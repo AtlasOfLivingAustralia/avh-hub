@@ -15,15 +15,24 @@
 
 package org.ala.hubs.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import org.ala.biocache.dto.SearchResultDTO;
+import org.ala.biocache.dto.UselessBean;
+import org.ala.hubs.dto.SearchRequestParams;
+import org.ala.hubs.service.BiocacheService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Search controller for occurrence record searching
@@ -35,72 +44,89 @@ public class SearchController {
 
 	private final static Logger logger = Logger.getLogger(SearchController.class);
 	
-	/** Name of view for list of taxa */
-	private final String SEARCH_LIST = "search/list"; // "species/list" || "search/species"
-	private final String SEARCH = "search"; //default view when empty query submitted
+	/** Name of views */
+	private final String SEARCH_LIST = "occurrences/list"; 
+    @Inject
+    private BiocacheService biocacheService;    
     
-    private final String WP_SOLR_URL = "http://alaprodweb1-cbr.vm.csiro.au/solr/select/?wt=json&q=";
 	
 	/**
-	 * Performs a search for occurrence records via Biocache web services
-	 * 
-	 * @param query
-	 * @param filterQuery
-	 * @param startIndex
-	 * @param pageSize
-	 * @param sortField
-	 * @param sortDirection
-	 * @param title
-	 * @param model
-	 * @return
-	 * @throws Exception
-	 */
+     * Performs a search for occurrence records via Biocache web services
+     * 
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return view
+     * @throws Exception 
+     */
 	@RequestMapping(value = "/search*", method = RequestMethod.GET)
-	public String search(
-			@RequestParam(value="q", required=false) String query,
-			@RequestParam(value="fq", required=false) String[] filterQuery,
-			@RequestParam(value="start", required=false, defaultValue="0") Integer startIndex,
-			@RequestParam(value="pageSize", required=false, defaultValue ="10") Integer pageSize,
-			@RequestParam(value="sort", required=false, defaultValue="score") String sortField,
-			@RequestParam(value="dir", required=false, defaultValue ="asc") String sortDirection,
-			@RequestParam(value="title", required=false, defaultValue ="Search Results") String title,
-		    Model model,
+	public String search(SearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
 		
-		if (StringUtils.isEmpty(query)) {
-			return SEARCH;
+		if (StringUtils.isEmpty(requestParams.getQ())) {
+			return SEARCH_LIST;
 		}
-		
-        // if params are set but empty (e.g. foo=&bar=) then provide sensible defaults
-        if (filterQuery != null && filterQuery.length == 0) {
-            filterQuery = null;
-        }
-        if (startIndex == null) {
-            startIndex = 0;
-        }
-        if (pageSize == null) {
-            pageSize = 20;
-        }
-        if (sortField.isEmpty()) {
-            sortField = "score";
-        }
-        if (sortDirection.isEmpty()) {
-            sortDirection = "asc";
-        }
+		        
+        //SearchRequestParams requestParams = setRequestParams(request.getParameterMap());
 
         //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
         //sortDirection = getSortDirection(sortField, sortDirection);
         
 		String view = SEARCH_LIST;
-
-        model.addAttribute("searchResults", null);
-        model.addAttribute("totalRecords", null);
-        model.addAttribute("lastPage", null);
+        SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
+        logger.debug("searchResult: " + searchResult.getTotalRecords());
+        model.addAttribute("searchResults", searchResult);
 
         logger.debug("Selected view: "+view);
         
 		return view;
 	}
-	
 
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String test(Model model) {
+        List<String> items = new ArrayList<String>();
+        items.add("This");
+        items.add("is");
+        items.add("just");
+        items.add("a");
+        items.add("list");
+        model.addAttribute("items", items);
+        return SEARCH_LIST;
+    }
+    
+    @RequestMapping(value = "/test2", method = RequestMethod.GET)
+	public @ResponseBody List test2(Model model) {
+        List<String> items = new ArrayList<String>();
+        items.add("This");
+        items.add("is");
+        items.add("just");
+        items.add("a");
+        items.add("list");
+        model.addAttribute("items", items);
+        logger.debug("test2 has list of size: " + items.size());
+        return items;
+    }
+	
+    @RequestMapping(value = "/test/client2", method = RequestMethod.GET)
+	public String testClient2(Model model) {
+        
+        List<String> list = biocacheService.getTestList();
+        model.addAttribute("items", list);
+        return SEARCH_LIST;
+    }
+    
+    @RequestMapping(value = "/test/client3", method = RequestMethod.GET)
+	public String testClient3(Model model) {
+        SearchRequestParams srp = biocacheService.getTestBean();
+        model.addAttribute("bean", srp);
+        return SEARCH_LIST;
+    }
+    
+    @RequestMapping(value = "/test/client4", method = RequestMethod.GET)
+	public String testClient4(Model model) {
+        SearchResultDTO searchResult = biocacheService.findByFulltextQuery("foo", null, 0, 10, "score", "asc");
+        model.addAttribute("bean", searchResult);
+        return SEARCH_LIST;
+    }
 }

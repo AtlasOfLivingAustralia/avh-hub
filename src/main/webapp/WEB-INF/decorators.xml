@@ -10,7 +10,7 @@
         <pattern>/index.jsp</pattern>
     </excludes>
 
-    <decorator name="main" page="main.jsp">
+    <decorator name="main" page="ozcam.jsp">
         <pattern>/*</pattern>
     </decorator>
 </decorators>
