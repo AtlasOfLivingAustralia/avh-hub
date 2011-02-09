@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class SearchRequestParams {
 
-    protected String q;
+    protected String q = "";
     protected String[] fq = {""}; // must not be null
     protected Integer start = 0;
     protected Integer pageSize = 10;
@@ -33,10 +33,10 @@ public class SearchRequestParams {
     protected String dir = "asc";
     
     /**
-     * Custom toString method to produce a String for the request parameters
-     * for the Biocache Service webservice
+     * Custom toString method to produce a String to be used as the request parameters
+     * for the Biocache Service webservices
      * 
-     * @return 
+     * @return request parameters string
      */
     @Override
     public String toString() {
