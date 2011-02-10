@@ -15,24 +15,19 @@
 
 package org.ala.hubs.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.ala.biocache.dto.SearchResultDTO;
-import org.ala.biocache.dto.UselessBean;
-import org.ala.hubs.dto.SearchRequestParams;
+import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.hubs.service.BiocacheService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Search controller for occurrence record searching
@@ -61,15 +56,15 @@ public class SearchController {
      * @throws Exception 
      */
 	@RequestMapping(value = "/search*", method = RequestMethod.GET)
-	public String search(SearchRequestParams requestParams, BindingResult result, Model model,
+	public String search(SearchRequestParams requestParams, Model model,
             HttpServletRequest request) throws Exception {
 		
 		if (StringUtils.isEmpty(requestParams.getQ())) {
 			return SEARCH_LIST;
-		}
-		        
-        //SearchRequestParams requestParams = setRequestParams(request.getParameterMap());
-
+		} else if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+		
         //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
         //sortDirection = getSortDirection(sortField, sortDirection);
         
@@ -77,56 +72,49 @@ public class SearchController {
         SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
-
+        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
         logger.debug("Selected view: "+view);
         
 		return view;
 	}
+    
+    /**
+     * Create a HashMap for the filter queries
+     *
+     * @param filterQuery
+     * @return
+     */
+    private HashMap<String, String> addFacetMap(String[] filterQuery) {
+               HashMap<String, String> facetMap = new HashMap<String, String>();
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(Model model) {
-        List<String> items = new ArrayList<String>();
-        items.add("This");
-        items.add("is");
-        items.add("just");
-        items.add("a");
-        items.add("list");
-        model.addAttribute("items", items);
-        return SEARCH_LIST;
+        if (filterQuery != null && filterQuery.length > 0) {
+            logger.debug("filterQuery = "+StringUtils.join(filterQuery, "|"));
+            for (String fq : filterQuery) {
+                if (fq != null && !fq.isEmpty()) {
+                    String[] fqBits = StringUtils.split(fq, ":", 2);
+                    facetMap.put(fqBits[0], fqBits[1]);
+                }
+            }
+        }
+        return facetMap;
     }
     
-    @RequestMapping(value = "/test2", method = RequestMethod.GET)
-	public @ResponseBody List test2(Model model) {
-        List<String> items = new ArrayList<String>();
-        items.add("This");
-        items.add("is");
-        items.add("just");
-        items.add("a");
-        items.add("list");
-        model.addAttribute("items", items);
-        logger.debug("test2 has list of size: " + items.size());
-        return items;
-    }
-	
-    @RequestMapping(value = "/test/client2", method = RequestMethod.GET)
-	public String testClient2(Model model) {
+    /**
+     * Calculate the last page number for pagination
+     * 
+     * @param totalRecords
+     * @param pageSize
+     * @return
+     */
+    private Integer calculateLastPage(Long totalRecords, Integer pageSize) {
+        Integer lastPage = 0;
+        Integer lastRecordNum = totalRecords.intValue();
         
-        List<String> list = biocacheService.getTestList();
-        model.addAttribute("items", list);
-        return SEARCH_LIST;
-    }
-    
-    @RequestMapping(value = "/test/client3", method = RequestMethod.GET)
-	public String testClient3(Model model) {
-        SearchRequestParams srp = biocacheService.getTestBean();
-        model.addAttribute("bean", srp);
-        return SEARCH_LIST;
-    }
-    
-    @RequestMapping(value = "/test/client4", method = RequestMethod.GET)
-	public String testClient4(Model model) {
-        SearchResultDTO searchResult = biocacheService.findByFulltextQuery("foo", null, 0, 10, "score", "asc");
-        model.addAttribute("bean", searchResult);
-        return SEARCH_LIST;
+        if (pageSize > 0) {
+            lastPage = (lastRecordNum / pageSize) + ((lastRecordNum % pageSize > 0) ? 1 : 0);
+        }
+        
+        return lastPage;
     }
 }

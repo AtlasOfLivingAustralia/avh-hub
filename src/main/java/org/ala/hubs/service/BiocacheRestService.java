@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import org.ala.biocache.dto.SearchResultDTO;
-import org.ala.hubs.dto.SearchRequestParams;
+import org.ala.biocache.dto.SearchRequestParams;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -52,15 +52,11 @@ public class BiocacheRestService implements BiocacheService {
         Assert.notNull(query, "query must not be null");
         
         try {
-            //RestTemplate restTemplate = new RestTemplate();
-            //List<HttpMessageConverter<?>> list = new ArrayList<HttpMessageConverter<?>>();
-            //list.add(new MappingJacksonHttpMessageConverter());
-            //restTemplate.setMessageConverters(list);
+            
             final String jsonUri = biocacheUriPrefix + "/search.json?" + requestParams;
             logger.debug("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class, query, 
                     "", startIndex, pageSize, sortField, sortDirection);
-            //OccurrenceDTO oc = new OccurrenceDTO();
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }

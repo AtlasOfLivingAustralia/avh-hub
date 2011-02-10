@@ -18,7 +18,8 @@ include file="/common/taglibs.jsp" %>
 		div#fancy_close {right:-15px;top:-12px}
 		div#fancy_bg {background-color:#FFFFFF}
         </style>
-	<script type='text/javascript' src='http://www.ozcam.org.au/wp-includes/js/jquery/jquery.js?ver=1.4.2'></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>
+	    <!--<script type='text/javascript' src='http://www.ozcam.org.au/wp-includes/js/jquery/jquery.js?ver=1.4.2'></script>-->
         <decorator:head />
     </head>
     <body>
@@ -45,9 +46,9 @@ include file="/common/taglibs.jsp" %>
                         <div id="Logo"></div></div>
                 </div>
             </div>
-            <div id="contentBox">
+            <div id="contentBox" style="margin-top: 20px;">
                 <decorator:body />
-<!--                <div id="SidebarBox">
+<!--            <div id="SidebarBox">
                     <div class="sidebar">
                     </div>
                     <div class="sidebar">

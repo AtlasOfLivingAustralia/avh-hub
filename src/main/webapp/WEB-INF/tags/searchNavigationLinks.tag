@@ -10,7 +10,7 @@
 <%@ attribute name="lastPage" required="true" type="java.lang.Integer" %>
 <%@ attribute name="maxPageLinks" required="false" type="java.lang.Integer" %>
 <%@ attribute name="title" required="false" type="java.lang.String" %>
-<span id="navLinks">
+<div id="navLinks">
     <c:if test="${empty maxPageLinks}"><c:set var="maxPageLinks" value="10"/></c:if>
     <fmt:formatNumber var="pageNumber" value="${(startIndex / pageSize) + 1}" pattern="0" />
     <c:set var="hash" value=""/>
@@ -63,4 +63,4 @@
             </c:otherwise>
         </c:choose>
     </ul>
-</span>
+</div>

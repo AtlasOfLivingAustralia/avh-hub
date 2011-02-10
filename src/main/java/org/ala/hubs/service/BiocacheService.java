@@ -16,7 +16,7 @@
 package org.ala.hubs.service;
 
 import java.util.List;
-import org.ala.hubs.dto.SearchRequestParams;
+import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
 
 /**
