@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
 @Controller("searchController")
-@RequestMapping(value = "/records")
+@RequestMapping(value = "/occurrences")
 public class SearchController {
 
 	private final static Logger logger = Logger.getLogger(SearchController.class);
