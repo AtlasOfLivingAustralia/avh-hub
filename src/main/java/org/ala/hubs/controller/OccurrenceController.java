@@ -48,8 +48,8 @@ public class OccurrenceController {
     @Inject
     private BiocacheService biocacheService;    
     /* View names */
-	private final String RECORD_LIST = "occurrence/list"; 
-    private final String RECORD_SHOW = "occurrence/show";
+	private final String RECORD_LIST = "occurrences/list";
+    private final String RECORD_SHOW = "occurrences/show";
 	
 	/**
      * Performs a search for occurrence records via Biocache web services
@@ -129,7 +129,7 @@ public class OccurrenceController {
         uuid = removeUriExtension(uuid);
         logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
-        model.addAttribute("occurrence", record);
+        model.addAttribute("record", record);
 		return RECORD_SHOW;
 	}
 
