@@ -105,4 +105,32 @@ $(document).ready(function() {
         var val = $("option:selected", this).val();
         reloadWithParam('pageSize',val);
     });
+
+//    // iPhone style toggle switch
+//    $('#listMapToggle11').iphoneSwitch("off",
+//        function() {
+//            //$('#ajax').load('on.html');
+//            alert("showing map");
+//        },
+//        function() {
+//            //$('#ajax').load('off.html');
+//            alert("showing list");
+//        },
+//        {
+//            switch_path: contextPath + "/static/images/" + 'iphone_switch.png',
+//            switch_off_container_path: contextPath + "/static/images/" + 'iphone_switch_container_off.png',
+//            switch_on_container_path: contextPath + "/static/images/" + 'iphone_switch_container_off.png'
+//        }
+//    );
+
+    $("#listMapToggle input").iButton({
+        labelOn: "Map",
+        labelOff: "List",
+        change: function ($input) {
+            // update the text based on the status of the checkbox
+            //$("#send-email").html($input.is(":checked") ? "Yes, send me more e-mail!" : "Ugh... no more e-mail already!");
+            //alert('changing view to');
+        }
+    }).trigger("change");
+;
 }); // end JQuery document ready

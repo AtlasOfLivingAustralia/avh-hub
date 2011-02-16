@@ -15,9 +15,9 @@
 
 package org.ala.hubs.service;
 
-import java.util.List;
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
+import org.ala.biocache.dto.store.OccurrenceDTO;
 
 /**
  * Service layer for accessing Biocache data
@@ -26,12 +26,10 @@ import org.ala.biocache.dto.SearchResultDTO;
  */
 public interface BiocacheService {
 
-    public SearchResultDTO findByFulltextQuery(String query, String[] filterQuery, Integer startIndex, Integer pageSize, String sortField, String sortDirection);
-
-    public List<String> getTestList();
-
-    public SearchRequestParams getTestBean();
-
     public SearchResultDTO findByFulltextQuery(SearchRequestParams requestParams);
+
+    public SearchResultDTO findByTaxonConcept(String guid, SearchRequestParams requestParams);
+
+    public OccurrenceDTO getRecordByUuid(String uuid);
     
 }

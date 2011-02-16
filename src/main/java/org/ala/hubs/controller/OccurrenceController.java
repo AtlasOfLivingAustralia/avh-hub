@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
+import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.hubs.service.BiocacheService;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,21 +35,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Search controller for occurrence record searching
+ * Occurrence record for occurrence record searching
  *
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
-@Controller("searchController")
-@RequestMapping(value = "/occurrences")
-public class SearchController {
+@Controller("occurrenceController")
+public class OccurrenceController {
 
-	private final static Logger logger = Logger.getLogger(SearchController.class);
+	private final static Logger logger = Logger.getLogger(OccurrenceController.class);
 	
-	/** Name of views */
-	private final String SEARCH_LIST = "occurrences/list"; 
+	/** BiocacheService injected by IoC */
     @Inject
     private BiocacheService biocacheService;    
-    
+    /* View names */
+	private final String RECORD_LIST = "occurrence/list"; 
+    private final String RECORD_SHOW = "occurrence/show";
 	
 	/**
      * Performs a search for occurrence records via Biocache web services
@@ -60,12 +61,12 @@ public class SearchController {
      * @return view
      * @throws Exception 
      */
-	@RequestMapping(value = "/search*", method = RequestMethod.GET)
+	@RequestMapping(value = "/occurrences/search*", method = RequestMethod.GET)
 	public String search(SearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
 		
 		if (StringUtils.isEmpty(requestParams.getQ())) {
-			return SEARCH_LIST;
+			return RECORD_LIST;
 		} else if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
@@ -77,19 +78,26 @@ public class SearchController {
         //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
         //sortDirection = getSortDirection(sortField, sortDirection);
         
-		String view = SEARCH_LIST;
-        requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
+		requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
         SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        logger.debug("Selected view: "+view);
         
-		return view;
+		return RECORD_LIST;
 	}
 
-    @RequestMapping(value = "/taxon/{guid:.+}*", method = RequestMethod.GET)
+    /**
+     * Display records for a given taxon concept id
+     *
+     * @param requestParams
+     * @param guid
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/occurrences/taxon/{guid:.+}*", method = RequestMethod.GET)
 	public String occurrenceSearchByTaxon(
 			SearchRequestParams requestParams,
             @PathVariable("guid") String guid,
@@ -102,9 +110,54 @@ public class SearchController {
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        return SEARCH_LIST;
+        return RECORD_LIST;
     }
 
+    /**
+     * Display an occurrence record by retrieving via its uuid.
+     *
+     * @param uuid
+     * @param request
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/occurrence/{uuid:.+}", method = RequestMethod.GET)
+	public String getOccurrenceRecord(@PathVariable("uuid") String uuid,
+            HttpServletRequest request, Model model) throws Exception {
+
+        uuid = removeUriExtension(uuid);
+        logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
+        OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
+        model.addAttribute("occurrence", record);
+		return RECORD_SHOW;
+	}
+
+    /**
+     * Remove the URI extension from the input String
+     * 
+     * @param uuid
+     * @return
+     */
+    protected String removeUriExtension(String uuid) {
+        uuid = StringUtils.removeEndIgnoreCase(uuid, ".json");
+        uuid = StringUtils.removeEndIgnoreCase(uuid, ".xml");
+        uuid = StringUtils.removeEndIgnoreCase(uuid, ".html");
+        return uuid;
+    }
+
+    /**
+     * Testing and debugging method
+     *
+     * TODO: delete this when stable
+     *
+     * @param query
+     * @param filterQuery
+     * @param request
+     * @param model
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String testRequest(
             @RequestParam(value = "q", required = false) String query,
@@ -122,7 +175,7 @@ public class SearchController {
         String[] fqs = request.getParameterValues("fq");
         model.addAttribute("fqs", fqs);
 
-        return SEARCH_LIST;
+        return RECORD_LIST;
     }
 
     /**

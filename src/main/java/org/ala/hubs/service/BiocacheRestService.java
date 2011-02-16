@@ -20,6 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
+import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -43,52 +44,6 @@ public class BiocacheRestService implements BiocacheService {
     protected final String requestParams = "q={query}&fq={filterQuery}&start={startIndex}&pageSize={pageSize}&sort={sortField}&dir={sortDirection}";
     protected final String rq2 = "q={qury}&foo={bar}";
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
-    
-    @Override
-    public SearchResultDTO findByFulltextQuery(String query, String[] filterQuery, Integer startIndex,
-            Integer pageSize, String sortField, String sortDirection) {
-
-        SearchResultDTO searchResults = new SearchResultDTO();
-        Assert.notNull(query, "query must not be null");
-        
-        try {
-            
-            final String jsonUri = biocacheUriPrefix + "/search.json?" + requestParams;
-            logger.debug("Requesting: " + jsonUri);
-            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class, query, 
-                    "", startIndex, pageSize, sortField, sortDirection);
-        } catch (Exception ex) {
-            logger.error("RestTemplate error: " + ex.getMessage(), ex);
-        }
-
-        return searchResults;
-    }
-
-    @Override
-    public List<String> getTestList() {
-        List<String> testList = new ArrayList<String>();
-        try {
-            final String jsonUri = "http://bee-be.local:8888/hubs-webapp/test2.json";
-            logger.debug("Requesting: " + jsonUri);
-            testList = restTemplate.getForObject(jsonUri, List.class);
-        } catch (Exception ex) {
-            logger.error("RestTemplate error: " + ex.getMessage(), ex);
-        }
-        return testList;
-    }
-
-    @Override
-    public SearchRequestParams getTestBean() {
-        SearchRequestParams srp = new SearchRequestParams();
-        try {
-            final String jsonUri = biocacheUriPrefix + "/test3.json?" + rq2;
-            logger.debug("Requesting: " + jsonUri);
-            srp = restTemplate.getForObject(jsonUri, SearchRequestParams.class, "bar", "bash");
-        } catch (Exception ex) {
-            logger.error("RestTemplate error: " + ex.getMessage(), ex);
-        }
-        return srp;
-    }
 
     @Override
     public SearchResultDTO findByFulltextQuery(SearchRequestParams requestParams) {
@@ -96,7 +51,7 @@ public class BiocacheRestService implements BiocacheService {
         SearchResultDTO searchResults = new SearchResultDTO();
         
         try {
-            final String jsonUri = biocacheUriPrefix + "/search.json?" + requestParams.toString();
+            final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();
             logger.debug("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
@@ -105,6 +60,41 @@ public class BiocacheRestService implements BiocacheService {
         }
 
         return searchResults;
+    }
+
+    @Override
+    public SearchResultDTO findByTaxonConcept(String guid, SearchRequestParams requestParams) {
+        Assert.notNull(guid, "guid must not be null");
+        //requestParams.setQ("taxonConceptID:" + guid);
+        SearchResultDTO searchResults = new SearchResultDTO();
+
+        try {
+            final String jsonUri = biocacheUriPrefix + "/occurrences/taxon/" + guid + "?" + requestParams.toString();
+            logger.debug("Requesting: " + jsonUri);
+            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+            searchResults.setStatus("Error: " + ex.getMessage());
+        }
+
+        return searchResults;
+    }
+
+    @Override
+    public OccurrenceDTO getRecordByUuid(String uuid) {
+        Assert.notNull(uuid, "uuid must not be null");
+        OccurrenceDTO record = new OccurrenceDTO();
+
+        try {
+            final String jsonUri = biocacheUriPrefix + "/occurrence/" + uuid;
+            logger.debug("Requesting: " + jsonUri);
+            record = restTemplate.getForObject(jsonUri, OccurrenceDTO.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+            //record.setStatus("Error: " + ex.getMessage());
+        }
+
+        return record;
     }
     
 }
