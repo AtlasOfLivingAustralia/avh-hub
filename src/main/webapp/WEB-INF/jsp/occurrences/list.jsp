@@ -10,9 +10,18 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>OzCam Hub - Occurrence Search Results</title>
+        <script type="text/javascript">
+            contextPath = "${pageContext.request.contextPath}";
+        </script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.metadata.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ibutton.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/densityMap.js"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.ibutton.css" type="text/css" media="all" />
+
     </head>
     <body>
         <c:if test="${searchResults.totalRecords > 0}">
@@ -84,6 +93,10 @@
                                                     <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></a>
                                                     (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                                 </c:when>
+                                                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_code_name')}">
+                                                    <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fn:replace(fieldResult.label, ',', '%2C')}"><fmt:message key="${fn:replace(fieldResult.label, ',', ',')}"/></a>
+                                                    (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                                </c:when>
                                                 <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
                                                 <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'month')}">
                                                     <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="month.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
@@ -102,15 +115,21 @@
                     </c:forEach>
                 </div>
             </div><!--facets-->
-            
         </c:if>
         <div id="content">
             <c:if test="${searchResults.totalRecords == 0}">
-                <p>No records found for ${searchResults.query}</p>
+                <p>No records found for <b>${searchRequestParams.displayString}</b></p>
             </c:if>
             <c:if test="${searchResults.totalRecords > 0}">
-                <p id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
-                    returned for <strong>${searchResults.query}</strong></p>
+                <div>
+                    <div id="listMapToggle" class="row">
+                        <label class="label" for="togg">Display Mode: </label>
+                        <input type="checkbox" id="togg" />
+                    </div>
+                    <div id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
+                        returned for <strong>${searchResults.query}</strong>
+                    </div>
+                </div>
                 <div class="solrResults">
                     <div id="dropdowns">
                         <div id="resultsStats">
@@ -165,9 +184,8 @@
                              lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
                     </div>
                 </div><!--solrResults-->
-                <div id="pointsMap"></div>
+                <div id="densityMap"></div>
                 <div id="busyIcon" style="display:none;"><img src="${pageContext.request.contextPath}/static/css/images/wait.gif" alt="busy/spinning icon" /></div>
-
             </c:if>
         </div>
     </body>
