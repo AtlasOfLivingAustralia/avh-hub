@@ -50,6 +50,7 @@ public class OccurrenceController {
     /* View names */
 	private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
+    private final String RECORD_MAP = "occurrences/map";
 	
 	/**
      * Performs a search for occurrence records via Biocache web services
@@ -216,5 +217,34 @@ public class OccurrenceController {
         }
         
         return lastPage;
+    }
+
+	@RequestMapping(value = "/occurrences/map", method = RequestMethod.GET)
+	public String map(SearchRequestParams requestParams, BindingResult result, Model model,
+            HttpServletRequest request) throws Exception {
+
+		if (StringUtils.isEmpty(requestParams.getQ())) {
+			return RECORD_MAP;
+		} else if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+
+        //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
+        //sortDirection = getSortDirection(sortField, sortDirection);
+
+		requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
+        SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
+        logger.debug("searchResult: " + searchResult.getTotalRecords());
+        model.addAttribute("searchResults", searchResult);
+        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+
+
+
+        return RECORD_MAP;
     }
 }
