@@ -26,8 +26,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Search controller for occurrence record searching
@@ -35,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
 @Controller("searchController")
+@RequestMapping(value = "/records")
 public class SearchController {
 
 	private final static Logger logger = Logger.getLogger(SearchController.class);
@@ -56,7 +61,7 @@ public class SearchController {
      * @throws Exception 
      */
 	@RequestMapping(value = "/search*", method = RequestMethod.GET)
-	public String search(SearchRequestParams requestParams, Model model,
+	public String search(SearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
 		
 		if (StringUtils.isEmpty(requestParams.getQ())) {
@@ -64,11 +69,16 @@ public class SearchController {
 		} else if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
-		
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+
         //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
         //sortDirection = getSortDirection(sortField, sortDirection);
         
 		String view = SEARCH_LIST;
+        requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
         SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
@@ -78,7 +88,43 @@ public class SearchController {
         
 		return view;
 	}
-    
+
+    @RequestMapping(value = "/taxon/{guid:.+}*", method = RequestMethod.GET)
+	public String occurrenceSearchByTaxon(
+			SearchRequestParams requestParams,
+            @PathVariable("guid") String guid,
+            Model model) throws Exception {
+
+        //requestParams.setQ("taxonConceptID:" + guid);
+        requestParams.setDisplayString("taxonConcept: "+guid); // replace with sci name if a match is found
+        SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
+        logger.debug("searchResult: " + searchResult.getTotalRecords());
+        model.addAttribute("searchResults", searchResult);
+        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+        return SEARCH_LIST;
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String testRequest(
+            @RequestParam(value = "q", required = false) String query,
+            @RequestParam(value = "fq", required = false) String[] filterQuery,
+            HttpServletRequest request,
+            Model model)
+            throws Exception {
+
+        SearchRequestParams requestParams = new SearchRequestParams();
+        StringBuilder debug = new StringBuilder("q = ").append(query).append("; ");
+        debug.append("fq = ").append(StringUtils.join(filterQuery, "|"));
+        requestParams.setDisplayString(debug.toString());
+        model.addAttribute("requestParams", requestParams);
+
+        String[] fqs = request.getParameterValues("fq");
+        model.addAttribute("fqs", fqs);
+
+        return SEARCH_LIST;
+    }
+
     /**
      * Create a HashMap for the filter queries
      *
@@ -93,6 +139,7 @@ public class SearchController {
             for (String fq : filterQuery) {
                 if (fq != null && !fq.isEmpty()) {
                     String[] fqBits = StringUtils.split(fq, ":", 2);
+                    logger.debug("bits = " + StringUtils.join(fqBits, "|"));
                     facetMap.put(fqBits[0], fqBits[1]);
                 }
             }
