@@ -7,6 +7,7 @@ var Maps = (function() {
             var url = location.href.replace("map", "search");
             document.getElementById("listLink").setAttribute("href", url);
         },
+
         addFilter: function(key, value) {
             //filterList.push({key: value});
             filterList[key] = value; 
@@ -38,8 +39,6 @@ var Maps = (function() {
                 "LAYERS=massgis:GISDATA.ASSESSPAR_POLY_PUBLIC_NOROADS,massgis:GISDATA.ASSESSPARNC_POLY_PUB_NOROADS",
                 "STYLES=GISDATA.ASSESSPAR_POLY_PUBLIC::Yellow_Outlines,GISDATA.ASSESSPARNC_POLY_PUB_NOROADS::Plum_Outlines_Max10k"
             ];
-            //parse query string and add additional search params
-            alert (window.location.search);
 
             //Add query string params to custom params
             var pairs = location.search.substring(1).split('&');
