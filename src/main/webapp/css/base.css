@@ -1,0 +1,86 @@
+/* 
+    Document   : base
+    Created on : Feb 17, 2011, 10:47:09 AM
+    Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#content p, #content div {
+    font-size: 13px;
+}
+#content {
+    width: 730px;
+}
+.sidebar {
+    width: 200px;
+}
+#content a:link, #content a:visited {
+    font-size: 13px;
+    text-decoration: none;
+    color: #005A8E;
+}
+#content a:hover {
+    text-decoration: underline;
+}
+#contentBox {
+    width: 1000px;
+}
+label {
+    display: inline;
+}
+input, textarea, select, button {
+    margin: 0;
+}
+table th {
+    text-align: left;
+    padding: 6px 12px;
+    font-weight: bold;
+    color: #666;
+}
+table td,table th  {
+    text-align: left;
+    padding: 6px 12px;
+    line-height: 1.3em;
+    vertical-align: top;
+/*    color: #666;*/
+}
+#headingBar {
+    padding-left: 30px;
+}
+#headingBar h1 {
+    font-family: 'Rockwell', arial, helvetica, sans-serif;
+    color: #1775BA;
+    font-size: 200%;
+    /*text-shadow: 1px 1px 1px #bbbaba;*/
+    margin-bottom: 10px;
+    font-weight: lighter;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #CCC;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 5px;
+    padding-left: 0px;
+    margin-top: 0px;
+}
+.sidebar h2 {
+    font-size: 120%;
+    margin-top: 4px;
+}
+.sidebar h3 {
+    font-size: 120%;
+    padding-top: 4px;
+}
+.sidebar h4 {
+    font-size: 110%;
+    padding: 6px 0;
+}
+.sidebar li {
+    border-bottom: none;
+}

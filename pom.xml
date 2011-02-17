@@ -35,6 +35,13 @@
             <artifactId>ala-logger</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!-- ALA common UI -->
+        <dependency>
+            <groupId>au.org.ala</groupId>
+            <artifactId>ala-common-ui</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- SPRING -->
 <!--        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>

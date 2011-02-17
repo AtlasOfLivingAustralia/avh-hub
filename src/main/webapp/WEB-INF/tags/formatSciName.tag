@@ -5,7 +5,7 @@ attribute name="acceptedName" required="false" type="java.lang.String" %>
 <c:set var="acceptedNameOutput">
     <c:if test="${not empty acceptedName}">
         <c:choose>
-            <c:when test="${rankId >= 6000}">
+            <c:when test="${rankId >= 6000 || empty rankId}">
                 (accepted name: <i>${acceptedName}</i>)
             </c:when>
             <c:otherwise>
@@ -16,7 +16,7 @@ attribute name="acceptedName" required="false" type="java.lang.String" %>
 </c:set>
 <c:set var="nameOutput">
     <c:choose>
-        <c:when test="${rankId >= 6000}">
+        <c:when test="${rankId >= 6000 || empty rankId}">
             <i>${name}</i>
         </c:when>
         <c:otherwise>

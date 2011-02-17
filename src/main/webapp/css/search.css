@@ -11,43 +11,6 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-#content p, #content div {
-    font-size: 13px;
-}
-#contentBox {
-    width: 1000px;
-}
-#content {
-    width: 730px;
-}
-.sidebar {
-    width: 200px;
-}
-label {
-    display: inline;
-}
-input, textarea, select, button {
-    margin: 0;
-}
-#headingBar {
-    padding-left: 30px;
-}
-#headingBar h1 {
-    font-family: 'Rockwell', arial, helvetica, sans-serif;
-    color: #1775BA;
-    font-size: 200%;
-    /*text-shadow: 1px 1px 1px #bbbaba;*/
-    margin-bottom: 10px;
-    font-weight: lighter;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #CCC;
-    padding-top: 0px;
-    padding-right: 0px;
-    padding-bottom: 5px;
-    padding-left: 0px;
-    margin-top: 0px;
-}
 
 #searchBox {
     margin: 10px 10px 10px 320px;
@@ -59,14 +22,7 @@ input, textarea, select, button {
     padding: 2px 3px;
     margin: 5px 10px;
 }
-.sidebar h3 {
-    font-size: 120%;
-    padding-top: 4px;
-}
-.sidebar h4 {
-    font-size: 110%;
-    padding: 6px 0;
-}
+
 #listMapToggle {
     width: 300px;
     float: right;
@@ -170,4 +126,10 @@ li.currentPage {
 #searchNavBar li a:hover  {
     color:#6DB71D;
     text-decoration:none;
+}
+div.recordHeader {
+    margin-left: 30px;
+    margin-bottom: 20px;
+    padding-left: 0 !important;
+    border-bottom: 2px solid gray;
 }

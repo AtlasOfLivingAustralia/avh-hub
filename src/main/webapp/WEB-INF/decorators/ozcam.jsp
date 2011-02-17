@@ -20,6 +20,7 @@ include file="/common/taglibs.jsp" %>
         </style>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>
 	    <!--<script type='text/javascript' src='http://www.ozcam.org.au/wp-includes/js/jquery/jquery.js?ver=1.4.2'></script>-->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
         <decorator:head />
     </head>
     <body>
