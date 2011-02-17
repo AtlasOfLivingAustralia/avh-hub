@@ -24,11 +24,9 @@ var Maps = (function() {
         },
         loadGoogle: function() {
             
-            //var myLatlng = new google.maps.LatLng(-23.75, 133);
-            var myLatlng = new google.maps.LatLng(42.760369, -71.031445);
+            var myLatlng = new google.maps.LatLng(-27, 133);
             var myOptions = {
-                zoom: 18,
-            //zoom: 4,
+                zoom: 4,
                 center: myLatlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             }
@@ -36,8 +34,7 @@ var Maps = (function() {
 
             var customParams = [
                 "FORMAT=image/png8",
-                "LAYERS=massgis:GISDATA.ASSESSPAR_POLY_PUBLIC_NOROADS,massgis:GISDATA.ASSESSPARNC_POLY_PUB_NOROADS",
-                "STYLES=GISDATA.ASSESSPAR_POLY_PUBLIC::Yellow_Outlines,GISDATA.ASSESSPARNC_POLY_PUB_NOROADS::Plum_Outlines_Max10k"
+                "LAYERS=ALA:ibra_reg_shape"
             ];
 
             //Add query string params to custom params
@@ -45,7 +42,7 @@ var Maps = (function() {
             for (var i = 0; i < pairs.length; i++) {
                 customParams.push(pairs[i]);
             }
-            loadWMS(map, "http://giswebservices.massgis.state.ma.us/geoserver/wms?", customParams);
+            loadWMS(map, "http://spatial.ala.org.au/geoserver/wms?", customParams);
         }
 
     } // return: public methods 

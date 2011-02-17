@@ -127,7 +127,6 @@ function loadWMS(map, baseURL, customParams){
     map.setOptions({
         mapTypeControlOptions: {
             mapTypeIds: [
-            'wms',
             google.maps.MapTypeId.ROADMAP,
             google.maps.MapTypeId.TERRAIN,
             google.maps.MapTypeId.SATELLITE,
