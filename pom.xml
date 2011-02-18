@@ -205,12 +205,12 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
-            <version>1.4.5</version>
+            <version>1.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.4.5</version>
+            <version>1.7.0</version>
         </dependency>
         <!-- XSTREAM -->
         <dependency>
