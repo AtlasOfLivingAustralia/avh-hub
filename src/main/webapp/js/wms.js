@@ -56,7 +56,6 @@ MercatorProjection.prototype.fromDivPixelToLatLng = function(pixel, zoom) {
 MercatorProjection.prototype.fromDivPixelToSphericalMercator = function(pixel, zoom) {
     var me = this;
     var coord = me.fromDivPixelToLatLng(pixel, zoom);
-
     var r= 6378137.0;
     var x = r* degreesToRadians(coord.lng());
     var latRad = degreesToRadians(coord.lat());
@@ -105,6 +104,9 @@ function loadWMS(map, baseURL, customParams){
             var lLR_Latitude = lLRg.y;
             var lLR_Longitude = lLRg.x;
 
+            if (lLR_Longitude < lUL_Longitude){
+                lLR_Longitude = Math.abs(lLR_Longitude);
+            }
             var urlResult = baseURL + wmsParams.join("&") + "&bbox=" + lUL_Longitude + "," + lUL_Latitude + "," + lLR_Longitude + "," + lLR_Latitude;
 
             return urlResult;
