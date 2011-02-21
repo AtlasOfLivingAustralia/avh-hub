@@ -15,16 +15,22 @@
 
 package org.ala.hubs.controller;
 
+import au.org.ala.biocache.Attribution;
 import java.util.HashMap;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
+import au.org.ala.biocache.FullRecord;
 import org.ala.biocache.dto.store.OccurrenceDTO;
+import org.ala.client.util.RestfulClient;
 import org.ala.hubs.service.BiocacheService;
+import org.apache.commons.httpclient.HttpStatus;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * Occurrence record for occurrence record searching
+ * Occurrence record Controller
  *
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
@@ -45,11 +51,16 @@ public class OccurrenceController {
 	
 	/** BiocacheService injected by IoC */
     @Inject
-    private BiocacheService biocacheService;    
+    private BiocacheService biocacheService;
+    @Inject
+	protected RestfulClient restfulClient;
     /* View names */
 	private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
     private final String RECORD_MAP = "occurrences/map";
+
+	protected String collectoryBaseUrl = "http://collections.ala.org.au";
+    protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
 	
 	/**
      * Performs a search for occurrence records via Biocache web services
@@ -129,6 +140,33 @@ public class OccurrenceController {
         uuid = removeUriExtension(uuid);
         logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
+        String collectionCodeUid = null;
+
+        if (record != null && record.getProcessed() != null) { // .getAttribution().getCollectionCodeUid()
+            FullRecord  pr = record.getProcessed();
+            collectionCodeUid = pr.getAttribution().getCollectionUid();
+
+            Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionCodeUid);
+            if ((Integer) resp[0] == HttpStatus.SC_OK) {
+                String json = (String) resp[1];
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode;
+
+                try {
+                    rootNode = mapper.readValue(json, JsonNode.class);
+                    String name = rootNode.path("name").getTextValue();
+                    String logo = rootNode.path("institutionLogoUrl").getTextValue();
+                    String institution = rootNode.path("institution").getTextValue();
+                    model.addAttribute("collectionName", name);
+                    model.addAttribute("collectionLogo", logo);
+                    model.addAttribute("collectionInstitution", institution);
+                } catch (Exception e) {
+                    logger.error(e.toString(), e);
+                }
+            }
+
+		}
+
         model.addAttribute("record", record);
 		return RECORD_SHOW;
 	}

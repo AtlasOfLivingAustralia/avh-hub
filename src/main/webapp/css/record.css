@@ -223,3 +223,6 @@ h1 span#recordId {
 #content h3 {
     margin-top: 4px;
 }
+#institutionLogo {
+    max-width: 280px;
+}

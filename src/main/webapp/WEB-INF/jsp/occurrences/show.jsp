@@ -29,7 +29,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/record.css" type="text/css" media="screen" />
     </head>
     <body>
-        <spring:url var="json" value="/occurrence/${record.raw.occurrence.uuid}.json" />
+        <spring:url var="json" value="/occurrence/${record.raw.uuid}.json" />
         <c:if test="${not empty recordId}">
             <div id="headingBar" class="recordHeader">
                 <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>
@@ -58,6 +58,11 @@
                 </c:if>
             </div>
             <div id="SidebarBox">
+                <c:if test="${not empty collectionLogo}">
+                    <div class="sidebar">
+                        <img src="${collectionLogo}" alt="institution logo" id="institutionLogo"/>
+                    </div>
+                </c:if>
                 <c:if test="${not empty record.systemAssertions}">
                     <div class="sidebar">
                         <div id="warnings">
@@ -83,6 +88,7 @@
                                 var myOptions = {
                                     zoom: 5,
                                     center: latlng,
+                                    scrollwheel: false,
                                     scaleControl: true,
                                     streetViewControl: false,
                                     mapTypeControl: true,
@@ -180,13 +186,16 @@
                                         ${record.processed.attribution.collectionName}
                                     </a>
                                 </c:when>
-                                <c:when test="${not empty record.processed.attribution.collectionUid}">
+                                <c:when test="${not empty record.processed.attribution.collectionUid && not empty collectionName}">
                                     <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">
-                                        [Collection name not known]
+                                        ${collectionName}
                                     </a>
                                 </c:when>
                                 <c:when test="${not empty record.processed.attribution.collectionName}">
                                     ${record.processed.attribution.collectionName}
+                                </c:when>
+                                <c:when test="${not empty collectionName}">
+                                    ${collectionName}
                                 </c:when>
                                 <c:otherwise>
                                     <%-- [Collection name not known] --%>
@@ -223,11 +232,11 @@
                         <!-- Record UUID -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordUuid" fieldName="Record UUID">
                             <c:choose>
-                                <c:when test="${not empty record.processed.occurrence.uuid}">
-                                    ${record.processed.occurrence.uuid}
+                                <c:when test="${not empty record.processed.uuid}">
+                                    ${record.processed.uuid}
                                 </c:when>
                                 <c:otherwise>
-                                    ${record.raw.occurrence.uuid}
+                                    ${record.raw.uuid}
                                 </c:otherwise>
                             </c:choose>
                         </alatag:occurrenceTableRow>
@@ -477,14 +486,19 @@
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="species" fieldName="Species">
                             <c:if test="${not empty record.processed.classification.speciesID}">
                                 <a href="${bieWebappContext}/species/${record.processed.classification.speciesID}">
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.species}">
+                            </c:if>
+                            <c:choose>
+                                <c:when test="${not empty record.processed.classification.species}">
                                     <i>${record.processed.classification.species}</i>
-                                </c:if>
-                                <c:if test="${empty record.processed.classification.species && not empty record.raw.classification.species}">
+                                </c:when>
+                                <c:when test="${not empty record.raw.classification.species}">
                                     <i>${record.raw.classification.species}</i>
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.speciesID}">
+                                </c:when>
+                                <c:when test="${not empty record.raw.classification.specificEpithet && not empty record.raw.classification.genus}">
+                                    <i>${record.raw.classification.genus} ${record.raw.classification.specificEpithet}</i>
+                                </c:when>
+                            </c:choose>
+                            <c:if test="${not empty record.processed.classification.speciesID}">
                                 </a>
                             </c:if>
                             <c:if test="${not empty record.processed.classification.species && not empty record.raw.classification.species && (fn:toLowerCase(record.processed.classification.species) != fn:toLowerCase(record.raw.classification.species))}">
@@ -515,11 +529,9 @@
                         </alatag:occurrenceTableRow>
                         <!-- State/Province -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="state" fieldName="State/Province">
-                            <c:if test="${not empty record.processed.location.stateProvince}">
-                                ${record.processed.location.stateProvince}
-                            </c:if>
-                            <c:if test="${empty record.processed.location.stateProvince && not empty record.raw.location.stateProvince}">
-                                ${record.raw.location.stateProvince}
+                            <c:set var="stateValue" value="${not empty record.processed.location.stateProvince ? record.processed.location.stateProvince : record.raw.location.stateProvince}" />
+                            <c:if test="${not empty stateValue}">
+                                <a href="${bieWebappContext}/regions/aus_states/${stateValue}">${stateValue}</a>
                             </c:if>
                             <c:if test="${not empty record.processed.location.stateProvince && not empty record.raw.location.stateProvince && (fn:toLowerCase(record.processed.location.stateProvince) != fn:toLowerCase(record.raw.location.stateProvince))}">
                                 <br/><span class="originalValue">Supplied as: "${record.raw.location.stateProvince}"</span>

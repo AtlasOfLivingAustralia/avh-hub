@@ -125,4 +125,6 @@
         </property>
     </bean>
 
+    <!-- ALA RestfulClient (from ala-logger) -->
+    <bean id="restfulClient" class="org.ala.client.util.RestfulClient"/>
 </beans>
