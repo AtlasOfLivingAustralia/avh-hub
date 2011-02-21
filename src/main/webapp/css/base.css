@@ -20,13 +20,18 @@
 .sidebar {
     width: 200px;
 }
-#content a:link, #content a:visited {
+a:link, a:visited, #content a:link, #content a:visited {
     font-size: 13px;
     text-decoration: none;
     color: #005A8E;
 }
-#content a:hover {
+a:hover, #content a:hover {
     text-decoration: underline;
+}
+h1, h2, h3, h4, h5, h6 {
+    padding: 0 0 8px;
+    color: #444;
+    font-family: 'Rockwell', arial, helvetica, sans-serif;
 }
 #contentBox {
     width: 1000px;
@@ -41,7 +46,7 @@ table th {
     text-align: left;
     padding: 6px 12px;
     font-weight: bold;
-    color: #666;
+    color: #444;
 }
 table td,table th  {
     text-align: left;
@@ -70,7 +75,7 @@ table td,table th  {
     margin-top: 0px;
 }
 .sidebar h2 {
-    font-size: 120%;
+    font-size: 130%;
     margin-top: 4px;
 }
 .sidebar h3 {

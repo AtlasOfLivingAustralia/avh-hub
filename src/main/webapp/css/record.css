@@ -195,9 +195,31 @@ div#occurrenceMap {
     font-style: italic; 
 }
 table.occurrenceTable {
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid silver;
+    margin: 5px 0 10px 0;
+    padding-bottom: 5px;
+    width: 100%;
+}
+.occurrenceTable th {
+    width: 140px;
+    vertical-align: top;
+    font-weight: bold;
+}
+td.annoText {
+    width: 24px;
 }
 #jsonLink {
     float:right;
     vertical-align: bottom;
+    margin-top: 5px;
+}
+h2#headingSciName {
+    color: #555;
+    font-size: 1.6em;
+}
+h1 span#recordId {
+    color: #222;
+}
+#content h3 {
+    margin-top: 4px;
 }

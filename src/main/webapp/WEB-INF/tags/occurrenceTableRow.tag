@@ -1,3 +1,8 @@
+<%--
+    Document   : occurrenceTableRow
+    Created on :
+    Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
+--%>
 <%@ include file="/common/taglibs.jsp" %><%@
     attribute name="fieldName" required="true" type="java.lang.String" %><%@
     attribute name="fieldNameIsMsgCode" required="false" type="java.lang.Boolean" %><%@
