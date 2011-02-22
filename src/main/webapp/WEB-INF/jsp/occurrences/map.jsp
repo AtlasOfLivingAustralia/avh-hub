@@ -1,5 +1,5 @@
 <%-- 
-    Document   : map
+    Document   : map.jsp
     Created on : Feb 16, 2011, 3:25:27 PM
     Author     : "Ajay Ranipeta <Ajay.Ranipeta@csiro.au>"
 --%>
