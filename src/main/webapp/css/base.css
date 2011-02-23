@@ -13,6 +13,7 @@
 
 #content p, #content div {
     font-size: 13px;
+    line-height: 1.5em;
 }
 #content {
     width: 730px;
@@ -28,7 +29,7 @@ a:link, a:visited, #content a:link, #content a:visited {
 a:hover, #content a:hover {
     text-decoration: underline;
 }
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
     padding: 0 0 8px;
     color: #444;
     font-family: 'Rockwell', arial, helvetica, sans-serif;

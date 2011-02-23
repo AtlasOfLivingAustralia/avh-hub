@@ -180,27 +180,21 @@
                         </alatag:occurrenceTableRow>
                         <!-- Collection -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="collectionCode" fieldName="Collection">
+                            <c:if test="${not empty record.processed.attribution.collectionUid}">
+<!--                                <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">-->
+                                <a href="${pageContext.request.contextPath}/collection/${record.processed.attribution.collectionUid}" title="view collection page">
+                            </c:if>
                             <c:choose>
-                                <c:when test="${not empty record.processed.attribution.collectionName && not empty record.processed.attribution.collectionUid}">
-                                    <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">
-                                        ${record.processed.attribution.collectionName}
-                                    </a>
-                                </c:when>
-                                <c:when test="${not empty record.processed.attribution.collectionUid && not empty collectionName}">
-                                    <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">
-                                        ${collectionName}
-                                    </a>
-                                </c:when>
                                 <c:when test="${not empty record.processed.attribution.collectionName}">
                                     ${record.processed.attribution.collectionName}
                                 </c:when>
                                 <c:when test="${not empty collectionName}">
                                     ${collectionName}
                                 </c:when>
-                                <c:otherwise>
-                                    <%-- [Collection name not known] --%>
-                                </c:otherwise>
                             </c:choose>
+                            <c:if test="${not empty record.processed.attribution.collectionUid}">
+                                </a>
+                            </c:if>
                             <c:if test="${not empty record.raw.occurrence.collectionCode}">
                                 <br/><span class="originalValue">Supplied as "${record.raw.occurrence.collectionCode}"</span>
                             </c:if>
