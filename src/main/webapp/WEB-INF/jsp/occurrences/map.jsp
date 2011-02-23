@@ -19,6 +19,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ibutton.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/densityMap.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms.js"></script>
         <script type="text/javascript"
@@ -131,7 +132,20 @@
                     <div id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
                         returned for <strong>${searchResults.query}</strong>
                     </div>
-                    <div><a id="listLink">List View</a></div>
+                    <div>
+                        <a id="listLink">List View</a>
+                        &nbsp;&nbsp;&nbsp;
+                        Colour by: 
+                        <select name="colourFacets" id="colourFacets">
+                            <option value=""> -- Select an option -- </option>
+                            <c:forEach var="facetResult" items="${searchResults.facetResults}">
+                                <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
+                                    <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
+                                </c:if>
+                            </c:forEach>
+                            
+                        </select>
+                    </div>
                 </div>
 
                 <div id="mapwrapper">
