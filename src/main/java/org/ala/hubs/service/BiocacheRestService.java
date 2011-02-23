@@ -15,8 +15,6 @@
 
 package org.ala.hubs.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
@@ -37,8 +35,6 @@ public class BiocacheRestService implements BiocacheService {
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
-    //@Inject
-    //private XPathOperations xpathTemplate
     
     protected final String biocacheUriPrefix = "http://localhost:8080/biocache-service";
     protected final String requestParams = "q={query}&fq={filterQuery}&start={startIndex}&pageSize={pageSize}&sort={sortField}&dir={sortDirection}";
@@ -90,7 +86,6 @@ public class BiocacheRestService implements BiocacheService {
             record = restTemplate.getForObject(jsonUri, OccurrenceDTO.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
-            //record.setStatus("Error: " + ex.getMessage());
         }
 
         return record;
