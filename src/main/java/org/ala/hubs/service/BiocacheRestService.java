@@ -40,7 +40,6 @@ public class BiocacheRestService implements BiocacheService {
     //@Inject
     //private XPathOperations xpathTemplate
     
-    //protected final String biocacheUriPrefix = "http://limb-yf.nexus.csiro.au:9999/biocache-service";
     protected final String biocacheUriPrefix = "http://localhost:8080/biocache-service";
     protected final String requestParams = "q={query}&fq={filterQuery}&start={startIndex}&pageSize={pageSize}&sort={sortField}&dir={sortDirection}";
     protected final String rq2 = "q={qury}&foo={bar}";
