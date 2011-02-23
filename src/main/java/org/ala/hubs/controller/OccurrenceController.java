@@ -61,7 +61,12 @@ public class OccurrenceController {
 
 	protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
-	
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+	public String homePage(){
+       return "homePage";
+    }
+
 	/**
      * Performs a search for occurrence records via Biocache web services
      * 
@@ -72,7 +77,7 @@ public class OccurrenceController {
      * @return view
      * @throws Exception 
      */
-	@RequestMapping(value = "/occurrences/search*", method = RequestMethod.GET)
+	@RequestMapping(value = {"/occurrence/search*","/occurrences/search*"}, method = RequestMethod.GET)
 	public String search(SearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
 		

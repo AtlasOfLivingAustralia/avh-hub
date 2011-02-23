@@ -79,6 +79,14 @@
                         </div>
                     </div>
                 </c:if>
+                <c:if test="${not empty record.processed.occurrence.images}">
+                    <div class="sidebar">
+                        <h2>Images</h2>
+                        <c:forEach items="${record.processed.occurrence.images}" var="imageUrl">
+                           <a href="${imageUrl}"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
+                        </c:forEach>
+                    </div>
+                </c:if>
                 <c:if test="${not empty record.processed.location.decimalLatitude && not empty record.processed.location.decimalLongitude}">
                     <div class="sidebar">
                         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
