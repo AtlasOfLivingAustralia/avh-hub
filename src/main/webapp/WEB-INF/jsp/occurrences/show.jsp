@@ -136,6 +136,7 @@
                 <div id="occurrenceDataset">
                     <h3>Dataset</h3>
                     <table class="occurrenceTable" id="datasetTable">
+                        <%--
                         <!-- Data Provider -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data Provider">
                             <c:choose>
@@ -162,11 +163,13 @@
                                 </c:otherwise>
                             </c:choose>
                         </alatag:occurrenceTableRow>
+                        --%>
                         <!-- Institution -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="institutionCode" fieldName="Institution">
                             <c:choose>
                                 <c:when test="${record.processed.attribution.institutionUid != null && not empty record.processed.attribution.institutionUid}">
-                                    <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.institutionUid}">
+                                    <!-- <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.institutionUid}"> -->
+                                    <a href="${pageContext.request.contextPath}/institution/${record.processed.attribution.institutionUid}">
                                         ${record.processed.attribution.institutionName}
                                     </a>
                                 </c:when>
