@@ -42,7 +42,6 @@ public class BiocacheRestService implements BiocacheService {
     
     protected final String biocacheUriPrefix = "http://localhost:8080/biocache-service";
     protected final String requestParams = "q={query}&fq={filterQuery}&start={startIndex}&pageSize={pageSize}&sort={sortField}&dir={sortDirection}";
-    protected final String rq2 = "q={qury}&foo={bar}";
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
 
     @Override
