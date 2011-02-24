@@ -32,7 +32,7 @@ var Maps = (function() {
         wmsinfo += "&lon=" + location.lng();
         wmsinfo += "&radius=10";
 
-        $.get(wmsinfo, loadNewGeoJsonData);
+        $.ajax({url: wmsinfo, dataType: "jsonp", success: loadNewGeoJsonData});
 
     }
 

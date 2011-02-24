@@ -64,7 +64,7 @@
                 </div>
 
                 <div id="mapwrapper">
-                    <div id="map-canvas" style="width: 640px; height: 480px">
+                    <div id="map-canvas" style="width: 730px; height: 540px">
                     <!-- <img id="wmsimg" src="http://localhost:8080/occurrences/wms?q=macropus" /> -->
                     </div>
                 </div>
