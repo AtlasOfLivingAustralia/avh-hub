@@ -179,8 +179,6 @@ $(document).ready(function() {
     $('#colourFacets').change(function(){
         var cbf = $('#colourFacets').val();
 
-        console.log("Colouring by '" + cbf + "' ");
-        
         //if (cbf=='') return;
 
         //TODO: Check if more than one custom maptype available, e.g: other wms layers

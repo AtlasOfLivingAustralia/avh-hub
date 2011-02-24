@@ -50,6 +50,7 @@
                     </div>
                     <div>
                         <a id="listLink"></a>
+                        Colour by: 
                         <select name="colourFacets" id="colourFacets">
                             <option value=""> -- Select an option -- </option>
                             <c:forEach var="facetResult" items="${searchResults.facetResults}">
