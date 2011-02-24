@@ -15,7 +15,6 @@
 
 package org.ala.hubs.controller;
 
-import au.org.ala.biocache.Attribution;
 import java.util.HashMap;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;

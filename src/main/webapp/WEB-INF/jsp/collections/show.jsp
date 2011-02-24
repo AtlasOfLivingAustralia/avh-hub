@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
+<c:set var="hostName" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}"/>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,7 +32,7 @@
             $("a.current").fancybox({
                     'hideOnContentClick' : false,
                     'titleShow' : false,
-                        'titlePosition' : 'inside',
+                    'titlePosition' : 'inside',
                     'autoDimensions' : true,
                     'width' : 300
             });

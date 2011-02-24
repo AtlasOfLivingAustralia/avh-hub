@@ -4,7 +4,7 @@
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
 --%>
 
-<%@tag description="put the tag description here" pageEncoding="UTF-8"%>
+<%@tag description="TO DO: not yet implemented" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%@attribute name="message"%>

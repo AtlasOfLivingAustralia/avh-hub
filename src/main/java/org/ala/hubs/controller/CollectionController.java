@@ -40,15 +40,16 @@ public class CollectionController {
     private final static Logger logger = Logger.getLogger(CollectionController.class);
 
     /* View names */
-	private final String SHOW_COLLECTION = "collections/collection";
+	private final String SHOW_COLLECTION = "collections/show";
     /* Constant String fields */
     private final String COLLECTION_PATH_PREFIX = "/Collectory/public/show/co";
     private final String INSTITUTION_PATH_PREFIX = "/Collectory/data/show/in";
     private final String COLLECTORY_PUBLIC_URL = "/Collectory/public/";
     private final String COLLECTORY_MAPS_URL = "/Collectory/images/map";
-    private final String COLLECTIONS_URI = "http://152.83.199.223:8080/Collectory/ws/fragment/";
     private final String COLLECTION = "collection/";
     private final String INSTITUTION = "institution/";
+    /* mutable fields - possibly overriden by properties overrides*/
+    private String collectionsFragUrl = "http://152.83.199.223:8080/Collectory/ws/fragment/";
 
     /**
      * Display a collection page.
@@ -66,7 +67,7 @@ public class CollectionController {
         model.addAttribute("uid", uid);
         model.addAttribute("type", "Collection");
         // get the HTML fragment from the collection WS
-        Document doc = Jsoup.connect(COLLECTIONS_URI + COLLECTION + uid).get();
+        Document doc = Jsoup.connect(collectionsFragUrl + COLLECTION + uid).get();
         model.addAttribute("entityName", GetNameFromTitle(doc));
 
         // Modify (interal) links to institutions
@@ -94,7 +95,7 @@ public class CollectionController {
         model.addAttribute("uid", uid);
         model.addAttribute("type", "Institution");
         // get the HTML fragment from the collection WS
-        Document doc = Jsoup.connect(COLLECTIONS_URI + INSTITUTION + uid).get();
+        Document doc = Jsoup.connect(collectionsFragUrl + INSTITUTION + uid).get();
         model.addAttribute("entityName", GetNameFromTitle(doc));
         // Modify (interal) links to institutions
         manipulateLinks(doc.getElementsByTag("a"), request);
@@ -126,7 +127,7 @@ public class CollectionController {
     }
 
     /**
-     * Fiddle with the in-line script CDATA to fix URLs
+     * Modify with the in-line script CDATA to fix URLs
      *
      * @param scripts
      * @param request
@@ -161,6 +162,22 @@ public class CollectionController {
         String[] titleElements = StringUtils.split(title, "|");
         String name = (titleElements.length > 0) ? titleElements[0].trim() : "";
         return name;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String getCollectionsFragUrl() {
+        return collectionsFragUrl;
+    }
+
+    /**
+     *
+     * @param collectionsFragUrl
+     */
+    public void setCollectionsFragUrl(String collectionsFragUrl) {
+        this.collectionsFragUrl = collectionsFragUrl;
     }
 
 }

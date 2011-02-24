@@ -30,13 +30,14 @@ import org.springframework.web.client.RestOperations;
  * 
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
-@Component
+@Component("biocacheRestService")
 public class BiocacheRestService implements BiocacheService {
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
-    
-    protected final String biocacheUriPrefix = "http://localhost:8080/biocache-service";
+    /** biocache-service URL - may be overriden by properties file version */
+    protected String biocacheUriPrefix = "http://localhost:8080/biocache-service";
+    /** logging init */
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
 
     @Override
@@ -88,6 +89,24 @@ public class BiocacheRestService implements BiocacheService {
         }
 
         return record;
+    }
+
+    /**
+     * Get the biocacheUriPrefix
+     * 
+     * @return biocacheUriPrefix
+     */
+    public String getBiocacheUriPrefix() {
+        return biocacheUriPrefix;
+    }
+
+    /**
+     * Set the biocacheUriPrefix
+     *
+     * @param biocacheUriPrefix to set
+     */
+    public void setBiocacheUriPrefix(String biocacheUriPrefix) {
+        this.biocacheUriPrefix = biocacheUriPrefix;
     }
     
 }
