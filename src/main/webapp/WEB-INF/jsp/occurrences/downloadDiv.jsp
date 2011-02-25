@@ -13,8 +13,8 @@
         <br/><br/>
         Please provide the following <b>optional</b> details before downloading:
     </p>
-    <form id="downloadForm" action="${biocacheServiceUrl}/occurrences/download">
-        <input type="hidden" name="q" value="${fn:replace(searchResults.urlParameters, '?q=', '')}"/>
+    <form id="downloadForm">
+        <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download${searchResults.urlParameters}"/>
         <fieldset>
             <p><label for="email">Email</label>
                 <input type="text" name="email" id="email" value="${pageContext.request.remoteUser}" size="30"  /></p>

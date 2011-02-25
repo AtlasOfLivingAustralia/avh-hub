@@ -142,7 +142,14 @@ $(document).ready(function() {
     // catch download submit button
     $("#downloadSubmitButton").click(function(e) {
         e.preventDefault();
-        $("form#downloadForm").submit();
+        //$("form#downloadForm").submit();
+        var downloadUrl = $("input#downloadUrl").val();
+        var reason = $("#reason").val();
+        if(typeof reason == "undefined")
+            reason = "";
+        downloadUrl = downloadUrl + "&type=&email="+$("#email").val()+"&reason="+encodeURIComponent(reason)+"&file="+$("#filename").val();
+        //alert("downloadUrl = " + downloadUrl);
+        window.location.replace(downloadUrl);
         $.modal.close();
     });
 

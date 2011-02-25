@@ -5,6 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
+<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
 <!DOCTYPE html>
 <html>
     <head>
@@ -26,6 +27,9 @@
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/simpleModal.css" type="text/css" media="screen" />
+        <!--[if lt IE 7]>
+            <link type='text/css' href='${pageContext.request.contextPath}/static/css/simpleModal_ie.css' rel='stylesheet' media='screen' />
+        <![endif]-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.ibutton.css" type="text/css" media="all" />
 
     </head>

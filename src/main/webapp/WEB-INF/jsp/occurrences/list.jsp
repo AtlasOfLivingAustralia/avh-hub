@@ -22,6 +22,10 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/simpleModal.css" type="text/css" media="screen" />
+        <!--[if lt IE 7]>
+            <link type='text/css' href='${pageContext.request.contextPath}/static/css/simpleModal_ie.css' rel='stylesheet' media='screen' />
+        <![endif]-->
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.ibutton.css" type="text/css" media="all" />
 
     </head>
