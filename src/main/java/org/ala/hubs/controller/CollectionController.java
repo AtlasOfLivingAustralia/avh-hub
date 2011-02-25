@@ -48,8 +48,8 @@ public class CollectionController {
     private final String COLLECTORY_MAPS_URL = "/Collectory/images/map";
     private final String COLLECTION = "collection/";
     private final String INSTITUTION = "institution/";
-    /* mutable fields - possibly overriden by properties overrides*/
-    private String collectionsFragUrl = "http://152.83.199.223:8080/Collectory/ws/fragment/";
+    /** URI for collection page fragments- possibly overriden by properties overrides */
+    private String collectionsFragUrl = "http://collections.ala.org.au/ws/fragment/";
 
     /**
      * Display a collection page.
@@ -151,7 +151,7 @@ public class CollectionController {
     }
 
     /**
-     * Extract the institution/collection name form the head > title tag
+     * Extract the institution/collection name from the head > title tag
      *
      * @param doc
      * @return

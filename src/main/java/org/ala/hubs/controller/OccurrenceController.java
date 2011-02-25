@@ -142,6 +142,7 @@ public class OccurrenceController {
             HttpServletRequest request, Model model) throws Exception {
 
         uuid = removeUriExtension(uuid);
+        model.addAttribute("uuid", uuid);
         logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
         String collectionCodeUid = null;
