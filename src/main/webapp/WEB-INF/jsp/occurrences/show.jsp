@@ -30,7 +30,7 @@
     </head>
     <body>
         <spring:url var="json" value="/occurrence/${record.raw.uuid}.json" />
-        <c:if test="${not empty recordId}">
+        <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
                 <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>
                 <div id="jsonLink"><a href="${json}">JSON</a></div>
@@ -595,6 +595,12 @@
 
                     </table>
                 </div>
+            </div>
+        </c:if>
+        <c:if test="${empty record.raw}">
+            <div id="content">
+                <h1>Record Not Found</h1>
+                <p>The requested record ID "${uuid}" was not found</p>
             </div>
         </c:if>
     </body>
