@@ -5,6 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
+<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,8 +18,10 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.metadata.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ibutton.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.simplemodal.1.4.1.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/simpleModal.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.ibutton.css" type="text/css" media="all" />
 
     </head>
@@ -38,10 +41,12 @@
                 <div>
                     <div id="listMapToggle" class="row" >
                         Display Mode: <a href="${fn:replace(requestScope['javax.servlet.forward.request_uri'],"/search","/map")}?${pageContext.request.queryString}">Map View</a>
+                        <span id="downloadLink"><a href="#download" title="Download all ${searchResults.totalRecords} results as XLS (tab-delimited) file">Download</a></span>
                     </div>
                     <div id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
                         returned for <strong>${searchResults.query}</strong>
                     </div>
+                    <jsp:include page="downloadDiv.jsp"/>
                 </div>
                 <div class="solrResults">
                     <div id="dropdowns">

@@ -536,7 +536,7 @@
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="state" fieldName="State/Province">
                             <c:set var="stateValue" value="${not empty record.processed.location.stateProvince ? record.processed.location.stateProvince : record.raw.location.stateProvince}" />
                             <c:if test="${not empty stateValue}">
-                                <a href="${bieWebappContext}/regions/aus_states/${stateValue}">${stateValue}</a>
+                                <%--<a href="${bieWebappContext}/regions/aus_states/${stateValue}">--%>${stateValue}<%--</a>--%>
                             </c:if>
                             <c:if test="${not empty record.processed.location.stateProvince && not empty record.raw.location.stateProvince && (fn:toLowerCase(record.processed.location.stateProvince) != fn:toLowerCase(record.raw.location.stateProvince))}">
                                 <br/><span class="originalValue">Supplied as: "${record.raw.location.stateProvince}"</span>

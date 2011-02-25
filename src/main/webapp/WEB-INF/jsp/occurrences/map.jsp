@@ -17,6 +17,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.metadata.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ibutton.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.simplemodal.1.4.1.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
@@ -24,6 +25,7 @@
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/simpleModal.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.ibutton.css" type="text/css" media="all" />
 
     </head>
@@ -43,7 +45,9 @@
                 <div>
                     <div id="listMapToggle" class="row" >
                         Display Mode: <a href="${fn:replace(requestScope['javax.servlet.forward.request_uri'],"/map","/search")}?${pageContext.request.queryString}">List View</a>
+                        <span id="downloadLink"><a href="#download" title="Download all ${searchResults.totalRecords} results as XLS (tab-delimited) file">Download</a></span>
                     </div>
+                    <jsp:include page="downloadDiv.jsp"/>
                     <div id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
                         returned for <strong>${searchResults.query}</strong>
                     </div>

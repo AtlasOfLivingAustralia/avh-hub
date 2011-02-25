@@ -11,7 +11,6 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-
 #searchBox {
     margin: 10px 10px 10px 320px;
     padding: 4px 5px 5px 4px;
@@ -24,7 +23,7 @@
 }
 
 #listMapToggle {
-    width: 300px;
+    width: 250px;
     float: right;
 }
 #listMapToggle > label {
@@ -133,3 +132,29 @@ div.recordHeader {
     padding-left: 0 !important;
     border-bottom: 2px solid gray;
 }
+span#downloadLink {
+    display: inline-block;
+    float: right;
+    padding-left: 10px;
+}
+div#download {
+    display: none;
+}
+#downloadForm label {
+    width: 85px;
+    display: inline-block;
+    color: #444;
+}
+#download {
+    line-height: 1.4em;
+}
+#downloadForm input {
+    float: none;
+}
+#termsOfUseDownload { 
+    text-align:left; padding-bottom:15px;
+}
+#downloadForm p { 
+    margin-bottom:10px;
+}
+

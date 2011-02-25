@@ -132,5 +132,18 @@ $(document).ready(function() {
             //alert('changing view to');
         }
     }).trigger("change");
-;
+
+    // download link
+    $("#downloadLink a").click(function(e) {
+        e.preventDefault();
+        $('#download').modal();
+    });
+
+    // catch download submit button
+    $("#downloadSubmitButton").click(function(e) {
+        e.preventDefault();
+        $("form#downloadForm").submit();
+        $.modal.close();
+    });
+
 }); // end JQuery document ready
