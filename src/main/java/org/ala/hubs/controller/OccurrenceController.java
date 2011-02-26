@@ -16,8 +16,12 @@
 package org.ala.hubs.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import au.org.ala.cas.util.AuthenticationCookieUtils;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
@@ -30,6 +34,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.util.AbstractCasFilter;
+import org.jasig.cas.client.validation.Assertion;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,6 +44,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import au.org.ala.biocache.ErrorCode;
 
 /**
  * Occurrence record Controller
@@ -141,10 +149,26 @@ public class OccurrenceController {
 	public String getOccurrenceRecord(@PathVariable("uuid") String uuid,
             HttpServletRequest request, Model model) throws Exception {
 
+        System.out.println("User prinicipal: " + request.getUserPrincipal());
+
+        final HttpSession session = request.getSession(false);
+        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
+
+        if(assertion!=null){
+            AttributePrincipal ap = assertion.getPrincipal();
+            System.out.println(ap.getName());
+            model.addAttribute("userName", ap.getName());
+        }
+
         uuid = removeUriExtension(uuid);
         model.addAttribute("uuid", uuid);
         logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
+        model.addAttribute("geospatialCodes", biocacheService.getGeospatialCodes());
+        model.addAttribute("taxonomicCodes", biocacheService.getTaxonomicCodes());
+        model.addAttribute("temporalCodes", biocacheService.getTemporalCodes());
+        model.addAttribute("miscellaneousCodes", biocacheService.getMiscellaneousCodes());
+
         String collectionCodeUid = null;
 
         if (record != null && record.getProcessed() != null) { // .getAttribution().getCollectionCodeUid()
@@ -169,7 +193,6 @@ public class OccurrenceController {
                     logger.error(e.toString(), e);
                 }
             }
-
 		}
 
         model.addAttribute("record", record);
@@ -284,8 +307,6 @@ public class OccurrenceController {
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-
-
 
         return RECORD_MAP;
     }
