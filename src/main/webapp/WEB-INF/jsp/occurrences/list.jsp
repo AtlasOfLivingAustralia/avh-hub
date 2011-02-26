@@ -32,7 +32,7 @@
     <body>
         <c:if test="${searchResults.totalRecords > 0}">
             <div id="headingBar">
-                <h1>Occurrence Records</h1>
+                <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
             </div>
 <!--            <div id="searchBox">search box goes here</div>-->
             <jsp:include page="facetsDiv.jsp"/>
@@ -44,7 +44,7 @@
             <c:if test="${searchResults.totalRecords > 0}">
                 <div>
                     <div id="listMapToggle" class="row" >
-                        Display Mode: <a href="${fn:replace(requestScope['javax.servlet.forward.request_uri'],"/search","/map")}?${pageContext.request.queryString}">Map View</a>
+                        Display Mode: <a href="${fn:replace(requestScope['javax.servlet.forward.request_uri'],"/search","/map")}?${pageContext.request.queryString}#resultsTop">Map View</a>
                         <span id="downloadLink"><a href="#download" title="Download all ${searchResults.totalRecords} results as XLS (tab-delimited) file">Download</a></span>
                     </div>
                     <div id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
