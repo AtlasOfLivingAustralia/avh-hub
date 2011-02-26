@@ -15,9 +15,13 @@
 
 package org.ala.hubs.service;
 
+import au.org.ala.biocache.ErrorCode;
+import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.store.OccurrenceDTO;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Service layer for accessing Biocache data
@@ -31,5 +35,18 @@ public interface BiocacheService {
     public SearchResultDTO findByTaxonConcept(String guid, SearchRequestParams requestParams);
 
     public OccurrenceDTO getRecordByUuid(String uuid);
-    
+
+    public List<ErrorCode> getErrorCodes();
+
+    public List<ErrorCode> getGeospatialCodes();
+
+    public List<ErrorCode> getTaxonomicCodes();
+
+    public List<ErrorCode> getTemporalCodes();
+
+    public List<ErrorCode> getMiscellaneousCodes();
+
+    public boolean addAssertion(String recordUuid, String code, String comment, String userId, String userDisplayName);
+
+    public boolean deleteAssertion(String uuid, String assertionUuid);
 }

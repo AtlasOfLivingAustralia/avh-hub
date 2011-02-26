@@ -27,6 +27,21 @@
             contextPath = "${pageContext.request.contextPath}";
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/record.css" type="text/css" media="screen" />
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#assertionMaker").fancybox({
+                    'hideOnContentClick' : false,
+                    'hideOnOverlayClick': true,
+                    'showCloseButton': true,
+                    'titleShow' : false,
+                    'autoDimensions' : false,
+                    'width': '500',
+                    'height': '300',
+                    'padding': 10,
+                    'margin': 10
+                });
+            });
+        </script>
     </head>
     <body>
         <spring:url var="json" value="/occurrence/${record.raw.uuid}.json" />
@@ -79,6 +94,84 @@
                         </div>
                     </div>
                 </c:if>
+                <div class="sidebar">
+
+                    <h3>You're logged in as: ${userName}</h3>
+
+                    <a id="assertionMaker"
+                       href="#loginOrFlag"
+                       value="Flag a problem"
+                       style="color: #900; font-weight: bold; font-size: 200%; text-transform: uppercase;">Flag a problem</a>
+
+                    <div style="display:none">
+                        <c:choose>
+                        <c:when test="${empty userName}">
+                            <div id="loginOrFlag">
+                                Login please
+                                <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrence/${record.raw.uuid}">Click here</a>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div id="loginOrFlag">
+                                You are logged in as ${userName}.
+                                <form id="issueForm">
+                                   <p style="margin-top:20px;">
+                                        <label for="issue">Issue type:</label>
+                                        <select name="issue" id="issue">
+                                            <option value="">Select an issue type:</option>
+                                            <optgroup label="Geospatial">
+                                            <c:forEach items="${geospatialCodes}" var="code">
+                                                <option value="${code.code}">${code.name}</option>
+                                            </c:forEach>
+                                            </optgroup>
+                                            <optgroup label="Taxonomic">
+                                            <c:forEach items="${taxonomicCodes}" var="code">
+                                                <option value="${code.code}">${code.name}</option>
+                                            </c:forEach>
+                                            </optgroup>
+                                            <optgroup label="Temporal">
+                                            <c:forEach items="${temporalCodes}" var="code">
+                                                <option value="${code.code}">${code.name}</option>
+                                            </c:forEach>
+                                            </optgroup>
+                                            <optgroup label="Miscellaneous">
+                                            <c:forEach items="${miscellaneousCodes}" var="code">
+                                                <option value="${code.code}">${code.name}</option>
+                                            </c:forEach>
+                                            </optgroup>
+                                        </select>
+                                    </p>
+                                    <p style="margin-top:20px;">
+                                        <label for="comment">Comment:</label>
+                                        <textarea name="comment" id="issueComment">
+                                            Please add a comment here...
+                                        </textarea>
+                                    </p>
+                                    <p style="margin-top:20px;">
+                                        <input id="issueFormSubmit" type="button" value="submit issue" onclick="javascript:submitIssue();"/>
+                                    </p>
+                                </form>
+                                <script type="text/javascript">
+                                    function submitIssue(){
+                                        var comment = $("#issueComment").val();
+                                        var code = $("#issue").val();
+                                        if(code!=""){
+                                            $.post("${pageContext.request.contextPath}/occurrence/${record.raw.uuid}/assertions/add",
+                                               { code: code, comment: comment},
+                                               function(data) {
+                                                 alert("Data Loaded: " + data);
+                                               }
+                                            );
+                                        } else {
+                                            alert("Please supply a issue type");
+                                        }
+                                    }
+                                </script>
+                            </div>
+                        </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
                 <c:if test="${not empty record.processed.occurrence.images}">
                     <div class="sidebar">
                         <h2>Images</h2>
@@ -235,6 +328,7 @@
                             </c:choose>
                         </alatag:occurrenceTableRow>
                         <!-- Record UUID -->
+                        <!--
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordUuid" fieldName="Record UUID">
                             <c:choose>
                                 <c:when test="${not empty record.processed.uuid}">
@@ -245,6 +339,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </alatag:occurrenceTableRow>
+                        -->
                         <!-- Basis of Record -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="basisOfRecord" fieldName="Basis of Record">
                             <c:choose>
@@ -262,8 +357,10 @@
                             <c:if test="${empty record.processed.event.eventDate && record.raw.event.eventDate && empty record.raw.event.year && empty record.raw.event.month && empty record.raw.event.day}">
                                 [date not supplied]
                             </c:if>
-                            <c:if test="${not empty record.processed.event.eventDate}">
-                                ${record.processed.event.eventDate}
+                            <c:if test="${empty record.processed.event.eventDate}">
+                                Year: ${record.processed.event.year},
+                                Month: ${record.processed.event.month},
+                                Day: ${record.processed.event.day}
                             </c:if>
                             <c:choose>
                                 <c:when test="${not empty record.raw.event.eventDate}">
@@ -515,6 +612,10 @@
                 <div id="geospatialTaxonomy">
                     <h3>Geospatial</h3>
                     <table class="occurrenceTable" id="geospatialTable">
+                        <!-- Higher Geography -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="higherGeography" fieldName="Higher Geography">
+                             ${record.raw.location.higherGeography}
+                        </alatag:occurrenceTableRow>
                         <!-- Country -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="country" fieldName="Country">
                             <c:choose>
@@ -580,8 +681,14 @@
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="longitude" fieldName="Longitude">
                             ${(not empty record.processed.location.decimalLongitude) ? record.processed.location.decimalLongitude : record.raw.location.decimalLongitude}
                         </alatag:occurrenceTableRow>
-                        <!-- Coordinate Precision -->
-                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate Precision (metres)">
+                        <!-- Coordinate Accuracy -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate Precision">
+                            <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
+                                ${not empty record.processed.location.coordinatePrecision ? record.processed.location.coordinatePrecision : 'Unknown'}
+                            </c:if>
+                        </alatag:occurrenceTableRow>
+                        <!-- Coordinate Accuracy -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate Accuracy (metres)">
                             <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
                                 ${not empty record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
                             </c:if>
@@ -592,7 +699,6 @@
                                 Due to sensitivity concerns, the coordinates of this record have been generalised to ${rawOccurrence.generalisedInMetres} metres.
                             </c:if>
                         </alatag:occurrenceTableRow>
-
                     </table>
                 </div>
             </div>
