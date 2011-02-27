@@ -1,0 +1,43 @@
+button {
+    border: 0 none;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0 15px 0 0;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    width: auto;
+}
+
+button.rounded {
+    background: transparent url("../images/btn_right.png") no-repeat scroll right top;
+    clear: left;
+    font-size: 1.1em;
+}
+
+button span {
+    display: block;
+    padding: 0 0 0 15px;
+    position: relative;
+    white-space: nowrap;
+    height: 30px;
+    line-height: 30px;
+}
+
+button.rounded span {
+    background: transparent url("../images/btn_left.png") no-repeat scroll left top;
+    color: #FFFFFF;
+}
+
+button.rounded:hover {
+    background-position: 100% -30px;
+}
+
+button.rounded:hover span {
+    background-position: 0% -30px;
+}
+
+button::-moz-focus-inner {
+    border: none;
+}
+

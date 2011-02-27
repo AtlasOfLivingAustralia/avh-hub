@@ -61,7 +61,7 @@ var Maps = (function() {
     return {
         setLinks: function(){
             var url = location.href.replace("map", "search");
-            document.getElementById("listLink").setAttribute("href", url);
+            //document.getElementById("listLink").setAttribute("href", url);
         },
 
         /**

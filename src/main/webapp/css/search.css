@@ -132,10 +132,11 @@ div.recordHeader {
     padding-left: 0 !important;
     border-bottom: 2px solid gray;
 }
-span#downloadLink {
+#listMapToggle{
     display: inline-block;
     float: right;
     padding-left: 10px;
+    text-align: right;
 }
 div#download {
     display: none;
@@ -158,3 +159,22 @@ div#download {
     margin-bottom:10px;
 }
 
+#resultsOuter {
+    position: relative;
+    overflow: hidden;
+    width: 730px;
+}
+#resultsOuter div.solrResults {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 730px;
+}
+
+#resultsOuter div#mapwrapper {
+    position: absolute;
+    left: 730px;
+    top: 0;
+    width: 730px;
+    /*display:none;*/
+}

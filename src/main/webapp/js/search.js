@@ -1,17 +1,17 @@
 /* 
-*  Copyright (C) 2011 Atlas of Living Australia
-*  All Rights Reserved.
-* 
-*  The contents of this file are subject to the Mozilla Public
-*  License Version 1.1 (the "License"); you may not use this file
-*  except in compliance with the License. You may obtain a copy of
-*  the License at http://www.mozilla.org/MPL/
-* 
-*  Software distributed under the License is distributed on an "AS
-*  IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-*  implied. See the License for the specific language governing
-*  rights and limitations under the License.
-*/
+ *  Copyright (C) 2011 Atlas of Living Australia
+ *  All Rights Reserved.
+ *
+ *  The contents of this file are subject to the Mozilla Public
+ *  License Version 1.1 (the "License"); you may not use this file
+ *  except in compliance with the License. You may obtain a copy of
+ *  the License at http://www.mozilla.org/MPL/
+ *
+ *  Software distributed under the License is distributed on an "AS
+ *  IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+ *  implied. See the License for the specific language governing
+ *  rights and limitations under the License.
+ */
 
 /**
  * Catch sort drop-down and build GET URL manually
@@ -79,7 +79,7 @@ function removeFacet(facet) {
         paramList.push("fq=" + fqList.join("&fq="));
     }
 
-    window.location.replace(window.location.pathname + '?' + paramList.join('&'));
+    window.location.replace(window.location.pathname + '?' + paramList.join('&') + window.location.hash);
 }
 
 // Jquery Document.onLoad equivalent
@@ -106,22 +106,22 @@ $(document).ready(function() {
         reloadWithParam('pageSize',val);
     });
 
-//    // iPhone style toggle switch
-//    $('#listMapToggle11').iphoneSwitch("off",
-//        function() {
-//            //$('#ajax').load('on.html');
-//            alert("showing map");
-//        },
-//        function() {
-//            //$('#ajax').load('off.html');
-//            alert("showing list");
-//        },
-//        {
-//            switch_path: contextPath + "/static/images/" + 'iphone_switch.png',
-//            switch_off_container_path: contextPath + "/static/images/" + 'iphone_switch_container_off.png',
-//            switch_on_container_path: contextPath + "/static/images/" + 'iphone_switch_container_off.png'
-//        }
-//    );
+    //    // iPhone style toggle switch
+    //    $('#listMapToggle11').iphoneSwitch("off",
+    //        function() {
+    //            //$('#ajax').load('on.html');
+    //            alert("showing map");
+    //        },
+    //        function() {
+    //            //$('#ajax').load('off.html');
+    //            alert("showing list");
+    //        },
+    //        {
+    //            switch_path: contextPath + "/static/images/" + 'iphone_switch.png',
+    //            switch_off_container_path: contextPath + "/static/images/" + 'iphone_switch_container_off.png',
+    //            switch_on_container_path: contextPath + "/static/images/" + 'iphone_switch_container_off.png'
+    //        }
+    //    );
 
     $("#listMapToggle input").iButton({
         labelOn: "Map",
@@ -134,7 +134,7 @@ $(document).ready(function() {
     }).trigger("change");
 
     // download link
-    $("#downloadLink a").click(function(e) {
+    $("#downloadLink").click(function(e) {
         e.preventDefault();
         $('#download').modal();
     });
@@ -153,4 +153,48 @@ $(document).ready(function() {
         $.modal.close();
     });
 
+    // set height of resultsOuter div to solrResults height
+    var solrHeight = $("div.solrResults").height();
+    //console.debug("solrResults div height = " + solrHeight);
+    $("#resultsOuter").css("height", (solrHeight > 560 ) ? solrHeight : 560 );
+
+    // animate the display of showing results list vs map
+    $("#listMapLink").click(function(e) {
+        e.preventDefault();
+        var linkText = $(this).html();
+        if (linkText == 'Map') {
+            $(this).html('List');
+            window.location.hash = "map";
+        } else {
+            $(this).html('Map');
+            window.location.hash = 'list';
+        }
+        //$(this).html((linkText == 'Map') ? "List" : "Map"); // change link text
+        var $listDiv = $("div.solrResults"); // list
+        $listDiv.animate({
+            left: parseInt($listDiv.css('left'),10) == 0 ? -$listDiv.outerWidth() : 0 },
+            {duration: "slow"}
+        );
+        var $mapDiv = $("div#mapwrapper"); // map
+        $mapDiv.animate({
+            left: parseInt($mapDiv.css('left'),10) == 0 ? $mapDiv.outerWidth() : 0},
+            {duration: "slow"}
+        );
+
+    });
+
+    // page load - detect if map is requested via #map hash
+    if (window.location.hash == "#map") {
+        //alert("hash is map");
+        $("div.solrResults").css("left", -730);
+        $("div#mapwrapper").css("left", 0);
+        $("#listMapLink").html("List");
+    }
+
+    // add hash to URIs for facet links, so map/list state is maintained
+    $("#subnavlist a").click(function(e) {
+        e.preventDefault();
+        var url = $(this).attr("href");
+        window.location.replace(url + window.location.hash);
+    });
 }); // end JQuery document ready

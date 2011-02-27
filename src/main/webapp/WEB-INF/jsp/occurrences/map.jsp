@@ -14,10 +14,7 @@
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.easing.1.3.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.metadata.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ibutton.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.simplemodal.1.4.1.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
@@ -30,7 +27,6 @@
         <!--[if lt IE 7]>
             <link type='text/css' href='${pageContext.request.contextPath}/static/css/simpleModal_ie.css' rel='stylesheet' media='screen' />
         <![endif]-->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.ibutton.css" type="text/css" media="all" />
 
     </head>
     <body>
@@ -38,7 +34,7 @@
             <div id="headingBar">
                 <h1>Occurrence Map<a name="resultsTop">&nbsp;</a></h1>
             </div>
-            <!--            <div id="searchBox">search box goes here</div>-->
+            <!-- <div id="searchBox">search box goes here</div>-->
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
         <div id="content">
@@ -65,7 +61,6 @@
                                     <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
                                 </c:if>
                             </c:forEach>
-                            
                         </select>
                     </div>
                 </div>

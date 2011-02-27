@@ -14,8 +14,11 @@
         <c:when test="${not empty record.processed.classification.scientificName}">
             ${record.processed.classification.scientificName} ${record.processed.classification.scientificNameAuthorship}
         </c:when>
-        <c:otherwise>
+        <c:when test="${not empty record.raw.classification.scientificName}">
             ${record.raw.classification.scientificName} ${record.raw.classification.scientificNameAuthorship}
+        </c:when>
+        <c:otherwise>
+            ${record.raw.classification.genus} ${record.raw.classification.specificEpithet}
         </c:otherwise>
     </c:choose>
 </c:set>
@@ -54,15 +57,19 @@
                     <a href="${json}">JSON</a>
                     -->
                 </div>
-                <c:if test="${not empty record.raw.classification.scientificName}">
+                <c:if test="${not empty record.raw.classification}">
                     <h2 id="headingSciName">
                         <c:choose>
                             <c:when test="${not empty record.processed.classification.scientificName}">
                                 <alatag:formatSciName rankId="${record.processed.classification.taxonRankID}" name="${record.processed.classification.scientificName}"/>
                                 ${record.processed.classification.scientificNameAuthorship}
                             </c:when>
-                            <c:otherwise>
+                            <c:when test="${not empty record.raw.classification.scientificName}">
                                 <alatag:formatSciName rankId="${record.raw.classification.taxonRankID}" name="${record.raw.classification.scientificName}"/>
+                                ${record.raw.classification.scientificNameAuthorship}
+                            </c:when>
+                            <c:otherwise>
+                                <i>${record.raw.classification.genus} ${record.raw.classification.specificEpithet}</i>
                                 ${record.raw.classification.scientificNameAuthorship}
                             </c:otherwise>
                         </c:choose>
@@ -453,9 +460,12 @@
                                         <alatag:formatSciName rankId="${record.raw.classification.taxonRankID}" name="${record.raw.classification.scientificName}"/>
                                         ${record.raw.classification.scientificNameAuthorship}
                                     </c:when>
+                                    <c:when test="${not empty record.raw.classification.genus && not empty record.raw.classification.specificEpithet}">
+                                        <i>${record.raw.classification.genus} ${record.raw.classification.specificEpithet}</i>
+                                        ${record.raw.classification.scientificNameAuthorship}
+                                    </c:when>
                                     <c:otherwise>
-                                        <alatag:formatSciName rankId="${record.processed.classification.taxonRankID}" name="${record.processed.classification.scientificName}"/>
-                                        ${record.processed.classification.scientificNameAuthorship}
+                                        
                                     </c:otherwise>
                                 </c:choose>
                             </c:set>
