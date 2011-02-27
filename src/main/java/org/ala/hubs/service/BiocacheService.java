@@ -20,6 +20,9 @@ import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.store.OccurrenceDTO;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +41,8 @@ public interface BiocacheService {
 
     public List<ErrorCode> getErrorCodes();
 
+    public List<ErrorCode> getUserCodes();
+
     public List<ErrorCode> getGeospatialCodes();
 
     public List<ErrorCode> getTaxonomicCodes();
@@ -49,4 +54,6 @@ public interface BiocacheService {
     public boolean addAssertion(String recordUuid, String code, String comment, String userId, String userDisplayName);
 
     public boolean deleteAssertion(String uuid, String assertionUuid);
+
+    public List<QualityAssertion> getUserAssertions(String recordUuid);
 }

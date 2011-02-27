@@ -48,7 +48,12 @@
         <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
                 <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>
-                <div id="jsonLink"><a href="${json}">JSON</a></div>
+                <div id="jsonLink">
+                    You're logged in as: ${userDisplayName} (${userId})
+                    <!--
+                    <a href="${json}">JSON</a>
+                    -->
+                </div>
                 <c:if test="${not empty record.raw.classification.scientificName}">
                     <h2 id="headingSciName">
                         <c:choose>
@@ -72,6 +77,23 @@
                     </h2>
                 </c:if>
             </div>
+
+            <script type="text/javascript">
+                function deleteAssertion(recordUuid, assertionUuid){
+                    $.post('${pageContext.request.contextPath}/occurrences/'+recordUuid+'/assertions/delete',
+                       { assertionUuid: assertionUuid },
+                       function(data) {
+                         //retrieve all asssertions
+                         $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
+                            $('#'+assertionUuid).fadeOut('slow', function() {
+                                $('#userAssertions').html(data);
+                            });
+                         });
+                       }
+                    );
+                }
+            </script>
+
             <div id="SidebarBox">
                 <c:if test="${not empty collectionLogo}">
                     <div class="sidebar">
@@ -81,13 +103,24 @@
                 <c:if test="${not empty record.systemAssertions}">
                     <div class="sidebar">
                         <div id="warnings">
-                            <h2>Possible Issues</h2>
-                            <p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>
-                            <ul>
+                            <h2>Data validation issues</h2>
+                            <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
+                            <ul id="systemAssertions">
                                 <c:forEach var="systemAssertion" items="${record.systemAssertions}">
                                     <li>
-                                        <!--  code: ${systemAssertion.code} -->
-                                        ${systemAssertion.comment}<c:if test="${not empty systemAssertion.name}">: ${systemAssertion.name}</c:if>
+                                        <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                            <h2>User flagged issues</h2>
+                            <ul id="userAssertions">
+                            <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
+                                <c:forEach var="assertion" items="${record.userAssertions}">
+                                    <li id="${assertion.uuid}">
+                                        <spring:message code="${assertion.name}" text="${assertion.name}"/>
+                                        <c:if test="${(not empty userId) && (userId eq assertion.userId)}">
+                                            <br/><strong>(added by you - <a href="javascript:deleteAssertion('${record.raw.uuid}','${assertion.uuid}');">delete</a>)</strong>
+                                        </c:if>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -95,17 +128,15 @@
                     </div>
                 </c:if>
                 <div class="sidebar">
-
-                    <h3>You're logged in as: ${userName}</h3>
-
+                    <p style="margin:20px 0 20px 0;">
                     <a id="assertionMaker"
                        href="#loginOrFlag"
                        value="Flag a problem"
-                       style="color: #900; font-weight: bold; font-size: 200%; text-transform: uppercase;">Flag a problem</a>
-
+                       style="background-color: #900; color: #FFFFFF; font-weight: bold; font-size: 150%; text-transform: uppercase; padding:5px; border:1px solid #900;">Flag a problem</a>
+                    </p>
                     <div style="display:none">
                         <c:choose>
-                        <c:when test="${empty userName}">
+                        <c:when test="${empty userId}">
                             <div id="loginOrFlag">
                                 Login please
                                 <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrence/${record.raw.uuid}">Click here</a>
@@ -113,53 +144,40 @@
                         </c:when>
                         <c:otherwise>
                             <div id="loginOrFlag">
-                                You are logged in as ${userName}.
+                                You are logged in as  <strong>${userDisplayName} (${userId})</strong>.
                                 <form id="issueForm">
                                    <p style="margin-top:20px;">
                                         <label for="issue">Issue type:</label>
                                         <select name="issue" id="issue">
-                                            <option value="">Select an issue type:</option>
-                                            <optgroup label="Geospatial">
-                                            <c:forEach items="${geospatialCodes}" var="code">
-                                                <option value="${code.code}">${code.name}</option>
+                                            <c:forEach items="${errorCodes}" var="code">
+                                             <option value="${code.code}"><spring:message code="${code.name}" text="${code.name}"/></option>
                                             </c:forEach>
-                                            </optgroup>
-                                            <optgroup label="Taxonomic">
-                                            <c:forEach items="${taxonomicCodes}" var="code">
-                                                <option value="${code.code}">${code.name}</option>
-                                            </c:forEach>
-                                            </optgroup>
-                                            <optgroup label="Temporal">
-                                            <c:forEach items="${temporalCodes}" var="code">
-                                                <option value="${code.code}">${code.name}</option>
-                                            </c:forEach>
-                                            </optgroup>
-                                            <optgroup label="Miscellaneous">
-                                            <c:forEach items="${miscellaneousCodes}" var="code">
-                                                <option value="${code.code}">${code.name}</option>
-                                            </c:forEach>
-                                            </optgroup>
                                         </select>
                                     </p>
-                                    <p style="margin-top:20px;">
-                                        <label for="comment">Comment:</label>
-                                        <textarea name="comment" id="issueComment">
-                                            Please add a comment here...
-                                        </textarea>
+                                    <p style="margin-top:30px;">
+                                        <label for="comment" style="vertical-align:top;">Comment:</label>
+                                        <textarea name="comment" id="issueComment" style="width:380px;height:150px;">Please add a comment here...</textarea>
                                     </p>
                                     <p style="margin-top:20px;">
                                         <input id="issueFormSubmit" type="button" value="submit issue" onclick="javascript:submitIssue();"/>
+                                        <span id="submitSuccess"></span>
                                     </p>
                                 </form>
                                 <script type="text/javascript">
                                     function submitIssue(){
                                         var comment = $("#issueComment").val();
                                         var code = $("#issue").val();
+                                        var userId = '${userId}';
+                                        var userDisplayName = '${userDisplayName}';
                                         if(code!=""){
-                                            $.post("${pageContext.request.contextPath}/occurrence/${record.raw.uuid}/assertions/add",
-                                               { code: code, comment: comment},
+                                            $.post("${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/add",
+                                               { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
                                                function(data) {
-                                                 alert("Data Loaded: " + data);
+                                                 $("#submitSuccess").html("Thanks for flagging the problem!");
+                                                 //retrieve all asssertions
+                                                 $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
+                                                   $('#userAssertions').html(data);
+                                                 });
                                                }
                                             );
                                         } else {
@@ -356,6 +374,9 @@
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceDate" fieldName="Record Date">
                             <c:if test="${empty record.processed.event.eventDate && record.raw.event.eventDate && empty record.raw.event.year && empty record.raw.event.month && empty record.raw.event.day}">
                                 [date not supplied]
+                            </c:if>
+                            <c:if test="${not empty record.processed.event.eventDate}">
+                               ${record.processed.event.eventDate}
                             </c:if>
                             <c:if test="${empty record.processed.event.eventDate}">
                                 Year: ${record.processed.event.year},

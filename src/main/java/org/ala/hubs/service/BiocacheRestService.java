@@ -31,6 +31,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestOperations;
 
 import au.org.ala.biocache.ErrorCode;
+import au.org.ala.biocache.QualityAssertion;
 
 /**
  * Implementation of BiocacheService.java that calls the biocache-service application
@@ -45,7 +46,7 @@ public class BiocacheRestService implements BiocacheService {
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     
-    protected String biocacheUriPrefix = "http://localhost:8080/biocache-service";
+    protected String biocacheUriPrefix = "http://localhost:9999/biocache-service";
     
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
 
@@ -127,6 +128,12 @@ public class BiocacheRestService implements BiocacheService {
         return restTemplate.getForObject(jsonUri, (new ArrayList<ErrorCode>()).getClass());
     }
 
+    public List<ErrorCode> getUserCodes() {
+        final String jsonUri = biocacheUriPrefix + "/assertions/user/codes";
+        logger.debug("Requesting: " + jsonUri);
+        return restTemplate.getForObject(jsonUri, (new ArrayList<ErrorCode>()).getClass());
+    }
+
     public boolean addAssertion(String recordUuid, String code, String comment, String userId, String userDisplayName) {
 
 //        final String jsonUri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/add";
@@ -155,9 +162,32 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     public boolean deleteAssertion(String recordUuid, String assertionUuid) {
-        //To change body of implemented methods use File | Settings | File Templates.
-        return true;
+        final String uri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/delete";
+        HttpClient h = new HttpClient();
+        PostMethod m = new PostMethod(uri);
+        try {
+            m.setParameter("assertionUuid", assertionUuid);
+            int status = h.executeMethod(m);
+            logger.debug("STATUS: " + status);
+            if(status == 201){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e){
+            logger.error(e.getMessage(), e);
+            return false;
+        }
     }
+
+    @Override
+    public List<QualityAssertion> getUserAssertions(String recordUuid) {
+        //occurrences/0352f657-98fa-436e-81c8-28e54fe06d8c/assertions/
+        final String jsonUri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/";
+        logger.debug("Requesting: " + jsonUri);
+        return restTemplate.getForObject(jsonUri, (new ArrayList<QualityAssertion>()).getClass());
+    }
+
     /**
      * Get the biocacheUriPrefix
      * 

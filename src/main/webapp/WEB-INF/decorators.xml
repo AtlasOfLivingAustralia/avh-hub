@@ -7,6 +7,7 @@
         <pattern>/ajax/*</pattern>
         <pattern>/css/*</pattern>
         <pattern>/static/*</pattern>
+        <pattern>/occurrences/*/assertions/</pattern>
         <pattern>/index.jsp</pattern>
     </excludes>
 

@@ -155,19 +155,24 @@ public class OccurrenceController {
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
 
         if(assertion!=null){
-            AttributePrincipal ap = assertion.getPrincipal();
-            System.out.println(ap.getName());
-            model.addAttribute("userName", ap.getName());
+            AttributePrincipal principal = assertion.getPrincipal();
+            System.out.println(principal.getName());
+            model.addAttribute("userId", principal.getName());
+            String fullName = "";
+            if (principal.getAttributes().get("firstname")!=null &&  principal.getAttributes().get("lastname")!=null) {
+                fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
+            }
+            model.addAttribute("userDisplayName", fullName);
         }
 
         uuid = removeUriExtension(uuid);
         model.addAttribute("uuid", uuid);
         logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
-        model.addAttribute("geospatialCodes", biocacheService.getGeospatialCodes());
-        model.addAttribute("taxonomicCodes", biocacheService.getTaxonomicCodes());
-        model.addAttribute("temporalCodes", biocacheService.getTemporalCodes());
-        model.addAttribute("miscellaneousCodes", biocacheService.getMiscellaneousCodes());
+        model.addAttribute("errorCodes", biocacheService.getUserCodes());
+//        model.addAttribute("taxonomicCodes", biocacheService.getTaxonomicCodes());
+//        model.addAttribute("temporalCodes", biocacheService.getTemporalCodes());
+//        model.addAttribute("miscellaneousCodes", biocacheService.getMiscellaneousCodes());
 
         String collectionCodeUid = null;
 
