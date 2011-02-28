@@ -143,25 +143,26 @@ $(document).ready(function() {
     //console.debug("solrResults div height = " + solrHeight);
     $("#resultsOuter").css("height", (solrHeight > 560 ) ? solrHeight : 560 );
 
-    var hashType = ["list", "map"]
+    var hashType = ["list", "map"]; // used below
     // animate the display of showing results list vs map
-    $("#listMapLink").click(function(e) {
+    $("#listMapButton").click(function(e) {
         e.preventDefault();
+        //console.log("inside click #listMapLink");
         // remove name so changing hash value does not jump the page
         $(".jumpTo").attr("name", ""); 
         //
-        var linkText = $(this).html();
-        if (linkText == 'Map') {
-            $(this).html('List');
+        var spanText = $("#listMapLink").html();
+        if (spanText == 'Map') {
+            $("#listMapLink").html('List');
             window.location.hash = "map";
         } else {
-            $(this).html('Map');
+            $("#listMapLink").html('Map');
             window.location.hash = 'list';
         }
         $(".jumpTo").each(function(i, el) {
             $(this).attr("name", hashType[i]);
         });
-        //$(this).html((linkText == 'Map') ? "List" : "Map"); // change link text
+        // make list & map div slide left & right
         var $listDiv = $("div.solrResults"); // list
         $listDiv.animate({
             left: parseInt($listDiv.css('left'),10) == 0 ? -$listDiv.outerWidth() : 0 },

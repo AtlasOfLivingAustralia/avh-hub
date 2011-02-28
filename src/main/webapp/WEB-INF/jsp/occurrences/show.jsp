@@ -74,14 +74,14 @@
 
                 // bind to form "close" button
                 $("input#close").live("click", function(e) {
+                    // close the popup
+                    $.fancybox.close();
                     // reset form back to default state
                     $('form#issueForm')[0].reset();
                     $("#submitSuccess").html("");
                     $("#issueFormSubmit").show();
                     $("input:reset").show();
                     $("input#close").hide();
-                    // close the popup
-                    $.fancybox.close();
                 });
             });
         </script>

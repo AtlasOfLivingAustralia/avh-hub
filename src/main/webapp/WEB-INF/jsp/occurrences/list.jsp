@@ -48,11 +48,9 @@
                 <a name="map" class="jumpTo">&nbsp;</a><a name="list" class="jumpTo">&nbsp;</a>
                 <div>
                     <div id="listMapToggle" class="row" >
-                        <!-- View as: <a href="#" id="listMapLink">Map</a> -->
-                        <button class="rounded">
+                        <button class="rounded" id="listMapButton">
                             <span id="listMapLink">Map</span>
                         </button>
-                        <!-- <span id="downloadLink"></span> -->
                     </div>
                     <div id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
                         returned for <strong>${searchResults.query}</strong>
