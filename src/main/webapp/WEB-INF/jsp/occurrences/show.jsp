@@ -34,7 +34,8 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 // add assertion form display
-                $("#assertionMaker").fancybox({
+                $("#assertionButton").fancybox({
+                    'href': '#loginOrFlag',
                     'hideOnContentClick' : false,
                     'hideOnOverlayClick': true,
                     'showCloseButton': true,
@@ -55,18 +56,18 @@
                     var userDisplayName = '${userDisplayName}';
                     if(code!=""){
                         $.post("${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/add",
-                        { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
-                        function(data) {
-                            $("#submitSuccess").html("Thanks for flagging the problem!");
-                            $("#issueFormSubmit").hide();
-                            $("input:reset").hide();
-                            $("input#close").show();
-                            //retrieve all asssertions
-                            $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
-                                $('#userAssertions').html(data);
-                            });
-                        }
-                    );
+                            { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
+                            function(data) {
+                                $("#submitSuccess").html("Thanks for flagging the problem!");
+                                $("#issueFormSubmit").hide();
+                                $("input:reset").hide();
+                                $("input#close").show();
+                                //retrieve all asssertions
+                                $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
+                                    $('#userAssertions').html(data);
+                                });
+                            }
+                        );
                     } else {
                         alert("Please supply a issue type");
                     }
@@ -79,9 +80,9 @@
                     // reset form back to default state
                     $('form#issueForm')[0].reset();
                     $("#submitSuccess").html("");
-                    $("#issueFormSubmit").show();
-                    $("input:reset").show();
-                    $("input#close").hide();
+                    $("#issueFormSubmit").show("slow");
+                    $("input:reset").show("slow");
+                    $("input#close").hide("slow");
                 });
             });
         </script>
@@ -92,10 +93,10 @@
             <div id="headingBar" class="recordHeader">
                 <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>
                 <div id="jsonLink">
-                    Logged in as: ${userDisplayName} (${userId})
-                    <!--
-                    <a href="${json}">JSON</a>
-                    -->
+                    <c:if test="${not empty userDisplayName}">
+                        Logged in as: ${userDisplayName} (${userId})
+                    </c:if>
+                    <!-- <a href="${json}">JSON</a> -->
                 </div>
                 <c:if test="${not empty record.raw.classification}">
                     <h2 id="headingSciName">
@@ -156,6 +157,7 @@
                                 <c:forEach var="systemAssertion" items="${record.systemAssertions}">
                                     <li>
                                         <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
+                                        ${systemAssertion.comment}
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -164,7 +166,7 @@
                             <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
                                 <c:forEach var="assertion" items="${record.userAssertions}">
                                     <li id="${assertion.uuid}">
-                                        <spring:message code="${assertion.name}" text="${assertion.name}"/>
+                                        <spring:message code="${assertion.name}" text="${assertion.name}"/> - ${assertion.comment}
                                         <c:if test="${(not empty userId) && (userId eq assertion.userId)}">
                                             <br/><strong>(added by you - <a href="javascript:deleteAssertion('${record.raw.uuid}','${assertion.uuid}');">delete</a>)</strong>
                                         </c:if>
@@ -176,7 +178,7 @@
                 </c:if>
                 <div class="sidebar">
                     <p style="margin:20px 0 20px 0;">
-                        <button class="rounded">
+                        <button class="rounded" id="assertionButton">
                             <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
                         </button>
                     </p>

@@ -52,9 +52,9 @@
                             <span id="listMapLink">Map</span>
                         </button>
                     </div>
-                    <div id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
+                    <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
                         returned for <strong>${searchResults.query}</strong>
-                        (<a href="#download" title="Download all ${searchResults.totalRecords} results as XLS (tab-delimited) file" id="downloadLink">Download all records</a>)
+                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)
                     </div>
                     <div style="display:none">
                         <jsp:include page="downloadDiv.jsp"/>

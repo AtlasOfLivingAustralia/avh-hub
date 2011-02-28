@@ -46,6 +46,9 @@ label {
 input, textarea, select, button {
     margin: 0;
 }
+form input {
+    padding: 0;
+}
 form p input {
     float: none
 }
@@ -87,9 +90,12 @@ table td,table th  {
     padding-top: 4px;
 }
 .sidebar h4 {
-    font-size: 110%;
+    font-size: 100%;
     padding: 6px 0;
 }
 .sidebar li {
     border-bottom: none;
+}
+.sidebar li {
+    font-size: 13px;
 }

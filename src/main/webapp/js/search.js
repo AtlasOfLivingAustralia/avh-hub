@@ -106,12 +106,6 @@ $(document).ready(function() {
         reloadWithParam('pageSize',val);
     });
 
-    // download link
-//    $("#downloadLink").click(function(e) {
-//        e.preventDefault();
-//        $('#download').modal();
-//    });
-
     $("#downloadLink").fancybox({
         'hideOnContentClick' : false,
         'hideOnOverlayClick': true,
@@ -127,7 +121,6 @@ $(document).ready(function() {
     // catch download submit button
     $("#downloadSubmitButton").click(function(e) {
         e.preventDefault();
-        //$("form#downloadForm").submit();
         var downloadUrl = $("input#downloadUrl").val();
         var reason = $("#reason").val();
         if(typeof reason == "undefined")
@@ -140,17 +133,15 @@ $(document).ready(function() {
 
     // set height of resultsOuter div to solrResults height
     var solrHeight = $("div.solrResults").height();
-    //console.debug("solrResults div height = " + solrHeight);
     $("#resultsOuter").css("height", (solrHeight > 560 ) ? solrHeight : 560 );
 
     var hashType = ["list", "map"]; // used below
     // animate the display of showing results list vs map
     $("#listMapButton").click(function(e) {
         e.preventDefault();
-        //console.log("inside click #listMapLink");
         // remove name so changing hash value does not jump the page
         $(".jumpTo").attr("name", ""); 
-        //
+        // change the button text...
         var spanText = $("#listMapLink").html();
         if (spanText == 'Map') {
             $("#listMapLink").html('List');
@@ -159,6 +150,7 @@ $(document).ready(function() {
             $("#listMapLink").html('Map');
             window.location.hash = 'list';
         }
+        // add <a name=""> attr's back
         $(".jumpTo").each(function(i, el) {
             $(this).attr("name", hashType[i]);
         });
@@ -173,7 +165,6 @@ $(document).ready(function() {
             left: parseInt($mapDiv.css('left'),10) == 0 ? $mapDiv.outerWidth() : 0},
             {duration: "slow"}
         );
-
     });
 
     // page load - detect if map is requested via #map hash
@@ -193,7 +184,7 @@ $(document).ready(function() {
 
     // add show/hide links to facets
     $('#subnavlist ul').oneShowHide({
-        numShown: 4,
+        numShown: 3,
         showText : '+ show more',
         hideText : '- show less',
         className: 'showHide'
