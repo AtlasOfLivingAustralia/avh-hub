@@ -46,6 +46,7 @@
                     'margin': 10
                 });
 
+                // bind to form submit for assertions
                 $("form#issueForm").submit(function(e) {
                     e.preventDefault();
                     var comment = $("#issueComment").val();
@@ -210,31 +211,6 @@
                                         <span id="submitSuccess"></span>
                                     </p>
                                 </form>
-                                <script type="text/javascript">
-                                    function submitIssue(){
-                                        var comment = $("#issueComment").val();
-                                        var code = $("#issue").val();
-                                        var userId = '${userId}';
-                                        var userDisplayName = '${userDisplayName}';
-                                        if(code!=""){
-                                            $.post("${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/add",
-                                               { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
-                                               function(data) {
-                                                 $("#submitSuccess").html("Thanks for flagging the problem!");
-                                                 $("#issueFormSubmit").hide();
-                                                 $("input:reset").hide();
-                                                 $("input#close").show();
-                                                 //retrieve all asssertions
-                                                 $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
-                                                   $('#userAssertions').html(data);
-                                                 });
-                                               }
-                                            );
-                                        } else {
-                                            alert("Please supply a issue type");
-                                        }
-                                    }
-                                </script>
                             </div>
                         </c:otherwise>
                         </c:choose>
