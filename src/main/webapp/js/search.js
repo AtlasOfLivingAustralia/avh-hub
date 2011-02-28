@@ -106,37 +106,22 @@ $(document).ready(function() {
         reloadWithParam('pageSize',val);
     });
 
-    //    // iPhone style toggle switch
-    //    $('#listMapToggle11').iphoneSwitch("off",
-    //        function() {
-    //            //$('#ajax').load('on.html');
-    //            alert("showing map");
-    //        },
-    //        function() {
-    //            //$('#ajax').load('off.html');
-    //            alert("showing list");
-    //        },
-    //        {
-    //            switch_path: contextPath + "/static/images/" + 'iphone_switch.png',
-    //            switch_off_container_path: contextPath + "/static/images/" + 'iphone_switch_container_off.png',
-    //            switch_on_container_path: contextPath + "/static/images/" + 'iphone_switch_container_off.png'
-    //        }
-    //    );
-
-    $("#listMapToggle input").iButton({
-        labelOn: "Map",
-        labelOff: "List",
-        change: function ($input) {
-            // update the text based on the status of the checkbox
-            //$("#send-email").html($input.is(":checked") ? "Yes, send me more e-mail!" : "Ugh... no more e-mail already!");
-            //alert('changing view to');
-        }
-    }).trigger("change");
-
     // download link
-    $("#downloadLink").click(function(e) {
-        e.preventDefault();
-        $('#download').modal();
+//    $("#downloadLink").click(function(e) {
+//        e.preventDefault();
+//        $('#download').modal();
+//    });
+
+    $("#downloadLink").fancybox({
+        'hideOnContentClick' : false,
+        'hideOnOverlayClick': true,
+        'showCloseButton': true,
+        'titleShow' : false,
+        'autoDimensions' : false,
+        'width': '500',
+        'height': '300',
+        'padding': 15,
+        'margin': 10
     });
 
     // catch download submit button
@@ -150,7 +135,7 @@ $(document).ready(function() {
         downloadUrl = downloadUrl + "&type=&email="+$("#email").val()+"&reason="+encodeURIComponent(reason)+"&file="+$("#filename").val();
         //alert("downloadUrl = " + downloadUrl);
         window.location.replace(downloadUrl);
-        $.modal.close();
+        $.fancybox.close();
     });
 
     // set height of resultsOuter div to solrResults height
@@ -158,9 +143,13 @@ $(document).ready(function() {
     //console.debug("solrResults div height = " + solrHeight);
     $("#resultsOuter").css("height", (solrHeight > 560 ) ? solrHeight : 560 );
 
+    var hashType = ["list", "map"]
     // animate the display of showing results list vs map
     $("#listMapLink").click(function(e) {
         e.preventDefault();
+        // remove name so changing hash value does not jump the page
+        $(".jumpTo").attr("name", ""); 
+        //
         var linkText = $(this).html();
         if (linkText == 'Map') {
             $(this).html('List');
@@ -169,6 +158,9 @@ $(document).ready(function() {
             $(this).html('Map');
             window.location.hash = 'list';
         }
+        $(".jumpTo").each(function(i, el) {
+            $(this).attr("name", hashType[i]);
+        });
         //$(this).html((linkText == 'Map') ? "List" : "Map"); // change link text
         var $listDiv = $("div.solrResults"); // list
         $listDiv.animate({
@@ -196,5 +188,13 @@ $(document).ready(function() {
         e.preventDefault();
         var url = $(this).attr("href");
         window.location.replace(url + window.location.hash);
+    });
+
+    // add show/hide links to facets
+    $('#subnavlist ul').oneShowHide({
+        numShown: 4,
+        showText : '+ show more',
+        hideText : '- show less',
+        className: 'showHide'
     });
 }); // end JQuery document ready

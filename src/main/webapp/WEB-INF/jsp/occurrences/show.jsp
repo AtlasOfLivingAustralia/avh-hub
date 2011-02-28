@@ -30,8 +30,10 @@
             contextPath = "${pageContext.request.contextPath}";
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/record.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <script type="text/javascript">
             $(document).ready(function() {
+                // add assertion form display
                 $("#assertionMaker").fancybox({
                     'hideOnContentClick' : false,
                     'hideOnOverlayClick': true,
@@ -40,8 +42,45 @@
                     'autoDimensions' : false,
                     'width': '500',
                     'height': '300',
-                    'padding': 10,
+                    'padding': 15,
                     'margin': 10
+                });
+
+                $("form#issueForm").submit(function(e) {
+                    e.preventDefault();
+                    var comment = $("#issueComment").val();
+                    var code = $("#issue").val();
+                    var userId = '${userId}';
+                    var userDisplayName = '${userDisplayName}';
+                    if(code!=""){
+                        $.post("${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/add",
+                        { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
+                        function(data) {
+                            $("#submitSuccess").html("Thanks for flagging the problem!");
+                            $("#issueFormSubmit").hide();
+                            $("input:reset").hide();
+                            $("input#close").show();
+                            //retrieve all asssertions
+                            $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
+                                $('#userAssertions').html(data);
+                            });
+                        }
+                    );
+                    } else {
+                        alert("Please supply a issue type");
+                    }
+                });
+
+                // bind to form "close" button
+                $("input#close").live("click", function(e) {
+                    // reset form back to default state
+                    $('form#issueForm')[0].reset();
+                    $("#submitSuccess").html("");
+                    $("#issueFormSubmit").show();
+                    $("input:reset").show();
+                    $("input#close").hide();
+                    // close the popup
+                    $.fancybox.close();
                 });
             });
         </script>
@@ -52,7 +91,7 @@
             <div id="headingBar" class="recordHeader">
                 <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>
                 <div id="jsonLink">
-                    You're logged in as: ${userDisplayName} (${userId})
+                    Logged in as: ${userDisplayName} (${userId})
                     <!--
                     <a href="${json}">JSON</a>
                     -->
@@ -136,10 +175,9 @@
                 </c:if>
                 <div class="sidebar">
                     <p style="margin:20px 0 20px 0;">
-                    <a id="assertionMaker"
-                       href="#loginOrFlag"
-                       value="Flag a problem"
-                       style="background-color: #900; color: #FFFFFF; font-weight: bold; font-size: 150%; text-transform: uppercase; padding:5px; border:1px solid #900;">Flag a problem</a>
+                        <button class="rounded">
+                            <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
+                        </button>
                     </p>
                     <div style="display:none">
                         <c:choose>
@@ -157,16 +195,18 @@
                                         <label for="issue">Issue type:</label>
                                         <select name="issue" id="issue">
                                             <c:forEach items="${errorCodes}" var="code">
-                                             <option value="${code.code}"><spring:message code="${code.name}" text="${code.name}"/></option>
+                                            <option value="${code.code}"><spring:message code="${code.name}" text="${code.name}"/></option>
                                             </c:forEach>
                                         </select>
                                     </p>
                                     <p style="margin-top:30px;">
                                         <label for="comment" style="vertical-align:top;">Comment:</label>
-                                        <textarea name="comment" id="issueComment" style="width:380px;height:150px;">Please add a comment here...</textarea>
+                                        <textarea name="comment" id="issueComment" style="width:380px;height:150px;" placeholder="Please add a comment here..."></textarea>
                                     </p>
                                     <p style="margin-top:20px;">
-                                        <input id="issueFormSubmit" type="button" value="submit issue" onclick="javascript:submitIssue();"/>
+                                        <input id="issueFormSubmit" type="submit" value="Submit" />
+                                        <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
+                                        <input type="button" id="close" value="Close" style="display:none;"/>
                                         <span id="submitSuccess"></span>
                                     </p>
                                 </form>
@@ -181,6 +221,9 @@
                                                { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
                                                function(data) {
                                                  $("#submitSuccess").html("Thanks for flagging the problem!");
+                                                 $("#issueFormSubmit").hide();
+                                                 $("input:reset").hide();
+                                                 $("input#close").show();
                                                  //retrieve all asssertions
                                                  $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
                                                    $('#userAssertions').html(data);

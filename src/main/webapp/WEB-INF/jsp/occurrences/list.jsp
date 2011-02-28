@@ -15,8 +15,8 @@
             contextPath = "${pageContext.request.contextPath}";
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ibutton.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.simplemodal.1.4.1.min.js"></script>
+<!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.simplemodal.1.4.1.min.js"></script>-->
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
@@ -45,7 +45,7 @@
                 <p>No records found for <b>${searchRequestParams.displayString}</b></p>
             </c:if>
             <c:if test="${searchResults.totalRecords > 0}">
-<!--                <a name="map">&nbsp;</a><a name="list">&nbsp;</a>-->
+                <a name="map" class="jumpTo">&nbsp;</a><a name="list" class="jumpTo">&nbsp;</a>
                 <div>
                     <div id="listMapToggle" class="row" >
                         <!-- View as: <a href="#" id="listMapLink">Map</a> -->
@@ -58,7 +58,9 @@
                         returned for <strong>${searchResults.query}</strong>
                         (<a href="#download" title="Download all ${searchResults.totalRecords} results as XLS (tab-delimited) file" id="downloadLink">Download all records</a>)
                     </div>
-                    <jsp:include page="downloadDiv.jsp"/>
+                    <div style="display:none">
+                        <jsp:include page="downloadDiv.jsp"/>
+                    </div>
                 </div>
                 <div id="resultsOuter">
                     <div class="solrResults">
@@ -103,9 +105,10 @@
                                     <c:if test="${not empty occurrence.vernacularName}"> | <span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
                                 </p>
                                 <p class="rowB">
-                                    <c:if test="${not empty occurrence.dataResourceName}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Dataset:</strong> ${fn:replace(occurrence.dataResourceName, ' provider for OZCAM', '')}</span></c:if>
-                                    <c:if test="${not empty occurrence.basisOfRecord}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Record type:</strong> ${occurrence.basisOfRecord}</span></c:if>
-                                    <c:if test="${not empty occurrence.eventDate}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Record date:</strong> <fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span></c:if>
+                                    <c:if test="${not empty occurrence.dataResourceName}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Institution:</strong> ${fn:replace(occurrence.dataResourceName, ' provider for OZCAM', '')}</span></c:if>
+                                    <%-- <c:if test="${not empty occurrence.institutionName}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Institution</strong> ${occurrence.institutionName}</span></c:if> --%>
+                                    <c:if test="${not empty occurrence.basisOfRecord}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Basis of record:</strong> ${occurrence.basisOfRecord}</span></c:if>
+                                    <c:if test="${not empty occurrence.eventDate}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong> <fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span></c:if>
                                     <c:if test="${not empty occurrence.stateProvince}"><span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong> <fmt:message key="region.${occurrence.stateProvince}"/></span></c:if>
                                 </p>
                             </c:forEach>

@@ -210,6 +210,8 @@ td.annoText {
 }
 #jsonLink {
     float:right;
+    width: 200px;
+    font-size: 11px;
     vertical-align: bottom;
     margin-top: 5px;
 }
@@ -226,4 +228,23 @@ h1 span#recordId {
 }
 #institutionLogo {
     max-width: 280px;
+}
+#assertionMaker {
+    font-size: 130%;
+/*    background-color: #900;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 150%;
+    text-transform: uppercase;
+    padding:5px;
+    border:1px solid #900;*/
+}
+#loginOrFlag {
+    font-size: 13px;
+}
+
+#loginOrFlag label {
+    width: 85px;
+    display: inline-block;
+    color: #444;
 }

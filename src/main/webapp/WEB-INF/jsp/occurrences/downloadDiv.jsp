@@ -23,7 +23,7 @@
             <p><label for="reason" style="vertical-align: top">Download Reason</label>
                 <textarea name="reason" rows="5" cols="30" id="reason"  ></textarea></p>
             <input type="submit" value="Download File" id="downloadSubmitButton"/>&nbsp;
-            <input type="reset" value="Cancel" onClick="$.modal.close();"/>
+            <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
         </fieldset>
     </form>
 </div>

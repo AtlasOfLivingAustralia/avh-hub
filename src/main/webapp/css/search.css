@@ -139,7 +139,8 @@ div.recordHeader {
     text-align: right;
 }
 div#download {
-    display: none;
+/*    display: none;*/
+    font-size: 13px;
 }
 #downloadForm label {
     width: 85px;
@@ -177,4 +178,13 @@ div#download {
     top: 0;
     width: 730px;
     /*display:none;*/
+}
+li.showHide {
+    list-style: none;
+    margin-left: 0px;
+}
+li.showHide a:link, li.showHide a:visited  {
+    color: #005A8E;
+    font-size: 12px;
+    text-decoration: none;
 }
