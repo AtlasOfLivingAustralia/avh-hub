@@ -42,10 +42,10 @@ public class CollectionController {
     /* View names */
 	private final String SHOW_COLLECTION = "collections/show";
     /* Constant String fields */
-    private final String COLLECTION_PATH_PREFIX = "/Collectory/public/show/co";
-    private final String INSTITUTION_PATH_PREFIX = "/Collectory/data/show/in";
-    private final String COLLECTORY_PUBLIC_URL = "/Collectory/public/";
-    private final String COLLECTORY_MAPS_URL = "/Collectory/images/map";
+    private final String COLLECTION_PATH_PREFIX = "/public/show/co";
+    private final String INSTITUTION_PATH_PREFIX = "/data/show/in";
+    private final String COLLECTORY_PUBLIC_URL = "/public/";
+    private final String COLLECTORY_MAPS_URL = "/images/map";
     private final String COLLECTION = "collection/";
     private final String INSTITUTION = "institution/";
     /** URI for collection page fragments- possibly overriden by properties overrides */
