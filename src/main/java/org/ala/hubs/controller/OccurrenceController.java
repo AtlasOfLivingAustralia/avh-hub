@@ -16,12 +16,10 @@
 package org.ala.hubs.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import au.org.ala.cas.util.AuthenticationCookieUtils;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
@@ -44,7 +42,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import au.org.ala.biocache.ErrorCode;
 
 /**
  * Occurrence record Controller
@@ -69,6 +66,11 @@ public class OccurrenceController {
 	protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
 
+    /**
+     * welcome page. TODO replace with config?
+     *
+     * @return
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
 	public String homePage(){
        return "homePage";
@@ -135,6 +137,34 @@ public class OccurrenceController {
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
         return RECORD_LIST;
     }
+
+    /**
+     * Occurrence search for a given collection, institution, data_resource or data_provider.
+     *
+     * @param requestParams The search parameters
+     * @param  uid The uid for collection, institution, data_resource or data_provider
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"/occurrences/collection/{uid}", "/occurrences/institution/{uid}", "/occurrences/data-resource/{uid}", "/occurrences/data-provider/{uid}"}, method = RequestMethod.GET)
+    public String occurrenceSearchForCollection(
+            SearchRequestParams requestParams,
+            @PathVariable("uid") String uid,
+            Model model)
+            throws Exception {
+        // no query so exit method
+        if (StringUtils.isEmpty(uid)) {
+            return RECORD_LIST;
+        }
+
+		logger.debug("solr query: " + requestParams);
+		SearchResultDTO searchResult = biocacheService.findByCollection(uid, requestParams);
+		model.addAttribute("searchResults", searchResult);
+        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+		return RECORD_LIST;
+	}
 
     /**
      * Display an occurrence record by retrieving via its uuid.

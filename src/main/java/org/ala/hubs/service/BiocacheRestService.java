@@ -83,6 +83,24 @@ public class BiocacheRestService implements BiocacheService {
         return searchResults;
     }
 
+    @Override
+    public SearchResultDTO findByCollection(String uid, SearchRequestParams requestParams) {
+        Assert.notNull(uid, "uid must not be null");
+        SearchResultDTO searchResults = new SearchResultDTO();
+
+        try {
+            final String jsonUri = biocacheUriPrefix + "/occurrences/collection/" + uid + "?" + requestParams.toString();
+            logger.debug("Requesting: " + jsonUri);
+            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+            searchResults.setStatus("Error: " + ex.getMessage());
+        }
+
+        return searchResults;
+    }
+
+    @Override
     public OccurrenceDTO getRecordByUuid(String uuid) {
         Assert.notNull(uuid, "uuid must not be null");
         OccurrenceDTO record = new OccurrenceDTO();
@@ -98,30 +116,35 @@ public class BiocacheRestService implements BiocacheService {
         return record;
     }
 
+    @Override
     public List<ErrorCode> getErrorCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/codes";
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, (new ArrayList<ErrorCode>()).getClass());
     }
 
+    @Override
     public List<ErrorCode> getGeospatialCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/geospatial/codes";
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, (new ArrayList<ErrorCode>()).getClass());
     }
 
+    @Override
     public List<ErrorCode> getTaxonomicCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/taxonomic/codes";
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, (new ArrayList<ErrorCode>()).getClass());
     }
 
+    @Override
     public List<ErrorCode> getTemporalCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/temporal/codes";
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, (new ArrayList<ErrorCode>()).getClass());
     }
 
+    @Override
     public List<ErrorCode> getMiscellaneousCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/miscellaneous/codes";
         logger.debug("Requesting: " + jsonUri);

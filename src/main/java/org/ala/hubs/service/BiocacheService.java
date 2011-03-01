@@ -37,6 +37,8 @@ public interface BiocacheService {
 
     public SearchResultDTO findByTaxonConcept(String guid, SearchRequestParams requestParams);
 
+    public SearchResultDTO findByCollection(String uid, SearchRequestParams requestParams);
+
     public OccurrenceDTO getRecordByUuid(String uuid);
 
     public List<ErrorCode> getErrorCodes();

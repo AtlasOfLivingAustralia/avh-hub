@@ -22,8 +22,8 @@
         <div id="headingBar">
             <h1>Search for records in OZCAM</h1>
             <form action="${pageContext.request.contextPath}/occurrences/search">
-                <input name="q" value="Victoria" style="width:600px; height:20px; font-size:16px;"/><br/>
-                <input type="submit" value="Submit" />
+                <input name="q" value="Victoria" style="width:600px; height:20px; font-size:16px;"/>&nbsp;
+                <input type="submit" value="Submit" style="font-size:18px;"/>
             </form>
         </div>
     </body>
