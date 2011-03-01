@@ -22,9 +22,13 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript">
+            Config.setupUrls("${biocacheServiceUrl}");
+        </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/simpleModal.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
         <!--[if lt IE 7]>
             <link type='text/css' href='${pageContext.request.contextPath}/static/css/simpleModal_ie.css' rel='stylesheet' media='screen' />
         <![endif]-->
@@ -37,7 +41,7 @@
             <div id="headingBar">
                 <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
             </div>
-<!--            <div id="searchBox">search box goes here</div>-->
+            <!--            <div id="searchBox">search box goes here</div>-->
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
         <div id="content">
@@ -113,27 +117,31 @@
                         </div><!--close results-->
                         <div id="searchNavBar">
                             <alatag:searchNavigationLinks totalRecords="${searchResults.totalRecords}" startIndex="${searchResults.startIndex}"
-                                 lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
+                                                          lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
                         </div>
                     </div><!--end solrResults-->
                     <div id="mapwrapper">
                         Colour by:
                         <select name="colourFacets" id="colourFacets">
-                            <option value=""> -- Select an option -- </option>
+                            <!--<option value=""> -- Select an option -- </option>-->
                             <c:forEach var="facetResult" items="${searchResults.facetResults}">
                                 <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
                                     <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
                                 </c:if>
                             </c:forEach>
                         </select>
-                        <div id="map-canvas" style="width: 730px; height: 560px">
-                        <!-- <img id="wmsimg" src="http://localhost:8080/occurrences/wms?q=macropus" /> -->
+                        <div id="mapcanvas"></div>
+                        <div id="legend" title="Toggle legend display">
+                            <div style="float:right">x</div>
+                            <div class="title">Legend</div>
+                            <div id="legendContent"></div>
                         </div>
+                        <!-- <img id="wmsimg" src="http://localhost:8080/occurrences/wms?q=macropus" /> -->
                     </div>
                 </div>
                 <div id="densityMap"></div>
                 <div id="busyIcon" style="display:none;"><img src="${pageContext.request.contextPath}/static/css/images/wait.gif" alt="busy/spinning icon" /></div>
-            </c:if>
+                </c:if>
         </div>
     </body>
 </html>

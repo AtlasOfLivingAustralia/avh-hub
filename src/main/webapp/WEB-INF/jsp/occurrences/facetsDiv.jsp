@@ -20,25 +20,25 @@
                 <ul>
                     <c:forEach var="item" items="${facetMap}">
                         <li>
-                        <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:${item.value}'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
-                        <fmt:message key="facet.${item.key}"/>:
-                        <c:choose>
-                            <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
-                                <b><fmt:message key="month.${item.value}"/></b>${closeLink}
-                            </c:when>
-                            <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:startsWith(item.value, '[*')}">
-                                <c:set var="endYear" value="${fn:substring(item.value, 6, 10)}"/><b>Before ${endYear}</b>${closeLink}
-                            </c:when>
-                            <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, '*]')}">
-                                <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>After ${startYear}</b>${closeLink}
-                            </c:when>
-                            <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
-                                <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear} - ${startYear + 10}</b>${closeLink}
-                            </c:when>
-                            <c:otherwise>
-                                <b><fmt:message key="${item.value}"/></b>${closeLink}
-                            </c:otherwise>
-                        </c:choose>
+                            <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:${item.value}'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
+                            <fmt:message key="facet.${item.key}"/>:
+                            <c:choose>
+                                <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
+                                    <b><fmt:message key="month.${item.value}"/></b>${closeLink}
+                                </c:when>
+                                <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:startsWith(item.value, '[*')}">
+                                    <c:set var="endYear" value="${fn:substring(item.value, 6, 10)}"/><b>Before ${endYear}</b>${closeLink}
+                                </c:when>
+                                <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, '*]')}">
+                                    <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>After ${startYear}</b>${closeLink}
+                                </c:when>
+                                <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
+                                    <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear} - ${startYear + 10}</b>${closeLink}
+                                </c:when>
+                                <c:otherwise>
+                                    <b><fmt:message key="${item.value}"/></b>${closeLink}
+                                </c:otherwise>
+                            </c:choose>
                         </li>
                     </c:forEach>
                 </ul>
@@ -52,8 +52,8 @@
                         <c:set var="lastElement" value="${facetResult.fieldResult[fn:length(facetResult.fieldResult)-1]}"/>
                         <c:if test="${lastElement.label eq 'before' && lastElement.count > 0}">
                             <li><c:set var="firstYear" value="${fn:substring(facetResult.fieldResult[0].label, 0, 4)}"/>
-                            <a href="?${queryParam}&fq=${facetResult.fieldName}:[* TO ${facetResult.fieldResult[0].label}]">Before ${firstYear}</a>
-                            (<fmt:formatNumber value="${lastElement.count}" pattern="#,###,###"/>)
+                                <a href="?${queryParam}&fq=${facetResult.fieldName}:[* TO ${facetResult.fieldResult[0].label}]">Before ${firstYear}</a>
+                                (<fmt:formatNumber value="${lastElement.count}" pattern="#,###,###"/>)
                             </li>
                         </c:if>
                         <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs"> <!-- ${facetResult.fieldName} -->
@@ -62,32 +62,74 @@
                                 <c:choose>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_date') && fn:endsWith(fieldResult.label, 'Z')}">
                                         <li><c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
-                                        <a href="?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${dateRangeTo}]">${startYear} - ${startYear + 10}</a>
-                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
+                                            <a href="?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${dateRangeTo}]">${startYear} - ${startYear + 10}</a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                        </c:when>
+                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_code_name')}">
+                                        </c:when>
+                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_code_name')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fn:replace(fieldResult.label, ',', '%2C')}"><fmt:message key="${fn:replace(fieldResult.label, ',', ',')}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:when>
-                                    <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
-                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'month')}">
+                                        </c:when>
+                                        <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
+                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'month')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="month.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:when>
-                                    <c:otherwise>
+                                        </c:when>
+                                        <c:otherwise>
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:if>
-                        </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:if>
+                            </c:forEach>
                     </ul>
                 </div>
             </c:if>
         </c:forEach>
     </div>
 </div><!--end facets-->
+<script type="text/javascript">
+    
+    String.prototype.hashCode = function(){
+        var hash = 0;
+        if (this.length == 0) return code;
+        for (i = 0; i < this.length; i++) {
+            char = this.charCodeAt(i);
+            hash = 31*hash+char;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
+    }
+
+    //var facets = {};
+
+    var facets = new Array(); 
+
+    var facetNames = new Array();
+    var facetValues = new Array();
+    var facetValueHashes = new Array();
+    var facetValueCounts = new Array();
+
+    ffv = "";
+    ffc = "";
+    ffh = "";
+    <c:forEach var="facetResult" items="${searchResults.facetResults}">
+        ffv = ""; ffc = "";
+        <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs">
+            // add the values (each value seperated by |
+            ffv += "${fieldResult.label}|";
+            // add the count (each value seperated by |
+            ffc += "${fieldResult.count}|";
+            // add the hashcode (each value seperated by |
+            ffh += "${fieldResult.label}".hashCode() + "|"; 
+        </c:forEach>
+            // add the facet field name
+            facetNames.push("${facetResult.fieldName}");
+            facetValues.push(ffv);
+            facetValueHashes.push(ffh);
+            facetValueCounts.push(ffc);            
+    </c:forEach>
+</script>

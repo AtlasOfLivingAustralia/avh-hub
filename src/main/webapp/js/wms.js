@@ -64,7 +64,7 @@ MercatorProjection.prototype.fromDivPixelToSphericalMercator = function(pixel, z
     return new google.maps.Point(x,y);
 };
 
-function loadWMS(map, baseURL, customParams){
+function getWMSObject(map, baseURL, customParams){
     var tileHeight = 256;
     var tileWidth = 256;
     var opacityLevel = 0.75;
@@ -113,28 +113,15 @@ function loadWMS(map, baseURL, customParams){
         },
 
         tileSize: new google.maps.Size(tileHeight, tileWidth),
-
         minZoom: minZoomLevel,
         maxZoom: maxZoomLevel,
-
         opacity: opacityLevel,
-
         isPng: isPng
     };
 
-    overlayWMS = new google.maps.ImageMapType(overlayOptions);
+    var overlayWMS = new google.maps.ImageMapType(overlayOptions);
 
-    map.overlayMapTypes.insertAt(0, overlayWMS);
-
-    map.setOptions({
-        mapTypeControlOptions: {
-            mapTypeIds: [
-            google.maps.MapTypeId.ROADMAP,
-            google.maps.MapTypeId.TERRAIN,
-            google.maps.MapTypeId.SATELLITE,
-            google.maps.MapTypeId.HYBRID
-            ],
-            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-        }
-    });
+    //map.overlayMapTypes.insertAt(0, overlayWMS);
+    //map.overlayMapTypes.insertAt(map.overlayMapTypes.length, overlayWMS);
+    return overlayWMS; 
 }

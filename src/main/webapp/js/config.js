@@ -6,13 +6,25 @@
 
 var Config = (function() {
 
+    //BIOCACHE_SERVICE_URL = "http://ala-bie1.vm.csiro.au:8080/biocache-service";
+    BIOCACHE_SERVICE_URL = "";
+
     return {
 
-        OCC_WMS_BASE_URL: 'http://localhost:8080/biocache-service/occurrences/wms?',
-        OCC_SEARCH_URL: 'http://localhost:8080/biocache-service/occurrences/info',
+        //BIOCACHE_SERVICE_URL: 'http://ala-bie1.vm.csiro.au:8080/biocache-service',
+        OCC_WMS_BASE_URL: BIOCACHE_SERVICE_URL + '/occurrences/wms?',
+        OCC_SEARCH_URL: BIOCACHE_SERVICE_URL + '/occurrences/info',
         OCC_INFO_URL_HTML: '/hubs-webapp/occurrence/_uuid_',
-        OCC_INFO_URL_JSON: '/hubs-webapp/occurrence/_uuid_.json'
-        //OCC_INFO_URL: 'http://localhost:8080/biocache-service/occurrence/'
+        OCC_INFO_URL_JSON: '/hubs-webapp/occurrence/_uuid_.json',
+
+        /**
+         * setup the Config with the base url 
+         */
+        setupUrls: function(baseurl) {
+            this.BIOCACHE_SERVICE_URL = baseurl;
+            this.OCC_WMS_BASE_URL = baseurl + '/occurrences/wms?';
+            this.OCC_SEARCH_URL = baseurl + '/occurrences/info';
+        }
 
     } // return: public variables and methods
 

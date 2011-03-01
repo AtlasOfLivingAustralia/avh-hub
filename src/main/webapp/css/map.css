@@ -1,0 +1,37 @@
+/* 
+    Document   : map
+    Created on : Mar 1, 2011, 10:47:41 AM
+    Author     : "Ajay Ranipeta <Ajay.Ranipeta@csiro.au>"
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#mapcanvas {
+    width: 730px;
+    height: 560px;
+}
+
+#legend {
+    background-color: white;
+    border: 2px solid black;
+    text-align: left;
+    cursor: pointer;
+    padding: 0 5px 0 5px;
+    z-index: 1;
+    margin-top: 5px; 
+
+    font-family: 'Arial,sans-serif';
+    font-size: 12px;
+
+    display: none; 
+}
+
+#legend div.title {
+    font-weight: bold;
+    border-bottom: 2px solid black; 
+}

@@ -66,13 +66,16 @@
                 </div>
 
                 <div id="mapwrapper">
-                    <div id="map-canvas" style="width: 730px; height: 540px">
+                    <div id="mapcanvas" style="width: 730px; height: 540px">
                     <!-- <img id="wmsimg" src="http://localhost:8080/occurrences/wms?q=macropus" /> -->
                     </div>
                 </div>
                 
                 <div id="busyIcon" style="display:none;"><img src="${pageContext.request.contextPath}/static/css/images/wait.gif" alt="busy/spinning icon" /></div>
                 </c:if>
+                <script type="text/javascript">
+                    Config.BIOCACHE_SERVICE_URL = "${biocacheServiceUrl}";
+                </script>
         </div>
     </body>
 </html>
