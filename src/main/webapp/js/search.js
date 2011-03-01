@@ -137,6 +137,7 @@ $(document).ready(function() {
 
     var hashType = ["list", "map"]; // used below
     // animate the display of showing results list vs map
+    // TODO: make this a toggle() so that double clicks don't break it
     $("#listMapButton").click(function(e) {
         e.preventDefault();
         // remove name so changing hash value does not jump the page
@@ -152,12 +153,13 @@ $(document).ready(function() {
                 $("#listMapLink").html('Map');
                 window.location.hash = 'list';
             }
+            // add <a name=""> attr's back
+            $(".jumpTo").each(function(i, el) {
+                $(this).attr("name", hashType[i]);
+            });
         });
         $("#listMapButton").fadeIn('slow');
-        // add <a name=""> attr's back
-        $(".jumpTo").each(function(i, el) {
-            $(this).attr("name", hashType[i]);
-        });
+        
         // make list & map div slide left & right
         var $listDiv = $("div.solrResults"); // list
         $listDiv.animate({

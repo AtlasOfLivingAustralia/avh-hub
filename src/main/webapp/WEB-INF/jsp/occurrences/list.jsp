@@ -40,8 +40,14 @@
         <c:if test="${searchResults.totalRecords > 0}">
             <div id="headingBar">
                 <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
+                <div id="searchBox">
+                    <form action="search" id="searchForm">
+                        <input type="text" id="searchQuery" name="q" value="${param.q}">
+                        <input type="submit" id="searchSubmit" value="Search"/>
+                    </form>
+                </div>
             </div>
-            <!--            <div id="searchBox">search box goes here</div>-->
+            <div style="clear: both"/>
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
         <div id="content">

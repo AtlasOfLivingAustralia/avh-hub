@@ -10,11 +10,41 @@
    TODO customize this sample style
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
-
+#headingBar {
+    border-bottom: 1px solid #ccc;
+    margin-left: 30px;
+    padding-left: 0px;
+    height: 40px;
+}
+#headingBar h1 {
+    border: none;
+}
+#headingBar h1 {
+    width: 50%;
+    float: left;
+    height: 32px;
+}
 #searchBox {
-    margin: 10px 10px 10px 320px;
-    padding: 4px 5px 5px 4px;
-    border: 1px solid red;
+    width: 50%;
+    float: left;
+    height: 32px;
+    text-align: right;
+}
+#searchForm input {
+    margin: 0
+}
+#searchForm input#searchQuery {
+    display: block;
+    float: left;
+    margin-top: 5px;
+    font-size: 110%;
+    width: 400px;
+}
+#searchForm input#searchSubmit {
+    display: block;
+    float: left;
+    font-size: 140%;
+    margin: 7px 6px;
 }
 .sidebar li {
     border: none;
