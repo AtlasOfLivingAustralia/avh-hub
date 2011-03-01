@@ -142,14 +142,18 @@ $(document).ready(function() {
         // remove name so changing hash value does not jump the page
         $(".jumpTo").attr("name", ""); 
         // change the button text...
-        var spanText = $("#listMapLink").html();
-        if (spanText == 'Map') {
-            $("#listMapLink").html('List');
-            window.location.hash = "map";
-        } else {
-            $("#listMapLink").html('Map');
-            window.location.hash = 'list';
-        }
+        $("#listMapButton").fadeOut('slow', function() {
+            // Animation complete
+            var spanText = $("#listMapLink").html();
+            if (spanText == 'Map') {
+                $("#listMapLink").html('List');
+                window.location.hash = "map";
+            } else {
+                $("#listMapLink").html('Map');
+                window.location.hash = 'list';
+            }
+        });
+        $("#listMapButton").fadeIn('slow');
         // add <a name=""> attr's back
         $(".jumpTo").each(function(i, el) {
             $(this).attr("name", hashType[i]);

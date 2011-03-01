@@ -32,6 +32,26 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/record.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <script type="text/javascript">
+            /**
+             * Delete a user assertion
+             */
+            function deleteAssertion(recordUuid, assertionUuid){
+                $.post('${pageContext.request.contextPath}/occurrences/'+recordUuid+'/assertions/delete',
+                    { assertionUuid: assertionUuid },
+                    function(data) {
+                        //retrieve all asssertions
+                        $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
+                            $('#'+assertionUuid).fadeOut('slow', function() {
+                                $('#userAssertions').html(data);
+                            });
+                        });
+                    }
+                );
+            }
+
+            /**
+             * JQuery on document ready callback
+             */
             $(document).ready(function() {
                 // add assertion form display
                 $("#assertionButton").fancybox({
@@ -64,6 +84,7 @@
                                 $("input#close").show();
                                 //retrieve all asssertions
                                 $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
+                                    console.log("data", data);
                                     $('#userAssertions').html(data);
                                 });
                             }
@@ -84,7 +105,19 @@
                     $("input:reset").show("slow");
                     $("input#close").hide("slow");
                 });
-            });
+
+                //var isConfirmed = {};
+                // catch link to delete user assertion
+                $("a.deleteAssertion").live('click', function(e) {
+                    e.preventDefault();
+                    var assertionUuid = $(this).attr("id");
+                    var isConfirmed = confirm('Are you sure you want to delete this issue?');
+                    if (isConfirmed === true) {
+                        deleteAssertion('${record.raw.uuid}', assertionUuid);
+                    } 
+                    //isConfirmed = false; // don't remember the confirm
+                });
+            }); // end JQuery document ready
         </script>
     </head>
     <body>
@@ -126,22 +159,6 @@
                 </c:if>
             </div>
 
-            <script type="text/javascript">
-                function deleteAssertion(recordUuid, assertionUuid){
-                    $.post('${pageContext.request.contextPath}/occurrences/'+recordUuid+'/assertions/delete',
-                       { assertionUuid: assertionUuid },
-                       function(data) {
-                         //retrieve all asssertions
-                         $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
-                            $('#'+assertionUuid).fadeOut('slow', function() {
-                                $('#userAssertions').html(data);
-                            });
-                         });
-                       }
-                    );
-                }
-            </script>
-
             <div id="SidebarBox">
                 <c:if test="${not empty collectionLogo}">
                     <div class="sidebar">
@@ -165,12 +182,8 @@
                             <ul id="userAssertions">
                             <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
                                 <c:forEach var="assertion" items="${record.userAssertions}">
-                                    <li id="${assertion.uuid}">
-                                        <spring:message code="${assertion.name}" text="${assertion.name}"/> - ${assertion.comment}
-                                        <c:if test="${(not empty userId) && (userId eq assertion.userId)}">
-                                            <br/><strong>(added by you - <a href="javascript:deleteAssertion('${record.raw.uuid}','${assertion.uuid}');">delete</a>)</strong>
-                                        </c:if>
-                                    </li>
+                                    <alatag:assertionListItem uuid="${assertion.uuid}" name="${assertion.name}"
+                                        comment="${assertion.comment}" userId="${assertion.userId}" currentUserId="${userId}"/>
                                 </c:forEach>
                             </ul>
                         </div>

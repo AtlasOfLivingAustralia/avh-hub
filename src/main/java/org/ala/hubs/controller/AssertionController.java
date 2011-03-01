@@ -1,5 +1,6 @@
 package org.ala.hubs.controller;
 
+import au.org.ala.biocache.QualityAssertion;
 import org.ala.hubs.service.BiocacheService;
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Controller("assertionController")
 public class AssertionController {
 
-    private final static Logger logger = Logger.getLogger(CollectionController.class);
+    private final static Logger logger = Logger.getLogger(AssertionController.class);
 
     @Inject
     private BiocacheService biocacheService;
@@ -86,21 +87,21 @@ public class AssertionController {
     }
 
     /**
-     * Remove an assertion
+     * List all assertions
      */
     @RequestMapping(value = {"/occurrences/{recordUuid}/assertions/"}, method = RequestMethod.GET)
 	public String getUserAssertions(@PathVariable(value="recordUuid") String recordUuid,
         HttpServletRequest request,
         Model model) throws Exception {
 
-        System.out.println("User prinicipal: " + request.getUserPrincipal());
+        logger.debug("(All assertions) User prinicipal: " + request.getUserPrincipal());
 
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
 
         if(assertion!=null){
             AttributePrincipal principal = assertion.getPrincipal();
-            System.out.println(principal.getName());
+            logger.debug("username = " + principal.getName());
             model.addAttribute("userId", principal.getName());
             String fullName = "";
             if (principal.getAttributes().get("firstname")!=null &&  principal.getAttributes().get("lastname")!=null) {
@@ -111,7 +112,9 @@ public class AssertionController {
 
 
         model.addAttribute("recordUuid",recordUuid);
-        model.addAttribute("assertions",biocacheService.getUserAssertions(recordUuid));
+        List<QualityAssertion> assertions = biocacheService.getUserAssertions(recordUuid);
+        logger.debug("Number of assertions: " + assertions.size());
+        model.addAttribute("assertions", assertions);
         return ASSERTIONS;
     }
 
