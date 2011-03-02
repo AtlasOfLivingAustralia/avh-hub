@@ -43,6 +43,12 @@
                         $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
                             $('#'+assertionUuid).fadeOut('slow', function() {
                                 $('#userAssertions').html(data);
+
+                                //if theres no child elements to the list, hide the heading
+                                //alert("Number of user assertions : " +  $('#userAssertions').children().size()   )
+                                if($('#userAssertions').children().size() < 1){
+                                    $('#userAssertionsContainer').hide("slow");
+                                }
                             });
                         });
                     }
@@ -86,6 +92,7 @@
                                 $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
                                     console.log("data", data);
                                     $('#userAssertions').html(data);
+                                    $('#userAssertionsContainer').show("slow");
                                 });
                             }
                         );
@@ -114,7 +121,7 @@
                     var isConfirmed = confirm('Are you sure you want to delete this issue?');
                     if (isConfirmed === true) {
                         deleteAssertion('${record.raw.uuid}', assertionUuid);
-                    } 
+                    }
                     //isConfirmed = false; // don't remember the confirm
                 });
             }); // end JQuery document ready
@@ -165,30 +172,34 @@
                         <img src="${collectionLogo}" alt="institution logo" id="institutionLogo"/>
                     </div>
                 </c:if>
-                <c:if test="${not empty record.systemAssertions}">
-                    <div class="sidebar">
-                        <div id="warnings">
-                            <h2>Data validation issues</h2>
-                            <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
-                            <ul id="systemAssertions">
-                                <c:forEach var="systemAssertion" items="${record.systemAssertions}">
-                                    <li>
-                                        <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
-                                        ${systemAssertion.comment}
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                            <h2>User flagged issues</h2>
-                            <ul id="userAssertions">
-                            <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
-                                <c:forEach var="assertion" items="${record.userAssertions}">
-                                    <alatag:assertionListItem uuid="${assertion.uuid}" name="${assertion.name}"
-                                        comment="${assertion.comment}" userId="${assertion.userId}" currentUserId="${userId}"/>
-                                </c:forEach>
-                            </ul>
+                <div class="sidebar">
+                    <div id="warnings">
+
+                        <div id="systemAssertionsContainer" <c:if test="${empty record.systemAssertions}">style="display:none"</c:if>>
+                        <h2>Data validation issues</h2>
+                        <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
+                        <ul id="systemAssertions">
+                            <c:forEach var="systemAssertion" items="${record.systemAssertions}">
+                                <li>
+                                    <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
+                                    ${systemAssertion.comment}
+                                </li>
+                            </c:forEach>
+                        </ul>
+                        </div>
+
+                        <div id="userAssertionsContainer" <c:if test="${empty record.userAssertions}">style="display:none"</c:if>>
+                        <h2>User flagged issues</h2>
+                        <ul id="userAssertions">
+                        <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
+                            <c:forEach var="assertion" items="${record.userAssertions}">
+                                <alatag:assertionListItem uuid="${assertion.uuid}" name="${assertion.name}"
+                                    comment="${assertion.comment}" userId="${assertion.userId}" currentUserId="${userId}"/>
+                            </c:forEach>
+                        </ul>
                         </div>
                     </div>
-                </c:if>
+                </div>
                 <div class="sidebar">
                     <p style="margin:20px 0 20px 0;">
                         <button class="rounded" id="assertionButton">
