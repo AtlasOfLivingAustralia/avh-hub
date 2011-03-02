@@ -42,8 +42,8 @@
                 <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
                 <div id="searchBox">
                     <form action="search" id="searchForm">
-                        <input type="text" id="searchQuery" name="q" value="${param.q}">
                         <input type="submit" id="searchSubmit" value="Search"/>
+                        <input type="text" id="searchQuery" name="q" value="${param.q}">
                     </form>
                 </div>
             </div>

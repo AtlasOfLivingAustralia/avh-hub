@@ -34,16 +34,16 @@
     margin: 0
 }
 #searchForm input#searchQuery {
-    display: block;
-    float: left;
+    display: inline-block;
+    float: right;
     margin-top: 5px;
-    font-size: 110%;
-    width: 400px;
+    font-size: 14px;
+    width: 360px;
 }
 #searchForm input#searchSubmit {
-    display: block;
-    float: left;
-    font-size: 140%;
+    display: inline-block;
+    float: right;
+    font-size: 13px;
     margin: 7px 6px;
 }
 .sidebar li {
