@@ -27,18 +27,43 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Service layer for accessing Biocache data
+ * Service layer interface for accessing Biocache data
  *
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 public interface BiocacheService {
-
+    /**
+     * Full text search for records
+     *
+     * @param requestParams
+     * @return
+     */
     public SearchResultDTO findByFulltextQuery(SearchRequestParams requestParams);
 
+    /**
+     * Taxon concept search for records using unique identifier
+     *
+     * @param guid
+     * @param requestParams
+     * @return
+     */
     public SearchResultDTO findByTaxonConcept(String guid, SearchRequestParams requestParams);
 
+    /**
+     * Collection/institution/dataset/data provider search for records using unique identifier
+     *
+     * @param uid
+     * @param requestParams
+     * @return
+     */
     public SearchResultDTO findByCollection(String uid, SearchRequestParams requestParams);
 
+    /**
+     * Retrieve a record by its UUID
+     *
+     * @param uuid
+     * @return
+     */
     public OccurrenceDTO getRecordByUuid(String uuid);
 
     public List<ErrorCode> getErrorCodes();

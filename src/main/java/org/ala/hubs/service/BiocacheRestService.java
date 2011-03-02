@@ -45,11 +45,15 @@ public class BiocacheRestService implements BiocacheService {
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
-    
+    /** URI prefix for biocache-service - may be overridden in properties file */
     protected String biocacheUriPrefix = "http://localhost:9999/biocache-service";
     
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
-
+    
+    /**
+     * @see org.ala.hubs.service.BiocacheService#findByFulltextQuery(SearchRequestParams)
+     */
+    @Override
     public SearchResultDTO findByFulltextQuery(SearchRequestParams requestParams) {
         Assert.notNull(requestParams.getQ(), "query must not be null");
         SearchResultDTO searchResults = new SearchResultDTO();
@@ -66,40 +70,52 @@ public class BiocacheRestService implements BiocacheService {
         return searchResults;
     }
 
+    /**
+     * @see org.ala.hubs.service.BiocacheService#findByTaxonConcept(String, SearchRequestParams)
+     */
+    @Override
     public SearchResultDTO findByTaxonConcept(String guid, SearchRequestParams requestParams) {
         Assert.notNull(guid, "guid must not be null");
         //requestParams.setQ("taxonConceptID:" + guid);
         SearchResultDTO searchResults = new SearchResultDTO();
 
-        try {
-            final String jsonUri = biocacheUriPrefix + "/occurrences/taxon/" + guid + "?" + requestParams.toString();
-            logger.debug("Requesting: " + jsonUri);
-            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
-        } catch (Exception ex) {
-            logger.error("RestTemplate error: " + ex.getMessage(), ex);
-            searchResults.setStatus("Error: " + ex.getMessage());
-        }
-
-        return searchResults;
+        return getSearchResultsForEntity(guid, requestParams, "/occurrences/taxon/");
     }
 
+    /**
+     * @see org.ala.hubs.service.BiocacheService#findByCollection(String, SearchRequestParams)
+     */
     @Override
     public SearchResultDTO findByCollection(String uid, SearchRequestParams requestParams) {
         Assert.notNull(uid, "uid must not be null");
-        SearchResultDTO searchResults = new SearchResultDTO();
 
+        return getSearchResultsForEntity(uid, requestParams, "/occurrences/collection/");
+    }
+
+    /**
+     * Perform a webservice request for a ssearch for taxon, collection, institution, etc.
+     *
+     * @param uid
+     * @param requestParams
+     * @param occurrencesPath
+     * @return
+     */
+    protected SearchResultDTO getSearchResultsForEntity(String uid, SearchRequestParams requestParams, String occurrencesPath) {
+        SearchResultDTO searchResults = new SearchResultDTO();
         try {
-            final String jsonUri = biocacheUriPrefix + "/occurrences/collection/" + uid + "?" + requestParams.toString();
+            final String jsonUri = biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.toString();
             logger.debug("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
             searchResults.setStatus("Error: " + ex.getMessage());
         }
-
         return searchResults;
     }
 
+    /**
+     * @see org.ala.hubs.service.BiocacheService#getRecordByUuid(String)
+     */
     @Override
     public OccurrenceDTO getRecordByUuid(String uuid) {
         Assert.notNull(uuid, "uuid must not be null");
@@ -151,12 +167,14 @@ public class BiocacheRestService implements BiocacheService {
         return restTemplate.getForObject(jsonUri, (new ArrayList<ErrorCode>()).getClass());
     }
 
+    @Override
     public List<ErrorCode> getUserCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/user/codes";
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, (new ArrayList<ErrorCode>()).getClass());
     }
 
+    @Override
     public boolean addAssertion(String recordUuid, String code, String comment, String userId, String userDisplayName) {
 
 //        final String jsonUri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/add";
@@ -184,6 +202,7 @@ public class BiocacheRestService implements BiocacheService {
         }
     }
 
+    @Override
     public boolean deleteAssertion(String recordUuid, String assertionUuid) {
         final String uri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/delete";
         HttpClient h = new HttpClient();
