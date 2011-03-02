@@ -42,6 +42,11 @@
     -->
 
     <context-param>
+        <param-name>uriExclusionFilterPattern</param-name>
+        <param-value>\.json</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>uriFilterPattern</param-name>
         <!--
         <param-value>/hubs-webapp/occurrence/.*</param-value>

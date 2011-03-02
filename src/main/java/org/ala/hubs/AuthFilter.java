@@ -69,10 +69,12 @@ public class AuthFilter implements Filter {
 
     private static final String URI_FILTER_PATTERN = "uriFilterPattern";
     private static final String AUTHENTICATE_ONLY_IF_LOGGED_IN_FILTER_PATTERN = "authenticateOnlyIfLoggedInFilterPattern";
+    private static final String URI_FILTER_EXCLUSION_PATTERN = "uriExclusionFilterPattern";
 
     private Filter filter;
     private String contextPath;
     private List<Pattern> uriInclusionPatterns;
+    private List<Pattern> uriExclusionPatterns;
     private List<Pattern> authOnlyIfLoggedInPatterns;
 
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -96,6 +98,16 @@ public class AuthFilter implements Filter {
         }
         logger.debug("Included URI Pattern = '" + includedUrlPattern + "'");
         this.uriInclusionPatterns = PatternMatchingUtils.getPatternList(contextPath, includedUrlPattern);
+
+        //
+        // Get URI exclusion filter patterns
+        //
+        String uriExclusionPattern = filterConfig.getServletContext().getInitParameter(URI_FILTER_EXCLUSION_PATTERN);
+        if (uriExclusionPattern == null) {
+            uriExclusionPattern = "";
+        }
+        logger.debug("URL exclusion Pattern = '" + uriExclusionPattern + "'");
+        this.uriExclusionPatterns = PatternMatchingUtils.getPatternList(contextPath, uriExclusionPattern);
 
         //
         // Get Authenticate Only if Logged in filter patterns
@@ -131,7 +143,7 @@ public class AuthFilter implements Filter {
             logger.debug("Filter Request Uri = '" + requestUri + "'");
         }
 
-        if (PatternMatchingUtils.matches(requestUri, uriInclusionPatterns)) {
+        if (PatternMatchingUtils.matches(requestUri, uriInclusionPatterns) && !PatternMatchingUtils.matches(requestUri,uriExclusionPatterns)) {
 
             logger.debug("URI '" + requestUri + "' is a recognised inclusion pattern " + URI_FILTER_PATTERN);
 
@@ -139,7 +151,7 @@ public class AuthFilter implements Filter {
                 logger.debug("Forwarding URI '" + requestUri + "' to CAS authentication filters because it matches " + URI_FILTER_PATTERN);
             }
             filter.doFilter(request, response, chain);
-        } else if (PatternMatchingUtils.matches(requestUri, authOnlyIfLoggedInPatterns)) {
+        } else if (PatternMatchingUtils.matches(requestUri, authOnlyIfLoggedInPatterns) && !PatternMatchingUtils.matches(requestUri,uriExclusionPatterns)) {
 
             logger.debug("URI '" + requestUri + "' is a recognised authOnlyIfLoggedInPatterns pattern " + URI_FILTER_PATTERN);
 
