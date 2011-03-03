@@ -8,6 +8,7 @@
         <pattern>/css/*</pattern>
         <pattern>/static/*</pattern>
         <pattern>/occurrences/*/assertions/</pattern>
+        <pattern>/occurrences/*/groupedAssertions/</pattern>
         <pattern>/index.jsp</pattern>
     </excludes>
 
