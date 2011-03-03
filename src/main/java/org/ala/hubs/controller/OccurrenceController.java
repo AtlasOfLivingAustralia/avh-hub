@@ -49,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
 @Controller("occurrenceController")
+@RequestMapping(value = "/occurrences")
 public class OccurrenceController {
 
 	private final static Logger logger = Logger.getLogger(OccurrenceController.class);
@@ -66,16 +67,6 @@ public class OccurrenceController {
 	protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
 
-    /**
-     * welcome page. TODO replace with config?
-     *
-     * @return
-     */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-	public String homePage(){
-       return "homePage";
-    }
-
 	/**
      * Performs a search for occurrence records via Biocache web services
      * 
@@ -86,7 +77,7 @@ public class OccurrenceController {
      * @return view
      * @throws Exception 
      */
-	@RequestMapping(value = {"/occurrences/search*"}, method = RequestMethod.GET)
+	@RequestMapping(value = "/search*", method = RequestMethod.GET)
 	public String search(SearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
 		
@@ -122,7 +113,7 @@ public class OccurrenceController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/occurrences/taxa/{guid:.+}*", method = RequestMethod.GET)
+    @RequestMapping(value = "/taxa/{guid:.+}*", method = RequestMethod.GET)
 	public String occurrenceSearchByTaxon(
 			SearchRequestParams requestParams,
             @PathVariable("guid") String guid,
@@ -147,7 +138,7 @@ public class OccurrenceController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"/occurrences/collections/{uid}", "/occurrences/institutions/{uid}", "/occurrences/data-resources/{uid}", "/occurrences/data-providers/{uid}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/collections/{uid}", "/institutions/{uid}", "/data-resources/{uid}", "/data-providers/{uid}"}, method = RequestMethod.GET)
     public String occurrenceSearchForCollection(
             SearchRequestParams requestParams,
             @PathVariable("uid") String uid,
@@ -175,7 +166,7 @@ public class OccurrenceController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/occurrences/{uuid:.+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{uuid:.+}", method = RequestMethod.GET)
 	public String getOccurrenceRecord(@PathVariable("uuid") String uuid,
             HttpServletRequest request, Model model) throws Exception {
 
@@ -235,6 +226,43 @@ public class OccurrenceController {
 	}
 
     /**
+     * Requests for mapping functions
+     *
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/map", method = RequestMethod.GET)
+	public String map(SearchRequestParams requestParams, BindingResult result, Model model,
+            HttpServletRequest request) throws Exception {
+
+		if (StringUtils.isEmpty(requestParams.getQ())) {
+			return RECORD_MAP;
+		} else if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+
+        //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
+        //sortDirection = getSortDirection(sortField, sortDirection);
+
+		requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
+        SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
+        logger.debug("searchResult: " + searchResult.getTotalRecords());
+        model.addAttribute("searchResults", searchResult);
+        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+
+        return RECORD_MAP;
+    }
+    
+    /**
      * Remove the URI extension from the input String
      * 
      * @param uuid
@@ -245,38 +273,6 @@ public class OccurrenceController {
         uuid = StringUtils.removeEndIgnoreCase(uuid, ".xml");
         uuid = StringUtils.removeEndIgnoreCase(uuid, ".html");
         return uuid;
-    }
-
-    /**
-     * Testing and debugging method
-     *
-     * TODO: delete this when stable
-     *
-     * @param query
-     * @param filterQuery
-     * @param request
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String testRequest(
-            @RequestParam(value = "q", required = false) String query,
-            @RequestParam(value = "fq", required = false) String[] filterQuery,
-            HttpServletRequest request,
-            Model model)
-            throws Exception {
-
-        SearchRequestParams requestParams = new SearchRequestParams();
-        StringBuilder debug = new StringBuilder("q = ").append(query).append("; ");
-        debug.append("fq = ").append(StringUtils.join(filterQuery, "|"));
-        requestParams.setDisplayString(debug.toString());
-        model.addAttribute("requestParams", requestParams);
-
-        String[] fqs = request.getParameterValues("fq");
-        model.addAttribute("fqs", fqs);
-
-        return RECORD_LIST;
     }
 
     /**
@@ -317,32 +313,5 @@ public class OccurrenceController {
         }
         
         return lastPage;
-    }
-
-	@RequestMapping(value = "/occurrences/map", method = RequestMethod.GET)
-	public String map(SearchRequestParams requestParams, BindingResult result, Model model,
-            HttpServletRequest request) throws Exception {
-
-		if (StringUtils.isEmpty(requestParams.getQ())) {
-			return RECORD_MAP;
-		} else if (request.getParameter("pageSize") == null) {
-            requestParams.setPageSize(20);
-        }
-
-        if (result.hasErrors()) {
-            logger.warn("BindingResult errors: " + result.toString());
-        }
-
-        //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
-        //sortDirection = getSortDirection(sortField, sortDirection);
-
-		requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
-        SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
-        logger.debug("searchResult: " + searchResult.getTotalRecords());
-        model.addAttribute("searchResults", searchResult);
-        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
-        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-
-        return RECORD_MAP;
     }
 }
