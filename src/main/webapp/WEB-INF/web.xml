@@ -51,7 +51,7 @@
         <!--
         <param-value>/hubs-webapp/occurrence/.*</param-value>
         -->
-        <param-value>/occurrence/.*,/hubs-webapp/occurrence/.*</param-value>
+        <param-value>/occurrences/.*,/hubs-webapp/occurrences/.*</param-value>
     </context-param>
 
     <!-- CAS Authentication Service filters -->
