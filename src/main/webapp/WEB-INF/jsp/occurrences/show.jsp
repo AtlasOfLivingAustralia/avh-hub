@@ -128,7 +128,7 @@
         </script>
     </head>
     <body>
-        <spring:url var="json" value="/occurrence/${record.raw.uuid}.json" />
+        <spring:url var="json" value="/occurrences/${record.raw.uuid}.json" />
         <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
                 <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>

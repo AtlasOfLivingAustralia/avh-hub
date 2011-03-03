@@ -86,7 +86,7 @@ public class OccurrenceController {
      * @return view
      * @throws Exception 
      */
-	@RequestMapping(value = {"/occurrence/search*","/occurrences/search*"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/occurrences/search*"}, method = RequestMethod.GET)
 	public String search(SearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
 		
@@ -122,7 +122,7 @@ public class OccurrenceController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/occurrences/taxon/{guid:.+}*", method = RequestMethod.GET)
+    @RequestMapping(value = "/occurrences/taxa/{guid:.+}*", method = RequestMethod.GET)
 	public String occurrenceSearchByTaxon(
 			SearchRequestParams requestParams,
             @PathVariable("guid") String guid,
@@ -147,7 +147,7 @@ public class OccurrenceController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"/occurrences/collection/{uid}", "/occurrences/institution/{uid}", "/occurrences/data-resource/{uid}", "/occurrences/data-provider/{uid}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/occurrences/collections/{uid}", "/occurrences/institutions/{uid}", "/occurrences/data-resources/{uid}", "/occurrences/data-providers/{uid}"}, method = RequestMethod.GET)
     public String occurrenceSearchForCollection(
             SearchRequestParams requestParams,
             @PathVariable("uid") String uid,
@@ -175,7 +175,7 @@ public class OccurrenceController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/occurrence/{uuid:.+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/occurrences/{uuid:.+}", method = RequestMethod.GET)
 	public String getOccurrenceRecord(@PathVariable("uuid") String uuid,
             HttpServletRequest request, Model model) throws Exception {
 
