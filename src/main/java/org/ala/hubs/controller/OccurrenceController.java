@@ -41,7 +41,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Occurrence record Controller
@@ -170,14 +169,13 @@ public class OccurrenceController {
 	public String getOccurrenceRecord(@PathVariable("uuid") String uuid,
             HttpServletRequest request, Model model) throws Exception {
 
-        System.out.println("User prinicipal: " + request.getUserPrincipal());
+        logger.debug("User prinicipal: " + request.getUserPrincipal());
 
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
 
         if(assertion!=null){
             AttributePrincipal principal = assertion.getPrincipal();
-            System.out.println(principal.getName());
             model.addAttribute("userId", principal.getName());
             String fullName = "";
             if (principal.getAttributes().get("firstname")!=null &&  principal.getAttributes().get("lastname")!=null) {
@@ -191,9 +189,6 @@ public class OccurrenceController {
         logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
-//        model.addAttribute("taxonomicCodes", biocacheService.getTaxonomicCodes());
-//        model.addAttribute("temporalCodes", biocacheService.getTemporalCodes());
-//        model.addAttribute("miscellaneousCodes", biocacheService.getMiscellaneousCodes());
 
         String collectionCodeUid = null;
 
