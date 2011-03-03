@@ -17,6 +17,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
 <!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.simplemodal.1.4.1.min.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.livequery.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
@@ -129,7 +130,7 @@
                     <div id="mapwrapper">
                         Colour by:
                         <select name="colourFacets" id="colourFacets">
-                            <!--<option value=""> -- Select an option -- </option>-->
+                            <option value=""> -- Select an option -- </option>
                             <c:forEach var="facetResult" items="${searchResults.facetResults}">
                                 <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
                                     <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>

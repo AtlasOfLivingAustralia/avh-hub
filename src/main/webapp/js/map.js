@@ -77,8 +77,7 @@ var Maps = (function() {
     */
     function insertWMSOverlay(params) {
         var customParams = [
-        "FORMAT=image/png8",
-        "zoom:"+map.getZoom()
+        "FORMAT=image/png8"
         ];
 
         if (arguments.length > 0) {
@@ -93,17 +92,12 @@ var Maps = (function() {
             customParams.push(pairs[i]);
         }
         //loadWMS(map, "http://spatial.ala.org.au/geoserver/wms?", customParams);
-        var overlayWMS = getWMSObject(map, Config.OCC_WMS_BASE_URL, customParams);
+        var overlayWMS = getWMSObject(map, "MySpecies", Config.OCC_WMS_BASE_URL, customParams);
         //map.overlayMapTypes.insertAt(map.overlayMapTypes.length, overlayWMS);
         overlayLayers.push(overlayWMS);
     }
 
     return {
-        setLinks: function(){
-            var url = location.href.replace("map", "search");
-        //document.getElementById("listLink").setAttribute("href", url);
-        },
-
         /**
          * loads a static map with all the points within Australia
          * and additional facets
@@ -122,9 +116,11 @@ var Maps = (function() {
             var myLatlng = new google.maps.LatLng(-27, 133);
             var myOptions = {
                 zoom: 4,
-                scrollwheel: false,
+                scrollwheel: true,
                 center: myLatlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                scaleControl: true, 
+                streetViewControl: false
             }
             map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
             infomarker = new google.maps.Marker({
@@ -148,6 +144,13 @@ var Maps = (function() {
                     style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
                 }
             });
+
+            // insert the env layers
+            //var customParams = ["format=image/png8"];
+            //var bio11 = getWMSObject(map, "Precipitation Annual (Bio11)", "http://spatial.ala.org.au/geoserver/wms?layers=ALA:BioClim_bio11&", customParams);
+            //map.mapTypes.set("bio11",bio11);
+            //map.setMapTypeId("bio11");
+
             
             map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('legend'));
 
@@ -205,8 +208,6 @@ var Maps = (function() {
                 displayHtml += pbutton + "           " + nbutton;
                 
                 displayHtml += '</div>';
-                
-                
 
                 infowindow.setContent(displayHtml);
             });
@@ -217,59 +218,77 @@ var Maps = (function() {
         /**
          * Load occurrences divided by the facet values 
          */
-        loadOccurrencesByType: function() {
+        loadOccurrencesByType: function(cbf) {
             var _idx = -1;
             var legHtml = "";
-            var cbf = $('#colourFacets').val();
 
-            // set the default, if none available to institution_name 
-            if (cbf=='') {
+            // set the default, if none available to institution_name
+            if (arguments.length == 0) {
                 //Maps.loadOccurrences();
                 cbf = 'institution_name';
             }
-            
-            // get and check if the default facet is available,
-            // if not, set it to the first one. 
-            _idx = $.inArray(cbf, facetNames);
-            _idx = (_idx>-1)?_idx:0;
-            $('#colourFacets').val(cbf);
 
-
-            var fValues = facetValues[_idx].split("|");
-            var fHashes = facetValueHashes[_idx].split("|");
-            var fCounts = facetValueCounts[_idx].split("|");
-
-            
-            // clear the current overlays
-            //map.overlayMapTypes.clear();
-            initialiseOverlays(fValues.length);
-
-            $.each(fValues, function(key, value) {
-                //var ptcolour = '#'+(Math.abs(fHashes[key])).toString(16);
-                //var ptcolour = (function(h){return '#000000'.substr(0,7-h.length)+h})((~~(Math.abs(fHashes[key]))).toString(16).substr(0,6));
-                //Maps.loadOccurrences("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
-                insertWMSOverlay("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
-
+            if (cbf=="") {
+                var key = 0;
+                var value = "Other"; 
+                initialiseOverlays(1);
+                insertWMSOverlay("&colourby="+value.hashCode()); //fHashes[key]);
                 legHtml += "<div>";
                 //legHtml += "<span style='height: 10px; width: 10px; background: "+ptcolour+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span> ";
                 legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
-                legHtml += "<img src='http://localhost:8080/biocache-service/occurrences/legend?colourby="+fHashes[key]+"&width=10&height=10' /> ";
+                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+value.hashCode()+"&width=10&height=10' /> ";
                 legHtml += ((value=='')?'Other':value);
                 legHtml += "</div>";
-            });
+
+            } else {
+                // get and check if the default facet is available,
+                // if not, set it to the first one.
+                _idx = $.inArray(cbf, facetNames);
+                _idx = (_idx>-1)?_idx:1;
+                $('#colourFacets').val(cbf);
+
+
+                var fValues = facetValues[_idx].split("|");
+                //var fHashes = facetValueHashes[_idx].split("|");
+                var fCounts = facetValueCounts[_idx].split("|");
+
+            
+                // clear the current overlays
+                //map.overlayMapTypes.clear();
+                initialiseOverlays(fValues.length);
+
+                $.each(fValues, function(key, value) {
+                    //var ptcolour = '#'+(Math.abs(fHashes[key])).toString(16);
+                    //var ptcolour = (function(h){return '#000000'.substr(0,7-h.length)+h})((~~(Math.abs(fHashes[key]))).toString(16).substr(0,6));
+                    //Maps.loadOccurrences("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
+
+                    var cbfq=cbf+":"+value;
+                    if (value == "") {
+                        cbfq = "-("+cbf+"[* TO *])";
+                    }
+
+                    insertWMSOverlay("fq="+cbfq+"&colourby="+value.hashCode()); //fHashes[key]);
+
+                    legHtml += "<div>";
+                    //legHtml += "<span style='height: 10px; width: 10px; background: "+ptcolour+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span> ";
+                    legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
+                    legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+value.hashCode()+"&width=10&height=10' /> ";
+                    legHtml += ((value=='')?'Other':value);
+                    legHtml += "</div>";
+                });
+            }
 
             // display the legend content
             $('#legendContent').ready(function() {
                 $('#legendContent').html(legHtml);
-            }); 
+            });
 
-            
+
             // now iterate thru' the array and load the layers
             //Maps.loadOccurrences();
             $.each(overlayLayers, function(_idx, overlayWMS) {
                 map.overlayMapTypes.setAt(_idx, overlayWMS);
-            }); 
-
+            });
         }
 
     } // return: public variables and methods
@@ -286,7 +305,6 @@ $(document).ready(function() {
 
 
     //Maps.loadMap();
-    Maps.setLinks();
     Maps.loadGoogle();
     Maps.loadOccurrencesByType();
 
@@ -297,7 +315,7 @@ $(document).ready(function() {
 
     // event for when a colourby facet is selected
     $('#colourFacets').change(function(){
-        Maps.loadOccurrencesByType(); 
+        Maps.loadOccurrencesByType($('#colourFacets').val());
     });
 
     // event for toggling the legend

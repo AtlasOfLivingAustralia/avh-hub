@@ -3,7 +3,7 @@
     Created on : Feb 24, 2011, 11:39:45 AM
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ include file="/common/taglibs.jsp" %>
 <div id="SidebarBox">
     <div class="sidebar">
@@ -104,32 +104,29 @@
         return hash;
     }
 
-    //var facets = {};
-
-    var facets = new Array(); 
-
     var facetNames = new Array();
     var facetValues = new Array();
-    var facetValueHashes = new Array();
     var facetValueCounts = new Array();
-
-    ffv = "";
-    ffc = "";
-    ffh = "";
     <c:forEach var="facetResult" items="${searchResults.facetResults}">
-        ffv = ""; ffc = "";
+        <c:set var="frlabelcount" value="0"/>
+        <c:set var="ffv" value="" />
+        <c:set var="ffc" value="" />
         <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs">
-            // add the values (each value seperated by |
-            ffv += "${fieldResult.label}|";
-            // add the count (each value seperated by |
-            ffc += "${fieldResult.count}|";
-            // add the hashcode (each value seperated by |
-            ffh += "${fieldResult.label}".hashCode() + "|"; 
+            <c:set var="frlabelcount" value="${fieldResult.count + frlabelcount}"/>
+            <c:if test="${!empty ffv}">
+                <c:set var="ffv" value="${ffv}|" />
+                <c:set var="ffc" value="${ffc}|" />
+            </c:if>
+            <c:set var="ffv" value="${ffv}${fieldResult.label}" />
+            <c:set var="ffc" value="${ffc}${fieldResult.count}" />
         </c:forEach>
-            // add the facet field name
-            facetNames.push("${facetResult.fieldName}");
-            facetValues.push(ffv);
-            facetValueHashes.push(ffh);
-            facetValueCounts.push(ffc);            
+        <c:if test="${frlabelcount < searchResults.totalRecords}">
+            <c:set var="ffv" value="${ffv}|Other" />
+            <c:set var="ffc" value="${ffc}|${searchResults.totalRecords - frlabelcount}" />
+        </c:if>
+    // add filter queries 
+    facetNames.push("${facetResult.fieldName}");
+    facetValues.push("${ffv}");
+    facetValueCounts.push("${ffc}");
     </c:forEach>
 </script>

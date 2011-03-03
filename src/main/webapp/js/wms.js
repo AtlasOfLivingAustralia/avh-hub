@@ -64,24 +64,24 @@ MercatorProjection.prototype.fromDivPixelToSphericalMercator = function(pixel, z
     return new google.maps.Point(x,y);
 };
 
-function getWMSObject(map, baseURL, customParams){
+function getWMSObject(map, name, baseURL, customParams){
     var tileHeight = 256;
     var tileWidth = 256;
-    var opacityLevel = 0.75;
+    var opacityLevel = 1.0;
     var isPng = true;
     var minZoomLevel = 2;
     var maxZoomLevel = 28;
 
     //var baseURL = "";
     var wmsParams = [
-    "REQUEST=GetMap",
-    "SERVICE=WMS",
-    "VERSION=1.1.1",
-    "BGCOLOR=0xFFFFFF",
-    "TRANSPARENT=TRUE",
-    "SRS=EPSG:900913", // 3395?
-    "WIDTH="+ tileWidth,
-    "HEIGHT="+ tileHeight
+    "request=GetMap",
+    "service=WMS",
+    "version=1.1.1",
+    "bgcolor=0xFFFFFF",
+    "transparent=TRUE",
+    "srs=EPSG:900913", // 3395?
+    "width="+ tileWidth,
+    "height="+ tileHeight
     ];
 
     //add additional parameters
@@ -108,6 +108,7 @@ function getWMSObject(map, baseURL, customParams){
                 lLR_Longitude = Math.abs(lLR_Longitude);
             }
             var urlResult = baseURL + wmsParams.join("&") + "&bbox=" + lUL_Longitude + "," + lUL_Latitude + "," + lLR_Longitude + "," + lLR_Latitude;
+            urlResult += "&zoom="+zoom;
 
             return urlResult;
         },
@@ -116,7 +117,8 @@ function getWMSObject(map, baseURL, customParams){
         minZoom: minZoomLevel,
         maxZoom: maxZoomLevel,
         opacity: opacityLevel,
-        isPng: isPng
+        isPng: isPng,
+        name: name
     };
 
     var overlayWMS = new google.maps.ImageMapType(overlayOptions);
