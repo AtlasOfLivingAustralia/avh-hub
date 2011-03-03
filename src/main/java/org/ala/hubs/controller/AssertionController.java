@@ -1,6 +1,7 @@
 package org.ala.hubs.controller;
 
 import au.org.ala.biocache.QualityAssertion;
+import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.service.BiocacheService;
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ public class AssertionController {
     private BiocacheService biocacheService;
 
     private final String ASSERTIONS =  "occurrences/assertions";
+    private final String GROUPED_ASSERTIONS =  "occurrences/groupedAssertions";
 
     /**
      * add an assertion
@@ -110,13 +113,54 @@ public class AssertionController {
             model.addAttribute("userDisplayName", fullName);
         }
 
-
         model.addAttribute("recordUuid",recordUuid);
-        List<QualityAssertion> assertions = biocacheService.getUserAssertions(recordUuid);
-        logger.debug("Number of assertions: " + assertions.size());
+        QualityAssertion[] assertions = biocacheService.getUserAssertions(recordUuid);
+        logger.debug("Number of assertions: " + assertions.length);
         model.addAttribute("assertions", assertions);
         return ASSERTIONS;
     }
+
+    /**
+     * User assertions grouped by assertion type
+     *
+     * @param recordUuid
+     * @param request
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"/occurrences/{recordUuid}/groupedAssertions/", "/occurrences/{recordUuid}/groupedAssertions.json"}, method = RequestMethod.GET)
+	public String getGroupedUserAssertions(@PathVariable(value="recordUuid") String recordUuid,
+        HttpServletRequest request,
+        Model model) throws Exception {
+
+        logger.debug("(All assertions) User prinicipal: " + request.getUserPrincipal());
+
+        String userId = null;
+        final HttpSession session = request.getSession(false);
+        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
+        AttributePrincipal principal = null;
+        if(assertion!=null){
+            principal = assertion.getPrincipal();
+            userId = principal.getName();
+            logger.debug("username = " + principal.getName());
+            model.addAttribute("userId", principal.getName());
+            String fullName = "";
+            if (principal.getAttributes().get("firstname")!=null &&  principal.getAttributes().get("lastname")!=null) {
+                fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
+            }
+            model.addAttribute("userDisplayName", fullName);
+        }
+
+        model.addAttribute("recordUuid",recordUuid);
+        QualityAssertion[] assertions = biocacheService.getUserAssertions(recordUuid);
+
+        Collection<AssertionDTO> groupedAssertions = AssertionUtils.groupAssertions(assertions, userId);
+        logger.debug("Number of assertions: " + groupedAssertions.size());
+        model.addAttribute("assertions", groupedAssertions);
+        return GROUPED_ASSERTIONS;
+    }
+
 
     public void setBiocacheService(BiocacheService biocacheService) {
         this.biocacheService = biocacheService;

@@ -82,5 +82,5 @@ public interface BiocacheService {
 
     public boolean deleteAssertion(String uuid, String assertionUuid);
 
-    public List<QualityAssertion> getUserAssertions(String recordUuid);
+    public QualityAssertion[] getUserAssertions(String recordUuid);
 }

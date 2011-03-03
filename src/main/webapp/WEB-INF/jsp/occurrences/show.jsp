@@ -40,7 +40,7 @@
                     { assertionUuid: assertionUuid },
                     function(data) {
                         //retrieve all asssertions
-                        $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
+                        $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/groupedAssertions/', function(data) {
                             $('#'+assertionUuid).fadeOut('slow', function() {
                                 $('#userAssertions').html(data);
 
@@ -89,7 +89,7 @@
                                 $("input:reset").hide();
                                 $("input#close").show();
                                 //retrieve all asssertions
-                                $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
+                                $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/groupedAssertions/', function(data) {
                                     //console.log("data", data);
                                     $('#userAssertions').html(data);
                                     $('#userAssertionsContainer').show("slow");
@@ -192,10 +192,7 @@
                         <h2>User flagged issues</h2>
                         <ul id="userAssertions">
                         <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
-                            <c:forEach var="assertion" items="${record.userAssertions}">
-                                <alatag:assertionListItem uuid="${assertion.uuid}" name="${assertion.name}"
-                                    comment="${assertion.comment}" userId="${assertion.userId}" currentUserId="${userId}"/>
-                            </c:forEach>
+                            <alatag:groupedAssertions groupedAssertions="${groupedAssertions}" />
                         </ul>
                         </div>
                     </div>

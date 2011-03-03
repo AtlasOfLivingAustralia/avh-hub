@@ -10,8 +10,9 @@ include file="/common/taglibs.jsp" %>
 <html dir="ltr" lang="en-US">
     <head profile="http://gmpg.org/xfn/11">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><decorator:title default="Atlas of Living Australia" /></title>
+        <title><decorator:title default="OZCAM" /></title>
         <link rel="stylesheet" href="http://www.ozcam.org.au/wp-content/themes/OZCAM-0.3/OZCAM 0.3/style.css" type="text/css" media="screen,projection" />
+        <!--<link rel="icon" type="image/x-icon" href="http://www.ozcam.org.au/favicon.ico" />-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
         <style type="text/css">
 		div#fancy_inner {border-color:#BBBBBB}

@@ -10,14 +10,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OzCam Hub - Occurrence Search Results</title>
+        <title>Occurrence Search Results | OZCAM</title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
 <!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.simplemodal.1.4.1.min.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.livequery.js"></script>
+        <!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.livequery.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
@@ -27,7 +27,7 @@
             Config.setupUrls("${biocacheServiceUrl}");
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/simpleModal.css" type="text/css" media="screen" />
+        <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/simpleModal.css" type="text/css" media="screen" />-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
         <!--[if lt IE 7]>
@@ -48,7 +48,7 @@
                     </form>
                 </div>
             </div>
-            <div style="clear: both"/>
+            <div style="clear: both"></div>
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
         <div id="content">
@@ -147,7 +147,9 @@
                     </div>
                 </div>
                 <div id="densityMap"></div>
-                <div id="busyIcon" style="display:none;"><img src="${pageContext.request.contextPath}/static/css/images/wait.gif" alt="busy/spinning icon" /></div>
+                <div id="busyIcon" style="display:none;">
+                    <!--<img src="${pageContext.request.contextPath}/static/css/images/wait.gif" alt="busy/spinning icon" />-->
+                </div>
                 </c:if>
         </div>
     </body>

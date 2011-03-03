@@ -15,19 +15,23 @@
 
 package org.ala.hubs.controller;
 
+import java.util.Collection;
 import java.util.HashMap;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.client.util.RestfulClient;
+import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.service.BiocacheService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.httpclient.HttpStatus;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
@@ -174,9 +178,13 @@ public class OccurrenceController {
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
 
+        String userId = null;
+
         if(assertion!=null){
             AttributePrincipal principal = assertion.getPrincipal();
             model.addAttribute("userId", principal.getName());
+            userId = principal.getName();
+
             String fullName = "";
             if (principal.getAttributes().get("firstname")!=null &&  principal.getAttributes().get("lastname")!=null) {
                 fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
@@ -216,6 +224,9 @@ public class OccurrenceController {
             }
 		}
 
+        Collection<AssertionDTO> grouped = AssertionUtils
+                .groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
+        model.addAttribute("groupedAssertions", grouped);
         model.addAttribute("record", record);
 		return RECORD_SHOW;
 	}

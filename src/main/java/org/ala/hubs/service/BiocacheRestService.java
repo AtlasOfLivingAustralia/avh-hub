@@ -223,11 +223,11 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     @Override
-    public List<QualityAssertion> getUserAssertions(String recordUuid) {
+    public QualityAssertion[] getUserAssertions(String recordUuid) {
         //occurrences/0352f657-98fa-436e-81c8-28e54fe06d8c/assertions/
         final String jsonUri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/";
         logger.debug("Requesting: " + jsonUri);
-        return restTemplate.getForObject(jsonUri, (new ArrayList<QualityAssertion>()).getClass());
+        return restTemplate.getForObject(jsonUri, QualityAssertion[].class);
     }
 
     /**
