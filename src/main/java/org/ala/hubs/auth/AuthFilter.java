@@ -1,4 +1,4 @@
-package org.ala.hubs;
+package org.ala.hubs.auth;
 
 
 import java.io.IOException;
@@ -13,11 +13,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import au.org.ala.cas.client.UriFilter;
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AuthenticationFilter;
 
-import au.org.ala.cas.util.AuthenticationCookieUtils;
 import au.org.ala.cas.util.PatternMatchingUtils;
 
 /**
