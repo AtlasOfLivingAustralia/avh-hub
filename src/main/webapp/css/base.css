@@ -6,12 +6,7 @@
         Purpose of the stylesheet follows.
 */
 
-/* 
-   TODO customize this sample style
-   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
-*/
-
-#content p, #content div {
+#content p, #content div, #headingBar {
     font-size: 13px;
     line-height: 1.5em;
 }
@@ -98,4 +93,10 @@ table td,table th  {
 }
 .sidebar li {
     font-size: 13px;
+}
+#advancedSearchLink a {
+    font-size: 12px;
+}
+#advancedSearch {
+    display: none;
 }

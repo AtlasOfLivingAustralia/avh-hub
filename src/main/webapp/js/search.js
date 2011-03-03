@@ -41,7 +41,7 @@ function reloadWithParam(paramName, paramValue) {
 
     //alert("params = "+paramList.join("&"));
     //alert("url = "+window.location.pathname);
-    window.location.replace(window.location.pathname + '?' + paramList.join('&'));
+    window.location.href = window.location.pathname + '?' + paramList.join('&');
 }
 
 /**
@@ -79,7 +79,7 @@ function removeFacet(facet) {
         paramList.push("fq=" + fqList.join("&fq="));
     }
 
-    window.location.replace(window.location.pathname + '?' + paramList.join('&') + window.location.hash);
+    window.location.href = window.location.pathname + '?' + paramList.join('&') + window.location.hash;
 }
 
 // Jquery Document.onLoad equivalent
@@ -106,6 +106,7 @@ $(document).ready(function() {
         reloadWithParam('pageSize',val);
     });
 
+    // download link
     $("#downloadLink").fancybox({
         'hideOnContentClick' : false,
         'hideOnOverlayClick': true,
@@ -127,17 +128,18 @@ $(document).ready(function() {
             reason = "";
         downloadUrl = downloadUrl + "&type=&email="+$("#email").val()+"&reason="+encodeURIComponent(reason)+"&file="+$("#filename").val();
         //alert("downloadUrl = " + downloadUrl);
-        window.location.replace(downloadUrl);
+        window.location.href = downloadUrl;
         $.fancybox.close();
     });
 
     // set height of resultsOuter div to solrResults height
     var solrHeight = $("div.solrResults").height();
-    $("#resultsOuter").css("height", (solrHeight > 560 ) ? solrHeight : 560 );
+    var mapHeight = $("div#mapwrapper").height();
+    $("#resultsOuter").css("height", (solrHeight > mapHeight ) ? solrHeight : mapHeight );
 
-    var hashType = ["list", "map"]; // used below
     // animate the display of showing results list vs map
     // TODO: make this a toggle() so that double clicks don't break it
+    var hashType = ["list", "map"]; //
     $("#listMapButton").click(function(e) {
         e.preventDefault();
         // remove name so changing hash value does not jump the page
@@ -185,7 +187,7 @@ $(document).ready(function() {
     $("#subnavlist a").click(function(e) {
         e.preventDefault();
         var url = $(this).attr("href");
-        window.location.replace(url + window.location.hash);
+        window.location.href = url + window.location.hash;
     });
 
     // add show/hide links to facets

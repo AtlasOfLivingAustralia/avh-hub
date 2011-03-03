@@ -15,7 +15,6 @@
             contextPath = "${pageContext.request.contextPath}";
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
-<!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.simplemodal.1.4.1.min.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
         <!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.livequery.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
@@ -27,28 +26,23 @@
             Config.setupUrls("${biocacheServiceUrl}");
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
-        <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/simpleModal.css" type="text/css" media="screen" />-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
-        <!--[if lt IE 7]>
-            <link type='text/css' href='${pageContext.request.contextPath}/static/css/simpleModal_ie.css' rel='stylesheet' media='screen' />
-        <![endif]-->
-
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.ibutton.css" type="text/css" media="all" />
 
     </head>
     <body>
-        <c:if test="${searchResults.totalRecords > 0}">
-            <div id="headingBar">
-                <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
-                <div id="searchBox">
-                    <form action="search" id="searchForm">
-                        <input type="submit" id="searchSubmit" value="Search"/>
-                        <input type="text" id="searchQuery" name="q" value="${param.q}">
-                    </form>
-                </div>
+        <div id="headingBar">
+            <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
+            <div id="searchBox">
+                <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
+                    <input type="submit" id="searchSubmit" value="Search"/>
+                    <input type="text" id="solrQuery" name="q" value="${param.q}">
+                    <input type="hidden" id="lsid" value=""/>
+                </form>
             </div>
-            <div style="clear: both"></div>
+        </div>
+        <div style="clear: both"/>
+        <c:if test="${searchResults.totalRecords > 0}">
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
         <div id="content">
@@ -64,7 +58,7 @@
                         </button>
                     </div>
                     <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
-                        returned for <strong>${searchResults.query}</strong>
+                        returned for <strong>${searchRequestParams.displayString}</strong>
                         (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)
                     </div>
                     <div style="display:none">
@@ -143,14 +137,9 @@
                             <div class="title">Legend</div>
                             <div id="legendContent"></div>
                         </div>
-                        <!-- <img id="wmsimg" src="http://localhost:8080/occurrences/wms?q=macropus" /> -->
                     </div>
                 </div>
-                <div id="densityMap"></div>
-                <div id="busyIcon" style="display:none;">
-                    <!--<img src="${pageContext.request.contextPath}/static/css/images/wait.gif" alt="busy/spinning icon" />-->
-                </div>
-                </c:if>
+            </c:if>
         </div>
     </body>
 </html>

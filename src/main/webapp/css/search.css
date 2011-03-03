@@ -30,17 +30,17 @@
     height: 32px;
     text-align: right;
 }
-#searchForm input {
+#solrSearchForm input {
     margin: 0
 }
-#searchForm input#searchQuery {
+#solrSearchForm input#solrQuery {
     display: inline-block;
     float: right;
     margin-top: 5px;
     font-size: 14px;
     width: 360px;
 }
-#searchForm input#searchSubmit {
+#solrSearchForm input#searchSubmit {
     display: inline-block;
     float: right;
     font-size: 13px;
