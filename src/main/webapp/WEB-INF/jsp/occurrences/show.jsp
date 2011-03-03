@@ -90,7 +90,7 @@
                                 $("input#close").show();
                                 //retrieve all asssertions
                                 $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/', function(data) {
-                                    console.log("data", data);
+                                    //console.log("data", data);
                                     $('#userAssertions').html(data);
                                     $('#userAssertionsContainer').show("slow");
                                 });
@@ -211,7 +211,7 @@
                         <c:when test="${empty userId}">
                             <div id="loginOrFlag">
                                 Login please
-                                <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrence/${record.raw.uuid}">Click here</a>
+                                <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrences/${record.raw.uuid}">Click here</a>
                             </div>
                         </c:when>
                         <c:otherwise>
