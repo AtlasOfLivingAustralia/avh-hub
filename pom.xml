@@ -129,12 +129,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.5.2</version>
+            <version>1.5.11</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.5.2</version>
+            <version>1.5.11</version>
         </dependency>
         <!-- JSR-250 -->
         <dependency>
@@ -199,31 +199,6 @@
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>au.org.ala</groupId>
-            <artifactId>biocache-store</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>au.org.ala</groupId>
-            <artifactId>biocache-store</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>au.org.ala</groupId>
-            <artifactId>biocache-store</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>au.org.ala</groupId>
-            <artifactId>biocache-store</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>au.org.ala</groupId>
-            <artifactId>biocache-store</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <repositories>
