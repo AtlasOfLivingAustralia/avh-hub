@@ -6,6 +6,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="queryDisplay">
+    <c:choose><c:when test="${not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when><c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
+</c:set>
 <!DOCTYPE html>
 <html>
     <head>
@@ -47,7 +50,7 @@
         </c:if>
         <div id="content">
             <c:if test="${searchResults.totalRecords == 0}">
-                <p>No records found for <b>${searchRequestParams.displayString}</b></p>
+                <p>No records found for <b>${queryDisplay}</b></p>
             </c:if>
             <c:if test="${searchResults.totalRecords > 0}">
                 <a name="map" class="jumpTo">&nbsp;</a><a name="list" class="jumpTo">&nbsp;</a>
@@ -58,7 +61,7 @@
                         </button>
                     </div>
                     <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
-                        returned for <strong>${searchRequestParams.displayString}</strong>
+                        for <strong>${queryDisplay}</strong>
                         (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)
                     </div>
                     <div style="display:none">
