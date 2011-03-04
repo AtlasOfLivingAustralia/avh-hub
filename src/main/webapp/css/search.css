@@ -67,6 +67,9 @@
     text-transform: none;
     line-height: 1.2em;
 }
+.currentFilter {
+    border: 1px solid #ccc;
+}
 .removeLink {
     text-decoration: none;
 }

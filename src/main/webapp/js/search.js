@@ -181,6 +181,8 @@ $(document).ready(function() {
         $("div.solrResults").css("left", -730);
         $("div#mapwrapper").css("left", 0);
         $("#listMapLink").html("List");
+    } else if (window.location.hash == "" && $.getQueryParam('start')) {
+        window.location.hash = "#list";
     }
 
     // add hash to URIs for facet links, so map/list state is maintained

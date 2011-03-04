@@ -16,7 +16,7 @@
         </c:if>
         <c:if test="${not empty facetMap}">
             <h4><span class="FieldName">Current Filters</span></h4>
-            <div id="subnavlist">
+            <div id="subnavlist" class="currentFilter">
                 <ul>
                     <c:forEach var="item" items="${facetMap}">
                         <li>
