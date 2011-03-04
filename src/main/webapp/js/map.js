@@ -116,7 +116,7 @@ var Maps = (function() {
             var myLatlng = new google.maps.LatLng(-27, 133);
             var myOptions = {
                 zoom: 4,
-                scrollwheel: true,
+                scrollwheel: false, // Dave says: leave as false
                 center: myLatlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 scaleControl: true, 
