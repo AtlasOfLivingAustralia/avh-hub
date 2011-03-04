@@ -27,17 +27,10 @@
             }); // end document.ready
 
             /************************************************************\
-            * Specify charts to load.
-            \************************************************************/
-            function onLoadCallback() {
-              // taxon chart
-              jpLoadTaxonChart("dp20",null,"phylum");  // start with all phyla
-            }
-            /************************************************************\
             * Fire chart loading
             \************************************************************/
             google.load("visualization", "1", {packages:["corechart"]});
-            google.setOnLoadCallback(onLoadCallback);
+            google.setOnLoadCallback(hubChartsOnLoadCallback);
 
         </script>
     </head>
@@ -56,21 +49,7 @@
                 Advanced search options go here.
             </div>
             <br/><br/>
-            <div class="section vertical-charts">
-                <!--
-                *******                                  *****
-                ******* STANDALONE TAXON BREAKDOWN CHART *****
-                *******                                  *****
-                -->
-                <div id='taxonChart'>
-                    <img class='taxon-loading' alt='loading...' src='http://collections.ala.org.au/images/ala/ajax-loader.gif'/>
-                </div>
-                <div id='taxonChartCaption' style='visibility:hidden;'>
-                    <span class='taxonChartCaption'>Click a slice or legend to drill into a group.</span><br/>
-                    <span id='resetTaxonChart' class="resetChart" onclick='resetTaxonChart()'></span>
-                </div>
-                
-            </div>
+            <jsp:include page="chartDiv.jspf"/>
         </div>
     </body>
 </html>
