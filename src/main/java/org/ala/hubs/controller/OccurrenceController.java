@@ -15,6 +15,7 @@
 
 package org.ala.hubs.controller;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import javax.inject.Inject;
@@ -24,14 +25,14 @@ import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
+import java.io.PrintWriter;
+import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.service.BiocacheService;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.httpclient.HttpStatus;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
@@ -266,6 +267,26 @@ public class OccurrenceController {
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
 
         return RECORD_MAP;
+    }
+
+    /**
+     * Test for bug in Spring with commas in parameter.
+     *
+     * @param requestParams
+     * @param result
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public void test(SearchRequestParams requestParams, BindingResult result, HttpServletResponse response) throws IOException {
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("text/plain");
+        String msg = "fq = " + StringUtils.join(requestParams.getFq(), "|");
+        response.getWriter().println(msg);
+        logger.debug(msg);
     }
     
     /**
