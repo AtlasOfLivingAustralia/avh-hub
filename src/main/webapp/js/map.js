@@ -220,14 +220,27 @@ var Maps = (function() {
                 displayHtml += "Institution: " + data.record.processed.attribution.institutionName + '<br />';
 
                 displayHtml += "<br />";
-                displayHtml += '<a href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a>';
-
+                displayHtml += '<a href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a><br/>';
+                displayHtml += '<a class="iframe" id="annotate_link" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr])) +'">Flag an issue</a>';
                 displayHtml += "<br /><br />";
                 displayHtml += pbutton + "           " + nbutton;
                 
                 displayHtml += '</div>';
 
                 infowindow.setContent(displayHtml);
+                //initialise fancy box
+                $("#annotate_link").fancybox({
+                    'hideOnContentClick' : false,
+                    'hideOnOverlayClick': true,
+                    'showCloseButton': true,
+                    'titleShow' : false,
+                    'autoDimensions' : false,
+                    'width': '500',
+                    'height': '300',
+                    'padding': 15,
+                    'margin': 10
+                });
+
             });
 
             return false; 

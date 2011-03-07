@@ -32,9 +32,10 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
-
     </head>
     <body>
+
+        <input type="hidden" id="userId" value="${userId}">
         <div id="headingBar">
             <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
             <div id="searchBox">
@@ -142,6 +143,7 @@
                                 <option value="">None</option>
                             </select>
                         </div>
+                        <a class="annotatetest iframe" href="http://localhost:8080/hubs-webapp/occurrences/annotate/00483d3a-1699-4589-a7ab-4ec7f1bcc524">Flag Issue</a>
                         <div id="mapcanvas"></div>
                         <div id="legend" title="Toggle layers/legend display">                            
                             <div class="title">Layers<span>&nabla;</span></div>
@@ -172,5 +174,5 @@
                 </div>
             </c:if>
         </div>
-    </body>
+  </body>
 </html>

@@ -64,14 +64,47 @@ public class OccurrenceController {
     @Inject
 	protected RestfulClient restfulClient;
     /* View names */
-	private final String RECORD_LIST = "occurrences/list";
+    private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
     private final String RECORD_MAP = "occurrences/map";
-
-	protected String collectoryBaseUrl = "http://collections.ala.org.au";
+    private final String ANNOTATE_EDITOR = "occurrences/annotationEditor";
+    protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
 
-	/**
+    /**
+     * Sets up state variables and calls the annotation editor jsp.
+     * @param uuid
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/annotate/{uuid:.+}", method = RequestMethod.GET)
+    public String annotate(@PathVariable("uuid") String uuid, Model model, HttpServletRequest request) throws Exception{
+
+        final HttpSession session = request.getSession(false);
+        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
+        String userId = null;
+        if (assertion != null) {
+            AttributePrincipal principal = assertion.getPrincipal();
+            model.addAttribute("userId", principal.getName());
+            userId = principal.getName();
+
+            String fullName = "";
+            if (principal.getAttributes().get("firstname") != null && principal.getAttributes().get("lastname") != null) {
+                fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
+            }
+            model.addAttribute("userDisplayName", fullName);
+        }
+
+        model.addAttribute("errorCodes", biocacheService.getUserCodes());
+        model.addAttribute("uuid", uuid);
+
+        return ANNOTATE_EDITOR;
+    }
+
+    /**
      * Performs a search for occurrence records via Biocache web services
      * 
      * @param requestParams
@@ -81,13 +114,32 @@ public class OccurrenceController {
      * @return view
      * @throws Exception 
      */
-	@RequestMapping(value = "/search*", method = RequestMethod.GET)
-	public String search(SearchRequestParams requestParams, BindingResult result, Model model,
+    @RequestMapping(value = "/search*", method = RequestMethod.GET)
+    public String search(SearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
-		
-		if (StringUtils.isEmpty(requestParams.getQ())) {
-			return RECORD_LIST;
-		} else if (request.getParameter("pageSize") == null) {
+        final HttpSession session = request.getSession(false);
+        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
+
+        // *****
+        String userId = null;
+        if (assertion != null) {
+            AttributePrincipal principal = assertion.getPrincipal();
+            model.addAttribute("userId", principal.getName());
+            userId = principal.getName();
+
+            String fullName = "";
+            if (principal.getAttributes().get("firstname") != null && principal.getAttributes().get("lastname") != null) {
+                fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
+            }
+            model.addAttribute("userDisplayName", fullName);
+        }
+
+        model.addAttribute("errorCodes", biocacheService.getUserCodes());
+        // *****
+
+        if (StringUtils.isEmpty(requestParams.getQ())) {
+            return RECORD_LIST;
+        } else if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
 
@@ -97,16 +149,16 @@ public class OccurrenceController {
 
         //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
         //sortDirection = getSortDirection(sortField, sortDirection);
-        
-		requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
+
+        requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
         SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        
-		return RECORD_LIST;
-	}
+
+        return RECORD_LIST;
+    }
 
     /**
      * Display records for a given taxon concept id

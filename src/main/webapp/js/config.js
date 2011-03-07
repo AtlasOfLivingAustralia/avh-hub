@@ -16,6 +16,7 @@ var Config = (function() {
         OCC_SEARCH_URL: BIOCACHE_SERVICE_URL + '/occurrences/info',
         OCC_INFO_URL_HTML: contextPath+'/occurrences/_uuid_',
         OCC_INFO_URL_JSON: contextPath+'/occurrences/_uuid_.json',
+        OCC_ANNOTATE_URL_HTML: contextPath+'/occurrences/annotate/_uuid_',
 
         /**
          * setup the Config with the base url 
