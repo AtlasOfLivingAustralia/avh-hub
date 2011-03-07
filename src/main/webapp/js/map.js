@@ -12,6 +12,7 @@ var Maps = (function() {
     var infowindow;
     var infomarker;
     var overlayLayers = [];
+    var envLayer;
 
     /**
      * post a query to the biocache-service
@@ -62,9 +63,19 @@ var Maps = (function() {
     }
 
     function initialiseOverlays(lyrCount) {
-        map.overlayMapTypes.clear();
+
+        // clear any existing MySpecies layers only from the map
+        if (overlayLayers.length > 0) {
+            for (i=0;i<overlayLayers.length;i++){
+                map.overlayMapTypes.removeAt(1);
+            }
+        }
+
+        // clear our local array
+        //map.overlayMapTypes.clear();
         overlayLayers = [];
 
+        // add some placeholders
         if (lyrCount > 0) {
             for (i=0;i<lyrCount;i++){
                 map.overlayMapTypes.push(null);
@@ -93,6 +104,9 @@ var Maps = (function() {
         }
         //loadWMS(map, "http://spatial.ala.org.au/geoserver/wms?", customParams);
         var overlayWMS = getWMSObject(map, "MySpecies", Config.OCC_WMS_BASE_URL, customParams);
+//        google.maps.event.addListener(overlayWMS, 'tilesloaded', function(event) {
+//            console.log("tiles loaded for overlayWMS");
+//        });
         //map.overlayMapTypes.insertAt(map.overlayMapTypes.length, overlayWMS);
         overlayLayers.push(overlayWMS);
     }
@@ -111,7 +125,7 @@ var Maps = (function() {
         /**
          * loads google maps and the WMS layers for occurrences
          */
-        loadGoogle: function() {
+        initialise: function() {
             
             var myLatlng = new google.maps.LatLng(-27, 133);
             var myOptions = {
@@ -145,18 +159,22 @@ var Maps = (function() {
                 }
             });
 
-            // insert the env layers
-            //var customParams = ["format=image/png8"];
-            //var bio11 = getWMSObject(map, "Precipitation Annual (Bio11)", "http://spatial.ala.org.au/geoserver/wms?layers=ALA:BioClim_bio11&", customParams);
-            //map.mapTypes.set("bio11",bio11);
-            //map.setMapTypeId("bio11");
-
-            
             map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('legend'));
 
             google.maps.event.addListener(map, 'click', function(event) {
                 loadOccurrencePopup(event.latLng);
             });
+
+            google.maps.event.addListener(map, 'tilesloaded', function(event) {
+                $('#legend').show();
+            });
+
+            // populate the env.layer dropdown
+            var opts='<option value="-1">None</option>';
+            $.each(envLayers, function(key, value) {
+                opts += '<option value="'+key+'">'+value[1]+'</option>';
+            });
+            $('#envLyrList').html(opts);
 
         },
 
@@ -166,10 +184,10 @@ var Maps = (function() {
         toggleOccurrenceLayer: function(input) {
             var _idx = parseInt($(input).attr('id').substr(3));
             if ($(input).is(':checked')){
-                map.overlayMapTypes.setAt(_idx,overlayLayers[_idx]);
+                map.overlayMapTypes.setAt((_idx+1),overlayLayers[_idx]);
             }else{
                 if (map.overlayMapTypes.getLength()>0){
-                    map.overlayMapTypes.setAt(_idx,null);
+                    map.overlayMapTypes.setAt((_idx+1),null);
                 }
             }
         },
@@ -230,14 +248,14 @@ var Maps = (function() {
 
             if (cbf=="") {
                 var key = 0;
-                var value = "Other"; 
+                var value = "All occurrences";
                 initialiseOverlays(1);
                 insertWMSOverlay("&colourby="+value.hashCode()); //fHashes[key]);
                 legHtml += "<div>";
                 //legHtml += "<span style='height: 10px; width: 10px; background: "+ptcolour+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span> ";
                 legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
                 legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+value.hashCode()+"&width=10&height=10' /> ";
-                legHtml += ((value=='')?'Other':value);
+                legHtml += "<label for='lyr"+key+"'>" + ((value=='')?'Other':value) + "</label>";
                 legHtml += "</div>";
 
             } else {
@@ -269,11 +287,11 @@ var Maps = (function() {
 
                     insertWMSOverlay("fq="+cbfq+"&colourby="+value.hashCode()); //fHashes[key]);
 
-                    legHtml += "<div>";
+                    legHtml += "<div class='layerWrapper'>";
                     //legHtml += "<span style='height: 10px; width: 10px; background: "+ptcolour+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span> ";
                     legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
                     legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+value.hashCode()+"&width=10&height=10' /> ";
-                    legHtml += ((value=='')?'Other':value);
+                    legHtml += "<label for='lyr"+key+"'>" + ((value=='')?'Other':value) + "</label>";
                     legHtml += "</div>";
                 });
             }
@@ -287,7 +305,7 @@ var Maps = (function() {
             // now iterate thru' the array and load the layers
             //Maps.loadOccurrences();
             $.each(overlayLayers, function(_idx, overlayWMS) {
-                map.overlayMapTypes.setAt(_idx, overlayWMS);
+                map.overlayMapTypes.setAt(_idx+1, overlayWMS);
             });
         }
 
@@ -299,14 +317,14 @@ $(document).ready(function() {
 
     // hide the legend srtuff initially 
     //$('#legend div:not(.title)').toggle();
-    $('#legend').show();
-    $('#legend div:first').hide();
-    $('#legendContent').hide();
+    //$('#legend').show();
+    //$('#legend div:first').hide();
+    //$('#layerlist').hide();
 
 
     //Maps.loadMap();
-    Maps.loadGoogle();
-    Maps.loadOccurrencesByType();
+    Maps.initialise();
+    Maps.loadOccurrencesByType("");
 
     // live event for toggling layer views
     $('input.layer').live("click", function(){
@@ -318,11 +336,20 @@ $(document).ready(function() {
         Maps.loadOccurrencesByType($('#colourFacets').val());
     });
 
+    $('#envLyrList').change(function(){
+        map.overlayMapTypes.setAt(0, null);
+        var selLayer = parseInt($(this).val());
+        if (selLayer > -1) {
+            var overlayWMS = getWMSObject(map, envLayers[selLayer][1], "http://spatial.ala.org.au/geoserver/wms/reflect?", ["format=image/png","layers="+envLayers[selLayer][2]]);
+            map.overlayMapTypes.setAt(0, overlayWMS);
+        }
+    });
+
     // event for toggling the legend
     $("#legend div.title, #legend div:first").click(function() {
         //$('#legend div:not(.title)').toggle();
-        $('#legendContent').toggle();
-        $('#legend div:first').toggle();
+        $('#layerlist').toggle();
+    //$('#legend div:first').toggle();
     });
 
 ;

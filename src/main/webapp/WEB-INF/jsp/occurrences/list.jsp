@@ -21,6 +21,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
         <!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.livequery.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms.js"></script>
@@ -125,20 +126,47 @@
                         </div>
                     </div><!--end solrResults-->
                     <div id="mapwrapper">
-                        Colour by:
-                        <select name="colourFacets" id="colourFacets">
-                            <option value=""> -- Select an option -- </option>
-                            <c:forEach var="facetResult" items="${searchResults.facetResults}">
-                                <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
-                                    <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
+                        <div>
+                            <label for="colourFacets">Colour by:</label>
+                            <select name="colourFacets" id="colourFacets">
+                                <option value=""> -- Select an option -- </option>
+                                <c:forEach var="facetResult" items="${searchResults.facetResults}">
+                                    <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
+                                        <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
+                                    </c:if>
+                                </c:forEach>
+                            </select>
+
+                            <label for="envLyrList">Environmental Layer:</label>
+                            <select id="envLyrList">
+                                <option value="">None</option>
+                            </select>
+                        </div>
                         <div id="mapcanvas"></div>
-                        <div id="legend" title="Toggle legend display">
-                            <div style="float:right">x</div>
-                            <div class="title">Legend</div>
-                            <div id="legendContent"></div>
+                        <div id="legend" title="Toggle layers/legend display">                            
+                            <div class="title">Layers<span>&nabla;</span></div>
+                            <div id="layerlist">
+                                <!--
+                            <div id="envLayers">
+                                <div>
+                                    <input type="radio" name="envBio11" /> Bio11
+                                </div>
+                                <div>
+                                    <input type="radio" name="envBio12" /> Bio12
+                                </div>
+                                <div>
+                                    <input type="radio" name="envBio34" /> Bio34
+                                </div>
+                                <div>
+                                    <input type="radio" name="envCars2006" /> CARS 2006
+                                </div>
+                                <div>
+                                    <input type="radio" name="envCars2009a" /> CARS 2009a
+                                </div>
+                            </div>
+                                -->
+                                <div id="legendContent"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
