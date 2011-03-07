@@ -15,40 +15,42 @@
             </c:set>
         </c:if>
         <c:if test="${not empty facetMap}">
-            <h4><span class="FieldName">Current Filters</span></h4>
-            <div id="subnavlist" class="currentFilter">
-                <ul>
-                    <c:forEach var="item" items="${facetMap}">
-                        <li>
-                            <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:${item.value}'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
-                            <fmt:message key="facet.${item.key}"/>:
-                            <c:choose>
-                                <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
-                                    <b><fmt:message key="month.${item.value}"/></b>${closeLink}
-                                </c:when>
-                                <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:startsWith(item.value, '[*')}">
-                                    <c:set var="endYear" value="${fn:substring(item.value, 6, 10)}"/><b>Before ${endYear}</b>${closeLink}
-                                </c:when>
-                                <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, '*]')}">
-                                    <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>After ${startYear}</b>${closeLink}
-                                </c:when>
-                                <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
-                                    <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear} - ${startYear + 10}</b>${closeLink}
-                                </c:when>
-                                <c:otherwise>
-                                    <b><fmt:message key="${item.value}"/></b>${closeLink}
-                                </c:otherwise>
-                            </c:choose>
-                        </li>
-                    </c:forEach>
-                </ul>
+            <div id="currentFilter">
+                <h4><span class="FieldName">Current Filters</span></h4>
+                <div id="subnavlist">
+                    <ul>
+                        <c:forEach var="item" items="${facetMap}">
+                            <li>
+                                <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:${item.value}'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
+                                <fmt:message key="facet.${item.key}"/>:
+                                <c:choose>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
+                                        <b><fmt:message key="month.${item.value}"/></b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:startsWith(item.value, '[*')}">
+                                        <c:set var="endYear" value="${fn:substring(item.value, 6, 10)}"/><b>Before ${endYear}</b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, '*]')}">
+                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>After ${startYear}</b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
+                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear} - ${startYear + 10}</b>${closeLink}
+                                    </c:when>
+                                    <c:otherwise>
+                                        <b><fmt:message key="${item.value}"/></b>${closeLink}
+                                    </c:otherwise>
+                                </c:choose>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
         </c:if>
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
             <c:if test="${fn:length(facetResult.fieldResult) > 0 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
                 <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/></span></h4>
                 <div id="subnavlist">
-                    <ul>
+                    <ul class="facets">
                         <c:set var="lastElement" value="${facetResult.fieldResult[fn:length(facetResult.fieldResult)-1]}"/>
                         <c:if test="${lastElement.label eq 'before' && lastElement.count > 0}">
                             <li><c:set var="firstYear" value="${fn:substring(facetResult.fieldResult[0].label, 0, 4)}"/>

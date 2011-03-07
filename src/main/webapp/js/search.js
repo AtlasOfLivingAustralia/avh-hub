@@ -193,7 +193,7 @@ $(document).ready(function() {
     });
 
     // add show/hide links to facets
-    $('#subnavlist ul').oneShowHide({
+    $('#subnavlist ul.facets').oneShowHide({
         numShown: 3,
         showText : '+ show more',
         hideText : '- show less',
