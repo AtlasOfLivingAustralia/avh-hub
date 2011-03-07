@@ -49,7 +49,7 @@
                 Advanced search options go here.
             </div>
             <br/><br/>
-            <jsp:include page="chartDiv.jspf"/>
+            <jsp:include page="chartDiv.jsp"/>
         </div>
     </body>
 </html>
