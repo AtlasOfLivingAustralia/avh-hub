@@ -144,4 +144,24 @@ public class CollectionsCache {
             return type;
         }
     }
+
+    /*
+     * Getter and setters
+     */
+    public String getCollectoryUriPrefix() {
+        return collectoryUriPrefix;
+    }
+
+    public void setCollectoryUriPrefix(String collectoryUriPrefix) {
+        this.collectoryUriPrefix = collectoryUriPrefix;
+    }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
+    }
+
 }
