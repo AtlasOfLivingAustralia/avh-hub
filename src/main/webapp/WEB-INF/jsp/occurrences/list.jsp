@@ -16,6 +16,7 @@
         <title>Occurrence Search Results | OZCAM</title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
+            searchString = "${searchResults.urlParameters}"; 
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>

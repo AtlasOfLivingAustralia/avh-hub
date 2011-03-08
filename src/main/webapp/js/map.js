@@ -98,7 +98,7 @@ var Maps = (function() {
         }
 
         //Add query string params to custom params
-        var pairs = location.search.substring(1).split('&');
+        var pairs = searchString.substring(1).split('&');
         for (var i = 0; i < pairs.length; i++) {
             customParams.push(pairs[i]);
         }
