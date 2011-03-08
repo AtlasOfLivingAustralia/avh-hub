@@ -228,6 +228,7 @@ var Maps = (function() {
                 displayHtml += '</div>';
 
                 infowindow.setContent(displayHtml);
+                
                 //initialise fancy box
                 $("#annotate_link").fancybox({
                     'hideOnContentClick' : false,
@@ -255,7 +256,6 @@ var Maps = (function() {
 
             // set the default, if none available to institution_name
             if (arguments.length == 0) {
-                //Maps.loadOccurrences();
                 cbf = 'institution_name';
             }
 
@@ -263,9 +263,8 @@ var Maps = (function() {
                 var key = 0;
                 var value = "All occurrences";
                 initialiseOverlays(1);
-                insertWMSOverlay("&colourby="+value.hashCode()); //fHashes[key]);
+                insertWMSOverlay("&colourby="+value.hashCode()+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
                 legHtml += "<div>";
-                //legHtml += "<span style='height: 10px; width: 10px; background: "+ptcolour+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span> ";
                 legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
                 legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+value.hashCode()+"&width=10&height=10' /> ";
                 legHtml += "<label for='lyr"+key+"'>" + ((value=='')?'Other':value) + "</label>";
@@ -298,10 +297,9 @@ var Maps = (function() {
                         cbfq = "-("+cbf+"[* TO *])";
                     }
 
-                    insertWMSOverlay("fq="+cbfq+"&colourby="+value.hashCode()); //fHashes[key]);
+                    insertWMSOverlay("fq="+cbfq+"&colourby="+value.hashCode()+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
 
                     legHtml += "<div class='layerWrapper'>";
-                    //legHtml += "<span style='height: 10px; width: 10px; background: "+ptcolour+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span> ";
                     legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
                     legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+value.hashCode()+"&width=10&height=10' /> ";
                     legHtml += "<label for='lyr"+key+"'>" + ((value=='')?'Other':value) + "</label>";
@@ -316,7 +314,6 @@ var Maps = (function() {
 
 
             // now iterate thru' the array and load the layers
-            //Maps.loadOccurrences();
             $.each(overlayLayers, function(_idx, overlayWMS) {
                 map.overlayMapTypes.setAt(_idx+1, overlayWMS);
             });
@@ -328,12 +325,19 @@ var Maps = (function() {
 // Jquery Document.onLoad equivalent
 $(document).ready(function() {
 
-    // hide the legend srtuff initially 
-    //$('#legend div:not(.title)').toggle();
-    //$('#legend').show();
-    //$('#legend div:first').hide();
-    //$('#layerlist').hide();
-
+    // setup the size slider first
+    $('#sizeslider').slider({
+        range: "min",
+        value: 4,
+        min: 2,
+        max: 10,
+        slide: function (event, ui) {
+            $('#sizeslider-val').html(ui.value);
+        },
+        stop: function (event, ui) {
+            Maps.loadOccurrencesByType($('#colourFacets').val());
+        }
+    });
 
     //Maps.loadMap();
     Maps.initialise();
@@ -360,9 +364,7 @@ $(document).ready(function() {
 
     // event for toggling the legend
     $("#legend div.title, #legend div:first").click(function() {
-        //$('#legend div:not(.title)').toggle();
         $('#layerlist').toggle();
-    //$('#legend div:first').toggle();
     });
 
 ;

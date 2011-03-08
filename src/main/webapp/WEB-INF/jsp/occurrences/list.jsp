@@ -20,7 +20,7 @@
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
-        <!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.livequery.js"></script>-->
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-ui-1.8.10.core.slider.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
@@ -33,6 +33,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/redmond/jquery.ui.redmond.css" type="text/css" media="screen" />
     </head>
     <body>
 
@@ -143,6 +144,16 @@
                             <select id="envLyrList">
                                 <option value="">None</option>
                             </select>
+
+                            <!-- size slider start -->
+                            <div style="width: 150px; padding: 10px">
+                                <div id="sizeslider" style="width: 100px; float: right"></div>
+                                Size: <span id="sizeslider-val">4</span>
+                            </div>
+                            <!-- size slider end -->
+
+
+
                         </div>
                         <div id="mapcanvas"></div>
                         <div id="legend" title="Toggle layers/legend display">                            

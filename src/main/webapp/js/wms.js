@@ -123,7 +123,5 @@ function getWMSObject(map, name, baseURL, customParams){
 
     var overlayWMS = new google.maps.ImageMapType(overlayOptions);
 
-    //map.overlayMapTypes.insertAt(0, overlayWMS);
-    //map.overlayMapTypes.insertAt(map.overlayMapTypes.length, overlayWMS);
     return overlayWMS; 
 }
