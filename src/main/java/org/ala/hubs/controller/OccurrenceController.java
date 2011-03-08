@@ -26,6 +26,7 @@ import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
 import java.io.PrintWriter;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.client.util.RestfulClient;
@@ -63,6 +64,8 @@ public class OccurrenceController {
     private BiocacheService biocacheService;
     @Inject
 	protected RestfulClient restfulClient;
+    @Inject
+    protected CollectionsCache collectionsCache;
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
@@ -156,6 +159,8 @@ public class OccurrenceController {
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+        model.addAttribute("collectionCodes", collectionsCache.getCollections());
+        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
 
         return RECORD_LIST;
     }

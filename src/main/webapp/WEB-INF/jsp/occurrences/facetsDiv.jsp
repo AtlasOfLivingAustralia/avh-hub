@@ -36,6 +36,12 @@
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
                                         <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear} - ${startYear + 10}</b>${closeLink}
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'institution_code_uid')}">
+                                        <b><fmt:message key="${institutionCodes[item.value]}"/></b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'collection_code_uid')}">
+                                        <b><fmt:message key="${collectionCodes[item.value]}"/></b>${closeLink}
+                                    </c:when>
                                     <c:otherwise>
                                         <b><fmt:message key="${item.value}"/></b>${closeLink}
                                     </c:otherwise>
@@ -47,7 +53,7 @@
             </div>
         </c:if>
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
-            <c:if test="${fn:length(facetResult.fieldResult) > 0 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
+            <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
                 <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/></span></h4>
                 <div id="subnavlist">
                     <ul class="facets">
@@ -71,8 +77,12 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                         </c:when>
-                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_code_name')}">
-                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fn:replace(fieldResult.label, ',', '%2C')}"><fmt:message key="${fn:replace(fieldResult.label, ',', ',')}"/></a>
+                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_code_uid')}">
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${institutionCodes[fieldResult.label]}</a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                        </c:when>
+                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collection_code_uid')}">
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${collectionCodes[fieldResult.label]}</a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                         </c:when>
                                         <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
