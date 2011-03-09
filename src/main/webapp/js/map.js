@@ -37,7 +37,6 @@ var Maps = (function() {
             dataType: "jsonp",
             success: loadNewGeoJsonData
         });
-
     }
 
     function loadNewGeoJsonData(data) {
@@ -52,7 +51,6 @@ var Maps = (function() {
             infowindow.open(map,infomarker);
 
             Maps.loadOccurrenceInfo(0);
-
         } else {
             //occids = new Array(); 
             occids == null;
@@ -221,7 +219,7 @@ var Maps = (function() {
 
                 displayHtml += "<br />";
                 displayHtml += '<a href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a><br/>';
-                displayHtml += '<a class="iframe" id="annotate_link" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr])) +'">Flag an issue</a>';
+                displayHtml += '<a id="annotate_link" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
                 displayHtml += "<br /><br />";
                 displayHtml += pbutton + "           " + nbutton;
                 
@@ -231,15 +229,12 @@ var Maps = (function() {
                 
                 //initialise fancy box
                 $("#annotate_link").fancybox({
-                    'hideOnContentClick' : false,
-                    'hideOnOverlayClick': true,
-                    'showCloseButton': true,
-                    'titleShow' : false,
-                    'autoDimensions' : false,
-                    'width': '500',
-                    'height': '300',
-                    'padding': 15,
-                    'margin': 10
+                    'width' : '75%',
+                    'height' : '75%',
+                    'autoScale' : false,
+                    'transitionIn' : 'none',
+                    'transitionOut' : 'none',
+                    'type' : 'iframe'
                 });
 
             });
@@ -366,7 +361,5 @@ $(document).ready(function() {
     $("#legend div.title, #legend div:first").click(function() {
         $('#layerlist').toggle();
     });
-
-;
 }); // end JQuery document ready
 

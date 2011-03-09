@@ -53,7 +53,7 @@
             <c:when test="${empty userId}">
                 <div id="loginOrFlag">
                     Login please
-                    <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrences/annotate/${uuid}">Click here</a>
+                    <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrences/annotate/${uuid}&format=minimal">Click here</a>
                 </div>
             </c:when>
             <c:otherwise>
