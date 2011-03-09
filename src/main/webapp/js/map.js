@@ -102,9 +102,9 @@ var Maps = (function() {
         }
         //loadWMS(map, "http://spatial.ala.org.au/geoserver/wms?", customParams);
         var overlayWMS = getWMSObject(map, "MySpecies", Config.OCC_WMS_BASE_URL, customParams);
-//        google.maps.event.addListener(overlayWMS, 'tilesloaded', function(event) {
-//            console.log("tiles loaded for overlayWMS");
-//        });
+        //        google.maps.event.addListener(overlayWMS, 'tilesloaded', function(event) {
+        //            console.log("tiles loaded for overlayWMS");
+        //        });
         //map.overlayMapTypes.insertAt(map.overlayMapTypes.length, overlayWMS);
         overlayLayers.push(overlayWMS);
     }
@@ -142,7 +142,7 @@ var Maps = (function() {
                 map: map
             });
             infowindow = new google.maps.InfoWindow({
-                size: new google.maps.Size(50,50)
+                size: new google.maps.Size(300, 200)
             });
 
             map.setOptions({
@@ -209,6 +209,7 @@ var Maps = (function() {
             $.get(Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]), function(data){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
 
+                displayHtml = '';
                 displayHtml = '<div id="occinfo">';
                 displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
                 displayHtml += "<br /><br />";
@@ -219,24 +220,13 @@ var Maps = (function() {
 
                 displayHtml += "<br />";
                 displayHtml += '<a href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a><br/>';
-                displayHtml += '<a id="annotate_link" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
+                displayHtml += '<a class="iframe" id="annotate_link" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
                 displayHtml += "<br /><br />";
                 displayHtml += pbutton + "           " + nbutton;
                 
                 displayHtml += '</div>';
 
                 infowindow.setContent(displayHtml);
-                
-                //initialise fancy box
-                $("#annotate_link").fancybox({
-                    'width' : '75%',
-                    'height' : '75%',
-                    'autoScale' : false,
-                    'transitionIn' : 'none',
-                    'transitionOut' : 'none',
-                    'type' : 'iframe'
-                });
-
             });
 
             return false; 
@@ -342,6 +332,23 @@ $(document).ready(function() {
     $('input.layer').live("click", function(){
         Maps.toggleOccurrenceLayer(this);
     });
+
+    // live event for loading up the annotation
+    $('a.iframe').live("click", function(){
+        //initialise fancy box
+        $("#annotate_link").fancybox({
+            'width' : '75%',
+            'height' : '75%',
+            'autoScale' : false,
+            'transitionIn' : 'none',
+            'transitionOut' : 'none',
+            'type' : 'iframe'
+        });
+
+        return false; 
+    });
+
+
 
     // event for when a colourby facet is selected
     $('#colourFacets').change(function(){

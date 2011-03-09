@@ -16,6 +16,11 @@
     height: 560px;
 }
 
+#occinfo {
+    width: 300px;
+    height: 200px;
+}
+
 /** mozilla and webkit styles from Google Maps **/
 #legend {
     display: none;
