@@ -115,3 +115,14 @@
 .layerWrapper:hover {
     background-color: #DDD;
 }
+
+#slidercontainer {
+    width: 160px;
+    padding: 10px;
+}
+
+#sizeslider {
+    width: 100px;
+    float: right;
+    margin-top: 3px;
+}

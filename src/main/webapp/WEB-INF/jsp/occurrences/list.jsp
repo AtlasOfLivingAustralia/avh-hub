@@ -146,9 +146,9 @@
                             </select>
 
                             <!-- size slider start -->
-                            <div style="width: 150px; padding: 10px">
-                                <div id="sizeslider" style="width: 100px; float: right"></div>
-                                Size: <span id="sizeslider-val">4</span>
+                            <div id="slidercontainer">
+                                <div id="sizeslider"></div>
+                                <label for="sizeslider">Size: </label><span id="sizeslider-val">4</span>
                             </div>
                             <!-- size slider end -->
 
