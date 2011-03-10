@@ -411,7 +411,7 @@ $(document).ready(function() {
     });
 
     // live event for loading up fancybox styles
-    $('a.iframe').live("mouseover", function(){
+    $('a.iframe').live("mouseover click", function(){
         //initialise fancy box
         $("a.fancy_iframe").fancybox({
             'showCloseButton': true,
