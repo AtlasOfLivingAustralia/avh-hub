@@ -24,13 +24,90 @@ var Maps = (function() {
         clickLocation = location;
 
         infowindow.close();
+        //need to calculate radius based on zoom level and point size
+        var radius = 0;
+        switch (map.zoom){
+            case 0:
+                radius = 800;
+                break;
+            case 1:
+                radius = 400;
+                break;
+            case 2:
+                radius = 200;
+                break;
+            case 3:
+                radius = 100;
+                break;
+            case 4:
+                radius = 50;
+                break;
+            case 5:
+                radius = 25;
+                break;
+            case 6:
+                radius = 20;
+                break;
+            case 7:
+                radius = 7.5;
+                break;
+            case 8:
+                radius = 3;
+                break;
+            case 9:
+                radius = 1.5;
+                break;
+            case 10:
+                radius = .75;
+                break;
+            case 11:
+                radius = .25;
+                break;
+            case 12:
+                radius = .15;
+                break;
+            case 13:
+                radius = .1;
+                break;
+            case 14:
+                radius = .05;
+                break;
+            case 15:
+                radius = .025;
+                break;
+            case 16:
+                radius = .015;
+                break;
+            case 17:
+                radius = 0.0075;
+                break;
+            case 18:
+                radius = 0.004;
+                break;
+            case 19:
+                radius = 0.002;
+                break;
+            case 20:
+                radius = 0.001;
+                break;
+                
+        }
+
+        //modifiers if we have a larger point size
+        var size = $('#sizeslider').slider('value');
+        if (size >= 5 && size < 8){
+            radius = radius*2;
+        }
+        if (size >= 8){
+            radius = radius*3;
+        }
 
         var baseurl = Config.OCC_SEARCH_URL;
         var wmsinfo = baseurl + window.location.search;
         wmsinfo += "&zoom=" + map.getZoom();
         wmsinfo += "&lat=" + location.lat();
         wmsinfo += "&lon=" + location.lng();
-        wmsinfo += "&radius=10";
+        wmsinfo += "&radius=" + radius;
 
         $.ajax({
             url: wmsinfo,
@@ -218,8 +295,8 @@ var Maps = (function() {
                 displayHtml += "Institution: " + data.record.processed.attribution.institutionName + '<br />';
 
                 displayHtml += "<br />";
-                displayHtml += '<a href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a><br/>';
-                displayHtml += '<a class="iframe" id="annotate_link" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
+                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a><br/>';
+                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
                 displayHtml += "<br /><br />";
                 displayHtml += pbutton + "           " + nbutton;
                 
@@ -336,9 +413,9 @@ $(document).ready(function() {
     // live event for loading up the annotation
     $('a.iframe').live("click", function(){
         //initialise fancy box
-        $("#annotate_link").fancybox({
-            'width' : '75%',
-            'height' : '75%',
+        $("a.fancy_iframe").fancybox({
+            'width' : '85%',
+            'height' : '85%',
             'autoScale' : false,
             'transitionIn' : 'none',
             'transitionOut' : 'none',
