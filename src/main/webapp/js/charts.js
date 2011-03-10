@@ -282,7 +282,7 @@ function drawInstitutionBreakdown(data) {
             collectionUid = instData[i].uid;
           }
         }
-        window.location.href = "http://ozcam-demo.ala.org.au:8080/occurrences/collections/" + collectionUid;
+        window.location.href = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*&fq=collection_code_uid:" + collectionUid;
       }
     }
   });
@@ -410,12 +410,12 @@ function resetInstChart() {
     google.visualization.events.addListener(accumChart, 'select', function() {
       var selection = accumChart.getSelection()[0];
       var instData = rawData[selection.column - 1];
-      var search = (instData.uid.substr(0,2) == "in" ? "institutions/" : "collections/") + instData.uid;
-      var searchUrl = "http://ozcam-demo.ala.org.au:8080/occurrences/" + search;
+      var search = (instData.uid.substr(0,2) == "in" ? "&fq=institution_code_uid:" : "&fq=collection_code_uid:") + instData.uid;
+      var searchUrl = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*" + search;
       if (selection.row != undefined) {
         var decadeStart = selection.row * 10 + 1850;
         var decadeEnd = selection.row * 10 + 1850 + 10;
-        searchUrl = searchUrl + "?fq=occurrence_date:[" + decadeStart + "-01-01T12:00:00Z%20TO%20" + decadeEnd + "-01-01T12:00:00Z]";
+        searchUrl = searchUrl + "&fq=occurrence_date:[" + decadeStart + "-01-01T12:00:00Z%20TO%20" + decadeEnd + "-01-01T12:00:00Z]";
       }
       window.location.href = searchUrl;
     });
