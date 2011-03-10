@@ -60,6 +60,19 @@ table td,table th  {
     vertical-align: top;
 /*    color: #666;*/
 }
+table.compact, table.nested {
+    width: 100%;
+    margin: 2px 0 4px 0;
+}
+table.compact th, table.compact td {
+    padding: 4px;
+}
+table.nested th, table.nested td {
+    padding: 0;
+}
+td.label {
+    width: 170px;
+}
 #headingBar {
     padding-left: 30px;
 }
@@ -99,4 +112,30 @@ table td,table th  {
 }
 #advancedSearch {
     display: none;
+    margin-top: 5px;
+    padding: 5px;
+    border: 2px solid #CCC;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+}
+input.taxaLookup {
+    float: right;
+    margin-right: 10px;
+}
+div.autoLine2 {
+    color: #777;
+}
+.matchedName {
+    padding: 0;
+/*    border: 1px solid #CCC;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;*/
+    width: 90%;
+    float: left;
+    max-height: 15px;
+    overflow: hidden;
 }
