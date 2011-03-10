@@ -47,10 +47,9 @@ var Maps = (function() {
             displayHtml += '<div id="occinfo">Loading occurrence info</div>';
             occids = data.occurrences;
 
-            infomarker.setPosition(clickLocation);
-            infowindow.open(map,infomarker);
-
             Maps.loadOccurrenceInfo(0);
+
+            infomarker.setPosition(clickLocation);
         } else {
             //occids = new Array(); 
             occids == null;
@@ -204,7 +203,7 @@ var Maps = (function() {
                 nbutton = '<span class="pagebutton" style="float: right"><a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr+1)+')">Next &gt;</a></span>';
             }
 
-            infowindow.setContent("Loading occurrence info. Please wait...");
+            infowindow.setContent('<div style="height:200px">Loading occurrence info. Please wait...</div>');
 
             $.get(Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]), function(data){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
@@ -227,6 +226,7 @@ var Maps = (function() {
                 displayHtml += '</div>';
 
                 infowindow.setContent(displayHtml);
+                infowindow.open(map,infomarker);
             });
 
             return false; 
