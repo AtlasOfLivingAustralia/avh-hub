@@ -410,15 +410,18 @@ $(document).ready(function() {
         Maps.toggleOccurrenceLayer(this);
     });
 
-    // live event for loading up the annotation
-    $('a.iframe').live("click", function(){
+    // live event for loading up fancybox styles
+    $('a.iframe').live("mouseover", function(){
         //initialise fancy box
         $("a.fancy_iframe").fancybox({
+            'showCloseButton': true,
+            'titleShow' : false,
+            'autoDimensions' : false,
+            'hideOnContentClick' : false,
+            'hideOnOverlayClick': true,
             'width' : '85%',
             'height' : '85%',
             'autoScale' : false,
-            'transitionIn' : 'none',
-            'transitionOut' : 'none',
             'type' : 'iframe'
         });
 
