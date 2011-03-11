@@ -51,36 +51,6 @@
             <div id="advancedSearch">
                 <h4>Advanced search options</h4>
                 <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/occurrences/search">
-                    <%--<b>Find records that have...</b>
-                    <table border="0" width="100" cellspacing="2" class="compact">
-                        <thead/>
-                        <tbody>
-                            <tr>
-                                <td class="label">all these words</td>
-                                <td><input type="text" value="" name="all_terms" style="width:100%"></td>
-                            </tr>
-                            <tr>
-                                <td class="label">the exact wording or phrase</td>
-                                <td><input type="text" value="" name="phrase" style="width:100%"></td>
-                            </tr>
-                            <tr>
-                                <td class="label">one or more of these words:</td>
-                                <td>
-                                    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="nested"><tbody><tr><td width="31%"><input type="text" style="width:95%" value="" id="as_oq0"></td><td class="hint">&nbsp;OR&nbsp;</td><td width="31%"><input type="text" style="width:95%" value="" id="as_oq1"></td><td class="hint">&nbsp;OR&nbsp;</td><td width="31%"><input type="text" style="width:95%" value="" id="as_oq2"></td></tr></tbody></table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <b>But don't show records that have...</b>
-                    <table border="0" width="100" cellspacing="2" class="compact">
-                        <thead/>
-                        <tbody>
-                            <tr>
-                                <td class="label">any of these unwanted words</td>
-                                <td><input type="text" value="" name="exclude_words" style="width:100%"></td>
-                            </tr>
-                        </tbody>
-                    </table> --%>
                     <b>Find records for the following taxa...</b>
                     <table border="0" width="100" cellspacing="2" class="compact">
                         <thead/>
@@ -102,10 +72,66 @@
                                         <%-- Search <input type="text" value="" id="${i}"name="name_autocomplete"  style="width:35%"> --%>
                                         <div class="matchedName" id="sciname_${i}"></div>
                                         <input type="hidden" id="lsid_${i}" value=""/>
-                                        <input type="button" id="clear_${i}" class="clear_taxon" value="clear" title="clear matched name" style="display: none; float:left"/>
+                                        <input type="button" id="clear_${i}" class="clear_taxon" value="clear" title="Remove this taxon" style="display: none; float:left"/>
                                     </td>
                                 </tr>
                             </c:forEach>
+                        </tbody>
+                    </table>
+                    <b>Find records from the following institutions</b>
+                    <table border="0" width="100" cellspacing="2" class="compact">
+                        <thead/>
+                        <tbody>
+                            <tr>
+                                <td class="label">Institution name</td>
+                                <td>
+                                    <select>
+                                        <option value="">-- select an institution --</option>
+                                        <c:forEach var="inst" items="${institutions}">
+                                            <option value="${inst.uid}">${inst.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <b>Find records from the following regions</b>
+                    <table border="0" width="100" cellspacing="2" class="compact">
+                        <thead/>
+                        <tbody>
+                            <tr>
+                                <td class="label">State</td>
+                                <td>
+                                    <select>
+                                        <option value="">-- select a state --</option>
+                                        <c:forEach var="state" items="${states}">
+                                            <option value="${state}">${state}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">IBRA region</td>
+                                <td>
+                                    <select>
+                                        <option value="">-- select a IBRA region --</option>
+                                        <c:forEach var="region" items="${ibra}">
+                                            <option value="${region}">${region}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">LGA region</td>
+                                <td>
+                                    <select>
+                                        <option value="">-- select a LGA region --</option>
+                                        <c:forEach var="region" items="${lga}">
+                                            <option value="${region}">${region}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <input type="button" id="advancedSubmit" value="Advanced Search" onClick="$('#solrSubmit').click()"/>

@@ -17,6 +17,14 @@
  * JQuery on document ready callback
  */
 $(document).ready(function() {
+    // Custom string methods
+    String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/g, "");
+    };
+    String.prototype.trimBools = function() {
+        return this.replace(/^\s*(OR|AND|NOT)\s+|\s+(OR|AND|NOT)\s*$/g, "");
+    };
+
     // Autocomplete
     $("input[name=name_autocomplete]").autocomplete('http://bie.ala.org.au/search/auto.json', {
         //width: 350,
@@ -67,7 +75,7 @@ $(document).ready(function() {
         // build the name string
         var matchedName = "<b>" + item.name + "</b>";
         if (item.rankId && item.rankId >= 6000) {
-            matchedName = "<i>" + matchedName + "</i>";
+            matchedName = "<i>" + matchedName + "</i>"; 
         }
         if (item.rankString) {
             matchedName = item.rankString + ": " + matchedName;
@@ -80,7 +88,12 @@ $(document).ready(function() {
         $("#clear_" + num).show(); // show the 'clear' button
         $("tr#taxon_row_" + num).show("slow"); // show the row
         var queryText = $("#solrQuery").val();
-        $("#solrQuery").val(queryText + " lsid:" + item.guid); // add LSID to the main query input
+        if (queryText && queryText.substr(0, 4) == "lsid") {
+            queryText = queryText + " OR lsid:" + item.guid;
+        } else {
+            queryText = queryText + " lsid:" + item.guid;
+        }
+        $("#solrQuery").val(queryText.trim()); // add LSID to the main query input
         $("#name_autocomplete").val(""); // clear the search test
     });
 
@@ -93,7 +106,10 @@ $(document).ready(function() {
         $('#sciname_' + num).html(''); // clear taxon
         $("tr#taxon_row_" + num).hide("slow"); // hide the row
         var query = $("#solrQuery").val(); // get the query text
-        query = query.replace("lsid:" + lsid, "").trim(); // reomve the LSID
+        query = query.replace(" OR lsid:" + lsid, "");  // remove potential OR'ed lsid
+        query = query.replace("lsid:" + lsid + " OR ", ""); // remove potential OR'ed lsid
+        query = query.replace("lsid:" + lsid, "").trimBools(); // reomve the LSID
+        console.log("clear() - query", query);
         $("#solrQuery").val(query); // replace with new query text
     });
 

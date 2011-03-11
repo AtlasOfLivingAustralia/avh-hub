@@ -128,13 +128,16 @@ div.autoLine2 {
     color: #777;
 }
 .matchedName {
-    padding: 0;
-/*    border: 1px solid #CCC;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    border-radius: 5px;*/
-    width: 90%;
+    display: inline-block;
+    padding: 2px 8px 4px 8px;
+    margin-right: 10px;
+    border: 0px solid #CCC;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #C5DCEE;
+    max-width: 90%;
     float: left;
     max-height: 15px;
     overflow: hidden;
@@ -142,4 +145,7 @@ div.autoLine2 {
 #taxonSearchHint {
     font-size: 12px;
     margin-top: 5px;
+}
+table.compact td select {
+    width: auto;
 }
