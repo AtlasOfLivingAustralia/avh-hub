@@ -42,7 +42,7 @@
             <h1>Search for records in OZCAM</h1>
             <div id="solrSearchForm">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="homepageSearchForm">
-                    <input name="q" value="${param.q}" id="solrQuery" style="width:650px; height:20px; font-size:13px;"/>&nbsp;
+                    <input name="q" value="${param.q}" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;
                     <input type="submit" value="Submit" id="solrSubmit" style="font-size:18px;"/>
                     <input type="hidden" id="lsid" value=""/>
                     <span id="advancedSearchLink"><a href="#advancedSearch">Advanced Search</a></span>
@@ -86,15 +86,18 @@
                         <thead/>
                         <tbody>
                             <tr>
-                                <td colspan="1">Search for taxon name</td>
+                                <td class="label">Search for taxon name</td>
                                 <td>
-                                    <input type="text" value="" id="name_autocomplete" name="name_autocomplete" placeholder="Start typing a common or scientific name" style="width:95%">
-                                    <%-- <input type="button" id="clear_search" onClick="$('input[name=name_autocomplete]').val('')" value="X" title="clear search text" style="float:right"/> --%>
+                                    <input type="text" value="" id="name_autocomplete" name="name_autocomplete" 
+                                           placeholder="Start typing a common name or scientific name..." style="width:600px;">
+                                    <br/>
+                                    <div id="taxonSearchHint">Start typing a common name or scientific name and click on a matched name from the autocomplete dropdown list.
+                                    You can add up to 6 taxa to use in your search.</div>
                                 </td>
                             </tr>
-                            <c:forEach begin="1" end="4" step="1" var="i">
-                                <tr>
-                                    <td class="label">Taxon ${i}</td>
+                            <c:forEach begin="1" end="6" step="1" var="i">
+                                <tr style="display: none" id="taxon_row_${i}">
+                                    <td class="label">Species/Taxon</td>
                                     <td>
                                         <%-- Search <input type="text" value="" id="${i}"name="name_autocomplete"  style="width:35%"> --%>
                                         <div class="matchedName" id="sciname_${i}"></div>

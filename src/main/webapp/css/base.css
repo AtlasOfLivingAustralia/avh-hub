@@ -139,3 +139,7 @@ div.autoLine2 {
     max-height: 15px;
     overflow: hidden;
 }
+#taxonSearchHint {
+    font-size: 12px;
+    margin-top: 5px;
+}

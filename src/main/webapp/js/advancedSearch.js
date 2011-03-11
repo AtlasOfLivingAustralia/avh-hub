@@ -54,40 +54,44 @@ $(document).ready(function() {
         selectFirst: false
     }).result(function(event, item) {
         // user has selected an autocomplete item
-        //console.log("item", item);
-        var num = 1;//$(this).attr("id");
+        // determine the next avail taxon row (num) to add to
+        var num = 1;
         for (i=1;i<=4;i++) {
             if (!$("#sciname_" + i).html()) {
                 num = i;
                 break;
             }
         }
-        //console.log("num", num);
-        //$('input[name=lsid_1]').val(item.guid);
-        $("input#lsid_" + num).val(item.guid);
-        var matchedName = item.name;
+        
+        $("input#lsid_" + num).val(item.guid); // add lsid to hidden field
+        // build the name string
+        var matchedName = "<b>" + item.name + "</b>";
+        if (item.rankId && item.rankId >= 6000) {
+            matchedName = "<i>" + matchedName + "</i>";
+        }
         if (item.rankString) {
             matchedName = item.rankString + ": " + matchedName;
         }
         if (item.commonName) {
             matchedName = matchedName + " | " + item.commonName;
         }
-        //var matchedName = item.name + ((item.commonName != null) ? " | " + item.commonName : "");
+
         $("#sciname_" + num).html(matchedName); // populate the matched name
         $("#clear_" + num).show(); // show the 'clear' button
+        $("tr#taxon_row_" + num).show("slow"); // show the row
         var queryText = $("#solrQuery").val();
         $("#solrQuery").val(queryText + " lsid:" + item.guid); // add LSID to the main query input
         $("#name_autocomplete").val(""); // clear the search test
-        //$("span#sciname_" + i).attr("title", matchedName);
-        $.fancybox.close();
     });
 
+    // "clear" button next to each taxon row
     $("input.clear_taxon").click(function(e) {
         e.preventDefault();
         $(this).hide();
         var num = $(this).attr("id").replace("clear_", ""); // get the num
         var lsid = $("input#lsid_" + num).val();
         $('#sciname_' + num).html(''); // clear taxon
+        $("tr#taxon_row_" + num).hide("slow"); // hide the row
         var query = $("#solrQuery").val(); // get the query text
         query = query.replace("lsid:" + lsid, "").trim(); // reomve the LSID
         $("#solrQuery").val(query); // replace with new query text
