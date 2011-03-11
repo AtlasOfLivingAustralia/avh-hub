@@ -6,11 +6,12 @@
  *******       TAXON BREAKDOWN CHART       *****
  *******                                   *****/
 
-var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/institutions/dp20";
+var instanceUid = 'dp20';
+var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/institutions/" + instanceUid;
 /************************************************************\
 *
 \************************************************************/
-function jpLoadTaxonChart(uid, name, rank) {
+function jpLoadTaxonChart(name, rank) {
   var url = taxaBreakdownUrl + "/rank/" + rank;
   if (name != undefined) {
     url = url + "/name/" + name;
@@ -57,7 +58,7 @@ function jpDrawTaxonChart(dataTable) {
   var chart = new google.visualization.PieChart(document.getElementById('taxonChart'));
   var options = {
       width: 400,
-      height: 400,
+      height: 380,
       chartArea: {left:0, top:30, width:"90%", height: "75%"},
       is3D: false,
       titleTextStyle: {color: "#1775BA", fontName: 'Arial', fontSize: 18},
@@ -83,11 +84,11 @@ function jpDrawTaxonChart(dataTable) {
     }
     // drill down unless already at species
     if (rank != "species") {
-      $('div#taxonChart').html('<img class="taxon-loading" alt="loading..." src="http://collections.ala.org.au/images/ala/ajax-loader.gif"/>');
-      jpLoadTaxonChart('dp20', dataTable.getValue(chart.getSelection()[0].row,0), dataTable.getTableProperty('rank'));
+      $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="/images/ajax-loader.gif"/>');
+      jpLoadTaxonChart(dataTable.getValue(chart.getSelection()[0].row,0), dataTable.getTableProperty('rank'));
     }
     // show reset link
-    $('span#resetTaxonChart').css('visibility','visible');
+    $('span#resetTaxonChart').html("<img src='/images/go-left.png'/>&nbsp;&nbsp;<img src='/images/go-right-disabled.png'/>");
   });
 
   chart.draw(dataTable, options);
@@ -99,9 +100,9 @@ function jpDrawTaxonChart(dataTable) {
 *
 \************************************************************/
 function jpResetTaxonChart() {
-  $('div#taxonChart').html('<img class="taxon-loading" alt="loading..." src="http://collections.ala.org.au/images/ala/ajax-loader.gif"/>');
-  jpLoadTaxonChart(instanceUid, null, 'phylum');
-  $('span#resetTaxonChart').css('visibility','hidden');
+  $('div#taxonChart').html('<img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="/images/ajax-loader.gif"/>');
+  jpLoadTaxonChart(null, 'phylum');
+  $('span#resetTaxonChart').html("<img src='/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='/images/go-right-disabled.png'/>");
 }
 
 /*******                                   *****
@@ -126,13 +127,13 @@ function drawTypesBreakdown(data) {
 
   // chart options
   var options = {
-      width: 510,
+      width: 485,
       height: 280,
-      chartArea: {left:0, top:60, width:"100%", height: "90%"},
+      chartArea: {left:0, top:60, width:"80%", height: "90%"},
       title: 'Records by type status',
       titleTextStyle: {color: "#1775BA", fontName: 'Arial', fontSize: 18},
       sliceVisibilityThreshold: 0,
-      legend: "right"
+      legend: "left"
   };
 
   // create chart
@@ -179,13 +180,15 @@ function drawStatesBreakdown(data) {
 
   // chart options
   var options = {
-      width: 510,
+      width: 485,
       height: 280,
       chartArea: {left:0, top:60, width:"100%", height: "90%"},
-      title: 'Records by state',
+      title: 'Records by state or territory',
       titleTextStyle: {color: "#1775BA", fontName: 'Arial', fontSize: 18},
       sliceVisibilityThreshold: 0,
-      legend: "right"
+      legend: "right"/*,
+      colors: ["#0444B3","#FF0B12","#73182C","#E65A00","#377923","#FCD202","#455662","#006854","#0099CC"]*/
+
   };
 
   // create chart
@@ -251,7 +254,8 @@ function drawInstitutionBreakdown(data) {
       title: 'Records by source institution',
       titleTextStyle: {color: "#1775BA", fontName: 'Arial', fontSize: 18},
       sliceVisibilityThreshold: 0,
-      legend: "right"
+      legend: "right",
+      colors: ["#0099CC","#0444B3","#E65A00","#377923","#73182C","#455662","#FF0B12","#FCD202","#006854"]
   };
 
   // create chart
@@ -265,7 +269,7 @@ function drawInstitutionBreakdown(data) {
       drawCollectionBreakdownChart(label);
       topLevel = false;
       // show reset link
-      $('span#resetInstChart').html("Return to institution view");
+      $('span#resetInstChart').html("<img src='/images/go-left.png'/>&nbsp;&nbsp;<img src='/images/go-right-disabled.png'/>");
       $('span#instChartCaption').html("Click a slice or legend to show records for the collection.");
     } else {
       var uid = instTable.getTableProperty('uid');
@@ -341,11 +345,11 @@ function drawCollectionBreakdownChart(label) {
 }
 
 function resetInstChart() {
-  $('div#instChart').html('<img style="margin-left: 230px;margin-top: 140px;margin-bottom: 110px;" alt="loading..." src="http://collections.ala.org.au/images/ala/ajax-loader.gif"/>');
+  $('div#instChart').html('<img style="margin-left: 230px;margin-top: 140px;margin-bottom: 110px;" alt="loading..." src="/images/ajax-loader.gif"/>');
   topLevel = true;
   loadInstChart();
   $('span#instChartCaption').html("Click a slice or legend to show the institution's collections.");
-  $('span#resetInstChart').html("");
+  $('span#resetInstChart').html("<img src='/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='/images/go-right-disabled.png'/>");
 }
 
 
@@ -397,10 +401,11 @@ function resetInstChart() {
         vAxis: {logScale: true, title: "num records (log scale)", format: "#,###,###"},
         //vAxis: {logScale: false, title: "number of records", format: "#,###,###"},
         chartArea: {left: 80, width:"55%"},
-        title: 'Accumulated records by decade',
+        title: 'Records accumulated by decade',
         titleTextStyle: {color: "#1775BA", fontName: 'Arial', fontSize: 18},
         sliceVisibilityThreshold: 0,
-        legend: "right"
+        legend: "right",
+        colors: ["#0444B3","#377923","#FCD202","#FF0B12","#E65A00","#455662","#73182C","#006854","#0099CC"]
     };
 
     // create chart
@@ -410,7 +415,7 @@ function resetInstChart() {
     google.visualization.events.addListener(accumChart, 'select', function() {
       var selection = accumChart.getSelection()[0];
       var instData = rawData[selection.column - 1];
-      var search = (instData.uid.substr(0,2) == "in" ? "&fq=institution_code_uid:" : "&fq=collection_code_uid:") + instData.uid;
+      var search = (instData.uid.substr(0,2)=="in" ? "&fq=institution_code_uid:" : "&fq=collection_code_uid:") + instData.uid;
       var searchUrl = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*" + search;
       if (selection.row != undefined) {
         var decadeStart = selection.row * 10 + 1850;
@@ -509,7 +514,7 @@ function hubChartsOnLoadCallback() {
 
   loadFacetCharts();
 
-  jpLoadTaxonChart("dp20",null,"phylum");  // start with all phyla
+  jpLoadTaxonChart(null,"phylum");  // start with all phyla
 
   loadRecordsAccumulation();
 }

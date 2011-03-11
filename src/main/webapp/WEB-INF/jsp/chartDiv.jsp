@@ -1,67 +1,83 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
 <div class="section vertical-charts">
-  <!--
-  *******                                  *****
-  ******* STANDALONE TAXON BREAKDOWN CHART *****
-  *******                                  *****
-  -->
-  <div id='taxonChart'>
-    <img class='taxon-loading' alt='loading...' src='http://collections.ala.org.au/images/ala/ajax-loader.gif'/>
-  </div>
-  <div id='taxonChartCaption' style='visibility:hidden;'>
-    <span class='taxonChartCaption'>Click a slice or legend to drill into a group.</span><br/>
-    <span id='resetTaxonChart' class="resetChart" style="visibility:hidden;" onclick='jpResetTaxonChart()'>Reset</span>
-  </div>
+    <!--
+    *******                                                  *****
+    ******* STANDALONE SPECIMEN ACCUMULATION BREAKDOWN CHART *****
+    *******                                                  *****
+    -->
+    <div style="margin-left:180px;">
+    <div id='recordsAccumChart'>
+      <img class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+    </div>
+    <div id='recordsAccumChartCaption'>
+      <span id='toggleAccumChart' class="resetChart" onclick='toggleLogScale()'>Use linear scale</span><br/>
+      <span class='taxonChartCaption'>Click on a line to show records for that decade and institution.</span><br/>
+    </div>
+    <div id="raJson"></div>
+    </div>
 
-  <!--
-  *******                                        *****
-  ******* STANDALONE INSTITUTION BREAKDOWN CHART *****
-  *******                                        *****
-  -->
-  <div id='instChart'>
-    <img style="margin-left: 230px;margin-top: 100px;margin-bottom: 118px;" alt='loading...' src='http://collections.ala.org.au/images/ala/ajax-loader.gif'/>
-  </div>
-  <div id='instChartCaptionBlock' style='visibility:hidden;'>
-    <span id="instChartCaption" class='taxonChartCaption'>Click a slice or legend to show the institution's collections.</span><br/>
-    <span id='resetInstChart' style="margin-left:90px;" class="resetChart" onclick='resetInstChart()'></span>
-  </div>
+    <!--
+    *******                                  *****
+    ******* STANDALONE TAXON BREAKDOWN CHART *****
+    *******                                  *****
+    -->
+    <div style="margin-top:45px;display:inline;float:left;">
+    <div id='taxonChart'>
+      <img style="margin-left: 230px;margin-top: 100px;margin-bottom: 120px;" class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+    </div>
+    <div id='taxonChartCaption' style='visibility:hidden;'>
+      <span id='resetTaxonChart' onclick='jpResetTaxonChart()'>
+        <img src="../../images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="/images/go-right-disabled.png"/></span><br/>
+      <span class='taxonChartCaption'>Click a slice or legend to drill into a group.</span>
+    </div>
+    </div>
 
-  <!--
-  *******                                  *****
-  ******* STANDALONE TYPES BREAKDOWN CHART *****
-  *******                                  *****
-  -->
-  <div id='typesChart'>
-    <img class='taxon-loading' alt='loading...' src='http://collections.ala.org.au/images/ala/ajax-loader.gif'/>
-  </div>
-  <div id='typesChartCaption'>
-    <span class='taxonChartCaption'>Click a slice or legend to show records of that type.</span><br/>
-  </div>
+    <!--
+    *******                                        *****
+    ******* STANDALONE INSTITUTION BREAKDOWN CHART *****
+    *******                                        *****
+    -->
+    <div style="margin-top:33px;display:inline;float:right;">
+    <div id='instChart'>
+      <img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" alt='loading...' src='/images/ajax-loader.gif'/>
+    </div>
+    <div id='instChartCaptionBlock' style='visibility:hidden;'>
+      <span id='resetInstChart' style="margin-left:133px;" onclick='resetInstChart()'>
+        <img src="/images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="/images/go-right-disabled.png"/></span><br/>
+      <span id="instChartCaption" class='taxonChartCaption'>Click a slice or legend to show the institution's collections.</span>
+    </div>
+    </div>
 
-  <!--
-  *******                                  *****
-  ******* STANDALONE STATE BREAKDOWN CHART *****
-  *******                                  *****
-  -->
-  <div id='statesChart'>
-    <img class='taxon-loading' alt='loading...' src='http://collections.ala.org.au/images/ala/ajax-loader.gif'/>
-  </div>
-  <div id='statesChartCaption' style='visibility:hidden;'>
-    <span class='taxonChartCaption'>Click a slice or legend to learn more about the institution.</span><br/>
-  </div>
+    <div style="clear:both;"></div>
+    <!--
+    *******                                  *****
+    ******* STANDALONE TYPES BREAKDOWN CHART *****
+    *******                                  *****
+    -->
+    <div style="display:inline;float:left;margin-top:15px;">
+    <div id='typesChart'>
+      <img class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+    </div>
+    <div id='typesChartCaption'>
+      <span class='taxonChartCaption'>Click a slice or legend to show records of that type.</span><br/>
+    </div>
+    </div>
 
-  <!--
-  *******                                                  *****
-  ******* STANDALONE SPECIMEN ACCUMULATION BREAKDOWN CHART *****
-  *******                                                  *****
-  -->
-  <div id='recordsAccumChart'>
-    <img class='taxon-loading' alt='loading...' src='http://collections.ala.org.au/images/ala/ajax-loader.gif'/>
-  </div>
-  <div id='recordsAccumChartCaption'>
-    <span id='toggleAccumChart' class="resetChart" style="margin-left:200px;" onclick='toggleLogScale()'>Use linear scale</span>
-  </div>
-  <div id="raJson"></div>
+    <!--
+    *******                                  *****
+    ******* STANDALONE STATE BREAKDOWN CHART *****
+    *******                                  *****
+    -->
+    <div style="display:inline;float:right;margin-top:15px;">
+    <div id='statesChart'>
+      <img class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+    </div>
+    <div id='statesChartCaption'>
+      <span class='taxonChartCaption'>Click a slice or legend to show records for that state.</span><br/>
+    </div>
+    </div>
 
-</div>
+    <div style="clear:both;"></div>
+
+  </div>
