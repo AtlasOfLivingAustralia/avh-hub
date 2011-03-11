@@ -58,7 +58,10 @@ include file="/common/taglibs.jsp" %>
                 <decorator:body />
                 <div class="push"></div>
             </div>
-            <div class="footer">OZCAM is an initiative of the Council of Heads of Australian Faunal Collections (CHAFC)</div>
+            <div class="footer">
+                <div style="float: right"><a href="http://www.ala.org.au/" target="_black"><img src="${pageContext.request.contextPath}/static/images/atlas-poweredby_rgb-lightbg.png" alt=""/></a></div>
+                OZCAM is an initiative of the Council of Heads of Australian Faunal Collections (CHAFC)
+            </div>
         </div>
     </body>
 </html>
