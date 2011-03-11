@@ -1,0 +1,221 @@
+
+div.center {
+    text-align:center !important;
+}
+
+/* prevent excess space after % records widget caption */
+#content .section p.caption {
+    padding-bottom: 0;
+}
+
+/************************************************************\
+* Charts
+\************************************************************/
+
+ul.taxaBreakdown input {
+    margin-top: 11px;
+}
+
+div.child-institutions {
+    padding-top: 20px;
+}
+
+table.charts {
+    margin-left: 20px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border: none;
+}
+
+div.vertical-charts {
+    height: auto !important;
+}
+
+.vertical-charts h3 {
+    margin-top: 40px;
+}
+
+div.vertical-charts h3:first-child {
+    margin-top: 15px;
+}
+
+/*** position caption blocks ***/
+
+div#instChartCaptionBlock {
+    margin-top: 11px;
+    margin-left: 10px;
+}
+
+div#typesChartCaption {
+    margin-top: 15px;
+    margin-left: 30px;
+}
+
+div#statesChartCaption {
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+div#recordsAccumChartCaption {
+    line-height: 22px;
+    position: relative;
+    z-index: 2;
+    margin-top: -18px;
+    margin-left: 50px;
+}
+
+span#toggleAccumChart {
+    padding-left: 140px;
+}
+
+div#taxonChartCaption {
+    text-align:center;
+    width: 300px;
+    position: relative;
+    z-index: 2;
+    margin-top: -88px;
+    margin-left: 95px;
+}
+
+/************************************************************\
+* Records maps
+\************************************************************/
+
+div.learnMaps {
+    padding-left: 45px;
+}
+
+img#mapLegend {
+    margin-top: 50px;
+    vertical-align: top;
+    padding-left: 10px;
+}
+
+/************************************************************\
+* Taxon charts
+\************************************************************/
+img.taxon-loading {
+    margin-left: 230px;
+    margin-top: 150px;
+    margin-bottom: 218px;
+}
+
+span.taxonChartCaption {
+    color: #555;
+}
+
+span.resetChart {
+    color: #01716E;
+    text-decoration:underline;
+    cursor:pointer;
+    margin-bottom: 14px;
+}
+
+div.taxonCaveat {
+    padding-top:5px;
+}
+
+div#taxonRecordsLink {
+    z-index: 2;
+    margin-left: 5px;
+}
+
+/************************************************************\
+* Progress bar (speedo)
+\************************************************************/
+#speedo {
+    text-align:center;
+}
+
+#speedoCaption {
+    position: relative;
+}
+
+a.recordsLink {
+    background: transparent url(../images/ala/database_go.png) center left no-repeat;
+    padding-left: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+div.inline {
+    display: inline;
+}
+
+div.contact {
+    padding-bottom: 5px;
+}
+
+p.contactName {
+    font-weight: bold;
+}
+
+p.lastUpdated {
+    font-size: 11px;
+    color: #666 !important;
+    margin-left: 15px;
+    padding-bottom: 0 !important;
+}
+
+
+/************************************************************\
+* Decade charts
+\************************************************************/
+img.decade-loading {
+    margin-left: 130px;
+    margin-bottom: 108px;
+}
+
+div#decadeChartCaption {
+    padding-left: 100px;
+    padding-bottom: 20px;
+    color: #555;
+    position: relative;
+    z-index: 2;
+}
+
+/* ------------*/
+
+/*a[target='_blank'] {
+    background: url(../images/skin/external.png) center right no-repeat;
+    padding-right: 13px;
+}*/
+
+img.no-radius {
+    -moz-border-radius: 0 !important; /* FF1+ */
+    -webkit-border-radius: 0 !important; /* Saf3+, Chrome */
+    border-radius: 0 !important; /* Opera 10.5, IE 9 */
+    -icab-border-radius: 0;
+    -khtml-border-radius: 0;
+}
+
+/* for percent records progress bar */
+
+img.percentImage1 {
+ background: white url(../images/percentImage_back1.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 10px 0;
+ background-position: 1px 0;
+}
+
+img.percentImage2 {
+ background: white url(../images/percentImage_back2.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+
+img.percentImage3 {
+ background: white url(../images/percentImage_back3.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+
+img.percentImage4 {
+ background: white url(../images/percentImage_back4.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+
