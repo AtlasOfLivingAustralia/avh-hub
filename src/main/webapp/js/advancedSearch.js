@@ -111,7 +111,7 @@ $(document).ready(function() {
         query = query.replace(" OR lsid:" + lsid, "");  // remove potential OR'ed lsid
         query = query.replace("lsid:" + lsid + " OR ", ""); // remove potential OR'ed lsid
         query = query.replace("lsid:" + lsid, "").trimBools(); // reomve the LSID
-        console.log("clear() - query", query);
+        //console.log("clear() - query", query);
         $("#solrQuery").val(query); // replace with new query text
     });
 
@@ -130,4 +130,55 @@ $(document).ready(function() {
         window.location.href = url;
     });
 
+    // Catch onChange event on all select elements
+    $("form#advancedSearchForm select").change(function() {
+        var fieldName = $(this).attr("id");
+        var fieldValue = $(this).val();
+        if (fieldValue && fieldValue.match(/\s+/)) {
+            addFieldToQuery(fieldName,  "\"" + fieldValue + "\"")
+        } else if (fieldValue) {
+            addFieldToQuery(fieldName, fieldValue)
+        } else {
+            removeFieldFromQuery(fieldName);
+        }
+    });
+
 });
+
+/**
+ * Add the selected field name:value to the solr query string
+ */
+function addFieldToQuery(fieldName, fieldValue) {
+    var newQuery = fieldName + ":" + fieldValue;
+    var queryText = $("#solrQuery").val();// + " " + newQuery;
+    var regex = new RegExp(fieldName + ":"); // check for existing field in query
+    if (queryText.match(regex)) {
+        queryText = removeFromQuery(queryText, fieldName);
+    }
+    queryText = queryText + " " + newQuery;
+    $("#solrQuery").val(queryText.trim());
+}
+
+/**
+ * Remove the selected field name:value from the solr query string
+ */
+function  removeFieldFromQuery(fieldName) {
+    var query = removeFromQuery($("#solrQuery").val(), fieldName);
+    $("#solrQuery").val(query); // replace with new query text
+}
+
+/**
+ * Remove the provided text from the query string
+ */
+function removeFromQuery(query, removeText) {
+    var fnRegEx;
+    if (removeText.match(/state/)) {
+        // quoted field value
+        fnRegEx = new RegExp(removeText + ":\".*\"");
+    } else {
+        fnRegEx = new RegExp(removeText + ":\\w+")
+    }
+    query = query.replace(fnRegEx, "");  // remove this field
+    query = query.replace(/\s{2,}/, " ").trim(); // replace 2 or more spaces with a single space
+    return query;
+}

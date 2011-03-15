@@ -15,9 +15,15 @@
 
 package org.ala.hubs.controller;
 
+import au.org.ala.biocache.BasisOfRecord;
+import au.org.ala.biocache.SpeciesGroup;
 import au.org.ala.biocache.SpeciesGroups;
 import au.org.ala.biocache.States;
+import au.org.ala.biocache.Term;
 import au.org.ala.biocache.TypeStatus;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -26,26 +32,75 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
+ * Controller for the site's home page
  *
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 @Controller("homePageController")
 public class HomePageController {
+    /** logger */
     private final static Logger logger = Logger.getLogger(HomePageController.class);
-
+    /** Cache for the collections & institutions codes -> names */
     @Inject
     protected CollectionsCache collectionsCache;
-
+    /** View name for home page */
     protected final String HOME_PAGE = "homePage";
 
+    /**
+     * Site root - home page
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String homePage(Model model) {
         logger.info("Home Page request.");
         model.addAttribute("collections", collectionsCache.getCollections());
         model.addAttribute("institutions", collectionsCache.getInstitutions());
-        model.addAttribute("typeStatus", TypeStatus.all());
-        model.addAttribute("states", States.all());
-        model.addAttribute("speciesGroups", SpeciesGroups.groups());
+        model.addAttribute("typeStatus", extractTermsList(TypeStatus.all()));
+        model.addAttribute("basisOfRecord", extractTermsList(BasisOfRecord.all()));
+        model.addAttribute("states", extractTermsList(States.all()));
+        model.addAttribute("speciesGroups", extractSpeciesGroups(SpeciesGroups.groups()));
         return HOME_PAGE;
     }
+
+    /**
+     * Convert Scala List of SpeciesGroup's to a Java List<String>
+     *
+     * @param groups
+     * @return
+     */
+    private List<String> extractSpeciesGroups(scala.collection.immutable.List<SpeciesGroup> groups) {
+        List<String> output = new ArrayList<String>();
+
+        scala.collection.Iterator<SpeciesGroup> it = groups.iterator();
+        while (it.hasNext()) {
+            String name =  it.next().name();
+            logger.debug("SpeciesGroup = " + name);
+            output.add(name);
+        }
+        
+        Collections.sort(output); // force alphabetic order
+        return output;
+    }
+
+    /**
+     * Convert Scala List of term's to a Java List<String>
+     *
+     * @param groups
+     * @return
+     */
+    private List<String> extractTermsList(scala.collection.immutable.Set<Term> terms) {
+        List<String> output = new ArrayList<String>();
+        scala.collection.Iterator<Term> it = terms.iterator();
+        while (it.hasNext()) {
+            String term =  it.next().canonical();
+            logger.debug("Term = " + term);
+            output.add(term);
+        }
+        
+        Collections.sort(output); // force alphabetic order
+        return output;
+    }
+
 }
