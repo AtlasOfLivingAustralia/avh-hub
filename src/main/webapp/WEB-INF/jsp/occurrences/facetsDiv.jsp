@@ -36,10 +36,10 @@
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
                                         <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear} - ${startYear + 10}</b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'institution_code_uid')}">
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'institution_uid')}">
                                         <b><fmt:message key="${institutionCodes[item.value]}"/></b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'collection_code_uid')}">
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'collection_uid')}">
                                         <b><fmt:message key="${collectionCodes[item.value]}"/></b>${closeLink}
                                     </c:when>
                                     <c:otherwise>
@@ -77,11 +77,11 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                         </c:when>
-                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_code_uid')}">
+                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_uid')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${institutionCodes[fieldResult.label]}</a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                         </c:when>
-                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collection_code_uid')}">
+                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collection_uid')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${collectionCodes[fieldResult.label]}</a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                         </c:when>
@@ -109,8 +109,8 @@
         var hash = 0;
         if (this.length == 0) return code;
         for (i = 0; i < this.length; i++) {
-            char = this.charCodeAt(i);
-            hash = 31*hash+char;
+            var thisChar = this.charCodeAt(i);
+            hash = 31*hash+chthisCharar;
             hash = hash & hash; // Convert to 32bit integer
         }
         return hash;

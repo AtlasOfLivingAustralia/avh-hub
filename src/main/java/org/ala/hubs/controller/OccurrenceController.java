@@ -256,13 +256,13 @@ public class OccurrenceController {
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
 
-        String collectionCodeUid = null;
+        String collectionUid = null;
 
         if (record != null && record.getProcessed() != null) { // .getAttribution().getCollectionCodeUid()
             FullRecord  pr = record.getProcessed();
-            collectionCodeUid = pr.getAttribution().getCollectionUid();
+            collectionUid = pr.getAttribution().getCollectionUid();
 
-            Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionCodeUid);
+            Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionUid);
             if ((Integer) resp[0] == HttpStatus.SC_OK) {
                 String json = (String) resp[1];
                 ObjectMapper mapper = new ObjectMapper();
