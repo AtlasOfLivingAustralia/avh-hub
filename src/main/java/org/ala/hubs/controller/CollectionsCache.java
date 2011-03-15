@@ -117,11 +117,10 @@ public class CollectionsCache {
 
             for (LinkedHashMap<String, String> je : entities) {
                 entityMap.put(je.get("uid"), je.get("name"));
-                logger.info("uid = " + je.get("uid") + " & name = " + je.get("name"));
+                logger.debug("uid = " + je.get("uid") + " & name = " + je.get("name"));
             }
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
-            //searchResults.setStatus("Error: " + ex.getMessage());
         }
 
         return entityMap;
