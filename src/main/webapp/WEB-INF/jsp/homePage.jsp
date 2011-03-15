@@ -44,7 +44,7 @@
             <div id="solrSearchForm">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="homepageSearchForm">
                     <input name="q" value="${param.q}" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;
-                    <input type="submit" value="Submit" id="solrSubmit" style="font-size:18px;"/>
+                    <input type="submit" value="Submit" id="solrSubmit" style="font-size:14px;"/>
                     <input type="hidden" id="lsid" value=""/>
                     <span id="advancedSearchLink"><a href="#advancedSearch">Advanced Search</a></span>
                 </form>
@@ -79,7 +79,24 @@
                             </c:forEach>
                         </tbody>
                     </table>
-                    <b>Find records from the following institutions</b>
+                    <b>Find records from the following species group</b>
+                    <table border="0" width="100" cellspacing="2" class="compact">
+                        <thead/>
+                        <tbody>
+                            <tr>
+                                <td class="label">Species Group</td>
+                                <td>
+                                     <select>
+                                        <option value="">-- select a species group --</option>
+                                        <c:forEach var="group" items="${speciesGroups2}">
+                                            <option value="${group.values}">${group.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <b>Find records from the following institution or collection</b>
                     <table border="0" width="100" cellspacing="2" class="compact">
                         <thead/>
                         <tbody>
@@ -89,7 +106,18 @@
                                     <select>
                                         <option value="">-- select an institution --</option>
                                         <c:forEach var="inst" items="${institutions}">
-                                            <option value="${inst.uid}">${inst.name}</option>
+                                            <option value="${inst.key}">${inst.value}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Collection name</td>
+                                <td>
+                                    <select>
+                                        <option value="">-- select an collection --</option>
+                                        <c:forEach var="coll" items="${collections}">
+                                            <option value="${coll.key}">${coll.value}</option> 
                                         </c:forEach>
                                     </select>
                                 </td>
@@ -105,7 +133,7 @@
                                 <td>
                                     <select>
                                         <option value="">-- select a state --</option>
-                                        <c:forEach var="state" items="${states}">
+                                        <c:forEach var="state" items="${}">
                                             <option value="${state}">${state}</option>
                                         </c:forEach>
                                     </select>
@@ -135,6 +163,24 @@
                             </tr>
                         </tbody>
                     </table>
+                    <b>Find records from the following type status</b>
+                    <table border="0" width="100" cellspacing="2" class="compact">
+                        <thead/>
+                        <tbody>
+                            <tr>
+                                <td class="label">Type Status</td>
+                                <td>
+                                     <select>
+                                        <option value="">-- select a type status --</option>
+                                        <c:forEach var="type" items="${}">
+                                            <option value="${type}">${type}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                     <input type="button" id="advancedSubmit" value="Advanced Search" onClick="$('#solrSubmit').click()"/>
                 </form>
             </div>

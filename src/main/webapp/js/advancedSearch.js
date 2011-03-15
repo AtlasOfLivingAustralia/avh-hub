@@ -88,7 +88,9 @@ $(document).ready(function() {
         $("#clear_" + num).show(); // show the 'clear' button
         $("tr#taxon_row_" + num).show("slow"); // show the row
         var queryText = $("#solrQuery").val();
-        if (queryText && queryText.substr(0, 4) == "lsid") {
+        // add OR between lsid:foo terms
+        // TODO wrap all lsid:NNN terms in braces
+        if (queryText && queryText.indexOf("lsid") != -1) {
             queryText = queryText + " OR lsid:" + item.guid;
         } else {
             queryText = queryText + " lsid:" + item.guid;
@@ -128,21 +130,4 @@ $(document).ready(function() {
         window.location.href = url;
     });
 
-    // Lookup buttons
-    $("input.taxaLookup").fancybox({
-        'hideOnContentClick' : false,
-        'hideOnOverlayClick': true,
-        'showCloseButton': true,
-        'titleShow' : false,
-        'autoDimensions' : false,
-        'width': '600',
-        'height': '200',
-        'padding': 15,
-        'margin': 10,
-        'onComplete': function(el) {
-            var num = $(el).attr("id");
-            //$("span#nameNum").html(num);
-            $("input[name=name_autocomplete]").attr("id", num);
-        }
-    });
 });

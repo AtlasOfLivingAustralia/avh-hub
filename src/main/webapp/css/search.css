@@ -20,12 +20,12 @@
     border: none;
 }
 #headingBar h1 {
-    width: 50%;
+    width: 40%;
     float: left;
     height: 32px;
 }
 #searchBox {
-    width: 50%;
+    width: 60%;
     float: left;
     height: 32px;
     text-align: right;
@@ -37,8 +37,8 @@
     display: inline-block;
     float: right;
     margin-top: 5px;
-    font-size: 14px;
-    width: 360px;
+    font-size: 13px;
+    width: 500px;
 }
 #solrSearchForm input#searchSubmit {
     display: inline-block;

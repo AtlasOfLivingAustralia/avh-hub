@@ -31,9 +31,6 @@
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-    
-    <!-- map / (home page) to a plain JSP -->
-    <mvc:view-controller path="/" view-name="homePage"/>
 
     <!-- Application Message Bundle -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
