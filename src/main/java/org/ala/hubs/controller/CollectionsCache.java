@@ -110,7 +110,7 @@ public class CollectionsCache {
 
         try {
             entityMap = new LinkedHashMap<String, String>(); // reset now we're inside the try
-            final String jsonUri = collectoryUriPrefix + type.getType() + ".json";
+            final String jsonUri = collectoryUriPrefix + "dataHub/dh1/" + type.getType() + "s.json";
             logger.debug("Requesting: " + jsonUri);
             List<LinkedHashMap<String, String>> entities = restTemplate.getForObject(jsonUri, List.class);
             logger.debug("number of entities = " + entities.size());
