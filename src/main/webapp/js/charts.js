@@ -6,8 +6,8 @@
  *******       TAXON BREAKDOWN CHART       *****
  *******                                   *****/
 
-var instanceUid = 'dp20';
-var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/institutions/" + instanceUid;
+var instanceUid = 'dh1';
+var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/data-hubs/" + instanceUid;
 /************************************************************\
 *
 \************************************************************/
