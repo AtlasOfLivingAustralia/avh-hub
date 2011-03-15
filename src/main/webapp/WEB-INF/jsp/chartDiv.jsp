@@ -8,7 +8,7 @@
     -->
     <div style="margin-left:180px;">
     <div id='recordsAccumChart'>
-      <img class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+      <img class='taxon-loading' alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
     <div id='recordsAccumChartCaption'>
       <span id='toggleAccumChart' class="resetChart" onclick='toggleLogScale()'>Use linear scale</span><br/>
@@ -24,11 +24,11 @@
     -->
     <div style="margin-top:45px;display:inline;float:left;">
     <div id='taxonChart'>
-      <img style="margin-left: 230px;margin-top: 100px;margin-bottom: 120px;" class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+      <img style="margin-left: 230px;margin-top: 100px;margin-bottom: 120px;" class='taxon-loading' alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
     <div id='taxonChartCaption' style='visibility:hidden;'>
       <span id='resetTaxonChart' onclick='jpResetTaxonChart()'>
-        <img src="../../images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="/images/go-right-disabled.png"/></span><br/>
+        <img src="static/images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="static/images/go-right-disabled.png"/></span><br/>
       <span class='taxonChartCaption'>Click a slice or legend to drill into a group.</span>
     </div>
     </div>
@@ -40,11 +40,11 @@
     -->
     <div style="margin-top:33px;display:inline;float:right;">
     <div id='instChart'>
-      <img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" alt='loading...' src='/images/ajax-loader.gif'/>
+      <img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
     <div id='instChartCaptionBlock' style='visibility:hidden;'>
       <span id='resetInstChart' style="margin-left:133px;" onclick='resetInstChart()'>
-        <img src="/images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="/images/go-right-disabled.png"/></span><br/>
+        <img src="static/images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="static/images/go-right-disabled.png"/></span><br/>
       <span id="instChartCaption" class='taxonChartCaption'>Click a slice or legend to show the institution's collections.</span>
     </div>
     </div>
@@ -57,7 +57,7 @@
     -->
     <div style="display:inline;float:left;margin-top:15px;">
     <div id='typesChart'>
-      <img class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+      <img class='taxon-loading' alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
     <div id='typesChartCaption'>
       <span class='taxonChartCaption'>Click a slice or legend to show records of that type.</span><br/>
@@ -71,7 +71,7 @@
     -->
     <div style="display:inline;float:right;margin-top:15px;">
     <div id='statesChart'>
-      <img class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+      <img class='taxon-loading' alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
     <div id='statesChartCaption'>
       <span class='taxonChartCaption'>Click a slice or legend to show records for that state.</span><br/>

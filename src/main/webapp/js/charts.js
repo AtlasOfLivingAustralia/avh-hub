@@ -84,11 +84,13 @@ function jpDrawTaxonChart(dataTable) {
     }
     // drill down unless already at species
     if (rank != "species") {
-      $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="/images/ajax-loader.gif"/>');
+      $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="static/images/ajax-loader.gif"/>');
       jpLoadTaxonChart(dataTable.getValue(chart.getSelection()[0].row,0), dataTable.getTableProperty('rank'));
+    } else {
+      window.location.href = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*&fq=" + rank + ":" + name;
     }
     // show reset link
-    $('span#resetTaxonChart').html("<img src='/images/go-left.png'/>&nbsp;&nbsp;<img src='/images/go-right-disabled.png'/>");
+    $('span#resetTaxonChart').html("<img src='static/images/go-left.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
   });
 
   chart.draw(dataTable, options);
@@ -100,9 +102,9 @@ function jpDrawTaxonChart(dataTable) {
 *
 \************************************************************/
 function jpResetTaxonChart() {
-  $('div#taxonChart').html('<img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="/images/ajax-loader.gif"/>');
+  $('div#taxonChart').html('<img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="static/images/ajax-loader.gif"/>');
   jpLoadTaxonChart(null, 'phylum');
-  $('span#resetTaxonChart').html("<img src='/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='/images/go-right-disabled.png'/>");
+  $('span#resetTaxonChart').html("<img src='static/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
 }
 
 /*******                                   *****
@@ -269,7 +271,7 @@ function drawInstitutionBreakdown(data) {
       drawCollectionBreakdownChart(label);
       topLevel = false;
       // show reset link
-      $('span#resetInstChart').html("<img src='/images/go-left.png'/>&nbsp;&nbsp;<img src='/images/go-right-disabled.png'/>");
+      $('span#resetInstChart').html("<img src='static/images/go-left.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
       $('span#instChartCaption').html("Click a slice or legend to show records for the collection.");
     } else {
       var uid = instTable.getTableProperty('uid');
@@ -345,11 +347,11 @@ function drawCollectionBreakdownChart(label) {
 }
 
 function resetInstChart() {
-  $('div#instChart').html('<img style="margin-left: 230px;margin-top: 140px;margin-bottom: 110px;" alt="loading..." src="/images/ajax-loader.gif"/>');
+  $('div#instChart').html('<img style="margin-left: 230px;margin-top: 140px;margin-bottom: 110px;" alt="loading..." src="static/images/ajax-loader.gif"/>');
   topLevel = true;
   loadInstChart();
   $('span#instChartCaption').html("Click a slice or legend to show the institution's collections.");
-  $('span#resetInstChart').html("<img src='/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='/images/go-right-disabled.png'/>");
+  $('span#resetInstChart').html("<img src='static/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
 }
 
 
