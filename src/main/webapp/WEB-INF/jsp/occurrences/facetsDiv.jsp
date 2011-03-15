@@ -110,7 +110,7 @@
         if (this.length == 0) return code;
         for (i = 0; i < this.length; i++) {
             var thisChar = this.charCodeAt(i);
-            hash = 31*hash+chthisCharar;
+            hash = 31*hash+thisChar;
             hash = hash & hash; // Convert to 32bit integer
         }
         return hash;
