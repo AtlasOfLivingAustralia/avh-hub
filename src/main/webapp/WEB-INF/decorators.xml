@@ -9,10 +9,10 @@
         <pattern>/static/*</pattern>
         <pattern>/occurrences/*/assertions/</pattern>
         <pattern>/occurrences/*/groupedAssertions/</pattern>
-        <pattern>/index.jsp</pattern>
+        <pattern>/index</pattern>
     </excludes>
 
-    <decorator name="main" page="ozcam.jsp">
+    <decorator name="main" page="ozcam-skin.jsp">
         <pattern>/*</pattern>
     </decorator>
 </decorators>
