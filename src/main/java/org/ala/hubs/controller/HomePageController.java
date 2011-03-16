@@ -48,14 +48,35 @@ public class HomePageController {
     protected GazetteerCache gazetteerCache;
     /** View name for home page */
     protected final String HOME_PAGE = "homePage";
+    protected final String OZCAM_PAGE = "ozcamHome";
 
     /**
-     * Site root - home page
+     * Site root - dummy Ozcam front page
+     *
+     * @return
+     */
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String ozcamPage() {
+        return "redirect:/index";
+    }
+
+    /**
+     * Site root - dummy Ozcam front page
+     *
+     * @return
+     */
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String indexPage() {
+        return OZCAM_PAGE;
+    }
+
+    /**
+     * Real root - search page
      *
      * @param model
      * @return
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String homePage(Model model) {
         logger.info("Home Page request.");
         model.addAttribute("collections", collectionsCache.getCollections());
