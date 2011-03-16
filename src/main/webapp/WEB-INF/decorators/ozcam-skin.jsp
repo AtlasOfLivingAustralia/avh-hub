@@ -11,7 +11,7 @@ include file="/common/taglibs.jsp" %>
     <head profile="http://gmpg.org/xfn/11">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title><decorator:title default="OZCAM" /></title>
-        <link rel="stylesheet" href="http://www.ozcam.org.au/wp-content/themes/OZCAM-0.3/OZCAM 0.3/style.css" type="text/css" media="screen,projection" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ozcam-0.3/style.css" type="text/css" media="screen,projection" />
         <!--<link rel="icon" type="image/x-icon" href="http://www.ozcam.org.au/favicon.ico" />-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
         <style type="text/css">
@@ -22,7 +22,7 @@ include file="/common/taglibs.jsp" %>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bieAutocomplete.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>

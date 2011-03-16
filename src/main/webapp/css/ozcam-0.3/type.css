@@ -1,0 +1,88 @@
+@charset "UTF-8";
+/* CSS Document */
+
+
+body, #content p{
+	font-family: 'LatiniaRegular', Georgia, "Times New Roman", Times, serif;
+	font-size: 12px;
+	line-height: 18px;
+	color: #333;
+}
+
+.news_content p, .news_postmetadata{font-family: 'LatiniaRegular', Georgia, "Times New Roman", Times, serif;}
+#News-sb h1, .news_content h1, .news_content h3{font-family: 'Rockwell', arial, helvetica, sans-serif;}
+h2, #search li, .hp-contentbutton, .searchbtn{font-family: 'Rockwell', arial, helvetica, sans-serif;}
+#nav a, #nav a:hover{font-family: 'Rockwell', arial, helvetica, sans-serif;}
+#hp-content h1, #content h1, #sidebar h1, #img-sb h1, #search-sb h1, #content h4, #sponsors h1{font-family: 'Rockwell', arial, helvetica, sans-serif;}
+
+@font-face {
+	font-family: 'Rockwell';
+	src: url('type/rockwell-webfont.eot');
+	src: local('☺'), url('type/rockwell-webfont.woff') format('woff'), url('type/rockwell-webfont.ttf') format('truetype'), url('type/rockwell-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'RockwellBold';
+	src: url('type/rockwbol-webfont.eot');
+	src: local('☺'), url('type/rockwbol-webfont.woff') format('woff'), url('type/rockwbol-webfont.ttf') format('truetype'), url('type/rockwbol-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'BergamoStdRegular';
+	src: url('type/BergamoStd-Regular-webfont.eot');
+	src: local('☺'), url('type/BergamoStd-Regular-webfont.woff') format('woff'), url('type/BergamoStd-Regular-webfont.ttf') format('truetype'), url('type/BergamoStd-Regular-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'LatiniaRegular';
+	src: url('type/Latinia-webfont.eot');
+	src: local('☺'), url('type/Latinia-webfont.woff') format('woff'), url('type/Latinia-webfont.ttf') format('truetype'), url('type/Latinia-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'LatiniaBlackRegular';
+	src: url('type/LatiniaBlack-webfont.eot');
+	src: local('☺'), url('type/LatiniaBlack-webfont.woff') format('woff'), url('type/LatiniaBlack-webfont.ttf') format('truetype'), url('type/LatiniaBlack-webfont.svg#webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/*@font-face {
+	font-family: 'DejaWebRegular';
+	src: url('type/dejaweb.eot');
+	src: local('☺'), url('type/dejaweb.woff') format('woff'), url('type/dejaweb.ttf') format('truetype'), url('type/dejaweb.svg#webfont') format('svg');
+}
+
+@font-face {
+	font-family: 'DejaWebBold';
+	src: url('type/dejaweb-bold.eot');
+	src: local('☺'), url('type/dejaweb-bold.woff') format('woff'), url('type/dejaweb-bold.ttf') format('truetype'), url('type/dejaweb-bold.svg#webfont') format('svg');
+}
+@font-face {
+	font-family: 'AniversRegular';
+	src: url('type/anivers_regular.eot');
+	src: local('☺'), url('type/anivers_regular.woff') format('woff'), url('type/anivers_regular.ttf') format('truetype'), url('type/anivers_regular.svg#webfont') format('svg');
+}
+@font-face {
+	font-family: 'VegurExtraLight';
+	src: url('type/Vegur-EL_0500.eot');
+	src: local('☺'), url('type/Vegur-EL_0500.ttf') format('truetype'), url('type/Vegur-EL_0500.svg#webfont') format('svg');
+}
+
+@font-face {
+	font-family: 'VegurRegular';
+	src: url('type/Vegur-R_0500.eot');
+	src: local('☺'), url('type/Vegur-R_0500.ttf') format('truetype'), url('type/Vegur-R_0500.svg#webfont') format('svg');
+}
+
+@font-face {
+	font-family: 'VegurBold';
+	src: url('type/Vegur-B_0500.eot');
+	src: local('☺'), url('type/Vegur-B_0500.ttf') format('truetype'), url('type/Vegur-B_0500.svg#webfont') format('svg');
+}
+*/

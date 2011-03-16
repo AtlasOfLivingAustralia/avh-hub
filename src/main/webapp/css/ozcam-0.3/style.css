@@ -1,0 +1,453 @@
+/*
+Theme Name: OZCAM Heavy 0.3
+Description:
+Author: Diego DeNicola/Musuem Victoria
+Author URI:
+Version: 0.3
+.
+.
+*/
+@import url("widget.css");
+@import url("type.css");
+@import url("reset.css");
+@import url("style-common.css");
+
+
+/*------------------------------------------------*/
+/*---------------[NAVIGATION]---------------*/
+/*------------------------------------------------*/
+{
+	margin: 0;
+}
+html, body {
+	height: 100%;
+}
+a:hover {color: #0E70B4;}
+a:visited {color: #506E02;
+}
+#navigation {
+	clear: both;
+	width: 100%;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	background-image: url(images/n-bg.jpg);
+	background-repeat: repeat-x;
+	height: 53px;
+}
+body {
+}
+h2 {
+	color: #666;
+}
+#nav-inside {
+	overflow: visible;
+	width: 1024px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+}
+#nav {
+	margin: 0;
+	list-style: none;
+	line-height: 100%;
+}
+
+#nav a {
+	display: block;
+	color: #0c6fb5;
+	text-decoration: none;
+	height: 33px;
+	padding: 10px;
+	text-align: center;
+	line-height: 175%;
+}
+#nav a:hover {
+	color: #FFF;
+	text-shadow: 0px -1px 0px #000;
+	-moz-box-shadow:inset -2px 0 5px #727272;
+	-webkit-box-shadow: inset -2px 0 5px #727272;
+	background-image: url(images/n-ro.png); /* fallback image */
+	background-repeat: repeat-x;
+	background-image: -moz-linear-gradient(100% 100% 90deg, #696969, #a2a2a2);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a2a2a2), to(#696969));
+}
+
+#nav li { /* all list items */
+	float: left;
+	width: 10em; /* width needed or else Opera goes nuts */
+	height: 53px;
+	background-image: url(images/n-sep.jpg);
+	background-repeat: no-repeat;
+	background-position: right;
+}
+#nav_start {
+	margin: 0;
+	list-style: none;
+	line-height: 100%;
+}
+#nav_start li { /* all list items */
+	float: left;
+	height: 53px;
+	background-repeat: no-repeat;
+	background-position: right;
+	background-image: url(images/n-sep.jpg);
+	width: 2px;
+}
+
+
+/*------------------------------------------------*/
+/*---------------FEATURE BOX---------------*/
+/*------------------------------------------------*/
+#feature {
+	width: 1100px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	padding-left: 80px;
+}
+#slider{
+	width: 444px;
+	height: 270px;
+	box-shadow: 7px 7px 8px #818181;
+	-webkit-box-shadow: 1px 1px 8px #000000;
+	-moz-box-shadow: 1px 1px 8px #000000;
+    filter: progid:DXImageTransform.Microsoft.dropShadow(color=#818181, offX=7, offY=7, positive=true);
+	border: 10px solid #FFF;
+}
+#sliderbody ul {
+}
+#hp-header {
+	width: 100%;
+	background-repeat: repeat-x;
+	height: 358px;
+	background-image: url(images/c-bg.png);
+	padding-top: 52px;
+}
+#featureBox, #hp-LogoBox {
+	float: left;
+}
+#hp-Logo {
+	background-image: url(images/ozcamlogo.png);
+	background-repeat: no-repeat;
+	width: 520px;
+	float: left;
+	height: 292px;
+	background-position: 10px;
+	margin-left: 40px;
+}
+#search  {
+	height: 54px;
+	margin-top: 240px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	width: 200px;
+}
+#search li  {
+	font-size: 12px;
+	line-height: 50px;
+	list-style-type: none;
+	background-image: url(images/Start-Search.png);
+	background-repeat: no-repeat;
+	padding-left: 30px;
+}
+#search a {
+	color: #787878;
+}
+#search a:hover {
+	color: #000;
+}
+/*------------------------------------------------*/
+/*---------------CONTENT---------------*/
+/*------------------------------------------------*/
+
+/*---------------HOME PAGE---------------*/
+#hp-contentBox {
+	background-color: #FFF;
+	width: 1024px;
+	margin-top: 30px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	padding: 0px;
+}
+#hp-content {
+	float: left;
+	width: 480px;
+	padding-left: 40px;
+}
+#hp-content h1 {
+	color: #999;
+	text-transform: uppercase;
+	font-size: 34px;
+	line-height: 44px;
+	text-shadow: 1px 1px 1px #bbbaba;
+	margin-bottom: 10px;
+	font-weight: lighter;
+}
+#hp-content p {
+	font-size: 12px;
+	line-height: 18px;
+	margin-bottom: 10px;
+}
+.hp-contentbutton  {
+	background-image: url(images/hp-button.png);
+	height: 50px;
+	width: 194px;
+	background-repeat: no-repeat;
+	font-size: 14px;
+	display: list-item;
+	list-style-type: none;
+	margin-top: 220px;
+	margin-right: auto;
+	margin-left: 140px;
+	margin-bottom: 0px;
+	padding: 0px;
+	text-indent: 30px;
+	line-height: 260%;
+}
+.hp-contentbutton a  {
+	color: #333;
+	padding-left: 10px;
+	text-align: center;
+}
+.hp-contentbutton a:hover  {
+	color: #729D00;
+	padding-left: 10px;
+}
+
+/*---------------PAGE---------------*/
+#contentBox {
+	background-color: #FFF;
+	width: 960px;
+	margin-top: 40px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	padding-left: 0px;
+}
+
+#header {
+	width: 100%;
+	background-repeat: repeat-x;
+	height: 144px;
+	background-image: url(images/pagebg.jpg);
+}
+#featureBox, #LogoBox {
+	float: left;
+}
+#Logo {
+	background-image: url(images/ozcamlogosmall.png);
+	background-repeat: no-repeat;
+	width: 400px;
+	float: left;
+	height: 91px;
+	background-position: 13px;
+	margin-top: 20px;
+}
+#content {
+	float: left;
+	margin-left: 40px;
+	width: 640px;
+}
+#content ul {
+	list-style-type: none;
+	list-style-position: inside;
+	list-style-image: url(images/bg-list-item.png);
+	margin-top: 10px;
+	line-height: 24px;
+	}
+#content h1 {
+	color: #1775BA;
+	font-size: 40px;
+	/*text-shadow: 1px 1px 1px #bbbaba;*/
+	margin-bottom: 10px;
+	font-weight: lighter;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 5px;
+	padding-left: 0px;
+	margin-top: 0px;
+}
+#content h4 {
+	color: #3C88C3;
+	font-size: 20px;
+	font-weight: lighter;
+	line-height: normal;
+	padding: 0px;
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+}
+#content p {
+	padding-right: 20px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 4px;
+	margin-left: 0px;
+}
+#content a {
+	font-size: 12px;
+}
+/* News*/
+#contentBoxA {
+	background-color: #FFF;
+	width: 980px;
+	margin-top: 40px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	padding-left: 0px;
+}
+.news_content {
+	float: left;
+	margin-left: 20px;
+	width: 640px;
+}
+.news_content ul {
+	list-style-type: none;
+	list-style-position: inside;
+	list-style-image: url(images/bg-list-item.png);
+	margin-top: 10px;
+	line-height: 24px;
+	}
+.news_content h1 {
+	color: #1775BA;
+	font-weight: lighter;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 10px;
+	padding-left: 0px;
+	margin-top: 0px;
+	font-size: 32px;
+}
+.news_content h2 {
+	color: #1775BA;
+	/*text-shadow: 1px 1px 1px #bbbaba;*/
+	margin-bottom: 10px;
+	font-weight: lighter;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 5px;
+	padding-left: 0px;
+	margin-top: 0px;
+}
+.news_content h3 {
+	color: #666;
+	font-size: 22px;
+	font-weight: lighter;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 5px;
+	padding-left: 0px;
+	margin-top: 20px;
+}
+.news_content h4 {
+	color: #3C88C3;
+	font-size: 20px;
+	font-weight: lighter;
+	line-height: normal;
+	padding: 0px;
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+}
+.news_content p {
+	padding-right: 20px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 4px;
+	margin-left: 0px;
+	font-size: 12px;
+	line-height: 20px;
+}
+.news_content a {
+	color: #1775BA;
+}
+.news_content a:hover {
+	color: #729D00;
+}
+.news_postmetadata{
+	margin-bottom: 20px;
+	font-size: 12px;
+	margin-top: 10px;
+}
+.date{
+	margin-bottom: 10px;
+	margin-top: 10px;
+	line-height: 160%;
+	overflow: visible;
+	font-size: 13px;
+}
+.comments{
+	font-size: 12px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.comment_text{
+	font-size: 14px;
+	line-height: 20px;
+	margin-top: 10px;
+	padding: 0px;
+	margin-bottom: 10px;
+	color: #666;
+}
+.comments_gravatar{}
+.comments ul li{}
+.commentmetadatadate {
+	font-size: 11px;
+	margin-bottom: 20px;
+}
+.comment-body {
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-khtml-border-radius: 12px;
+	-webkit-box-shadow: 0px 0px 10px  #cfcfcf;
+	-moz-box-shadow: 0px 0px 10px #cfcfcf;
+	border-radius: 12px;
+	border: 1px solid #cfcfcf;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+.fn {
+	font-size: 14px;
+	font-weight: normal;
+	color: #1789D7;
+	font-style: normal;
+}
+/*------------------------------------------------*/
+/*---------------FOOTER---------------*/
+/*------------------------------------------------*/
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer {
+	height: 100px; /* .push must be the same height as .footer */
+	clear: both;
+	text-align: center;
+	background-color: #E8E8E8;
+	font-size: 12px;
+	padding-top: 10px;
+}
+.push {
+	height: 100px; /* .push must be the same height as .footer */
+	clear: both;
+}
