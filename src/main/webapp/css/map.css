@@ -16,6 +16,16 @@
     height: 560px;
 }
 
+#maploading {
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    background-color: yellow;
+    padding: 5px;
+    text-align: center; 
+    display: none;
+}
+
 #occinfo {
     width: 300px;
     height: 200px;

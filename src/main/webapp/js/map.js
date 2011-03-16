@@ -177,12 +177,14 @@ var Maps = (function() {
             customParams.push(pairs[i]);
         }
         //loadWMS(map, "http://spatial.ala.org.au/geoserver/wms?", customParams);
-        var overlayWMS = getWMSObject(map, "MySpecies - " + name, Config.OCC_WMS_BASE_URL, customParams);
+        //var overlayWMS = getWMSObject(map, "MySpecies - " + name, Config.OCC_WMS_BASE_URL, customParams);
         //        google.maps.event.addListener(overlayWMS, 'tilesloaded', function(event) {
         //            console.log("tiles loaded for overlayWMS");
         //        });
         //map.overlayMapTypes.insertAt(map.overlayMapTypes.length, overlayWMS);
-        overlayLayers.push(overlayWMS);
+        //overlayLayers.push(overlayWMS);
+        var wmstile = new CustomTileLayer("MySpecies - " + name,customParams);
+        overlayLayers.push(wmstile);
     }
 
     return {
@@ -239,10 +241,10 @@ var Maps = (function() {
                 loadOccurrencePopup(event.latLng);
             });
 
-            google.maps.event.addListener(map, 'tilesloaded', function(event) {
+            google.maps.event.addListener(map, 'tilesloaded', function() {
                 $('#legend').show();
             });
-
+            
             // populate the env.layer dropdown
             var opts='<option value="-1">None</option>';
             $.each(envLayers, function(key, value) {
@@ -313,6 +315,9 @@ var Maps = (function() {
          * Load occurrences divided by the facet values 
          */
         loadOccurrencesByType: function(cbf) {
+
+            $('#maploading').show();
+
             var _idx = -1;
             var legHtml = "";
 

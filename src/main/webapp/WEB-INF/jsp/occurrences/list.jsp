@@ -132,7 +132,7 @@
                         <div>
                             <label for="colourFacets">Colour by:</label>
                             <select name="colourFacets" id="colourFacets">
-                                <option value=""> -- Select an option -- </option>
+                                <option value=""> None </option>
                                 <c:forEach var="facetResult" items="${searchResults.facetResults}">
                                     <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
                                         <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
@@ -156,29 +156,11 @@
 
                         </div>
                         <div id="mapcanvas"></div>
+                        <div id="maploading">Loading...</div>
                         <div id="legend" title="Toggle layers/legend display">                            
                             <div class="title">Layers<span>&nabla;</span></div>
                             <div id="layerlist">
                                 <div id="toggleAll">Toggle layers</div>
-                                <!--
-                            <div id="envLayers">
-                                <div>
-                                    <input type="radio" name="envBio11" /> Bio11
-                                </div>
-                                <div>
-                                    <input type="radio" name="envBio12" /> Bio12
-                                </div>
-                                <div>
-                                    <input type="radio" name="envBio34" /> Bio34
-                                </div>
-                                <div>
-                                    <input type="radio" name="envCars2006" /> CARS 2006
-                                </div>
-                                <div>
-                                    <input type="radio" name="envCars2009a" /> CARS 2009a
-                                </div>
-                            </div>
-                                -->
                                 <div id="legendContent"></div>
                             </div>
                         </div>

@@ -2,6 +2,10 @@
     Document   : wms.js
     Created on : Feb 16, 2011, 3:25:27 PM
     Author     : "Gavin Jackson <Gavin.Jackson@csiro.au>"
+    Modified   : "Ajay Ranipeta <Ajay.Ranipeta@csiro.au>"
+                 - Added better direct tile support rather than ImageMapType
+                 - Added tiles loaded checking
+
 
     Refactored code from http://lyceum.massgis.state.ma.us/wiki/doku.php?id=googlemapsv3:home
 */
@@ -125,3 +129,76 @@ function getWMSObject(map, name, baseURL, customParams){
 
     return overlayWMS; 
 }
+
+var totalTileCount = 0;
+var currTileCount = 0;
+function CustomTileLayer(name, customParams){
+    this.tileSize = new google.maps.Size(256,256);
+    this.minZoom = 2;
+    this.maxZoom = 17;
+    this.name = name;
+    this.customparams_ = customParams;
+    this.isPng = true;
+    totalTileCount = 0;
+    currTileCount = 0;
+}
+
+CustomTileLayer.prototype.getTile = function(a, b, ownerDocument) {
+    var src=getWMSTileUrl(a, b, this.customparams_);
+    var tile = ownerDocument.createElement('div');
+    tile.id = 'img_div_'+a.x+'_'+a.y+'_'+b;
+    tile.style.width = this.tileSize.width + 'px';
+    tile.style.height = this.tileSize.height + 'px';
+    tile.innerHTML = '<img class="wmsloading" src="'+src+'" />';
+    totalTileCount++;
+    $('img.wmsloading').load(function() {
+        currTileCount++;
+
+        if (currTileCount == totalTileCount) {
+            totalTileCount=0;
+            currTileCount=0;
+            $('#maploading').fadeOut("slow");
+        }
+    });
+    return tile;
+}
+
+function getWMSTileUrl(coord, zoom, customParams)
+{
+
+    var wmsParams = [
+    "request=GetMap",
+    "service=WMS",
+    "version=1.1.1",
+    "bgcolor=0xFFFFFF",
+    "transparent=TRUE",
+    "srs=EPSG:900913", // 3395?
+    "width=256",
+    "height=256"
+    ];
+
+    //add additional parameters
+    var wmsParams = wmsParams.concat(customParams);
+
+    var lULP = new google.maps.Point(coord.x*256,(coord.y+1)*256);
+    var lLRP = new google.maps.Point((coord.x+1)*256,coord.y*256);
+
+    var projectionMap = new MercatorProjection();
+
+    var lULg = projectionMap.fromDivPixelToSphericalMercator(lULP, zoom);
+    var lLRg  = projectionMap.fromDivPixelToSphericalMercator(lLRP, zoom);
+
+    var lUL_Latitude = lULg.y;
+    var lUL_Longitude = lULg.x;
+    var lLR_Latitude = lLRg.y;
+    var lLR_Longitude = lLRg.x;
+
+    if (lLR_Longitude < lUL_Longitude){
+        lLR_Longitude = Math.abs(lLR_Longitude);
+    }
+    var urlResult = Config.OCC_WMS_BASE_URL + wmsParams.join("&") + "&bbox=" + lUL_Longitude + "," + lUL_Latitude + "," + lLR_Longitude + "," + lLR_Latitude;
+    urlResult += "&zoom="+zoom;
+
+    return urlResult;
+}
+
