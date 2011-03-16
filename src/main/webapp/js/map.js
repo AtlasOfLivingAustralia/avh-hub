@@ -109,6 +109,7 @@ var Maps = (function() {
         wmsinfo += "&lon=" + location.lng();
         wmsinfo += "&radius=" + radius;
 
+        $('#maploading').show();
         $.ajax({
             url: wmsinfo,
             dataType: "jsonp",
@@ -126,12 +127,13 @@ var Maps = (function() {
 
             Maps.loadOccurrenceInfo(0);
 
-            infomarker.setPosition(clickLocation);
+            infomarker.setPosition(clickLocation);            
         } else {
             //occids = new Array(); 
             occids == null;
 
             displayHtml = data.count + ' occurrences founds';
+            $('#maploading').fadeIn('slow');
         }
 
     }
@@ -306,6 +308,7 @@ var Maps = (function() {
 
                 infowindow.setContent(displayHtml);
                 infowindow.open(map,infomarker);
+                $('#maploading').fadeOut('slow');
             });
 
             return false; 
