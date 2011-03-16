@@ -15,7 +15,6 @@
 
 package org.ala.hubs.controller;
 
-import org.ala.hubs.service.CollectionsCache;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,10 +25,9 @@ import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
-import java.io.PrintWriter;
-import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.store.OccurrenceDTO;
+import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.service.BiocacheService;

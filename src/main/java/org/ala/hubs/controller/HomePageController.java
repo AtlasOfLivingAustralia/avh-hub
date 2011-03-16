@@ -15,11 +15,10 @@
 
 package org.ala.hubs.controller;
 
-import org.ala.hubs.service.CollectionsCache;
+import org.ala.biocache.util.CollectionsCache;
 import au.org.ala.biocache.BasisOfRecord;
 import au.org.ala.biocache.SpeciesGroup;
 import au.org.ala.biocache.SpeciesGroups;
-import au.org.ala.biocache.States;
 import au.org.ala.biocache.Term;
 import au.org.ala.biocache.TypeStatus;
 import java.util.ArrayList;

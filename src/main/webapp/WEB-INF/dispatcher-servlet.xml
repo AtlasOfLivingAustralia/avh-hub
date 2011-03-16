@@ -128,4 +128,7 @@
 
     <!-- ALA RestfulClient (from ala-logger) -->
     <bean id="restfulClient" class="org.ala.client.util.RestfulClient"/>
+
+    <!-- CollectionCache from biocache-service -->
+    <bean id="collectionCache" class="org.ala.biocache.util.CollectionsCache"/>
 </beans>

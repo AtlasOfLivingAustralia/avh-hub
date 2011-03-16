@@ -130,7 +130,7 @@
                         <thead/>
                         <tbody>
                             <tr>
-                                <td class="label">State</td>
+                                <td class="label">State/Territory</td>
                                 <td>
                                     <select class="state">
                                         <option value="">-- select a state --</option>

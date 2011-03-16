@@ -34,10 +34,6 @@ import org.springframework.web.client.RestOperations;
 @Component("gazetteerCache")
 public class GazetteerCache {
     protected static Map<String, List<String>> regionsMap = new HashMap<String, List<String>>();
-//    protected List<String> states = new ArrayList<String>();
-//    protected List<String> ibra = new ArrayList<String>();
-//    protected List<String> imcra = new ArrayList<String>();
-//    protected List<String> lga = new ArrayList<String>();
     protected Date lastUpdated = new Date();
     protected Long timeout = 3600000L; // in millseconds (1 hour)
     protected String gazetteerUriPrefix = "http://spatial.ala.org.au/gazetteer/";
@@ -129,8 +125,9 @@ public class GazetteerCache {
             // clean-up values (remove name space URI prefixes)
             for (String name : tempNames) {
                 name = name.replaceFirst(gazetteerUriPrefix + region.getType() + "/", "");
-                name = name.replaceFirst(".json", ""); // remove the .json ending
+                name = name.replaceAll("\\.json$", ""); // remove the .json ending
                 name = name.replaceAll("_", " "); // spaces for underscores
+                name = name.replaceAll("\\s*\\(.*?\\)\\s*", ""); // remove state portion of LGA names, e.g. foo (New South Wales)
                 if (!name.startsWith("Unknown")) {
                     // don't add the states called unknown_1, etc
                     allNames.add(name);

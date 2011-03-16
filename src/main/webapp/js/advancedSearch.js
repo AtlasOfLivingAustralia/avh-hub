@@ -158,20 +158,20 @@ $(document).ready(function() {
         if (!$(this).val()) {
             //return;
         }
-        removeFieldFromQuery(fieldName); // clear previous click
         var fieldName = "occurrence_date";
+        removeFieldFromQuery(fieldName); // clear previous click
         var fieldValue = "";// = $(this).val();
         var start = $("input#startDate").val();
         var end = $("input#endDate").val();
         if (start) {
-            fieldValue = "[" + start + "T12:00:00Z%20TO%20";
+            fieldValue = "[" + start + "T12:00:00Z TO ";
         } else {
-            fieldValue = "[*%20TO%20";
+            fieldValue = "[* TO ";
         }
         if (end) {
-            fieldValue = end + "T12:00:00Z]";
+            fieldValue = fieldValue + end + "T12:00:00Z]";
         } else {
-            fieldValue = "*]";
+            fieldValue = fieldValue + "*]";
         }
         if (fieldValue) {
             addFieldToQuery(fieldName, fieldValue)
@@ -209,8 +209,11 @@ function  removeFieldFromQuery(fieldName) {
  */
 function removeFromQuery(query, removeText) {
     var fnRegEx;
-    if (removeText.match(/state/)) {
+    if (removeText.match(/state|places/)) {
         // quoted field value
+        fnRegEx = new RegExp(removeText + ":\".*?\"");
+    } else if (removeText.match(/_date/)) {
+        // range field value, e.g. [1 TO 2]
         fnRegEx = new RegExp(removeText + ":\".*\"");
     } else {
         fnRegEx = new RegExp(removeText + ":\\w+")
