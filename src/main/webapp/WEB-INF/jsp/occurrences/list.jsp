@@ -159,6 +159,7 @@
                         <div id="legend" title="Toggle layers/legend display">                            
                             <div class="title">Layers<span>&nabla;</span></div>
                             <div id="layerlist">
+                                <div id="toggleAll">Toggle layers</div>
                                 <!--
                             <div id="envLayers">
                                 <div>

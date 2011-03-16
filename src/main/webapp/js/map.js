@@ -160,12 +160,12 @@ var Maps = (function() {
     /**
     * Load occurrences wms with the selected params
     */
-    function insertWMSOverlay(params) {
+    function insertWMSOverlay(name, params) {
         var customParams = [
         "FORMAT=image/png8"
         ];
 
-        if (arguments.length > 0) {
+        if (arguments.length > 1) {
             for (var i = 0; i < arguments.length; i++) {
                 customParams.push(arguments[i]);
             }
@@ -177,7 +177,7 @@ var Maps = (function() {
             customParams.push(pairs[i]);
         }
         //loadWMS(map, "http://spatial.ala.org.au/geoserver/wms?", customParams);
-        var overlayWMS = getWMSObject(map, "MySpecies", Config.OCC_WMS_BASE_URL, customParams);
+        var overlayWMS = getWMSObject(map, "MySpecies - " + name, Config.OCC_WMS_BASE_URL, customParams);
         //        google.maps.event.addListener(overlayWMS, 'tilesloaded', function(event) {
         //            console.log("tiles loaded for overlayWMS");
         //        });
@@ -323,13 +323,13 @@ var Maps = (function() {
 
             if (cbf=="") {
                 var key = 0;
-                var value = "All occurrences";
+                var label = "All occurrences";
                 initialiseOverlays(1);
-                insertWMSOverlay("&colourby="+value.hashCode()+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
+                insertWMSOverlay("All occurrences", "&colourby="+label.hashCode()+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
                 legHtml += "<div>";
                 legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
-                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+value.hashCode()+"&width=10&height=10' /> ";
-                legHtml += "<label for='lyr"+key+"'>" + ((value=='')?'Other':value) + "</label>";
+                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+label.hashCode()+"&width=10&height=10' /> ";
+                legHtml += "<label for='lyr"+key+"'>" + label + "</label>";
                 legHtml += "</div>";
 
             } else {
@@ -340,6 +340,7 @@ var Maps = (function() {
                 $('#colourFacets').val(cbf);
 
 
+                var fLabels = facetLabels[_idx].split("|");
                 var fValues = facetValues[_idx].split("|");
                 //var fHashes = facetValueHashes[_idx].split("|");
                 var fCounts = facetValueCounts[_idx].split("|");
@@ -354,18 +355,22 @@ var Maps = (function() {
                     //var ptcolour = (function(h){return '#000000'.substr(0,7-h.length)+h})((~~(Math.abs(fHashes[key]))).toString(16).substr(0,6));
                     //Maps.loadOccurrences("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
 
-                    var cbfq=cbf+":"+value;
-                    if (value == "") {
-                        cbfq = "-("+cbf+"[* TO *])";
+                    var label = fLabels[key];
+                    if (label!='') {
+                        var cbfq=cbf+":"+value;
+                        if (value == "" && label=='Other') {
+                            cbfq = "-("+cbf+":[* TO *])";
+                        }
+
+                        insertWMSOverlay(label, "fq="+cbfq+"&colourby="+label.hashCode()+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
+
+                        legHtml += "<div class='layerWrapper'>";
+                        legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
+                        legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+label.hashCode()+"&width=10&height=10' /> ";
+                        legHtml += "<label for='lyr"+key+"'>" + label + "</label>";
+                        legHtml += "</div>";
                     }
 
-                    insertWMSOverlay("fq="+cbfq+"&colourby="+value.hashCode()+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
-
-                    legHtml += "<div class='layerWrapper'>";
-                    legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
-                    legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+value.hashCode()+"&width=10&height=10' /> ";
-                    legHtml += "<label for='lyr"+key+"'>" + ((value=='')?'Other':value) + "</label>";
-                    legHtml += "</div>";
                 });
             }
 
@@ -448,5 +453,15 @@ $(document).ready(function() {
     $("#legend div.title, #legend div:first").click(function() {
         $('#layerlist').toggle();
     });
+
+    // event for toggle all layers
+    $('#toggleAll').click(function(){
+        $('input.layer').each(function(index) {
+            $(this).attr('checked', ($(this).is(':checked'))?false:true);
+            Maps.toggleOccurrenceLayer(this);
+        });
+
+    });
+
 }); // end JQuery document ready
 

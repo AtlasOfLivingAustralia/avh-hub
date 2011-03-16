@@ -98,6 +98,13 @@
     display: none; 
 }
 
+#legend #toggleAll {
+    border-top: 2px solid black;
+    padding: 5px 0;
+
+    font-weight: normal;
+}
+
 #legend #layerlist #legendContent {
     border-top: 2px solid black;
     padding-top: 5px;

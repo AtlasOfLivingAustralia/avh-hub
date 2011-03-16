@@ -64,7 +64,7 @@
                                 (<fmt:formatNumber value="${lastElement.count}" pattern="#,###,###"/>)
                             </li>
                         </c:if>
-                        <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs"> <!-- ${facetResult.fieldName} -->
+                        <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs"> <!-- ${facetResult.fieldName}:${fieldResult.label} -->
                             <c:if test="${fieldResult.count > 0}">
                                 <c:set var="dateRangeTo"><c:choose><c:when test="${vs.last || facetResult.fieldResult[vs.count].label=='before'}">*</c:when><c:otherwise>${facetResult.fieldResult[vs.count].label}</c:otherwise></c:choose></c:set>
                                 <c:choose>
@@ -85,8 +85,8 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${collectionCodes[fieldResult.label]}</a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                         </c:when>
-                                        <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
-                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'month')}">
+                                        <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><!-- skipping --> <%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'month')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="month.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                         </c:when>
@@ -103,6 +103,9 @@
         </c:forEach>
     </div>
 </div><!--end facets-->
+<!--
+${collectionCodes}
+-->
 <script type="text/javascript">
     
     String.prototype.hashCode = function(){
@@ -117,28 +120,76 @@
     }
 
     var facetNames = new Array();
+    var facetLabels = new Array();
     var facetValues = new Array();
     var facetValueCounts = new Array();
     <c:forEach var="facetResult" items="${searchResults.facetResults}">
         <c:set var="frlabelcount" value="0"/>
+        <c:set var="ffl" value="" />
         <c:set var="ffv" value="" />
         <c:set var="ffc" value="" />
-        <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs">
+
+        <c:set var="lastElement" value="${facetResult.fieldResult[fn:length(facetResult.fieldResult)-1]}"/>
+        <c:if test="${lastElement.label eq 'before' && lastElement.count > 0}">
+            <c:set var="firstYear" value="${fn:substring(facetResult.fieldResult[0].label, 0, 4)}"/>
+            <c:set var="ffl" value="Before ${firstYear}" />
+            <c:set var="ffv" value="[* TO ${facetResult.fieldResult[0].label}]" />
+            <c:set var="ffc" value="${lastElement.count}" />
+        </c:if>
+
+        <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs">  
             <c:set var="frlabelcount" value="${fieldResult.count + frlabelcount}"/>
-            <c:if test="${!empty ffv}">
+            <c:if test="${!empty ffv && not fn:endsWith(fieldResult.label, 'before')}">
+                <c:set var="ffl" value="${ffl}|" />
                 <c:set var="ffv" value="${ffv}|" />
                 <c:set var="ffc" value="${ffc}|" />
             </c:if>
-            <c:set var="ffv" value="${ffv}${fieldResult.label}" />
+
+            <c:set var="dateRangeTo"><c:choose><c:when test="${vs.last || facetResult.fieldResult[vs.count].label=='before'}">*</c:when><c:otherwise>${facetResult.fieldResult[vs.count].label}</c:otherwise></c:choose></c:set>
+            <c:set var="cffv" value="" />
+            <c:set var="cffl" value="" />
+            <c:choose>
+                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_date') && fn:endsWith(fieldResult.label, 'Z')}">
+                    <c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
+                    <c:set var="cffv" value="[${fieldResult.label} TO ${dateRangeTo}]" />
+                    <c:set var="cffl" value="${startYear} - ${startYear + 10}" />
+                </c:when>
+                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
+                    <c:set var="cffv" value="${fieldResult.label}" />
+                    <c:set var="cffl"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></c:set>
+                </c:when>
+                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_uid')}">
+                    <c:set var="cffv" value="${fieldResult.label}" />
+                    <c:set var="cffl" value="${institutionCodes[fieldResult.label]}" />
+                </c:when>
+                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collection_uid')}">
+                    <c:set var="cffv" value="${fieldResult.label}" />
+                    <c:set var="cffl" value="${collectionCodes[fieldResult.label]}" />
+                </c:when>
+                <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
+                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'month')}">
+                    <c:set var="cffv" value="${fieldResult.label}" />
+                    <c:set var="cffl"><fmt:message key="month.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></c:set>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="cffv" value="${fieldResult.label}" />
+                    <c:set var="cffl"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></c:set>
+                </c:otherwise>
+            </c:choose>
+
+            <c:set var="ffl" value="${ffl}${cffl}" />
+            <c:set var="ffv" value="${ffv}${cffv}" />
             <c:set var="ffc" value="${ffc}${fieldResult.count}" />
         </c:forEach>
         <c:if test="${frlabelcount < searchResults.totalRecords}">
-            <c:set var="ffv" value="${ffv}|Other" />
+            <c:set var="ffl" value="${ffl}|Other" />
+            <c:set var="ffv" value="${ffv}|" />
             <c:set var="ffc" value="${ffc}|${searchResults.totalRecords - frlabelcount}" />
         </c:if>
-    // add filter queries 
-    facetNames.push("${facetResult.fieldName}");
-    facetValues.push("${ffv}");
-    facetValueCounts.push("${ffc}");
+            // add filter queries
+            facetNames.push("${facetResult.fieldName}");
+            facetLabels.push("${ffl}");
+            facetValues.push("${ffv}");
+            facetValueCounts.push("${ffc}");
     </c:forEach>
 </script>
