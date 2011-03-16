@@ -87,7 +87,7 @@ function jpDrawTaxonChart(dataTable) {
       $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="static/images/ajax-loader.gif"/>');
       jpLoadTaxonChart(dataTable.getValue(chart.getSelection()[0].row,0), dataTable.getTableProperty('rank'));
     } else {
-      window.location.href = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*&fq=" + rank + ":" + name;
+      window.location.href = "occurrences/search?q=*:*&fq=" + rank + ":" + name;
     }
     // show reset link
     $('span#resetTaxonChart').html("<img src='static/images/go-left.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
@@ -146,7 +146,7 @@ function drawTypesBreakdown(data) {
     var name = table.getValue(chart.getSelection()[0].row,0);
     // reverse any presentation transforms
     if (name == 'unknown type') {name = 'type';}
-    window.location.href = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*&fq=type_status:" + name;
+    window.location.href = "occurrences/search?q=*:*&fq=type_status:" + name;
   });
 
   // draw
@@ -199,7 +199,7 @@ function drawStatesBreakdown(data) {
   // selection actions
   google.visualization.events.addListener(chart, 'select', function() {
     var name = table.getValue(chart.getSelection()[0].row,0);
-    window.location.href = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*&fq=state:" + name;
+    window.location.href = "occurrences/search?q=*:*&fq=state:" + name;
   });
 
   // draw
@@ -288,7 +288,7 @@ function drawInstitutionBreakdown(data) {
             collectionUid = instData[i].uid;
           }
         }
-        window.location.href = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*&fq=collection_uid:" + collectionUid;
+        window.location.href = "occurrences/search?q=*:*&fq=collection_uid:" + collectionUid;
       }
     }
   });
@@ -418,7 +418,7 @@ function resetInstChart() {
       var selection = accumChart.getSelection()[0];
       var instData = rawData[selection.column - 1];
       var search = (instData.uid.substr(0,2)=="in" ? "&fq=institution_uid:" : "&fq=collection_uid:") + instData.uid;
-      var searchUrl = "http://ozcam-demo.ala.org.au:8080/occurrences/search?q=*:*" + search;
+      var searchUrl = "occurrences/search?q=*:*" + search;
       if (selection.row != undefined) {
         var decadeStart = selection.row * 10 + 1850;
         var decadeEnd = selection.row * 10 + 1850 + 10;
@@ -470,7 +470,7 @@ function resetInstChart() {
 
 function loadFacetCharts() {
     // bio-cache facets data
-    var url = biocacheServicesUrl + "occurrences/search.json?q=*:*&pageSize=0";
+    var url = biocacheServicesUrl + "occurrences/institutions/" + instanceUid + ".json?pageSize=0";
     $.ajax({
       url: url,
       dataType: 'jsonp',
