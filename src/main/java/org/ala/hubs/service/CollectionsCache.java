@@ -13,7 +13,7 @@
  *  rights and limitations under the License.
  ***************************************************************************/
 
-package org.ala.hubs.controller;
+package org.ala.hubs.service;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -84,7 +84,7 @@ public class CollectionsCache {
      * Update the entity types (fields)
      */
     protected void updateCache() {
-        logger.info("Updating cache...");
+        logger.info("Updating collectory cache...");
         this.collections = getCodesMap(ResourceType.COLLECTION);
         this.institutions = getCodesMap(ResourceType.INSTITUTION);
 
@@ -100,7 +100,7 @@ public class CollectionsCache {
         LinkedHashMap<String, String> entityMap = null;
 
         try {
-            // grab cachced values (map) in case WS is not available (uses reflection)
+            // grab cached values (map) in case WS is not available (uses reflection)
             Field f = CollectionsCache.class.getDeclaredField(type.getType() + "s"); // field is plural form
             entityMap = (LinkedHashMap<String, String>) f.get(this);
             logger.debug("checking map size: " + entityMap.size());

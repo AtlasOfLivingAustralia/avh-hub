@@ -25,6 +25,15 @@ $(document).ready(function() {
         return this.replace(/^\s*(OR|AND|NOT)\s+|\s+(OR|AND|NOT)\s*$/g, "");
     };
 
+    //window.onbeforeunload = function (e) {
+    $(window).unload(function() {
+        //alert('Handler for .unload() called.');
+        //$("form#advancedSearchForm select").options.length = 0;
+        //console.log("unload", e);
+        //$('form#advancedSearchForm').reset();
+    });
+    //}
+    
     // Autocomplete
     $("input[name=name_autocomplete]").autocomplete('http://bie.ala.org.au/search/auto.json', {
         //width: 350,
@@ -132,11 +141,39 @@ $(document).ready(function() {
 
     // Catch onChange event on all select elements
     $("form#advancedSearchForm select").change(function() {
-        var fieldName = $(this).attr("id");
+        var fieldName = $(this).attr("class");
         var fieldValue = $(this).val();
         if (fieldValue && fieldValue.match(/\s+/)) {
             addFieldToQuery(fieldName,  "\"" + fieldValue + "\"")
         } else if (fieldValue) {
+            addFieldToQuery(fieldName, fieldValue)
+        } else {
+            removeFieldFromQuery(fieldName);
+        }
+    });
+
+    // catch date field changes
+    $("input.occurrence_date").blur(function() {
+        console.log("date field on blur");
+        if (!$(this).val()) {
+            //return;
+        }
+        removeFieldFromQuery(fieldName); // clear previous click
+        var fieldName = "occurrence_date";
+        var fieldValue = "";// = $(this).val();
+        var start = $("input#startDate").val();
+        var end = $("input#endDate").val();
+        if (start) {
+            fieldValue = "[" + start + "T12:00:00Z%20TO%20";
+        } else {
+            fieldValue = "[*%20TO%20";
+        }
+        if (end) {
+            fieldValue = end + "T12:00:00Z]";
+        } else {
+            fieldValue = "*]";
+        }
+        if (fieldValue) {
             addFieldToQuery(fieldName, fieldValue)
         } else {
             removeFieldFromQuery(fieldName);

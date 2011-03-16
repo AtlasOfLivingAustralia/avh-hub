@@ -15,6 +15,7 @@
 
 package org.ala.hubs.controller;
 
+import org.ala.hubs.service.CollectionsCache;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;

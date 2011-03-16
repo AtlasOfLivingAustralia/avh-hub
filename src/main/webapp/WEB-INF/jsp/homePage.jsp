@@ -44,7 +44,7 @@
             <h1>Search for records in OZCAM</h1>
             <div id="solrSearchForm">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="homepageSearchForm">
-                    <input name="q" value="${param.q}" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;
+                    <input name="q" value="<c:out value='${param.q}'/>" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;
                     <input type="submit" value="Submit" id="solrSubmit" style="font-size:14px;"/>
                     <input type="hidden" id="lsid" value=""/>
                     <span id="advancedSearchLink"><a href="#advancedSearch">Advanced Search</a></span>
@@ -87,7 +87,7 @@
                             <tr>
                                 <td class="label">Species Group</td>
                                 <td>
-                                     <select id="species_group">
+                                     <select class="species_group">
                                         <option value="">-- select a species group --</option>
                                         <c:forEach var="group" items="${speciesGroups}">
                                             <option value="${group}">${group}</option>
@@ -104,7 +104,7 @@
                             <tr>
                                 <td class="label">Institution name</td>
                                 <td>
-                                    <select id="institution_uid">
+                                    <select class="institution_uid">
                                         <option value="">-- select an institution --</option>
                                         <c:forEach var="inst" items="${institutions}">
                                             <option value="${inst.key}">${inst.value}</option>
@@ -115,8 +115,8 @@
                             <tr>
                                 <td class="label">Collection name</td>
                                 <td>
-                                    <select id="collection_uid">
-                                        <option value="">-- select an collection --</option>
+                                    <select class="collection_uid">
+                                        <option value="">-- select a collection --</option>
                                         <c:forEach var="coll" items="${collections}">
                                             <option value="${coll.key}">${coll.value}</option> 
                                         </c:forEach>
@@ -132,7 +132,7 @@
                             <tr>
                                 <td class="label">State</td>
                                 <td>
-                                    <select id="state">
+                                    <select class="state">
                                         <option value="">-- select a state --</option>
                                         <c:forEach var="state" items="${states}">
                                             <option value="${state}">${state}</option>
@@ -143,9 +143,20 @@
                             <tr>
                                 <td class="label">IBRA region</td>
                                 <td>
-                                    <select id="ibra">
-                                        <option value="">-- select a IBRA region --</option>
+                                    <select class="biogeographic_region">
+                                        <option value="">-- select an IBRA region --</option>
                                         <c:forEach var="region" items="${ibra}">
+                                            <option value="${region}">${region}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">IMCRA region</td>
+                                <td>
+                                    <select class="biogeographic_region">
+                                        <option value="">-- select an IMCRA region --</option>
+                                        <c:forEach var="region" items="${imcra}">
                                             <option value="${region}">${region}</option>
                                         </c:forEach>
                                     </select>
@@ -154,7 +165,7 @@
                             <tr>
                                 <td class="label">LGA region</td>
                                 <td>
-                                    <select id="places">
+                                    <select class="places">
                                         <option value="">-- select a LGA region --</option>
                                         <c:forEach var="region" items="${lga}">
                                             <option value="${region}">${region}</option>
@@ -171,7 +182,7 @@
                             <tr>
                                 <td class="label">Type Status</td>
                                 <td>
-                                     <select id="type_status">
+                                     <select class="type_status">
                                         <option value="">-- select a type status --</option>
                                         <c:forEach var="type" items="${typeStatus}">
                                             <option value="${type}">${type}</option>
@@ -188,7 +199,7 @@
                             <tr>
                                 <td class="label">Basis of record</td>
                                 <td>
-                                     <select id="basis_of_record">
+                                     <select class="basis_of_record">
                                         <option value="">-- select a basis of record --</option>
                                         <c:forEach var="bor" items="${basisOfRecord}">
                                             <option value="${bor}">${bor}</option>
@@ -205,14 +216,14 @@
                             <tr>
                                 <td class="label">Begin Date</td>
                                 <td>
-                                     <input type="text" id="startDate" placeholder="will have data picker" value=""/>
+                                     <input type="text" id="startDate" class="occurrence_date" placeholder="will have data picker" value=""/>
                                      leave blank for earliest record date
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label">End Date</td>
                                 <td>
-                                     <input type="text" id="endDate" placeholder="will have data picker" value=""/>
+                                     <input type="text" id="endDate" class="occurrence_date" placeholder="will have data picker" value=""/>
                                      leave blank for most recent record date
                                 </td>
                             </tr>

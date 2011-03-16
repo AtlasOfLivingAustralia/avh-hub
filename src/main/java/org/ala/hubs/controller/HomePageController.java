@@ -15,6 +15,7 @@
 
 package org.ala.hubs.controller;
 
+import org.ala.hubs.service.CollectionsCache;
 import au.org.ala.biocache.BasisOfRecord;
 import au.org.ala.biocache.SpeciesGroup;
 import au.org.ala.biocache.SpeciesGroups;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
+import org.ala.hubs.service.GazetteerCache;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +45,8 @@ public class HomePageController {
     /** Cache for the collections & institutions codes -> names */
     @Inject
     protected CollectionsCache collectionsCache;
+    @Inject
+    protected GazetteerCache gazetteerCache;
     /** View name for home page */
     protected final String HOME_PAGE = "homePage";
 
@@ -59,7 +63,10 @@ public class HomePageController {
         model.addAttribute("institutions", collectionsCache.getInstitutions());
         model.addAttribute("typeStatus", extractTermsList(TypeStatus.all()));
         model.addAttribute("basisOfRecord", extractTermsList(BasisOfRecord.all()));
-        model.addAttribute("states", extractTermsList(States.all()));
+        model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
+        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
+        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
+        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
         model.addAttribute("speciesGroups", extractSpeciesGroups(SpeciesGroups.groups()));
         return HOME_PAGE;
     }

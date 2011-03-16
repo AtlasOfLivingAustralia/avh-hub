@@ -43,7 +43,7 @@
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
                     <input type="submit" id="searchSubmit" value="Search"/>
-                    <input type="text" id="solrQuery" name="q" value="${param.q}">
+                    <input type="text" id="solrQuery" name="q" value="<c:out value='${param.q}'/>">
                     <input type="hidden" id="lsid" value=""/>
                 </form>
             </div>
