@@ -185,8 +185,12 @@ var Maps = (function() {
         //        });
         //map.overlayMapTypes.insertAt(map.overlayMapTypes.length, overlayWMS);
         //overlayLayers.push(overlayWMS);
-        var wmstile = new CustomTileLayer("MySpecies - " + name,customParams);
+        var wmstile = new WMSTileLayer("MySpecies - " + name, Config.OCC_WMS_BASE_URL, customParams, wmsTileLoaded);
         overlayLayers.push(wmstile);
+    }
+
+    function wmsTileLoaded(numtiles) {
+        $('#maploading').fadeOut("slow");
     }
 
     return {
@@ -392,6 +396,14 @@ var Maps = (function() {
             $.each(overlayLayers, function(_idx, overlayWMS) {
                 map.overlayMapTypes.setAt(_idx+1, overlayWMS);
             });
+        },
+
+        loadEnvironmentalLayer: function(selLayer) {
+            map.overlayMapTypes.setAt(0, null);
+            if (selLayer > -1) {
+                var overlayWMS = new WMSTileLayer(envLayers[selLayer][1], "http://spatial.ala.org.au/geoserver/wms/reflect?", ["format=image/png","layers="+envLayers[selLayer][2]], wmsTileLoaded);
+                map.overlayMapTypes.setAt(0, overlayWMS);
+            }
         }
 
     } // return: public variables and methods
@@ -449,12 +461,7 @@ $(document).ready(function() {
     });
 
     $('#envLyrList').change(function(){
-        map.overlayMapTypes.setAt(0, null);
-        var selLayer = parseInt($(this).val());
-        if (selLayer > -1) {
-            var overlayWMS = getWMSObject(map, envLayers[selLayer][1], "http://spatial.ala.org.au/geoserver/wms/reflect?", ["format=image/png","layers="+envLayers[selLayer][2]]);
-            map.overlayMapTypes.setAt(0, overlayWMS);
-        }
+        Maps.loadEnvironmentalLayer(parseInt($(this).val()));
     });
 
     // event for toggling the legend

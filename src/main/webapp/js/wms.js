@@ -132,38 +132,40 @@ function getWMSObject(map, name, baseURL, customParams){
 
 var totalTileCount = 0;
 var currTileCount = 0;
-function CustomTileLayer(name, customParams){
+function WMSTileLayer(name, baseurl, customParams, fn){
     this.tileSize = new google.maps.Size(256,256);
     this.minZoom = 2;
     this.maxZoom = 17;
     this.name = name;
-    this.customparams_ = customParams;
     this.isPng = true;
+    this.customparams_ = customParams;
+    this.baseurl_ = baseurl;
+    this.fn_ = fn;
     totalTileCount = 0;
     currTileCount = 0;
 }
 
-CustomTileLayer.prototype.getTile = function(a, b, ownerDocument) {
-    var src=getWMSTileUrl(a, b, this.customparams_);
+WMSTileLayer.prototype.getTile = function(a, b, ownerDocument) {
+    var src=getWMSTileUrl(a, b, this.baseurl_, this.customparams_);
     var tile = ownerDocument.createElement('div');
-    tile.id = 'img_div_'+a.x+'_'+a.y+'_'+b;
     tile.style.width = this.tileSize.width + 'px';
     tile.style.height = this.tileSize.height + 'px';
-    tile.innerHTML = '<img class="wmsloading" src="'+src+'" />';
+    tile.innerHTML = '<img class="wmstile" src="'+src+'" />';
     totalTileCount++;
-    $('img.wmsloading').load(function() {
+    afterFn = this.fn_;
+    $('img.wmstile').load(function() {
         currTileCount++;
 
         if (currTileCount == totalTileCount) {
+            afterFn(totalTileCount);
             totalTileCount=0;
             currTileCount=0;
-            $('#maploading').fadeOut("slow");
         }
     });
     return tile;
 }
 
-function getWMSTileUrl(coord, zoom, customParams)
+function getWMSTileUrl(coord, zoom, baseurl, customParams)
 {
 
     var wmsParams = [
@@ -196,7 +198,7 @@ function getWMSTileUrl(coord, zoom, customParams)
     if (lLR_Longitude < lUL_Longitude){
         lLR_Longitude = Math.abs(lLR_Longitude);
     }
-    var urlResult = Config.OCC_WMS_BASE_URL + wmsParams.join("&") + "&bbox=" + lUL_Longitude + "," + lUL_Latitude + "," + lLR_Longitude + "," + lLR_Latitude;
+    var urlResult = baseurl + wmsParams.join("&") + "&bbox=" + lUL_Longitude + "," + lUL_Latitude + "," + lLR_Longitude + "," + lLR_Latitude;
     urlResult += "&zoom="+zoom;
 
     return urlResult;
