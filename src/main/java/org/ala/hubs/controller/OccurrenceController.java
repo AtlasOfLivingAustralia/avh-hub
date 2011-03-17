@@ -25,6 +25,8 @@ import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
@@ -46,6 +48,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestOperations;
 
 /**
  * Occurrence record Controller
@@ -65,6 +69,9 @@ public class OccurrenceController {
 	protected RestfulClient restfulClient;
     @Inject
     protected CollectionsCache collectionsCache;
+    /** Spring injected RestTemplate object */
+    @Inject
+    private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
@@ -72,6 +79,7 @@ public class OccurrenceController {
     private final String ANNOTATE_EDITOR = "occurrences/annotationEditor";
     protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
+    private String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
 
     /**
      * Sets up state variables and calls the annotation editor jsp.
@@ -279,6 +287,33 @@ public class OccurrenceController {
                     logger.error(e.toString(), e);
                 }
             }
+
+            // Check is user has role: ROLE_COLLECTION_EDITOR or ROLE_COLLECTION_ADMIN
+            // and then call Collections WS to see if they are a member of the current collection uid
+
+            if (userId != null && (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_COLLECTION_ADMIN") || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
+                logger.info("User has appropriate ROLE...");
+                try {
+                    final String jsonUri = collectionContactsUrl + "/" + collectionUid + "/contacts.json";
+                    logger.debug("Requesting: " + jsonUri);
+                    List<Map<String, Object>> contacts = restTemplate.getForObject(jsonUri, List.class);
+                    logger.debug("number of contacts = " + contacts.size());
+
+                    for (Map<String, Object> contact : contacts) {
+                        Map<String, String> details = (Map<String, String>) contact.get("contact");
+                        String email = details.get("email");
+                        logger.debug("email = " + email);
+                        if (userId.equalsIgnoreCase(email)) {
+                            logger.info("Loged in user has collection admin rights: " + email);
+                            model.addAttribute("isCollectionAdmin", true);
+                        } else if (request.isUserInRole("ROLE_ADMIN")) {
+                            model.addAttribute("isCollectionAdmin", true);
+                        }
+                    }
+                } catch (Exception ex) {
+                    logger.error("RestTemplate error: " + ex.getMessage(), ex);
+                }
+            }            
 		}
 
         Collection<AssertionDTO> grouped = AssertionUtils

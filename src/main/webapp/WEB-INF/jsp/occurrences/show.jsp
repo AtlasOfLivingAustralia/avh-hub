@@ -202,7 +202,11 @@
                         <button class="rounded" id="assertionButton">
                             <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
                         </button>
+                        
                     </p>
+                    <c:if test="${isCollectionAdmin}">
+                        <div>You are able to modify assertions!</div>
+                    </c:if>
                     <div style="display:none">
                         <c:choose>
                         <c:when test="${empty userId}">
