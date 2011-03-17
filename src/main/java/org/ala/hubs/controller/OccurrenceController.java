@@ -194,6 +194,8 @@ public class OccurrenceController {
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+        model.addAttribute("collectionCodes", collectionsCache.getCollections());
+        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
         return RECORD_LIST;
     }
 
@@ -222,6 +224,8 @@ public class OccurrenceController {
 		model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+        model.addAttribute("collectionCodes", collectionsCache.getCollections());
+        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
 		return RECORD_LIST;
 	}
 
