@@ -149,3 +149,6 @@ div.autoLine2 {
 table.compact td select {
     width: auto;
 }
+input.region_autocomplete {
+    width: 350px;
+}

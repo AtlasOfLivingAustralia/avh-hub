@@ -22,14 +22,29 @@
                 // advanced search link
                 $("#advancedSearchLink a").click(function(e) {
                     e.preventDefault();
-                    var advDiv = $(this).attr("href");
-                    $(advDiv).css("display") == "none" ? $(advDiv).fadeIn() : $(advDiv).fadeOut();
+                    showHideAdvancedSearch();
                 });
 
+                var url = escape(window.location.hash.replace( /^#/, '')); // escape used to prevent injection attacks
 
+                if (url == "advanced_search") {
+                    showHideAdvancedSearch();
+                }
                 
 
             }); // end document.ready
+            
+            function showHideAdvancedSearch() {
+                var advDiv = $("div#advancedSearch");
+                
+                if ($(advDiv).css("display") == "none") {
+                    $(advDiv).fadeIn();
+                    window.location.hash = "advanced_search";
+                } else {
+                     $(advDiv).fadeOut();
+                     window.location.hash = "";
+                }
+            }
 
             /************************************************************\
             * Fire chart loading
@@ -47,7 +62,7 @@
                     <input name="q" value="<c:out value='${param.q}'/>" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;
                     <input type="submit" value="Submit" id="solrSubmit" style="font-size:14px;"/>
                     <input type="hidden" id="lsid" value=""/>
-                    <span id="advancedSearchLink"><a href="#advancedSearch">Advanced Search</a></span>
+                    <span id="advancedSearchLink"><a href="#advanced_search">Advanced Search</a></span>
                 </form>
             </div>
             <div id="advancedSearch">
@@ -140,37 +155,23 @@
                                     </select>
                                 </td>
                             </tr>
+                            <c:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
                             <tr>
                                 <td class="label">IBRA region</td>
                                 <td>
-                                    <select class="biogeographic_region">
-                                        <option value="">-- select an IBRA region --</option>
-                                        <c:forEach var="region" items="${ibra}">
-                                            <option value="${region}">${region}</option>
-                                        </c:forEach>
-                                    </select>
+                                    <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label">IMCRA region</td>
                                 <td>
-                                    <select class="biogeographic_region">
-                                        <option value="">-- select an IMCRA region --</option>
-                                        <c:forEach var="region" items="${imcra}">
-                                            <option value="${region}">${region}</option>
-                                        </c:forEach>
-                                    </select>
+                                    <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label">LGA region</td>
                                 <td>
-                                    <select class="places">
-                                        <option value="">-- select a LGA region --</option>
-                                        <c:forEach var="region" items="${lga}">
-                                            <option value="${region}">${region}</option>
-                                        </c:forEach>
-                                    </select>
+                                    <input type="text" name="lga" id="lga" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
                                 </td>
                             </tr>
                         </tbody>
