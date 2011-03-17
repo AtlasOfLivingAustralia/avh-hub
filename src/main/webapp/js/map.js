@@ -133,7 +133,7 @@ var Maps = (function() {
             occids == null;
 
             displayHtml = data.count + ' occurrences founds';
-            $('#maploading').fadeIn('slow');
+            $('#maploading').fadeOut('slow');
         }
 
     }
