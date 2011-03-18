@@ -9,6 +9,7 @@
         <pattern>/static/*</pattern>
         <pattern>/occurrences/*/assertions/</pattern>
         <pattern>/occurrences/*/groupedAssertions/</pattern>
+        <pattern>/occurrences/annotate/*</pattern>
         <pattern>/index</pattern>
     </excludes>
 

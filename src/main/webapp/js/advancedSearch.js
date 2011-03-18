@@ -17,6 +17,18 @@
  * JQuery on document ready callback
  */
 $(document).ready(function() {
+    // advanced search link
+    $("#advancedSearchLink a").click(function(e) {
+        e.preventDefault();
+        showHideAdvancedSearch();
+    });
+
+    var url = escape(window.location.hash.replace( /^#/, '')); // escape used to prevent injection attacks
+
+    if (url == "advanced_search") {
+        showHideAdvancedSearch();
+    }
+
     // Custom string methods
     String.prototype.trim = function() {
         return this.replace(/^\s+|\s+$/g, "");
@@ -291,4 +303,19 @@ function removeFromQuery(query, removeText) {
     query = query.replace(fnRegEx, "");  // remove this field
     query = query.replace(/\s{2,}/, " ").trim(); // replace 2 or more spaces with a single space
     return query;
+}
+
+/**
+ * show/hide the advanced search div
+ */
+function showHideAdvancedSearch() {
+    var advDiv = $("div#advancedSearch");
+
+    if ($(advDiv).css("display") == "none") {
+        $(advDiv).fadeIn();
+        window.location.hash = "advanced_search";
+    } else {
+         $(advDiv).fadeOut();
+         window.location.hash = "";
+    }
 }

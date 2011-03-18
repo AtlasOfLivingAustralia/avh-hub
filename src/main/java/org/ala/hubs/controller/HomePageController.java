@@ -84,9 +84,9 @@ public class HomePageController {
         model.addAttribute("typeStatus", extractTermsList(TypeStatus.all()));
         model.addAttribute("basisOfRecord", extractTermsList(BasisOfRecord.all()));
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
-        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
-        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
-        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
+//        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
+//        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
+//        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
         model.addAttribute("speciesGroups", extractSpeciesGroups(SpeciesGroups.groups()));
         return HOME_PAGE;
     }
@@ -97,7 +97,7 @@ public class HomePageController {
      * @param groups
      * @return
      */
-    private List<String> extractSpeciesGroups(scala.collection.immutable.List<SpeciesGroup> groups) {
+    public static List<String> extractSpeciesGroups(scala.collection.immutable.List<SpeciesGroup> groups) {
         List<String> output = new ArrayList<String>();
 
         scala.collection.Iterator<SpeciesGroup> it = groups.iterator();
@@ -117,7 +117,7 @@ public class HomePageController {
      * @param groups
      * @return
      */
-    private List<String> extractTermsList(scala.collection.immutable.Set<Term> terms) {
+    public static List<String> extractTermsList(scala.collection.immutable.Set<Term> terms) {
         List<String> output = new ArrayList<String>();
         scala.collection.Iterator<Term> it = terms.iterator();
         while (it.hasNext()) {

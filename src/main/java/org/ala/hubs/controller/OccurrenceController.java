@@ -15,6 +15,7 @@
 
 package org.ala.hubs.controller;
 
+import au.org.ala.biocache.BasisOfRecord;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,6 +26,8 @@ import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
+import au.org.ala.biocache.SpeciesGroups;
+import au.org.ala.biocache.TypeStatus;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +36,7 @@ import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.service.BiocacheService;
+import org.ala.hubs.service.GazetteerCache;
 import org.apache.commons.httpclient.HttpStatus;
 
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +52,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestOperations;
 
 /**
@@ -69,6 +72,8 @@ public class OccurrenceController {
 	protected RestfulClient restfulClient;
     @Inject
     protected CollectionsCache collectionsCache;
+    @Inject
+    protected GazetteerCache gazetteerCache;
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
@@ -166,9 +171,7 @@ public class OccurrenceController {
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        model.addAttribute("collectionCodes", collectionsCache.getCollections());
-        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
-
+        addCommonDataToModel(model);
         return RECORD_LIST;
     }
 
@@ -194,8 +197,7 @@ public class OccurrenceController {
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        model.addAttribute("collectionCodes", collectionsCache.getCollections());
-        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
+        addCommonDataToModel(model);
         return RECORD_LIST;
     }
 
@@ -224,8 +226,7 @@ public class OccurrenceController {
 		model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        model.addAttribute("collectionCodes", collectionsCache.getCollections());
-        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
+        addCommonDataToModel(model);
 		return RECORD_LIST;
 	}
 
@@ -435,5 +436,26 @@ public class OccurrenceController {
         }
         
         return lastPage;
+    }
+
+    /**
+     * Add "common" data structures required for search pages (list.jsp).
+     *
+     * TODO: move static methods from HomePAgeController into utility class.
+     *
+     * @param model
+     */
+    private void addCommonDataToModel(Model model) {
+        model.addAttribute("collectionCodes", collectionsCache.getCollections());
+        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
+        model.addAttribute("collections", collectionsCache.getCollections());
+        model.addAttribute("institutions", collectionsCache.getInstitutions());
+        model.addAttribute("typeStatus", HomePageController.extractTermsList(TypeStatus.all()));
+        model.addAttribute("basisOfRecord", HomePageController.extractTermsList(BasisOfRecord.all()));
+        model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
+//        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
+//        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
+//        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
+        model.addAttribute("speciesGroups", HomePageController.extractSpeciesGroups(SpeciesGroups.groups()));
     }
 }

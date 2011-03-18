@@ -141,6 +141,7 @@ div#currentFilter {
     width: 70%;
     margin: auto;
     padding: 10px;
+    height: 2.5em;
 }
 #searchNavBar ul, #searchNavBar ul li {
     display: inline;
@@ -230,4 +231,8 @@ li.showHide a:link, li.showHide a:visited  {
     color: #005A8E;
     font-size: 12px;
     text-decoration: none;
+}
+div#advancedSearch {
+    margin-left: 30px;
+    margin-bottom: 20px;
 }

@@ -22,6 +22,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-ui-1.8.10.core.slider.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
@@ -45,10 +46,13 @@
                     <input type="submit" id="searchSubmit" value="Search"/>
                     <input type="text" id="solrQuery" name="q" value="<c:out value='${param.q}'/>">
                     <input type="hidden" id="lsid" value=""/>
+                    <span id="advancedSearchLink"><a href="#advanced_search">Advanced Search</a></span>
                 </form>
             </div>
+            
         </div>
         <div style="clear: both"/>
+        <jsp:include page="../advancedSearchDiv.jsp"/>
         <c:if test="${searchResults.totalRecords > 0}">
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>

@@ -6,7 +6,7 @@
         Purpose of the stylesheet follows.
 */
 
-#content p, #content div, #headingBar {
+#content p, #content div, #headingBar, #contentBox div {
     font-size: 13px;
     line-height: 1.5em;
 }
