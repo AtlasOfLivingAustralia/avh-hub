@@ -1,0 +1,395 @@
+
+.sidebar p {
+    font-size: 0.9em ! important;
+    line-height: normal ! important;
+    padding-bottom: 4px ! important;
+    color: #555 ! important;
+}
+
+.sidebar p.caption {
+    color: #666 ! important;
+    font-size: 0.9em;
+    line-height: normal ! important;
+    padding-bottom: 4px ! important;
+}
+
+.sidebar h4 {
+    color: #7D8804;
+}
+
+.sidebar a {
+    font-size: 1em;
+}
+
+span.acronym {
+    color:#555;
+    padding-right:10px;
+}
+
+span.lsid {
+    font-size:12px;
+}
+
+div.center {
+    text-align:center !important;
+}
+
+a.current {
+    text-decoration: none;
+    color: #333;
+    cursor: default;
+    background-image:none !important;
+}
+
+.institutionImage {
+    max-width:300px;
+    -moz-border-radius: 0 !important; /* FF1+ */
+    -webkit-border-radius: 0 !important; /* Saf3+, Chrome */
+    border-radius: 0 !important; /* Opera 10.5, IE 9 */
+    -icab-border-radius: 0;
+    -khtml-border-radius: 0;
+    padding-bottom: 5px;
+}
+
+/* allow logo to rise to level of name text */
+#header .aside {
+    padding-top: 0;
+}
+
+/********************************\
+* Styling for map pop-up
+\********************************/
+/* eliminate excess space below list in map popups */
+.olFramedCloudPopupContent ul {
+    padding-bottom: 0;
+}
+
+/* default charcoal text for collections */
+.olFramedCloudPopupContent a {
+    color: #333;
+}
+
+/* indent inner list items in popups */
+.olFramedCloudPopupContent ul ul li a {
+    margin-left: 20px;
+}
+
+/* header colour for institutions */
+.olFramedCloudPopupContent a.highlight {
+    color: #718804;
+}
+
+/* colour for other text */
+.olFramedCloudPopupContent span {
+    color: #333;
+}
+
+/* hr in popups */
+.olFramedCloudPopupContent hr {
+    height: 0;
+    margin-bottom: 0 !important;
+    background-color: transparent;
+}
+
+/*div#featurePopup_contentDiv {
+    padding-right: 0;
+    padding-bottom: 0;
+}*/
+
+.olFramedCloudPopupContent div.address {
+    color: #555;
+    margin-left: 6px;
+    font-size: smaller;
+    font-style: italic;
+}
+
+.olFramedCloudPopupContent div.desc {
+    color: #333;
+    margin-left: 6px;
+    font-size: smaller;
+    margin-top: 0;
+}
+
+/* control space in map hover */
+ul.hoverPop {
+    font-size: smaller;
+}
+
+/* prevent excess space after % records widget caption */
+#content .section p.caption {
+    padding-bottom: 0;
+}
+
+/* images for taxa breakdown
+ul.taxaBreakdown li {
+    height: 35px;
+}*/
+
+ul.taxaBreakdown input {
+    margin-top: 11px;
+}
+
+#map-collections p {
+    margin-top: 20px;
+}
+
+#map-collections {
+    padding-left: 15px;
+}
+
+.olControlPanel {
+    position:relative;
+    top:130px;
+    left: 7px;
+    display:block;
+    width:  24px;
+    height: 24px;
+    margin: 5px;
+/*    background-color:red;*/
+}
+
+.olControlPanel .resetZoomItemActive {
+    width:  22px;
+    height: 22px;
+    background-image: url("../images/map/australia.png");
+}
+
+/* error messages*/
+/* for "not found" messages in public pages */
+.message {
+    background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
+    border: 1px solid #b2d1ff;
+    color: #006dba;
+    margin: 10px 0 5px 0;
+    padding: 5px 5px 5px 30px
+}
+/* tabs */
+.hide,.ui-tabs-hide, #nav-footer{
+    display:block !important;
+    position: absolute;
+    left: -10000px;
+}
+
+/************************************************************\
+* Charts
+\************************************************************/
+
+div.child-institutions {
+    padding-top: 20px;
+}
+
+table.charts {
+    margin-left: 20px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border: none;
+}
+
+div.vertical-charts {
+    height: auto !important;
+    margin-left: 30px;
+}
+
+.vertical-charts h3 {
+    margin-top: 40px;
+}
+
+div.vertical-charts h3:first-child {
+    margin-top: 15px;
+}
+
+/************************************************************\
+* Records maps
+\************************************************************/
+
+div.learnMaps {
+    padding-left: 45px;
+}
+
+img#mapLegend {
+    margin-top: 50px;
+    vertical-align: top;
+    padding-left: 10px;
+}
+
+/************************************************************\
+* Taxon charts
+\************************************************************/
+img.taxon-loading {
+    margin-left: 230px;
+    margin-top: 150px;
+    margin-bottom: 218px;
+}
+
+span.taxonChartCaption {
+    color: #555;
+}
+
+div.taxonCaveat {
+    padding-top:5px;
+}
+
+div#taxonChartCaption {
+    text-align:center;
+    width: 430px;
+    position: relative;
+    z-index: 2;
+    margin-top: -50px;
+}
+
+div#taxonRecordsLink {
+    z-index: 2;
+    margin-left: 5px;
+}
+
+/************************************************************\
+* Progress bar (speedo)
+\************************************************************/
+#speedo {
+    text-align:center;
+}
+
+#speedoCaption {
+    position: relative;
+}
+
+a.recordsLink {
+    background: transparent url(http://collections.ala.org.au/images/ala/database_go.png) center left no-repeat;
+    padding-left: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+div.inline {
+    display: inline;
+}
+
+div.contact {
+    padding-bottom: 5px;
+}
+
+p.contactName {
+    font-weight: bold;
+}
+
+p.lastUpdated {
+    font-size: 11px;
+    color: #666 !important;
+    margin-left: 15px;
+    padding-bottom: 0 !important;
+}
+
+
+/************************************************************\
+* Decade charts
+\************************************************************/
+img.decade-loading {
+    margin-left: 130px;
+    margin-bottom: 108px;
+}
+
+div#decadeChartCaption {
+    padding-left: 100px;
+    padding-bottom: 20px;
+    color: #555;
+    position: relative;
+    z-index: 2;
+}
+
+/* ------------*/
+
+/*a[target='_blank'] {
+    background: url(../images/skin/external.png) center right no-repeat;
+    padding-right: 13px;
+}*/
+
+img.no-radius {
+    -moz-border-radius: 0 !important; /* FF1+ */
+    -webkit-border-radius: 0 !important; /* Saf3+, Chrome */
+    border-radius: 0 !important; /* Opera 10.5, IE 9 */
+    -icab-border-radius: 0;
+    -khtml-border-radius: 0;
+}
+
+/* stop rounding of map tiles */
+.olMap img {
+    -moz-border-radius: 0 !important; /* FF1+ */
+    -webkit-border-radius: 0 !important; /* Saf3+, Chrome */
+    border-radius: 0 !important; /* Opera 10.5, IE 9 */
+    -icab-border-radius: 0;
+    -khtml-border-radius: 0;
+}
+/* for percent records progress bar */
+
+img.percentImage1 {
+ background: white url(../images/percentImage_back1.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 10px 0;
+ background-position: 1px 0;
+}
+
+img.percentImage2 {
+ background: white url(../images/percentImage_back2.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+
+img.percentImage3 {
+ background: white url(../images/percentImage_back3.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+
+img.percentImage4 {
+ background: white url(../images/percentImage_back4.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+
+/* for info pages - eg web services catalogue */
+div.infoPage span.entity {
+    color: #718804;
+}
+
+div.infoPage ul {
+    margin-top: -10px;
+}
+
+div.infoPage p {
+    padding-bottom: 1.3em !important;
+}
+
+div.infoColumn {
+    padding-left: 20px;
+}
+
+div.infoColumn h1 {
+    font-size: 1.4em;
+    line-height: 1.4em;
+    color: #666 !important;
+    padding-bottom: 5px !important;
+}
+
+span.code {
+    color: #555;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+/* override the default thick grey line under all tables */
+table.clean {
+    border: none;
+}
+
+/* table with no td left padding so that the first column of text aligns with non-table text */
+table.no-left-pad td:first-child {
+    padding-left: 0;
+    text-align: left;
+}
+
+/*
+table.no-left-pad td {
+    text-align: right;
+}*/

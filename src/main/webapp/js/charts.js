@@ -7,12 +7,18 @@
  *******                                   *****/
 
 var instanceUid = 'dh1';
-var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/data-hubs/" + instanceUid;
+var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/";
+var pageUid = "";
+var initialRank = "";
 /************************************************************\
 *
 \************************************************************/
-function jpLoadTaxonChart(name, rank) {
-  var url = taxaBreakdownUrl + "/rank/" + rank;
+function jpLoadTaxonChart(uid, name, rank) {
+  if (initialRank == "") {
+    initialRank = rank;
+  }
+  pageUid = uid;
+  var url = taxaBreakdownUrl + getBreakdownContext(uid) + "/" + uid + "/rank/" + rank;
   if (name != undefined) {
     url = url + "/name/" + name;
   }
@@ -33,78 +39,88 @@ function jpLoadTaxonChart(name, rank) {
 * Converts biocache json to Google VIS DataTable
 \************************************************************/
 function jpBuildDataTable(data, name, rank) {
-  var table = new google.visualization.DataTable();
-  table.addColumn('string', data.rank);
-  table.addColumn('number', 'count');
-
-  if (data.taxa == undefined) {
-    alert("no data");
-  }
-  for (var i = 0; i < data.taxa.length; i++) {
-    table.addRow([data.taxa[i].label,data.taxa[i].count]);
-  }
-  table.setTableProperty('rank', data.rank);
-  if (name == undefined) {
-    table.setTableProperty('scope', 'all');
+  if (data == undefined) {
+    return null
   } else {
-    table.setTableProperty('name', name);
+    var table = new google.visualization.DataTable();
+    table.addColumn('string', data.rank);
+    table.addColumn('number', 'count');
+
+    if (data.taxa == undefined) {
+      alert("no data");
+    }
+    for (var i = 0; i < data.taxa.length; i++) {
+      table.addRow([data.taxa[i].label,data.taxa[i].count]);
+    }
+    table.setTableProperty('rank', data.rank);
+    if (name == undefined) {
+      table.setTableProperty('scope', 'all');
+    } else {
+      table.setTableProperty('name', name);
+    }
+    return table
   }
-  return table
 }
 /************************************************************\
 * Draw the chart
 \************************************************************/
 function jpDrawTaxonChart(dataTable) {
-  var chart = new google.visualization.PieChart(document.getElementById('taxonChart'));
-  var options = {
-      width: 400,
-      height: 380,
-      chartArea: {left:0, top:30, width:"90%", height: "75%"},
-      is3D: false,
-      titleTextStyle: {color: "#1775BA", fontName: 'Arial', fontSize: 18},
-      sliceVisibilityThreshold: 0,
-      legend: "left"
-  };
-  if (dataTable.getTableProperty('scope') == "all") {
-    options.title = "Records by " + dataTable.getTableProperty('rank');
+  if (dataTable == null) {
+      // no data
+      $('div#taxonChart').css("display","none");
+      $('div#taxonChartCaption').css("display","none");
   } else {
-    options.title = dataTable.getTableProperty('name') + " records by " + dataTable.getTableProperty('rank');
-  }
-  // only set the reset link text the first time in
-  if ($('span#resetTaxonChart').html() == 'Reset') {
-      $('span#resetTaxonChart').html("Reset to " + dataTable.getTableProperty('rank'));
-  }
-  google.visualization.events.addListener(chart, 'select', function() {
-    var rank = dataTable.getTableProperty('rank');
-    var name = dataTable.getValue(chart.getSelection()[0].row,0);
-    // add genus to name if we are at species level
-    var scope = dataTable.getTableProperty('scope');
-    if (scope == "genus" && rank == "species") {
-      name = dataTable.getTableProperty('name') + " " + name;
-    }
-    // drill down unless already at species
-    if (rank != "species") {
-      $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="static/images/ajax-loader.gif"/>');
-      jpLoadTaxonChart(dataTable.getValue(chart.getSelection()[0].row,0), dataTable.getTableProperty('rank'));
+    var chart = new google.visualization.PieChart(document.getElementById('taxonChart'));
+    var options = {
+        width: 400,
+        height: 380,
+        chartArea: {left:0, top:30, width:"90%", height: "75%"},
+        is3D: false,
+        titleTextStyle: {color: "#1775BA", fontName: 'Arial', fontSize: 18},
+        sliceVisibilityThreshold: 0,
+        legend: "left"
+    };
+    if (dataTable.getTableProperty('scope') == "all") {
+      options.title = "Records by " + dataTable.getTableProperty('rank');
     } else {
-      window.location.href = "occurrences/search?q=*:*&fq=" + rank + ":" + name;
+      options.title = dataTable.getTableProperty('name') + " records by " + dataTable.getTableProperty('rank');
     }
-    // show reset link
-    $('span#resetTaxonChart').html("<img src='static/images/go-left.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
-  });
+    // only set the reset link text the first time in
+    if ($('span#resetTaxonChart').html() == 'Reset') {
+        $('span#resetTaxonChart').html("Reset to " + dataTable.getTableProperty('rank'));
+    }
+    google.visualization.events.addListener(chart, 'select', function() {
+      var rank = dataTable.getTableProperty('rank');
+      var name = dataTable.getValue(chart.getSelection()[0].row,0);
+      // add genus to name if we are at species level
+      var scope = dataTable.getTableProperty('scope');
+      if (scope == "genus" && rank == "species") {
+        name = dataTable.getTableProperty('name') + " " + name;
+      }
+      // drill down unless already at species
+      if (rank != "species") {
+        $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="' + contextPath + '/static/images/ajax-loader.gif"/>');
+        jpLoadTaxonChart(pageUid, dataTable.getValue(chart.getSelection()[0].row,0), dataTable.getTableProperty('rank'));
+      } else {
+        window.location.href = contextPath + "/occurrences/search?q=*:*&fq=" + rank + ":" + name;
+      }
+      // show reset link
+      $('span#resetTaxonChart').html("<img class='hand' onclick='jpResetTaxonChart()' src='" + contextPath + "/static/images/go-left.png'/>&nbsp;&nbsp;<img src='" + contextPath + "/static/images/go-right-disabled.png'/>");
+    });
 
-  chart.draw(dataTable, options);
+    chart.draw(dataTable, options);
 
-  // show taxon caption
-  $('div#taxonChartCaption').css('visibility', 'visible');
+    // show taxon caption
+    $('div#taxonChartCaption').css('visibility', 'visible');
+  }
 }
 /************************************************************\
 *
 \************************************************************/
 function jpResetTaxonChart() {
-  $('div#taxonChart').html('<img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="static/images/ajax-loader.gif"/>');
-  jpLoadTaxonChart(null, 'phylum');
-  $('span#resetTaxonChart').html("<img src='static/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
+  $('div#taxonChart').html('<img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="' + contextPath + '/static/images/ajax-loader.gif"/>');
+  jpLoadTaxonChart(pageUid, null, initialRank);
+  $('span#resetTaxonChart').html("<img src='" + contextPath + "/static/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='" + contextPath + "/static/images/go-right-disabled.png'/>");
 }
 
 /*******                                   *****
@@ -112,7 +128,7 @@ function jpResetTaxonChart() {
  *******                                   *****/
 
 var priorityOfTypes = ['holotype','lectotype','neotype','syntype','paratype','allotype','topotype','paralectotype','cotype','hapantotype','allolectotype','paraneotype'];
-function drawTypesBreakdown(data) {
+function drawTypesBreakdown(data, uid) {
   var types = data.fieldResult;
   types.sort(typeSorter);
   // build data table
@@ -146,7 +162,8 @@ function drawTypesBreakdown(data) {
     var name = table.getValue(chart.getSelection()[0].row,0);
     // reverse any presentation transforms
     if (name == 'unknown type') {name = 'type';}
-    window.location.href = "occurrences/search?q=*:*&fq=type_status:" + name;
+
+    window.location.href = contextPath + "/occurrences/search?q=*:*&fq=type_status:" + name + buildUidFacet(uid);
   });
 
   // draw
@@ -216,8 +233,6 @@ var instBreakdownJson = {empty: true};
 var topLevel = true;
 var instTable;
 function loadInstChart() {
-  //var url = biocacheServicesUrl + "occurrences/data-provider/" + instanceUid + ".json?pageSize=0";
-  //var oldUrl = biocacheUrl + "occurrences/searchForUID.json?pageSize=0&q=" + instanceUid;
   if (instBreakdownJson.empty) {
     // load json one time only
     var url = "http://collections.ala.org.au/public/recordsByCollectionByInstitution.json";
@@ -271,7 +286,7 @@ function drawInstitutionBreakdown(data) {
       drawCollectionBreakdownChart(label);
       topLevel = false;
       // show reset link
-      $('span#resetInstChart').html("<img src='static/images/go-left.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
+      $('span#resetInstChart').html("<img class='hand' onclick='resetInstChart()' src='" + contextPath + "/static/images/go-left.png'/>&nbsp;&nbsp;<img src='" + contextPath + "/static/images/go-right-disabled.png'/>");
       $('span#instChartCaption').html("Click a slice or legend to show records for the collection.");
     } else {
       var uid = instTable.getTableProperty('uid');
@@ -347,11 +362,11 @@ function drawCollectionBreakdownChart(label) {
 }
 
 function resetInstChart() {
-  $('div#instChart').html('<img style="margin-left: 230px;margin-top: 140px;margin-bottom: 110px;" alt="loading..." src="static/images/ajax-loader.gif"/>');
+  $('div#instChart').html('<img style="margin-left: 230px;margin-top: 140px;margin-bottom: 110px;" alt="loading..." src="' + contextPath + '/static/images/ajax-loader.gif"/>');
   topLevel = true;
   loadInstChart();
   $('span#instChartCaption').html("Click a slice or legend to show the institution's collections.");
-  $('span#resetInstChart').html("<img src='static/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='static/images/go-right-disabled.png'/>");
+  $('span#resetInstChart').html("<img src='" + contextPath + "/static/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='" + contextPath + "/static/images/go-right-disabled.png'/>");
 }
 
 
@@ -465,12 +480,59 @@ function resetInstChart() {
 
 
 /*******                                   *****
+ *******              UTILITY              *****
+ *******                                   *****/
+function getBreakdownContext(uid) {
+  if (uid == undefined || uid == null) {
+    return "";
+  }
+  if (uid.substr(0,2) == "co") {
+    return "collections";
+  }
+  if (uid.substr(0,2) == "in") {
+    return "institutions";
+  }
+  if (uid.substr(0,2) == "dr") {
+    return "data-resources";
+  }
+  if (uid.substr(0,2) == "dp") {
+    return "data-providers";
+  }
+  if (uid.substr(0,2) == "dh") {
+    return "data-hubs";
+  }
+  return ""
+}
+
+function buildUidFacet(uid) {
+  if (uid == undefined || uid == null) {
+    return "";
+  }
+  if (uid.substr(0,2) == "co") {
+    return "&fq=collection_uid:" + uid;
+  }
+  if (uid.substr(0,2) == "in") {
+    return "&fq=institution_uid:" + uid;
+  }
+  if (uid.substr(0,2) == "dr") {
+    return "&fq=data_resource_uid:" + uid;
+  }
+  if (uid.substr(0,2) == "dp") {
+    return "&fq=data_provider_uid:" + uid;
+  }
+  if (uid.substr(0,2) == "dh") {
+    return "&fq=data_hub_uid:" + uid;
+  }
+  return ""
+}
+
+/*******                                   *****
  *******    LOAD FACETS FOR ALL RECORDS    *****
  *******                                   *****/
 
 function loadFacetCharts() {
     // bio-cache facets data
-    var url = biocacheServicesUrl + "occurrences/institutions/" + instanceUid + ".json?pageSize=0";
+    var url = biocacheServicesUrl + "occurrences/data-hubs/" + instanceUid + ".json?pageSize=0";
     $.ajax({
       url: url,
       dataType: 'jsonp',
@@ -485,7 +547,7 @@ function loadFacetCharts() {
         var foundStatesData = false;
         for (var i = 0; i < facets.length; i++) {
           if (facets[i].fieldName == 'type_status') {
-            drawTypesBreakdown(facets[i]);
+            drawTypesBreakdown(facets[i], null);
             foundTypesData = true;
           }
           if (facets[i].fieldName == 'state') {
@@ -516,7 +578,7 @@ function hubChartsOnLoadCallback() {
 
   loadFacetCharts();
 
-  jpLoadTaxonChart(null,"phylum");  // start with all phyla
+  jpLoadTaxonChart(instanceUid, null,"phylum");  // start with all phyla
 
   loadRecordsAccumulation();
 }

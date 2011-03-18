@@ -27,7 +27,7 @@
       <img style="margin-left: 230px;margin-top: 100px;margin-bottom: 120px;" class='taxon-loading' alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
     <div id='taxonChartCaption' style='visibility:hidden;'>
-      <span id='resetTaxonChart' onclick='jpResetTaxonChart()'>
+      <span id='resetTaxonChart'>
         <img src="static/images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="static/images/go-right-disabled.png"/></span><br/>
       <span class='taxonChartCaption'>Click a slice or legend to drill into a group.</span>
     </div>
@@ -43,7 +43,7 @@
       <img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
     <div id='instChartCaptionBlock' style='visibility:hidden;'>
-      <span id='resetInstChart' style="margin-left:133px;" onclick='resetInstChart()'>
+      <span id='resetInstChart' style="margin-left:133px;">
         <img src="static/images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="static/images/go-right-disabled.png"/></span><br/>
       <span id="instChartCaption" class='taxonChartCaption'>Click a slice or legend to show the institution's collections.</span>
     </div>

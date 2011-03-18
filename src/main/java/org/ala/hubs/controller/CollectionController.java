@@ -42,14 +42,18 @@ public class CollectionController {
     /* View names */
 	private final String SHOW_COLLECTION = "collections/show";
     /* Constant String fields */
-    private final String COLLECTION_PATH_PREFIX = "/public/show/co";
-    private final String INSTITUTION_PATH_PREFIX = "/data/show/in";
+    private final String COLLECTION_PREFIX = "co";
+    private final String INSTITUTION_PREFIX = "in";
+    private final String SHOW_PATH_PREFIX = "/public/show/";
+    //private final String BIOCACHE_PATH_PREFIX = "biocache.ala.org.au";
+    private final String BIOCACHE_PATH_PREFIX = "http://biocache.ala.org.au/occurrences/searchForUID?q=";
     private final String COLLECTORY_PUBLIC_URL = "/public/";
     private final String COLLECTORY_MAPS_URL = "/images/map";
     private final String COLLECTION = "collection/";
     private final String INSTITUTION = "institution/";
     /** URI for collection page fragments- possibly overriden by properties overrides */
-    private String collectionsFragUrl = "http://collections.ala.org.au/ws/fragment/";
+    private String collectory = "http://collections.ala.org.au";
+    private String collectionsFragContext = "/ws/fragment/";
 
     /**
      * Display a collection page.
@@ -67,11 +71,13 @@ public class CollectionController {
         model.addAttribute("uid", uid);
         model.addAttribute("type", "Collection");
         // get the HTML fragment from the collection WS
-        Document doc = Jsoup.connect(collectionsFragUrl + COLLECTION + uid).get();
+        Document doc = Jsoup.connect(collectory + collectionsFragContext + COLLECTION + uid).get();
         model.addAttribute("entityName", GetNameFromTitle(doc));
 
-        // Modify (interal) links to institutions
+        // Modify (internal) links to institutions
         manipulateLinks(doc.getElementsByTag("a"), request);
+        // Modify src to images
+        manipulateImageSources(doc.getElementsByTag("img"), request);
         // Modify inline script tags
         manipulateScripts(doc.getElementsByTag("script"), request);
         // get body and add to Model
@@ -95,10 +101,12 @@ public class CollectionController {
         model.addAttribute("uid", uid);
         model.addAttribute("type", "Institution");
         // get the HTML fragment from the collection WS
-        Document doc = Jsoup.connect(collectionsFragUrl + INSTITUTION + uid).get();
+        Document doc = Jsoup.connect(collectory + collectionsFragContext + INSTITUTION + uid).get();
         model.addAttribute("entityName", GetNameFromTitle(doc));
-        // Modify (interal) links to institutions
+        // Modify (internal) links to institutions
         manipulateLinks(doc.getElementsByTag("a"), request);
+        // Modify src to images
+        manipulateImageSources(doc.getElementsByTag("img"), request);
         // Modify inline script tags
         manipulateScripts(doc.getElementsByTag("script"), request);
         // get body and add to Model
@@ -115,13 +123,38 @@ public class CollectionController {
     protected void manipulateLinks(Elements links, HttpServletRequest request) {
         for (Element link : links) {
             String href = link.attr("href");
-            
-            if (href.startsWith(COLLECTION_PATH_PREFIX)) {
-                String newHref = StringUtils.replace(href, COLLECTION_PATH_PREFIX, request.getContextPath() + "/collection/co");
+
+            if (href.startsWith(SHOW_PATH_PREFIX + COLLECTION_PREFIX)) {
+                String newHref = StringUtils.replace(href, SHOW_PATH_PREFIX + COLLECTION_PREFIX, request.getContextPath() + "/collection/co");
                 link.attr("href", newHref);
-            } else if (href.startsWith(INSTITUTION_PATH_PREFIX)) {
-                String newHref = StringUtils.replace(href, INSTITUTION_PATH_PREFIX, request.getContextPath() + "/institution/in");
+            } else if (href.startsWith(SHOW_PATH_PREFIX + INSTITUTION_PREFIX)) {
+                String newHref = StringUtils.replace(href, SHOW_PATH_PREFIX + INSTITUTION_PREFIX, request.getContextPath() + "/institution/in");
                 link.attr("href", newHref);
+            } else if (StringUtils.hasText(BIOCACHE_PATH_PREFIX + COLLECTION_PREFIX)) {
+                String newHref = StringUtils.replace(href, BIOCACHE_PATH_PREFIX + COLLECTION_PREFIX,
+                        request.getContextPath() + "/occurrences/search?q=*:*&fq=collection_uid:co");
+                link.attr("href", newHref);
+            } else if (href.startsWith(BIOCACHE_PATH_PREFIX + INSTITUTION_PREFIX)) {
+                String newHref = StringUtils.replace(href, BIOCACHE_PATH_PREFIX + INSTITUTION_PREFIX,
+                        request.getContextPath() + "/occurrences/search?q=*:*&fq=institution_uid:in");
+                link.attr("href", newHref);
+            }
+        }
+    }
+
+    /**
+     * Iterate over images (img tags) and change src from Collectory to hubs.
+     *
+     * @param imgs
+     * @param request
+     */
+    protected void manipulateImageSources(Elements imgs, HttpServletRequest request) {
+        for (Element img : imgs) {
+            String src = img.attr("src");
+
+            if (src.startsWith("/images")) {
+                String newSrc = StringUtils.replace(src, "/images", request.getContextPath() + "/static/images");
+                img.attr("src", newSrc);
             }
         }
     }
@@ -138,12 +171,16 @@ public class CollectionController {
             String data = dataNode.attr("data");
 
             if (StringUtils.hasText(COLLECTORY_MAPS_URL)) {
-                data = StringUtils.replace(data, COLLECTORY_MAPS_URL, "http://collections.ala.org.au/images/map");
+                data = StringUtils.replace(data, COLLECTORY_MAPS_URL, collectory + "/images/map");
                 logger.debug("Found and changed: " + COLLECTORY_MAPS_URL);
             }
             if (StringUtils.hasText(COLLECTORY_PUBLIC_URL)) {
-                data = StringUtils.replace(data, COLLECTORY_PUBLIC_URL, "http://collections.ala.org.au/public/");
+                data = StringUtils.replace(data, COLLECTORY_PUBLIC_URL, collectory + "/public/");
                 logger.debug("Found and changed: " + COLLECTORY_PUBLIC_URL);
+            }
+            if (StringUtils.hasText("/images")) {
+                data = StringUtils.replace(data, "/images", request.getContextPath() + "/static/images");
+                logger.debug("Found and changed: " + "/images");
             }
 
             dataNode.attr("data", data); // push modified JS back into the node
@@ -168,16 +205,32 @@ public class CollectionController {
      * 
      * @return
      */
-    public String getCollectionsFragUrl() {
-        return collectionsFragUrl;
+    public String getCollectionsFragContext() {
+        return collectory + collectionsFragContext;
     }
 
     /**
      *
-     * @param collectionsFragUrl
+     * @param collectionsFragContext
      */
-    public void setCollectionsFragUrl(String collectionsFragUrl) {
-        this.collectionsFragUrl = collectionsFragUrl;
+    public void setCollectionsFragContext(String collectionsFragContext) {
+        this.collectionsFragContext = collectionsFragContext;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getCollectory() {
+        return collectory;
+    }
+
+    /**
+     *
+     * @param collectory
+     */
+    public void setCollectory(String collectory) {
+        this.collectory = collectory;
     }
 
 }

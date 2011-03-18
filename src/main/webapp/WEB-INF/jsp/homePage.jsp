@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Occurrence Search | OZCAM</title>
-        <link rel="stylesheet" href="static/css/charts.css" type="text/css" media="screen">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>

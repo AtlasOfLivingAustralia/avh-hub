@@ -14,10 +14,13 @@
         <title>OzCam Hub - ${type}: ${entityName}</title>
         <%-- <base href="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}${pageContext.request.contextPath}/" /> --%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/collection.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/public.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="http://collections.ala.org.au/js/jquery.fancybox/fancybox/jquery.fancybox-1.3.1.pack.js"></script>
         <link rel="stylesheet" type="text/css" href="http://collections.ala.org.au/js/jquery.fancybox/fancybox/jquery.fancybox-1.3.1.css" media="screen" />
         <script type="text/javascript" language="javascript" src="http://collections.ala.org.au/js/collectory.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script>
         <script type="text/javascript">
           $(document).ready(function() {
             //$('#nav-tabs > ul').tabs();

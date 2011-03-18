@@ -106,9 +106,11 @@ span.taxonChartCaption {
 
 span.resetChart {
     color: #01716E;
-    text-decoration:underline;
-    cursor:pointer;
     margin-bottom: 14px;
+}
+
+.hand {
+    cursor:pointer;
 }
 
 div.taxonCaveat {
