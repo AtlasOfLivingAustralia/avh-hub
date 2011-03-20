@@ -15,11 +15,10 @@
 
 package org.ala.hubs.controller;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -28,7 +27,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestOperations;
 
 /**
@@ -78,7 +76,7 @@ public class TaxonController {
                         taxon.setRankId((Integer) tc.get("rankID"));
                     } else if (key.contentEquals("commonNames")) {
                         List<Map<String, Object>> commonNames = (List<Map<String, Object>>) etc.get("commonNames");
-                        Set<String> names = new TreeSet<String>(); // avoid duplicates
+                        Set<String> names = new LinkedHashSet<String>(); // avoid duplicates
                         for (Map<String, Object> cn : commonNames) {
                             String theName = (String) cn.get("nameString");
                             names.add(theName.trim());
