@@ -11,10 +11,10 @@
     line-height: 1.5em;
 }
 #content {
-    width: 730px;
+    width: 720px;
 }
 .sidebar {
-    width: 200px;
+    width: 210px;
 }
 a:link, a:visited, #content a:link, #content a:visited {
     font-size: 13px;
@@ -151,4 +151,18 @@ table.compact td select {
 }
 input.region_autocomplete {
     width: 350px;
+}
+#contentBox div.imageThumb {
+    float: left;
+    padding: 2px;
+    line-height: 0;
+}
+div.fullWidthHeader {
+    margin-left: 30px;
+    margin-bottom: 20px;
+    padding-left: 0 !important;
+    border-bottom: 2px solid gray;
+}
+span#taxonName {
+    color: black;
 }
