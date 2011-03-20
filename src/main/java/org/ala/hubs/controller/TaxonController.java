@@ -18,6 +18,8 @@ package org.ala.hubs.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -63,6 +65,7 @@ public class TaxonController {
             if (entities.containsKey(EXTENDED_TAXON_CONCEPTDTO)) {
                 Map<String, Object> etc = entities.get(EXTENDED_TAXON_CONCEPTDTO);
                 //logger.debug("etc: " + etc);
+                int maxDescriptionBlocks = 5; 
                 
                 
                 for (String key : etc.keySet()) {
@@ -75,9 +78,10 @@ public class TaxonController {
                         taxon.setRankId((Integer) tc.get("rankID"));
                     } else if (key.contentEquals("commonNames")) {
                         List<Map<String, Object>> commonNames = (List<Map<String, Object>>) etc.get("commonNames");
-                        List<String> names = new ArrayList<String>();
+                        Set<String> names = new TreeSet<String>(); // avoid duplicates
                         for (Map<String, Object> cn : commonNames) {
-                            names.add((String) cn.get("nameString"));
+                            String theName = (String) cn.get("nameString");
+                            names.add(theName.trim());
                         }
                         taxon.setCommonNames(names);
                     } else if (key.contentEquals("images")) {
@@ -92,7 +96,7 @@ public class TaxonController {
                         for (Map<String, Object> prop : props) {
                             if (prop.containsKey("name")) {
                                 String val = (String) prop.get("name");
-                                if (val.endsWith("hasDescriptiveText") && n < 5) {
+                                if (val.endsWith("hasDescriptiveText") && n < maxDescriptionBlocks) {
                                     description.append("<p>").append((String) prop.get("value")).append("</p>");
                                     n++;
                                 }
@@ -118,7 +122,7 @@ public class TaxonController {
         String author;
         String rank;
         Integer rankId;
-        List<String> commonNames;
+        Set<String> commonNames;
         Boolean isAustralian;
         String description;
         List<Map<String, String>> images;
@@ -137,11 +141,11 @@ public class TaxonController {
             this.author = author;
         }
 
-        public List<String> getCommonNames() {
+        public Set<String> getCommonNames() {
             return commonNames;
         }
 
-        public void setCommonNames(List<String> commonNames) {
+        public void setCommonNames(Set<String> commonNames) {
             this.commonNames = commonNames;
         }
 
