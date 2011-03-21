@@ -36,15 +36,6 @@ $(document).ready(function() {
     String.prototype.trimBools = function() {
         return this.replace(/^\s*(OR|AND|NOT)\s+|\s+(OR|AND|NOT)\s*$/g, "");
     };
-
-    //window.onbeforeunload = function (e) {
-    $(window).unload(function() {
-        //alert('Handler for .unload() called.');
-        //$("form#advancedSearchForm select").options.length = 0;
-        //console.log("unload", e);
-        //$('form#advancedSearchForm').reset();
-    });
-    //}
     
     // Autocomplete
     $("input[name=name_autocomplete]").autocomplete('http://bie.ala.org.au/search/auto.json', {
@@ -234,9 +225,7 @@ $(document).ready(function() {
             selectFirst: false
         }).result(function(event, item) {
             // user selected an item -> process it and add to query
-            var fieldMap = {lga: "places", ibra: "ibra", imcra: "imcra"};
-            var idName = el.attr("id");
-            var fieldName = fieldMap[idName];
+            var fieldName = $(this).attr("name");
             var fieldValue = $(this).val().trim();
             removeFieldFromQuery(fieldName); // clear previous click
             if (fieldValue && fieldValue.match(/\s+/)) {
@@ -252,16 +241,32 @@ $(document).ready(function() {
             // check to see if user has cleared the field
             var el = $(this);
             if (!el.val()) {
-                var fieldMap = {lga: "places", ibra: "ibra", imcra: "imcra"};
-                var idName = el.attr("id");
-                var fieldName = fieldMap[idName];
+                var fieldName = $(this).attr("name");
+                console.log("input blur", fieldName);
                 removeFieldFromQuery(fieldName);
             }
             return true;
         });
     });
 
+    // populate advanced search options from q param on page load
+    var q = decodeURIComponent($.getQueryParam("q")[0]);
+    var terms = q.match(/(\w+:".*?"|\w+:\w+)/g);
+    //console.log("terms", terms);
+    for (var i in terms) {
+        var term = terms[i].replace(/"/g, '');
+        //console.log("term", i, term);
+        if (term.indexOf(":") != -1) {
+            // only interested in field searches, e.g. lsid:foo
+            var bits = term.split(":");
+            //console.log("bits",bits);
+            $("select." + bits[0]).val(bits[1]);
+            $("input[name=" + bits[0] + "]").val(bits[1]);
+            // TODO Date fields...
+        }
+    }
 
+    
 });
 
 /**
@@ -291,7 +296,7 @@ function  removeFieldFromQuery(fieldName) {
  */
 function removeFromQuery(query, removeText) {
     var fnRegEx;
-    if (removeText.match(/state|places/)) {
+    if (removeText.match(/state|places|ibra|imcra/)) {
         // quoted field value
         fnRegEx = new RegExp(removeText + ":\".*?\"");
     } else if (removeText.match(/_date/)) {

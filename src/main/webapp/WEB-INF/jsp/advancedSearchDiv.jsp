@@ -111,7 +111,7 @@
                 <tr>
                     <td class="label">LGA region</td>
                     <td>
-                        <input type="text" name="lga" id="lga" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
+                        <input type="text" name="places" id="lga" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
                     </td>
                 </tr>
             </tbody>
@@ -171,5 +171,7 @@
             </tbody>
         </table>
         <input type="button" id="advancedSubmit" value="Advanced Search" onClick="$('#solrSubmit').click()"/>
+        &nbsp;&nbsp;
+        <input type="reset" value="clear all" onclick="$('input#solrQuery').val(''); return true;"/>
     </form>
 </div>

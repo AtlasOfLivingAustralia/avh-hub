@@ -16,7 +16,7 @@
         <title>Occurrence Search Results | OZCAM</title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
-            searchString = "${searchResults.urlParameters}"; 
+            searchString = '${searchResults.urlParameters}'; 
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
@@ -43,7 +43,7 @@
             <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                    <input type="submit" id="searchSubmit" value="Search"/>
+                    <input type="submit" id="solrSubmit" value="Search"/>
                     <input type="text" id="solrQuery" name="q" value="<c:out value='${param.q}'/>">
                     <input type="hidden" id="lsid" value=""/>
                     <span id="advancedSearchLink"><a href="#advanced_search">Advanced Search</a></span>

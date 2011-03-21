@@ -40,7 +40,7 @@
     font-size: 13px;
     width: 500px;
 }
-#solrSearchForm input#searchSubmit {
+#solrSearchForm input#solrSubmit {
     display: inline-block;
     float: right;
     font-size: 13px;
