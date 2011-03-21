@@ -311,6 +311,9 @@ function showHideAdvancedSearch() {
     }
 }
 
+/**
+ * Add "sticky" behaviour for lsid searches
+ */
 function updateTaxonConcepts(data) {
     //console.log("ajax data", data);
     if (data.extendedTaxonConceptDTO) {
@@ -325,6 +328,10 @@ function updateTaxonConcepts(data) {
     }
 }
 
+/**
+ * Add the selected lsid (+ data) to the next available lsid entry
+ * displaying the rank, sci name and common names
+ */
 function addTaxonConcept(item) {
     // determine the next avail taxon row (num) to add to
     var num = 1;
