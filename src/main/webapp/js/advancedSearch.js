@@ -37,7 +37,7 @@ $(document).ready(function() {
         return this.replace(/^\s*(OR|AND|NOT)\s+|\s+(OR|AND|NOT)\s*$/g, "");
     };
     
-    // Autocomplete
+    //  for taxon concepts
     $("input[name=name_autocomplete]").autocomplete('http://bie.ala.org.au/search/auto.json', {
         //width: 350,
         extraParams: {limit:100},
@@ -74,7 +74,6 @@ $(document).ready(function() {
         selectFirst: false
     }).result(function(event, item) {
         // user has selected an autocomplete item
-        // determine the next avail taxon row (num) to add to
         addTaxonConcept(item);
     });
 
@@ -126,15 +125,15 @@ $(document).ready(function() {
 
     // catch date field changes
     $("input.occurrence_date").blur(function() {
-        console.log("date field on blur");
-        if (!$(this).val()) {
-            //return;
-        }
+        //console.log("date field on blur");
         var fieldName = "occurrence_date";
         removeFieldFromQuery(fieldName); // clear previous click
         var fieldValue = "";// = $(this).val();
         var start = $("input#startDate").val();
-        var end = $("input#endDate").val();
+        var end   = $("input#endDate").val();
+        if (!start && !end) {
+            return; // both fields are blank
+        }
         if (start) {
             fieldValue = "[" + start + "T12:00:00Z TO ";
         } else {
@@ -175,16 +174,6 @@ $(document).ready(function() {
             matchSubset: false,
             highlight: false,
             delay: 600,
-    //        formatItem: function(row, i, n) {
-    //            var result = (row.scientificNameMatches) ? row.scientificNameMatches[0] : row.commonNameMatches ;
-    //            if (row.name != result && row.rankString) {
-    //                result = result + "<div class='autoLine2'>" + row.rankString + ": " + row.name + "</div>";
-    //            } else if (row.rankString) {
-    //                result = result + "<div class='autoLine2'>" + row.rankString + "</div>";
-    //            }
-    //            result = "<input type='button' value='Add' style='float:right'/>" + result
-    //            return result;
-    //        },
             cacheLength: 10,
             minChars: 3,
             scroll: false,
@@ -216,37 +205,57 @@ $(document).ready(function() {
         });
     });
 
+    // dataset fields: catalogue_number & record number
+    $("input.dataset").blur(function() {
+        var el = $(this);
+        var fieldName = el.attr("id");
+        var fieldValue = el.val().trim();
+        removeFieldFromQuery(fieldName);
+        if (fieldValue) {
+            if (fieldValue.match(/\s/)) {
+                fieldValue = "\"" + fieldValue + "\"";
+            }
+            addFieldToQuery(fieldName, fieldValue);
+        }
+    });
+
     // populate advanced search options from q param on page load
     var q = decodeURIComponent($.getQueryParam("q")[0]);
-    var terms = q.match(/(\w+:".*?"|lsid:(\S+)|\w+:\w+)/g);
+    var terms = q.match(/(\w+:".*?"|lsid:(\S+)|\w+:\[.*?\]|\w+:\w+)/g); // magic regex!
     //console.log("terms", terms);
     for (var i in terms) {
-        var term = terms[i].replace(/"/g, '');
+        var term = terms[i].replace(/"/g, ''); // remove quotes
         console.log("term", i, term);
         if (term.indexOf(":") != -1) {
             // only interested in field searches, e.g. lsid:foo
             var bits = term.split(":");
             var fieldName = bits[0];
             var fieldValue = bits.slice(1).join(":"); //bits[1];
-            console.log("bits",bits);
+            // plain fields -  try setting selects and inputs
             $("select." + fieldName).val(fieldValue);
             $("input[name=" + fieldName + "]").val(fieldValue);
             // taxon concepts
             if (fieldName.indexOf("lsid") != -1) {
+                // lsid searches
                 var taxonUri = "http://bie.ala.org.au/species/" + fieldValue + ".json";
-                console.log("URL", taxonUri);
+                //console.log("URL", taxonUri);
                 $.ajax({
                     url: taxonUri,
                     dataType: "jsonp",
                     success: updateTaxonConcepts
                 });
+            } else if (fieldName.indexOf("_date") != -1) {
+                // date range search
+                fieldValue = fieldValue.replace(/\[|\]/g, ''); // remove [ & ]
+                fieldValue = fieldValue.replace(/T12:00:00Z/g, ''); // remove time portion of ISO date
+                fieldValue = fieldValue.replace(/\*/g, ''); // remove wildcard char
+                var dates = fieldValue.split(" TO ");
+                $("#startDate").val(dates[0].trim());
+                $("#endDate").val(dates[1].trim());
             }
-            // TODO Date fields...
         }
     }
-
-    
-});
+}); // end document ready
 
 /**
  * Add the selected field name:value to the solr query string
@@ -271,20 +280,18 @@ function  removeFieldFromQuery(fieldName) {
 }
 
 /**
- * Remove the provided text from the query string
+ * Remove the provided fieldName and any value from the query string
  */
-function removeFromQuery(query, removeText) {
-    var fnRegEx;
-    if (removeText.match(/state|places|ibra|imcra/)) {
-        // quoted field value
-        fnRegEx = new RegExp(removeText + ":\".*?\"");
-    } else if (removeText.match(/_date/)) {
-        // range field value, e.g. [1 TO 2]
-        fnRegEx = new RegExp(removeText + ":\".*\"");
-    } else {
-        fnRegEx = new RegExp(removeText + ":\\w+")
+function removeFromQuery(query, fieldName) {
+    var fnRegEx = [];
+    fnRegEx[0] = new RegExp(fieldName + ":\".*?\""); // quoted search
+    fnRegEx[2] = new RegExp(fieldName + ":\\[.*?\\]"); // range search
+    fnRegEx[3] = new RegExp(fieldName + ":\\w+"); // plain search
+    
+    for (var i in fnRegEx) {
+        query = query.replace(fnRegEx[i], "");
     }
-    query = query.replace(fnRegEx, "");  // remove this field
+
     query = query.replace(/\s{2,}/, " ").trim(); // replace 2 or more spaces with a single space
     return query;
 }
@@ -305,7 +312,7 @@ function showHideAdvancedSearch() {
 }
 
 function updateTaxonConcepts(data) {
-    console.log("ajax data", data);
+    //console.log("ajax data", data);
     if (data.extendedTaxonConceptDTO) {
         var tc = data.extendedTaxonConceptDTO;
         var item = {};
@@ -319,6 +326,7 @@ function updateTaxonConcepts(data) {
 }
 
 function addTaxonConcept(item) {
+    // determine the next avail taxon row (num) to add to
     var num = 1;
     for (i=1;i<=4;i++) {
         if (!$("#sciname_" + i).html()) {

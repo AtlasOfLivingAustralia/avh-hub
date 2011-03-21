@@ -150,6 +150,24 @@
                 </tr>
             </tbody>
         </table>
+        <b>Find records with the following details</b>
+        <table border="0" width="100" cellspacing="2" class="compact">
+            <thead/>
+            <tbody>
+                <tr>
+                    <td class="label">Catalogue Number</td>
+                    <td>
+                         <input type="text" name="catalogue_number" id="catalogue_number" class="dataset" placeholder="" value=""/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Record Number</td>
+                    <td>
+                         <input type="text" name="record_number" id="record_number" class="dataset" placeholder="" value=""/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <b>Find records within the following date range</b>
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
