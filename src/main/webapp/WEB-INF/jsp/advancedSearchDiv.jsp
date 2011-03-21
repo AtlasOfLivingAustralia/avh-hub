@@ -150,7 +150,7 @@
                 </tr>
             </tbody>
         </table>
-        <b>Find records with the following details</b>
+        <b>Find records with the following dataset fields</b>
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
             <tbody>
@@ -164,6 +164,12 @@
                     <td class="label">Record Number</td>
                     <td>
                          <input type="text" name="record_number" id="record_number" class="dataset" placeholder="" value=""/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Collector Name</td>
+                    <td>
+                         <input type="text" name="collector" id="collector" class="dataset" placeholder="" value=""/>
                     </td>
                 </tr>
             </tbody>

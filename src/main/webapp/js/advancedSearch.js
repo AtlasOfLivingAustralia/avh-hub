@@ -17,14 +17,13 @@
  * JQuery on document ready callback
  */
 $(document).ready(function() {
-    // advanced search link
+    // advanced search link (hide/show)
     $("#advancedSearchLink a").click(function(e) {
         e.preventDefault();
         showHideAdvancedSearch();
     });
-
+    // remember advanced option hide/show on reload
     var url = escape(window.location.hash.replace( /^#/, '')); // escape used to prevent injection attacks
-
     if (url == "advanced_search") {
         showHideAdvancedSearch();
     }
@@ -78,7 +77,7 @@ $(document).ready(function() {
     });
 
     // "clear" button next to each taxon row
-    $("input.clear_taxon").click(function(e) {
+    $("input.clear_taxon").live("click", function(e) {
         e.preventDefault();
         $(this).hide();
         var num = $(this).attr("id").replace("clear_", ""); // get the num
@@ -86,10 +85,15 @@ $(document).ready(function() {
         $('#sciname_' + num).html(''); // clear taxon
         $("tr#taxon_row_" + num).hide("slow"); // hide the row
         var query = $("#solrQuery").val(); // get the query text
+        //console.log("1. clear() - query", query);
+        // TODO: Clean this code up!
         query = query.replace(" OR lsid:" + lsid, "");  // remove potential OR'ed lsid
         query = query.replace("lsid:" + lsid + " OR ", ""); // remove potential OR'ed lsid
         query = query.replace("lsid:" + lsid, "").trimBools(); // reomve the LSID
-        //console.log("clear() - query", query);
+        query = query.replace(/\(\)/g, ""); // remove left over braces ()
+        query = query.replace(/(\(\s*OR\s*|\s+OR\S*\))/g, ""); // remove left over braces (OR .*)| (.* OR)
+        query = query.replace(/^\($|^\)$/, ""); // remove orphaned braces
+        //console.log("2. clear() - query", query);
         $("#solrQuery").val(query); // replace with new query text
     });
 
@@ -198,7 +202,7 @@ $(document).ready(function() {
             var el = $(this);
             if (!el.val()) {
                 var fieldName = $(this).attr("name");
-                console.log("input blur", fieldName);
+                //console.log("input blur", fieldName);
                 removeFieldFromQuery(fieldName);
             }
             return true;
@@ -224,8 +228,8 @@ $(document).ready(function() {
     var terms = q.match(/(\w+:".*?"|lsid:(\S+)|\w+:\[.*?\]|\w+:\w+)/g); // magic regex!
     //console.log("terms", terms);
     for (var i in terms) {
-        var term = terms[i].replace(/"/g, ''); // remove quotes
-        console.log("term", i, term);
+        var term = terms[i].replace(/"|\(|\)/g, ''); // remove quotes
+        //console.log("term", i, term);
         if (term.indexOf(":") != -1) {
             // only interested in field searches, e.g. lsid:foo
             var bits = term.split(":");
@@ -361,8 +365,11 @@ function addTaxonConcept(item) {
     var queryText = $("#solrQuery").val();
     // add OR between lsid:foo terms
     // TODO wrap all lsid:NNN terms in braces
-    if (queryText && queryText.indexOf("lsid") != -1) {
-        queryText = queryText + " OR lsid:" + item.guid;
+    if (queryText && queryText.indexOf(item.guid) != -1) {
+        // guid already in query (e.g. page reload)
+        return;
+    } else if (queryText && queryText.indexOf("lsid") != -1) {
+        queryText = "(" +queryText + " OR lsid:" + item.guid + ")";
     } else {
         queryText = queryText + " lsid:" + item.guid;
     }
