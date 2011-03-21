@@ -566,6 +566,21 @@ function loadFacetCharts() {
 
 }
 
+/*******                                   *****
+ *******   Temp lookup for starting rank   *****
+ *******                                   *****/
+var rankTable = {
+  'dh1':'phylum',   // start with all phyla
+  'co126':'order'
+};
+function getStartingRank(uid) {
+  if (rankTable[uid] == undefined) {
+    // default to class
+    return 'class';
+  } else {
+    return rankTable[uid];
+  }
+}
 
 /*******                                   *****
  *******      Specify charts to load       *****
@@ -578,7 +593,7 @@ function hubChartsOnLoadCallback() {
 
   loadFacetCharts();
 
-  jpLoadTaxonChart(instanceUid, null,"phylum");  // start with all phyla
+  jpLoadTaxonChart(instanceUid, null, getStartingRank(instanceUid));
 
   loadRecordsAccumulation();
 }
