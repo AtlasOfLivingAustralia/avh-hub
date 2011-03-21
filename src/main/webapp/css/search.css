@@ -140,10 +140,13 @@ div#currentFilter {
     text-align: center;
     width: 70%;
     margin: auto;
-    padding: 10px;
-    height: 2.5em;
+    padding: 5px;
+    height: 2.0em;
 }
-#searchNavBar ul, #searchNavBar ul li {
+#searchNavBar ul {
+    display: inline-block;
+}
+#searchNavBar ul li {
     display: inline;
     list-style: none;
     font-size: 14px;

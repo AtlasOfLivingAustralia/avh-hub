@@ -133,7 +133,7 @@ $(document).ready(function() {
     });
 
     // set height of resultsOuter div to solrResults height
-    var solrHeight = $("div.solrResults").height();
+    var solrHeight = $("div.solrResults").height() + 50;
     var mapHeight = $("div#mapwrapper").height();
     $("#resultsOuter").css("height", (solrHeight > mapHeight ) ? solrHeight : mapHeight );
 

@@ -61,7 +61,7 @@
                 <p>No records found for <b>${queryDisplay}</b></p>
             </c:if>
             <c:if test="${searchResults.totalRecords > 0}">
-                <a name="map" class="jumpTo">&nbsp;</a><a name="list" class="jumpTo">&nbsp;</a>
+                <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
                 <div>
                     <div id="listMapToggle" class="row" >
                         <button class="rounded" id="listMapButton">
@@ -155,9 +155,6 @@
                                 <label for="sizeslider">Size: </label><span id="sizeslider-val">4</span>
                             </div>
                             <!-- size slider end -->
-
-
-
                         </div>
                         <div id="mapcanvas"></div>
                         <div id="maploading">Loading...</div>
