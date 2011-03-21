@@ -208,12 +208,14 @@ table.occurrenceTable {
 td.annoText {
     width: 24px;
 }
-#jsonLink {
+#contentBox #jsonLink {
     float:right;
     width: 200px;
     font-size: 11px;
     vertical-align: bottom;
-    margin-top: 5px;
+    text-align: right;
+    line-height: 1.2em;
+    color: #555;
 }
 h2#headingSciName {
     color: #555;
