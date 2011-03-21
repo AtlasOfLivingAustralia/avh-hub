@@ -1,6 +1,6 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-<div class="section vertical-charts">
+<div class="section two-column-charts">
     <!--
     *******                                                  *****
     ******* STANDALONE SPECIMEN ACCUMULATION BREAKDOWN CHART *****
@@ -34,11 +34,27 @@
     </div>
 
     <!--
+    *******                                   *****
+    ******* STANDALONE GROUPS BREAKDOWN CHART *****
+    *******                                   *****
+    -->
+    <div style="margin-top:40px;display:inline;float:right;padding-right:20px;">
+      <div id='groupsChart'>
+        <img class='taxon-loading' alt='loading...' src='/images/ajax-loader.gif'/>
+      </div>
+      <div id='groupsChartCaption'>
+        <span class='taxonChartCaption'>Click a slice or legend to show records for that group.</span><br/>
+      </div>
+    </div>
+
+    <div style="clear:both;"></div>
+
+    <!--
     *******                                        *****
     ******* STANDALONE INSTITUTION BREAKDOWN CHART *****
     *******                                        *****
     -->
-    <div style="margin-top:33px;display:inline;float:right;">
+    <div style="margin-top:33px;display:inline;float:left;">
     <div id='instChart'>
       <img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
@@ -49,13 +65,12 @@
     </div>
     </div>
 
-    <div style="clear:both;"></div>
     <!--
     *******                                  *****
     ******* STANDALONE TYPES BREAKDOWN CHART *****
     *******                                  *****
     -->
-    <div style="display:inline;float:left;margin-top:15px;">
+    <div style="display:inline;float:right;margin-top:40px;">
     <div id='typesChart'>
       <img class='taxon-loading' alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>
@@ -64,12 +79,14 @@
     </div>
     </div>
 
+    <div style="clear:both;"></div>
+
     <!--
     *******                                  *****
     ******* STANDALONE STATE BREAKDOWN CHART *****
     *******                                  *****
     -->
-    <div style="display:inline;float:right;margin-top:15px;">
+    <div style="display:inline;float:none;margin-top:15px;">
     <div id='statesChart'>
       <img class='taxon-loading' alt='loading...' src='static/images/ajax-loader.gif'/>
     </div>

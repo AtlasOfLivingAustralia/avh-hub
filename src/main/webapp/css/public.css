@@ -253,13 +253,6 @@ div#taxonRecordsLink {
     position: relative;
 }
 
-a.recordsLink {
-    background: transparent url(http://collections.ala.org.au/images/ala/database_go.png) center left no-repeat;
-    padding-left: 20px;
-    position: relative;
-    z-index: 2;
-}
-
 div.inline {
     display: inline;
 }

@@ -92,8 +92,27 @@ img#mapLegend {
 }
 
 /************************************************************\
+* General charts
+\************************************************************/
+div.chart-container {
+    margin-top: 25px;
+}
+
+.vertical-charts div#typesChart {
+    margin-left: 40px;
+}
+
+div#groupsChart {
+    margin-top: 10px;
+}
+
+/************************************************************\
 * Taxon charts
 \************************************************************/
+div#taxonChart {
+    margin-left: 40px;
+}
+
 img.taxon-loading {
     margin-left: 230px;
     margin-top: 150px;
@@ -122,19 +141,8 @@ div#taxonRecordsLink {
     margin-left: 5px;
 }
 
-/************************************************************\
-* Progress bar (speedo)
-\************************************************************/
-#speedo {
-    text-align:center;
-}
-
-#speedoCaption {
-    position: relative;
-}
-
 a.recordsLink {
-    background: transparent url(../images/ala/database_go.png) center left no-repeat;
+    background: transparent url(../images/database_go.png) center left no-repeat;
     padding-left: 20px;
     position: relative;
     z-index: 2;
@@ -177,47 +185,4 @@ div#decadeChartCaption {
 }
 
 /* ------------*/
-
-/*a[target='_blank'] {
-    background: url(../images/skin/external.png) center right no-repeat;
-    padding-right: 13px;
-}*/
-
-img.no-radius {
-    -moz-border-radius: 0 !important; /* FF1+ */
-    -webkit-border-radius: 0 !important; /* Saf3+, Chrome */
-    border-radius: 0 !important; /* Opera 10.5, IE 9 */
-    -icab-border-radius: 0;
-    -khtml-border-radius: 0;
-}
-
-/* for percent records progress bar */
-
-img.percentImage1 {
- background: white url(../images/percentImage_back1.png) top left no-repeat;
- padding: 0;
- margin: 5px 0 10px 0;
- background-position: 1px 0;
-}
-
-img.percentImage2 {
- background: white url(../images/percentImage_back2.png) top left no-repeat;
- padding: 0;
- margin: 5px 0 0 0;
- background-position: 1px 0;
-}
-
-img.percentImage3 {
- background: white url(../images/percentImage_back3.png) top left no-repeat;
- padding: 0;
- margin: 5px 0 0 0;
- background-position: 1px 0;
-}
-
-img.percentImage4 {
- background: white url(../images/percentImage_back4.png) top left no-repeat;
- padding: 0;
- margin: 5px 0 0 0;
- background-position: 1px 0;
-}
 

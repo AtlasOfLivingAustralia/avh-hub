@@ -183,6 +183,50 @@ function typeSorter(a,b) {
 
 
 /*******                                   *****
+ *******      GROUPS BREAKDOWN CHART       *****
+ *******                                   *****/
+
+function drawGroupsBreakdown(data, uid) {
+  var groups = data.fieldResult;
+  // build data table
+  var table = new google.visualization.DataTable();
+  table.addColumn('string', 'Group');
+  table.addColumn('number', 'Number of records');
+  for (var i = 0; i < groups.length; i++) {
+    var label = groups[i].label;
+    if (label != "Animals" && label != "Protozoa" && label != "Fungi" && label != "Chromista" && label != "Bacteria") {
+      table.addRow([label,groups[i].count]);
+    }
+  }
+
+  // chart options
+  var options = {
+      width: 480,
+      height: 300,
+      titleTextStyle: {color: "#1775BA", fontName: 'Arial', fontSize: 18},
+      legend: "none",
+      chartArea: {left:80, top:35, width:"75%", height: "70%"},
+      colors: ["#2464B3","#f4914b"],
+      //backgroundColor: {stroke:"#bbbbbb", strokeWidth:1, fill:"#fbfbf0"},
+      hAxis: {title: 'Number of records'},
+      title: 'Records by species group'
+  };
+
+  // create chart
+  var chart = new google.visualization.BarChart(document.getElementById('groupsChart'));
+
+  // selection actions
+  google.visualization.events.addListener(chart, 'select', function() {
+    var name = table.getValue(chart.getSelection()[0].row,0);
+
+    window.location.href = contextPath + "/occurrences/search?q=*:*&fq=species_group:" + name + buildUidFacet(uid);
+  });
+
+  // draw
+  chart.draw(table, options);
+}
+
+/*******                                   *****
  *******       STATE BREAKDOWN CHART       *****
  *******                                   *****/
 
@@ -265,7 +309,7 @@ function drawInstitutionBreakdown(data) {
 
   // chart options
   var options = {
-      width: 510,
+      width: 485,
       height: 280,
       chartArea: {left:0, top:60, width:"100%", height: "90%"},
       title: 'Records by source institution',
@@ -382,6 +426,7 @@ function resetInstChart() {
   var rawData;
   function loadRecordsAccumulation() {
     var url = "http://collections.ala.org.au/public/recordsByDecadeByInstitution.json";
+    //var url = "http://woodfired.ala.org.au:8080/Collectory/public/recordsByDecadeByInstitution.json";
     if (useStaticData) { url = url + "?static=true";}
     if (saveStaticData) { url = url + "?save=true";}
     $.ajax({
@@ -545,6 +590,7 @@ function loadFacetCharts() {
         var facets = data.facetResults;
         var foundTypesData = false;
         var foundStatesData = false;
+        var foundGroupsData = false;
         for (var i = 0; i < facets.length; i++) {
           if (facets[i].fieldName == 'type_status') {
             drawTypesBreakdown(facets[i], null);
@@ -554,12 +600,22 @@ function loadFacetCharts() {
             drawStatesBreakdown(facets[i]);
             foundStatesData = true;
           }
+          if (facets[i].fieldName == 'species_group') {
+            drawGroupsBreakdown(facets[i], "${instance.uid}");
+            foundGroupsData = true;
+          }
         }
         if (!foundTypesData) {
           $('div#typesChart').css('display', 'none');
+          $('div#typesChartCaption').css('display', 'none');
         }
         if (!foundStatesData) {
           $('div#statesChart').css('display', 'none');
+          $('div#statesChartCaption').css('display', 'none');
+        }
+        if (!foundGroupsData) {
+          $('div#groupsChart').css('display', 'none');
+          $('div#groupsChartCaption').css('display', 'none');
         }
       }
     });
@@ -571,7 +627,25 @@ function loadFacetCharts() {
  *******                                   *****/
 var rankTable = {
   'dh1':'phylum',   // start with all phyla
-  'co126':'order'
+  'co126':'order',
+  'co118':'order',
+  'co120':'order',
+  'co13':'order',
+  'co80':'order',
+  'co11':'order',
+  'co170':'order',
+  'co158':'order',
+  'co34':'order',
+  'co157':'order',
+  'co139':'family',
+  'co138':'order',
+  'co137':'order',
+  'co140':'order',
+  'co121':'order',
+  'co123':'order',
+  'co151':'order',
+  'co50':'order',
+  'co150':'order'
 };
 function getStartingRank(uid) {
   if (rankTable[uid] == undefined) {

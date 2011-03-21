@@ -134,7 +134,7 @@ public class CollectionController {
                 String newHref = StringUtils.replace(href, BIOCACHE_PATH_PREFIX + COLLECTION_PREFIX,
                         request.getContextPath() + "/occurrences/search?q=*:*&fq=collection_uid:co");
                 link.attr("href", newHref);
-            } else if (href.startsWith(BIOCACHE_PATH_PREFIX + INSTITUTION_PREFIX)) {
+            } else if (StringUtils.hasText(BIOCACHE_PATH_PREFIX + INSTITUTION_PREFIX)) {
                 String newHref = StringUtils.replace(href, BIOCACHE_PATH_PREFIX + INSTITUTION_PREFIX,
                         request.getContextPath() + "/occurrences/search?q=*:*&fq=institution_uid:in");
                 link.attr("href", newHref);
