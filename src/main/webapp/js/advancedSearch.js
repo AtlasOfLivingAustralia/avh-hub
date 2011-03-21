@@ -75,40 +75,7 @@ $(document).ready(function() {
     }).result(function(event, item) {
         // user has selected an autocomplete item
         // determine the next avail taxon row (num) to add to
-        var num = 1;
-        for (i=1;i<=4;i++) {
-            if (!$("#sciname_" + i).html()) {
-                num = i;
-                break;
-            }
-        }
-        
-        $("input#lsid_" + num).val(item.guid); // add lsid to hidden field
-        // build the name string
-        var matchedName = "<b>" + item.name + "</b>";
-        if (item.rankId && item.rankId >= 6000) {
-            matchedName = "<i>" + matchedName + "</i>"; 
-        }
-        if (item.rankString) {
-            matchedName = item.rankString + ": " + matchedName;
-        }
-        if (item.commonName) {
-            matchedName = matchedName + " | " + item.commonName;
-        }
-
-        $("#sciname_" + num).html(matchedName); // populate the matched name
-        $("#clear_" + num).show(); // show the 'clear' button
-        $("tr#taxon_row_" + num).show("slow"); // show the row
-        var queryText = $("#solrQuery").val();
-        // add OR between lsid:foo terms
-        // TODO wrap all lsid:NNN terms in braces
-        if (queryText && queryText.indexOf("lsid") != -1) {
-            queryText = queryText + " OR lsid:" + item.guid;
-        } else {
-            queryText = queryText + " lsid:" + item.guid;
-        }
-        $("#solrQuery").val(queryText.trim()); // add LSID to the main query input
-        $("#name_autocomplete").val(""); // clear the search test
+        addTaxonConcept(item);
     });
 
     // "clear" button next to each taxon row
@@ -251,17 +218,29 @@ $(document).ready(function() {
 
     // populate advanced search options from q param on page load
     var q = decodeURIComponent($.getQueryParam("q")[0]);
-    var terms = q.match(/(\w+:".*?"|\w+:\w+)/g);
+    var terms = q.match(/(\w+:".*?"|lsid:(\S+)|\w+:\w+)/g);
     //console.log("terms", terms);
     for (var i in terms) {
         var term = terms[i].replace(/"/g, '');
-        //console.log("term", i, term);
+        console.log("term", i, term);
         if (term.indexOf(":") != -1) {
             // only interested in field searches, e.g. lsid:foo
             var bits = term.split(":");
-            //console.log("bits",bits);
-            $("select." + bits[0]).val(bits[1]);
-            $("input[name=" + bits[0] + "]").val(bits[1]);
+            var fieldName = bits[0];
+            var fieldValue = bits.slice(1).join(":"); //bits[1];
+            console.log("bits",bits);
+            $("select." + fieldName).val(fieldValue);
+            $("input[name=" + fieldName + "]").val(fieldValue);
+            // taxon concepts
+            if (fieldName.indexOf("lsid") != -1) {
+                var taxonUri = "http://bie.ala.org.au/species/" + fieldValue + ".json";
+                console.log("URL", taxonUri);
+                $.ajax({
+                    url: taxonUri,
+                    dataType: "jsonp",
+                    success: updateTaxonConcepts
+                });
+            }
             // TODO Date fields...
         }
     }
@@ -323,4 +302,55 @@ function showHideAdvancedSearch() {
          $(advDiv).fadeOut();
          window.location.hash = "";
     }
+}
+
+function updateTaxonConcepts(data) {
+    console.log("ajax data", data);
+    if (data.extendedTaxonConceptDTO) {
+        var tc = data.extendedTaxonConceptDTO;
+        var item = {};
+        item.guid = tc.taxonConcept.guid;
+        item.name = tc.taxonConcept.nameString;
+        item.rankString = tc.taxonConcept.rankString;
+        item.rankId = tc.taxonConcept.rankID;
+        item.commonName = tc.commonNames[0].nameString;
+        addTaxonConcept(item);
+    }
+}
+
+function addTaxonConcept(item) {
+    var num = 1;
+    for (i=1;i<=4;i++) {
+        if (!$("#sciname_" + i).html()) {
+            num = i;
+            break;
+        }
+    }
+
+    $("input#lsid_" + num).val(item.guid); // add lsid to hidden field
+    // build the name string
+    var matchedName = "<b>" + item.name + "</b>";
+    if (item.rankId && item.rankId >= 6000) {
+        matchedName = "<i>" + matchedName + "</i>";
+    }
+    if (item.rankString) {
+        matchedName = item.rankString + ": " + matchedName;
+    }
+    if (item.commonName) {
+        matchedName = matchedName + " | " + item.commonName;
+    }
+
+    $("#sciname_" + num).html(matchedName); // populate the matched name
+    $("#clear_" + num).show(); // show the 'clear' button
+    $("tr#taxon_row_" + num).show("slow"); // show the row
+    var queryText = $("#solrQuery").val();
+    // add OR between lsid:foo terms
+    // TODO wrap all lsid:NNN terms in braces
+    if (queryText && queryText.indexOf("lsid") != -1) {
+        queryText = queryText + " OR lsid:" + item.guid;
+    } else {
+        queryText = queryText + " lsid:" + item.guid;
+    }
+    $("#solrQuery").val(queryText.trim()); // add LSID to the main query input
+    $("#name_autocomplete").val(""); // clear the search test
 }

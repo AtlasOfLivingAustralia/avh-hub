@@ -172,6 +172,6 @@
         </table>
         <input type="button" id="advancedSubmit" value="Advanced Search" onClick="$('#solrSubmit').click()"/>
         &nbsp;&nbsp;
-        <input type="reset" value="clear all" onclick="$('input#solrQuery').val(''); return true;"/>
+        <input type="reset" value="clear all" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
     </form>
 </div>
