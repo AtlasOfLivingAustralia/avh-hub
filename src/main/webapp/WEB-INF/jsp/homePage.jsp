@@ -30,7 +30,7 @@
             <div id="solrSearchForm">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="homepageSearchForm">
                     <input name="q" value="<c:out value='${param.q}'/>" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;
-                    <input type="submit" value="Submit" id="solrSubmit" style="font-size:14px;"/>
+                    <input type="submit" value="Search" id="solrSubmit" style="font-size:14px;"/>
                     <input type="hidden" id="lsid" value=""/>
                     <span id="advancedSearchLink"><a href="#advanced_search">Advanced Search</a></span>
                 </form>
