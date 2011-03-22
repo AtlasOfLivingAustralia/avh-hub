@@ -52,13 +52,17 @@ $(document).ready(function() {
     $("#solrSearchForm").submit(function(e) {
         e.preventDefault();
         var lsid = $("input#lsid").val();
+        var query = $("input#solrQuery").val();
+        // add q param to current URL hash for back button support
+        var hash = window.location.hash;
+        window.location.hash = hash + "/q=" + query;
         var url;
         if (lsid) {
             // redirect to taxon search if lsid
             url = contextPath + "/occurrences/taxa/" + lsid;
         } else {
             // normal full text search
-            url = contextPath + "/occurrences/search?q=" + $("input#solrQuery").val();
+            url = contextPath + "/occurrences/search?q=" + query;
         }
         window.location.href = url;
     });

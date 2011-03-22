@@ -23,9 +23,15 @@ $(document).ready(function() {
         showHideAdvancedSearch();
     });
     // remember advanced option hide/show on reload
-    var url = escape(window.location.hash.replace( /^#/, '')); // escape used to prevent injection attacks
-    if (url == "advanced_search") {
+    var hash = window.location.hash.replace( /^#/, ''); // escape used to prevent injection attacks
+    //console.log("hash", hash);
+    if (hash.indexOf("advanced_search") != -1) {
         showHideAdvancedSearch();
+    }
+    if (hash.indexOf("/q=") != -1) {
+        var query = hash.replace(/.*\/q=(.*)/, "$1");
+        //console.log("query", query);
+        $("input#solrQuery").val(query);
     }
 
     // Custom string methods
@@ -224,7 +230,8 @@ $(document).ready(function() {
     });
 
     // populate advanced search options from q param on page load
-    var q = decodeURIComponent($.getQueryParam("q")[0]);
+    //var q = decodeURIComponent($.getQueryParam("q")[0]);
+    var q = $("input#solrQuery").val();
     var terms = q.match(/(\w+:".*?"|lsid:(\S+)|\w+:\[.*?\]|\w+:\w+)/g); // magic regex!
     //console.log("terms", terms);
     for (var i in terms) {
