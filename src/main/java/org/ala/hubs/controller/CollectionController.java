@@ -49,6 +49,7 @@ public class CollectionController {
     private final String BIOCACHE_PATH_PREFIX = "http://biocache.ala.org.au/occurrences/searchForUID?q=";
     private final String COLLECTORY_PUBLIC_URL = "/public/";
     private final String COLLECTORY_MAPS_URL = "/images/map";
+    private final String SEARCH_ALL = "$searchAll";
     private final String COLLECTION = "collection/";
     private final String INSTITUTION = "institution/";
     /** URI for collection page fragments- possibly overriden by properties overrides */
@@ -130,13 +131,17 @@ public class CollectionController {
             } else if (href.startsWith(SHOW_PATH_PREFIX + INSTITUTION_PREFIX)) {
                 String newHref = StringUtils.replace(href, SHOW_PATH_PREFIX + INSTITUTION_PREFIX, request.getContextPath() + "/institution/in");
                 link.attr("href", newHref);
-            } else if (StringUtils.hasText(BIOCACHE_PATH_PREFIX + COLLECTION_PREFIX)) {
+            } else if (href.contains(BIOCACHE_PATH_PREFIX + COLLECTION_PREFIX)) {
                 String newHref = StringUtils.replace(href, BIOCACHE_PATH_PREFIX + COLLECTION_PREFIX,
                         request.getContextPath() + "/occurrences/search?q=*:*&fq=collection_uid:co");
                 link.attr("href", newHref);
-            } else if (StringUtils.hasText(BIOCACHE_PATH_PREFIX + INSTITUTION_PREFIX)) {
+            } else if (href.contains(BIOCACHE_PATH_PREFIX + INSTITUTION_PREFIX)) {
                 String newHref = StringUtils.replace(href, BIOCACHE_PATH_PREFIX + INSTITUTION_PREFIX,
                         request.getContextPath() + "/occurrences/search?q=*:*&fq=institution_uid:in");
+                link.attr("href", newHref);
+            } else if (href.contains(SEARCH_ALL)) {
+                String newHref = StringUtils.replace(href, SEARCH_ALL,
+                        request.getContextPath() + "/occurrences/search?q=*:*");
                 link.attr("href", newHref);
             }
         }
@@ -170,15 +175,15 @@ public class CollectionController {
             Node dataNode = script.childNode(0);
             String data = dataNode.attr("data");
 
-            if (StringUtils.hasText(COLLECTORY_MAPS_URL)) {
+            if (data.contains(COLLECTORY_MAPS_URL)) {
                 data = StringUtils.replace(data, COLLECTORY_MAPS_URL, collectory + "/images/map");
                 logger.debug("Found and changed: " + COLLECTORY_MAPS_URL);
             }
-            if (StringUtils.hasText(COLLECTORY_PUBLIC_URL)) {
+            if (data.contains(COLLECTORY_PUBLIC_URL)) {
                 data = StringUtils.replace(data, COLLECTORY_PUBLIC_URL, collectory + "/public/");
                 logger.debug("Found and changed: " + COLLECTORY_PUBLIC_URL);
             }
-            if (StringUtils.hasText("/images")) {
+            if (data.contains("/images")) {
                 data = StringUtils.replace(data, "/images", request.getContextPath() + "/static/images");
                 logger.debug("Found and changed: " + "/images");
             }
