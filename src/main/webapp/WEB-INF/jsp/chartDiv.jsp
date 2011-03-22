@@ -22,15 +22,20 @@
     ******* STANDALONE TAXON BREAKDOWN CHART *****
     *******                                  *****
     -->
-    <div style="margin-top:45px;display:inline;float:left;">
-    <div id='taxonChart'>
-      <img style="margin-left: 230px;margin-top: 100px;margin-bottom: 120px;" class='taxon-loading' alt='loading...' src='static/images/ajax-loader.gif'/>
-    </div>
-    <div id='taxonChartCaption' style='visibility:hidden;'>
+    <div style="margin-top:40px;display:inline;float:left;">
+        <div id='taxonChart'>
+            <img style="margin-left: 230px;margin-top: 100px;margin-bottom: 120px;" class='taxon-loading'
+                 alt='loading...' src='static/images/ajax-loader.gif'/>
+        </div>
+        <div id='taxonChartCaption' style='visibility:hidden;'>
       <span id='resetTaxonChart'>
-        <img src="static/images/go-left-disabled.png"/>&nbsp;&nbsp;<img src="static/images/go-right-disabled.png"/></span><br/>
-      <span class='taxonChartCaption'>Click a slice or legend to drill into a group.</span>
-    </div>
+        <img src="static/images/go-left-disabled.png"/>&nbsp;&nbsp;<img
+              src="static/images/go-right-disabled.png"/></span><br/>
+            <span class='taxonChartCaption'>Click a slice or legend to drill into a group.</span>
+        </div>
+        <div id='taxonRecordsLink' style='visibility:hidden;'>
+            <span id='viewRecordsLink' class='taxonChartCaption'><a class='recordsLink' href="${pageContext.request.contextPath}/occurrences/search?q=*:*">View all records</a></span><br/>
+        </div>
     </div>
 
     <!--

@@ -97,21 +97,25 @@ function jpDrawTaxonChart(dataTable) {
       if (scope == "genus" && rank == "species") {
         name = dataTable.getTableProperty('name') + " " + name;
       }
+      var recordsLinkUrl = contextPath + "/occurrences/search?" + buildUidFacet(pageUid,'q') + "&fq=" + rank + ":" + name;
       // drill down unless already at species
       if (rank != "species") {
         $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="' + contextPath + '/static/images/ajax-loader.gif"/>');
         jpLoadTaxonChart(pageUid, dataTable.getValue(chart.getSelection()[0].row,0), dataTable.getTableProperty('rank'));
       } else {
-        window.location.href = contextPath + "/occurrences/search?q=*:*&fq=" + rank + ":" + name;
+        //window.location.href = contextPath + "/occurrences/search?q=*:*&fq=" + rank + ":" + name;
       }
       // show reset link
       $('span#resetTaxonChart').html("<img class='hand' onclick='jpResetTaxonChart()' src='" + contextPath + "/static/images/go-left.png'/>&nbsp;&nbsp;<img src='" + contextPath + "/static/images/go-right-disabled.png'/>");
+      // show link to view records for the taxon group currently displayed
+      $('span#viewRecordsLink').html("<a class='recordsLink' href='" + recordsLinkUrl + "'>View records for " + name + "</a>");
     });
 
     chart.draw(dataTable, options);
 
     // show taxon caption
     $('div#taxonChartCaption').css('visibility', 'visible');
+    $('div#taxonRecordsLink').css('visibility', 'visible');
   }
 }
 /************************************************************\
@@ -163,7 +167,7 @@ function drawTypesBreakdown(data, uid) {
     // reverse any presentation transforms
     if (name == 'unknown type') {name = 'type';}
 
-    window.location.href = contextPath + "/occurrences/search?q=*:*&fq=type_status:" + name + buildUidFacet(uid);
+    window.location.href = contextPath + "/occurrences/search?q=*:*&fq=type_status:" + name + "&" + buildUidFacet(uid,"fq");
   });
 
   // draw
@@ -219,7 +223,7 @@ function drawGroupsBreakdown(data, uid) {
   google.visualization.events.addListener(chart, 'select', function() {
     var name = table.getValue(chart.getSelection()[0].row,0);
 
-    window.location.href = contextPath + "/occurrences/search?q=*:*&fq=species_group:" + name + buildUidFacet(uid);
+    window.location.href = contextPath + "/occurrences/search?q=*:*&fq=species_group:" + name + "&" + buildUidFacet(uid, "fq");
   });
 
   // draw
@@ -549,24 +553,29 @@ function getBreakdownContext(uid) {
   return ""
 }
 
-function buildUidFacet(uid) {
+// queryType is either q or fq
+function buildUidFacet(uid,queryType) {
   if (uid == undefined || uid == null) {
     return "";
   }
+  // hard code dh1 to show all records
+  if (uid == 'dh1') {
+    return queryType + "=*:*";
+  }
   if (uid.substr(0,2) == "co") {
-    return "&fq=collection_uid:" + uid;
+    return queryType + "=collection_uid:" + uid;
   }
   if (uid.substr(0,2) == "in") {
-    return "&fq=institution_uid:" + uid;
+    return queryType + "=institution_uid:" + uid;
   }
   if (uid.substr(0,2) == "dr") {
-    return "&fq=data_resource_uid:" + uid;
+    return queryType + "=data_resource_uid:" + uid;
   }
   if (uid.substr(0,2) == "dp") {
-    return "&fq=data_provider_uid:" + uid;
+    return queryType + "=data_provider_uid:" + uid;
   }
   if (uid.substr(0,2) == "dh") {
-    return "&fq=data_hub_uid:" + uid;
+    return queryType + "=data_hub_uid:" + uid;
   }
   return ""
 }
