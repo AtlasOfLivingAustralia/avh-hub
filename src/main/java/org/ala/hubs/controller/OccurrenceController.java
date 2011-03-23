@@ -309,7 +309,7 @@ public class OccurrenceController {
                         String email = details.get("email");
                         logger.debug("email = " + email);
                         if (userId.equalsIgnoreCase(email)) {
-                            logger.info("Loged in user has collection admin rights: " + email);
+                            logger.info("Logged in user has collection admin rights: " + email);
                             model.addAttribute("isCollectionAdmin", true);
                         } else if (request.isUserInRole("ROLE_ADMIN")) {
                             model.addAttribute("isCollectionAdmin", true);
