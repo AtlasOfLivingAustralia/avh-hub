@@ -103,7 +103,7 @@ var Maps = (function() {
         }
 
         var baseurl = Config.OCC_SEARCH_URL;
-        var wmsinfo = baseurl + window.location.search;
+        var wmsinfo = baseurl + ((searchString) ? searchString : "?"); // window.location.search;
         wmsinfo += "&zoom=" + map.getZoom();
         wmsinfo += "&lat=" + location.lat();
         wmsinfo += "&lon=" + location.lng();
@@ -130,7 +130,7 @@ var Maps = (function() {
             infomarker.setPosition(clickLocation);            
         } else {
             //occids = new Array(); 
-            occids == null;
+            occids == null; // did you mean occids = null ?
 
             displayHtml = data.count + ' occurrences founds';
             $('#maploading').fadeOut('slow');
