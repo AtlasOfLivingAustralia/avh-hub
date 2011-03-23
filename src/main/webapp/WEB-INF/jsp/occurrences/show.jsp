@@ -133,8 +133,11 @@
             <div id="headingBar" class="recordHeader">
                 <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>
                 <div id="jsonLink">
+                    <c:if test="${isCollectionAdmin}">
+                        <c:set var="admin" value=" - admin"/>
+                    </c:if>
                     <c:if test="${not empty userDisplayName}">
-                        Logged in as: ${userDisplayName} (${userId})
+                        Logged in as: ${userDisplayName} (${userId}${admin})
                     </c:if>
                     <!-- <a href="${json}">JSON</a> -->
                 </div>
@@ -204,9 +207,9 @@
                         </button>
                         
                     </p>
-                    <c:if test="${isCollectionAdmin}">
-                        <div>You are able to modify assertions!</div>
-                    </c:if>
+                    <!--c:if test="${isCollectionAdmin}"-->
+                        <!--div>You are able to modify assertions!</div-->
+                    <!--/c:if-->
                     <div style="display:none">
                         <c:choose>
                         <c:when test="${empty userId}">
