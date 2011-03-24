@@ -99,13 +99,25 @@
                 <tr>
                     <td class="label">IBRA region</td>
                     <td>
-                        <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
+                        <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
+                        <select class="ibra">
+                            <option value="">-- select an IBRA region --</option>
+                            <c:forEach var="region" items="${ibra}">
+                                <option value="${region}">${region}</option>
+                            </c:forEach>
+                        </select>
                     </td>
                 </tr>
                 <tr>
                     <td class="label">IMCRA region</td>
                     <td>
-                        <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
+                        <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
+                        <select class="imcra">
+                            <option value="">-- select an IMCRA region --</option>
+                            <c:forEach var="region" items="${imcra}">
+                                <option value="${region}">${region}</option>
+                            </c:forEach>
+                        </select>
                     </td>
                 </tr>
                 <tr>

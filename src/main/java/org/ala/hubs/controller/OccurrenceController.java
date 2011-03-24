@@ -453,8 +453,8 @@ public class OccurrenceController {
         model.addAttribute("typeStatus", HomePageController.extractTermsList(TypeStatus.all()));
         model.addAttribute("basisOfRecord", HomePageController.extractTermsList(BasisOfRecord.all()));
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
-//        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
-//        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
+        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
+        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
 //        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
         model.addAttribute("speciesGroups", HomePageController.extractSpeciesGroups(SpeciesGroups.groups()));
     }

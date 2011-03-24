@@ -181,11 +181,11 @@ $(document).ready(function() {
                 });
                 return parsed;
             },
-            matchSubset: false,
+            matchSubset: true,
             highlight: false,
             delay: 600,
             cacheLength: 10,
-            minChars: 3,
+            minChars: 1,
             scroll: false,
             max: 10,
             selectFirst: false
@@ -314,11 +314,12 @@ function showHideAdvancedSearch() {
     var advDiv = $("div#advancedSearch");
 
     if ($(advDiv).css("display") == "none") {
-        $(advDiv).fadeIn();
+        $(advDiv).slideDown();
         window.location.hash = "advanced_search";
     } else {
-         $(advDiv).fadeOut();
-         window.location.hash = "";
+         $(advDiv).slideUp();
+         //window.location.hash = '';
+         var stripped = window.location.href.replace(/#.*$/,'');
     }
 }
 

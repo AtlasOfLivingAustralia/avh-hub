@@ -16,6 +16,7 @@
 package org.ala.hubs.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -136,7 +137,7 @@ public class GazetteerCache {
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }
-
+        Collections.sort(allNames); // alphabetical ordering
         return allNames;
     }
     
