@@ -10,6 +10,7 @@ var instanceUid = 'dh1';
 var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/";
 var pageUid = "";
 var initialRank = "";
+var taxonHistory = new Array();
 /************************************************************\
 *
 \************************************************************/
@@ -17,6 +18,8 @@ function jpLoadTaxonChart(uid, name, rank) {
   if (initialRank == "") {
     initialRank = rank;
   }
+  // store current state for back-tracking
+  taxonHistory.push(rank + ":" + name);
   pageUid = uid;
   var url = taxaBreakdownUrl + getBreakdownContext(uid) + "/" + uid + "/rank/" + rank;
   if (name != undefined) {
@@ -100,13 +103,17 @@ function jpDrawTaxonChart(dataTable) {
       var recordsLinkUrl = contextPath + "/occurrences/search?" + buildUidFacet(pageUid,'q') + "&fq=" + rank + ":" + name;
       // drill down unless already at species
       if (rank != "species") {
+
+        // set loading.. image
         $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="' + contextPath + '/static/images/ajax-loader.gif"/>');
+
+        // load new chart
         jpLoadTaxonChart(pageUid, dataTable.getValue(chart.getSelection()[0].row,0), dataTable.getTableProperty('rank'));
       } else {
         //window.location.href = contextPath + "/occurrences/search?q=*:*&fq=" + rank + ":" + name;
       }
       // show reset link
-      $('span#resetTaxonChart').html("<img class='hand' onclick='jpResetTaxonChart()' src='" + contextPath + "/static/images/go-left.png'/>&nbsp;&nbsp;<img src='" + contextPath + "/static/images/go-right-disabled.png'/>");
+      $('span#resetTaxonChart').html("<img class='hand' onclick='taxonBack()' src='" + contextPath + "/static/images/go-left.png'/>&nbsp;&nbsp;<img src='" + contextPath + "/static/images/go-right-disabled.png'/>");
       // show link to view records for the taxon group currently displayed
       $('span#viewRecordsLink').html("<a class='recordsLink' href='" + recordsLinkUrl + "'>View records for " + name + "</a>");
     });
@@ -116,15 +123,37 @@ function jpDrawTaxonChart(dataTable) {
     // show taxon caption
     $('div#taxonChartCaption').css('visibility', 'visible');
     $('div#taxonRecordsLink').css('visibility', 'visible');
+
+    // set button states
+    drawTaxonButtonStates();
   }
 }
 /************************************************************\
-*
+* Implements the back action for taxon chart.
 \************************************************************/
-function jpResetTaxonChart() {
-  $('div#taxonChart').html('<img style="margin-left: 230px;margin-top: 174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="' + contextPath + '/static/images/ajax-loader.gif"/>');
-  jpLoadTaxonChart(pageUid, null, initialRank);
-  $('span#resetTaxonChart').html("<img src='" + contextPath + "/static/images/go-left-disabled.png'/>&nbsp;&nbsp;<img src='" + contextPath + "/static/images/go-right-disabled.png'/>");
+function taxonBack() {
+  taxonHistory.pop();  // remove current
+  var prev = taxonHistory.pop();  // the previous rank/name
+  var rank = prev.substr(0, prev.indexOf(':'));
+  var name = prev.substr(prev.indexOf(':') + 1);
+  if (name == "null") { name = null }
+
+  // set loading.. image
+  $('div#taxonChart').html('<img style="margin-left: 230px;margin-top:174px;margin-bottom: 174px;" class="taxon-loading" alt="loading..." src="' + contextPath + '/static/images/ajax-loader.gif"/>');
+
+  // load new chart
+  jpLoadTaxonChart(pageUid, name, rank);
+
+}
+/************************************************************\
+* Implements the back action for taxon chart.
+\************************************************************/
+function drawTaxonButtonStates() {
+  if (taxonHistory.length > 1) {
+    $('span#resetTaxonChart img:first-child').attr('src', contextPath + "/static/images/go-left.png");
+  } else {
+    $('span#resetTaxonChart img:first-child').attr('src', contextPath + "/static/images/go-left-disabled.png");
+  }
 }
 
 /*******                                   *****
