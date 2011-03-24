@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Controller for the site's home page
+ * Controller for the site's home page/s
  *
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
@@ -84,9 +84,6 @@ public class HomePageController {
         model.addAttribute("typeStatus", extractTermsList(TypeStatus.all()));
         model.addAttribute("basisOfRecord", extractTermsList(BasisOfRecord.all()));
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
-//        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
-//        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
-//        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
         model.addAttribute("speciesGroups", extractSpeciesGroups(SpeciesGroups.groups()));
         return HOME_PAGE;
     }
