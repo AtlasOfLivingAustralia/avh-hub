@@ -178,12 +178,12 @@
                          <input type="text" name="record_number" id="record_number" class="dataset" placeholder="" value=""/>
                     </td>
                 </tr>
-                <tr>
+                <%--<tr>
                     <td class="label">Collector Name</td>
                     <td>
                          <input type="text" name="collector" id="collector" class="dataset" placeholder="" value=""/>
                     </td>
-                </tr>
+                </tr> --%>
             </tbody>
         </table>
         <b>Find records within the following date range</b>
