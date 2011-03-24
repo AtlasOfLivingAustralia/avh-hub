@@ -1,8 +1,8 @@
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US"> 
 <head profile="http://gmpg.org/xfn/11"> 
-<title>OZCAM </title> 
+<title>OZCAM</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ozcam-0.3/style.css" type="text/css" media="screen,projection" />
  
@@ -242,12 +242,12 @@ sub {
 </div> 
 <div id="hp-content"> 
   
-<p>Welcome to the <a><strong>Online Zoological Collections of Australian Museums</strong></a></p>
-<p>From this site you can search, map and down­load species records from many of Australia’s fauna collections.</p>
-<p>Museums hold vast collections of specimens from the natural world and these represent a key resource for taxonomy, systematics, conservation and the sustainable use of our biodiversity. This website provides a way to discover more about Australia’s diverse fauna by allowing virtual access to the combined collections of many of Australia’s museums.</p>
-<p>Click the <a href="${pageContext.request.contextPath}/home" target="_self"><strong>Search <span class="caps">OZCAM</span></strong></a> button to search the <span class="caps">OZCAM</span> database online.</p>
-<p>To access a feed of the raw data, go to the <a href="http://www.ozcam.org.au/?page_id=9" target="_self"><strong><span class="caps">OZCAM</span> Data</strong></a> page.</p>
-<p>Latest <a href="http://www.ozcam.org.au/?page_id=154" target="_self"><strong><span class="caps">OZCAM</span> News</strong></a></p>
+    <p>Welcome to the <a><strong>Online Zoological Collections of Australian Museums</strong></a></p>
+    <p>From this site you can search, map and down­load species records from many of Australia&apos;s fauna collections.</p>
+    <p>Museums hold vast collections of specimens from the natural world and these represent a key resource for taxonomy, systematics, conservation and the sustainable use of our biodiversity. This website provides a way to discover more about Australia&apos;s diverse fauna by allowing virtual access to the combined collections of many of Australia&apos;s museums.</p>
+    <p>Click the <a href="${pageContext.request.contextPath}/home" target="_self"><strong>Search <span class="caps">OZCAM</span></strong></a> button to search the <span class="caps">OZCAM</span> database online.</p>
+    <p>To access a feed of the raw data, go to the <a href="http://www.ozcam.org.au/?page_id=9" target="_self"><strong><span class="caps">OZCAM</span> Data</strong></a> page.</p>
+    <p>Latest <a href="http://www.ozcam.org.au/?page_id=154" target="_self"><strong><span class="caps">OZCAM</span> News</strong></a></p>
 
 	<!--  <div class="hp-contentbutton"><a href="http://www.biomaps.net.au/biomaps2/" target="_blank">OZCAM2 (BioMaps) Portal</a></div>
   <div class="hp-contentbutton"><a href="http://digir.austmus.gov.au/ozcam/DiGIR.php" target="_blank">TAPIR provider</a></div>--> 
