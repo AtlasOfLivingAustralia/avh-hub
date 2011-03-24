@@ -46,7 +46,7 @@
                     <input type="submit" id="solrSubmit" value="Search"/>
                     <input type="text" id="solrQuery" name="q" value="<c:out value='${param.q}'/>">
                     <input type="hidden" id="lsid" value=""/>
-                    <span id="advancedSearchLink"><a href="#advanced_search">Advanced Search</a></span>
+                    <span id="advancedSearchLink"><a id="showHideAdvancedOptions" href="#advanced_search_show">Advanced Search</a></span>
                 </form>
             </div>
             

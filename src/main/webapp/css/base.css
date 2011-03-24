@@ -107,8 +107,13 @@ td.label {
 .sidebar li {
     font-size: 13px;
 }
+#advancedSearchLink {
+    display: block;
+    padding: 2px 0;
+}
 #advancedSearchLink a {
     font-size: 12px;
+    margin-left: 5px;
 }
 #advancedSearch {
     display: none;

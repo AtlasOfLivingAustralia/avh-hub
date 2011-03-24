@@ -206,8 +206,9 @@
                 </tr>
             </tbody>
         </table>
-        <input type="button" id="advancedSubmit" value="Advanced Search" onClick="$('#solrSubmit').click()"/>
+        <input type="button" id="advancedSubmit" value="Search" onClick="$('#solrSubmit').click()"/>
         &nbsp;&nbsp;
-        <input type="reset" value="clear all" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
+        <input type="reset" value="Clear all" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
+        &nbsp;&nbsp;<a id="showHideAdvancedOptions" href="#advanced_search_show">Hide advanced search options</a>
     </form>
 </div>

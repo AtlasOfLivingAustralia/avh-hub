@@ -17,22 +17,32 @@
  * JQuery on document ready callback
  */
 $(document).ready(function() {
+    // catch onHashChange event and trigger actions...
+    $(window).hashchange( function() {
+        var hash = window.location.hash.replace( /^#/, '');
+        // remember advanced option hide/show on reload
+        var show = (hash.indexOf("advanced_search_show") != -1) ? true : false; // boolean
+        showHideAdvancedSearch(show);
+
+        var solrQuery = $("input#solrQuery");
+        if (hash.indexOf("/q=") != -1 && !solrQuery.val()) {
+            var query = hash.replace(/.*\/q=(.*)/, "$1");
+            //console.log("query", query);
+            solrQuery.val(query);
+        }
+        
+    }); // end hashchange
+
+    // trigger it for page load...
+    $(window).hashchange();
+
     // advanced search link (hide/show)
-    $("#advancedSearchLink a").click(function(e) {
-        e.preventDefault();
-        showHideAdvancedSearch();
-    });
+//    $("#advancedSearchLink a").click(function(e) {
+//        e.preventDefault();
+//        //showHideAdvancedSearch();
+//    });
     // remember advanced option hide/show on reload
-    var hash = window.location.hash.replace( /^#/, ''); // escape used to prevent injection attacks
-    //console.log("hash", hash);
-    if (hash.indexOf("advanced_search") != -1) {
-        showHideAdvancedSearch();
-    }
-    if (hash.indexOf("/q=") != -1) {
-        var query = hash.replace(/.*\/q=(.*)/, "$1");
-        //console.log("query", query);
-        $("input#solrQuery").val(query);
-    }
+
 
     // Custom string methods
     String.prototype.trim = function() {
@@ -310,16 +320,19 @@ function removeFromQuery(query, fieldName) {
 /**
  * show/hide the advanced search div
  */
-function showHideAdvancedSearch() {
+function showHideAdvancedSearch(doShow) {
     var advDiv = $("div#advancedSearch");
 
-    if ($(advDiv).css("display") == "none") {
-        $(advDiv).slideDown();
-        window.location.hash = "advanced_search";
+    //if ($(advDiv).css("display") == "none") {
+    if (doShow) {
+        advDiv.slideDown();
+        $("a#showHideAdvancedOptions").attr("href", "#advanced_search_hide");
+        //window.location.hash = "advanced_search";
     } else {
-         $(advDiv).slideUp();
+         advDiv.slideUp();
+         $("a#showHideAdvancedOptions").attr("href", "#advanced_search_show");
          //window.location.hash = '';
-         var stripped = window.location.href.replace(/#.*$/,'');
+         //var stripped = window.location.href.replace(/#.*$/,'');
     }
 }
 

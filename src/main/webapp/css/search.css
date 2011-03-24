@@ -27,7 +27,7 @@
 #searchBox {
     width: 60%;
     float: left;
-    height: 32px;
+    height: 36px;
     text-align: right;
 }
 #solrSearchForm input {
@@ -36,7 +36,7 @@
 #solrSearchForm input#solrQuery {
     display: inline-block;
     float: right;
-    margin-top: 5px;
+    margin-top: 2px;
     font-size: 13px;
     width: 500px;
 }
@@ -44,7 +44,7 @@
     display: inline-block;
     float: right;
     font-size: 13px;
-    margin: 7px 6px;
+    margin: 3px 6px;
 }
 .sidebar li {
     border: none;

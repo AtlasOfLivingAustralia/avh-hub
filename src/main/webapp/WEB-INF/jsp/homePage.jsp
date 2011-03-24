@@ -32,7 +32,7 @@
                     <input name="q" value="<c:out value='${param.q}'/>" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;
                     <input type="submit" value="Search" id="solrSubmit" style="font-size:14px;"/>
                     <input type="hidden" id="lsid" value=""/>
-                    <span id="advancedSearchLink"><a href="#advanced_search">Advanced Search</a></span>
+                    <span id="advancedSearchLink"><a id="showHideAdvancedOptions" href="#advanced_search_show">Advanced Search</a></span>
                 </form>
             </div>
             <jsp:include page="advancedSearchDiv.jsp"/>
