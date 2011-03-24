@@ -108,7 +108,7 @@ td.label {
     font-size: 13px;
 }
 #advancedSearchLink {
-    display: block;
+    display: inline-block;
     padding: 2px 0;
 }
 #advancedSearchLink a {
