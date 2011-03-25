@@ -103,7 +103,7 @@ var Maps = (function() {
         }
 
         var baseurl = Config.OCC_SEARCH_URL;
-        var wmsinfo = baseurl + ((searchString) ? searchString : "?"); // window.location.search;
+        var wmsinfo = baseurl + ((searchString) ? encodeURI(searchString) : "?"); // window.location.search;
         wmsinfo += "&zoom=" + map.getZoom();
         wmsinfo += "&lat=" + location.lat();
         wmsinfo += "&lon=" + location.lng();
@@ -174,9 +174,10 @@ var Maps = (function() {
         }
 
         //Add query string params to custom params
-        var pairs = searchString.substring(1).split('&');
-        for (var i = 0; i < pairs.length; i++) {
-            customParams.push(pairs[i]);
+        var searchParam = encodeURI(searchString); // NdR - fixes bug where terms have quotes around them
+        var pairs = searchParam.substring(1).split('&');
+        for (var j = 0; j < pairs.length; j++) {
+            customParams.push(pairs[j]);
         }
         //loadWMS(map, "http://spatial.ala.org.au/geoserver/wms?", customParams);
         //var overlayWMS = getWMSObject(map, "MySpecies - " + name, Config.OCC_WMS_BASE_URL, customParams);
@@ -303,10 +304,10 @@ var Maps = (function() {
                 displayHtml += "Institution: " + data.record.processed.attribution.institutionName + '<br />';
 
                 displayHtml += "<br />";
-                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a><br/>';
+                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a> | ';
                 displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
                 displayHtml += "<br /><br />";
-                displayHtml += pbutton + "           " + nbutton;
+                displayHtml += pbutton + "&nbsp;" + nbutton;
                 
                 displayHtml += '</div>';
 

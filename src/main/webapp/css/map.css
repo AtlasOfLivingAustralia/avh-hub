@@ -20,7 +20,8 @@
     position: absolute;
     top: 60px;
     width: 100%;
-    background-color: yellow;
+    background-color: #1775BA;
+    color: white;
     padding: 5px;
     text-align: center; 
     display: none;
@@ -28,7 +29,8 @@
 
 #occinfo {
     width: 300px;
-    height: 200px;
+    height: 175px;
+    font-family: Helvetica, sans-serif;
 }
 
 /** mozilla and webkit styles from Google Maps **/
