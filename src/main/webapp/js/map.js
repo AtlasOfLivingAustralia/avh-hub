@@ -336,11 +336,12 @@ var Maps = (function() {
             if (cbf=="") {
                 var key = 0;
                 var label = "All occurrences";
+                var colour = parseInt(getColourForIndex(0), 16);
                 initialiseOverlays(1);
-                insertWMSOverlay("All occurrences", "&colourby="+label.hashCode()+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
+                insertWMSOverlay("All occurrences", "&colourby="+ colour +"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
                 legHtml += "<div>";
                 legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
-                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+label.hashCode()+"&width=10&height=10' /> ";
+                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+ colour +"&width=10&height=10' /> ";
                 legHtml += "<label for='lyr"+key+"'>" + label + "</label>";
                 legHtml += "</div>";
 
@@ -368,17 +369,18 @@ var Maps = (function() {
                     //Maps.loadOccurrences("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
 
                     var label = fLabels[key];
+                    var colour = parseInt(getColourForIndex(key), 16);
                     if (label!='') {
                         var cbfq=cbf+":"+value;
                         if (value == "" && label=='Other') {
                             cbfq = "-("+cbf+":[* TO *])";
                         }
 
-                        insertWMSOverlay(label, "fq="+cbfq+"&colourby="+label.hashCode()+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
+                        insertWMSOverlay(label, "fq="+cbfq+"&colourby="+colour+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
 
                         legHtml += "<div class='layerWrapper'>";
                         legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
-                        legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+label.hashCode()+"&width=10&height=10' /> ";
+                        legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+colour+"&width=10&height=10' /> ";
                         legHtml += "<label for='lyr"+key+"'>" + label + "</label>";
                         legHtml += "</div>";
                     }
@@ -493,4 +495,28 @@ function formatSciName(name, rankId) {
     }
 
     return output;
+}
+
+function getColourForIndex(index) {
+    var colours = ["3366CC","DC3912","FF9900","109618","990099","0099C6","DD4477","66AA00","B82E2E",
+        "316395","994499","22AA99","AAAA11","6633CC","E67200","8B0707","651067","329262","5574A6",
+        "3B3EAC","B77322","16D620","B91383","F43595","9C5935","A9C413","2A778D","668D1C","BEA413",
+        "0C5922","743411",""];
+    var hexCode = ""
+
+    if (index && isInteger(index) && index < 31) {
+        hexCode = colours[index];
+    } else {
+        hexCode = colours[0];
+    }
+
+    return hexCode;
+}
+
+function isInteger(value){
+  if((parseFloat(value) == parseInt(value)) && !isNaN(value)){
+      return true;
+  } else {
+      return false;
+  }
 }
