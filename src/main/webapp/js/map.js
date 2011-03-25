@@ -293,13 +293,12 @@ var Maps = (function() {
 
             $.get(Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]), function(data){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
-
                 displayHtml = '';
                 displayHtml = '<div id="occinfo">';
                 displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
                 displayHtml += "<br /><br />";
 
-                displayHtml += "Scientific Name: " + data.record.raw.classification.scientificName + '<br />';
+                displayHtml += "Scientific Name: " + formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID) + '<br />';
                 displayHtml += "Family: " + data.record.raw.classification.family + '<br />';
                 displayHtml += "Institution: " + data.record.processed.attribution.institutionName + '<br />';
 
@@ -481,3 +480,17 @@ $(document).ready(function() {
 
 }); // end JQuery document ready
 
+/**
+ * Format the disaply of a scientific name.
+ * E.g. genus and below should be italicised
+ */
+function formatSciName(name, rankId) {
+    var output = "";
+    if (rankId && rankId >= 6000) {
+        output = "<i>" + name + "</i>";
+    } else {
+        output = name;
+    }
+
+    return output;
+}
