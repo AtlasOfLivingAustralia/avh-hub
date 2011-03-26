@@ -201,7 +201,7 @@ var Maps = (function() {
          */
         loadMap: function() {
             var baseurl = "http://localhost:8080/biocache-service/occurrences/static";
-            var wmsimg = baseurl + window.location.search;
+            var wmsimg = baseurl + encodeURI(searchString); // window.location.search;
             document.getElementById('wmsimg').src= wmsimg;
         },
         

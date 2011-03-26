@@ -5,6 +5,9 @@
     Modified   : "Ajay Ranipeta <Ajay.Ranipeta@csiro.au>"
                  - Added better direct tile support rather than ImageMapType
                  - Added tiles loaded checking
+                 "Nick dos Remedios (Nick.dosRemedios@csiro.au)"
+                 - Modified colour palett to use Google colour scheme via array index
+                 - Changed MWS opacity to 0.9
 
 
     Refactored code from http://lyceum.massgis.state.ma.us/wiki/doku.php?id=googlemapsv3:home
@@ -150,6 +153,7 @@ WMSTileLayer.prototype.getTile = function(a, b, ownerDocument) {
     var tile = ownerDocument.createElement('div');
     tile.style.width = this.tileSize.width + 'px';
     tile.style.height = this.tileSize.height + 'px';
+    tile.style.opacity = 0.9; // Added by NdR
     tile.innerHTML = '<img class="wmstile" src="'+src+'" />';
     totalTileCount++;
     afterFn = this.fn_;
