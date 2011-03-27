@@ -27,14 +27,14 @@
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
                                         <b><fmt:message key="month.${item.value}"/></b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:startsWith(item.value, '[*')}">
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_year') && fn:startsWith(item.value, '[*')}">
                                         <c:set var="endYear" value="${fn:substring(item.value, 6, 10)}"/><b>Before ${endYear}</b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, '*]')}">
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_year') && fn:endsWith(item.value, '*]')}">
                                         <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>After ${startYear}</b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
-                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear} - ${startYear + 10}</b>${closeLink}
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_year') && fn:endsWith(item.value, 'Z]')}">
+                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear}<i>s</i></b>${closeLink}
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'institution_uid')}">
                                         <b><fmt:message key="${institutionCodes[item.value]}"/></b>${closeLink}
@@ -68,9 +68,9 @@
                             <c:if test="${fieldResult.count > 0}">
                                 <c:set var="dateRangeTo"><c:choose><c:when test="${vs.last || facetResult.fieldResult[vs.count].label=='before'}">*</c:when><c:otherwise>${facetResult.fieldResult[vs.count].label}</c:otherwise></c:choose></c:set>
                                 <c:choose>
-                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_date') && fn:endsWith(fieldResult.label, 'Z')}">
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_year') && fn:endsWith(fieldResult.label, 'Z')}">
                                         <li><c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
-                                            <a href="?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${dateRangeTo}]">${startYear} - ${startYear + 10}</a>
+                                            <a href="?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${dateRangeTo}]">${startYear}<i>s</i></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                         </c:when>
                                         <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
@@ -149,7 +149,7 @@ ${collectionCodes}
             <c:set var="cffv" value="" />
             <c:set var="cffl" value="" />
             <c:choose>
-                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_date') && fn:endsWith(fieldResult.label, 'Z')}">
+                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_year') && fn:endsWith(fieldResult.label, 'Z')}">
                     <c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
                     <c:set var="cffv" value="[${fieldResult.label} TO ${dateRangeTo}]" />
                     <c:set var="cffl" value="${startYear} - ${startYear + 10}" />
