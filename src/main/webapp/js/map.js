@@ -501,7 +501,7 @@ function formatSciName(name, rankId) {
  * Get a colour value (hex) by its index value in an array (31 elements)
  */
 function getColourForIndex(index) {
-    var colours = ["DC3912","3366CC","FF9900","109618","990099","0099C6","DD4477","66AA00","B82E2E",
+    var colours = ["3366CC","DC3912","FF9900","109618","990099","0099C6","DD4477","66AA00","B82E2E",
         "316395","994499","22AA99","AAAA11","6633CC","E67200","8B0707","651067","329262","5574A6",
         "3B3EAC","B77322","16D620","B91383","F43595","9C5935","A9C413","2A778D","668D1C","BEA413",
         "0C5922","743411",""];
