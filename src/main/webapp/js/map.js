@@ -504,10 +504,11 @@ function getColourForIndex(index) {
     var colours = ["3366CC","DC3912","FF9900","109618","990099","0099C6","DD4477","66AA00","B82E2E",
         "316395","994499","22AA99","AAAA11","6633CC","E67200","8B0707","651067","329262","5574A6",
         "3B3EAC","B77322","16D620","B91383","F43595","9C5935","A9C413","2A778D","668D1C","BEA413",
-        "0C5922","743411",""];
+        "0C5922","743411"];
+    colours = colours.concat(colours); // re-use the 31 colours again in array
     var hexCode = ""
 
-    if (index && isInteger(index) && index < 31) {
+    if (index && isInteger(index) && index < 62) {
         hexCode = colours[index];
     } else {
         hexCode = colours[0];
