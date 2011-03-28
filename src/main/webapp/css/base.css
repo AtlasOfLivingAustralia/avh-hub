@@ -171,3 +171,6 @@ div.fullWidthHeader {
 span#taxonName {
     color: black;
 }
+#content div.taxaDescription p {
+    padding-bottom: 10px;
+}

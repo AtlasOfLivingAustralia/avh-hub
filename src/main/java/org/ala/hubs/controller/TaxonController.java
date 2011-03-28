@@ -45,13 +45,26 @@ public class TaxonController {
     private final String EXTENDED_TAXON_CONCEPTDTO = "extendedTaxonConceptDTO";
     private final String TAXON_SHOW = "taxa/show";
 
-    @RequestMapping(value = "/{guid:.+}", method = RequestMethod.GET)
+    /**
+     * Show a taxon page
+     *
+     * @param guid
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"/{guid:.+}", "/{guid:.+}.json"}, method = RequestMethod.GET)
     public String getOccurrenceRecord(@PathVariable("guid") String guid, Model model) {
         model.addAttribute("guid", guid);
         model.addAttribute("taxon", getMiniTaxon(guid));
         return TAXON_SHOW;
     }
 
+    /**
+     * create and populate a TaxonMini oblject via JSON web services call to BIE service
+     *
+     * @param guid
+     * @return
+     */
     private TaxonMini getMiniTaxon(String guid) {
         TaxonMini taxon = new TaxonMini(guid);
         try {
@@ -87,6 +100,8 @@ public class TaxonController {
                         taxon.setImages(images);
                     } else if (key.contentEquals("isAustralian")) {
                         taxon.setIsAustralian((Boolean) etc.get("isAustralian"));
+                    } else if (key.contentEquals("classification")) {
+                        taxon.setClassification(buildClassification((Map<String, Object>) etc.get("classification")));
                     } else if (key.contentEquals("simpleProperties")) {
                         List<Map<String, Object>> props = (List<Map<String, Object>>) etc.get("simpleProperties");
                         StringBuilder description = new StringBuilder();
@@ -95,7 +110,10 @@ public class TaxonController {
                             if (prop.containsKey("name")) {
                                 String val = (String) prop.get("name");
                                 if (val.endsWith("hasDescriptiveText") && n < maxDescriptionBlocks) {
-                                    description.append("<p>").append((String) prop.get("value")).append("</p>");
+                                    String content = "<p>" + (String) prop.get("value") + " [Source: ";
+                                    content += "<a href='" + (String) prop.get("identifier") + "' target='_blank'>";
+                                    content += (String) prop.get("infoSourceName") + "</a>]</p>";
+                                    description.append(content);
                                     n++;
                                 }
                             }
@@ -111,6 +129,42 @@ public class TaxonController {
 
         return taxon;
     }
+
+    /**
+     * Build an HTML string for the classification tree for the taxon
+     *
+     * @param map
+     * @return
+     */
+    private String buildClassification(Map<String, Object> map) {
+        String content = "";
+        String[] levels = {"kingdom", "phylum", "clazz", "order", "family", "genus", "species", "subspecies"};
+        String listOpen = "<ul><li>";
+        String closeList = "</ul>";
+        int listCount = 0;
+        String rank = (map.containsKey("rank")) ? (String) map.get("rank") : null;
+
+        for (String cf : levels) {
+            if (map.containsKey(cf) && map.get(cf) != null && map.containsKey(cf+"Guid")) {
+                String label = ("clazz".equals(cf)) ? "class" : cf;
+                content += listOpen + label + ": <a href='" + (String) map.get(cf+"Guid") + "'/>" + (String) map.get(cf) + "</a></li>";
+                listCount++;
+
+                if (StringUtils.containsIgnoreCase(rank, cf)) {
+                    // current classifcation level for taxon, so jump out of loop
+                    continue;
+                }
+            }
+        }
+
+        for (int i = 0; i < listCount; i++) {
+            // add closing tags for nested unordered lists
+            content += closeList;
+        }
+
+        return content;
+    }
+    
     /**
      * Inner Class - mini taxon bean
      */
@@ -123,6 +177,7 @@ public class TaxonController {
         Set<String> commonNames;
         Boolean isAustralian;
         String description;
+        String classification;
         List<Map<String, String>> images;
 
         public TaxonMini() {}
@@ -153,6 +208,14 @@ public class TaxonController {
 
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public String getClassification() {
+            return classification;
+        }
+
+        public void setClassification(String classification) {
+            this.classification = classification;
         }
 
         public String getGuid() {
