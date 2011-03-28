@@ -36,14 +36,6 @@ $(document).ready(function() {
     // trigger it for page load...
     $(window).hashchange();
 
-    // advanced search link (hide/show)
-//    $("#advancedSearchLink a").click(function(e) {
-//        e.preventDefault();
-//        //showHideAdvancedSearch();
-//    });
-    // remember advanced option hide/show on reload
-
-
     // Custom string methods
     String.prototype.trim = function() {
         return this.replace(/^\s+|\s+$/g, "");
@@ -128,19 +120,24 @@ $(document).ready(function() {
         window.location.href = url;
     });
 
-    // Catch onChange event on all select elements
-    $("form#advancedSearchForm select").change(function() {
-        var fieldName = $(this).attr("class");
-        var fieldValue = $(this).val();
-        if (fieldValue && fieldValue.match(/\s+/)) {
-            // add quotes to search terms with spaces in them
-            addFieldToQuery(fieldName,  "\"" + fieldValue + "\"")
-        } else if (fieldValue) {
-            addFieldToQuery(fieldName, fieldValue)
-        } else {
-            // desected a select drop down
-            removeFieldFromQuery(fieldName);
-        }
+    // Catch onChange event on all select elements (except institution)
+    $("form#advancedSearchForm select").not("select#institution_collection").change(function() {
+        var fieldName = el.attr("class");
+        var fieldValue = el.val();
+        selectChange(fieldName, fieldValue);
+    });
+
+    // catch institution drop down list
+    $("select#institution_collection").change(function() {
+        var code = $(this).val();
+        removeFieldFromQuery("institution_uid");
+        removeFieldFromQuery("collection_uid");
+
+        if (code.indexOf("in") != -1) {
+            selectChange("institution_uid", code);
+        } else if (code) {
+            selectChange("collection_uid", code);
+        } 
     });
 
     // catch date field changes
@@ -277,6 +274,18 @@ $(document).ready(function() {
         }
     }
 }); // end document ready
+
+function selectChange(fieldName, fieldValue) {
+    if (fieldValue && fieldValue.match(/\s+/)) {
+        // add quotes to search terms with spaces in them
+        addFieldToQuery(fieldName,  "\"" + fieldValue + "\"")
+    } else if (fieldValue) {
+        addFieldToQuery(fieldName, fieldValue)
+    } else {
+        // desected a select drop down
+        removeFieldFromQuery(fieldName);
+    }
+}
 
 /**
  * Add the selected field name:value to the solr query string

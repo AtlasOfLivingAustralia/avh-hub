@@ -42,7 +42,7 @@
                 <tr>
                     <td class="label">Species Group</td>
                     <td>
-                         <select class="species_group">
+                         <select class="species_group" id="species_group">
                             <option value="">-- select a species group --</option>
                             <c:forEach var="group" items="${speciesGroups}">
                                 <option value="${group}">${group}</option>
@@ -56,10 +56,10 @@
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
             <tbody>
-                <tr>
+                <%-- <tr>
                     <td class="label">Institution name</td>
                     <td>
-                        <select class="institution_uid">
+                        <select class="institution_uid" id="institution_uid">
                             <option value="">-- select an institution --</option>
                             <c:forEach var="inst" items="${institutions}">
                                 <option value="${inst.key}">${inst.value}</option>
@@ -70,10 +70,37 @@
                 <tr>
                     <td class="label">Collection name</td>
                     <td>
-                        <select class="collection_uid">
+                        <select class="collection_uid" id="collection_uid">
                             <option value="">-- select a collection --</option>
                             <c:forEach var="coll" items="${collections}">
                                 <option value="${coll.key}">${coll.value}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                </tr> --%>
+                <tr>
+                    <td class="label">Institution or Collection</td>
+                    <td>
+                        <select class="institution_uid collection_uid" id="institution_collection">
+                            <option value="">-- select an institution or collection --</option>
+                            <c:forEach var="inst" items="${institutions}">
+                                <optgroup label="${inst.value}">
+                                    <option value="${inst.key}">All records from ${inst.value}</option>
+                                    <c:forEach var="coll" items="${collections}">
+                                        <c:choose>
+                                            <c:when test="${inst.key == 'in13' && fn:startsWith(coll.value, inst.value)}">
+                                                <option value="${coll.key}">${fn:replace(fn:replace(coll.value, inst.value, ""), " - " ,"")} Collection</option>
+                                            </c:when>
+                                            <c:when test="${inst.key == 'in6' && fn:startsWith(coll.value, 'Australian National')}">
+                                                <%-- <option value="${coll.key}">${fn:replace(coll.value,"Australian National ", "")}</option> --%>
+                                                <option value="${coll.key}">${coll.value}</option>
+                                            </c:when>
+                                            <c:when test="${fn:startsWith(coll.value, inst.value)}">
+                                                <option value="${coll.key}">${fn:replace(coll.value, inst.value, "")}</option>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:forEach>
+                                </optgroup>
                             </c:forEach>
                         </select>
                     </td>
@@ -87,7 +114,7 @@
                 <tr>
                     <td class="label">State/Territory</td>
                     <td>
-                        <select class="state">
+                        <select class="state"  id="state">
                             <option value="">-- select a state --</option>
                             <c:forEach var="state" items="${states}">
                                 <option value="${state}">${state}</option>
@@ -100,7 +127,7 @@
                     <td class="label">IBRA region</td>
                     <td>
                         <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                        <select class="biogeographic_region">
+                        <select class="biogeographic_region" id="ibra">
                             <option value="">-- select an IBRA region --</option>
                             <c:forEach var="region" items="${ibra}">
                                 <option value="${region}">${region}</option>
@@ -112,7 +139,7 @@
                     <td class="label">IMCRA region</td>
                     <td>
                         <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                        <select class="biogeographic_region">
+                        <select class="biogeographic_region" id="imcra">
                             <option value="">-- select an IMCRA region --</option>
                             <c:forEach var="region" items="${imcra}">
                                 <option value="${region}">${region}</option>
