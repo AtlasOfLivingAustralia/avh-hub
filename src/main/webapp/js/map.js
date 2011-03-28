@@ -370,7 +370,9 @@ var Maps = (function() {
                     //Maps.loadOccurrences("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
 
                     var label = fLabels[key];
-                    var colour = parseInt(getColourForIndex(key), 16);
+                    // year and month facets use a differefnt colour scheme
+                    var hexCode = (cbf.indexOf("year") != -1 || cbf.indexOf("month") != -1) ? getDateColours(key) : getColourForIndex(key);
+                    var colour = parseInt(hexCode, 16);
                     if (label!='') {
                         var cbfq=cbf+":"+value;
                         if (value == "" && label=='Other') {
@@ -509,7 +511,21 @@ function getColourForIndex(index) {
     colours = colours.concat(colours); // re-use the 31 colours again in array
     var hexCode = ""
 
-    if (index && isInteger(index) && index < 62) {
+    if (index && isInteger(index) && index < colours.length) {
+        hexCode = colours[index];
+    } else {
+        hexCode = colours[0];
+    }
+
+    return hexCode;
+}
+
+function getDateColours(index) {
+    var colours = ["0B2CC8","0C309B","0B3474","093758","063B40","083C27","123B17","23360F",
+        "38300B","482B0C","582610","662113","771B15","87161A","99101E","AF082C","C0003D"];
+    var hexCode = ""
+
+    if (index && isInteger(index) && index < colours.length) {
         hexCode = colours[index];
     } else {
         hexCode = colours[0];
