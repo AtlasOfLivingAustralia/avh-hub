@@ -401,7 +401,18 @@
                                 </c:otherwise>
                             </c:choose>
                         </alatag:occurrenceTableRow>
-                        <!-- Record UUID -->
+                        <!-- Occurrence ID -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceID" fieldName="Occurrence ID">
+                            <c:choose>
+                                <c:when test="${not empty record.processed.occurrence.occurrenceID && not empty record.raw.occurrence.occurrenceID}">
+                                    ${record.processed.occurrence.occurrenceID}
+                                    <br/><span class="originalValue">Supplied as "${record.raw.occurrence.occurrenceID}"</span>
+                                </c:when>
+                                <c:otherwise>
+                                    ${record.raw.occurrence.occurrenceID}
+                                </c:otherwise>
+                            </c:choose>
+                        </alatag:occurrenceTableRow>
                         <!--
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordUuid" fieldName="Record UUID">
                             <c:choose>
