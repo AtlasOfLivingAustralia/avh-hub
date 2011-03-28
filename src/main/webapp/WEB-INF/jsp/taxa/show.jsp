@@ -11,6 +11,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>OzCam Hub - Taxa Page: </title>
+        <script type="text/javascript">
+            /**
+             * JQuery on document ready callback
+             */
+            $(document).ready(function() {
+                $("a.imgThumb").fancybox({titlePosition: 'inside'});
+            });
+        </script>
     </head>
     <body>
         <c:choose>
@@ -24,7 +32,7 @@
 <!--                        <div style="width: 220px;">-->
                             <c:forEach var="image" items="${taxon.images}">
                                 <div class="imageThumb">
-                                    <a href="${image.identifier}"><img src="${image.thumbnail}" alt="${image.title}"/></a>
+                                    <a href="${image.repoLocation}" title="Source: <a href='${image.isPartOf}' target='_blank'>${image.infoSourceName}</a><br/>Creator: ${image.creator}<br/>Rights: <a href='${image.licence}' target='_blank'>${image.rights}</a>" class="imgThumb" rel="thumbs"><img src="${image.thumbnail}" alt="${image.title}"/></a>
                                 </div>
                             </c:forEach>
 <!--                        </div>-->
