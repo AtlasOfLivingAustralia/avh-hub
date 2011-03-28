@@ -132,7 +132,7 @@ var Maps = (function() {
             //occids = new Array(); 
             occids == null; // did you mean occids = null ?
 
-            displayHtml = data.count + ' occurrences founds';
+            displayHtml = data.count + ' occurrences found';
             $('#maploading').fadeOut('slow');
         }
 
@@ -220,6 +220,7 @@ var Maps = (function() {
                 streetViewControl: false
             }
             map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
+            map.enableKeyDragZoom();
             infomarker = new google.maps.Marker({
                 position: myLatlng,
                 visible: false,
