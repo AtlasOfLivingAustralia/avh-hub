@@ -32,7 +32,8 @@
 <!--                        <div style="width: 220px;">-->
                             <c:forEach var="image" items="${taxon.images}">
                                 <div class="imageThumb">
-                                    <a href="${image.repoLocation}" title="Source: <a href='${image.isPartOf}' target='_blank'>${image.infoSourceName}</a><br/>Creator: ${image.creator}<br/>Rights: <a href='${image.licence}' target='_blank'>${image.rights}</a>" class="imgThumb" rel="thumbs"><img src="${image.thumbnail}" alt="${image.title}"/></a>
+                                    <a href="${image.repoLocation}" title="Source: <a href='${image.isPartOf}' target='_blank'>${image.infoSourceName}</a><br/>Creator: ${(not empty image.creator) ? image.creator : 'N/A'}<br/>Rights: <a href='${image.licence}' target='_blank'>${(not empty image.rights) ? image.rights : ''}</a>${(empty image.licence) ? 'N/A' : ''}"
+                                       class="imgThumb" rel="thumbs"><img src="${image.thumbnail}" title="Source: ${image.infoSourceName} ${(not empty image.creator) ? 'by' :''} ${image.creator}" alt="${image.title}"/></a>
                                 </div>
                             </c:forEach>
 <!--                        </div>-->
