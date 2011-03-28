@@ -187,7 +187,12 @@ var Maps = (function() {
         //map.overlayMapTypes.insertAt(map.overlayMapTypes.length, overlayWMS);
         //overlayLayers.push(overlayWMS);
         var wmstile = new WMSTileLayer("MySpecies - " + name, Config.OCC_WMS_BASE_URL, customParams, wmsTileLoaded);
-        overlayLayers.push(wmstile);
+        if (name=='Other') {
+            overlayLayers.splice(0,0,wmstile);
+            overlayLayers.pop();
+        } else {
+            overlayLayers.push(wmstile);
+        }
     }
 
     function wmsTileLoaded(numtiles) {
@@ -364,6 +369,13 @@ var Maps = (function() {
                 //map.overlayMapTypes.clear();
                 initialiseOverlays(fValues.length);
 
+                // check if there is 'Other' value,
+                // if so, then increment the values by 1
+                var otherInc = false;
+                if (facetLabels[_idx].indexOf('Other') > -1) {
+                    otherInc = true;
+                }
+
                 $.each(fValues, function(key, value) {
                     //var ptcolour = '#'+(Math.abs(fHashes[key])).toString(16);
                     //var ptcolour = (function(h){return '#000000'.substr(0,7-h.length)+h})((~~(Math.abs(fHashes[key]))).toString(16).substr(0,6));
@@ -390,10 +402,15 @@ var Maps = (function() {
 
                         insertWMSOverlay(label, "fq="+cbfq+"&colourby="+colour+"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
 
+                        var layerIdx = key;
+                        if (otherInc) {
+                            layerIdx = ((label=='Other')?0:(key+1)); 
+                        } 
+
                         legHtml += "<div class='layerWrapper'>";
-                        legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
+                        legHtml += "<input type='checkbox' class='layer' id='lyr"+layerIdx+"' checked='checked' /> ";
                         legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+colour+"&width=10&height=10' /> ";
-                        legHtml += "<label for='lyr"+key+"'>" + label + "</label>";
+                        legHtml += "<label for='lyr"+layerIdx+"'>" + label + "</label>";
                         legHtml += "</div>";
                     }
 

@@ -136,10 +136,10 @@ function getWMSObject(map, name, baseURL, customParams){
 var totalTileCount = 0;
 var currTileCount = 0;
 function WMSTileLayer(name, baseurl, customParams, fn){
+    this.name = name;
     this.tileSize = new google.maps.Size(256,256);
     this.minZoom = 2;
     this.maxZoom = 17;
-    this.name = name;
     this.isPng = true;
     this.customparams_ = customParams;
     this.baseurl_ = baseurl;
