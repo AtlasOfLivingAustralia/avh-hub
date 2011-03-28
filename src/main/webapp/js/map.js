@@ -370,8 +370,17 @@ var Maps = (function() {
                     //Maps.loadOccurrences("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
 
                     var label = fLabels[key];
-                    // year and month facets use a differefnt colour scheme
-                    var hexCode = (cbf.indexOf("year") != -1 || cbf.indexOf("month") != -1) ? getDateColours(key) : getColourForIndex(key);
+                    // year and month facets use a different colour scheme
+                    var hexCode = otherColour;
+                    if (label == "Other") {
+                        hexCode = otherColour;
+                    } else if (cbf.indexOf("year") != -1) {
+                        hexCode = getDateColours(key);
+                    } else if (cbf.indexOf("month") != -1) {
+                        hexCode = getMonthColours(key);
+                    } else {
+                        hexCode = getColourForIndex(key);
+                    }
                     var colour = parseInt(hexCode, 16);
                     if (label!='') {
                         var cbfq=cbf+":"+value;
@@ -401,6 +410,7 @@ var Maps = (function() {
             $.each(overlayLayers, function(_idx, overlayWMS) {
                 map.overlayMapTypes.setAt(_idx+1, overlayWMS);
             });
+
         },
 
         loadEnvironmentalLayer: function(selLayer) {
@@ -509,9 +519,10 @@ function getColourForIndex(index) {
         "3B3EAC","B77322","16D620","B91383","F43595","9C5935","A9C413","2A778D","668D1C","BEA413",
         "0C5922","743411"];
     colours = colours.concat(colours); // re-use the 31 colours again in array
-    var hexCode = ""
 
-    if (index && isInteger(index) && index < colours.length) {
+    var hexCode = "";
+
+    if (isInteger(index) && index < colours.length) {
         hexCode = colours[index];
     } else {
         hexCode = colours[0];
@@ -520,15 +531,32 @@ function getColourForIndex(index) {
     return hexCode;
 }
 
-function getDateColours(index) {
-    var colours = ["0B2CC8","0C309B","0B3474","093758","063B40","083C27","123B17","23360F",
-        "38300B","482B0C","582610","662113","771B15","87161A","99101E","AF082C","C0003D"];
-    var hexCode = ""
+var decadeColours = ['0530B3','053391','083574','043956','053A46','063C33','113A27','253423','312F30','3E293B','4F243D','601F39','731A33','851529','951124','A30D1D','B40817','BD060F'];
+//var monthColours = ['0530B3','083574','043956','063C33','113A27','312F30','3E293B','601F39','731A33','951124','A30D1D','BD060F'];
+var monthColours = ['9D0F19','A5093B','A40663','810D8D','59179C','2F2788','202F66','263043','392D27','4C281C','622215','811814'];
+var otherColour = "b0b0b0";
 
-    if (index && isInteger(index) && index < colours.length) {
-        hexCode = colours[index];
+function getDateColours(index) {
+
+    var hexCode = "";
+
+    if (isInteger(index) && index < decadeColours.length) {
+        hexCode = decadeColours[index];
     } else {
-        hexCode = colours[0];
+        hexCode = decadeColours[decadeColours.length-1];
+    }
+
+    return hexCode;
+}
+
+function getMonthColours(index) {
+
+    var hexCode = "";
+
+    if (isInteger(index) && index < monthColours.length) {
+        hexCode = monthColours[index];
+    } else {
+        hexCode = monthColours[monthColours.length-1];
     }
 
     return hexCode;
