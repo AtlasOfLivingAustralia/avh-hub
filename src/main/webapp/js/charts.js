@@ -661,6 +661,31 @@ function loadFacetCharts() {
 }
 
 /*******                                   *****
+ *******        LOAD DOWNLOAD STATS        *****
+ *******                                   *****/
+
+function loadDownloadStats(uid) {
+    var url = loggerServicesUrl + uid + "/downloads/counts.json";
+    $.ajax({
+      url: url,
+      dataType: 'jsonp',
+      cache: false,
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert(textStatus);
+      },
+      success: function(data) {
+        $('span#downloadedRecordsThisMonth').html(data.thisMonth.numberOfDownloadedRecords);
+        $('span#downloadedRecordsLast3Months').html(data.last3Months.numberOfDownloadedRecords);
+        $('span#downloadedRecordsAll').html(data.all.numberOfDownloadedRecords);
+        $('span#downloadsThisMonth').html(data.thisMonth.numberOfDownloads);
+        $('span#downloadsLast3Months').html(data.last3Months.numberOfDownloads);
+        $('span#downloadsAll').html(data.all.numberOfDownloads);
+      }
+    });
+}
+
+
+/*******                                   *****
  *******   Temp lookup for starting rank   *****
  *******                                   *****/
 var rankTable = {
@@ -698,6 +723,7 @@ function getStartingRank(uid) {
  *******      Specify charts to load       *****
  *******                                   *****/
 var biocacheServicesUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/";
+var loggerServicesUrl = "http://logger.ala.org.au/service/";
 
 function hubChartsOnLoadCallback() {
 
@@ -708,4 +734,5 @@ function hubChartsOnLoadCallback() {
   jpLoadTaxonChart(instanceUid, null, getStartingRank(instanceUid));
 
   loadRecordsAccumulation();
+
 }
