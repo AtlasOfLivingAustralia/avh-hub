@@ -14,7 +14,7 @@ var Config = (function() {
         //BIOCACHE_SERVICE_URL: 'http://ala-bie1.vm.csiro.au:8080/biocache-service',
         OCC_WMS_BASE_URL: BIOCACHE_SERVICE_URL + '/occurrences/wms?',
         OCC_SEARCH_URL: BIOCACHE_SERVICE_URL + '/occurrences/info',
-        OCC_INFO_URL_HTML: contextPath+'/occurrences/_uuid_',
+        OCC_INFO_URL_HTML: contextPath+'/occurrences/fragment/_uuid_',
         OCC_INFO_URL_JSON: contextPath+'/occurrences/_uuid_.json',
         OCC_ANNOTATE_URL_HTML: contextPath+'/occurrences/annotate/_uuid_',
 

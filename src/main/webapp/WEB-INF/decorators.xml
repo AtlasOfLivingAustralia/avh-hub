@@ -13,7 +13,12 @@
         <pattern>/index</pattern>
     </excludes>
 
+    <decorator name="bare" page="bare-skin.jsp">
+        <pattern>/occurrences/fragment/*</pattern>
+    </decorator>
+    
     <decorator name="main" page="ozcam-skin.jsp">
         <pattern>/*</pattern>
     </decorator>
+
 </decorators>
