@@ -122,6 +122,7 @@ $(document).ready(function() {
 
     // Catch onChange event on all select elements (except institution)
     $("form#advancedSearchForm select").not("select#institution_collection").change(function() {
+        var el = $(this);
         var fieldName = el.attr("class");
         var fieldValue = el.val();
         selectChange(fieldName, fieldValue);
