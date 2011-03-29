@@ -389,6 +389,10 @@
                                 </c:otherwise>
                             </c:choose>
                         </alatag:occurrenceTableRow>
+                        <!-- Other Catalog Number -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="otherCatalogNumbers" fieldName="Other Catalogue Numbers">
+                            ${record.raw.occurrence.otherCatalogNumbers}
+                        </alatag:occurrenceTableRow>
                         <!-- Record Number -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordNumber" fieldName="Record number">
                             <c:choose>
@@ -495,9 +499,17 @@
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="typeStatus" fieldName="Type Status">
                             ${record.raw.occurrence.typeStatus}
                         </alatag:occurrenceTableRow>
+                        <!-- Reproductive Condition -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="reproductiveCondition" fieldName="Reproductive Condition">
+                            ${record.raw.occurrence.reproductiveCondition}
+                        </alatag:occurrenceTableRow>
                         <!-- Sex -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="sex" fieldName="Sex">
                             ${record.raw.occurrence.sex}
+                        </alatag:occurrenceTableRow>
+                        <!-- Behavior -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="behavior" fieldName="Behaviour">
+                            ${record.raw.occurrence.behavior}
                         </alatag:occurrenceTableRow>
                         <!-- Individual count -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="individualCount" fieldName="Individual Count">
@@ -797,9 +809,17 @@
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic Datum">
                             ${record.raw.location.geodeticDatum}
                         </alatag:occurrenceTableRow>
+                        <!-- verbatimCoordinateSystem -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Vverbatim Coordinate System">
+                            ${record.raw.location.verbatimCoordinateSystem}
+                        </alatag:occurrenceTableRow>
                         <!-- Verbatim locality -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimLocality" fieldName="Verbatim locality">
                             ${record.raw.location.verbatimLocality}
+                        </alatag:occurrenceTableRow>
+                        <!-- Water Body -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="waterBody" fieldName="Water body">
+                            ${record.raw.location.waterBody}
                         </alatag:occurrenceTableRow>
                         <!-- Location remarks -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locationRemarks" fieldName="Location Remarks">
@@ -808,6 +828,10 @@
                         <!-- Occurrence remarks -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="occurrenceRemarks" fieldName="Occurrence Remarks">
                             ${record.raw.occurrence.occurrenceRemarks}
+                        </alatag:occurrenceTableRow>
+                        <!-- Field notes -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field Notes">
+                            ${record.raw.occurrence.fieldNotes}
                         </alatag:occurrenceTableRow>
                         <!-- Coordinate Accuracy -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate Precision">
