@@ -9,12 +9,12 @@
         <pattern>/static/*</pattern>
         <pattern>/occurrences/*/assertions/</pattern>
         <pattern>/occurrences/*/groupedAssertions/</pattern>
-        <pattern>/occurrences/annotate/*</pattern>
         <pattern>/index</pattern>
     </excludes>
 
     <decorator name="bare" page="bare-skin.jsp">
         <pattern>/occurrences/fragment/*</pattern>
+        <pattern>/occurrences/annotate/*</pattern>
     </decorator>
     
     <decorator name="main" page="ozcam-skin.jsp">
