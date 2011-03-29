@@ -48,6 +48,15 @@
                         <h3>Classification</h3>
                         <div class="taxaDescription">${taxon.classification}</div>
                     </c:if>
+                    <c:if test="${not empty taxon.references}">
+                        <br/>
+                        <h3>References</h3>
+                        <ul>
+                            <c:forEach var="ref" items="${taxon.references}">
+                               <li>${ref}</li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
                 </div>
             </c:when>
             <c:otherwise>

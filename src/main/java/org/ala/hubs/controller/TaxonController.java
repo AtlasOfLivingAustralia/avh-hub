@@ -15,6 +15,7 @@
 
 package org.ala.hubs.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,29 @@ public class TaxonController {
                             }
                         }
                         taxon.setDescription(description.toString());
+                    } else if (key.contentEquals("earliestReference")) {
+                        Map<String, Object> ref = (Map<String, Object>) etc.get("earliestReference");
+                        List<String> refList = taxon.getReferences();
+
+                        if (refList == null) {
+                            refList = new ArrayList<String>();
+                        }
+
+                        refList.add(formatReference(ref));
+                        taxon.setReferences(refList);
+                    } else if (key.contentEquals("references")) {
+                        List<Map<String, Object>> refs = (List<Map<String, Object>>) etc.get("references");
+                        List<String> refList = taxon.getReferences();
+                        
+                        if (refList == null) {
+                            refList = new ArrayList<String>();
+                        }
+                        
+                        for (Map<String, Object> ref : refs) {
+                            refList.add(formatReference(ref));
+                        }
+
+                        taxon.setReferences(refList);
                     }
                 }
                 logger.debug("miniTaxon: " + taxon.toString());
@@ -164,6 +188,50 @@ public class TaxonController {
 
         return content;
     }
+
+    /**
+     * Format the reference into an HTML string
+     *
+     * @param refMap
+     * @return
+     */
+    private String formatReference(Map<String, Object> refMap) {
+        String output = "Scientific name: " + getStringValue(refMap, "scientificName") + ". ";
+        output += getStringValue(refMap, "title") + " ";
+        output += (!getStringValue(refMap, "year").isEmpty()) ? ("(" + getStringValue(refMap, "year") + ") ") : "";
+        output += (!getStringValue(refMap, "volume").isEmpty()) ? ("Volume: " + getStringValue(refMap, "volume") + ". ") : "";
+
+        if (refMap.containsKey("pageIdentifiers") && refMap.get("pageIdentifiers") != null) {
+            List<String> pageNos = (List<String>) refMap.get("pageIdentifiers");
+
+            if (pageNos != null && !pageNos.isEmpty()) {
+                output += "<a href='http://library.ala.org.au/page/"+ pageNos.get(0);
+                output += "' title='view original publication' target='_blank'>Biodiversity Heritage Library</a>";
+            }
+        }
+        return output;
+    }
+
+    /**
+     * Get a string value from the JSON derived Map<String, Object> and return empty string if null
+     *
+     * @param map
+     * @param key
+     * @return
+     */
+    private String getStringValue(Map<String, Object> map, String key) {
+        String value = "";
+
+        if (key != null && map.containsKey(key)) {
+            String temp = (String) map.get(key);
+            if (temp != null || StringUtils.containsIgnoreCase(temp, "null")) {
+                // If the JSON value is null, then the String gets a value of null (type)
+                value = temp;
+            }
+        }
+
+        return value;
+    }
     
     /**
      * Inner Class - mini taxon bean
@@ -178,6 +246,7 @@ public class TaxonController {
         Boolean isAustralian;
         String description;
         String classification;
+        List<String> references;
         List<Map<String, String>> images;
 
         public TaxonMini() {}
@@ -268,6 +337,14 @@ public class TaxonController {
 
         public String getAllCommonNames() {
             return StringUtils.join(this.commonNames, ", ");
+        }
+
+        public List<String> getReferences() {
+            return references;
+        }
+
+        public void setReferences(List<String> references) {
+            this.references = references;
         }
 
         @Override
