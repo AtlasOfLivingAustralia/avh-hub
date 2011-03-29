@@ -209,16 +209,13 @@ div#overview {
     display: inline;
     width: 290px;
 }
-img#progressBar {
-    display:none;
-}
 #content h1 {
 /*    font-size: 180%;*/
     border-bottom: none;
 }
 #content h2, #content h2 a:link {
     font-size: 160%;
-    padding-top: 5px;
+    padding-top: 10px;
 }
 #content h3 {
     font-size: 140%;
@@ -246,3 +243,31 @@ span.lsid {
     margin:15px 0 0 15px;
     height:100%;
 }
+
+.number {
+    font-size: 14px;
+    font-weight: bold;
+    color: #00456e;
+}
+/*
+
+.1 {color: #0530B3}
+.1 {color: #0530B3}
+.1 {color: #053391}
+.1 {color: #083574}
+.1 {color: #043956}
+.1 {color: #053A46}
+.1 {color: #063C33}
+.1 {color: #113A27}
+.1 {color: #253423}
+.1 {color: #312F30}
+.1 {color: #3E293B}
+.1 {color: #4F243D}
+.1 {color: #601F39}
+.1 {color: #731A33}
+.1 {color: #851529}
+.1 {color: #951124}
+.1 {color: #A30D1D}
+.1 {color: #B40817}
+.1 {color: #BD060F}
+*/
