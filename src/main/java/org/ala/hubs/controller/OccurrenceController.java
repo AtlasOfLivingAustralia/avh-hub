@@ -152,9 +152,7 @@ public class OccurrenceController {
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
         // *****
 
-        if (StringUtils.isEmpty(requestParams.getQ())) {
-            return RECORD_LIST;
-        } else if (request.getParameter("pageSize") == null) {
+        if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
 
