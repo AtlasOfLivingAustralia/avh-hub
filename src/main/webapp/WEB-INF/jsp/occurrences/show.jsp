@@ -476,6 +476,10 @@
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="fieldNumber" fieldName="Field Number">
                             ${record.raw.occurrence.fieldNumber}
                         </alatag:occurrenceTableRow>
+                        <!-- Field Number -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationRemarks" fieldName="Identification Remarks">
+                            ${record.raw.identification.identificationRemarks}
+                        </alatag:occurrenceTableRow>
                         <!-- Collector/Observer -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="Collector/Observer">
                             <c:choose>
@@ -528,6 +532,10 @@
                 <div id="occurrenceTaxonomy">
                     <h3>Taxonomy</h3>
                     <table class="occurrenceTable" id="taxonomyTable">
+                        <!-- Preparations -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="higherClassification" fieldName="Higher Classification">
+                            ${record.raw.classification.higherClassification}
+                        </alatag:occurrenceTableRow>
                         <!-- Scientific Name -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="scientificName" fieldName="Scientific Name">
                             <c:if test="${not empty record.processed.classification.taxonConceptID}">
@@ -820,6 +828,30 @@
                         <!-- Water Body -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="waterBody" fieldName="Water body">
                             ${record.raw.location.waterBody}
+                        </alatag:occurrenceTableRow>
+                        <!-- Min depth -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumDepthInMeters" fieldName="Minimum Depth In Metres">
+                            ${record.raw.location.minimumDepthInMeters}
+                        </alatag:occurrenceTableRow>
+                        <!-- Max depth -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumDepthInMeters" fieldName="Maximum Depth In Metres">
+                            ${record.raw.location.maximumDepthInMeters}
+                        </alatag:occurrenceTableRow>
+                        <!-- Min elevation -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumElevationInMeters" fieldName="Minimum Elevation In Metres">
+                            ${record.raw.location.minimumElevationInMeters}
+                        </alatag:occurrenceTableRow>
+                        <!-- Max elevation -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumElevationInMeters" fieldName="Maximum Elevation In Metres">
+                            ${record.raw.location.maximumElevationInMeters}
+                        </alatag:occurrenceTableRow>
+                        <!-- Island -->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="island" fieldName="Island">
+                            ${record.raw.location.island}
+                        </alatag:occurrenceTableRow>
+                        <!-- Island Group-->
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="islandGroup" fieldName="Island group">
+                            ${record.raw.location.islandGroup}
                         </alatag:occurrenceTableRow>
                         <!-- Location remarks -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locationRemarks" fieldName="Location Remarks">
