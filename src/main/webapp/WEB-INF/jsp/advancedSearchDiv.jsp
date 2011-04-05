@@ -56,28 +56,6 @@
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
             <tbody>
-                <%-- <tr>
-                    <td class="label">Institution name</td>
-                    <td>
-                        <select class="institution_uid" id="institution_uid">
-                            <option value="">-- select an institution --</option>
-                            <c:forEach var="inst" items="${institutions}">
-                                <option value="${inst.key}">${inst.value}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">Collection name</td>
-                    <td>
-                        <select class="collection_uid" id="collection_uid">
-                            <option value="">-- select a collection --</option>
-                            <c:forEach var="coll" items="${collections}">
-                                <option value="${coll.key}">${coll.value}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                </tr> --%>
                 <tr>
                     <td class="label">Institution or Collection</td>
                     <td>
@@ -115,7 +93,7 @@
                     <td class="label">State/Territory</td>
                     <td>
                         <select class="state"  id="state">
-                            <option value="">-- select a state --</option>
+                            <option value="">-- select a state/territory --</option>
                             <c:forEach var="state" items="${states}">
                                 <option value="${state}">${state}</option>
                             </c:forEach>
