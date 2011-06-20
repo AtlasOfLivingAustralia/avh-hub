@@ -347,7 +347,7 @@ var Maps = (function() {
                 insertWMSOverlay("All occurrences", "&colourby="+ colour +"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
                 legHtml += "<div>";
                 legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
-                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+ colour +"&width=10&height=10' /> ";
+                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+ colour +"&width=10&height=10&qc="+Config.QUERY_CONTEXT+"' /> ";
                 legHtml += "<label for='lyr"+key+"'>" + label + "</label>";
                 legHtml += "</div>";
 
@@ -409,7 +409,7 @@ var Maps = (function() {
 
                         legHtml += "<div class='layerWrapper'>";
                         legHtml += "<input type='checkbox' class='layer' id='lyr"+layerIdx+"' checked='checked' /> ";
-                        legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+colour+"&width=10&height=10' /> ";
+                        legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+colour+"&width=10&height=10&qc="+Config.QUERY_CONTEXT+"' /> ";
                         legHtml += "<label for='lyr"+layerIdx+"'>" + label + "</label>";
                         legHtml += "</div>";
                     }

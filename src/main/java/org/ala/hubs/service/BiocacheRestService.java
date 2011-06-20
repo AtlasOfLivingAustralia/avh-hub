@@ -47,6 +47,8 @@ public class BiocacheRestService implements BiocacheService {
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     /** URI prefix for biocache-service - may be overridden in properties file */
     protected String biocacheUriPrefix = "http://localhost:9999/biocache-service";
+    /** A comma separated list of context to apply to the query - may be overridden in the properties file */
+    protected String queryContext ="";
     
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
     
@@ -56,10 +58,11 @@ public class BiocacheRestService implements BiocacheService {
     @Override
     public SearchResultDTO findByFulltextQuery(SearchRequestParams requestParams) {
         Assert.notNull(requestParams.getQ(), "query must not be null");
+        addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
-        
+ 
         try {
-            final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();
+            final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();            
             logger.debug("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
@@ -101,6 +104,7 @@ public class BiocacheRestService implements BiocacheService {
      * @return
      */
     protected SearchResultDTO getSearchResultsForEntity(String uid, SearchRequestParams requestParams, String occurrencesPath) {
+        addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
         try {
             final String jsonUri = biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.toString();
@@ -113,6 +117,12 @@ public class BiocacheRestService implements BiocacheService {
         return searchResults;
     }
 
+    protected void addQueryContext(SearchRequestParams requestParams){
+        if(requestParams != null){
+            requestParams.setQc(queryContext);
+        }
+    }
+    
     /**
      * @see org.ala.hubs.service.BiocacheService#getRecordByUuid(String)
      */
@@ -247,4 +257,13 @@ public class BiocacheRestService implements BiocacheService {
     public void setBiocacheUriPrefix(String biocacheUriPrefix) {
         this.biocacheUriPrefix = biocacheUriPrefix;
     }
+
+    public String getQueryContext() {
+        return queryContext;
+    }
+
+    public void setQueryContext(String queryContext) {
+        this.queryContext = queryContext;
+    }
+    
 }

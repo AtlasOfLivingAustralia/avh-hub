@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
+import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,8 @@ public class HomePageController {
     protected CollectionsCache collectionsCache;
     @Inject
     protected GazetteerCache gazetteerCache;
+    @Inject
+    protected CollectoryUidCache collectoryUidCache;
     /** View name for home page */
     protected final String HOME_PAGE = "homePage";
     protected final String OZCAM_PAGE = "ozcamHome";
@@ -79,8 +82,11 @@ public class HomePageController {
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String homePage(Model model) {
         logger.info("Home Page request.");
-        model.addAttribute("collections", collectionsCache.getCollections());
-        model.addAttribute("institutions", collectionsCache.getInstitutions());
+        
+        List<String>inguids = collectoryUidCache.getInstitutions();
+        List<String> coguids = collectoryUidCache.getCollections();
+        model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));
+        model.addAttribute("institutions", collectionsCache.getInstitutions(inguids, coguids));
         model.addAttribute("typeStatus", extractTermsList(TypeStatus.all()));
         model.addAttribute("basisOfRecord", extractTermsList(BasisOfRecord.all()));
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())

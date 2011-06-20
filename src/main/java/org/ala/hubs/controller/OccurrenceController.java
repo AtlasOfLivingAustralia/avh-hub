@@ -36,6 +36,7 @@ import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.service.BiocacheService;
+import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.apache.commons.httpclient.HttpStatus;
 
@@ -74,6 +75,9 @@ public class OccurrenceController {
     protected CollectionsCache collectionsCache;
     @Inject
     protected GazetteerCache gazetteerCache;
+    @Inject
+    protected CollectoryUidCache collectoryUidCache;
+
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
@@ -444,10 +448,12 @@ public class OccurrenceController {
      * @param model
      */
     private void addCommonDataToModel(Model model) {
-        model.addAttribute("collectionCodes", collectionsCache.getCollections());
-        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
-        model.addAttribute("collections", collectionsCache.getCollections());
-        model.addAttribute("institutions", collectionsCache.getInstitutions());
+        List<String>inguids = collectoryUidCache.getInstitutions();
+        List<String> coguids = collectoryUidCache.getCollections();
+        model.addAttribute("collectionCodes", collectionsCache.getCollections(inguids, coguids));
+        model.addAttribute("institutionCodes", collectionsCache.getInstitutions(inguids, coguids));
+        model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));
+        model.addAttribute("institutions", collectionsCache.getInstitutions(inguids, coguids));
         model.addAttribute("typeStatus", HomePageController.extractTermsList(TypeStatus.all()));
         model.addAttribute("basisOfRecord", HomePageController.extractTermsList(BasisOfRecord.all()));
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
