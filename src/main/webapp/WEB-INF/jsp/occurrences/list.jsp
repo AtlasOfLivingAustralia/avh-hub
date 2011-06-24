@@ -116,7 +116,16 @@
                         </div><!--drop downs-->
                         <div id="results">
                             <c:forEach var="occurrence" items="${searchResults.occurrences}">
-                                <p class="rowA">Record: <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="font-size: 100%; color: #005A8E;">${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}</a> &mdash;
+                                <p class="rowA">Record: <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="font-size: 100%; color: #005A8E;">
+                                    <c:choose>
+                                        <c:when test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
+                                            ${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${occurrence.uuid}
+                                        </c:otherwise>
+                                    </c:choose>
+                                            </a> &mdash;
                                     <span style="text-transform: capitalize">${occurrence.taxonRank}</span>: <span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${occurrence.scientificName}"/></span>
                                     <c:if test="${not empty occurrence.vernacularName}"> | <span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
                                 </p>
