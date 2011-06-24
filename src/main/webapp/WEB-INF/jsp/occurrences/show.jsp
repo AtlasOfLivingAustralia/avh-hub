@@ -9,6 +9,7 @@
 <c:set var="recordId" value="${record.raw.occurrence.collectionCode}:${record.raw.occurrence.catalogNumber}"/>
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
 <c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
+<c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
 <c:set var="scientificName">
     <c:choose>
         <c:when test="${not empty record.processed.classification.scientificName}">
@@ -344,7 +345,14 @@
                             <c:choose>
                                 <c:when test="${record.processed.attribution.institutionUid != null && not empty record.processed.attribution.institutionUid}">
                                     <!-- <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.institutionUid}"> -->
-                                    <a href="${pageContext.request.contextPath}/institution/${record.processed.attribution.institutionUid}">
+                                    <c:choose>
+                                        <c:when test="${useAla == 'true'}">
+                                            <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.institutionUid}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/institution/${record.processed.attribution.institutionUid}">
+                                        </c:otherwise>
+                                    </c:choose>
                                         ${record.processed.attribution.institutionName}
                                     </a>
                                 </c:when>
@@ -360,7 +368,14 @@
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="collectionCode" fieldName="Collection">
                             <c:if test="${not empty record.processed.attribution.collectionUid}">
 <!--                                <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">-->
-                                <a href="${pageContext.request.contextPath}/collection/${record.processed.attribution.collectionUid}" title="view collection page">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                       <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">
+                                    </c:when>
+                                    <c:otherwise>
+                                       <a href="${pageContext.request.contextPath}/collection/${record.processed.attribution.collectionUid}" title="view collection page">
+                                    </c:otherwise>
+                                </c:choose>
                             </c:if>
                             <c:choose>
                                 <c:when test="${not empty record.processed.attribution.collectionName}">
@@ -568,7 +583,14 @@
                             </c:set>
                             <c:choose>
                                 <c:when test="${not empty record.processed.classification.taxonConceptID}">
-                                    <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.taxonConceptID}">${displaySciName}</a>
+                                    <c:choose>
+                                        <c:when  test="${useAla == 'true'}">
+                                            <a href="${bieWebappContext}/species/${record.processed.classification.taxonConceptID}">${displaySciName}</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.taxonConceptID}">${displaySciName}</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="${bieWebappContext}/search?q=${fn:replace(scientificName, '  ', ' ')}">${displaySciName}</a>
@@ -607,7 +629,14 @@
                         <!-- Kingdom -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="kingdom" fieldName="Kingdom">
                             <c:if test="${not empty record.processed.classification.kingdomID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.kingdomID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.kingdomID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.kingdomID}">
+                                    </c:otherwise>
+                                </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.kingdom}">
                                     ${record.processed.classification.kingdom}
@@ -625,7 +654,14 @@
                         <!-- Phylum -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="phylum" fieldName="Phylum">
                             <c:if test="${not empty record.processed.classification.phylumID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.phylumID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.phylumID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.phylumID}">
+                                    </c:otherwise>
+                                </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.phylum}">
                                     ${record.processed.classification.phylum}
@@ -643,7 +679,14 @@
                         <!-- Class -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="classs" fieldName="Class">
                             <c:if test="${not empty record.processed.classification.classID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.classID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.classID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.classID}">
+                                    </c:otherwise>
+                                </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.classs}">
                                     ${record.processed.classification.classs}
@@ -661,7 +704,14 @@
                         <!-- Order -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="order" fieldName="Order">
                             <c:if test="${not empty record.processed.classification.orderID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.orderID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.orderID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.orderID}">
+                                    </c:otherwise>
+                                </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.order}">
                                     ${record.processed.classification.order}
@@ -679,7 +729,14 @@
                         <!-- Family -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="family" fieldName="Family">
                             <c:if test="${not empty record.processed.classification.familyID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.familyID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.familyID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.familyID}">
+                                    </c:otherwise>
+                                 </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.family}">
                                     ${record.processed.classification.family}
@@ -697,7 +754,14 @@
                         <!-- Genus -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="genus" fieldName="Genus">
                             <c:if test="${not empty record.processed.classification.genusID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.genusID}">
+                                 <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.genusID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.genusID}">
+                                    </c:otherwise>
+                                  </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.genus}">
                                     <i>${record.processed.classification.genus}</i>
@@ -715,7 +779,14 @@
                         <!-- Species -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="species" fieldName="Species">
                             <c:if test="${not empty record.processed.classification.speciesID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.speciesID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.speciesID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.speciesID}">
+                                    </c:otherwise>
+                                </c:choose>
                             </c:if>
                             <c:choose>
                                 <c:when test="${not empty record.processed.classification.species}">
