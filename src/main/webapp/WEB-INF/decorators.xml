@@ -17,7 +17,7 @@
         <pattern>/occurrences/annotate/*</pattern>
     </decorator>
     
-    <decorator name="main" page="ozcam-skin.jsp">
+    <decorator name="main" page="ala-skin.jsp">
         <pattern>/*</pattern>
     </decorator>
 

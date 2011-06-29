@@ -19,7 +19,7 @@
 a:link, a:visited, #content a:link, #content a:visited {
     font-size: 13px;
     text-decoration: none;
-    color: #005A8E;
+/*    color: #005A8E;*/
 }
 a:hover, #content a:hover {
     text-decoration: underline;

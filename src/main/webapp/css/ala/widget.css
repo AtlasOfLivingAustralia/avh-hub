@@ -1,0 +1,44 @@
+/*------------------------------------------------*/
+/*---------------SIDEBAR---------------*/
+/*------------------------------------------------*/
+
+#SidebarBox{
+	float: left;
+}
+.sidebar {
+	float: left;
+	clear: left;
+	width: 250px;
+	margin: 0;
+	padding-left: 3px;
+}
+
+.sidebar li {
+	font-size: 12px;
+	list-style-image: url(images/arrow_r.jpg);
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #E8E8E8;
+	margin-right: 20px;
+	margin-bottom: 5px;
+	padding-top: 7px;
+	padding-right: 3px;
+	padding-bottom: 7px;
+	padding-left: 3px;
+	behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */
+	margin-left: 20px;
+}
+
+/*.sidebar li a {
+	color:#005A8E;
+	text-decoration:none;
+}*/
+/*.sidebar li a:hover  {
+	color:#6DB71D;
+	text-decoration:none;
+}*/
+.sidebar p {
+	font-size: 12px;
+	line-height: 18px;
+	color: #545454;
+}

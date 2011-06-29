@@ -1,0 +1,1260 @@
+/*@import url("widget.css");*/
+/* --------------------------------------------------------------
+
+   Boilerplate Screen Styles
+   * Version:   0.5 (2007-11-19)
+
+-------------------------------------------------------------- */
+
+/*@import "lib/reset.css";
+@import "lib/typography.css";
+@import "lib/forms.css";
+@import "lib/plugins/tabs.css";*/
+
+/* ALA additions */
+/*#page {
+    margin: 0 auto;
+    width: 950px;
+    background: url("images/ui-bg_flat_100_ffffff_40x100.png") repeat scroll 50% 50% #FFFFFF;
+}*/
+/*body {
+    margin: 0;
+    background:url("imgages/ALA_icon_in_background.gif") repeat-x left top #EDECEB;
+    color: #222;
+    font-size: 90%;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    color: #373737;
+}
+h1 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+h2 {
+    font-size: 1.1em;
+    margin-bottom: 12px;
+}
+h3 {
+    font-size: 1.0em;
+    margin-bottom: 10px;
+}
+h4 {
+    font-size: 1.0em;
+    margin-bottom: 10px;
+}
+ul, ol {
+    margin: 0 1.0em 0.5em 2em;
+}
+ul {
+    list-style-type: disc;
+}
+a:focus, a:hover {
+    color: #03C;
+    text-decoration: underline;
+}
+a {
+    color: #03C;
+    text-decoration: none;
+}
+p {
+    margin:0 0 0.8em;
+}
+td, th  {
+    vertical-align: top;
+}*/
+.show-90 {
+    -moz-opacity:.90;
+    -ms-filter:"alpha(opacity=90)";
+    filter:alpha(opacity=90);
+    opacity:.90;
+}
+.show-80 {
+    -moz-opacity:.80;
+    -ms-filter:"alpha(opacity=80)";
+    filter:alpha(opacity=80);
+    opacity:.80;
+}
+.show-70 {
+    -moz-opacity:.70;
+    -ms-filter:"alpha(opacity=70)";
+    filter:alpha(opacity=70);
+    opacity:.70;
+}
+.show-60 {
+    -moz-opacity:.60;
+    -ms-filter:"alpha(opacity=60)";
+    filter:alpha(opacity=60);
+    opacity:.60;
+}
+.show-50 {
+    -moz-opacity:.50;
+    -ms-filter:"alpha(opacity=50)";
+    filter:alpha(opacity=50);
+    opacity:.50;
+}
+/* header
+#header {
+    margin: 6px 0 7px 0;
+    padding: 2px 6px;
+    width: 100%;
+    background: url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") repeat-x scroll 50% 50% #CCCCCC;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    vertical-align:middle;
+}
+#header span {
+    font-size: 100%;
+    font-weight: bold;
+    color: #262627;
+    vertical-align: middle;
+}*/
+#searchTab input[type="text"] {
+    margin: 0;
+}
+#menuSearch {
+    /*float: right;
+    margin-top: 60px;*/
+    vertical-align: middle;
+    padding: 2px;
+}
+#page > #header > #menuSearch form {
+    display: inline-block;
+    vertical-align:middle;
+    margin-top: 0;
+    padding-bottom: 2px;
+    /*margin-top: 58px;*/
+}
+#header h1 {
+    padding-bottom: 8px;
+}
+#menuSearch input {
+    font-size: 13px;
+    padding: 1px;
+    margin-top: 2px;
+}
+
+#headerLogo  {
+    padding-top: 2px;
+}
+#headerLogo img {
+    margin-left: -4px;
+}
+
+#menuSearch .tabs {
+    float: right;
+    margin-top: -1px;
+    font-size: 13px;
+}
+#menuSearch .tabs li {
+    border-right: 1px solid #999999;
+}
+#menuSearch .tabs li.last {
+    border-right: none;
+}
+#menuSearch .tabs a {
+    padding: 5px 12px;
+    /*background-color: #ddd;
+    background: url("images/ui-bg_glass_75_cccccc_1x400.png") repeat-x scroll 50% 50% #DDDDDD;*/
+    color: #404142;
+    text-decoration: none;
+    vertical-align: middle;
+}
+#menuSearch .tabs a:hover {
+    text-decoration: underline;
+}
+/* top menu */
+#topmenu {
+    float: right;
+    margin:0;
+    margin-right: 10px;
+    padding:0;
+}
+#topmenu .tabs {
+    border-bottom: 0px solid #ddd;
+    margin-left: 0px;
+    font-size: 13px;
+}
+#topmenu .tabs li {
+    margin-right: 1px;
+}
+#topmenu .tabs a {
+    padding: 5px 15px;
+    /*background-color: #ddd;*/
+    background: url("images/ui-bg_glass_75_cccccc_1x400.png") repeat-x scroll 50% 50% #DDDDDD;
+    color: #404142;
+    text-decoration: none;
+}
+#topmenu .tabs li.first a {
+    /*-moz-border-radius-topleft: 5px;*/
+    -moz-border-radius-bottomleft: 5px;
+    /*-webkit-border-top-left-radius: 5px;*/
+    -webkit-border-bottom-left-radius: 5px;
+}
+#topmenu .tabs li.last a {
+    /*-moz-border-radius-topright: 5px;*/
+    -moz-border-radius-bottomright: 5px;
+    /*-webkit-border-top-right-radius: 5px;*/
+    -webkit-border-bottom-right-radius: 5px;
+}
+#topmenu .tabs li.active a {
+    /*background-color: #bbb;*/
+    background: url("images/ui-bg_glass_45_aaaaaa_1x400.png") repeat-x scroll 50% 50% #BBBBBB;
+    color: #262627;
+}
+#topmenu .tabs li a:hover, #topmenu .tabs li.active a:hover {
+    /*background-color: #4b4c4e;*/
+    background: url("images/ui-bg_glass_30_4b4c4e_1x400.png") repeat-x scroll 50% 50% #4b4c4e;
+    color: #fff;
+}
+#topmenu .tabs #searchTab {
+    background: #fff;
+    padding: 3px 10px;
+}
+
+#loginStatus {
+    float: right;
+    margin:0;
+    margin-right: 10px;
+    padding:0;
+    position:relative;
+    top:-20px;
+}
+
+#speciesTitle {
+    float: left;
+    position: relative;
+    background-color: #CBDAF0;
+    background: url("bie-theme/images/ui-bg_gloss-wave_85_c9d9f1_500x100.png") repeat-x scroll 50% 0% #CBDAF0;
+    /*background-size: 100%;*/
+    border: 1px solid #A6C9E2;
+    width: 98%; /*931px; 64%; 670px*/
+    min-height: 120px;
+    padding: 6px 6px 6px 10px;
+    margin-bottom: 15px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    color: #666;
+}
+#speciesTitle h2 {
+    margin: 3px 0 4px 0;
+    color: #FF5D00;/*#F26649;*/
+    font-size: 18px;
+}
+#speciesTitle #rankInTitle {
+    margin-top: -2px;
+    color: #FF5D00;
+    font-size: 15px;
+    font-weight: bold;
+}
+#speciesTitle a {
+    color: #255094; /* #193563 */
+}
+#commonNames {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 4px 0 0px 0;
+}
+#taxonSource {
+    font-size: 13px;
+    margin: 4px 0 4px 0;
+}
+#classification td a {
+    /*color:inherit;*/
+}
+#classification td {
+    color:inherit;
+}
+#classification #taxonTree {
+    width: 48%;
+}
+#classification #family {
+    width: 48%;
+    float: right;
+}
+#classification #outerDiv {
+    overflow: auto;
+}
+#speciesPhoto {
+    float: right;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    /*padding-left: 10px;*/
+    text-align: right;
+}
+#speciesHeader {
+    clear: both;
+}
+.speciesInfo a {
+    color: inherit;
+}
+#icons {
+    position:absolute;
+    bottom: 2px;
+    /*height: 15px;*/
+    vertical-align: text-top;
+    color: white;
+    font-family:courier;
+    font-size: 12px;
+    font-weight: bold;
+}
+#icons #LSID_text a, #icons #JSON_text a {
+    padding: 0 4px 0px 4px;
+}
+#icons #LSID_text {
+    background-color: #FF8640;
+}
+#icons #JSON_text {
+    background-color: #6590D4;
+}
+#icons a {
+    color: white;
+}
+#LSID_text a:hover {
+    background-color: #FF5D00;
+    text-decoration: none;
+}
+#JSON_text a:hover {
+    background-color: #316AC5;
+    text-decoration: none;
+}
+a.lsidLink {
+    display: none;
+}
+div#fancy_div {
+    background-color: white;
+    color: #333;
+    /*font-size: 12px;*/
+}
+div#lsid {
+    white-space: nowrap;
+    padding: 5px;
+    border: 1px solid #DDD;
+}
+div#fancy_div input {
+    display: block;
+    margin-top: 10px;
+    font-size: 90%;
+    width: 480px;
+}
+table.noBorders td {
+    border: none;
+}
+p#sourceTitle {
+    font-weight: bold;
+    padding: 4px 2px 2px 4px;
+    margin-bottom: 0;
+    padding-left: 5px;
+    background-color: #DDD;
+}
+#harvestedProperties {
+    /*border-top: 1px solid gray;
+    border-bottom: 1px solid gray;*/
+    padding: 5px 0;
+}
+#harvestedProperties table.propertyTable {
+    margin: 0;
+}
+#harvestedProperties table.propertyTable tr:first-child td {
+    border-top: 2px solid #DDD;
+}
+td.propertyName {
+    white-space: nowrap;
+    max-width: 20%;
+    min-width: 10%;
+    color: #676767;
+}
+n tr.Taxonomic td:first-child {
+    /*border-left: 3px solid #F68D77;*/
+}
+div#harvestedInfo tr.Status {
+
+}
+div#harvestedInfo tr.Media {
+    /*background-color: #CBDAF0;*/
+}
+div#harvestedInfo tr.Names {
+
+}
+div#harvestedInfo tr.Geospatial {
+    /*background-color: #FCD9D1;*/
+}
+p > a.showHideLink {
+    margin: 0;
+}
+#searchBox {
+    width: 500px;
+    float: left;
+    margin-top:10px;
+    margin-bottom: 20px;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    text-align: center;
+}
+#listsBox {
+    width: 400px;
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+#searchBox input {
+    font-size: 100%;
+}
+#portalInfo {
+    font-size: 90%;
+    font-family: inherit;
+    color: inherit;
+    padding:15px 10px;
+}
+#portalInfo > div#mapLeft {
+    width: 350px;
+    float: left;
+}
+#mappanel {
+    float: right;
+    width: 550px;
+    height: 450px;
+}
+.olControlAttribution {
+    right: 50px !important;
+    left: 50px !important;
+    bottom: 0.5em;
+}
+table#cellCountsLegend {
+    margin: 0;
+/*    margin-top: 20px !important;*/
+    float: right;
+    width: 100%;
+}
+#cellCountsLegend td {
+    text-align: center;
+    border: none;
+    color: #000;
+    padding: 0 2px;
+}
+table.rdfProperties {
+    margin-bottom: 0;
+}
+table.rdfProperties tr:last-child td {
+    border-bottom: 1px solid white;
+}
+table.rdfProperties tr td:first-child {
+    color: #777777;
+}
+#toc {sortWidget
+    width: 32%;
+    /*float: right;*/
+}
+#toc ul, #portalInfo ul {
+    margin-left: 1.2em;
+    padding-left: 3px;
+}
+#toc ul {
+    list-style-type: circle;
+}
+ul.compact {
+    margin: 0 0 0 1.2em;
+    padding-left: 3px;
+    white-space: nowrap;
+    list-style-type: circle;
+}
+.crop{
+    float:left;
+    /*margin:.5em 10px .5em 0;*/
+    overflow:hidden; /* this is important */
+    position:relative; /* this is important too */
+    /*border:0px solid #ccc;*/
+    margin-top: 5px;
+    width:75px;
+    height:75px;
+}
+.crop img {
+    /*position:absolute;
+    top:0px;*/
+    margin-left:-20px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+}
+.cropBig {
+    float:left;
+    /*margin:.5em 10px .5em 0;*/
+    overflow:hidden; /* this is important */
+    position:relative; /* this is important too */
+    /*border:0px solid #ccc;
+    margin-top: 5px;*/
+    max-width:220px;
+    max-height:220px;
+}
+/* input values to crop the image: top, right, bottom, left */
+.cropBig img {
+    /*position:absolute;
+    top:0px;*/
+    margin-left:-30px;
+}
+
+img.galleryImage {
+    max-height: 400px;
+    max-width: 640px;
+}
+
+#occurrenceMetadata {
+    font-size: 11px;
+    color: #666;
+}
+
+/* footer */
+/*#footer {
+    clear: both;
+    border-top: 1px solid #999;
+    padding-top: 5px;
+    color: #4b4c4e;
+    font-size: 12px;
+}
+#footer #copy {
+    float: right;
+}
+#footer a {
+    color: #666;
+}
+#footer .tabs {
+    margin-left: 5px;
+}
+#footer .tabs a {
+    padding: 0px 30px 10px 0;
+    color: #666;
+    text-decoration: none;
+}
+#footer .tabs a:hover {
+    text-decoration: underline;
+}*/
+div.solrResults div.results span {
+    display: inline;
+}
+div.results span .resultsLabel {
+    color: #666;
+    font-weight: normal;
+}
+div.results span.occurrenceNames {
+    color: #111;
+}
+#facets {
+    margin-top:-1px;
+}
+#facets > h3 {
+    border-bottom: 1px solid #E8EACE;
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1.8em !important;
+}
+#facets  h3 {
+    padding: 0px 10px !important;
+}
+#subnavlist li {
+    text-transform: capitalize;
+}
+#facets #accordion {
+    display: block;
+}
+#subnavlist {
+    font-size: 90%;
+}
+div.results span.commonNameSummary {
+    display: inline;
+    color: #222;
+}
+p.occurrenceResultRow {
+    font-size: 90%;
+}
+p.occurrenceResultRow span {
+    color: #222;
+    padding-right: 4px;
+    border-right: 0px solid gray;
+}
+
+div#decoratorBody {
+    padding: 10px;
+    color: #444;
+}
+#decoratorBody > h2, #decoratorBody > h3 {
+    margin-bottom: 10px;
+}
+
+#debug {
+    display: none;
+    border: 1px solid #D75A20;
+}
+/** occurrence record... */
+div.occurrenceSection {
+    width:640px;
+}
+div#occurrenceMap {
+    height: 300px;
+    margin-top: 10px;
+}
+table.occurrenceTable {
+    width: 100%;
+}
+table.occurrenceTable td.label {
+    width: 25%;
+}
+a.occurrenceLink {
+    white-space: nowrap;
+}
+#searchHeader {
+    margin: 5px;
+    vertical-align: baseline;
+}
+#searchButtons h1 {
+/*    width: 780px;*/
+}
+#searchButtons button {
+/*    width: 120px;*/
+    padding: 2px 6px;
+    line-height: 1.8em;
+}
+#searchButtons  {
+    float: right;
+    padding-bottom: 5px;
+}
+#subnavlist > ul {
+    margin: 0 1em 0 2em;
+    padding-bottom: 0.5em;
+}
+
+/* Openlayers map */
+
+div#pointsMap {
+    display: none;
+    height: 480px;
+    width: 580px;
+}
+/* Styling for Google-style Nav links */
+
+#searchNavBar {
+/*    border:1px solid gray;*/
+    padding-bottom: 10px;
+}
+#pageJumpLink {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+#prevPage, #nextPage {
+    display: inline-block;
+    width: 80px;
+}
+#prevPage {
+    text-align: right;
+    padding-right: 3px;
+}
+#nextPage {
+    text-align: left;
+    padding-left: 3px;
+}
+#currentPage {
+    font-weight: normal;
+    padding: 1px 2px;
+    border: 1px solid gray;
+}
+/* Misc changes to CSS */
+div#body {
+    margin: 15px 0 10px 0;
+}
+table.propertyTable {
+    width: 100%;
+    /*border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD !important;*/
+    font-size: 90%;
+}
+table.propertyTable td:first-child  {
+    font-weight: bold;
+    text-align: right;
+}
+table.propertyTable2 td:first-child  {
+    font-weight: bold;
+    text-align: left;
+}
+table.propertyTable th {
+    /*background-color: #DDD;
+    border-right: 1px solid #FFF;
+    border-bottom: none;*/
+}
+table.propertyTable th {
+    border-bottom:4px solid #DDDDDD;
+    font-weight:bold;
+}
+table.propertyTable th, .propertyTable td {
+    padding: 5px;
+}
+
+.resultTable ul {
+    margin: 0;
+}
+.errorMessage {
+    color: #F26649 !important;
+}
+div#results {
+    margin-top: 20px;
+    width: 720px;
+}
+h4.divider {
+    border-top: 2px solid #DDD;
+    padding-top: 8px;
+    margin-top: 15px;
+}
+
+#exampleSeaches a {
+    font-style: italic;
+}
+
+table.datasets {
+    width: 750px;
+    margin-left: 15px;
+}
+
+table.datasets td:first-child {
+    width: 70%;
+}
+
+#photos {
+    text-align: center;
+}
+
+table.propertyTable tr.textProperty {
+    border-top: 3px solid #DDD;
+}
+
+table.propertyTable td.propertyNames {
+    color: inherit;
+    font-weight: bold;
+    text-align: right;
+}
+
+/* Your-Area page styles */
+#mapOuter{
+	padding-top:12px;
+}
+#yourMap {
+    width: 400px;
+    height: 420px;
+}
+#left-col {
+    width: 550px;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+#taxaBox div#rightList {
+    float: right;
+    width: 369px;
+    padding: 0;
+    margin: 0;
+}
+
+#rightList table {
+    width: 365px;
+    /*height: 240px;*/
+	border:0;
+	border-bottom:4px solid #d9d9d9;
+}
+#taxaBox #leftList {
+    width: 181px;
+}
+#taxaBox td, #taxaBox th {
+   padding:1px 5px;
+}
+#taxaBox table{
+    /*font-weight: bold;*/
+	border-top:1px solid #d9d9d9;
+}
+#taxaBox #leftList th {
+	border-bottom:2px solid #d9d9d9;
+}
+#taxaBox td.indent {
+    padding-left: 10px;
+}
+#taxaBox td.indent2 {
+    padding-left: 20px;
+}
+
+#rightList tbody  {
+    background-color: #f0f0f0;
+}
+#rightList tbody td {
+    height: auto;
+    padding: 1px 2px 1px 5px;
+}
+#taxaDiv ol, #taxaDiv ul {
+    margin: 0px 1em 0.5em 2.5em;
+    font-size: 11px;
+}
+#taxaDiv li {
+    margin: 2px 0px 2px 0px;
+}
+#taxaDiv li span {
+    font-size: 12px;
+}
+#taxa-level-0, #rightList table {
+    margin-bottom: 0!important;
+    width: 100%;
+}
+#taxa-level-0  tbody{
+	padding-bottom:3px!important;
+}
+
+#taxaBox #taxa-level-1 tbody td {
+    margin: 0;
+    padding: 0;
+}
+#rightList .speciesInfo {
+    display: none;
+}
+#rightList tr#info a {
+    text-decoration: none;
+}
+#rightList .rightCounts {
+    padding-right: 5px;
+    width:auto;
+}
+.activeRow {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+.activeRow2, tr#info {
+    background-color: #fff;
+    border-left: 1px solid #d9d9d9;
+}
+.hoverRow {
+    cursor: pointer;
+    background-color: #dd3102;
+	color:#fff;
+}
+.hoverCell {
+    cursor: pointer;
+    background-color: #dd3102;
+	color:#fff;
+}
+.hoverCell a:link, .hoverCell a:visited  {
+	color:#fff;
+}
+.hoverCell a:hover, .hoverCell a:active  {
+	color:#fff;
+	text-decoration:none;
+}
+.hoverRow a:link, .hoverRow a:visited  {
+	color:#fff;
+}
+.hoverRow a:hover, .hoverRow a:active  {
+	color:#fff;
+	text-decoration:none;
+}
+a.taxonBrowse, a.taxonBrowse:hover, a.taxonBrowse:focus,
+a.taxonBrowse2, a.taxonBrowse2:hover, a.taxonBrowse2:focus {
+    text-decoration: none;
+    color: #444;
+    color: inherit;
+}
+#download { float: right; }
+#taxaBox p {
+    margin-bottom: 5px;
+}
+#locationInput #address {
+    width: 350px;
+    padding: 2px;
+    margin-right: 5px;
+}
+#locationInput, #locationInfo {
+    padding: 0;
+    margin: 0;
+}
+#searchHints {
+	color:#555;
+	font-size:.9em;
+}
+input#locationSearch{
+	padding:1px 2px;
+}
+button#download {
+/*	padding:1px;*/
+}
+#locationInfo {
+	padding-top:.8em;
+	margin-top:.8em;
+	border-top:1px solid #d9d9d9;
+}
+#locationInfo p {
+	padding-bottom:.8em;
+}
+#markerAddress {
+	font-weight:bold;
+}
+
+/* Your Localtion scrollable table from: http://www.imaputz.com/cssStuff/bigFourVersion.html */
+div.tableContainer {
+/*	clear: both;*/
+	height: 265px;
+	width: 360px;
+    overflow: auto !important;
+    background-color: transparent;
+}
+/* Reset overflow value to hidden for all non-IE browsers. */
+html>body div.tableContainer {
+	overflow: hidden;
+	width: 360px;
+}
+
+/* define width of table. IE browsers only                 */
+div.tableContainer table {
+	float: left;
+	width: 344px;
+}
+/* define width of table. Add 16px to width for scrollbar.           */
+/* All other non-IE browsers.                                        */
+html>body div.tableContainer table {
+	width: 360px;
+}
+/* set table header to a fixed position. WinIE 6.x only                                       */
+/* In WinIE 6.x, any element with a position property set to relative and is a child of       */
+/* an element that has an overflow property set, the relative value translates into fixed.    */
+/* Ex: parent element DIV with a class of tableContainer has an overflow property set to auto */
+thead.fixedHeader tr {
+	position: relative;
+    width: 100%;
+    background-color: white;
+}
+
+/* set THEAD element to have block level attributes. All other non-IE browsers            */
+/* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
+html>body thead.fixedHeader tr {
+	display: block;
+}
+/* define the table content to be scrollable                                              */
+/* set TBODY element to have block level attributes. All other non-IE browsers            */
+/* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
+/* induced side effect is that child TDs no longer accept width: auto                     */
+html>body tbody.scrollContent {
+	display: block;
+	height: 262px;
+	overflow: auto;
+	width: 100%
+}
+tbody.scrollContent tr, tbody.scrollContent tr td {
+    height: auto;
+}
+/* define width of TH elements: 1st, 2nd, and 3rd respectively.          */
+/* Add 16px to last TH for scrollbar padding. All other non-IE browsers. */
+/* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
+html>body thead.fixedHeader th {
+	width: 20px;
+}
+
+html>body thead.fixedHeader th + th {
+	width: 320px;
+}
+
+html>body thead.fixedHeader th + th + th {
+	width: 30px;
+}
+
+/* define width of TD elements: 1st, 2nd, and 3rd respectively.          */
+/* All other non-IE browsers.                                            */
+/* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
+html>body tbody.scrollContent td {
+	width: 20px;
+}
+
+html>body tbody.scrollContent td + td {
+	width: 320px;
+}
+
+html>body tbody.scrollContent td + td + td {
+	width: 30px;
+}
+/* YUI modifications */
+div.yui-dt > table {
+    width: 100%;
+}
+div.yui-pg-container {
+    font-size: 12px;
+}
+.yui-pg-current {
+    font-size: 120%;
+}
+#yui-history-iframe {
+    position:absolute;
+    top:0; left:0;
+    width:1px; height:1px; /* avoid scrollbars */
+    visibility:hidden;
+}
+div#content div.yui-pg-container a {
+    text-decoration:none;
+}
+div#content div.yui-pg-container a.yui-pg-previous {
+    background:url(images/sprite.png) no-repeat 0 -550px;
+    color:#FFF !important;
+    width: 35px;
+    height: 13px;
+    margin-bottom:-5px;
+}
+div#content div.yui-pg-container a.yui-pg-next {
+    background:url(images/sprite.png) no-repeat 0 -600px;
+    color:#FFF !important;
+    width: 35px;
+    height: 13px;
+    margin-bottom:-5px;
+}
+div#content div.yui-pg-container a.yui-pg-previous span,
+div#content div.yui-pg-container a.yui-pg-next span {
+    display:none;
+    padding:1px 5px;
+    margin-left: -10px;
+    margin-top: 20px;
+    font-size: 11px;
+    /*width:130px;*/
+}
+div#content div.yui-pg-container a.yui-pg-previous:hover span,
+div#content div.yui-pg-container a.yui-pg-next:hover span {
+    display:inline;
+    position:absolute;
+    background:#ddd;
+    border:1px solid #cccccc;
+    color:#444;
+}
+div#content div.yui-pg-container span.yui-pg-previous span,
+div#content div.yui-pg-container span.yui-pg-next span {
+    display:none;
+}
+
+div#content div.yui-pg-container span.yui-pg-previous {
+    background: url(images/sprite.png) no-repeat 0 -1950px;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    color: #FFF !important;
+    width: 35px;
+    height: 13px;
+    margin-bottom: -5px;
+}
+div#content div.yui-pg-container span.yui-pg-next {
+    background: url(images/sprite.png) no-repeat 0 -2000px;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    color: #FFF !important;
+    width: 35px;
+    height: 13px;
+    margin-bottom: -5px;
+}
+div.datatable-summary {
+    width: 635px;
+    /*text-align: center;*/
+    margin-top: -6px;
+    margin-bottom: -14px;
+}
+td .yui-dt-liner {
+    width: 97%;
+    height: 20px;
+    line-height: 1.4em;
+    overflow: hidden;
+    position: relative
+}
+.yui-skin-sam div.yui-navset div.yui-content {
+    background: white;
+    padding: 10px;
+}
+
+/* overr-ride JQuery CSS */
+ul.ui-tabs-nav {
+    font-size:90%;
+    font-family:"Helvetica Neue",Arial,Helvetica,sans-serif;
+}
+
+.ui-menu .ui-menu-item a {
+    padding: 0.1em 0.4em;
+}
+
+.ui-tabs .ui-tabs-hide {
+   /* display: inherit;*/
+    position: absolute;
+    left: -10000px;
+}
+
+em, dfn {
+    font-style:normal;
+}
+
+.ui-widget {
+    font-family:inherit;
+    font-size:inherit;
+}
+
+
+/* Temporary styles add by Dave */
+#selectedGroup, #compareRegions { margin:0; }
+#selectedGroup li { margin-right: 10px; float: left; display: inline; list-style-type: none;}
+#compareRegions li { margin-left: 20px; float: right; list-style-type: none;}
+
+#taxonGroups { list-style: none; padding:0; margin:0;}
+li.taxonBreakdown { border: 1px solid gray; padding:10px; margin-bottom: 5px;}
+
+#comparisonToolHdr {margin-top:20px;}
+
+.taxonGroupActions { float: right; }
+.taxonList { margin-top:5px; }
+.taxonList li { border:0; padding:0; margin:0; }
+.taxonGroupTitle { margin-left:35px; }
+
+#fishBreakdown { background:url("../images/afdgroups/pisces.gif")  no-repeat; padding-left:10px; background-position: 5px 3px;}
+#birdsBreakdown { background:url("../images/afdgroups/aves.png") no-repeat; padding-left:10px; background-position: 5px 3px;}
+#frogsBreakdown { background:url("../images/afdgroups/amphibia.png") no-repeat; padding-left:10px; background-position: 5px 3px;}
+#reptilesBreakdown { background:url("../images/afdgroups/reptilia.png") no-repeat ; padding-left:10px; background-position: 5px 3px;}
+#mammalsBreakdown { background:url("../images/afdgroups/mammalia.png") no-repeat; padding-left:10px; background-position: 5px 3px;}
+
+#taxaDiffComparison { width:100%;  margin-top: 30px;}
+
+#comparisonTable { border: 1px solid gray; padding:10px; }
+.selectedCompareGroup { font-weight: bold; }
+
+.taxaDiffCount { margin:0 0 5px 0; }
+#taxaDiff { margin-top:5px; }
+
+.taxonGroupActions a { margin-left:25px; }
+
+.scientificName {font-style: italic; }
+
+.earliestReference { background-color: #FFFFCC; }
+.earliestReferenceLabel { color: grey; }
+
+.dataTable td, th { padding-right:15px; }
+
+/* "Logged in" message at top of page */
+#loginId {
+    position: absolute;
+    right: 0;
+    margin-right: 4px;
+    padding: 0 4px;
+    text-align:right;
+    color:white;
+    background-color:rgba(0, 0, 0, 0.4);
+    -moz-border-radius: 0 0 4px 4px; /* FF1+ */
+    -webkit-border-radius: 0 0 4px 4px; /* Saf3+, Chrome */
+    border-radius: 0 0 4px 4px; /* Opera 10.5, IE 9 */
+}
+/* Contribute Sighting Page */
+#mapCanvas {
+    width: 315px;
+    height: 315px;
+}
+#sightingAddress {
+    margin: 5px 0;
+}
+#sightingInfo {
+    background-color: #FAFBF5;
+    border: 1px solid #E8EACE;
+    -moz-border-radius: 8px; /* FF1+ */
+    -webkit-border-radius: 8px; /* Saf3+, Chrome */
+    border-radius: 8px; /* Opera 10.5, IE 9 */
+}
+#sightingInfo label {
+    width: 120px;
+    display: inline-block;
+    vertical-align: top;
+}
+#sightingNotes {
+    width: 200px;
+}
+#sightingInfo span#notes {
+    display: inline-block;
+    width: 180px;
+    vertical-align: top;
+    float: right;
+}
+#locationBlock {
+    overflow:hidden;
+/*    width: 400px;*/
+}
+div#location {
+/*    height: 100%;*/
+    width: 100px;
+    float: right;
+    background-color: #E8EACE;
+    padding: 10px 5px;
+    vertical-align: middle;
+}
+#sightingInfo p {
+    padding: 5px 8px;
+    vertical-align: top;
+}
+#confirmValues {
+    padding: 10px;
+    margin: 8px 0;
+    background-color: #E8EACE;
+    font-weight: bold;
+}
+div#mapConfirm {
+    margin: 45px 0 10px 10px;
+}
+
+/* located in demo.css and creates a little calendar icon
+ * instead of a text link for "Choose date"
+ */
+a.dp-choose-date {
+/*	float: left;*/
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 1px 2px 0 2px;
+	display: inline-block;
+	text-indent: -2000px;
+	overflow: hidden;
+	background: url(images/calendar.png) no-repeat;
+}
+a.dp-choose-date.dp-disabled {
+	background-position: 0 -20px;
+	cursor: default;
+}
+/* makes the input field shorter once the date picker code
+ * has run (to allow space for the calendar icon
+ */
+input.dp-applied {
+/*	width: 140px;
+	float: left;*/
+}
+
+div.time-picker {
+    margin-top: 1.4em;
+}
+
+/* OPenLayers ZoomPanel positioning */
+.olZoomPanel {
+    top: 31px !important;
+}
+
+.loadingVector {
+    background: url("images/wait.gif") no-repeat 50% 50% white;
+    -moz-border-radius: 8px; /* FF1+ */
+    -webkit-border-radius: 8px; /* Saf3+, Chrome */
+    border-radius: 8px; /* Opera 10.5, IE 9 */
+    border: 2px solid #444;
+    width: 45px;
+    height: 45px;
+    top: 45%;
+    bottom: 45%;
+    left: 45%;
+    right: 45%;
+}
+
+li.showHide a {
+    font-size: 90%;
+    text-decoration: none;
+}
+
+#header #breadcrumb {
+    width: 750px;
+}
+#downloadForm label {
+    width: 75px;
+    display: inline-block;
+}
+
+.originalValue { padding-left:10px; font-style: italic; font-size: 0.9em; }
+
+#border #content{
+    position: static
+}
