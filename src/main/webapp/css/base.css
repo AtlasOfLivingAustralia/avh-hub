@@ -6,25 +6,25 @@
         Purpose of the stylesheet follows.
 */
 
-#content p, #content div, #headingBar, #contentBox div {
+#content2 p, #content2 div, #headingBar, #contentBox div {
     font-size: 13px;
     line-height: 1.5em;
 }
-#content {
+#content2 {
     width: 720px;
 }
 .sidebar {
     width: 210px;
 }
-a:link, a:visited, #content a:link, #content a:visited {
+a:link, a:visited, #content2 a:link, #content2 a:visited {
     font-size: 13px;
     text-decoration: none;
 /*    color: #005A8E;*/
 }
-a:hover, #content a:hover {
+a:hover, #content2 a:hover {
     text-decoration: underline;
 }
-h1, h2, h3, h4, h5, h6, #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
+h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, #content2 h5, #content2 h6 {
     padding: 0 0 8px;
     color: #444;
     font-family: 'Rockwell', arial, helvetica, sans-serif;
@@ -171,6 +171,6 @@ div.fullWidthHeader {
 span#taxonName {
     color: black;
 }
-#content div.taxaDescription p {
+#content2 div.taxaDescription p {
     padding-bottom: 10px;
 }

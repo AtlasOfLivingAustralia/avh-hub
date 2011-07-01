@@ -11,7 +11,7 @@ include file="/common/taglibs.jsp" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <title><decorator:title default="Atlas of Living Australia" /></title>
-        <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/ala/biocache.css" />
+        <%--<link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/ala/biocache.css" />--%>
          <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala/style.css" type="text/css" media="screen" />
         <link rel="icon" type="image/x-icon" href="${initParam.centralServer}/wp-content/themes/ala/images/favicon.ico" />
@@ -25,7 +25,10 @@ include file="/common/taglibs.jsp" %>
        
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
         <link rel="stylesheet" type="text/css" media="screen,projection" href="${pageContext.request.contextPath}/static/css/ala/widget.css" />
-<c:set var="dev" value="${true}"/><%-- should be false in prod --%>
+        <c:set var="dev" value="${true}"/><%-- should be false in prod --%>
+        <script type="text/javascript">
+            contextPath = "${pageContext.request.contextPath}";
+        </script>
 <%--<c:choose>
     <c:when test="${dev}">
         <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/ala/biocache.css" />

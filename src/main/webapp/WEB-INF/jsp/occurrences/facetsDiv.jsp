@@ -5,7 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ include file="/common/taglibs.jsp" %>
-<div id="SidebarBox">
+<div id="SidebarBox" class="facets">
     <div class="sidebar">
         <h3>Refine Results</h3>
     </div>

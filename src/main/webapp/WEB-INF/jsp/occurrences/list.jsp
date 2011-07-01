@@ -14,6 +14,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
         <title>Occurrence Search Results | OZCAM</title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
@@ -53,12 +54,12 @@
             </div>
             
         </div>
-        <div style="clear: both"/>
+        <div style="clear: both;"></div>
         <jsp:include page="../advancedSearchDiv.jsp"/>
         <c:if test="${searchResults.totalRecords > 0}">
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
-        <div id="content">
+        <div id="content2">
             <c:if test="${searchResults.totalRecords == 0}">
                 <p>No records found for <b>${queryDisplay}</b></p>
             </c:if>
@@ -116,7 +117,7 @@
                         </div><!--drop downs-->
                         <div id="results">
                             <c:forEach var="occurrence" items="${searchResults.occurrences}">
-                                <p class="rowA">Record: <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="font-size: 100%; color: #005A8E;">
+                                <p class="rowA">Record: <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink">
                                     <c:choose>
                                         <c:when test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
                                             ${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}

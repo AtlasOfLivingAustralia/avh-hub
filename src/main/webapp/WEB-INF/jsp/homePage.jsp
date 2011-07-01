@@ -10,6 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
         <title>Occurrence Search | OZCAM</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
@@ -27,7 +28,7 @@
     </head>
     <body>
         <div id="headingBar">
-            <h1>Search for records in OZCAM</h1>
+            <h1 style="width:100%;">Search for records in <ala:propertyLoader bundle="hubs" property="site.displayName"/></h1>
             <div id="solrSearchForm">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="homepageSearchForm">
                     <input name="q" value="<c:out value='${param.q}'/>" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;

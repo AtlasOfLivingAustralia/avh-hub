@@ -249,19 +249,19 @@ h2 {
 	background-position: 13px;
 	margin-top: 20px;
 }
-#content {
+#content2 {
 	float: left;
 	margin-left: 40px;
 	width: 640px;
 }
-#content ul {
+#content2 ul {
 	list-style-type: none;
 	list-style-position: inside;
 	list-style-image: url(images/bg-list-item.png);
 	margin-top: 10px;
 	line-height: 24px;
 	}
-#content h1 {
+#content2 h1 {
 	color: #1775BA;
 	font-size: 40px;
 	/*text-shadow: 1px 1px 1px #bbbaba;*/
@@ -276,7 +276,7 @@ h2 {
 	padding-left: 0px;
 	margin-top: 0px;
 }
-#content h4 {
+#content2 h4 {
 	color: #3C88C3;
 	font-size: 20px;
 	font-weight: lighter;
@@ -287,14 +287,14 @@ h2 {
 	margin-bottom: 5px;
 	margin-left: 0px;
 }
-#content p {
+#content2 p {
 	padding-right: 20px;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 4px;
 	margin-left: 0px;
 }
-#content a {
+#content2 a {
 	font-size: 12px;
 }
 /* News*/

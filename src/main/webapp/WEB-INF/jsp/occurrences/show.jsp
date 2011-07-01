@@ -26,6 +26,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
         <title>OzCam Hub - Occurrence Record ${recordId}</title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
@@ -308,7 +309,7 @@
                     </div>
                 </c:if>
             </div><!-- end div#SidebarBox -->
-            <div id="content">
+            <div id="content2">
                 <div id="occurrenceDataset">
                     <h3>Dataset</h3>
                     <table class="occurrenceTable" id="datasetTable">
@@ -959,7 +960,7 @@
             </div>
         </c:if>
         <c:if test="${empty record.raw}">
-            <div id="content">
+            <div id="content2">
                 <h1>Record Not Found</h1>
                 <p>The requested record ID "${uuid}" was not found</p>
             </div>

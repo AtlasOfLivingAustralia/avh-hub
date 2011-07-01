@@ -16,9 +16,13 @@
         <pattern>/occurrences/fragment/*</pattern>
         <pattern>/occurrences/annotate/*</pattern>
     </decorator>
+
+    <decorator name="ala" page="/WEB-INF/decorators/ala-skin.jsp" />
+    <decorator name="ozcam" page="/WEB-INF/decorators/ozcam-skin.jsp" />
     
     <decorator name="main" page="ala-skin.jsp">
         <pattern>/*</pattern>
     </decorator>
+
 
 </decorators>

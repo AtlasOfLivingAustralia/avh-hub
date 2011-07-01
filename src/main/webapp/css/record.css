@@ -174,7 +174,7 @@ a.annotationIcon {
     opacity: 0.5;
 }
 */
-#content {
+#content2 {
     width: 640px;
 }
 .sidebar {
@@ -208,7 +208,7 @@ table.occurrenceTable {
 td.annoText {
     width: 24px;
 }
-#contentBox #jsonLink {
+#headingBar #jsonLink {
     float:right;
     width: 200px;
     font-size: 11px;
@@ -225,7 +225,7 @@ h2#headingSciName {
 h1 span#recordId {
     color: #222;
 }
-#content h3 {
+#content2 h3 {
     margin-top: 4px;
 }
 #institutionLogo {

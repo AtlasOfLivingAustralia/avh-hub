@@ -49,9 +49,10 @@ public class HomePageController {
     protected GazetteerCache gazetteerCache;
     @Inject
     protected CollectoryUidCache collectoryUidCache;
+
     /** View name for home page */
     protected final String HOME_PAGE = "homePage";
-    protected final String OZCAM_PAGE = "ozcamHome";
+    protected String homePage = ""; // injected via hubs.properties & can be different to HOME_PAGE
 
     /**
      * Site root - dummy Ozcam front page
@@ -60,7 +61,8 @@ public class HomePageController {
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String ozcamPage() {
-        return "redirect:/index";
+        //return "redirect:/index";
+        return homePage;
     }
 
     /**
@@ -70,7 +72,7 @@ public class HomePageController {
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String indexPage() {
-        return OZCAM_PAGE;
+        return homePage;
     }
 
     /**
@@ -119,7 +121,7 @@ public class HomePageController {
     /**
      * Convert Scala List of term's to a Java List<String>
      *
-     * @param groups
+     * @param terms
      * @return
      */
     public static List<String> extractTermsList(scala.collection.immutable.Set<Term> terms) {
@@ -135,4 +137,12 @@ public class HomePageController {
         return output;
     }
 
+    public String getHomePage() {
+        return homePage;
+    }
+
+    public void setHomePage(String homePage) {
+        this.homePage = homePage;
+    }
+    
 }
