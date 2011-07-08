@@ -165,12 +165,12 @@ li.currentPage {
     color: #DD3102;
 }
 #searchNavBar li a {
-    color:#005A8E;
+    /*color:#005A8E;*/
     text-decoration:none;
     font-size: 14px;
 }
 #searchNavBar li a:hover  {
-    color:#6DB71D;
+    /*color:#6DB71D;*/
     text-decoration:none;
 }
 div.recordHeader {
@@ -231,7 +231,7 @@ li.showHide {
     margin-left: 0px;
 }
 li.showHide a:link, li.showHide a:visited  {
-    color: #005A8E;
+    /*color: #005A8E;*/
     font-size: 12px;
     text-decoration: none;
 }

@@ -34,16 +34,16 @@
         <param-value>http://localhost:8080</param-value>
     </context-param>
 
-    <!-- for local development
+    <!-- for local development -->
     <context-param>
         <param-name>contextPath</param-name>
-        <param-value>/biocache-webapp</param-value>
+        <param-value>/hubs-webapp</param-value>
     </context-param>
-    -->
+    
 
     <context-param>
         <param-name>uriExclusionFilterPattern</param-name>
-        <param-value>/occurrences/[0-9a-z\-]*\.json,/hubs-webapp/occurrences/[0-9a-z\-]*\.json,/hubs-webapp/occurrences/MySpeciesREQUEST=.*,/occurrences/MySpeciesREQUEST=.*</param-value>
+        <param-value>/occurrences/[0-9a-z\-]*\.json,/occurrences/[0-9a-z\-]*\.json,/occurrences/MySpeciesREQUEST=.*,/occurrences/MySpeciesREQUEST=.*</param-value>
     </context-param>
 
     <context-param>

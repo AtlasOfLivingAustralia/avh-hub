@@ -768,10 +768,13 @@ table.propertyTable td.propertyNames {
 #taxaBox #leftList th {
 	border-bottom:2px solid #d9d9d9;
 }
-#taxaBox td.indent {
+#taxaBox td.indent1 {
     padding-left: 10px;
 }
 #taxaBox td.indent2 {
+    padding-left: 15px;
+}
+#taxaBox td.indent3 {
     padding-left: 20px;
 }
 
