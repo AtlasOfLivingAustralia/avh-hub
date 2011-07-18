@@ -264,6 +264,23 @@ var Maps = (function() {
                 opts += '<option value="'+key+'">'+value[1]+'</option>';
             });
             $('#envLyrList').html(opts);
+            
+            // if spatial FT search (e.g. via explore your area) then zoom in
+            var zoomForRadius = {
+                1: 14,
+                5: 12,
+                10: 11
+            };
+            var lat = $.urlParam('lat');
+            var lon = $.urlParam('lon');
+            var rad = $.urlParam('radius');
+            
+            if (lat && lon && rad) {
+                var latLng = new google.maps.LatLng(lat, lon);
+                var zoom = zoomForRadius[rad];
+                map.setCenter(latLng);
+                map.setZoom(zoom);
+            }
 
         },
 
@@ -588,4 +605,17 @@ function isInteger(value) {
     } else {
         return false;
     }
+}
+
+/**
+ * utility to get URL params
+ * E.g. $.urlParam('foo')
+ */
+$.urlParam = function(name){
+    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (!results)
+    { 
+        return 0; 
+    }
+    return results[1] || 0;
 }
