@@ -763,7 +763,7 @@ table.propertyTable td.propertyNames {
 }
 #taxaBox table{
     /*font-weight: bold;*/
-	border-top:1px solid #d9d9d9;
+	border-top:2px solid #d9d9d9;
 }
 #taxaBox #leftList th {
 	border-bottom:2px solid #d9d9d9;
@@ -1260,4 +1260,14 @@ li.showHide a {
 
 #border #content{
     position: static
+}
+
+#locationInfo table#locationOptions {
+    margin-bottom: 5px;
+    border-bottom: none;
+    width: 100%;
+}
+
+#locationInfo table#locationOptions td {
+    padding: 0 10px 0 0;
 }

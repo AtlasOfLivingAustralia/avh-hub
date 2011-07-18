@@ -28,9 +28,11 @@ import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
 import au.org.ala.biocache.SpeciesGroups;
 import au.org.ala.biocache.TypeStatus;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
@@ -39,6 +41,7 @@ import org.ala.hubs.service.BiocacheService;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -122,6 +125,102 @@ public class OccurrenceController {
 
         return ANNOTATE_EDITOR;
     }
+    
+    /**
+     * Spatial search for either a taxon name or full text text search
+     *
+     * @param query
+     * @param filterQuery
+     * @param startIndex
+     * @param pageSize
+     * @param sortField
+     * @param sortDirection
+     * @param radius
+     * @param latitude
+     * @param longitude
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/searchByArea*", method = RequestMethod.GET)
+	public String occurrenceSearchByArea(
+			SpatialSearchRequestParams requestParams,
+            BindingResult result,
+            HttpServletRequest request,
+			Model model) throws Exception {
+        
+        if (requestParams.getQ() == null || requestParams.getQ().isEmpty()) {
+			return RECORD_LIST;
+		}
+
+		// SearchQuery searchQuery = new SearchQuery(query, "spatial", filterQuery);
+        //        searchUtils.updateQueryDetails(searchQuery);
+		//searchUtils.updateTaxonConceptSearchString(searchQuery);
+
+		if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+        
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        
+        String query = requestParams.getQ();
+        logger.info("searchByArea - requestParams = " + requestParams);
+
+        if (requestParams.getLat() == null && requestParams.getLon() == null && requestParams.getRadius() == null && query.contains("|")) {
+            // check for lat/long/rad encoded in q param, delimited by |
+            // order is query, latitude, longitude, radius
+            String[] queryParts = StringUtils.split(query, "|", 4);
+            query = queryParts[0];
+            logger.info("(spatial) query: "+query);
+
+            if (query.contains("%%")) {
+                // mulitple parts (%% separated) need to be OR'ed (yes a hack for now)
+                String prefix = StringUtils.substringBefore(query, ":");
+                String suffix = StringUtils.substringAfter(query, ":");
+                String[] chunks = StringUtils.split(suffix, "%%");
+                ArrayList<String> formatted = new ArrayList<String>();
+
+                for (String s : chunks) {
+                    formatted.add(prefix+":"+s);
+                }
+
+                query = StringUtils.join(formatted, " OR ");
+                logger.info("new query: "+query);
+            }
+
+            requestParams.setLat(Float.parseFloat(queryParts[1]));
+            requestParams.setLon(Float.parseFloat(queryParts[2]));
+            requestParams.setRadius(Float.parseFloat(queryParts[3]));
+        }
+
+		//SearchResultDTO searchResult = new SearchResultDTO();
+//		String queryJsEscaped = StringEscapeUtils.escapeJavaScript(query);
+        StringBuilder displayQuery = new StringBuilder(StringUtils.substringAfter(query, ":").replace("*", "(all taxa)"));
+        displayQuery.append(" - within "+requestParams.getRadius()+" km of point ("+requestParams.getLat()+", "+requestParams.getLon()+")");
+		requestParams.setDisplayString(displayQuery.toString());
+//        model.addAttribute("entityQuery", displayQuery.toString());
+//		model.addAttribute("query", query);
+//		model.addAttribute("queryJsEscaped", queryJsEscaped);
+//		model.addAttribute("facetQuery", requestParams.getFq());
+//        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("latitude", requestParams.getLat());
+        model.addAttribute("longitude", requestParams.getLon());
+        model.addAttribute("radius", requestParams.getRadius());
+
+        //searchResult = searchDAO.findByFulltextSpatialQuery(query, searchQuery.getFilterQuery(), latitude, longitude, radius, startIndex, pageSize, sortField, sortDirection);
+        SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
+        logger.debug("searchResult: " + searchResult.getTotalRecords());
+        model.addAttribute("searchRequestParams", requestParams);
+        model.addAttribute("searchResults", searchResult);
+        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+        addCommonDataToModel(model);
+		//model.addAttribute("lastPage", calculateLastPage(totalRecords, requestParams.getPageSize()));
+
+		return RECORD_LIST;
+	}
 
     /**
      * Performs a search for occurrence records via Biocache web services

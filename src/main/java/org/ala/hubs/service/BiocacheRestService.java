@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
+import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -264,6 +265,30 @@ public class BiocacheRestService implements BiocacheService {
 
     public void setQueryContext(String queryContext) {
         this.queryContext = queryContext;
+    }
+
+    /**
+     * @see org.ala.hubs.service.BiocacheService#findBySpatialFulltextQuery(org.ala.biocache.dto.SpatialSearchRequestParams) 
+     * 
+     * @param requestParams
+     * @return 
+     */
+    @Override
+    public SearchResultDTO findBySpatialFulltextQuery(SpatialSearchRequestParams requestParams) {
+        Assert.notNull(requestParams.getQ(), "query must not be null");
+        addQueryContext(requestParams);
+        SearchResultDTO searchResults = new SearchResultDTO();
+ 
+        try {
+            final String jsonUri = biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.toString();            
+            logger.debug("Requesting: " + jsonUri);
+            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+            searchResults.setStatus("Error: " + ex.getMessage());
+        }
+
+        return searchResults;
     }
     
 }

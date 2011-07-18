@@ -85,7 +85,7 @@ $(document).ready(function() {
             map.setZoom((zoom)?zoom:12);
             updateMarkerPosition(marker.getPosition()); // so bookmarks is updated
             //loadRecordsLayer();
-            doSpatialSearch();
+            loadGroups();
         }
     );
 
@@ -151,9 +151,10 @@ $(document).ready(function() {
     }
 
     // catch the link for "View all records"
-    $('#viewAllRecords').click(function(e) {
+    $('#viewAllRecords').live("click", function(e) {
         e.preventDefault();
-        var params = "q=taxon_name:*|"+$('#latitude').val()+"|"+$('#longitude').val()+"|"+$('#radius').val();
+        //var params = "q=taxon_name:*|"+$('#latitude').val()+"|"+$('#longitude').val()+"|"+$('#radius').val();
+        var params = "q=*:*&lat="+$('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val();
         document.location.href = contextPath +'/occurrences/searchByArea?' + params;
     });
 
@@ -201,7 +202,7 @@ $(document).ready(function() {
 // pointer fn
 function initialize() {
     loadMap();
-    doSpatialSearch();
+    loadGroups();
 }
 /**
  * Google map API v3
@@ -272,7 +273,8 @@ function loadMap() {
         updateMarkerAddress('Drag ended');
         updateMarkerPosition(marker.getPosition());
         geocodePosition(marker.getPosition());
-        LoadTaxaGroupCounts();
+        //LoadTaxaGroupCounts();
+        loadGroups();
         map.panTo(marker.getPosition());
     });
     
@@ -491,7 +493,7 @@ function geocodeAddress(reverseGeocode) {
                 // reload map pin, etc
                 initialize();
                 loadRecordsLayer();
-                LoadTaxaGroupCounts();
+                //LoadTaxaGroupCounts();
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
             }
@@ -675,31 +677,10 @@ function processSpeciesJsonData(data, appendResults) {
     );
 }
 
-/**
- * For each taxa group get species counts via AJAX call
- */
-function LoadTaxaGroupCounts() {
-    $('a.taxonBrowse').each(function(index) {
-        var countsUrl = biocacheServiceUrl +"/explore/taxaGroupCount?callback=?";
-        var element = $(this); // for use inside ajax callback
-        var params = {
-            "group": $(this).attr('title'),
-            "latitude": $('#latitude').val(),
-            "longitude": $('#longitude').val(),
-            "radius": $('#radius').val()
-        }
-        $.getJSON(countsUrl, params, function(count) {
-            $(element).parent('td').siblings(':last-child').html(count);
-        });
-    });
-    // reload the all species right list
-    $('#taxa-level-0 tbody tr:first').click();
-}
-
 /*
  * Perform normal spatial searcj for spceies groups and species counts
  */
-function doSpatialSearch() {
+function loadGroups() {
     var url = biocacheServiceUrl +"/explore/groups.json?callback=?";
     var params = {
         //"group": $(this).attr('title'),

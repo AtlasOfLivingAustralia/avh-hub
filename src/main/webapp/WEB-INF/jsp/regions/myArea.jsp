@@ -76,9 +76,7 @@
                                 <div id="locationInfo">
                                     <c:if test="${true || not empty location}">
                                         <p>
-                                            Showing records for: <span id="markerAddress">${location}</span>
-                                            &nbsp;&nbsp;&nbsp;
-                                            <a href="#" id="addressHelp" style="text-decoration: none"><span class="help-container">&nbsp;</span></a>
+                                            Showing records for: <span id="markerAddress">${location}</span>&nbsp;&nbsp<a href="#" id="addressHelp" style="text-decoration: none"><span class="help-container">&nbsp;</span></a>
                                         </p>
                                     </c:if>
                                     <table id="locationOptions">
