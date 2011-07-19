@@ -22,6 +22,9 @@ function reloadWithParam(paramName, paramValue) {
     var fqList = $.getQueryParam('fq'); //$.query.get('fq');
     var sort = $.getQueryParam('sort');
     var dir = $.getQueryParam('dir');
+    var lat = $.getQueryParam('lat');
+    var lon = $.getQueryParam('lon');
+    var rad = $.getQueryParam('radius');
     // add query param
     if (q != null) {
         paramList.push("q=" + q);
@@ -38,6 +41,12 @@ function reloadWithParam(paramName, paramValue) {
     if (paramName != null && paramValue != null) {
         paramList.push(paramName + "=" +paramValue);
     }
+    
+    if (lat && lon && rad) {
+        paramList.push("lat=" + lat);
+        paramList.push("lon=" + lon);
+        paramList.push("radius=" + rad);
+    }
 
     //alert("params = "+paramList.join("&"));
     //alert("url = "+window.location.pathname);
@@ -51,9 +60,19 @@ function reloadWithParam(paramName, paramValue) {
 function removeFacet(facet) {
     var q = $.getQueryParam('q'); //$.query.get('q')[0];
     var fqList = $.getQueryParam('fq'); //$.query.get('fq');
+    var lat = $.getQueryParam('lat');
+    var lon = $.getQueryParam('lon');
+    var rad = $.getQueryParam('radius');
+    
     var paramList = [];
     if (q != null) {
         paramList.push("q=" + q);
+    }
+    
+    if (lat && lon && rad) {
+        paramList.push("lat=" + lat);
+        paramList.push("lon=" + lon);
+        paramList.push("radius=" + rad);
     }
 
     //alert("this.facet = "+facet+"; fqList = "+fqList.join('|'));
@@ -199,4 +218,32 @@ $(document).ready(function() {
         hideText : '- show less',
         className: 'showHide'
     });
+    
+    // Substitute LSID strings for tacon names in facet values for species
+    var guidList = [];
+    $("li.species_guid").each(function(i, el) {
+        guidList[i] = $(el).attr("id");
+    });
+    
+    if (guidList.length > 0) {
+        // AJAX call to get names for LSIDs
+        var jsonUrl = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidList.join("&guid=") + "&callback=?";
+        $.getJSON(jsonUrl, function(data) {
+            // set the name in place of LSID
+            $("li.species_guid").each(function(i, el) {
+                $(el).find("a").text(data[i]);
+            });
+        });
+    }
+    
+    // do the same for the selected facet
+    var selectedLsid = $("b.species_guid").attr("id");
+    if (selectedLsid) {
+        var jsonUrl = bieWebappUrl + "/species/namesFromGuids.json?guid=" + selectedLsid + "&callback=?";
+        $.getJSON(jsonUrl, function(data) {
+            // set the name in place of LSID
+            $("b.species_guid").text(data[0]);
+        });
+    }
+    
 }); // end JQuery document ready

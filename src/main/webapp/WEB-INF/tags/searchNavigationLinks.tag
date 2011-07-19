@@ -14,7 +14,14 @@
     <c:if test="${empty maxPageLinks}"><c:set var="maxPageLinks" value="10"/></c:if>
     <fmt:formatNumber var="pageNumber" value="${(startIndex / pageSize) + 1}" pattern="0" />
     <c:set var="hash" value=""/>
-    <c:set var="coreParams">?q=${param.q}<c:if test="${not empty paramValues.fq}">&fq=${fn:join(paramValues.fq, "&fq=")}</c:if>&sort=${param.sort}&dir=${param.dir}&pageSize=${pageSize}</c:set>
+    <c:set var="coreParams">?q=${param.q}<c:if 
+            test="${not empty paramValues.fq}">&fq=${fn:join(paramValues.fq, "&fq=")}</c:if><c:if 
+            test="${not empty param.sort}">&sort=${param.sort}</c:if><c:if 
+            test="${not empty param.dir}">&dir=${param.dir}</c:if><c:if 
+            test="${not empty param.pageSize}">&pageSize=${pageSize}</c:if><c:if 
+            test="${not empty param.lat}">&lat=${param.lat}</c:if><c:if 
+            test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if 
+            test="${not empty param.radius}">&radius=${param.radius}</c:if></c:set>
     <!-- coreParams = ${coreParams} || lastPage = ${lastPage} || startIndex = ${startIndex} || pageNumber = ${pageNumber} -->
     <c:set var="startPageLink">
         <c:choose>

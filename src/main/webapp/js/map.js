@@ -279,7 +279,45 @@ var Maps = (function() {
                 var latLng = new google.maps.LatLng(lat, lon);
                 var zoom = zoomForRadius[rad];
                 map.setCenter(latLng);
-                map.setZoom(zoom);
+                if (zoom) {
+                    map.setZoom(zoom);
+                } else {
+                    map.setZoom(11);
+                }
+                
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: 'Centre of spatial search',
+                    map: map,
+                    draggable: true
+                });
+                
+                var infowindow1 = new google.maps.InfoWindow({
+                    content: "Centre of spatial search <br/> with radius of " + rad + " km"
+                });
+                
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow1.open(map, marker);
+                });
+                
+                // Add a Circle overlay to the map.
+                var circle = new google.maps.Circle({
+                    map: map,
+                    radius: rad * 1000,
+                    strokeWeight: 1,
+                    strokeColor: 'white',
+                    strokeOpacity: 0.5,
+                    fillColor: '#222', // '#2C48A6'
+                    fillOpacity: 0.2,
+                    zIndex: -10
+                });
+                
+                // bind circle to marker
+                circle.bindTo('center', marker, 'position');
+                // add event listener so dots can be clicked on
+                google.maps.event.addListener(circle, 'click', function(event) {
+                    loadOccurrencePopup(event.latLng);
+                });
             }
 
         },
