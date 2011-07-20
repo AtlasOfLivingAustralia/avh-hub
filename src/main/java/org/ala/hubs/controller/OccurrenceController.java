@@ -397,7 +397,7 @@ public class OccurrenceController {
             // Check is user has role: ROLE_COLLECTION_EDITOR or ROLE_COLLECTION_ADMIN
             // and then call Collections WS to see if they are a member of the current collection uid
 
-            if (userId != null && (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_COLLECTION_ADMIN") || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
+            if (userId != null && collectionUid != null && (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_COLLECTION_ADMIN") || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
                 logger.info("User has appropriate ROLE...");
                 try {
                     final String jsonUri = collectionContactsUrl + "/" + collectionUid + "/contacts.json";
@@ -419,15 +419,16 @@ public class OccurrenceController {
                 } catch (Exception ex) {
                     logger.error("RestTemplate error: " + ex.getMessage(), ex);
                 }
-            }            
+            }
+            
+            Collection<AssertionDTO> grouped = null;
+            if (userId != null && record.getUserAssertions() != null) {
+                grouped = AssertionUtils.groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
+            }
+            model.addAttribute("groupedAssertions", grouped);
+            model.addAttribute("record", record);
 		}
-
-        Collection<AssertionDTO> grouped = null;
-        if (userId != null) {
-            grouped = AssertionUtils.groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
-        }
-        model.addAttribute("groupedAssertions", grouped);
-        model.addAttribute("record", record);
+        
 		return RECORD_SHOW;
 	}
 
