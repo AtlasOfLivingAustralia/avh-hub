@@ -128,7 +128,6 @@ $(document).ready(function() {
 
     if (url) {
         var hashParts = url.split("%7C"); // note escaped version of |
-        //console.log("url hash = ", url, coords);
         if (hashParts.length == 3) {
             bookmarkedSearch(hashParts[0], hashParts[1], hashParts[2], null);
         } else if (hashParts.length == 4) {
@@ -137,8 +136,9 @@ $(document).ready(function() {
             attemptGeolocation();
         }
         
-        function bookmarkedSearch(lat, lng, zoom, group) {
-            radius = radiusForZoom[zoom];  // set global var
+        function bookmarkedSearch(lat, lng, zoom1, group) {
+            radius = radiusForZoom[zoom1];  // set global var
+            zoom = parseInt(zoom1);
             $('select#radius').val(radius); // update drop-down widget
             if (group) speciesGroup = group;
             updateMarkerPosition(new google.maps.LatLng(lat, lng));
@@ -224,7 +224,7 @@ function loadMap() {
     });
     marker = new google.maps.Marker({
         position: latLng,
-        title: 'Sighting Location',
+        title: 'Marker Location',
         map: map,
         draggable: true
     });
@@ -234,10 +234,10 @@ function loadMap() {
     });
     
     google.maps.event.addListener(marker, 'click', function(event) {
-            if (lastInfoWindow) lastInfoWindow.close();
-            markerInfowindow.setPosition(event.latLng);
-            markerInfowindow.open(map, marker);
-            lastInfoWindow = markerInfowindow;
+        if (lastInfoWindow) lastInfoWindow.close();
+        markerInfowindow.setPosition(event.latLng);
+        markerInfowindow.open(map, marker);
+        lastInfoWindow = markerInfowindow;
     });
 
     // Add a Circle overlay to the map.
@@ -413,8 +413,8 @@ function loadNewGeoJsonData(data) {
         }
 
         var content = '<div class="infoWindow">Number of records: '+n.properties.count+'<br/>'+
-                '<a href="'+ contextPath +'/occurrences/searchByArea?q='+solrQuery+'|'+
-                n.geometry.coordinates[1]+'|'+n.geometry.coordinates[0]+'|0.05">View list of records</a></div>';
+                '<a href="'+ contextPath +'/occurrences/searchByArea?q='+solrQuery+'&lat='+
+                n.geometry.coordinates[1]+'&lon='+n.geometry.coordinates[0]+'&radius=0.05">View list of records</a></div>';
         infoWindows[i] = new google.maps.InfoWindow({
             content: content,
             maxWidth: 200,
@@ -577,7 +577,7 @@ function processSpeciesJsonData(data, appendResults) {
                 data[i].name+'"><i>'+data[i].name+'</i></a>';
             // add common name
             if (data[i].commonName) {
-                tr = tr + ' ('+data[i].commonName+')';
+                tr = tr + ' : '+data[i].commonName+'';
             }
             // add links to species page and ocurrence search (inside hidden div)
             var speciesInfo = '<div class="speciesInfo">';
@@ -586,8 +586,8 @@ function processSpeciesJsonData(data, appendResults) {
                     '"><img src="'+ contextPath +'/static/images/page_white_go.png" alt="species page icon" style="margin-bottom:-3px;" class="no-rounding"/>'+
                     ' species profile</a> | ';
             }
-            speciesInfo = speciesInfo + '<a href="'+ contextPath +'/occurrences/searchByArea?q=taxon_name:'+data[i].name+
-                    '|'+$('input#latitude').val()+'|'+$('input#longitude').val()+'|'+$('select#radius').val()+'" title="'+
+            speciesInfo = speciesInfo + '<a href="'+ contextPath +'/occurrences/searchByArea?q=species:%22'+data[i].name+
+                    '%22&lat='+$('input#latitude').val()+'&lon='+$('input#longitude').val()+'&radius='+$('select#radius').val()+'" title="'+
                     recsTitle+'"><img src="'+ contextPath +'/static/images/database_go.png" '+
                     'alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"/> list of records</a></div>';
             tr = tr + speciesInfo;

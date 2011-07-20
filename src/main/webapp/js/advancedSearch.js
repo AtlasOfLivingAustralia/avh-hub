@@ -243,7 +243,9 @@ $(document).ready(function() {
     var terms = q.match(/(\w+:".*?"|lsid:(\S+)|\w+:\[.*?\]|\w+:\w+)/g); // magic regex!
     //console.log("terms", terms);
     for (var i in terms) {
-        var term = terms[i].replace(/"|\(|\)/g, ''); // remove quotes
+        if (typeof terms[i] === 'string') {
+            var term = terms[i].replace(/"|\(|\)/g, ''); // remove quotes
+        }
         //console.log("term", i, term);
         if (term.indexOf(":") != -1) {
             // only interested in field searches, e.g. lsid:foo

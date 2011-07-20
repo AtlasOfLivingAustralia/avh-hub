@@ -422,8 +422,10 @@ public class OccurrenceController {
             }            
 		}
 
-        Collection<AssertionDTO> grouped = AssertionUtils
-                .groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
+        Collection<AssertionDTO> grouped = null;
+        if (userId != null) {
+            grouped = AssertionUtils.groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
+        }
         model.addAttribute("groupedAssertions", grouped);
         model.addAttribute("record", record);
 		return RECORD_SHOW;
