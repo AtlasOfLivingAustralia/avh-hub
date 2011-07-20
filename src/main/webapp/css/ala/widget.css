@@ -26,7 +26,7 @@
 
 .sidebar li {
 	font-size: 12px;
-	list-style-image: url(images/arrow_r.jpg);
+/*	list-style-image: url(images/arrow_r.jpg);*/
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 	border-bottom-color: #E8E8E8;

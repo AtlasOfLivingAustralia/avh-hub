@@ -289,7 +289,7 @@ var Maps = (function() {
                     position: latLng,
                     title: 'Centre of spatial search',
                     map: map,
-                    draggable: true
+                    draggable: false
                 });
                 
                 var infowindow1 = new google.maps.InfoWindow({

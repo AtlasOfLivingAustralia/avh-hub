@@ -231,7 +231,7 @@ $(document).ready(function() {
         $.getJSON(jsonUrl, function(data) {
             // set the name in place of LSID
             $("li.species_guid").each(function(i, el) {
-                $(el).find("a").text(data[i]);
+                $(el).find("a").html("<i>"+data[i]+"</i>");
             });
         });
     }
@@ -242,8 +242,14 @@ $(document).ready(function() {
         var jsonUrl = bieWebappUrl + "/species/namesFromGuids.json?guid=" + selectedLsid + "&callback=?";
         $.getJSON(jsonUrl, function(data) {
             // set the name in place of LSID
-            $("b.species_guid").text(data[0]);
+            $("b.species_guid").html("<i>"+data[0]+"</i>");
         });
+    }
+    
+    // remove *:* query from search bar
+    var q = $.getQueryParam('q');
+    if (q[0] == "*:*") {
+        $(":input#solrQuery").val("");
     }
     
 }); // end JQuery document ready
