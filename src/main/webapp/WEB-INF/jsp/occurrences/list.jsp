@@ -134,6 +134,7 @@
                                 </p>
                                 <p class="rowB">
                                     <c:if test="${not empty occurrence.institutionName}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Institution:</strong> ${occurrence.institutionName}</span></c:if>
+                                    <c:if test="${not empty occurrence.collectionName}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Collection:</strong> ${occurrence.collectionName}</span></c:if>
                                     <c:if test="${not empty occurrence.basisOfRecord}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Basis of record:</strong> ${occurrence.basisOfRecord}</span></c:if>
                                     <c:if test="${not empty occurrence.eventDate}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong> <fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span></c:if>
                                     <c:if test="${not empty occurrence.stateProvince}"><span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong> <fmt:message key="region.${occurrence.stateProvince}"/></span></c:if>
