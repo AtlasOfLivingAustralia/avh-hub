@@ -4,10 +4,23 @@
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ include file="/common/taglibs.jsp" %>
 <div id="SidebarBox" class="facets">
     <div class="sidebar">
-        <h3>Refine Results</h3>
+        <h3 style="float: left; display: inline-block;">Refine Results </h3>
+        <div id="customiseFacets"><a href="#">options &#8711;</a></div>
+        <div id="facetOptions">
+            <h4>Filter Options</h4>
+            <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
+            <div id="facetCheckboxes">
+                Select: <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a><br/>
+                <c:forEach var="facet" items="${defaultFacets}">
+                    <input type="checkbox" name="facets" class="facetOpts" value="${facet}" checked="checked">&nbsp;<fmt:message key="facet.${facet}"/><br>
+                </c:forEach>
+            </div>
+            <input type="button" id="updateFacetOptions" value="Update"/>
+        </div>
     </div>
     <div class="sidebar">
         <c:if test="${not empty searchResults.query}">

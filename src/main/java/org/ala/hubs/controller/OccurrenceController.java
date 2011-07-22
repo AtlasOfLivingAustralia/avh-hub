@@ -17,8 +17,10 @@ package org.ala.hubs.controller;
 
 import au.org.ala.biocache.BasisOfRecord;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Level;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,9 +30,11 @@ import org.ala.biocache.dto.SearchRequestParams;
 import au.org.ala.biocache.FullRecord;
 import au.org.ala.biocache.SpeciesGroups;
 import au.org.ala.biocache.TypeStatus;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
@@ -148,7 +152,7 @@ public class OccurrenceController {
             BindingResult result,
             HttpServletRequest request,
 			Model model) throws Exception {
-        
+        logger.info("/searchByArea* TOP");
         if (requestParams.getQ() == null || requestParams.getQ().isEmpty()) {
 			return RECORD_LIST;
 		}
@@ -208,7 +212,9 @@ public class OccurrenceController {
         model.addAttribute("latitude", requestParams.getLat());
         model.addAttribute("longitude", requestParams.getLon());
         model.addAttribute("radius", requestParams.getRadius());
-
+        String[] userFacets = getFacetsFromCookie(request);
+        logger.info("userFacets = "+userFacets);
+        if (userFacets.length > 0) requestParams.setFacets(userFacets);
         //searchResult = searchDAO.findByFulltextSpatialQuery(query, searchQuery.getFilterQuery(), latitude, longitude, radius, startIndex, pageSize, sortField, sortDirection);
         SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
@@ -235,6 +241,7 @@ public class OccurrenceController {
     @RequestMapping(value = "/search*", method = RequestMethod.GET)
     public String search(SearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
+        logger.info("/search* TOP");
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
 
@@ -265,10 +272,11 @@ public class OccurrenceController {
 
         //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
         //sortDirection = getSortDirection(sortField, sortDirection);
-
+        String[] userFacets = getFacetsFromCookie(request);
+        if (userFacets.length > 0) requestParams.setFacets(userFacets);
         requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
+        
         SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
-        logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
@@ -289,10 +297,13 @@ public class OccurrenceController {
 	public String occurrenceSearchByTaxon(
 			SearchRequestParams requestParams,
             @PathVariable("guid") String guid,
+            HttpServletRequest request,
             Model model) throws Exception {
 
         //requestParams.setQ("taxonConceptID:" + guid);
         requestParams.setDisplayString("taxonConcept: "+guid); // replace with sci name if a match is found
+        String[] userFacets = getFacetsFromCookie(request);
+        if (userFacets.length > 0) requestParams.setFacets(userFacets);
         SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
@@ -563,5 +574,51 @@ public class OccurrenceController {
         model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
 //        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
         model.addAttribute("speciesGroups", HomePageController.extractSpeciesGroups(SpeciesGroups.groups()));
+        model.addAttribute("defaultFacets", new SearchRequestParams().getFacets());
+    }
+
+    /**
+     * Get an array of facets from the cookie "user_facets". 
+     * Note: the cookie is a simple String so the list is encoded as a common-separated list.
+     * 
+     * @param request
+     * @return facets
+     */
+    private String[] getFacetsFromCookie(HttpServletRequest request) {
+        String userFacets = null;
+        String[] facets = {};
+        String rawCookie = getCookieValue(request.getCookies(), "user_facets", null);
+        
+        if (rawCookie != null) {
+            try {
+                userFacets = URLDecoder.decode(rawCookie, "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                logger.error(ex.getMessage(), ex);
+            }
+            
+            if (userFacets != null) {
+                facets = userFacets.split(",");
+            }
+        }
+        
+        return facets;
+    }
+    
+    /**
+     * Utility for getting a named cookie value from the HttpServletRepsonse cookies array
+     * 
+     * @param cookies
+     * @param cookieName
+     * @param defaultValue
+     * @return 
+     */
+    public static String getCookieValue(Cookie[] cookies, String cookieName, String defaultValue) {
+        for (int i = 0; i < cookies.length; i++) {
+            Cookie cookie = cookies[i];
+            if (cookieName.equals(cookie.getName())) {
+                return (cookie.getValue());
+            }
+        }
+        return (defaultValue);
     }
 }

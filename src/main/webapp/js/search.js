@@ -184,7 +184,7 @@ $(document).ready(function() {
         // make list & map div slide left & right
         var $listDiv = $("div.solrResults"); // list
         $listDiv.animate({
-            left: parseInt($listDiv.css('left'),10) == 0 ? -$listDiv.outerWidth() : 0 },
+            left: parseInt($listDiv.css('left'),10) == 0 ? -$listDiv.outerWidth() : 0},
             {duration: "slow"}
         );
         var $mapDiv = $("div#mapwrapper"); // map
@@ -248,8 +248,65 @@ $(document).ready(function() {
     
     // remove *:* query from search bar
     var q = $.getQueryParam('q');
-    if (q[0] == "*:*") {
+    if (q && q[0] == "*:*") {
         $(":input#solrQuery").val("");
     }
+    
+    // show hide facet display options
+    $("#customiseFacets a").click(function(e) {
+        e.preventDefault();
+//        var pos = $(this).offset();  
+//        var width = $(this).width();
+//        //show the menu directly over the placeholder
+//        $("#facetOptions").css( { "left": (pos.left + width) + "px", "top":pos.top + "px" } );
+        $('#facetOptions').toggle();
+    });
+    
+    $("#facetOptions").position({
+        my: "left top",
+        at: "left bottom",
+        of: $("#customiseFacets"), // or this
+        offset: "0 -1",
+        collision: "none"
+    });
+    $("#facetOptions").hide();
+    
+    var userFacets = $.cookie("user_facets");
+    console.log("userFacets", userFacets);
+    // load stored prefs from cookie
+    if (userFacets) {
+        $(":input.facetOpts").removeAttr("checked"); 
+        var facetList = userFacets.split(",");
+        for (i in facetList) {
+            if (typeof facetList[i] === "string") {
+                var thisFacet = facetList[i];
+                console.log("thisFacet", thisFacet);
+                $(":input.facetOpts[value='"+thisFacet+"']").attr("checked","checked");
+            }
+        }
+    }
+    
+    $("a#selectNone").click(function(e) {
+        e.preventDefault();
+        $(":input.facetOpts").removeAttr("checked");
+    });
+    $("a#selectAll").click(function(e) {
+        e.preventDefault();
+        $(":input.facetOpts").attr("checked","checked");
+    });
+    
+    $(":input#updateFacetOptions").click(function(e) {
+        e.preventDefault();
+        var selectedFacets = [];
+        $(":input.facetOpts").each(function() {
+            var selected = ($(this).attr("checked")) ? true : false;
+            if (selected) {
+                selectedFacets.push($(this).val());
+            }
+        });
+        console.log("selectedFacets", selectedFacets);
+        $.cookie("user_facets", selectedFacets);
+        document.location.reload(true);
+    });
     
 }); // end JQuery document ready

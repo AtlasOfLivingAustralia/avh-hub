@@ -239,3 +239,25 @@ div#advancedSearch {
     margin-left: 30px;
     margin-bottom: 20px;
 }
+#customiseFacets {
+    display: inline-block;
+    float: left;
+    text-align: left;
+    padding: 0px 5px;
+    margin: 4px 10px;
+    border: 1px solid #bbb;
+}
+#facetOptions {
+    position: absolute;
+    left: -2000px;
+    padding: 0px 8px 10px 8px;
+    margin: 4px 10px;
+    border: 1px solid #bbb;
+    background-color: #FFFFFF;
+    z-index: 500;
+}
+
+#facetCheckboxes {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
