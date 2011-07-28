@@ -9,7 +9,7 @@
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>    
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="queryDisplay">
-    <c:choose><c:when test="${not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when><c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
+    <c:choose><c:when test="${false && not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when><c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
 </c:set>
 <!DOCTYPE html>
 <html>
@@ -51,8 +51,9 @@
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
                     <input type="submit" id="solrSubmit" value="Search"/>
-                    <input type="text" id="solrQuery" name="q" value="<c:out value='${param.q}'/>">
-                    <input type="hidden" id="lsid" value=""/>
+                    <span style="display:inline-block;width:50px;padding-top:3px;">Species:</span>&nbsp;<input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
+                    <input type="hidden" id="lsid" value="${param.lsid}"/>
+                    <input type="hidden" id="solrQuery" id="q" value="${(not empty param.q) ? param.q : searchRequestParams.q}"/>
                     <span id="advancedSearchLink"><a id="showHideAdvancedOptions" href="#advanced_search_show">Advanced Search</a></span>
                 </form>
             </div>
@@ -64,10 +65,14 @@
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
         <div id="content2">
-            <c:if test="${searchResults.totalRecords == 0}">
+            <c:if test="${not empty errors}">
+                <h2 style="padding-left: 15px;">Error</h2>
+                <p>${errors}</p>
+            </c:if>
+            <c:if test="${searchResults.totalRecords == 0 && empty errors}">
                 <p>No records found for <b>${queryDisplay}</b></p>
             </c:if>
-            <c:if test="${searchResults.totalRecords > 0}">
+            <c:if test="${searchResults.totalRecords > 0 && empty errors}">
                 <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
                 <div>
                     <div id="listMapToggle" class="row" >

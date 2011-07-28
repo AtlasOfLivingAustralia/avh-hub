@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.logging.Level;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,18 +33,21 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
+import org.ala.biocache.util.SearchUtils;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.AssertionDTO;
+import org.ala.hubs.service.BieService;
 import org.ala.hubs.service.BiocacheService;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.lang.StringEscapeUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -60,6 +62,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestOperations;
 
 /**
@@ -76,6 +79,10 @@ public class OccurrenceController {
 	/** BiocacheService injected by IoC */
     @Inject
     private BiocacheService biocacheService;
+    @Inject
+    private BieService bieService;
+//    @Inject
+//    protected SearchUtils searchUtils;
     @Inject
 	protected RestfulClient restfulClient;
     @Inject
@@ -95,7 +102,7 @@ public class OccurrenceController {
     private final String ANNOTATE_EDITOR = "occurrences/annotationEditor";
     protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
-    private String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
+    protected String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
 
     /**
      * Sets up state variables and calls the annotation editor jsp.
@@ -148,21 +155,19 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/searchByArea*", method = RequestMethod.GET)
 	public String occurrenceSearchByArea(
-			SpatialSearchRequestParams requestParams,
+			@RequestParam(value="taxa", required=false) String taxaQuery,
+            SpatialSearchRequestParams requestParams,
             BindingResult result,
             HttpServletRequest request,
 			Model model) throws Exception {
-        logger.info("/searchByArea* TOP");
+        logger.debug("/searchByArea* TOP");
+        
         if (requestParams.getQ() == null || requestParams.getQ().isEmpty()) {
 			return RECORD_LIST;
 		}
 
-		// SearchQuery searchQuery = new SearchQuery(query, "spatial", filterQuery);
-        //        searchUtils.updateQueryDetails(searchQuery);
-		//searchUtils.updateTaxonConceptSearchString(searchQuery);
-
 		if (request.getParameter("pageSize") == null) {
-            requestParams.setPageSize(20);
+            requestParams.setPageSize(20); // default is 10
         }
         
         if (result.hasErrors()) {
@@ -170,7 +175,7 @@ public class OccurrenceController {
         }
         
         String query = requestParams.getQ();
-        logger.info("searchByArea - requestParams = " + requestParams);
+        logger.debug("searchByArea - requestParams = " + requestParams);
 
         if (requestParams.getLat() == null && requestParams.getLon() == null && requestParams.getRadius() == null && query.contains("|")) {
             // check for lat/long/rad encoded in q param, delimited by |
@@ -191,7 +196,7 @@ public class OccurrenceController {
                 }
 
                 query = StringUtils.join(formatted, " OR ");
-                logger.info("new query: "+query);
+                logger.debug("new query: "+query);
             }
 
             requestParams.setLat(Float.parseFloat(queryParts[1]));
@@ -199,31 +204,11 @@ public class OccurrenceController {
             requestParams.setRadius(Float.parseFloat(queryParts[3]));
         }
 
-		//SearchResultDTO searchResult = new SearchResultDTO();
-//		String queryJsEscaped = StringEscapeUtils.escapeJavaScript(query);
-        StringBuilder displayQuery = new StringBuilder(StringUtils.substringAfter(query, ":").replace("*", "(all taxa)"));
+		StringBuilder displayQuery = new StringBuilder(StringUtils.substringAfter(query, ":").replace("*", "(all taxa)"));
         displayQuery.append(" - within "+requestParams.getRadius()+" km of point ("+requestParams.getLat()+", "+requestParams.getLon()+")");
 		requestParams.setDisplayString(displayQuery.toString());
-//        model.addAttribute("entityQuery", displayQuery.toString());
-//		model.addAttribute("query", query);
-//		model.addAttribute("queryJsEscaped", queryJsEscaped);
-//		model.addAttribute("facetQuery", requestParams.getFq());
-//        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
-        model.addAttribute("latitude", requestParams.getLat());
-        model.addAttribute("longitude", requestParams.getLon());
-        model.addAttribute("radius", requestParams.getRadius());
-        String[] userFacets = getFacetsFromCookie(request);
-        logger.info("userFacets = "+userFacets);
-        if (userFacets.length > 0) requestParams.setFacets(userFacets);
-        //searchResult = searchDAO.findByFulltextSpatialQuery(query, searchQuery.getFilterQuery(), latitude, longitude, radius, startIndex, pageSize, sortField, sortDirection);
-        SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
-        logger.debug("searchResult: " + searchResult.getTotalRecords());
-        model.addAttribute("searchRequestParams", requestParams);
-        model.addAttribute("searchResults", searchResult);
-        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
-        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        addCommonDataToModel(model);
-		//model.addAttribute("lastPage", calculateLastPage(totalRecords, requestParams.getPageSize()));
+        // perform the search
+        doFullTextSearch(taxaQuery, model, requestParams, request);
 
 		return RECORD_LIST;
 	}
@@ -239,29 +224,14 @@ public class OccurrenceController {
      * @throws Exception 
      */
     @RequestMapping(value = "/search*", method = RequestMethod.GET)
-    public String search(SearchRequestParams requestParams, BindingResult result, Model model,
+    public String search(
+            @RequestParam(value="taxa", required=false) String taxaQuery,
+            SearchRequestParams requestParams, 
+            BindingResult result, 
+            Model model,
             HttpServletRequest request) throws Exception {
-        logger.info("/search* TOP");
-        final HttpSession session = request.getSession(false);
-        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
-
-        // *****
-        String userId = null;
-        if (assertion != null) {
-            AttributePrincipal principal = assertion.getPrincipal();
-            model.addAttribute("userId", principal.getName());
-            userId = principal.getName();
-
-            String fullName = "";
-            if (principal.getAttributes().get("firstname") != null && principal.getAttributes().get("lastname") != null) {
-                fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
-            }
-            model.addAttribute("userDisplayName", fullName);
-        }
-
-        model.addAttribute("errorCodes", biocacheService.getUserCodes());
-        // *****
-
+        logger.debug("/search* TOP");
+        
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
@@ -269,18 +239,9 @@ public class OccurrenceController {
         if (result.hasErrors()) {
             logger.warn("BindingResult errors: " + result.toString());
         }
-
-        //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
-        //sortDirection = getSortDirection(sortField, sortDirection);
-        String[] userFacets = getFacetsFromCookie(request);
-        if (userFacets.length > 0) requestParams.setFacets(userFacets);
-        requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
         
-        SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
-        model.addAttribute("searchResults", searchResult);
-        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
-        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        addCommonDataToModel(model);
+		doFullTextSearch(taxaQuery, model, requestParams, request);
+        
         return RECORD_LIST;
     }
 
@@ -295,7 +256,8 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/taxa/{guid:.+}*", method = RequestMethod.GET)
 	public String occurrenceSearchByTaxon(
-			SearchRequestParams requestParams,
+			@RequestParam(value="taxa", required=false) String taxaQuery,
+            SearchRequestParams requestParams,
             @PathVariable("guid") String guid,
             HttpServletRequest request,
             Model model) throws Exception {
@@ -364,9 +326,8 @@ public class OccurrenceController {
 
         if(assertion!=null){
             AttributePrincipal principal = assertion.getPrincipal();
-            model.addAttribute("userId", principal.getName());
             userId = principal.getName();
-
+            model.addAttribute("userId", userId);
             String fullName = "";
             if (principal.getAttributes().get("firstname")!=null &&  principal.getAttributes().get("lastname")!=null) {
                 fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
@@ -514,6 +475,97 @@ public class OccurrenceController {
     }
 
     /**
+     * Common search code for full text searches
+     * 
+     * @param model
+     * @param requestParams
+     * @param request 
+     */
+    protected void doFullTextSearch(String taxaQuery, Model model, SearchRequestParams requestParams, HttpServletRequest request) {
+        // Prepare request obj
+        prepareSearchRequest(taxaQuery, request, requestParams);
+        // Perform search via webservice
+        try {
+            SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
+            logger.debug("searchResult: " + searchResult.getTotalRecords());
+            addToModel(model, requestParams, searchResult);
+            
+            if (taxaQuery != null && !taxaQuery.isEmpty()) {
+                // attempt to add the mathced name/common name to displayQuery
+                String displayQuery = searchResult.getQueryTitle();
+                Pattern exp = Pattern.compile("<span>(.*)</span>");
+                Matcher matcher = exp.matcher(displayQuery);
+                if (matcher.find()) {
+                    logger.info("Generator: "+matcher.group(1));
+                    requestParams.setDisplayString(requestParams.getDisplayString() + " <span>[" + matcher.group(1) + "]</span>");
+                }
+                
+            }
+            
+        } catch (Exception ex) {
+            model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
+        }
+    }
+    
+    /**
+     * Common search code for spatial full text searches
+     * 
+     * @param model
+     * @param requestParams
+     * @param request 
+     */
+    protected void doFullTextSearch(String taxaQuery, Model model, SpatialSearchRequestParams requestParams, HttpServletRequest request) {
+        // Prepare request obj
+        prepareSearchRequest(taxaQuery, request, requestParams);
+        // Perform search via webservice
+        try {
+            SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
+            model.addAttribute("latitude", requestParams.getLat());
+            model.addAttribute("longitude", requestParams.getLon());
+            model.addAttribute("radius", requestParams.getRadius());
+            logger.debug("searchResult: " + searchResult.getTotalRecords());
+            addToModel(model, requestParams, searchResult);
+        } catch (Exception ex) {
+            model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
+        }
+    }
+
+    /**
+     * Common code to check for facets cookie and manipulate query, etc
+     * 
+     * @param request
+     * @param requestParams 
+     */
+    protected void prepareSearchRequest(String taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
+        // check for user facets via cookie
+        String[] userFacets = getFacetsFromCookie(request);
+        if (userFacets.length > 0) requestParams.setFacets(userFacets);
+        
+        if (taxaQuery != null && !taxaQuery.isEmpty()) {
+            StringBuilder query = new StringBuilder("raw_taxon_name:\"" + taxaQuery + "\"");
+            query.append(" OR raw_common_name:").append("\"" + taxaQuery + "\"");
+            String guid = bieService.getGuidForName(taxaQuery);
+            logger.info("GUID = " + guid);
+            
+            if (guid != null && !guid.isEmpty()) {
+                query.append(" OR lsid:").append(guid);
+                taxaQuery = taxaQuery + " <span id='queryGuid'>" + guid + "</span>";
+                // lookup accepted name & common names for GUID
+//                String[] values = searchUtils.getTaxonSearch(guid);
+//                requestParams.setDisplayString(values[1]); // 
+                requestParams.setDisplayString(taxaQuery);
+            } else {
+                requestParams.setDisplayString(taxaQuery);
+            }
+            
+            logger.info("query = " + query);
+            requestParams.setQ(query.toString());
+        } else {
+            //requestParams.setDisplayString(requestParams.getQ());
+        }
+    } 
+
+    /**
      * Create a HashMap for the filter queries
      *
      * @param filterQuery
@@ -551,6 +603,25 @@ public class OccurrenceController {
         }
         
         return lastPage;
+    }
+    
+    /**
+     * Common code to add stuff to the MVC model (for search methods)
+     * 
+     * @param model
+     * @param requestParams
+     * @param searchResult 
+     */
+    protected void addToModel(Model model, SearchRequestParams requestParams, SearchResultDTO searchResult) {
+        if (requestParams.getDisplayString() == null || requestParams.getDisplayString().isEmpty()) {
+            requestParams.setDisplayString(searchResult.getQueryTitle());
+        }
+        
+        model.addAttribute("searchRequestParams", requestParams);
+        model.addAttribute("searchResults", searchResult);
+        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+        addCommonDataToModel(model);
     }
 
     /**

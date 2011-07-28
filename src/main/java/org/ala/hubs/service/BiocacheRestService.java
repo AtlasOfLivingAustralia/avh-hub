@@ -46,7 +46,7 @@ public class BiocacheRestService implements BiocacheService {
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
-    /** URI prefix for biocache-service - may be overridden in properties file */
+    /** URI prefix for biocache-service - should be overridden in properties file */
     protected String biocacheUriPrefix = "http://localhost:9999/biocache-service";
     /** A comma separated list of context to apply to the query - may be overridden in the properties file */
     protected String queryContext ="";
@@ -64,7 +64,7 @@ public class BiocacheRestService implements BiocacheService {
  
         try {
             final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();            
-            logger.debug("Requesting: " + jsonUri);
+            logger.info("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);

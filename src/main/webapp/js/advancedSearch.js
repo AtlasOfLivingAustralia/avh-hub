@@ -24,12 +24,12 @@ $(document).ready(function() {
         var show = (hash.indexOf("advanced_search_show") != -1) ? true : false; // boolean
         showHideAdvancedSearch(show);
 
-        var solrQuery = $("input#solrQuery");
-        if (hash.indexOf("/q=") != -1 && !solrQuery.val()) {
-            var query = hash.replace(/.*\/q=(.*)/, "$1");
-            //console.log("query", query);
-            solrQuery.val(query);
-        }
+//        var solrQuery = $("input#solrQuery");
+//        if (hash.indexOf("/q=") != -1 && !solrQuery.val()) {
+//            var query = hash.replace(/.*\/q=(.*)/, "$1");
+//            //console.log("query", query);
+//            solrQuery.val(query);
+//        }
         
     }); // end hashchange
 
@@ -106,19 +106,19 @@ $(document).ready(function() {
     });
 
     // search submit
-    $("#solrSearchForm").submit(function(e) {
-        e.preventDefault();
-        var lsid = $("input#lsid").val();
-        var url;
-        if (lsid) {
-            // redirect to taxon search if lsid
-            url = contextPath + "/occurrences/taxa/" + lsid;
-        } else {
-            // normal full text search
-            url = contextPath + "/occurrences/search?q=" + $("input#solrQuery").val();
-        }
-        window.location.href = url;
-    });
+//    $("#solrSearchForm").submit(function(e) {
+//        e.preventDefault();
+//        var lsid = $("input#lsid").val();
+//        var url;
+//        if (lsid) {
+//            // redirect to taxon search if lsid
+//            url = contextPath + "/occurrences/taxa/" + lsid;
+//        } else {
+//            // normal full text search
+//            url = contextPath + "/occurrences/search?q=" + $("input#solrQuery").val();
+//        }
+//        window.location.href = url;
+//    });
 
     // Catch onChange event on all select elements (except institution)
     $("form#advancedSearchForm select").not("select#institution_collection").change(function() {

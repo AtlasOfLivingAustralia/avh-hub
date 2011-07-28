@@ -25,6 +25,7 @@ function reloadWithParam(paramName, paramValue) {
     var lat = $.getQueryParam('lat');
     var lon = $.getQueryParam('lon');
     var rad = $.getQueryParam('radius');
+    var taxa = $.getQueryParam('taxa');
     // add query param
     if (q != null) {
         paramList.push("q=" + q);
@@ -47,6 +48,10 @@ function reloadWithParam(paramName, paramValue) {
         paramList.push("lon=" + lon);
         paramList.push("radius=" + rad);
     }
+    
+    if (taxa) {
+        paramList.push("taxa=" + taxa);
+    }
 
     //alert("params = "+paramList.join("&"));
     //alert("url = "+window.location.pathname);
@@ -63,7 +68,7 @@ function removeFacet(facet) {
     var lat = $.getQueryParam('lat');
     var lon = $.getQueryParam('lon');
     var rad = $.getQueryParam('radius');
-    
+    var taxa = $.getQueryParam('taxa');
     var paramList = [];
     if (q != null) {
         paramList.push("q=" + q);
@@ -73,6 +78,10 @@ function removeFacet(facet) {
         paramList.push("lat=" + lat);
         paramList.push("lon=" + lon);
         paramList.push("radius=" + rad);
+    }
+    
+    if (taxa) {
+        paramList.push("taxa=" + taxa);
     }
 
     //alert("this.facet = "+facet+"; fqList = "+fqList.join('|'));
@@ -272,7 +281,7 @@ $(document).ready(function() {
     $("#facetOptions").hide();
     
     var userFacets = $.cookie("user_facets");
-    console.log("userFacets", userFacets);
+    //console.log("userFacets", userFacets);
     // load stored prefs from cookie
     if (userFacets) {
         $(":input.facetOpts").removeAttr("checked"); 
@@ -280,7 +289,7 @@ $(document).ready(function() {
         for (i in facetList) {
             if (typeof facetList[i] === "string") {
                 var thisFacet = facetList[i];
-                console.log("thisFacet", thisFacet);
+                //console.log("thisFacet", thisFacet);
                 $(":input.facetOpts[value='"+thisFacet+"']").attr("checked","checked");
             }
         }
@@ -308,5 +317,23 @@ $(document).ready(function() {
         $.cookie("user_facets", selectedFacets);
         document.location.reload(true);
     });
+    
+    // taxa search - show included sysnonyms with popup to allow user to refine to a single name
+    var taxaLsid = $("#queryGuid").text();
+    if (taxaLsid) {
+        var jsonUrl = bieWebappUrl + "/species/synonymsForGuid/" + taxaLsid + ".json?callback=?";
+        $.getJSON(jsonUrl, function(data) {
+            // list of synonyms
+            var synList = "<div id='refineTaxaSearch1'><ul>";
+            $.each(data, function(i, el) {
+                //for (var key in el) {
+                    //console.log("key", key, "value", el[key]);
+                    synList += "<li><a href='?q=raw_taxon_name:%22" + el.name + "%22'>" + el.name + "</a>";
+                //}
+            });
+            synList += "</ul></div>";
+            $("#resultsReturned").append(synList);
+        });
+    }
     
 }); // end JQuery document ready

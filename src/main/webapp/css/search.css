@@ -33,12 +33,12 @@
 #solrSearchForm input {
     margin: 0
 }
-#solrSearchForm input#solrQuery {
+#solrSearchForm input#taxaQuery {
     display: inline-block;
     float: right;
     margin-top: 2px;
     font-size: 13px;
-    width: 500px;
+    width: 450px;
 }
 #solrSearchForm input#solrSubmit {
     display: inline-block;
@@ -261,3 +261,8 @@ div#advancedSearch {
     margin-top: 4px;
     margin-bottom: 8px;
 }
+
+#queryGuid, #refineTaxaSearch {
+    display:none;
+}
+#

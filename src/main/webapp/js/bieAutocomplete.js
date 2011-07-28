@@ -49,7 +49,7 @@ $(document).ready(function() {
     });
 
     // search submit
-    $("#solrSearchForm").submit(function(e) {
+    $("#solrSearchFormOFF").submit(function(e) {
         e.preventDefault();
         var lsid = $("input#lsid").val();
         var query = $("input#solrQuery").val();
