@@ -264,10 +264,6 @@ $(document).ready(function() {
     // show hide facet display options
     $("#customiseFacets a").click(function(e) {
         e.preventDefault();
-//        var pos = $(this).offset();  
-//        var width = $(this).width();
-//        //show the menu directly over the placeholder
-//        $("#facetOptions").css( { "left": (pos.left + width) + "px", "top":pos.top + "px" } );
         $('#facetOptions').toggle();
     });
     
@@ -313,7 +309,7 @@ $(document).ready(function() {
                 selectedFacets.push($(this).val());
             }
         });
-        console.log("selectedFacets", selectedFacets);
+        //console.log("selectedFacets", selectedFacets);
         $.cookie("user_facets", selectedFacets);
         document.location.reload(true);
     });
@@ -321,19 +317,36 @@ $(document).ready(function() {
     // taxa search - show included sysnonyms with popup to allow user to refine to a single name
     var taxaLsid = $("#queryGuid").text();
     if (taxaLsid) {
-        var jsonUrl = bieWebappUrl + "/species/synonymsForGuid/" + taxaLsid + ".json?callback=?";
-        $.getJSON(jsonUrl, function(data) {
+        var jsonUri = bieWebappUrl + "/species/synonymsForGuid/" + taxaLsid + ".json?callback=?";
+        $.getJSON(jsonUri, function(data) {
             // list of synonyms
-            var synList = "<div id='refineTaxaSearch1'><ul>";
+            var synList = "<div id='refineTaxaSearch'>The following taxa are synonyms of <b>" + 
+                $("#matchedTaxon").text() + "</b>. Click on a name to search for records that use this name (verbatim). <ul>";
             $.each(data, function(i, el) {
-                //for (var key in el) {
-                    //console.log("key", key, "value", el[key]);
-                    synList += "<li><a href='?q=raw_taxon_name:%22" + el.name + "%22'>" + el.name + "</a>";
-                //}
+                synList += "<li><a href='?q=raw_taxon_name:%22" + el.name + "%22'>" + el.name + "</a>";
             });
             synList += "</ul></div>";
             $("#resultsReturned").append(synList);
+            // position it under the drop down
+            $("#refineTaxaSearch").position({
+                my: "right top",
+                at: "right bottom",
+                of: $("#queryDisplay"), // or this
+                offset: "0 4",
+                collision: "none"
+            });
+            $("#refineTaxaSearch").hide();
         });
+        
+        // format display with drop-down
+        $("#matchedTaxon").before("<span class='plain'> which matched: </span>");
+        $("#matchedTaxon").wrap("<a href='#' title='display query info'/>");
+        $("#matchedTaxon").addClass("dropDown");
     }
+    
+    $("#queryDisplay a").click(function(e) {
+        e.preventDefault();
+        $("#refineTaxaSearch").toggle();
+    });
     
 }); // end JQuery document ready

@@ -70,7 +70,7 @@
                 <p>${errors}</p>
             </c:if>
             <c:if test="${searchResults.totalRecords == 0 && empty errors}">
-                <p>No records found for <b>${queryDisplay}</b></p>
+                <p>No records found for <span id="queryDisplay">${queryDisplay}</span></p>
             </c:if>
             <c:if test="${searchResults.totalRecords > 0 && empty errors}">
                 <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
@@ -81,7 +81,7 @@
                         </button>
                     </div>
                     <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
-                        for <strong>${queryDisplay}</strong>
+                        for <span id="queryDisplay">${queryDisplay}</span>
                         (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)
                     </div>
                     <div style="display:none">

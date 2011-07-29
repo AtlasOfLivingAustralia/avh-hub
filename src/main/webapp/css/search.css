@@ -245,15 +245,17 @@ div#advancedSearch {
     text-align: left;
     padding: 0px 5px;
     margin: 4px 10px;
-    border: 1px solid #bbb;
+    border: 1px solid #BBBBBB;
+    background-color: #EEEEEE;
+    font-weight: bold;
 }
 #facetOptions {
     position: absolute;
-    left: -2000px;
+    left: -9999px;
     padding: 0px 8px 10px 8px;
     margin: 4px 10px;
-    border: 1px solid #bbb;
-    background-color: #FFFFFF;
+    border: 1px solid #BBBBBB;
+    background-color: #EEEEEE;
     z-index: 500;
 }
 
@@ -262,7 +264,52 @@ div#advancedSearch {
     margin-bottom: 8px;
 }
 
-#queryGuid, #refineTaxaSearch {
+#queryGuid, #advancedSearchLink {
     display:none;
 }
-#
+
+#refineTaxaSearch {
+    position: absolute;
+    top: -9999px;
+    width: 500px;
+    z-index: 501;
+    background-color: #EEEEEE;
+    border: 1px solid #BBBBBB;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+span#queryDisplay {
+    font-weight: bold;
+}
+
+span#queryDisplay a:hover {
+    text-decoration: none;
+}
+
+.dropDown {
+    display: inline-block;
+/*    float: left;*/
+    text-align: left;
+    padding: 2px 5px;
+    margin: 4px 0px;
+    background-color: #EEEEEE;
+    border: 1px solid #BBBBBB;
+}
+
+#customiseFacets a::after, .dropDown::after {
+    width: 7px;
+    height: 7px;
+    display: inline-block;
+    background: transparent url(../images/sprite-icons.png) no-repeat scroll -111px -68px;
+    content: "&darr;";
+    text-indent: -99999px;
+    vertical-align: top;
+    margin-top: 8px;
+    margin-left: 4px;
+}
+
+.plain {
+    font-weight: normal;
+    color: #444444;
+}

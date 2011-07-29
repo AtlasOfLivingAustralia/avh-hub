@@ -497,7 +497,7 @@ public class OccurrenceController {
                 Matcher matcher = exp.matcher(displayQuery);
                 if (matcher.find()) {
                     logger.info("Generator: "+matcher.group(1));
-                    requestParams.setDisplayString(requestParams.getDisplayString() + " <span>[" + matcher.group(1) + "]</span>");
+                    requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
                 }
                 
             }

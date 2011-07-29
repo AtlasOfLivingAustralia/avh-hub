@@ -9,7 +9,7 @@
 <div id="SidebarBox" class="facets">
     <div class="sidebar">
         <h3 style="float: left; display: inline-block;">Refine Results </h3>
-        <div id="customiseFacets"><a href="#">options &#8711;</a></div>
+        <div id="customiseFacets"><a href="#">options</a></div>
         <div id="facetOptions">
             <h4>Filter Options</h4>
             <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
