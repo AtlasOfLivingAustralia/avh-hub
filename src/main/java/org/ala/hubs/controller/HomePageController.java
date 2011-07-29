@@ -60,9 +60,9 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String ozcamPage() {
+    public String ozcamPage(Model model) {
         //return "redirect:/index";
-        return homePage;
+        return homePage(model);
     }
 
     /**

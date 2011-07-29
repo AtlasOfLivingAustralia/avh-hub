@@ -18,7 +18,7 @@
  */
 $(document).ready(function() {
     // Autocomplete
-    $("input#solrQuery").autocomplete('http://bie.ala.org.au/search/auto.json', {
+    $(":input#taxaQuery, :input#solrQuery").autocomplete('http://bie.ala.org.au/search/auto.json', {
         extraParams: {limit:100},
         dataType: 'jsonp',
         parse: function(data) {
