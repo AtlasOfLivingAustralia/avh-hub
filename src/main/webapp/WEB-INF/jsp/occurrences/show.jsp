@@ -313,34 +313,34 @@
                 <div id="occurrenceDataset">
                     <h3>Dataset</h3>
                     <table class="occurrenceTable" id="datasetTable">
-                        <%--
-                        <!-- Data Provider -->
-                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data Provider">
-                            <c:choose>
-                                <c:when test="${record.processed.attribution.dataProviderUid != null && not empty record.processed.attribution.dataProviderUid}">
-                                    <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataProviderUid}">
+                        <c:if test="${useAla == 'true'}">
+                            <!-- Data Provider -->
+                            <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data Provider">
+                                <c:choose>
+                                    <c:when test="${record.processed.attribution.dataProviderUid != null && not empty record.processed.attribution.dataProviderUid}">
+                                        <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataProviderUid}">
+                                            ${record.processed.attribution.dataProviderName}
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
                                         ${record.processed.attribution.dataProviderName}
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    ${record.processed.attribution.dataProviderName}
-                                </c:otherwise>
-                            </c:choose>
-                        </alatag:occurrenceTableRow>
-                        <!-- Data Resource -->
-                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data Set">
-                            <c:choose>
-                                <c:when test="${record.processed.attribution.dataResourceUid != null && not empty record.processed.attribution.dataResourceUid}">
-                                    <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataResourceUid}">
+                                    </c:otherwise>
+                                </c:choose>
+                            </alatag:occurrenceTableRow>
+                            <!-- Data Resource -->
+                            <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data Set">
+                                <c:choose>
+                                    <c:when test="${record.processed.attribution.dataResourceUid != null && not empty record.processed.attribution.dataResourceUid}">
+                                        <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataResourceUid}">
+                                            ${record.processed.attribution.dataResourceName}
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
                                         ${record.processed.attribution.dataResourceName}
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    ${record.processed.attribution.dataResourceName}
-                                </c:otherwise>
-                            </c:choose>
-                        </alatag:occurrenceTableRow>
-                        --%>
+                                    </c:otherwise>
+                                </c:choose>
+                            </alatag:occurrenceTableRow>
+                        </c:if>
                         <!-- Institution -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="institutionCode" fieldName="Institution">
                             <c:choose>
