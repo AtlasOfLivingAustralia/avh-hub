@@ -50,6 +50,8 @@ public class BiocacheRestService implements BiocacheService {
     protected String biocacheUriPrefix = "http://localhost:9999/biocache-service";
     /** A comma separated list of context to apply to the query - may be overridden in the properties file */
     protected String queryContext ="";
+    /** The API key to use to add and delete assertions */
+    protected String apiKey ="";
     
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
     
@@ -200,6 +202,7 @@ public class BiocacheRestService implements BiocacheService {
             m.setParameter("comment", comment);
             m.setParameter("userId", userId);
             m.setParameter("userDisplayName", userDisplayName);
+            m.setParameter("apiKey", apiKey);
             int status = h.executeMethod(m);
             logger.debug("STATUS: " + status);
             if(status == 201){
@@ -220,6 +223,7 @@ public class BiocacheRestService implements BiocacheService {
         PostMethod m = new PostMethod(uri);
         try {
             m.setParameter("assertionUuid", assertionUuid);
+            m.setParameter("apiKey", apiKey);
             int status = h.executeMethod(m);
             logger.debug("STATUS: " + status);
             if(status == 201){
@@ -265,6 +269,16 @@ public class BiocacheRestService implements BiocacheService {
 
     public void setQueryContext(String queryContext) {
         this.queryContext = queryContext;
+    }
+    
+    
+    
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 
     /**
