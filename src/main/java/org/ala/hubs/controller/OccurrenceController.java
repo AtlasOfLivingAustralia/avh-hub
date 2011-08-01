@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
-import org.ala.biocache.util.SearchUtils;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.service.BieService;

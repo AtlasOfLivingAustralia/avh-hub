@@ -101,7 +101,10 @@
 
     <!-- Over-ride bean properties - including dataSource configs -->
     <context:property-override location="classpath:hubs.properties" ignore-unresolvable="true" ignore-resource-not-found="true"/>
-
+    
+    <!-- Also make hubs properties available for lookup -->
+    <context:property-placeholder location="classpath:hubs.properties" />
+    
     <!-- beans for RestTemplate  -->
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
         <property name="messageConverters">

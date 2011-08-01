@@ -10,6 +10,7 @@
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
 <c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
 <c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
+<c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="scientificName">
     <c:choose>
         <c:when test="${not empty record.processed.classification.scientificName}">
@@ -27,7 +28,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
-        <title>OzCam Hub - Occurrence Record ${recordId}</title>
+        <title>${hubDisplayName} - Occurrence Record ${recordId}</title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
@@ -71,6 +72,19 @@
                     'autoDimensions' : false,
                     'width': '500',
                     'height': '300',
+                    'padding': 15,
+                    'margin': 10
+                });
+                
+                $("#showRawProcessed").fancybox({
+                    //'href': '#loginOrFlag',
+                    'hideOnContentClick' : false,
+                    'hideOnOverlayClick': true,
+                    'showCloseButton': true,
+                    'titleShow' : false,
+                    'autoDimensions' : false,
+                    'width': '80%',
+                    'height': '80%',
                     'padding': 15,
                     'margin': 10
                 });
@@ -306,6 +320,8 @@
                         </script>
                         <h2>Location of record</h2>
                         <div id="occurrenceMap"></div>
+                        <br/>
+                        <a href="#processedVsRawView" title="as a pop-up" id="showRawProcessed">Display all raw and processed fields for this record</a>
                     </div>
                 </c:if>
             </div><!-- end div#SidebarBox -->
@@ -597,6 +613,10 @@
                                     <a href="${bieWebappContext}/search?q=${fn:replace(scientificName, '  ', ' ')}">${displaySciName}</a>
                                 </c:otherwise>
                             </c:choose>
+                            <c:if test="${not empty record.raw.classification.scientificName && !fn:contains(displaySciName, record.raw.classification.scientificName)}">
+                                <br/><span class="originalValue">Supplied as &quot;${record.raw.classification.scientificName}&quot;</span>
+                                <!-- ${record.raw.classification.scientificName} || ${displaySciName} -->
+                            </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Taxon Rank -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon Rank">
@@ -949,13 +969,47 @@
                                 ${not empty record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
                             </c:if>
                         </alatag:occurrenceTableRow>
-                        <!-- Coordinates Generalised -->
+                        <!-- Data Generalizations -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="generalisedInMetres" fieldName="Coordinates Generalised">
-                            <c:if test="${not empty record.processed.location.coordinatePrecision}">
-                                Due to sensitivity concerns, the coordinates of this record have been generalised to ${rawOccurrence.generalisedInMetres} metres.
+                            <c:if test="${not empty record.processed.occurrence.dataGeneralizations}">
+                                Due to sensitivity concerns, the coordinates of this record have been generalised: &quot;${record.processed.occurrence.dataGeneralizations}&quot;.
                             </c:if>
                         </alatag:occurrenceTableRow>
                     </table>
+                </div>
+            </div>
+            
+            <div style="display:none;clear:both;">
+                <div id="processedVsRawView">
+                    <h3>Raw versus Processed values for this Occurrence Record</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:20%">Field Name</th>
+                                <th style="width:40%">Raw</th>
+                                <th style="width:40%">Processed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <alatag:formatRawVsProcessedRow label="Occurrence Fields" 
+                                    raw="${record.raw.occurrence.map}" processed="${record.processed.occurrence.map}"/>
+                            </tr>
+                            <tr>
+                                <alatag:formatRawVsProcessedRow label="Attribution Fields" 
+                                    raw="${record.raw.attribution.map}" processed="${record.processed.occurrence.map}"/>
+                            </tr>
+                            <tr>
+                                <alatag:formatRawVsProcessedRow label="Classification Fields" 
+                                    raw="${record.raw.classification.map}" processed="${record.processed.classification.map}"/>
+                            </tr>
+                            <tr>
+                                <alatag:formatRawVsProcessedRow label="Location Fields" 
+                                    raw="${record.raw.location.map}" processed="${record.processed.location.map}"/>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </c:if>

@@ -250,3 +250,45 @@ h1 span#recordId {
     display: inline-block;
     color: #444;
 }
+
+#processedVsRawView table {
+    width: 100%;
+    border: none;
+    margin-bottom: 0;
+}
+
+#processedVsRawView > table {
+    width: 97%;
+}
+
+#processedVsRawView > table {
+    border-top: 1px solid #D9D9D9;
+    border-right: 1px solid #D9D9D9;
+    border-left: 1px solid #D9D9D9;
+}
+
+#processedVsRawView > table > tbody > tr {
+    border-bottom: 1px solid #D9D9D9;
+    border-left: 1px solid #D9D9D9;
+}
+
+#processedVsRawView > table > tbody > tr > td, #processedVsRawView > table > thead > tr > th {
+    border-left: 1px solid #D9D9D9;
+}
+
+#processedVsRawView th {
+    padding: 8px;
+}
+
+#processedVsRawView td {
+    padding: 8px 8px 0 8px;
+}
+
+#processedVsRawView table.inner th, #processedVsRawView table.inner td {
+    padding: 0 4px 8px 0;
+}
+
+table.inner td:first-child {
+    width: 150px;
+    min-width: 150px;
+}

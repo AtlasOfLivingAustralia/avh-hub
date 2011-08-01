@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,8 @@ public class HomePageController {
     /** View name for home page */
     protected final String HOME_PAGE = "homePage";
     protected String homePage = ""; // injected via hubs.properties & can be different to HOME_PAGE
+    /* Get the skin name form the hubs.properties file (via context:property-placeholder conf) */
+    protected @Value("${sitemesh.skin}") String skin;
 
     /**
      * Site root - dummy Ozcam front page
@@ -62,7 +65,15 @@ public class HomePageController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String ozcamPage(Model model) {
         //return "redirect:/index";
-        return homePage(model);
+        String page = null;
+        
+        if ("ala".equalsIgnoreCase(skin)) {
+            page = homePage(model);
+        } else {
+            page = homePage;
+        }
+        
+        return page;
     }
 
     /**
