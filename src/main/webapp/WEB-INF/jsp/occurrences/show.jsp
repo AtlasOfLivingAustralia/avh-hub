@@ -250,7 +250,7 @@
                     <div class="sidebar">
                         <h2>Images</h2>
                         <c:forEach items="${record.processed.occurrence.images}" var="imageUrl">
-                           <a href="${imageUrl}"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
+                           <a href="${not empty record.raw.occurrence.occurrenceDetails ?  record.raw.occurrence.occurrenceDetails : imageUrl}"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
                         </c:forEach>
                     </div>
                 </c:if>
