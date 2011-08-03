@@ -76,12 +76,18 @@
                     'margin': 10
                 });
                 
+                // raw vs processed popup
                 $("#showRawProcessed").fancybox({
                     //'href': '#loginOrFlag',
                     'hideOnContentClick' : false,
                     'hideOnOverlayClick': true,
                     'showCloseButton': true,
                     'titleShow' : false,
+                    'centerOnScroll': true,
+                    'transitionIn': 'elastic',
+                    'transitionOut': 'elastic',
+                    'speedIn': 500,
+                    'speedOut': 500,
                     'autoDimensions' : false,
                     'width': '80%',
                     'height': '80%',
@@ -139,6 +145,15 @@
                         deleteAssertion('${record.raw.uuid}', assertionUuid);
                     }
                     //isConfirmed = false; // don't remember the confirm
+                });
+                
+                // give every second row a class="grey-bg"
+                $('table#datasetTable, table#taxonomyTable, table#geospatialTable, table.inner').each(function(i, el) {
+                    $(this).find('tr').each(function(j, tr) {
+                        if (j % 2 == 0) {
+                            $(this).addClass("grey-bg");
+                        }
+                    });
                 });
             }); // end JQuery document ready
         </script>
@@ -200,7 +215,7 @@
                         <ul id="systemAssertions">
                             <c:forEach var="systemAssertion" items="${record.systemAssertions}">
                                 <li>
-                                    <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
+                                    <!-- <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/> -->
                                     ${systemAssertion.comment}
                                 </li>
                             </c:forEach>
@@ -217,12 +232,9 @@
                     </div>
                 </div>
                 <div class="sidebar">
-                    <p style="margin:20px 0 20px 0;">
-                        <button class="rounded" id="assertionButton">
-                            <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
-                        </button>
-                        
-                    </p>
+                    <button class="rounded" id="assertionButton">
+                        <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
+                    </button>
                     <!--c:if test="${isCollectionAdmin}"-->
                         <!--div>You are able to modify assertions!</div-->
                     <!--/c:if-->
@@ -262,6 +274,11 @@
                         </c:choose>
                     </div>
                 </div>
+                <div class="sidebar">
+                    <button class="rounded" id="showRawProcessed" href="#processedVsRawView" title="Table showing both raw and processed DwC values">
+                        <span id="assertionMaker" href="#processedVsRawView" title="">View &quot;Raw vs Processed&quot;</span>
+                    </button>
+                </div>  
                 <c:if test="${not empty record.processed.occurrence.images}">
                     <div class="sidebar">
                         <h2>Images</h2>
@@ -320,8 +337,6 @@
                         </script>
                         <h2>Location of record</h2>
                         <div id="occurrenceMap"></div>
-                        <br/>
-                        <a href="#processedVsRawView" title="as a pop-up" id="showRawProcessed">Display all raw and processed fields for this record</a>
                     </div>
                 </c:if>
             </div><!-- end div#SidebarBox -->
@@ -981,19 +996,23 @@
             
             <div style="display:none;clear:both;">
                 <div id="processedVsRawView">
-                    <h3>Raw versus Processed values for this Occurrence Record</h3>
+                    <h2>&quot;Raw versus Processed&quot; Comparison of Darwin Core Fields</h2>
                     <table>
                         <thead>
                             <tr>
-                                <th style="width:20%">Field Name</th>
-                                <th style="width:40%">Raw</th>
-                                <th style="width:40%">Processed</th>
+                                <th style="width:20%"></th>
+                                <th style="width:40%;text-align:center;">Raw</th>
+                                <th style="width:40%;text-align:center;">Processed</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <alatag:formatRawVsProcessedRow label="Occurrence Fields" 
                                     raw="${record.raw.occurrence.map}" processed="${record.processed.occurrence.map}"/>
+                            </tr>
+                            <tr>
+                                <alatag:formatRawVsProcessedRow label="Event Fields" 
+                                    raw="${record.raw.event.map}" processed="${record.processed.event.map}"/>
                             </tr>
                             <tr>
                                 <alatag:formatRawVsProcessedRow label="Attribution Fields" 

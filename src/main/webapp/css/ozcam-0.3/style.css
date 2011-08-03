@@ -451,3 +451,8 @@ h2 {
 	height: 100px; /* .push must be the same height as .footer */
 	clear: both;
 }
+h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, #content2 h5, #content2 h6 {
+    padding: 0 0 8px;
+    color: #444;
+    font-family: 'Rockwell', arial, helvetica, sans-serif;
+}

@@ -5,17 +5,17 @@ attribute name="processed" required="false" type="java.util.Map" %>
 <td>
     ${label}
 </td>
-<td>
+<td class="noPad">
     <table class="inner">
         <c:forEach var="attr" items="${raw}">
-            <tr><td>${attr.key}</td><td>${attr.value}</td></tr>
+            <tr><td class="label">${attr.key}:</td><td>${attr.value}</td></tr>
         </c:forEach>
     </table>
 </td>
-<td>
+<td class="noPad">
     <table class="inner">
         <c:forEach var="attr" items="${processed}">
-            <tr><td>${attr.key}</td><td>${attr.value}</td></tr>
+            <tr><td class="label">${attr.key}:</td><td>${attr.value}</td></tr>
         </c:forEach>
     </table>
 </td>

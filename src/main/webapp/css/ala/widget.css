@@ -26,10 +26,10 @@
 
 .sidebar li {
 	font-size: 12px;
-/*	list-style-image: url(images/arrow_r.jpg);*/
+/*	list-style-image: url(images/arrow_r.jpg);
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
-	border-bottom-color: #E8E8E8;
+	border-bottom-color: #E8E8E8;*/
 	margin-right: 20px;
 	margin-bottom: 5px;
 	padding-top: 7px;
@@ -153,4 +153,17 @@ input::-webkit-input-placeholder {
 
 .solrResults #searchNavBar ul li {
     font-size: 13px;
+}
+
+#content ul {
+    list-style: disc;
+    margin-left: 0px;
+}
+
+#content2 > div > h3 {
+    color: #718804;
+}
+
+span#assertionMaker {
+    font-size: 100%;
 }

@@ -24,11 +24,11 @@ a:link, a:visited, #content2 a:link, #content2 a:visited {
 a:hover, #content2 a:hover {
     text-decoration: underline;
 }
-h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, #content2 h5, #content2 h6 {
+/*h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, #content2 h5, #content2 h6 {
     padding: 0 0 8px;
     color: #444;
     font-family: 'Rockwell', arial, helvetica, sans-serif;
-}
+}*/
 #nav li a {
     font-size: 100%;
 }
@@ -55,7 +55,7 @@ table th {
 }
 table td,table th  {
     text-align: left;
-    padding: 6px 12px;
+    padding: 6px 6px;
     line-height: 1.3em;
     vertical-align: top;
 /*    color: #666;*/
@@ -83,9 +83,9 @@ td.label {
     /*text-shadow: 1px 1px 1px #bbbaba;*/
     margin-bottom: 10px;
     font-weight: lighter;
-    border-bottom-width: 1px;
+/*    border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: #CCC;
+    border-bottom-color: #CCC;*/
     /*padding: 5px 0; */
     margin-top: 0px;
 }

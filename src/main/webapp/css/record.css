@@ -180,6 +180,9 @@ a.annotationIcon {
 .sidebar {
     width: 290px;
 }
+.sidebar > button {
+    margin: 10px 0;
+}
 div.recordHeader {
     margin-left: 30px;
     margin-bottom: 20px;
@@ -232,7 +235,7 @@ h1 span#recordId {
     max-width: 280px;
 }
 #assertionMaker {
-    font-size: 130%;
+    font-size: 110%;
 /*    background-color: #900;
     color: #FFFFFF;
     font-weight: bold;
@@ -280,15 +283,27 @@ h1 span#recordId {
     padding: 8px;
 }
 
+#processedVsRawView td.noPad {
+    padding: 0;
+}
+
+.inner td.label {
+    text-align: right;
+}
+
 #processedVsRawView td {
-    padding: 8px 8px 0 8px;
+    padding: 4px 8px 4px 8px;
 }
 
 #processedVsRawView table.inner th, #processedVsRawView table.inner td {
-    padding: 0 4px 8px 0;
+    padding: 4px;
 }
 
 table.inner td:first-child {
     width: 150px;
     min-width: 150px;
+}
+
+#content2 > div {
+    padding-left: 10px;
 }

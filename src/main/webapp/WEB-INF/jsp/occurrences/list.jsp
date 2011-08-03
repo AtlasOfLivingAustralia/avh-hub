@@ -8,6 +8,7 @@
 <c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>    
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="queryDisplay">
     <c:choose><c:when test="${false && not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when><c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
 </c:set>
@@ -16,7 +17,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
-        <title>Occurrence Search Results | OZCAM</title>
+        <title>${hubDisplayName} - Occurrence Search Results</title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
             searchString = '${searchResults.urlParameters}'; 
