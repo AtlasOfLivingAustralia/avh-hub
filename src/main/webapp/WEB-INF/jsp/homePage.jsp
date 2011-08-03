@@ -23,23 +23,20 @@
             \************************************************************/
             google.load("visualization", "1", {packages:["corechart"]});
             google.setOnLoadCallback(hubChartsOnLoadCallback);
+            
+            $(document).ready(function() {
+                $("#advancedSearch").show();
+            });
 
         </script>
     </head>
     <body>
         <div id="headingBar">
             <h1 style="width:100%;">Search for records in <ala:propertyLoader bundle="hubs" property="site.displayName"/></h1>
-            <div id="solrSearchForm">
-                <form action="${pageContext.request.contextPath}/occurrences/search" id="homepageSearchForm">
-                    <input name="q" value="<c:out value='${param.q}'/>" id="solrQuery" style="width:720px; height:20px; font-size:12px;"/>&nbsp;
-                    <input type="submit" value="Search" id="solrSubmit" style="font-size:14px;"/>
-                    <input type="hidden" id="lsid" value=""/>
-                    <span id="advancedSearchLink"><a id="showHideAdvancedOptions" href="#advanced_search_show">Advanced Search</a></span>
-                </form>
-            </div>
+            
             <jsp:include page="advancedSearchDiv.jsp"/>
             <br/><br/>
-            <jsp:include page="chartDiv.jsp"/>
+            <%-- <jsp:include page="chartDiv.jsp"/> --%>
         </div>
     </body>
 </html>

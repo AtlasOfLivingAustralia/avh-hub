@@ -264,7 +264,7 @@ div#advancedSearch {
     margin-bottom: 8px;
 }
 
-#queryGuid, #advancedSearchLink {
+#queryGuid {
     display:none;
 }
 

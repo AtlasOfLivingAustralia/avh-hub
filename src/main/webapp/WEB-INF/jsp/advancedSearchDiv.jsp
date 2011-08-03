@@ -8,6 +8,7 @@
 <div id="advancedSearch">
     <h4>Advanced search options</h4>
     <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/occurrences/search">
+        <input type="hidden" id="solrQuery" name="q">${param.q}</input>
         <b>Find records for the following taxa...</b>
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
@@ -33,6 +34,18 @@
                         </td>
                     </tr>
                 </c:forEach>
+            </tbody>
+        </table>
+        <b>Find records that specify the following scientific name (verbatim)</b>
+        <table border="0" width="100" cellspacing="2" class="compact">
+            <thead/>
+            <tbody>
+                <tr>
+                    <td class="label">Raw Scientific Name</td>
+                    <td>
+                         <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="50" value=""/>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <b>Find records from the following species group</b>
@@ -198,22 +211,23 @@
                 <tr>
                     <td class="label">Begin Date</td>
                     <td>
-                         <input type="text" id="startDate" class="occurrence_date" placeholder="will have data picker" value=""/>
+                         <input type="text" id="startDate" class="occurrence_date" placeholder="" value=""/>
                           (YYYY-MM-DD) leave blank for earliest record date
                     </td>
                 </tr>
                 <tr>
                     <td class="label">End Date</td>
                     <td>
-                         <input type="text" id="endDate" class="occurrence_date" placeholder="will have data picker" value=""/>
+                         <input type="text" id="endDate" class="occurrence_date" placeholder="" value=""/>
                          (YYYY-MM-DD) leave blank for most recent record date
                     </td>
                 </tr>
             </tbody>
         </table>
-        <input type="button" id="advancedSubmit" value="Search" onClick="$('#solrSubmit').click()"/>
+        <input type="button" id="advancedSubmit" value="Search" onClick="$('#advancedSearchForm').submit()"/>
+<!--        <input type="submit" value="Search" />-->
         &nbsp;&nbsp;
         <input type="reset" value="Clear all" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
-        &nbsp;&nbsp;<a id="showHideAdvancedOptions" href="#advanced_search_show">Hide advanced search options</a>
+<!--        &nbsp;&nbsp;<a id="showHideAdvancedOptions" href="#advanced_search_show">Hide advanced search options</a>-->
     </form>
 </div>
