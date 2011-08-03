@@ -39,7 +39,7 @@ import java.util.HashMap;
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
 @Controller("regionController")
-@RequestMapping(value = "/region")
+//@RequestMapping(value = "/region")
 public class RegionController {
 
 	private final static Logger logger = Logger.getLogger(RegionController.class);
@@ -64,7 +64,7 @@ public class RegionController {
         }
     }
 
-    @RequestMapping(value = "/my-area*", method = RequestMethod.GET)
+    @RequestMapping(value = {"/region/my-area*","explore/your-area*"}, method = RequestMethod.GET)
     public String yourAreaView(
             @RequestParam(value="radius", required=false, defaultValue="5f") Float radius,
             @RequestParam(value="latitude", required=false, defaultValue="-35.27412f") Float latitude,
