@@ -100,11 +100,11 @@ public class OccurrenceController {
 
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
-        String userId = null;
+        
         if (assertion != null) {
+        	
             AttributePrincipal principal = assertion.getPrincipal();
             model.addAttribute("userId", principal.getName());
-            userId = principal.getName();
 
             String fullName = "";
             if (principal.getAttributes().get("firstname") != null && principal.getAttributes().get("lastname") != null) {
@@ -448,12 +448,12 @@ public class OccurrenceController {
         model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
         model.addAttribute("collections", collectionsCache.getCollections());
         model.addAttribute("institutions", collectionsCache.getInstitutions());
-        model.addAttribute("typeStatus", HomePageController.extractTermsList(TypeStatus.all()));
-        model.addAttribute("basisOfRecord", HomePageController.extractTermsList(BasisOfRecord.all()));
+        model.addAttribute("typeStatus", TypeStatus.getStringList());
+        model.addAttribute("basisOfRecord", BasisOfRecord.getStringList());
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
         model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
         model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
 //        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
-        model.addAttribute("speciesGroups", HomePageController.extractSpeciesGroups(SpeciesGroups.groups()));
+        model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
     }
 }

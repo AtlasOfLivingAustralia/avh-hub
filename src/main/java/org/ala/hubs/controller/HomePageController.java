@@ -81,52 +81,12 @@ public class HomePageController {
         logger.info("Home Page request.");
         model.addAttribute("collections", collectionsCache.getCollections());
         model.addAttribute("institutions", collectionsCache.getInstitutions());
-        model.addAttribute("typeStatus", extractTermsList(TypeStatus.all()));
-        model.addAttribute("basisOfRecord", extractTermsList(BasisOfRecord.all()));
+        model.addAttribute("typeStatus", TypeStatus.getStringList());
+        model.addAttribute("basisOfRecord", BasisOfRecord.getStringList());
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
         model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
         model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
-        model.addAttribute("speciesGroups", extractSpeciesGroups(SpeciesGroups.groups()));
+        model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
         return HOME_PAGE;
     }
-
-    /**
-     * Convert Scala List of SpeciesGroup's to a Java List<String>
-     *
-     * @param groups
-     * @return
-     */
-    public static List<String> extractSpeciesGroups(scala.collection.immutable.List<SpeciesGroup> groups) {
-        List<String> output = new ArrayList<String>();
-
-        scala.collection.Iterator<SpeciesGroup> it = groups.iterator();
-        while (it.hasNext()) {
-            String name =  it.next().name();
-            logger.debug("SpeciesGroup = " + name);
-            output.add(name);
-        }
-        
-        Collections.sort(output); // force alphabetic order
-        return output;
-    }
-
-    /**
-     * Convert Scala List of term's to a Java List<String>
-     *
-     * @param groups
-     * @return
-     */
-    public static List<String> extractTermsList(scala.collection.immutable.Set<Term> terms) {
-        List<String> output = new ArrayList<String>();
-        scala.collection.Iterator<Term> it = terms.iterator();
-        while (it.hasNext()) {
-            String term =  it.next().canonical();
-            logger.debug("Term = " + term);
-            output.add(term);
-        }
-        
-        Collections.sort(output); // force alphabetic order
-        return output;
-    }
-
 }
