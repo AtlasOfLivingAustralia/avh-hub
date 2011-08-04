@@ -12,17 +12,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
         <title>Occurrence Search | OZCAM</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
+        <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script> --%>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>
         <script type="text/javascript">
             
             /************************************************************\
             * Fire chart loading
             \************************************************************/
-            google.load("visualization", "1", {packages:["corechart"]});
-            google.setOnLoadCallback(hubChartsOnLoadCallback);
+            //google.load("visualization", "1", {packages:["corechart"]});
+            //google.setOnLoadCallback(hubChartsOnLoadCallback);
             
             $(document).ready(function() {
                 $("#advancedSearch").show();
