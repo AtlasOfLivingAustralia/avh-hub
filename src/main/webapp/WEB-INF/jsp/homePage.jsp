@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
-        <title>Occurrence Search | OZCAM</title>
+        <title><ala:propertyLoader bundle="hubs" property="site.displayName"/> - Advanced Search</title>
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script> --%>
