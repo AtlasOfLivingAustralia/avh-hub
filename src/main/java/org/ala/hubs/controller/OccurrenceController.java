@@ -502,6 +502,7 @@ public class OccurrenceController {
             }
             
         } catch (Exception ex) {
+        	logger.error(ex.getMessage(),ex);
             model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
         }
     }
@@ -525,6 +526,7 @@ public class OccurrenceController {
             logger.debug("searchResult: " + searchResult.getTotalRecords());
             addToModel(model, requestParams, searchResult);
         } catch (Exception ex) {
+        	logger.error(ex.getMessage(),ex);
             model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
         }
     }
