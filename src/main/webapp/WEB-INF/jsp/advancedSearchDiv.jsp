@@ -9,6 +9,18 @@
     <h4>Advanced search options</h4>
     <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/occurrences/search">
         <input type="hidden" id="solrQuery" name="q">${param.q}</input>
+        <b>Find records that have...</b>
+        <table border="0" width="100" cellspacing="2" class="compact">
+            <thead/>
+            <tbody>
+                <tr>
+                    <td class="label">All of these words (full text)</td>
+                    <td>
+                         <input type="text" name="text" id="text" class="dataset" placeholder="" size="80" value=""/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <b>Find records for the following taxa...</b>
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
@@ -43,7 +55,7 @@
                 <tr>
                     <td class="label">Raw Scientific Name</td>
                     <td>
-                         <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="50" value=""/>
+                         <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
                     </td>
                 </tr>
             </tbody>
