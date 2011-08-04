@@ -57,6 +57,13 @@
                     }
                 );
             }
+            
+            /**
+            * Convert camel case text to pretty version (all lower case)
+            */
+            function fileCase(str) {
+                return str.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
+            }
 
             /**
              * JQuery on document ready callback
@@ -155,6 +162,13 @@
                         }
                     });
                 });
+                
+                // convert camel case field names to "normal"
+                $("td.dwc").each(function(i, el) {
+                    var html = $(el).html();
+                    $(el).html(fileCase(html)); // conver it
+                });
+                
             }); // end JQuery document ready
         </script>
     </head>
@@ -275,8 +289,8 @@
                     </div>
                 </div>
                 <div class="sidebar">
-                    <button class="rounded" id="showRawProcessed" href="#processedVsRawView" title="Table showing both raw and processed DwC values">
-                        <span id="assertionMaker" href="#processedVsRawView" title="">View &quot;Raw vs Processed&quot;</span>
+                    <button class="rounded" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
+                        <span id="assertionMaker" href="#processedVsRawView" title="">Original vs Processed</span>
                     </button>
                 </div>  
                 <c:if test="${not empty record.processed.occurrence.images}">
@@ -986,9 +1000,14 @@
                         </alatag:occurrenceTableRow>
                         <!-- Data Generalizations -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="generalisedInMetres" fieldName="Coordinates Generalised">
-                            <c:if test="${not empty record.processed.occurrence.dataGeneralizations}">
-                                Due to sensitivity concerns, the coordinates of this record have been generalised: &quot;${record.processed.occurrence.dataGeneralizations}&quot;.
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${not empty record.processed.occurrence.dataGeneralizations && fn:contains(record.processed.occurrence.dataGeneralizations, 'is already generalised')}">
+                                    ${record.processed.occurrence.dataGeneralizations}
+                                </c:when>
+                                <c:when test="${not empty record.processed.occurrence.dataGeneralizations}">
+                                    Due to sensitivity concerns, the coordinates of this record have been generalised: &quot;${record.processed.occurrence.dataGeneralizations}&quot;.
+                                </c:when>
+                            </c:choose>
                         </alatag:occurrenceTableRow>
                     </table>
                 </div>
@@ -996,38 +1015,18 @@
             
             <div style="display:none;clear:both;">
                 <div id="processedVsRawView">
-                    <h2>&quot;Raw versus Processed&quot; Comparison of Darwin Core Fields</h2>
+                    <h2>&quot;Original versus Processed&quot; Comparison of Fields</h2>
                     <table>
                         <thead>
                             <tr>
-                                <th style="width:20%">Group</th>
-                                <th style="width:20%">Field Name</th>
-                                <th style="width:30%;text-align:center;">Raw</th>
-                                <th style="width:30%;text-align:center;">Processed</th>
+                                <th style="width:15%;text-align:center;">Group</th>
+                                <th style="width:15%;text-align:center;">Field Name</th>
+                                <th style="width:35%;text-align:center;">Raw</th>
+                                <th style="width:35%;text-align:center;">Processed</th>
                             </tr>
                         </thead>
                         <tbody>
                             <alatag:formatRawVsProcessed map="${compareRecord}"/>
-<!--                            <tr>
-                                <alatag:formatRawVsProcessedRow label="Occurrence Fields" 
-                                    raw="${record.raw.occurrence.map}" processed="${record.processed.occurrence.map}"/>
-                            </tr>
-                            <tr>
-                                <alatag:formatRawVsProcessedRow label="Event Fields" 
-                                    raw="${record.raw.event.map}" processed="${record.processed.event.map}"/>
-                            </tr>
-                            <tr>
-                                <alatag:formatRawVsProcessedRow label="Attribution Fields" 
-                                    raw="${record.raw.attribution.map}" processed="${record.processed.occurrence.map}"/>
-                            </tr>
-                            <tr>
-                                <alatag:formatRawVsProcessedRow label="Classification Fields" 
-                                    raw="${record.raw.classification.map}" processed="${record.processed.classification.map}"/>
-                            </tr>
-                            <tr>
-                                <alatag:formatRawVsProcessedRow label="Location Fields" 
-                                    raw="${record.raw.location.map}" processed="${record.processed.location.map}"/>
-                            </tr>-->
                         </tbody>
                     </table>
 

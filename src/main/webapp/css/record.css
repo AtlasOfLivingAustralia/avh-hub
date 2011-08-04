@@ -307,3 +307,8 @@ table.inner td:first-child {
 #content2 > div {
     padding-left: 10px;
 }
+
+td.dwc {
+    text-align: right;
+    white-space: nowrap;
+}

@@ -4,30 +4,17 @@ attribute name="map" required="true" type="java.util.Map" %>
     <c:choose>
         <c:when test="${not empty group.value}">
             <c:forEach var="field" items="${group.value}" varStatus="status">
+                <c:set var="grayBg">${(status.index % 2 == 0) ? 'grey-bg': ''}</c:set>
                 <tr>
                     <c:if test="${status.first}">
-                        <td rowspan="${fn:length(group.value)}">
-                            ${group.key}
-                        </td>
+                        <td rowspan="${fn:length(group.value)}">${group.key}</td>
                     </c:if>
-                    <td class="${(status.index % 2 == 0) ? 'grey-bg': ''}">
-                        ${field.name}
-                    </td>
-                    <td class="${(status.index % 2 == 0) ? 'grey-bg': ''}">
-                        ${field.raw}
-                    </td>
-                    <td class="${(status.index % 2 == 0) ? 'grey-bg': ''}">
-                        ${field.processed}
-                    </td>
+                    <td class="${grayBg} dwc">${field.name}</td>
+                    <td class="${grayBg}">${field.raw}</td>
+                    <td class="${grayBg}">${field.processed}</td>
                 </tr>
             </c:forEach>
         </c:when>
-        <c:otherwise>
-            <tr>
-                <td>${group.key}</td>
-                <td colspan="3">[no data]</td>
-            </tr>
-        </c:otherwise>
     </c:choose>
 <%--    
     <tr>
