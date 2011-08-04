@@ -117,11 +117,9 @@ public class OccurrenceController {
 
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
-        String userId = null;
         if (assertion != null) {
             AttributePrincipal principal = assertion.getPrincipal();
             model.addAttribute("userId", principal.getName());
-            userId = principal.getName();
 
             String fullName = "";
             if (principal.getAttributes().get("firstname") != null && principal.getAttributes().get("lastname") != null) {
@@ -689,12 +687,14 @@ public class OccurrenceController {
      * @return 
      */
     public static String getCookieValue(Cookie[] cookies, String cookieName, String defaultValue) {
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie cookie = cookies[i];
-            if (cookieName.equals(cookie.getName())) {
-                return (cookie.getValue());
-            }
-        }
+    	if(cookies!=null){
+	        for (int i = 0; i < cookies.length; i++) {
+	            Cookie cookie = cookies[i];
+	            if (cookieName.equals(cookie.getName())) {
+	                return (cookie.getValue());
+	            }
+	        }
+    	}
         return (defaultValue);
     }
 }
