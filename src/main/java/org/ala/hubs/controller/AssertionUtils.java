@@ -1,10 +1,16 @@
 package org.ala.hubs.controller;
 
-import au.org.ala.biocache.QualityAssertion;
-import org.ala.hubs.dto.AssertionDTO;
-import org.apache.commons.collections.ListUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import java.util.*;
+import org.ala.hubs.dto.AssertionDTO;
+
+import au.org.ala.biocache.QualityAssertion;
 
 public class AssertionUtils {
 
