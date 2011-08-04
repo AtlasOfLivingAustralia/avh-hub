@@ -29,7 +29,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ui.position.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>
+<!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
@@ -60,7 +60,7 @@
             
         </div>
         <div style="clear: both;"></div>
-        <jsp:include page="../advancedSearchDiv.jsp"/>
+        <%-- <jsp:include page="../advancedSearchDiv.jsp"/> --%>
         <c:if test="${searchResults.totalRecords > 0}">
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>

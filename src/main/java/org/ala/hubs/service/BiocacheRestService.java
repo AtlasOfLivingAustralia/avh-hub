@@ -17,6 +17,7 @@ package org.ala.hubs.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -304,5 +305,24 @@ public class BiocacheRestService implements BiocacheService {
 
         return searchResults;
     }
+
+    @Override
+    public Map<String, Object> getCompareRecord(String uuid) {
+        Assert.notNull(uuid, "UUID must not be null");
+        Map<String, Object> compareRecord = null;
+        
+        try {
+            final String jsonUri = biocacheUriPrefix + "/occurrence/compare/" + uuid + ".json";            
+            logger.debug("Requesting: " + jsonUri);
+            compareRecord = restTemplate.getForObject(jsonUri, Map.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+            //searchResults.setStatus("Error: " + ex.getMessage());
+        }
+        
+        return compareRecord;
+    }
+    
+    
     
 }

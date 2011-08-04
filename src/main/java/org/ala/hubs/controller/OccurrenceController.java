@@ -398,6 +398,10 @@ public class OccurrenceController {
             }
             model.addAttribute("groupedAssertions", grouped);
             model.addAttribute("record", record);
+            
+            // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
+            Map<String, Object> compareRecord = biocacheService.getCompareRecord(uuid);
+            model.addAttribute("compareRecord", compareRecord);
 		}
         
 		return RECORD_SHOW;

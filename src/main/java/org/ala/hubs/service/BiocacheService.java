@@ -93,4 +93,6 @@ public interface BiocacheService {
 
     public QualityAssertion[] getUserAssertions(String recordUuid);
 
+    public Map<String, Object> getCompareRecord(String uuid);
+
 }

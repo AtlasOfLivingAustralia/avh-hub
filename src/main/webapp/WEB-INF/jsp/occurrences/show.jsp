@@ -1000,13 +1000,15 @@
                     <table>
                         <thead>
                             <tr>
-                                <th style="width:20%"></th>
-                                <th style="width:40%;text-align:center;">Raw</th>
-                                <th style="width:40%;text-align:center;">Processed</th>
+                                <th style="width:20%">Group</th>
+                                <th style="width:20%">Field Name</th>
+                                <th style="width:30%;text-align:center;">Raw</th>
+                                <th style="width:30%;text-align:center;">Processed</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <alatag:formatRawVsProcessed map="${compareRecord}"/>
+<!--                            <tr>
                                 <alatag:formatRawVsProcessedRow label="Occurrence Fields" 
                                     raw="${record.raw.occurrence.map}" processed="${record.processed.occurrence.map}"/>
                             </tr>
@@ -1025,7 +1027,7 @@
                             <tr>
                                 <alatag:formatRawVsProcessedRow label="Location Fields" 
                                     raw="${record.raw.location.map}" processed="${record.processed.location.map}"/>
-                            </tr>
+                            </tr>-->
                         </tbody>
                     </table>
 
