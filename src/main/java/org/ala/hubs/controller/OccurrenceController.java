@@ -390,11 +390,11 @@ public class OccurrenceController {
                 }
             }
             
-            Collection<AssertionDTO> grouped = null;
-            if (userId != null && record.getUserAssertions() != null) {
-                grouped = AssertionUtils.groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
+            if (record.getUserAssertions() != null) {
+            	Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
+                model.addAttribute("groupedAssertions", grouped);
             }
-            model.addAttribute("groupedAssertions", grouped);
+            
             model.addAttribute("record", record);
             
             // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
