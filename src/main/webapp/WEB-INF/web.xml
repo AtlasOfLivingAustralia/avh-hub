@@ -35,11 +35,11 @@
     </context-param>
 
     <!-- for local development -->
+    <!-- the context param should be empty if a virtual host is in use -->
     <context-param>
         <param-name>contextPath</param-name>
         <param-value>/hubs-webapp</param-value>
     </context-param>
-    
 
     <context-param>
         <param-name>uriExclusionFilterPattern</param-name>
