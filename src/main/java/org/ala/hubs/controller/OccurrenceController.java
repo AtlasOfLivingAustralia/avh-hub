@@ -637,13 +637,13 @@ public class OccurrenceController {
         model.addAttribute("institutionCodes", collectionsCache.getInstitutions(inguids, coguids));
         model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));
         model.addAttribute("institutions", collectionsCache.getInstitutions(inguids, coguids));
-        model.addAttribute("typeStatus", HomePageController.extractTermsList(TypeStatus.all()));
-        model.addAttribute("basisOfRecord", HomePageController.extractTermsList(BasisOfRecord.all()));
+        model.addAttribute("typeStatus", TypeStatus.getStringList());
+        model.addAttribute("basisOfRecord", BasisOfRecord.getStringList());
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
         model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
         model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
 //        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
-        model.addAttribute("speciesGroups", HomePageController.extractSpeciesGroups(SpeciesGroups.groups()));
+        model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
         model.addAttribute("defaultFacets", new SearchRequestParams().getFacets());
     }
 
