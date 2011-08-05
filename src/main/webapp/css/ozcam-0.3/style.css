@@ -211,13 +211,17 @@ h2 {
 	line-height: 260%;
 }
 .hp-contentbutton a  {
-	color: #333;
-	padding-left: 10px;
-	text-align: center;
+	display: inline-block;
+    width: 200px;
+    text-indent: 0;
+    color: #333;
+	padding-left: 0px;
+    padding-top: 10px;
+/*	text-align: center;*/
 }
 .hp-contentbutton a:hover  {
 	color: #729D00;
-	padding-left: 10px;
+	padding-left: 0px;
 }
 
 /*---------------PAGE---------------*/

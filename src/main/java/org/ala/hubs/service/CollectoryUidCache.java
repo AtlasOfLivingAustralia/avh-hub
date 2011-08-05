@@ -99,9 +99,10 @@ public class CollectoryUidCache {
         logger.info("Updating collection uid cache...");
         SearchRequestParams srp = new SearchRequestParams();
         srp.setFacets(new String[]{"institution_uid","collection_uid","data_resource_uid", "data_provider_uid"});
+        srp.setFlimit(-1);
         srp.setQ("*:*");
         srp.setPageSize(0);
-        SearchResultDTO result =biocacheService.findByFulltextQuery(srp);
+        SearchResultDTO result = biocacheService.findByFulltextQuery(srp);
         //now update the cache with the facet names
         for(FacetResultDTO res : result.getFacetResults()){
             List<String>list = null;

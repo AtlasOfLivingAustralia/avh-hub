@@ -8,7 +8,7 @@
 <div id="advancedSearch">
     <h4>Advanced search options</h4>
     <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/occurrences/search">
-        <input type="hidden" id="solrQuery" name="q">${param.q}</input>
+        <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;">${param.q}</input>
         <b>Find records that have...</b>
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>

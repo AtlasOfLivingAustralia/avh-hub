@@ -92,7 +92,7 @@ public class HomePageController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = {"/home", "/advancedSearch"}, method = RequestMethod.GET)
     public String homePage(Model model) {
         logger.info("Home Page request.");
         

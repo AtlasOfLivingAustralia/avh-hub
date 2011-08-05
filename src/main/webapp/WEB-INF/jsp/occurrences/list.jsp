@@ -54,7 +54,7 @@
                     <input type="submit" id="solrSubmit" value="Search"/>
                     <span style="display:inline-block;width:50px;padding-top:3px;">Species:</span>&nbsp;<input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
                     <input type="hidden" id="lsid" value="${param.lsid}"/>
-                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/">Advanced Search</a></span>
+                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/advancedSearch">Advanced Search</a></span>
                 </form>
             </div>
             

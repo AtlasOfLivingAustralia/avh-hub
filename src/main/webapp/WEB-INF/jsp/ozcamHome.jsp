@@ -5,7 +5,7 @@
 <head profile="http://gmpg.org/xfn/11"> 
     <title>OZCAM</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
+    <meta name="decorator" content="bare"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ozcam-0.3/style.css" type="text/css" media="screen,projection" />
  
     <meta name='robots' content='noindex,nofollow' />

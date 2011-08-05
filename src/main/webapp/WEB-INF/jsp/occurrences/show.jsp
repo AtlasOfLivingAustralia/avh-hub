@@ -1015,7 +1015,7 @@
             
             <div style="display:none;clear:both;">
                 <div id="processedVsRawView">
-                    <h2>&quot;Original versus Processed&quot; Comparison of Fields</h2>
+                    <h2>&quot;Original versus Processed&quot; Comparison Table</h2>
                     <table>
                         <thead>
                             <tr>

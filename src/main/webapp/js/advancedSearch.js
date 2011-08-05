@@ -35,6 +35,8 @@ $(document).ready(function() {
 
     // trigger it for page load...
     $(window).hashchange();
+    
+    checkForBackButtonValues();
 
     // Custom string methods
     String.prototype.trim = function() {
@@ -408,4 +410,16 @@ function addTaxonConcept(item) {
     }
     $("#solrQuery").val(queryText.trim()); // add LSID to the main query input
     $("#name_autocomplete").val(""); // clear the search test
+}
+
+/**
+ * When user hits the back button, the browser populates fields with values from its cache
+ * 
+ * Check for these and re-add them to the q param
+ */
+function checkForBackButtonValues() {
+    $(":input").each(function(i, el) {
+        var value = $(el).val();
+        console.log("input "+$(el).attr("id") +" val: " + value);
+    });
 }
