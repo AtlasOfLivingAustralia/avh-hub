@@ -68,7 +68,7 @@ public class AdvancedSearchParams {
         }
         
         if (!institution_collection.isEmpty()) {
-            String label = (StringUtils.startsWith(institution_collection, "in")) ? "institution_uid" : "collection_uid";
+            String label = (StringUtils.startsWith(institution_collection, "in")) ? " institution_uid" : " collection_uid";
             q.append(label).append(":").append(institution_collection);
         }
         
