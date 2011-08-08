@@ -431,6 +431,9 @@
                                 </c:otherwise>
                             </c:choose>
                         </alatag:occurrenceTableRow>
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="citation" fieldName="Record citation">
+                            ${record.raw.attribution.citation}
+                        </alatag:occurrenceTableRow>                        
                         <!--
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordUuid" fieldName="Record UUID">
                             <c:choose>
