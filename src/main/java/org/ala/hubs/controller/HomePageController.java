@@ -94,8 +94,7 @@ public class HomePageController {
      */
     @RequestMapping(value = {"/home", "/advancedSearch"}, method = RequestMethod.GET)
     public String homePage(Model model) {
-        logger.info("Home Page request.");
-        
+        logger.debug("Home Page request.");
         List<String>inguids = collectoryUidCache.getInstitutions();
         List<String> coguids = collectoryUidCache.getCollections();
         model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));

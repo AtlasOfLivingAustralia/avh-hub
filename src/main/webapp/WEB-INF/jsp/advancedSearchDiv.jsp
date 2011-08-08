@@ -239,7 +239,7 @@
         <input type="button" id="advancedSubmit" value="Search" onClick="$('#advancedSearchForm').submit()"/>
 <!--        <input type="submit" value="Search" />-->
         &nbsp;&nbsp;
-        <input type="reset" value="Clear all" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
+        <input type="reset" value="Clear all" id="clearAll" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
 <!--        &nbsp;&nbsp;<a id="showHideAdvancedOptions" href="#advanced_search_show">Hide advanced search options</a>-->
     </form>
 </div>

@@ -161,7 +161,9 @@ $(document).ready(function() {
     });
 
     // set height of resultsOuter div to solrResults height
-    var solrHeight = $("div.solrResults").height() + 50;
+    var pageLength = $("select#per-page").val() || 20;
+    var solrHeight = $("div.solrResults").height() + (2 * pageLength) + 70;
+    //console.log("solrHeight", solrHeight, pageLength);
     var mapHeight = $("div#mapwrapper").height();
     $("#resultsOuter").css("height", (solrHeight > mapHeight ) ? solrHeight : mapHeight );
 

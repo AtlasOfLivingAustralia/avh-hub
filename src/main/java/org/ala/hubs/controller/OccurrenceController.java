@@ -544,6 +544,9 @@ public class OccurrenceController {
         String[] userFacets = getFacetsFromCookie(request);
         if (userFacets.length > 0) requestParams.setFacets(userFacets);
         
+        if (requestParams.getQ().isEmpty()) 
+            requestParams.setQ("*:*"); // assume search for everything
+        
         if (taxaQuery != null && !taxaQuery.isEmpty()) {
             StringBuilder query = new StringBuilder("raw_taxon_name:\"" + taxaQuery + "\"");
             query.append(" OR raw_common_name:").append("\"" + taxaQuery + "\"");
