@@ -41,6 +41,11 @@ public class AdvancedSearchParams {
     protected String start_date = "";
     protected String end_date = "";
 
+    /**
+     * This custom toString method outputs a valid SOLR query (q param value).
+     * 
+     * @return q
+     */
     @Override
     public String toString() {
         StringBuilder q = new StringBuilder();
@@ -86,7 +91,6 @@ public class AdvancedSearchParams {
             }
             q.append(" occurrence_date:").append(value);
         }
-        
         
         return q.toString().trim();
     }
