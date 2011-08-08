@@ -6,7 +6,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <!DOCTYPE html>
-<c:set var="recordId" value="${record.raw.occurrence.collectionCode}:${record.raw.occurrence.catalogNumber}"/>
+<c:choose>
+<c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
+	<c:set var="recordId" value="${record.raw.occurrence.collectionCode}:${record.raw.occurrence.catalogNumber}"/>
+</c:when>
+<c:when test="${not empty record.raw.occurrence.occurrenceID}">
+	<c:set var="recordId" value="${record.raw.occurrence.occurrenceID}"/>
+</c:when>
+<c:otherwise>
+	<c:set var="recordId" value="${record.raw.uuid}"/>
+</c:otherwise>
+</c:choose>
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
 <c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
 <c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
@@ -470,11 +480,15 @@
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceID" fieldName="Occurrence ID">
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.occurrenceID && not empty record.raw.occurrence.occurrenceID}">
+                                    <c:if test="${fn:startsWith(record.processed.occurrence.occurrenceID,'http://')}"><a href="${record.processed.occurrence.occurrenceID}"></c:if>
                                     ${record.processed.occurrence.occurrenceID}
+                                    <c:if test="${fn:startsWith(record.processed.occurrence.occurrenceID,'http://')}"></a></c:if>                                    
                                     <br/><span class="originalValue">Supplied as "${record.raw.occurrence.occurrenceID}"</span>
                                 </c:when>
                                 <c:otherwise>
+                                    <c:if test="${fn:startsWith(record.raw.occurrence.occurrenceID,'http://')}"><a href="${record.raw.occurrence.occurrenceID}"></c:if>                                
                                     ${record.raw.occurrence.occurrenceID}
+                                    <c:if test="${fn:startsWith(record.raw.occurrence.occurrenceID,'http://')}"></a></c:if>                                                                        
                                 </c:otherwise>
                             </c:choose>
                         </alatag:occurrenceTableRow>
