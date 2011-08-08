@@ -25,12 +25,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
+import org.ala.hubs.dto.AdvancedSearchParams;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -106,6 +108,23 @@ public class HomePageController {
         model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
         model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
         return HOME_PAGE;
+    }
+    
+    /**
+     * Advanced search - POST 
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
+    public String homePagePost(AdvancedSearchParams requestParams, BindingResult result, Model model) {
+        logger.info("Advanced search POST");
+        
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        
+        return "redirect:/occurrences/search?q=" + requestParams.toString();
     }
 
     public void setHomePage(String homePage) {

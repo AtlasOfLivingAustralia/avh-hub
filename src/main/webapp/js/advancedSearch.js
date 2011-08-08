@@ -45,7 +45,7 @@ $(document).ready(function() {
     };
     
     //  for taxon concepts
-    $("input[name=name_autocomplete]").autocomplete('http://bie.ala.org.au/search/auto.json', {
+    $("input#name_autocomplete").autocomplete('http://bie.ala.org.au/search/auto.json', {
         //width: 350,
         extraParams: {limit:100},
         dataType: 'jsonp',
