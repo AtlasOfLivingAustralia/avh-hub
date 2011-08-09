@@ -31,6 +31,7 @@ import au.org.ala.biocache.SpeciesGroups;
 import au.org.ala.biocache.TypeStatus;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -548,17 +549,17 @@ public class OccurrenceController {
             requestParams.setQ("*:*"); // assume search for everything
         
         if (taxaQuery != null && !taxaQuery.isEmpty()) {
-            StringBuilder query = new StringBuilder("raw_taxon_name:\"" + taxaQuery + "\"");
-            query.append(" OR raw_common_name:").append("\"" + taxaQuery + "\"");
+            StringBuilder query = new StringBuilder("raw_name:\"" + taxaQuery + "\"");
             String guid = bieService.getGuidForName(taxaQuery);
             logger.info("GUID = " + guid);
             
             if (guid != null && !guid.isEmpty()) {
                 query.append(" OR lsid:").append(guid);
                 taxaQuery = taxaQuery + " <span id='queryGuid'>" + guid + "</span>";
-                // lookup accepted name & common names for GUID
-//                String[] values = searchUtils.getTaxonSearch(guid);
-//                requestParams.setDisplayString(values[1]); // 
+                // add raw_scientificName facet so we can show breakdown of taxa contributing to search
+                List<String> facets = new ArrayList<String>(Arrays.asList(requestParams.getFacets()));                
+                if (!facets.contains("raw_taxon_name")) facets.add("raw_taxon_name"); 
+                requestParams.setFacets(facets.toArray(new String[0]));
                 requestParams.setDisplayString(taxaQuery);
             } else {
                 requestParams.setDisplayString(taxaQuery);
@@ -638,20 +639,11 @@ public class OccurrenceController {
      * @param model
      */
     private void addCommonDataToModel(Model model) {
-        List<String>inguids = collectoryUidCache.getInstitutions();
+        List<String> inguids = collectoryUidCache.getInstitutions();
         List<String> coguids = collectoryUidCache.getCollections();
         model.addAttribute("collectionCodes", collectionsCache.getCollections(inguids, coguids));
         model.addAttribute("institutionCodes", collectionsCache.getInstitutions(inguids, coguids));
-        model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));
-        model.addAttribute("institutions", collectionsCache.getInstitutions(inguids, coguids));
-        model.addAttribute("typeStatus", TypeStatus.getStringList());
-        model.addAttribute("basisOfRecord", BasisOfRecord.getStringList());
-        model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
-        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
-        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
-//        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
-        model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
-        model.addAttribute("defaultFacets", new SearchRequestParams().getFacets());
+        model.addAttribute("defaultFacets", biocacheService.getDefaultFacets());
     }
 
     /**
