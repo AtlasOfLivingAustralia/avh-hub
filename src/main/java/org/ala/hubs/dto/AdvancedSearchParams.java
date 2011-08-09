@@ -56,7 +56,7 @@ public class AdvancedSearchParams {
         if (!state.isEmpty()) q.append(" state:\"").append(state).append("\"");
         if (!ibra.isEmpty()) q.append(" ibra:\"").append(ibra).append("\"");
         if (!imcra.isEmpty()) q.append(" imcra:\"").append(imcra).append("\"");
-        if (!places.isEmpty()) q.append(" places:\"").append(places).append("\"");
+        if (!places.isEmpty()) q.append(" places:\"").append(places.trim()).append("\"");
         if (!type_status.isEmpty()) q.append(" type_status:").append(type_status);
         if (!basis_of_record.isEmpty()) q.append(" basis_of_record:").append(basis_of_record);
         if (!catalogue_number.isEmpty()) q.append(" catalogue_number:").append(catalogue_number);
