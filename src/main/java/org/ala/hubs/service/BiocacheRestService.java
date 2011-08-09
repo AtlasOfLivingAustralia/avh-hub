@@ -34,6 +34,7 @@ import org.springframework.web.client.RestOperations;
 
 import au.org.ala.biocache.ErrorCode;
 import au.org.ala.biocache.QualityAssertion;
+import com.googlecode.ehcache.annotations.Cacheable;
 
 /**
  * Implementation of BiocacheService.java that calls the biocache-service application
@@ -321,6 +322,22 @@ public class BiocacheRestService implements BiocacheService {
         }
         
         return compareRecord;
+    }
+
+    @Override
+    @Cacheable(cacheName = "facetsCache")
+    public List<String> getDefaultFacets() {
+        List<String> facets = null;
+        
+        try {
+            final String jsonUri = biocacheUriPrefix + "/search/facets";            
+            logger.info("Requesting facets via: " + jsonUri);
+            facets = restTemplate.getForObject(jsonUri, List.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+        
+        return facets;
     }
     
     
