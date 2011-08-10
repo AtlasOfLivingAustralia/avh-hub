@@ -260,6 +260,11 @@ h1 span#recordId {
     margin-bottom: 0;
 }
 
+#processedVsRawView {
+    font-size: 13px;
+    text-align: center;
+}
+
 #processedVsRawView > table {
     width: 97%;
 }
@@ -275,6 +280,9 @@ h1 span#recordId {
     border-left: 1px solid #D9D9D9;
 }
 
+#processedVsRawView > table > thead > tr {
+    border-bottom: 1px solid #D9D9D9;
+}
 #processedVsRawView > table > tbody > tr > td, #processedVsRawView > table > thead > tr > th {
     border-left: 1px solid #D9D9D9;
 }
@@ -289,6 +297,10 @@ h1 span#recordId {
 
 .inner td.label {
     text-align: right;
+}
+
+.grey-bg {
+    background-color: #F0F0F0;
 }
 
 #processedVsRawView td {

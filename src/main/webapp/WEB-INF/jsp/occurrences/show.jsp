@@ -1038,7 +1038,7 @@
                             <tr>
                                 <th style="width:15%;text-align:center;">Group</th>
                                 <th style="width:15%;text-align:center;">Field Name</th>
-                                <th style="width:35%;text-align:center;">Raw</th>
+                                <th style="width:35%;text-align:center;">Original</th>
                                 <th style="width:35%;text-align:center;">Processed</th>
                             </tr>
                         </thead>
