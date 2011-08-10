@@ -272,6 +272,45 @@ public class OccurrenceController {
         addCommonDataToModel(model);
         return RECORD_LIST;
     }
+    
+    /**
+     * UID search for links via collectory
+     * 
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception 
+     */
+    @RequestMapping(value = "/searchForUID*", method = RequestMethod.GET)
+    public String searchForUid(
+            SearchRequestParams requestParams, 
+            BindingResult result, 
+            Model model,
+            HttpServletRequest request) throws Exception {
+        logger.debug("/searchForUID TOP");
+        
+        if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        
+        String query = requestParams.getQ();
+        
+        if (query.startsWith("in")) {
+            requestParams.setQ("institution_uid:" + query);
+        } else if (query.startsWith("co")) {
+            requestParams.setQ("collection_uid:" + query);
+        }
+        
+		doFullTextSearch(null, model, requestParams, request);
+        
+        return RECORD_LIST;
+    }
 
     /**
      * Occurrence search for a given collection, institution, data_resource or data_provider.
