@@ -719,6 +719,7 @@ public class OccurrenceController {
         List<String> coguids = collectoryUidCache.getCollections();
         model.addAttribute("collectionCodes", collectionsCache.getCollections(inguids, coguids));
         model.addAttribute("institutionCodes", collectionsCache.getInstitutions(inguids, coguids));
+        model.addAttribute("dataResourceCodes", collectionsCache.getDataResources(inguids, coguids));
         model.addAttribute("defaultFacets", biocacheService.getDefaultFacets());
     }
 

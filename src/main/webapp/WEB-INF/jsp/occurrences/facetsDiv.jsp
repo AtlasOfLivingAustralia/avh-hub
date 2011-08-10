@@ -58,6 +58,9 @@
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'collection_uid')}">
                                         <b><fmt:message key="${collectionCodes[item.value]}"/></b>${closeLink}
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'data_resource_uid')}">
+                                        <b><fmt:message key="${dataResourceCodes[item.value]}"/></b>${closeLink}
+                                    </c:when>
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'species_guid')}">
                                         <b class="species_guid" id="${item.value}"><fmt:message key="${fn:substring(item.value,0,20)}"/></b>${closeLink}
                                     </c:when>
@@ -91,6 +94,10 @@
                                         <li><c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
                                             <a href="?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${dateRangeTo}]">${startYear}<i>s</i></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource_uid')}">
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${dataResourceCodes[fieldResult.label]}</a>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></a>
