@@ -174,3 +174,6 @@ span#taxonName {
 #content2 div.taxaDescription p {
     padding-bottom: 10px;
 }
+.bold {
+    font-weight: bold;
+}

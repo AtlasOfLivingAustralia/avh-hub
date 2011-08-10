@@ -316,18 +316,39 @@ $(document).ready(function() {
         document.location.reload(true);
     });
     
-    // taxa search - show included sysnonyms with popup to allow user to refine to a single name
+    // taxa search - show included synonyms with popup to allow user to refine to a single name
     var taxaLsid = $("#queryGuid").text();
     if (taxaLsid) {
-        var jsonUri = bieWebappUrl + "/species/synonymsForGuid/" + taxaLsid + ".json?callback=?";
+        //var jsonUri = bieWebappUrl + "/species/synonymsForGuid/" + taxaLsid + ".json?callback=?";
+        var jsonUri = biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + taxaLsid + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
         $.getJSON(jsonUri, function(data) {
             // list of synonyms
-            var synList = "<div id='refineTaxaSearch'>The following taxa are synonyms of <b>" + 
-                $("#matchedTaxon").text() + "</b>. Click on a name to search for records that use this name (verbatim). <ul>";
-            $.each(data, function(i, el) {
-                synList += "<li><a href='?q=raw_taxon_name:%22" + el.name + "%22'>" + el.name + "</a>";
+            var synList = "<div id='refineTaxaSearch'>" + 
+            //    "The following taxa are synonyms of <b>" + $("#matchedTaxon").text() + 
+            //    "</b>. Click on a name to search for records that use this name (verbatim). <ul>";
+                "This taxon search will include records with synonyms and child taxa of " +
+                "<a href='" + bieWebappUrl + "/species/" + taxaLsid + "' title='Species page' class='bold'>" +
+                $("#matchedTaxon").text() + "</a>.<br/>Below are the <u>unprocessed scientific names</u> " + 
+                "which appear on records in this result set:";
+            var synListSize = 0;
+            $.each(data.facetResults, function(i, el) {
+                //console.log("el", el);
+                if (el.fieldName == "raw_taxon_name") {
+                    $.each(el.fieldResult, function(j, el1) {
+                        synListSize++;
+                        synList += "<li><a href='?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")";
+                    });
+                    
+                }
             });
-            synList += "</ul></div>";
+            
+            synList += "</ul>";
+            
+            if (synListSize >= 50) {
+                synList += "<div>[Only showing the top 50 names]</div>";
+            } 
+            
+            synList += "</div>";
             $("#resultsReturned").append(synList);
             // position it under the drop down
             $("#refineTaxaSearch").position({

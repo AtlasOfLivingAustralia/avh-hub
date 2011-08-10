@@ -22,6 +22,7 @@
             contextPath = "${pageContext.request.contextPath}";
             searchString = '${searchResults.urlParameters}'; 
             bieWebappUrl = "${bieWebappContext}";
+            biocacheServiceUrl = "${biocacheServiceUrl}";
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>

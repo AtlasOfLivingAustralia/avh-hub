@@ -634,9 +634,12 @@ public class OccurrenceController {
                 taxaQuery = taxaQuery + " <span id='queryGuid'>" + guid + "</span>";
                 // add raw_scientificName facet so we can show breakdown of taxa contributing to search
                 List<String> facets = new ArrayList<String>(Arrays.asList(requestParams.getFacets()));                
-                if (!facets.contains("raw_taxon_name")) facets.add("raw_taxon_name"); 
-                requestParams.setFacets(facets.toArray(new String[0]));
-                requestParams.setDisplayString(taxaQuery);
+                if (!facets.contains("raw_taxon_name")) {
+                    facets.add("raw_taxon_name");
+                    requestParams.setFacets(facets.toArray(new String[0]));
+                    requestParams.setDisplayString(taxaQuery);
+                } 
+                
             } else {
                 requestParams.setDisplayString(taxaQuery);
             }
