@@ -21,8 +21,6 @@ import au.org.ala.biocache.SpeciesGroup;
 import au.org.ala.biocache.SpeciesGroups;
 import au.org.ala.biocache.Term;
 import au.org.ala.biocache.TypeStatus;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import org.ala.hubs.dto.AdvancedSearchParams;
