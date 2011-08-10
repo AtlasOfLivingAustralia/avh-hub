@@ -259,9 +259,11 @@
                     <button class="rounded" id="assertionButton">
                         <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
                     </button>
-                    <!--c:if test="${isCollectionAdmin}"-->
-                        <!--div>You are able to modify assertions!</div-->
-                    <!--/c:if-->
+                    <c:if test="${isCollectionAdmin}">
+                        <button class="rounded" id="verifyButton">
+                            <span id="assertionMaker" href="#verifyRecord" title="">Verify Record</span>
+                        </button>
+                    </c:if>
                     <div style="display:none">
                         <c:choose>
                         <c:when test="${empty userId}">
