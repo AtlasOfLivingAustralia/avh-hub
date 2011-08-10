@@ -1003,14 +1003,14 @@
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field Notes">
                             ${record.raw.occurrence.fieldNotes}
                         </alatag:occurrenceTableRow>
-                        <!-- Coordinate Accuracy -->
+                        <!-- Coordinate Precision -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate Precision">
                             <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
                                 ${not empty record.processed.location.coordinatePrecision ? record.processed.location.coordinatePrecision : 'Unknown'}
                             </c:if>
                         </alatag:occurrenceTableRow>
-                        <!-- Coordinate Accuracy -->
-                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate Accuracy (metres)">
+                        <!-- Coordinate Uncertainty -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate Uncertainty (metres)">
                             <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
                                 ${not empty record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
                             </c:if>
