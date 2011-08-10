@@ -181,9 +181,9 @@
                         <div id="mapcanvas"></div>
                         <div id="maploading">Loading...</div>
                         <div id="legend" title="Toggle layers/legend display">                            
-                            <div class="title">Layers<span>&nabla;</span></div>
+                            <div class="title">Legend<span>&nabla;</span></div>
                             <div id="layerlist">
-                                <div id="toggleAll">Toggle layers</div>
+                                <div id="toggleAll">Toggle All</div>
                                 <div id="legendContent"></div>
                             </div>
                         </div>

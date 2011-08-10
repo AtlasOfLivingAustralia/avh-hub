@@ -430,6 +430,9 @@ var Maps = (function() {
                 if (facetLabels[_idx].indexOf('Other') > -1) {
                     otherInc = true;
                 }
+                
+                // list to store species GUIDs in (to substitute names for)
+                var lsidList = [];
 
                 $.each(fValues, function(key, value) {
                     //var ptcolour = '#'+(Math.abs(fHashes[key])).toString(16);
@@ -437,6 +440,12 @@ var Maps = (function() {
                     //Maps.loadOccurrences("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
 
                     var label = fLabels[key];
+                    
+                    if (cbf == "species_guid" && label != "Other") {
+                        // add gid to list
+                        lsidList[key] = label;
+                    }
+                    
                     // year and month facets use a different colour scheme
                     var hexCode = otherColour;
                     if (label == "Other") {
@@ -470,6 +479,18 @@ var Maps = (function() {
                     }
 
                 });
+                
+                // Do JSON lookup for GUID -> taxon name
+                if (cbf == "species_guid" && lsidList) {
+                    var jsonUrl = bieWebappUrl + "/species/namesFromGuids.json?guid=" + lsidList.join("&guid=") + "&callback=?";
+                    $.getJSON(jsonUrl, function(data) {
+                        // set the name in place of LSID
+                        $.each(data, function(i, el) {
+                            var j = i + 1; 
+                            $("label[for='lyr"+j+"']").html("<i>"+data[i]+"</i>");
+                        });
+                    });
+                }
             }
 
             // display the legend content
