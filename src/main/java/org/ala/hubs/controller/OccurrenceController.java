@@ -272,6 +272,43 @@ public class OccurrenceController {
         addCommonDataToModel(model);
         return RECORD_LIST;
     }
+
+    /**
+     * Display records for a given taxon concept id (with request param)
+     * 
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception 
+     */
+    @RequestMapping(value = "/searchByTaxon*", method = RequestMethod.GET)
+    public String searchByTaxon(
+            SearchRequestParams requestParams, 
+            BindingResult result, 
+            Model model,
+            HttpServletRequest request) throws Exception {
+        logger.debug("/searchByTaxon TOP");
+        
+        if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        
+        String query = requestParams.getQ();
+        
+        if (!query.startsWith("lsid")) {
+            requestParams.setQ("lsid:" + query);
+        } 
+        
+		doFullTextSearch(null, model, requestParams, request);
+        
+        return RECORD_LIST;
+    }
     
     /**
      * UID search for links via collectory
