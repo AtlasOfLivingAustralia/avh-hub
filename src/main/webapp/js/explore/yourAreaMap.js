@@ -106,7 +106,9 @@ $(document).ready(function() {
         autoOpen: false,
         buttons: {
             'Download File': function() {
-                var downloadUrl = biocacheServiceUrl + "/explore/group/"+speciesGroup+"/download?latitude="+$('#latitude').val()+"&longitude="+$('#longitude').val()+"&radius="+$('#radius').val()+"&taxa=*&rank=*";
+                var downloadUrl = biocacheServiceUrl + "/explore/group/"+speciesGroup+"/download?latitude="+
+                    $('#latitude').val()+"&longitude="+$('#longitude').val()+"&radius="+$('#radius').val()+
+                    "&taxa=*&rank=*";
                 window.location.replace(downloadUrl);
                 $(this).dialog('close');
             },
@@ -347,10 +349,11 @@ function loadRecordsLayer(retry) {
     var zoom = (map && map.getZoom()) ? map.getZoom() : 12;
     // request params for ajax geojson call
     var params = {
-        "lat": $('#latitude').val(),
-        "lon": $('#longitude').val(),
-        "radius": $('#radius').val(),
-        "zoom": zoom
+        lat: $('#latitude').val(),
+        lon: $('#longitude').val(),
+        radius: $('#radius').val(),
+        fq: "geospatial_kosher:true",
+        zoom: zoom
     };
     if (taxon) {
         params.q = "species:\"" + taxon + "\"";
@@ -541,6 +544,7 @@ function groupClicked(el) {
         lat: $('#latitude').val(),
         lon: $('#longitude').val(),
         radius: $('#radius').val(),
+        fq: "geospatial_kosher:true",
         pageSize: 50
     };
     //var params = "?latitude=${latitude}&longitude=${longitude}&radius=${radius}&taxa="+taxa+"&rank="+rank;
@@ -654,6 +658,7 @@ function processSpeciesJsonData(data, appendResults) {
                 lat: $('#latitude').val(),
                 lon: $('#longitude').val(),
                 radius: $('#radius').val(),
+                fq: "geospatial_kosher:true",
                 start: start,
                 pageSize: 50
             };
@@ -687,6 +692,7 @@ function loadGroups() {
         lat: $('#latitude').val(),
         lon: $('#longitude').val(),
         radius: $('#radius').val(),
+        fq: "geospatial_kosher:true",
         facets: "species_group"
     }
     
@@ -704,7 +710,7 @@ function populateSpeciesGroups(data) {
     if (data.length > 0) {
          $("#taxa-level-0 tbody").empty(); // clear existing values
         $.each(data, function (i, n) {
-            addGroupRow(n.name, n.count, n.level)
+            addGroupRow(n.name, n.speciesCount, n.level)
         });
         
         // Dynamically set height of #taxaDiv (to match containing div height)

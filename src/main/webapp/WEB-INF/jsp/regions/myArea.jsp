@@ -119,7 +119,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Group</th>
-                                                    <th>Records</th>
+                                                    <th>Species</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
