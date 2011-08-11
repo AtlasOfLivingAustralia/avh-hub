@@ -110,6 +110,10 @@ function removeFacet(facet) {
     window.location.href = window.location.pathname + '?' + paramList.join('&') + window.location.hash;
 }
 
+// vars for hiding drop-dpwn divs on click outside tem
+var hoverTaxaRefine = false;
+var hoverFacetOptions = false;
+
 // Jquery Document.onLoad equivalent
 $(document).ready(function() {
     // listeners for sort & paging widgets
@@ -328,7 +332,7 @@ $(document).ready(function() {
             //    "</b>. Click on a name to search for records that use this name (verbatim). <ul>";
                 "This taxon search will include records with synonyms and child taxa of " +
                 "<a href='" + bieWebappUrl + "/species/" + taxaLsid + "' title='Species page' class='bold'>" +
-                $("#matchedTaxon").text() + "</a>.<br/>Below are the <u>unprocessed scientific names</u> " + 
+                $("#matchedTaxon").text() + "</a>.<br/>Below are the <u>original scientific names</u> " + 
                 "which appear on records in this result set:";
             var synListSize = 0;
             $.each(data.facetResults, function(i, el) {
@@ -370,6 +374,24 @@ $(document).ready(function() {
     $("#queryDisplay a").click(function(e) {
         e.preventDefault();
         $("#refineTaxaSearch").toggle();
+    });
+    
+    // close drop-down divs when clicked outside 
+    $('#refineTaxaSearch').live("mouseover mouseout", function(event) {
+        if ( event.type == "mouseover" ) {
+            hoverTaxaRefine = true;
+        } else {
+            hoverTaxaRefine = false;
+        }
+    });
+    $('#facetOptions').hover(function(){ 
+        hoverFacetOptions = true; 
+    }, function(){ 
+        hoverFacetOptions = false; 
+    });
+    $("body").mouseup(function(){ 
+        if (!hoverTaxaRefine) $('#refineTaxaSearch').hide();
+        if (!hoverFacetOptions) $('#facetOptions').hide();
     });
     
 }); // end JQuery document ready
