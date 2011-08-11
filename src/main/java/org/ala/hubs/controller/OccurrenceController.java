@@ -703,6 +703,10 @@ public class OccurrenceController {
             requestParams.setDisplayString(searchResult.getQueryTitle());
         }
         
+        if (requestParams.getDisplayString().equals("*:*")) {
+            requestParams.setDisplayString("[all records]");
+        }
+        
         model.addAttribute("searchRequestParams", requestParams);
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
