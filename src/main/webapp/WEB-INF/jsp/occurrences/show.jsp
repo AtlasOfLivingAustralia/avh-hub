@@ -1028,6 +1028,22 @@
                                 </c:when>
                             </c:choose>
                         </alatag:occurrenceTableRow>
+                        <!-- GeoreferenceVerificationStatus -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceVerificationStatus" fieldName="Georeference Verification Status">
+                            ${record.raw.location.georeferenceVerificationStatus}
+                        </alatag:occurrenceTableRow>                        
+                        <!-- georeferenceSources -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceSources" fieldName="Georeference Sources">
+                            ${record.raw.location.georeferenceSources}
+                        </alatag:occurrenceTableRow>                        
+                        <!-- georeferenceProtocol -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceProtocol" fieldName="Georeference Protocol">
+                            ${record.raw.location.georeferenceProtocol}
+                        </alatag:occurrenceTableRow> 
+                        <!-- georeferenceProtocol -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferencedBy" fieldName="Georeferenced By">
+                            ${record.raw.location.georeferencedBy}
+                        </alatag:occurrenceTableRow>  
                     </table>
                 </div>
             </div>
