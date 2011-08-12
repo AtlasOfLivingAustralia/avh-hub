@@ -581,7 +581,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Type Status -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="typeStatus" fieldName="Type Status">
-                            ${record.raw.occurrence.typeStatus}
+                            ${record.raw.identification.typeStatus}
                         </alatag:occurrenceTableRow>
                         <!-- Reproductive Condition -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="reproductiveCondition" fieldName="Reproductive Condition">
