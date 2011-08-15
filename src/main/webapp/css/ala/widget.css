@@ -167,3 +167,7 @@ input::-webkit-input-placeholder {
 span#assertionMaker {
     font-size: 100%;
 }
+
+input[type="submit"] {
+    color: #000000;
+}
