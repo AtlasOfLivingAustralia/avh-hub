@@ -85,7 +85,7 @@ $(document).ready(function() {
         //addTaxonConcept(item);
         //console.log("result",  item, this);
         var id = $(this).attr("id");
-        console.log("id", id);
+        //console.log("id", id);
         $(".lsidInput#" + id).val(item.guid);
     });
 
