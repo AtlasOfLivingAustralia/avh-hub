@@ -77,7 +77,7 @@ td.label {
     padding-left: 30px;
 }
 #headingBar h1 {
-    font-family: 'Rockwell', arial, helvetica, sans-serif;
+/*    font-family: 'Rockwell', arial, helvetica, sans-serif;*/
     color: #1775BA;
     font-size: 200%;
     /*text-shadow: 1px 1px 1px #bbbaba;*/
@@ -108,12 +108,14 @@ td.label {
     font-size: 13px;
 }
 #advancedSearchLink {
-    display: inline-block;
-    padding: 2px 0;
+    display: block;
+    padding: 0;
+    margin-top: -16px;
+    margin-right: 70px;
 }
 #advancedSearchLink a {
-    font-size: 12px;
-    margin-left: 5px;
+    font-size: 11px;
+   
 }
 #advancedSearch {
     display: none;

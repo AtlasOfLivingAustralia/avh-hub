@@ -111,8 +111,7 @@ function removeFacet(facet) {
 }
 
 // vars for hiding drop-dpwn divs on click outside tem
-var hoverTaxaRefine = false;
-var hoverFacetOptions = false;
+var hoverDropDownDiv = false;
 
 // Jquery Document.onLoad equivalent
 $(document).ready(function() {
@@ -370,28 +369,23 @@ $(document).ready(function() {
         $("#matchedTaxon").wrap("<a href='#' title='display query info'/>");
         $("#matchedTaxon").addClass("dropDown");
     }
-    
+        
     $("#queryDisplay a").click(function(e) {
         e.preventDefault();
         $("#refineTaxaSearch").toggle();
     });
     
     // close drop-down divs when clicked outside 
-    $('#refineTaxaSearch').live("mouseover mouseout", function(event) {
+    $('#customiseFacets > a, #refineTaxaSearch, #queryDisplay a, #facetOptions').live("mouseover mouseout", function(event) {
         if ( event.type == "mouseover" ) {
-            hoverTaxaRefine = true;
+            hoverDropDownDiv = true;
         } else {
-            hoverTaxaRefine = false;
+            hoverDropDownDiv = false;
         }
     });
-    $('#facetOptions').hover(function(){ 
-        hoverFacetOptions = true; 
-    }, function(){ 
-        hoverFacetOptions = false; 
-    });
+    
     $("body").mouseup(function(){ 
-        if (!hoverTaxaRefine) $('#refineTaxaSearch').hide();
-        if (!hoverFacetOptions) $('#facetOptions').hide();
+        if (!hoverDropDownDiv) $('#refineTaxaSearch, #facetOptions').hide();
     });
     
 }); // end JQuery document ready

@@ -118,20 +118,23 @@ div#currentFilter {
     font-weight: normal;
     color: #555;
 }
-#dropdowns {
+#searchControls {
     background-color: #F0F0F0;
     border-bottom: 1px solid #D9D9D9;
     border-top: 1px solid #D9D9D9;
     /*                margin-left: 15px;*/
     padding: 5px;
+    height: 22px;
 }
-#resultsStats {
-    float: left;
-    text-align: left;
-    width: 50%;
+
+#results {
+    clear: both;
 }
-#sortWidget {
+
+#sortWidgets {
     text-align: right;
+    float: right;
+    width: 70%;
 }
 #searchNavBar {
     text-align: center;
@@ -297,7 +300,22 @@ span#queryDisplay a:hover {
     border: 1px solid #BBBBBB;
 }
 
-#customiseFacets a::after, .dropDown::after {
+#downloads {
+    display: inline-block;
+    float: left;
+    text-align: left;
+    font-weight: bold;
+    padding: 2px 5px;
+    margin-top: -1px;
+    background-color: #FFFFFF;
+    border: 1px solid #BBBBBB;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#customiseFacets a::after, .dropDown::after,  #downloads1 a::after {
     width: 7px;
     height: 7px;
     display: inline-block;

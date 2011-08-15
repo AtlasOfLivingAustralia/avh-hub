@@ -26,6 +26,7 @@ public class AdvancedSearchParams {
 
     protected String text = "";
     protected String[] lsid = {};
+    protected String[] taxa = {};
     protected String raw_taxon_name = "";
     protected String species_group = "";
     protected String institution_collection = "";
@@ -70,6 +71,16 @@ public class AdvancedSearchParams {
         
         if (!lsids.isEmpty()) {
             q.append(" lsid:").append(StringUtils.join(lsids, " OR lsid:"));
+        }
+        
+        ArrayList<String> taxas = new ArrayList<String>();
+        for (String taxon : taxa) {
+            if (!taxon.isEmpty()) taxas.add(taxon);
+        }
+        
+        if (!taxas.isEmpty()) {
+            if (!lsids.isEmpty()) q.append(" OR ");
+            q.append(" raw_name:\"").append(StringUtils.join(taxas, "\" OR raw_name:\"")).append("\"");
         }
         
         if (!institution_collection.isEmpty()) {
@@ -381,6 +392,14 @@ public class AdvancedSearchParams {
      */
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String[] getTaxa() {
+        return taxa;
+    }
+
+    public void setTaxa(String[] taxa) {
+        this.taxa = taxa;
     }
 
 }

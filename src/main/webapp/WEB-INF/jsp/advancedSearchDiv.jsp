@@ -9,23 +9,23 @@
     <h4>Advanced search options</h4>
     <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/advancedSearch" method="POST">
         <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;">${param.q}</input>
-        <b>Find records that have...</b>
+        <b>Find records that have</b>
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
             <tbody>
                 <tr>
-                    <td class="label">All of these words (full text)</td>
+                    <td class="label">ALL of these words (full text)</td>
                     <td>
                          <input type="text" name="text" id="text" class="dataset" placeholder="" size="80" value="${param.text}"/>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <b>Find records for the following taxa...</b>
+        <b>Find records for the ANY of the following taxa (matched/processed taxon concepts)</b>
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
             <tbody>
-                <tr>
+<%--                <tr>
                     <td class="label">Search for taxon name</td>
                     <td>
                         <input type="text" value="" id="name_autocomplete" 
@@ -40,16 +40,28 @@
                     <tr style="display: none" id="taxon_row_${i}">
                         <td class="label">Species/Taxon</td>
                         <td>
-                            <%-- Search <input type="text" value="" id="${i}"name="name_autocomplete"  style="width:35%"> --%>
                             <div class="matchedName" id="sciname_${i}"></div>
                             <input type="hidden" name="lsid" id="${lsidParam}" value="${param.lsid}"/>
                             <input type="button" id="clear_${i}" class="clear_taxon" value="clear" title="Remove this taxon" style="display: none; float:left"/>
                         </td>
                     </tr>
+                </c:forEach>--%>
+                <c:forEach begin="1" end="4" step="1" var="i">
+                    <c:set var="lsidParam" value="lsid_${i}"/>
+                    <tr style="" id="taxon_row_${i}">
+                        <td class="label">Species/Taxon</td>
+                        <td>
+                            <input type="text" value="" id="taxa_${i}" name="taxa" class="name_autocomplete" style="width:35%">
+                            <input type="hidden" name="lsid" class="lsidInput" id="taxa_${i}" value=""/>
+                            <%-- <div class="matchedName" id="sciname_${i}"></div>
+                            
+                            <input type="button" id="clear_${i}" class="clear_taxon" value="clear" title="Remove this taxon" style="display: none; float:left"/> --%>
+                        </td>
+                    </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <b>Find records that specify the following scientific name (verbatim)</b>
+        <b>Find records that specify the following scientific name (verbatim/unprocessed name)</b>
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
             <tbody>

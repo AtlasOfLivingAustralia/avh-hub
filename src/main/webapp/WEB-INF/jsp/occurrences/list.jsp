@@ -10,7 +10,10 @@
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="queryDisplay">
-    <c:choose><c:when test="${false && not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when><c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
+    <c:choose>
+        <c:when test="${fn:contains(searchRequestParams.displayString,'matchedTaxon')}">${searchRequestParams.displayString}</c:when>
+        <c:when test="${not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when>
+        <c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
 </c:set>
 <!DOCTYPE html>
 <html>
@@ -52,10 +55,10 @@
             <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
+                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/advancedSearch">Advanced Search</a></span>
                     <input type="submit" id="solrSubmit" value="Search"/>
                     <span style="display:inline-block;width:50px;padding-top:3px;">Species:</span>&nbsp;<input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
                     <input type="hidden" id="lsid" value="${param.lsid}"/>
-                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/advancedSearch">Advanced Search</a></span>
                 </form>
             </div>
             
@@ -83,16 +86,20 @@
                     </div>
                     <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
                         for <span id="queryDisplay">${queryDisplay}</span>
-                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)
+<!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
                     </div>
+                    
                     <div style="display:none">
                         <jsp:include page="downloadDiv.jsp"/>
                     </div>
                 </div>
                 <div id="resultsOuter">
                     <div class="solrResults">
-                        <div id="dropdowns">
-                            <div id="resultsStats">
+                        <div id="searchControls">
+                            <div id="downloads">
+                                <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file">Download</a>
+                            </div>
+                            <div id="sortWidgets">
                                 Results per page
                                 <select id="per-page" name="per-page">
                                     <c:set var="pageSizeVar">
@@ -106,8 +113,6 @@
                                     <option value="50" <c:if test="${pageSizeVar eq '50'}">selected</c:if>>50</option>
                                     <option value="100" <c:if test="${pageSizeVar eq '100'}">selected</c:if>>100</option>
                                 </select>
-                            </div>
-                            <div id="sortWidget">
                                 Sort by
                                 <select id="sort" name="sort">
                                     <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>best match</option>
@@ -123,8 +128,8 @@
                                     <option value="desc" <c:if test="${param.dir eq 'desc'}">selected</c:if>>reverse</option>
                                 </select>
 
-                            </div><!--sortWidget-->
-                        </div><!--drop downs-->
+                            </div><!-- sortWidget -->
+                        </div><!-- searchControls -->
                         <div id="results">
                             <c:forEach var="occurrence" items="${searchResults.occurrences}">
                                 <p class="rowA">Record: <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink">

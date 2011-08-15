@@ -122,6 +122,10 @@
                                             key="${lsidLength > 30 ? fn:substring(fieldResult.label,0,20) : fieldResult.label}..${lsidLength > 30 ? fn:substring(fieldResult.label, (lsidLength - 10), lsidLength) : fieldResult.label}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'geospatial_kosher')}">
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="geospatial_kosher.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
                                     <c:otherwise>
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>

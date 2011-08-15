@@ -113,7 +113,7 @@ public class BiocacheRestService implements BiocacheService {
         SearchResultDTO searchResults = new SearchResultDTO();
         try {
             final String jsonUri = biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.toString();
-            logger.debug("Requesting: " + jsonUri);
+            logger.info("Entity Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);

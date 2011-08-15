@@ -45,7 +45,7 @@ $(document).ready(function() {
     };
     
     //  for taxon concepts
-    $("input#name_autocomplete").autocomplete('http://bie.ala.org.au/search/auto.json', {
+    $(".name_autocomplete").autocomplete('http://bie.ala.org.au/search/auto.json', {
         //width: 350,
         extraParams: {limit:100},
         dataType: 'jsonp',
@@ -56,7 +56,8 @@ $(document).ready(function() {
                 rows[i] = {
                     data:data[i],
                     value: data[i].guid,
-                    result: data[i].matchedNames[0]
+                    //result: data[i].matchedNames[0]
+                    result: data[i].name
                 };
             }
             return rows;
@@ -81,7 +82,11 @@ $(document).ready(function() {
         selectFirst: false
     }).result(function(event, item) {
         // user has selected an autocomplete item
-        addTaxonConcept(item);
+        //addTaxonConcept(item);
+        //console.log("result",  item, this);
+        var id = $(this).attr("id");
+        console.log("id", id);
+        $(".lsidInput#" + id).val(item.guid);
     });
 
     // "clear" button next to each taxon row

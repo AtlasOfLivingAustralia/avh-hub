@@ -267,6 +267,7 @@ public class OccurrenceController {
         SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
+        model.addAttribute("searchRequestParams", requestParams);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
         addCommonDataToModel(model);
@@ -576,8 +577,8 @@ public class OccurrenceController {
                 if (matcher.find()) {
                     logger.info("Generator: "+matcher.group(1));
                     requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
-                }
-                
+            }
+            
             }
             
         } catch (Exception ex) {
@@ -632,12 +633,12 @@ public class OccurrenceController {
             if (guid != null && !guid.isEmpty()) {
                 query.append(" OR lsid:").append(guid);
                 taxaQuery = taxaQuery + " <span id='queryGuid'>" + guid + "</span>";
+                requestParams.setDisplayString(taxaQuery);
                 // add raw_scientificName facet so we can show breakdown of taxa contributing to search
-                List<String> facets = new ArrayList<String>(Arrays.asList(requestParams.getFacets()));                
+                List<String> facets = new ArrayList<String>(Arrays.asList(requestParams.getFacets()));    
                 if (!facets.contains("raw_taxon_name")) {
                     facets.add("raw_taxon_name");
                     requestParams.setFacets(facets.toArray(new String[0]));
-                    requestParams.setDisplayString(taxaQuery);
                 } 
                 
             } else {

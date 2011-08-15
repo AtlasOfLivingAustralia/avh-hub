@@ -116,12 +116,12 @@ public class HomePageController {
      */
     @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
     public String homePagePost(AdvancedSearchParams requestParams, BindingResult result, Model model) {
-        logger.info("Advanced search POST");
+        logger.debug("Advanced search POST: " + requestParams.toString());
         
         if (result.hasErrors()) {
             logger.warn("BindingResult errors: " + result.toString());
         }
-        
+        // Note: AdvancedSearchParams.toString() contains the logic for building query
         return "redirect:/occurrences/search?q=" + requestParams.toString();
     }
 
