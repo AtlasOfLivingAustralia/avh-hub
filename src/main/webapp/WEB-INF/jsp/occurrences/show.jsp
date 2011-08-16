@@ -239,7 +239,9 @@
                         <ul id="systemAssertions">
                             <c:forEach var="systemAssertion" items="${record.systemAssertions}">
                                 <li>
-                                    <!-- <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/> -->
+                                    <c:if test="${empty systemAssertion.comment}">
+                                        <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
+                                    </c:if>
                                     ${systemAssertion.comment}
                                 </li>
                             </c:forEach>
