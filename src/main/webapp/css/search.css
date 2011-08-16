@@ -24,27 +24,64 @@
     float: left;
     height: 32px;
 }
-#searchBox {
+#headingBar #searchBox {
+    margin: 0;
+    padding:0;
+    width: 60%;
+    float: left;
+    height: 80px;
+    text-align: right;
+}
+#headingBar > #searchBox {
     width: 60%;
     float: left;
     height: 36px;
     text-align: right;
 }
+
+#searchBox > #searchLabel { 
+    display:inline-block;
+    padding-top:0px; 
+}
+
+#searchBox #advancedSearchLink {
+    display: block;
+    padding: 0;
+/*    margin: 0;*/
+    margin-bottom: 0;
+    margin-right: 70px;
+    font-size: 11px;
+}
+*+html #searchBox #advancedSearchLink {
+    display: block;
+    padding: 0;
+    margin-right: 80px;
+    margin-bottom: -6px;
+}
+
+#searchBox  #advancedSearchLink a {
+    font-size: 10px;
+}
+#searchBox #advancedSearchLink > a {
+    font-size: 11px; 
+}
 #solrSearchForm input {
     margin: 0
 }
-#solrSearchForm input#taxaQuery {
+#solrSearchForm > input#taxaQuery {
     display: inline-block;
-    float: right;
     margin-top: 2px;
     font-size: 13px;
     width: 450px;
 }
-#solrSearchForm input#solrSubmit {
+#solrSearchForm > input#solrSubmit {
     display: inline-block;
-    float: right;
     font-size: 13px;
     margin: 3px 6px;
+}
+
+#listMapToggle {
+    margin-top: 5px;
 }
 .sidebar li {
     border: none;
@@ -315,7 +352,7 @@ span#queryDisplay a:hover {
     border-radius: 5px;
 }
 
-#customiseFacets a::after, .dropDown::after,  #downloads1 a::after {
+#customiseFacets a::after, .dropDown::after {
     width: 7px;
     height: 7px;
     display: inline-block;

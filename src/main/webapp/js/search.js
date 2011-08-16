@@ -366,7 +366,7 @@ $(document).ready(function() {
         
         // format display with drop-down
         $("#matchedTaxon").before("<span class='plain'> which matched: </span>");
-        $("#matchedTaxon").wrap("<a href='#' title='display query info'/>");
+        $("#matchedTaxon").html("<a href='#' title='display query info'>" + $("#matchedTaxon").html() + "</a>");
         $("#matchedTaxon").addClass("dropDown");
     }
         

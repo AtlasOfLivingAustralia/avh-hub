@@ -2,26 +2,34 @@ button {
     border: 0 none;
     cursor: pointer;
     font-weight: bold;
-    padding: 0 15px 0 0;
+    padding: 0 12px 0 0;
     text-align: center;
     height: 30px;
     line-height: 30px;
     width: auto;
 }
 
+*+html button {
+    padding: 0 8px 0 0;
+}
+
 button.rounded {
     background: transparent url("../images/btn_right.png") no-repeat scroll right top;
     clear: left;
-    font-size: 1.1em;
+    font-size: 1.0em;
 }
 
 button span {
     display: block;
-    padding: 0 0 0 15px;
+    padding: 0 0 0 12px;
     position: relative;
     white-space: nowrap;
     height: 30px;
     line-height: 30px;
+}
+
+*+html button {
+    padding: 0 0 0 5px;
 }
 
 button.rounded span {

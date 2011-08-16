@@ -65,22 +65,24 @@ public class AdvancedSearchParams {
         if (!collector.isEmpty()) q.append(" collector:").append(collector);
         
         ArrayList<String> lsids = new ArrayList<String>();
-        for (String guid : lsid) {
-            if (!guid.isEmpty()) lsids.add(guid);
+        ArrayList<String> taxas = new ArrayList<String>();
+        
+        // iterate over the taxa search inputs and if lsid is set use it otherwisw use taxa input
+        for (int i = 0; i < lsid.length; i++) {
+            if (!lsid[i].isEmpty()) {
+                lsids.add(lsid[i]);
+            } else if (!taxa[i].isEmpty()) {
+                taxas.add(taxa[i]);
+            }
         }
         
         if (!lsids.isEmpty()) {
             q.append(" lsid:").append(StringUtils.join(lsids, " OR lsid:"));
         }
         
-        ArrayList<String> taxas = new ArrayList<String>();
-        for (String taxon : taxa) {
-            if (!taxon.isEmpty()) taxas.add(taxon);
-        }
-        
         if (!taxas.isEmpty()) {
             if (!lsids.isEmpty()) q.append(" OR ");
-            q.append(" raw_name:\"").append(StringUtils.join(taxas, "\" OR raw_name:\"")).append("\"");
+            q.append(" taxon_name:\"").append(StringUtils.join(taxas, "\" OR taxon_name:\"")).append("\"");
         }
         
         if (!institution_collection.isEmpty()) {
