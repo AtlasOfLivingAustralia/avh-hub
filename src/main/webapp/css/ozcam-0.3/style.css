@@ -460,3 +460,16 @@ h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, 
     color: #444;
     font-family: 'Rockwell', arial, helvetica, sans-serif;
 }
+
+/*---- ALA changes ----*/
+#contentBox > #headingBar {
+    height: 55px;
+}
+
+#contentBox > #headingBar > h1 {
+    padding-top: 10px;
+}
+
+#SidebarBox, #resultsReturned {
+    margin-top: 5px;
+} 
