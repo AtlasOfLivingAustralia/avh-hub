@@ -15,6 +15,7 @@
     </p>
     <form id="downloadForm">
         <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download${searchResults.urlParameters}"/>
+        <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download${searchResults.urlParameters}"/>
         <fieldset>
             <p><label for="email">Email</label>
                 <input type="text" name="email" id="email" value="${pageContext.request.remoteUser}" size="30"  /></p>
@@ -22,7 +23,8 @@
                 <input type="text" name="filename" id="filename" value="data" size="30"  /></p>
             <p><label for="reason" style="vertical-align: top">Download Reason</label>
                 <textarea name="reason" rows="5" cols="30" id="reason"  ></textarea></p>
-            <input type="submit" value="Download File" id="downloadSubmitButton"/>&nbsp;
+            <input type="submit" value="Download All Records" id="downloadSubmitButton"/>&nbsp;
+            <input type="submit" value="Download Species Checklist" id="downloadCheckListSubmitButton"/>&nbsp;
             <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
         </fieldset>
     </form>

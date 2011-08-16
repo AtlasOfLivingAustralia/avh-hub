@@ -97,7 +97,7 @@
                     <div class="solrResults">
                         <div id="searchControls">
                             <div id="downloads">
-                                <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file">Download</a>
+                                <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
                             </div>
                             <div id="sortWidgets">
                                 Results per page

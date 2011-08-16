@@ -162,6 +162,14 @@ $(document).ready(function() {
         window.location.href = downloadUrl;
         $.fancybox.close();
     });
+    // catch checklist download submit button
+    $("#downloadCheckListSubmitButton").click(function(e) {
+        e.preventDefault();
+        var downloadUrl = $("input#downloadChecklistUrl").val() + "&facets=species_guid";
+        alert("downloadUrl = " + downloadUrl);
+        window.location.href = downloadUrl;
+        $.fancybox.close();
+    });
 
     // set height of resultsOuter div to solrResults height
     var pageLength = $("select#per-page").val() || 20;

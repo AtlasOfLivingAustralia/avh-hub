@@ -24,15 +24,10 @@
     float: left;
     height: 32px;
 }
-#headingBar #searchBox {
+
+#headingBar > #searchBox {
     margin: 0;
     padding:0;
-    width: 60%;
-    float: left;
-    height: 80px;
-    text-align: right;
-}
-#headingBar > #searchBox {
     width: 60%;
     float: left;
     height: 36px;
