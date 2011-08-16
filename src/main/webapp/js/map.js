@@ -446,6 +446,13 @@ var Maps = (function() {
                         lsidList[key] = label;
                     }
                     
+                    if (cbf == "geospatial_kosher") {
+                        if (label != "true") {
+                            label = "Questionable";
+                        } else {
+                            label = "OK";
+                        }
+                    }
                     // year and month facets use a different colour scheme
                     var hexCode = otherColour;
                     if (label == "Other") {
