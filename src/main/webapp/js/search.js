@@ -166,7 +166,7 @@ $(document).ready(function() {
     $("#downloadCheckListSubmitButton").click(function(e) {
         e.preventDefault();
         var downloadUrl = $("input#downloadChecklistUrl").val() + "&facets=species_guid";
-        alert("downloadUrl = " + downloadUrl);
+        //alert("downloadUrl = " + downloadUrl);
         window.location.href = downloadUrl;
         $.fancybox.close();
     });
