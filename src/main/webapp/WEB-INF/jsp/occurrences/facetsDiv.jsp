@@ -64,6 +64,9 @@
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'species_guid')}">
                                         <b class="species_guid" id="${item.value}"><fmt:message key="${fn:substring(item.value,0,20)}"/></b>${closeLink}
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'geospatial_kosher')}">
+                                        <b><fmt:message key="geospatial_kosher.${item.value}"/></b>${closeLink}
+                                    </c:when>  
                                     <c:otherwise>
                                         <b><fmt:message key="${item.value}"/></b>${closeLink}
                                     </c:otherwise>
