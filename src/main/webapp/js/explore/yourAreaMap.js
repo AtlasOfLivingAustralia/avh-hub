@@ -106,9 +106,8 @@ $(document).ready(function() {
         autoOpen: false,
         buttons: {
             'Download File': function() {
-                var downloadUrl = biocacheServiceUrl + "/explore/group/"+speciesGroup+"/download?latitude="+
-                    $('#latitude').val()+"&longitude="+$('#longitude').val()+"&radius="+$('#radius').val()+
-                    "&taxa=*&rank=*";
+                var downloadUrl = biocacheServiceUrl + "/explore/group/"+speciesGroup+"/download?lat="+
+                    $('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val();
                 window.location.replace(downloadUrl);
                 $(this).dialog('close');
             },
