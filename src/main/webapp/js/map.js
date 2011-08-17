@@ -493,7 +493,8 @@ var Maps = (function() {
                     $.getJSON(jsonUrl, function(data) {
                         // set the name in place of LSID
                         $.each(data, function(i, el) {
-                            var j = i + 1; 
+                            var j = i + ((lsidList.length >= 30) ? 1 : 0);
+                            //console.log(i, j, data[i]);
                             $("label[for='lyr"+j+"']").html("<i>"+data[i]+"</i>");
                         });
                     });
