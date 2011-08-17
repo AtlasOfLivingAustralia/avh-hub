@@ -53,7 +53,7 @@ button.rounded {
 }
 
 *+html button.rounded {
-    padding: 0 2px 0 0;
+    padding: 0 4px 0 0;
 }
 
 button.rounded span {
@@ -67,7 +67,7 @@ button.rounded span {
 }
 
 *+html button.rounded span {
-    padding: 4px 0 5px 0px;
+    padding: 4px 0 5px 6px;
 }
 
 button.rounded:hover {
