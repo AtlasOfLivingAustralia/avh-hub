@@ -527,7 +527,7 @@ function addAddressToPage(response) {
  */
 function groupClicked(el) {
     // Change the global var speciesGroup
-    speciesGroup = $(el).find('a.taxonBrowse').attr('href');
+    speciesGroup = $(el).find('a.taxonBrowse').attr('id');
     taxon = null; // clear any species click 
     //taxa = []; // array of taxa
     //taxa = (taxon.indexOf("|") > 0) ? taxon.split("|") : taxon;
@@ -607,7 +607,7 @@ function processSpeciesJsonData(data, appendResults) {
             $('#rightList tbody').append('<tr id="loadMoreSpecies"><td>&nbsp;</td><td colspan="2"><a href="'+newStart+
                 '">Show more species</a></td></tr>');
         }
-
+        
     } else if (appendResults) {
         // do nothing
     } else {
@@ -645,8 +645,8 @@ function processSpeciesJsonData(data, appendResults) {
     $('#loadMoreSpecies a').click(
         function(e) {
             e.preventDefault(); // ignore the href text - used for data
-            var thisTaxon = $('#taxa-level-0 tr.activeRow').find('a.taxonBrowse').attr('href');
-            rank = $('#taxa-level-0 tr.activeRow').find('a.taxonBrowse').attr('id');
+            var thisTaxon = $('#taxa-level-0 tr.activeRow').find('a.taxonBrowse').attr('id');
+            //rank = $('#taxa-level-0 tr.activeRow').find('a.taxonBrowse').attr('id');
             taxa = []; // array of taxa
             taxa = (thisTaxon.indexOf("|") > 0) ? thisTaxon.split("|") : thisTaxon;
             var start = $(this).attr('href');
@@ -724,7 +724,7 @@ function populateSpeciesGroups(data) {
         var label = group;
         if (group == "ALL_SPECIES") label = "All Species";
         var rc = (group == speciesGroup) ? " class='activeRow'" : ""; // highlight active group
-        var h = "<tr"+rc+" title='click to view group on map'><td class='indent"+indent+"'><a href='"+group+"' class='taxonBrowse' title='click to view group on map'>"+label+"</a></td><td>"+count+"</td></tr>";
+        var h = "<tr"+rc+" title='click to view group on map'><td class='indent"+indent+"'><a href='#' id='"+group+"' class='taxonBrowse' title='click to view group on map'>"+label+"</a></td><td>"+count+"</td></tr>";
         $("#taxa-level-0 tbody").append(h);
     }
 }
