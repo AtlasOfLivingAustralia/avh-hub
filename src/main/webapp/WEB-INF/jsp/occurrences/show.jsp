@@ -258,14 +258,16 @@
                     </div>
                 </div>
                 <div class="sidebar">
-                    <button class="rounded" id="assertionButton">
-                        <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
-                    </button>
                     <c:if test="${isCollectionAdmin}">
                         <button class="rounded" id="verifyButton">
                             <span id="assertionMaker" href="#verifyRecord" title="">Verify Record</span>
                         </button>
                     </c:if>
+                </div>
+                <div class="sidebar">
+                    <button class="rounded" id="assertionButton">
+                        <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
+                    </button>
                     <div style="display:none">
                         <c:choose>
                         <c:when test="${empty userId}">
