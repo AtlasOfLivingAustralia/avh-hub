@@ -641,7 +641,7 @@ public class OccurrenceController {
                 } 
                 
             } else {
-                query.append("raw_name:\"" + taxaQuery + "\"");
+                query.append(taxaQuery); // full text search
                 requestParams.setDisplayString(taxaQuery);
             }
             
@@ -704,8 +704,8 @@ public class OccurrenceController {
             requestParams.setDisplayString(searchResult.getQueryTitle());
         }
         
-        if (requestParams.getDisplayString().equals("*:*")) {
-            requestParams.setDisplayString("[all records]");
+        if (searchResult.getQueryTitle().equals("*:*")) {
+            searchResult.setQueryTitle("[all records]");
         }
         
         model.addAttribute("searchRequestParams", requestParams);

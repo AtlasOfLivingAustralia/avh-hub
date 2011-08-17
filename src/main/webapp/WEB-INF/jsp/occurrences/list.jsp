@@ -100,7 +100,7 @@
                                 <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
                             </div>
                             <div id="sortWidgets">
-                                Results per page
+                                Results per page:
                                 <select id="per-page" name="per-page">
                                     <c:set var="pageSizeVar">
                                         <c:choose>
@@ -113,7 +113,7 @@
                                     <option value="50" <c:if test="${pageSizeVar eq '50'}">selected</c:if>>50</option>
                                     <option value="100" <c:if test="${pageSizeVar eq '100'}">selected</c:if>>100</option>
                                 </select>
-                                Sort by
+                                Sort by:
                                 <select id="sort" name="sort">
                                     <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>best match</option>
                                     <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>scientific name</option>
@@ -122,7 +122,7 @@
                                     <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>record date</option>
                                     <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>record type</option>
                                 </select>
-                                Sort order
+                                Sort order:
                                 <select id="dir" name="dir">
                                     <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>normal</option>
                                     <option value="desc" <c:if test="${param.dir eq 'desc'}">selected</c:if>>reverse</option>

@@ -9,9 +9,9 @@
 <div id="SidebarBox" class="facets">
     <div class="sidebar">
         <h3 style="float: left; display: inline-block;">Refine Results </h3>
-        <div id="customiseFacets"><a href="#">options</a></div>
+        <div id="customiseFacets"><a href="#">customise</a></div>
         <div id="facetOptions">
-            <h4>Filter Options</h4>
+            <h4>Select the filter categories that are to<br/> appear in the &quot;Refine Results&quot; column</h4>
             <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
             <div id="facetCheckboxes">
                 Select: <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a><br/>
