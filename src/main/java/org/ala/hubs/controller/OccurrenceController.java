@@ -577,8 +577,7 @@ public class OccurrenceController {
                 if (matcher.find()) {
                     logger.info("Generator: "+matcher.group(1));
                     requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
-            }
-            
+                }
             }
             
         } catch (Exception ex) {
@@ -626,12 +625,12 @@ public class OccurrenceController {
             requestParams.setQ("*:*"); // assume search for everything
         
         if (taxaQuery != null && !taxaQuery.isEmpty()) {
-            StringBuilder query = new StringBuilder("raw_name:\"" + taxaQuery + "\"");
+            StringBuilder query = new StringBuilder();
             String guid = bieService.getGuidForName(taxaQuery);
             logger.info("GUID = " + guid);
             
             if (guid != null && !guid.isEmpty()) {
-                query.append(" OR lsid:").append(guid);
+                query.append("lsid:").append(guid);
                 taxaQuery = taxaQuery + " <span id='queryGuid'>" + guid + "</span>";
                 requestParams.setDisplayString(taxaQuery);
                 // add raw_scientificName facet so we can show breakdown of taxa contributing to search
@@ -642,6 +641,7 @@ public class OccurrenceController {
                 } 
                 
             } else {
+                query.append("raw_name:\"" + taxaQuery + "\"");
                 requestParams.setDisplayString(taxaQuery);
             }
             
