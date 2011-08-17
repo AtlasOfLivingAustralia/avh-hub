@@ -193,6 +193,10 @@ ${collectionCodes}
                     <c:set var="cffv" value="[${fieldResult.label} TO ${dateRangeTo}]" />
                     <c:set var="cffl" value="${startYear} - ${startYear + 10}" />
                 </c:when>
+                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource_uid')}">
+                    <c:set var="cffv" value="${fieldResult.label}" />
+                    <c:set var="cffl" value="${dataResourceCodes[fieldResult.label]}" />
+                </c:when>
                 <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
                     <c:set var="cffv" value="${fieldResult.label}" />
                     <c:set var="cffl"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></c:set>
