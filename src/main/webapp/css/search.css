@@ -303,7 +303,7 @@ div#advancedSearch {
     display:none;
 }
 
-#refineTaxaSearch {
+.refineTaxaSearch {
     position: absolute;
     top: -9999px;
     width: 500px;
@@ -311,7 +311,7 @@ div#advancedSearch {
     background-color: #EEEEEE;
     border: 1px solid #BBBBBB;
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 0;
 }
 
 span#queryDisplay {

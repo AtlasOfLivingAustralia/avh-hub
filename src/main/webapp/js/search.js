@@ -328,21 +328,20 @@ $(document).ready(function() {
     });
     
     // taxa search - show included synonyms with popup to allow user to refine to a single name
-    var taxaLsid = $("#queryGuid").text();
-    if (taxaLsid) {
-        //var jsonUri = bieWebappUrl + "/species/synonymsForGuid/" + taxaLsid + ".json?callback=?";
-        var jsonUri = biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + taxaLsid + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
+    
+    $("span.lsid").each(function(i, el) {
+        var lsid = $(this).attr("id");
+        var nameString = $(this).html();
+        var jsonUri = biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
         $.getJSON(jsonUri, function(data) {
             // list of synonyms
-            var synList = "<div id='refineTaxaSearch'>" + 
-            //    "The following taxa are synonyms of <b>" + $("#matchedTaxon").text() + 
-            //    "</b>. Click on a name to search for records that use this name (verbatim). <ul>";
+            var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" + 
                 "This taxon search will include records with synonyms and child taxa of " +
-                "<a href='" + bieWebappUrl + "/species/" + taxaLsid + "' title='Species page' class='bold'>" +
-                $("#matchedTaxon").text() + "</a>.<br/>Below are the <u>original scientific names</u> " + 
-                "which appear on records in this result set:";
+                "<a href='" + bieWebappUrl + "/species/" + lsid + "' title='Species page' class='bold'>" +
+                nameString + "</a>.<br/>Below are the <u>original scientific names</u> " + 
+                "which appear on records in this result set:<ul>";
             var synListSize = 0;
-            $.each(data.facetResults, function(i, el) {
+            $.each(data.facetResults, function(k, el) {
                 //console.log("el", el);
                 if (el.fieldName == "raw_taxon_name") {
                     $.each(el.fieldResult, function(j, el1) {
@@ -353,6 +352,10 @@ $(document).ready(function() {
                 }
             });
             
+            if (synListSize == 0) {
+                synList += "<li style='list-style:none;'>[no records found]</li>";
+            }
+            
             synList += "</ul>";
             
             if (synListSize >= 50) {
@@ -362,25 +365,25 @@ $(document).ready(function() {
             synList += "</div>";
             $("#resultsReturned").append(synList);
             // position it under the drop down
-            $("#refineTaxaSearch").position({
+            $("#refineTaxaSearch_"+i).position({
                 my: "right top",
                 at: "right bottom",
-                of: $("#queryDisplay"), // or this
-                offset: "0 4",
+                of: $(el), // or this
+                offset: "0 -1",
                 collision: "none"
             });
-            $("#refineTaxaSearch").hide();
+            $("#refineTaxaSearch_"+i).hide();
         });
-        
         // format display with drop-down
-        $("#matchedTaxon").before("<span class='plain'> which matched: </span>");
-        $("#matchedTaxon").html("<a href='#' title='display query info'>" + $("#matchedTaxon").html() + "</a>");
-        $("#matchedTaxon").addClass("dropDown");
-    }
+        //$("span.lsid").before("<span class='plain'> which matched: </span>");
+        $(el).html("<a href='#' title='display query info' id='" + i + "'>" + nameString + "</a>");
+        $(el).addClass("dropDown");
+    });
         
     $("#queryDisplay a").click(function(e) {
         e.preventDefault();
-        $("#refineTaxaSearch").toggle();
+        var j = $(this).attr("id");
+        $("#refineTaxaSearch_"+j).toggle();
     });
     
     // close drop-down divs when clicked outside 
@@ -393,7 +396,7 @@ $(document).ready(function() {
     });
     
     $("body").mouseup(function(){ 
-        if (!hoverDropDownDiv) $('#refineTaxaSearch, #facetOptions').hide();
+        if (!hoverDropDownDiv) $('.refineTaxaSearch, #facetOptions').hide();
     });
     
 }); // end JQuery document ready
