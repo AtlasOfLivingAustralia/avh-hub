@@ -258,7 +258,7 @@
                     </div>
                 </div>
                 <div class="sidebar">
-                    <c:if test="${isCollectionAdmin}">
+                    <c:if test="${false && isCollectionAdmin}">
                         <button class="rounded" id="verifyButton">
                             <span id="assertionMaker" href="#verifyRecord" title="">Verify Record</span>
                         </button>
