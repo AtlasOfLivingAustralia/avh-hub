@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
@@ -56,6 +57,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -95,6 +97,9 @@ public class OccurrenceController {
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
+    @Value("${sensitiveDataset.list}")
+    String sensitiveDatasets = null;
+    
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
@@ -474,7 +479,7 @@ public class OccurrenceController {
             }
             
             model.addAttribute("record", record);
-            
+            model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
             // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
             Map<String, Object> compareRecord = biocacheService.getCompareRecord(uuid);
             model.addAttribute("compareRecord", compareRecord);
@@ -777,4 +782,4 @@ public class OccurrenceController {
     	}
         return (defaultValue);
     }
-}
+    }

@@ -21,6 +21,7 @@
 <c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
 <c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
+<%--<c:set var="sensitiveDatasets" scope="request"><ala:propertyLoader bundle="hubs" property="sensitiveDatasets.NSW_DECCW"/></c:set>--%>
 <c:set var="scientificName">
     <c:choose>
         <c:when test="${not empty record.processed.classification.scientificName}">
@@ -177,6 +178,32 @@
                 $("td.dwc").each(function(i, el) {
                     var html = $(el).html();
                     $(el).html(fileCase(html)); // conver it
+                });
+                
+                // load a JS map with sensitiveDatasets values from hubs.properties file
+                var sensitiveDatasets = {
+                    <c:forEach var="sds" items="${sensitiveDatasets}" varStatus="s">
+                        ${sds}: '<ala:propertyLoader bundle="hubs" property="sensitiveDatasets.${sds}"/>'<c:if test="${not s.last}">,</c:if>
+                    </c:forEach>
+                }
+                
+                // add links for dataGeneralizations pages in collectory
+                $("span.dataGeneralizations").each(function(i, el) {
+                    var field = $(this);
+                    var text = $(this).text().match(/\[.*?\]/g);
+                    
+                    $.each(text, function(i, el) {
+                        var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
+                        var code = list.replace(/\s/g, "_").toUpperCase();
+
+                        if (sensitiveDatasets[code]) {
+                            var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
+                                + " sensitive species list information page' target='collectory'>" + list + "</a>";
+                            var regex = new RegExp(list, "g");
+                            var html = $(field).html().replace(regex, linked);
+                            $(field).html(html);
+                        }
+                    });
                 });
                 
             }); // end JQuery document ready
@@ -1028,9 +1055,15 @@
                                     ${record.processed.occurrence.dataGeneralizations}
                                 </c:when>
                                 <c:when test="${not empty record.processed.occurrence.dataGeneralizations}">
-                                    Due to sensitivity concerns, the coordinates of this record have been generalised: &quot;${record.processed.occurrence.dataGeneralizations}&quot;.
+                                    Due to sensitivity concerns, the coordinates of this record have been generalised: &quot;<span class="dataGeneralizations">${record.processed.occurrence.dataGeneralizations}</span>&quot;.
                                 </c:when>
                             </c:choose>
+                        </alatag:occurrenceTableRow>
+                        <!-- Information Withheld -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="informationWithheld" fieldName="Information Withheld">
+                            <c:if test="${not empty record.processed.occurrence.informationWithheld}">
+                                <span class="dataGeneralizations">${record.processed.occurrence.informationWithheld}</span>
+                            </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- GeoreferenceVerificationStatus -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceVerificationStatus" fieldName="Georeference Verification Status">
