@@ -105,7 +105,7 @@
                                     <c:set var="pageSizeVar">
                                         <c:choose>
                                             <c:when test="${not empty param.pageSize}">${param.pageSize}</c:when>
-                                            <c:otherwise>20</c:otherwise>
+                                            <c:otherwise>10</c:otherwise>
                                         </c:choose>
                                     </c:set>
                                     <option value="10" <c:if test="${pageSizeVar eq '10'}">selected</c:if>>10</option>
