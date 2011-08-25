@@ -346,7 +346,7 @@ $(document).ready(function() {
                 if (el.fieldName == "raw_taxon_name") {
                     $.each(el.fieldResult, function(j, el1) {
                         synListSize++;
-                        synList += "<li><a href='?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")";
+                        synList += "<li><a href='" + contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")";
                     });
                     
                 }
