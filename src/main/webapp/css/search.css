@@ -363,3 +363,29 @@ span#queryDisplay a:hover {
     font-weight: normal;
     color: #444444;
 }
+
+#mapLayerControls > label {
+    clear: both;
+    display: block;
+    float: left;
+    width: 20%;
+    text-align: right;
+}
+
+#mapLayerControls > .layerControls {
+    display: block;
+    float: left;
+    width: 80%;
+    margin-bottom: 4px;
+}
+
+#mapLayerControls #sizeslider-val {
+    padding-right: 12px;
+    padding-left: 6px;
+}
+
+.layerControls #sizeslider-val, .layerControls #sizeslider {
+    display: block;
+    float:left;
+    margin-bottom: 5px;
+}

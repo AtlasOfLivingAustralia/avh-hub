@@ -161,26 +161,29 @@
                         </div>
                     </div><!--end solrResults-->
                     <div id="mapwrapper">
-                        <div>
-                            <label for="colourFacets">Colour by:</label>
-                            <select name="colourFacets" id="colourFacets">
-                                <option value=""> None </option>
-                                <c:forEach var="facetResult" items="${searchResults.facetResults}">
-                                    <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
-                                        <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
-                                    </c:if>
-                                </c:forEach>
-                            </select>
-
-                            <label for="envLyrList">Environmental Layer:</label>
-                            <select id="envLyrList">
-                                <option value="">None</option>
-                            </select>
-
+                        <div id="mapLayerControls">
+                            <label for="colourFacets">Colour by:&nbsp;</label>
+                            <div class="layerControls">
+                                <select name="colourFacets" id="colourFacets">
+                                    <option value=""> None </option>
+                                    <c:forEach var="facetResult" items="${searchResults.facetResults}">
+                                        <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
+                                            <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
+                                        </c:if>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <label for="envLyrList">Environmental Layer:&nbsp;</label>
+                            <div class="layerControls">
+                                <select id="envLyrList">
+                                    <option value="">None</option>
+                                </select>
+                            </div>
                             <!-- size slider start -->
-                            <div id="slidercontainer">
+                            <label for="sizeslider">Size:&nbsp;</label>
+                            <div class="layerControls">
+                                <span id="sizeslider-val">4</span>
                                 <div id="sizeslider"></div>
-                                <label for="sizeslider">Size: </label><span id="sizeslider-val">4</span>
                             </div>
                             <!-- size slider end -->
                         </div>
