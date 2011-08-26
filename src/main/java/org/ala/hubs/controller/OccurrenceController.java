@@ -709,7 +709,7 @@ public class OccurrenceController {
             requestParams.setDisplayString(searchResult.getQueryTitle());
         }
         
-        if (searchResult.getQueryTitle().equals("*:*")) {
+        if ("*:*".equals(searchResult.getQueryTitle())) {
             searchResult.setQueryTitle("[all records]");
         }
         
