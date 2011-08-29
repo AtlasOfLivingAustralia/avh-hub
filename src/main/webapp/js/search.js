@@ -153,7 +153,7 @@ $(document).ready(function() {
     // catch download submit button
     $("#downloadSubmitButton").click(function(e) {
         e.preventDefault();
-        var downloadUrl = $("input#downloadUrl").val();
+        var downloadUrl = $("input#downloadUrl").val().replace(/\\ /g, " ");
         var reason = $("#reason").val();
         if(typeof reason == "undefined")
             reason = "";
@@ -165,7 +165,7 @@ $(document).ready(function() {
     // catch checklist download submit button
     $("#downloadCheckListSubmitButton").click(function(e) {
         e.preventDefault();
-        var downloadUrl = $("input#downloadChecklistUrl").val() + "&facets=species_guid&lookup=true";
+        var downloadUrl = $("input#downloadChecklistUrl").val().replace(/\\ /g, " ") + "&facets=species_guid&lookup=true";
         //alert("downloadUrl = " + downloadUrl);
         window.location.href = downloadUrl;
         $.fancybox.close();

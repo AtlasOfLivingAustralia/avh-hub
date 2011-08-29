@@ -14,8 +14,8 @@
         Please provide the following <b>optional</b> details before downloading:
     </p>
     <form id="downloadForm">
-        <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download${searchResults.urlParameters}"/>
-        <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download${searchResults.urlParameters}"/>
+        <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download<c:out value="${searchResults.urlParameters}"/>"/>
+        <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download<c:out value="${searchResults.urlParameters}"/>"/>
         <fieldset>
             <p><label for="email">Email</label>
                 <input type="text" name="email" id="email" value="${pageContext.request.remoteUser}" size="30"  /></p>
