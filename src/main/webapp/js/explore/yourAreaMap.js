@@ -26,7 +26,7 @@ var geocoder, map, selectControl, selectFeature, marker, circle, markerInfowindo
 var points = [];
 var infoWindows = [];
 var speciesGroup = "ALL_SPECIES";
-var taxon;
+var taxon, taxonGuid;
 var zoomForRadius = {
     1000: 14,
     5000: 12,
@@ -413,7 +413,13 @@ function loadNewGeoJsonData(data) {
         } else {
             solrQuery = rank+':'+taxa;
         }
-        var fqParam = (speciesGroup == "ALL_SPECIES") ? "" : "&fq=species_group:" + speciesGroup;
+        var fqParam = "";
+        if (taxonGuid) {
+            fqParam = "&fq=species_guid:" + taxonGuid;
+        } else if (speciesGroup != "ALL_SPECIES") {
+            fqParam = "&fq=species_group:" + speciesGroup;
+        }
+        
         var content = '<div class="infoWindow">Number of records: '+n.properties.count+'<br/>'+
                 '<a href="'+ contextPath +'/occurrences/searchByArea?q='+solrQuery+fqParam+
                 '&lat='+n.geometry.coordinates[1]+'&lon='+n.geometry.coordinates[0]+'&radius=0.05">View list of records</a></div>';
@@ -529,6 +535,7 @@ function groupClicked(el) {
     // Change the global var speciesGroup
     speciesGroup = $(el).find('a.taxonBrowse').attr('id');
     taxon = null; // clear any species click 
+    taxonGuid = null;
     //taxa = []; // array of taxa
     //taxa = (taxon.indexOf("|") > 0) ? taxon.split("|") : taxon;
     $('#taxa-level-0 tr').removeClass("activeRow");
@@ -621,6 +628,7 @@ function processSpeciesJsonData(data, appendResults) {
         e.preventDefault(); // ignore the href text - used for data
         var thisTaxon = $(this).find('a.taxonBrowse2').attr('href');
         var guid = $(this).find('a.taxonBrowse2').attr('id');
+        taxonGuid = guid;
         taxon = thisTaxon; // global var so map can show just this taxon
         //rank = $(this).find('a.taxonBrowse2').attr('id');
         //taxa = []; // array of taxa
