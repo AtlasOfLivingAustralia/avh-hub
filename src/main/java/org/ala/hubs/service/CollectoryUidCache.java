@@ -76,7 +76,6 @@ public class CollectoryUidCache {
         return data_provider_uid;
     }
 
-
       /**
      * Check age of cache and retrieve new values from biocache webservices if needed.
      */
@@ -103,24 +102,27 @@ public class CollectoryUidCache {
         srp.setQ("*:*");
         srp.setPageSize(0);
         SearchResultDTO result = biocacheService.findByFulltextQuery(srp);
-        //now update the cache with the facet names
-        for(FacetResultDTO res : result.getFacetResults()){
-            List<String>list = null;
-           // grab cached values (map) in case WS is not available (uses reflection)
-            try{
-                Field f = CollectoryUidCache.class.getDeclaredField(res.getFieldName()); // field is plural form
-                list = (List<String>) f.get(this);
-                //now add all the values
-                for(FieldResultDTO fieldResult :res.getFieldResult()){
-                    list.add(fieldResult.getLabel());
+
+        if(result != null && result.getFacetResults() !=null){
+            //now update the cache with the facet names
+            for(FacetResultDTO res : result.getFacetResults()){
+                List<String> list = null;
+               // grab cached values (map) in case WS is not available (uses reflection)
+                try{
+                    Field f = CollectoryUidCache.class.getDeclaredField(res.getFieldName()); // field is plural form
+                    list = (List<String>) f.get(this);
+                    //now add all the values
+                    for(FieldResultDTO fieldResult :res.getFieldResult()){
+                        list.add(fieldResult.getLabel());
+                    }
+                }
+                catch(Exception e){
+                    logger.error("Unable to load cache for " + res.getFieldName());
                 }
             }
-            catch(Exception e){
-                logger.error("Unable to load cache for " + res.getFieldName());
-            }
+        } else {
+             logger.warn("No results for  facet query");
         }
-
-        
     }
 
     public Long getTimeout() {
@@ -130,5 +132,4 @@ public class CollectoryUidCache {
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
-
 }
