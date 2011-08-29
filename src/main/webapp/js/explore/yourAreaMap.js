@@ -413,10 +413,10 @@ function loadNewGeoJsonData(data) {
         } else {
             solrQuery = rank+':'+taxa;
         }
-
+        var fqParam = (speciesGroup == "ALL_SPECIES") ? "" : "&fq=species_group:" + speciesGroup;
         var content = '<div class="infoWindow">Number of records: '+n.properties.count+'<br/>'+
-                '<a href="'+ contextPath +'/occurrences/searchByArea?q='+solrQuery+'&lat='+
-                n.geometry.coordinates[1]+'&lon='+n.geometry.coordinates[0]+'&radius=0.05">View list of records</a></div>';
+                '<a href="'+ contextPath +'/occurrences/searchByArea?q='+solrQuery+fqParam+
+                '&lat='+n.geometry.coordinates[1]+'&lon='+n.geometry.coordinates[0]+'&radius=0.05">View list of records</a></div>';
         infoWindows[i] = new google.maps.InfoWindow({
             content: content,
             maxWidth: 200,
