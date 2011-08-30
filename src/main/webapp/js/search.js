@@ -165,7 +165,7 @@ $(document).ready(function() {
     // catch checklist download submit button
     $("#downloadCheckListSubmitButton").click(function(e) {
         e.preventDefault();
-        var downloadUrl = $("input#downloadChecklistUrl").val().replace(/\\ /g, " ") + "&facets=species_guid&lookup=true";
+        var downloadUrl = $("input#downloadChecklistUrl").val().replace(/\\ /g, " ") + "&facets=species_guid&lookup=true&file="+$("#filename").val();
         //alert("downloadUrl = " + downloadUrl);
         window.location.href = downloadUrl;
         $.fancybox.close();
