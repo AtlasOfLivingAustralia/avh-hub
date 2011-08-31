@@ -162,14 +162,14 @@ $(document).ready(function() {
     // Tooltip for matched location
     $('#addressHelp').qtip({
         content: {
-            url: '${pageContext.request.contextPath}/proxy/wordpress',
+            url: contextPath + '/proxy/wordpress',
             data: { 'page_id': 16658, 'content-only': 1},
             method: 'get',
             title: {
                text: 'About the matched address',
                button: 'Close'
             },
-            text: '<img src="${pageContext.request.contextPath}/static/images/loading.gif" alt="" class="no-rounding"/>'
+            text: '<img src="' + contextPath + '/static/images/loading.gif" alt="" class="no-rounding"/>'
         },
         position: {
             corner: {

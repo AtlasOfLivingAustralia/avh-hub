@@ -9,6 +9,7 @@
         <pattern>/static/*</pattern>
         <pattern>/occurrences/*/assertions/</pattern>
         <pattern>/occurrences/*/groupedAssertions/</pattern>
+        <pattern>/proxy/*</pattern>
         <pattern>/index</pattern>
     </excludes>
 
