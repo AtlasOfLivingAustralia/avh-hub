@@ -20,6 +20,7 @@
 
     <decorator name="ala" page="ala-skin.jsp" />
     <decorator name="ozcam" page="ozcam-skin.jsp" />
+    <decorator name="avh" page="avh-skin.jsp" />
     
     <decorator name="main" page="ala-skin.jsp">
         <pattern>/*</pattern>

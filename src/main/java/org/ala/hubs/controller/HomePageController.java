@@ -67,10 +67,10 @@ public class HomePageController {
         //return "redirect:/index";
         String page = null;
         
-        if ("ala".equalsIgnoreCase(skin)) {
-            page = homePage(model);
-        } else {
+        if ("ozcam".equalsIgnoreCase(skin)) {
             page = homePage;
+        } else {
+            page = homePage(model);
         }
         
         return page;

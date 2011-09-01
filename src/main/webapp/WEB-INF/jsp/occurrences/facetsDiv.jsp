@@ -8,7 +8,7 @@
 <%@ include file="/common/taglibs.jsp" %>
 <div id="SidebarBox" class="facets">
     <div class="sidebar">
-        <h3 style="float: left; display: inline-block;">Refine Results </h3>
+        <h3 style="display: inline-block;float:left;">Refine Results </h3>
         <div id="customiseFacets"><a href="#">customise</a></div>
         <div id="facetOptions">
             <h4>Select the filter categories that are to<br/> appear in the &quot;Refine Results&quot; column</h4>
@@ -22,7 +22,7 @@
             <input type="button" id="updateFacetOptions" value="Update"/>
         </div>
     </div>
-    <div class="sidebar">
+    <div class="sidebar" style="clear:both;">
         <c:if test="${not empty searchResults.query}">
             <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=${param.taxa}</c:when><c:otherwise>q=<c:out escapeXml="true" value="${param.q}"/></c:otherwise></c:choose><c:if 
                     test="${not empty param.fq}">&fq=${fn:join(paramValues.fq, "&fq=")}</c:if><c:if 

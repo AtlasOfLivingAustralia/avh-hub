@@ -87,7 +87,7 @@ td.label {
 }
 #headingBar h1 {
 /*    font-family: 'Rockwell', arial, helvetica, sans-serif;*/
-    color: #1775BA;
+/*    color: #1775BA;*/
     font-size: 200%;
     /*text-shadow: 1px 1px 1px #bbbaba;*/
     margin-bottom: 10px;
@@ -108,7 +108,7 @@ td.label {
 }
 .sidebar h4 {
     font-size: 100%;
-    padding: 6px 0;
+    padding: 4px 0;
 }
 .sidebar li {
     border-bottom: none;
