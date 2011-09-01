@@ -142,7 +142,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                             </a> &mdash;
-                                    <span style="text-transform: capitalize">${occurrence.taxonRank}</span>: <span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${occurrence.scientificName}"/></span>
+                                    <span style="text-transform: capitalize">${occurrence.taxonRank}</span>: <span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${occurrence.raw_scientificName}"/></span>
                                     <c:if test="${not empty occurrence.vernacularName}"> | <span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
                                 </p>
                                 <p class="rowB">
