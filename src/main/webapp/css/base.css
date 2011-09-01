@@ -5,6 +5,15 @@
     Description:
         Purpose of the stylesheet follows.
 */
+html #content img {
+    -moz-border-radius: 0px; /* FF1+ */
+    -webkit-border-radius: 0px; /* Saf3+, Chrome */
+    -o-border-radius: 0px;
+    -icab-border-radius: 0px;
+    -khtml-border-radius: 0px;
+    border-radius: 0px; /* Opera 7.7, IE 9 */
+}
+
 
 #content2 p, #content2 div, #headingBar, #contentBox div {
     font-size: 13px;
