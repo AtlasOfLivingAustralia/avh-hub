@@ -422,11 +422,15 @@ public class OccurrenceController {
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
 
         String collectionUid = null;
+        String rowKey = (record != null && record.getRaw() != null)? record.getRaw().getRowKey() : uuid;
+        // add the rowKey for the record.
+        model.addAttribute("rowKey", rowKey);
 
+       
         if (record != null && record.getProcessed() != null) { // .getAttribution().getCollectionCodeUid()
             FullRecord  pr = record.getProcessed();
             collectionUid = pr.getAttribution().getCollectionUid();
-
+            
             Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionUid);
             if ((Integer) resp[0] == HttpStatus.SC_OK) {
                 String json = (String) resp[1];
@@ -481,7 +485,7 @@ public class OccurrenceController {
             model.addAttribute("record", record);
             model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
             // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
-            Map<String, Object> compareRecord = biocacheService.getCompareRecord(uuid);
+            Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
             model.addAttribute("compareRecord", compareRecord);
 		}
         

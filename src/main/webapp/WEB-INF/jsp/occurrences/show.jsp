@@ -54,7 +54,7 @@
                     { assertionUuid: assertionUuid },
                     function(data) {
                         //retrieve all asssertions
-                        $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/groupedAssertions/', function(data) {
+                        $.get('${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/groupedAssertions/', function(data) {
                             $('#'+assertionUuid).fadeOut('slow', function() {
                                 $('#userAssertions').html(data);
 
@@ -121,7 +121,7 @@
                     var userId = '${userId}';
                     var userDisplayName = '${userDisplayName}';
                     if(code!=""){
-                        $.post("${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/add",
+                        $.post("${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/assertions/add",
                             { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
                             function(data) {
                                 $("#submitSuccess").html("Thanks for flagging the problem!");
@@ -129,7 +129,7 @@
                                 $("input:reset").hide();
                                 $("input#close").show();
                                 //retrieve all asssertions
-                                $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/groupedAssertions/', function(data) {
+                                $.get('${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/groupedAssertions/', function(data) {
                                     //console.log("data", data);
                                     $('#userAssertions').html(data);
                                     $('#userAssertionsContainer').show("slow");
@@ -160,7 +160,7 @@
                     var assertionUuid = $(this).attr("id");
                     var isConfirmed = confirm('Are you sure you want to delete this issue?');
                     if (isConfirmed === true) {
-                        deleteAssertion('${record.raw.uuid}', assertionUuid);
+                        deleteAssertion('${record.raw.rowKey}', assertionUuid);
                     }
                     //isConfirmed = false; // don't remember the confirm
                 });
