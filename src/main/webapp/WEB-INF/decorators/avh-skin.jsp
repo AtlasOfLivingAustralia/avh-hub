@@ -28,8 +28,8 @@ include file="/common/taglibs.jsp" %>
 	<meta name="DC.Availability" content="Freely available. Some parts of this resource are username and password restricted" />
 	<meta name="DC.Rights" content="(c) Council of Heads of Australasian Herbaria, 2010" />
 	<meta name="DC.Rights" content="Unless other stated, Intellectual Property associated with this resource resides with the Council of Heads of Australasian Herbaria and individual herbaria. Applications, source code and data are freely available for research, non-commercial and public good purposes" />
-	<script type="text/javascript" src="/avh/js/jquery-1.3.2.min.js"></script>
-    <script type="text/javascript" src="/avh/js/jquery.avh.googleanalytics.js"></script>
+<!--	<script type="text/javascript" src="/avh/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="/avh/js/jquery.avh.googleanalytics.js"></script>-->
     
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     <script type="text/javascript">
