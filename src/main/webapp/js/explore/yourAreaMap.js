@@ -214,7 +214,7 @@ function loadMap() {
         zoom: zoom,
         center: latLng,
         scrollwheel: false,
-        streetViewControl: false,
+        streetViewControl: true,
         mapTypeControl: true,
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
