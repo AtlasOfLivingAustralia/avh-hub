@@ -12,7 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
-        <title>OzCam Hub - ${type}: ${entityName}</title>
+        <title><ala:propertyLoader bundle="hubs" property="site.displayName"/> - ${type}: ${entityName}</title>
         <%-- <base href="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}${pageContext.request.contextPath}/" /> --%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/collection.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/public.css" type="text/css" media="screen" />

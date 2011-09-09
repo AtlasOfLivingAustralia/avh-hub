@@ -213,6 +213,8 @@ function loadMap() {
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
         zoom: zoom,
         center: latLng,
+        scrollwheel: false,
+        streetViewControl: false,
         mapTypeControl: true,
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
