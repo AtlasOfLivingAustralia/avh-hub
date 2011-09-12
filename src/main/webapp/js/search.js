@@ -234,12 +234,12 @@ $(document).ready(function() {
     });
 
     // add show/hide links to facets
-    $('#subnavlist ul.facets').oneShowHide({
-        numShown: 3,
-        showText : '+ show more',
-        hideText : '- show less',
-        className: 'showHide'
-    });
+    $('ul.facets').oneShowHide({
+            numShown: 3,
+            showText : '+ show more',
+            hideText : '- show less',
+            className: 'showHide'
+        });
     
     // Substitute LSID strings for tacon names in facet values for species
     var guidList = [];
