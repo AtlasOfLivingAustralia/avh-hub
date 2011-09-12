@@ -733,7 +733,7 @@ function getStartingRank(uid) {
 /*******                                   *****
  *******      Specify charts to load       *****
  *******                                   *****/
-var biocacheServicesUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/";
+var biocacheServicesUrl = "http://biocache.ala.org.au/";
 var loggerServicesUrl = "http://logger.ala.org.au/service/";
 
 function hubChartsOnLoadCallback() {
