@@ -249,20 +249,41 @@ $(document).ready(function() {
     
     if (guidList.length > 0) {
         // AJAX call to get names for LSIDs
-        var jsonUrl = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidList.join("&guid=") + "&callback=?";
-        $.getJSON(jsonUrl, function(data) {
+        // IE7< has limit of 2000 chars on URL so split into 2 requests        
+        var guidListA = guidList.slice(0, 14) // first 15 elements
+        var jsonUrlA = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListA.join("&guid=") + "&callback=?";
+        $.getJSON(jsonUrlA, function(data) {
             // set the name in place of LSID
             $("li.species_guid").each(function(i, el) {
-                $(el).find("a").html("<i>"+data[i]+"</i>");
+                if (i < 15) {
+                    $(el).find("a").html("<i>"+data[i]+"</i>");
+                } else {
+                    return false; // breaks each loop
+                }
             });
         });
+        
+        if (guidList.length > 15) {
+            var guidListB = guidList.slice(15)
+            var jsonUrlB = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListB.join("&guid=") + "&callback=?";
+            $.getJSON(jsonUrlB, function(data) {
+                // set the name in place of LSID
+                $("li.species_guid").each(function(i, el) {
+                    // skip forst 15 elements
+                    if (i > 14) {
+                        var k = i - 15;
+                        $(el).find("a").html("<i>"+data[k]+"</i>");
+                    }
+                });
+            });
+        }
     }
     
     // do the same for the selected facet
     var selectedLsid = $("b.species_guid").attr("id");
     if (selectedLsid) {
-        var jsonUrl = bieWebappUrl + "/species/namesFromGuids.json?guid=" + selectedLsid + "&callback=?";
-        $.getJSON(jsonUrl, function(data) {
+        var jsonUrl2 = bieWebappUrl + "/species/namesFromGuids.json?guid=" + selectedLsid + "&callback=?";
+        $.getJSON(jsonUrl2, function(data) {
             // set the name in place of LSID
             $("b.species_guid").html("<i>"+data[0]+"</i>");
         });
