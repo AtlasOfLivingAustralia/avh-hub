@@ -388,7 +388,7 @@ function loadNewGeoJsonData(data) {
     } else {
         infoWindows = [];
     }
-
+    
     $.each(data.features, function (i, n) {
         var latLng1 = new google.maps.LatLng(n.geometry.coordinates[1], n.geometry.coordinates[0]);
         var iconUrl = contextPath+"/static/images/circle-"+n.properties.color.replace('#','')+".png";
@@ -628,7 +628,9 @@ function processSpeciesJsonData(data, appendResults) {
     // Register clicks for the list of species links so that map changes
     $('#rightList tbody tr').click(function(e) {
         e.preventDefault(); // ignore the href text - used for data
-        var thisTaxon = $(this).find('a.taxonBrowse2').attr('href');
+        //var thisTaxon = $(this).find('a.taxonBrowse2').attr('href'); // absolute URI in IE!
+        var thisTaxonA = $(this).find('a.taxonBrowse2').attr('href').split('/');
+        var thisTaxon = thisTaxonA[thisTaxonA.length-1].replace(/%20/g, ' ');
         var guid = $(this).find('a.taxonBrowse2').attr('id');
         taxonGuid = guid;
         taxon = thisTaxon; // global var so map can show just this taxon
