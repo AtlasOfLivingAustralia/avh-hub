@@ -7,7 +7,7 @@
  *******                                   *****/
 
 var instanceUid = 'dh1';
-var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/";
+var taxaBreakdownUrl = "http://biocache.ala.org.au/ws/breakdown/";
 var pageUid = "";
 var initialRank = "";
 var taxonHistory = new Array();
@@ -21,9 +21,9 @@ function jpLoadTaxonChart(uid, name, rank) {
   // store current state for back-tracking
   taxonHistory.push(rank + ":" + name);
   pageUid = uid;
-  var url = taxaBreakdownUrl + getBreakdownContext(uid) + "/" + uid + "/rank/" + rank;
+  var url = taxaBreakdownUrl + wsEntityForBreakdown(uid) + "/" + uid + "?rank=" + rank;
   if (name != undefined) {
-    url = url + "/name/" + name;
+    url = url + "&name=" + name;
   }
   url = url + ".json";
   $.ajax({
@@ -607,6 +607,17 @@ function buildUidFacet(uid,queryType) {
     return queryType + "=data_hub_uid:" + uid;
   }
   return ""
+}
+
+function wsEntityForBreakdown(uid) {
+    switch (uid.substr(0,2)) {
+        case 'co': return 'collections';
+        case 'in': return 'institutions';
+        case 'dr': return 'dataResources';
+        case 'dp': return 'dataProviders';
+        case 'dh': return 'dataHubs';
+        default: return "";
+    }
 }
 
 /*******                                   *****
