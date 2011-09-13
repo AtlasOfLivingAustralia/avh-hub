@@ -250,7 +250,7 @@ $(document).ready(function() {
     if (guidList.length > 0) {
         // AJAX call to get names for LSIDs
         // IE7< has limit of 2000 chars on URL so split into 2 requests        
-        var guidListA = guidList.slice(0, 14) // first 15 elements
+        var guidListA = guidList.slice(0, 15) // first 15 elements
         var jsonUrlA = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListA.join("&guid=") + "&callback=?";
         $.getJSON(jsonUrlA, function(data) {
             // set the name in place of LSID
