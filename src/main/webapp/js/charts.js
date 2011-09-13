@@ -7,7 +7,7 @@
  *******                                   *****/
 
 var instanceUid = 'dh1';
-var taxaBreakdownUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/breakdown/";
+var taxaBreakdownUrl = "http://biocache.ala.org.au/ws/breakdown/";
 var pageUid = "";
 var initialRank = "";
 var taxonHistory = new Array();
@@ -21,11 +21,10 @@ function jpLoadTaxonChart(uid, name, rank) {
   // store current state for back-tracking
   taxonHistory.push(rank + ":" + name);
   pageUid = uid;
-  var url = taxaBreakdownUrl + getBreakdownContext(uid) + "/" + uid + "/rank/" + rank;
+  var url = taxaBreakdownUrl + wsEntityForBreakdown(uid) + "/" + uid + ".json?rank=" + rank;
   if (name != undefined) {
-    url = url + "/name/" + name;
+    url = url + "&name=" + name;
   }
-  url = url + ".json";
   $.ajax({
     url: url,
     dataType: 'jsonp',
@@ -609,6 +608,17 @@ function buildUidFacet(uid,queryType) {
   return ""
 }
 
+function wsEntityForBreakdown(uid) {
+    switch (uid.substr(0,2)) {
+        case 'co': return 'collections';
+        case 'in': return 'institutions';
+        case 'dr': return 'dataResources';
+        case 'dp': return 'dataProviders';
+        case 'dh': return 'dataHubs';
+        default: return "";
+    }
+}
+
 /*******                                   *****
  *******    LOAD FACETS FOR ALL RECORDS    *****
  *******                                   *****/
@@ -665,7 +675,7 @@ function loadFacetCharts() {
  *******                                   *****/
 
 function loadDownloadStats(uid) {
-    var url = loggerServicesUrl + uid + "/downloads/counts.json";
+    var url = loggerServicesUrl + uid + "/events/1002/counts.json";
     $.ajax({
       url: url,
       dataType: 'jsonp',
@@ -674,12 +684,12 @@ function loadDownloadStats(uid) {
         alert(textStatus);
       },
       success: function(data) {
-        $('span#downloadedRecordsThisMonth').html(data.thisMonth.numberOfDownloadedRecords);
-        $('span#downloadedRecordsLast3Months').html(data.last3Months.numberOfDownloadedRecords);
-        $('span#downloadedRecordsAll').html(data.all.numberOfDownloadedRecords);
-        $('span#downloadsThisMonth').html(data.thisMonth.numberOfDownloads);
-        $('span#downloadsLast3Months').html(data.last3Months.numberOfDownloads);
-        $('span#downloadsAll').html(data.all.numberOfDownloads);
+        $('span#downloadedRecordsThisMonth').html(data.thisMonth.numberOfEventItems);
+        $('span#downloadedRecordsLast3Months').html(data.last3Months.numberOfEventItems);
+        $('span#downloadedRecordsAll').html(data.all.numberOfEventItems);
+        $('span#downloadsThisMonth').html(data.thisMonth.numberOfEvents);
+        $('span#downloadsLast3Months').html(data.last3Months.numberOfEvents);
+        $('span#downloadsAll').html(data.all.numberOfEvents);
       }
     });
 }
@@ -722,7 +732,7 @@ function getStartingRank(uid) {
 /*******                                   *****
  *******      Specify charts to load       *****
  *******                                   *****/
-var biocacheServicesUrl = "http://ala-bie1.vm.csiro.au:8080/biocache-service/";
+var biocacheServicesUrl = "http://biocache.ala.org.au/";
 var loggerServicesUrl = "http://logger.ala.org.au/service/";
 
 function hubChartsOnLoadCallback() {
