@@ -24,8 +24,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import au.org.ala.biocache.QualityAssertion;
-import org.ala.biocache.dto.SearchResultDTO;
-import org.ala.biocache.dto.SearchRequestParams;
+import org.ala.biocache.dto.*;
 import au.org.ala.biocache.FullRecord;
 import au.org.ala.biocache.SpeciesGroups;
 import au.org.ala.biocache.TypeStatus;
@@ -39,7 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import org.ala.biocache.dto.SpatialSearchRequestParams;
+
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
@@ -585,7 +584,7 @@ public class OccurrenceController {
             model.addAttribute("record", record);
             model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
             // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
-            Map<String, Object> compareRecord = biocacheService.getCompareRecord(uuid);
+            Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
             model.addAttribute("compareRecord", compareRecord);
 		}
         
