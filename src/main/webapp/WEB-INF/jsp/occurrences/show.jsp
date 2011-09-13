@@ -409,7 +409,7 @@
                 <style type="text/css">
                   .cp-play { left:-20px; top: -5px;}
                   .cp-pause { left:-20px; top: -5px; }
-                  .soundsHeader { margin-top:15px; }
+                  #soundsHeader { margin-top:15px; }
                 </style>
                 <div class="sidebar">
                     <h2 id="soundsHeader">Sounds</h2>
@@ -434,6 +434,9 @@
                             </ul>
                         </div>
                     </div>
+                    <c:if test="${not empty record.raw.occurrence.rights}">
+                    <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                    </c:if>
                     <p>Please press the play button to hear the sound file associated with this occurrence record.
                     </p>
                 </div>
@@ -679,6 +682,10 @@
                         <!-- Preparations -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="preparations" fieldName="Preparations">
                             ${record.raw.occurrence.preparations}
+                        </alatag:occurrenceTableRow>
+                        <!-- Rights -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="rights" fieldName="Rights">
+                            ${record.raw.occurrence.rights}
                         </alatag:occurrenceTableRow>
                     </table>
                 </div>

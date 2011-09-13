@@ -116,7 +116,6 @@ public class OccurrenceController {
     /**
      * Expects a request body in JSON
      *
-     * @param request
      * @return
      */
     @RequestMapping(value="/refreshUidCache", method = RequestMethod.GET)
@@ -290,6 +289,12 @@ public class OccurrenceController {
             Model model,
             HttpServletRequest request) throws Exception {
         logger.debug("/search* TOP");
+
+        if(requestParams.getFq()!=null){
+            System.out.println("*******requestParams.fq :" + StringUtils.join(requestParams.getFq(), ", "));
+        } else {
+            System.out.println("*******requestParams.fq : NOTHING");
+        }
         
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
@@ -376,8 +381,6 @@ public class OccurrenceController {
      * Display records for a given taxon concept id (with request param)
      *
      * @param requestParams
-     * @param result
-     * @param model
      * @param request
      * @return
      * @throws Exception
