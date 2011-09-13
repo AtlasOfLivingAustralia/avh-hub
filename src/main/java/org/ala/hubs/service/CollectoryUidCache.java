@@ -51,7 +51,7 @@ public class CollectoryUidCache {
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     /** Log4J logger */
-    private final static Logger logger = Logger.getLogger(GazetteerCache.class);
+    private final static Logger logger = Logger.getLogger(CollectoryUidCache.class);
 
     protected Date lastUpdated = new Date();
     protected Long timeout = 3600000L; // in millseconds (1 hour)
@@ -94,7 +94,8 @@ public class CollectoryUidCache {
     /**
      * Update the entity types (fields)
      */
-    protected void updateCache() {
+    public void updateCache() {
+    
         logger.info("Updating collection uid cache...");
         SearchRequestParams srp = new SearchRequestParams();
         srp.setFacets(new String[]{"institution_uid","collection_uid","data_resource_uid", "data_provider_uid"});

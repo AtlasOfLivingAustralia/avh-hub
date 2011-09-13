@@ -44,12 +44,16 @@ import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.AssertionDTO;
+import org.ala.hubs.dto.FieldGuideDTO;
 import org.ala.hubs.service.BieService;
 import org.ala.hubs.service.BiocacheService;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
+import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
@@ -73,7 +77,7 @@ import org.springframework.web.client.RestOperations;
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
 @Controller("occurrenceController")
-@RequestMapping(value = "/occurrences")
+@RequestMapping(value = {"/occurrences","/occurrence"})
 public class OccurrenceController {
 
 	private final static Logger logger = Logger.getLogger(OccurrenceController.class);
@@ -110,9 +114,20 @@ public class OccurrenceController {
     protected String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
 
     /**
+     * Expects a request body in JSON
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/refreshUidCache", method = RequestMethod.GET)
+    public String refreshCaches() throws Exception {
+        collectoryUidCache.updateCache();
+        return null;
+    }
+
+    /**
      * Sets up state variables and calls the annotation editor jsp.
      * @param uuid
-     * @param result
      * @param model
      * @param request
      * @return
@@ -143,15 +158,6 @@ public class OccurrenceController {
     /**
      * Spatial search for either a taxon name or full text text search
      *
-     * @param query
-     * @param filterQuery
-     * @param startIndex
-     * @param pageSize
-     * @param sortField
-     * @param sortDirection
-     * @param radius
-     * @param latitude
-     * @param longitude
      * @param model
      * @return
      * @throws Exception
@@ -215,6 +221,56 @@ public class OccurrenceController {
 
 		return RECORD_LIST;
 	}
+
+    /**
+     * Performs a search for occurrence records via Biocache web services
+     *
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return view
+     * @throws Exception
+     */
+    @RequestMapping(value = "/dataResource/{dataResourceUid}/search*", method = RequestMethod.GET)
+    public String search(
+            @RequestParam(value="taxa", required=false) String taxaQuery,
+            @PathVariable String dataResourceUid,
+            SearchRequestParams requestParams,
+            BindingResult result,
+            Model model,
+            HttpServletRequest request) throws Exception {
+        logger.debug("/search* TOP");
+
+        if(requestParams.getFq()!=null){
+            System.out.println("*******requestParams.fq :" + StringUtils.join(requestParams.getFq(), ", "));
+        } else {
+            System.out.println("*******requestParams.fq : NOTHING");
+        }
+
+
+        String[] filterQueries = requestParams.getFq();
+        if(filterQueries!=null){
+            String[] filterQueriesWithDR = new String[filterQueries.length+1];
+            ArrayUtils.addAll(filterQueries, filterQueriesWithDR);
+            filterQueriesWithDR[filterQueriesWithDR.length -1] = "data_resource_uid:" + dataResourceUid;
+            requestParams.setFq(filterQueriesWithDR);
+        } else {
+            requestParams.setFq(new String[]{"data_resource_uid:" + dataResourceUid});
+        }
+
+        if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+
+		doFullTextSearch(taxaQuery, model, requestParams, request);
+
+        return RECORD_LIST;
+    }
 
     /**
      * Performs a search for occurrence records via Biocache web services
@@ -315,7 +371,49 @@ public class OccurrenceController {
         
         return RECORD_LIST;
     }
-    
+
+    /**
+     * Display records for a given taxon concept id (with request param)
+     *
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/fieldguide/download", method = RequestMethod.GET)
+    public String downloadFieldGuide(
+            SearchRequestParams requestParams,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        logger.debug("Field guide download starting");
+
+        requestParams.setFlimit(500);
+        SearchResultDTO dto = biocacheService.findByFulltextQuery(requestParams);
+        Collection<FacetResultDTO> facets = dto.getFacetResults();
+        FacetResultDTO facet = facets.iterator().next();
+        List<FieldResultDTO> results = facet.getFieldResult();
+        FieldGuideDTO fg = new FieldGuideDTO();
+
+        for(FieldResultDTO fr : results){
+            fg.getGuids().add(fr.getLabel());
+        }
+
+        //send the request to the fieldguide webservice
+        HttpClient httpClient = new HttpClient();
+        PostMethod post = new PostMethod("http://ala-biocache2.vm.csiro.au:8080/fieldguides/generate");
+        ObjectMapper om = new ObjectMapper();
+        String jsonRequest = om.writeValueAsString(fg);
+        System.out.println("Sending body: " + jsonRequest);
+        post.setRequestBody(jsonRequest);
+        httpClient.executeMethod(post);
+
+        String fileID = post.getResponseHeader("Fileid").getValue();
+        response.sendRedirect("http://ala-biocache2.vm.csiro.au:8080/fieldguides/guide/"+fileID);
+        return null;
+    }
+
     /**
      * UID search for links via collectory
      * 
@@ -426,11 +524,10 @@ public class OccurrenceController {
         // add the rowKey for the record.
         model.addAttribute("rowKey", rowKey);
 
-       
         if (record != null && record.getProcessed() != null) { // .getAttribution().getCollectionCodeUid()
             FullRecord  pr = record.getProcessed();
             collectionUid = pr.getAttribution().getCollectionUid();
-            
+
             Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionUid);
             if ((Integer) resp[0] == HttpStatus.SC_OK) {
                 String json = (String) resp[1];
@@ -485,7 +582,7 @@ public class OccurrenceController {
             model.addAttribute("record", record);
             model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
             // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
-            Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
+            Map<String, Object> compareRecord = biocacheService.getCompareRecord(uuid);
             model.addAttribute("compareRecord", compareRecord);
 		}
         
