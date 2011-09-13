@@ -441,10 +441,14 @@ var Maps = (function() {
 
                     var label = fLabels[key];
                     
-                    if (cbf == "species_guid" && label != "Other") {
-                        // add gid to list
-                        lsidList[key] = label;
-                    }
+                    if (cbf == "species_guid") {
+                        if (label != "Other") {
+                            // add gid to list
+                            lsidList[key+1] = label;
+                        } else {
+                            lsidList[0] = label;
+                        }
+                    } 
                     
                     if (cbf == "geospatial_kosher") {
                         if (label != "true") {
@@ -493,9 +497,10 @@ var Maps = (function() {
                     $.getJSON(jsonUrl, function(data) {
                         // set the name in place of LSID
                         $.each(data, function(i, el) {
-                            var j = i + ((lsidList.length >= 30) ? 1 : 0);
-                            //console.log(i, j, data[i]);
-                            $("label[for='lyr"+j+"']").html("<i>"+data[i]+"</i>");
+                            var j = i; // + ((lsidList.length >= 30) ? 1 : 0);
+                            if (data[i]) {
+                                $("label[for='lyr"+j+"']").html("<i>"+data[i]+"</i>");
+                            }
                         });
                     });
                 }
