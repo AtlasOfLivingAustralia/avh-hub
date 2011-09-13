@@ -24,6 +24,8 @@ include file="/common/taglibs.jsp" %>
        
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
         <link rel="stylesheet" type="text/css" media="screen,projection" href="${pageContext.request.contextPath}/static/css/ala/widget.css" />
+        <!-- CIRCLE PLAYER -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/circle.skin/circle.player.css" type="text/css" media="screen" />
         <c:set var="dev" value="${true}"/><%-- should be false in prod --%>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
@@ -48,6 +50,11 @@ include file="/common/taglibs.jsp" %>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.transform.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.grab.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.jplayer.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mod.csstransforms.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/circle.player.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bieAutocomplete.js"></script>
         <script type="text/javascript">
 
@@ -97,7 +104,6 @@ include file="/common/taglibs.jsp" %>
 
                 });
             });
-
         </script>
         <style type="text/css">
             ul.ui-autocomplete {
@@ -106,8 +112,6 @@ include file="/common/taglibs.jsp" %>
             }
         </style>
         <meta name='robots' content='index,follow' />
-        <link rel="alternate" type="application/rss+xml" title="Atlas Living Australia NG &raquo; Feed" href="${initParam.centralServer}/?feed=rss2" />
-        <link rel="alternate" type="application/rss+xml" title="Atlas Living Australia NG &raquo; Comments Feed" href="${initParam.centralServer}/?feed=comments-rss2" />
         <link rel='stylesheet' id='external-links-css'  href='${initParam.centralServer}/wp-content/plugins/sem-external-links/sem-external-links.css?ver=20090903' type='text/css' media='' />
         <!--<link rel="EditURI" type="application/rsd+xml" title="RSD" href="${initParam.centralServer}/xmlrpc.php?rsd" />
         <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="${initParam.centralServer}/wp-includes/wlwmanifest.xml" />
