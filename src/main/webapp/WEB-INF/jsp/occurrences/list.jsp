@@ -172,13 +172,13 @@
                                         </c:if>
                                     </c:forEach>
                                 </select>
-                            </div>
-                            <label for="envLyrList">Environmental Layer:&nbsp;</label>
+                                </div>
+                            <%--<label for="envLyrList">Environmental Layer:&nbsp;</label>
                             <div class="layerControls">
                                 <select id="envLyrList">
                                     <option value="">None</option>
                                 </select>
-                            </div>
+                            </div>--%>
                             <!-- size slider start -->
                             <label for="sizeslider">Size:&nbsp;</label>
                             <div class="layerControls">
