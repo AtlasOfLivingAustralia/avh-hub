@@ -216,6 +216,15 @@
                     });
                 </c:if>
             }); // end JQuery document ready
+            
+            /*
+             * IE doesn't support String.trim(), so add it in manually
+             */
+            if(typeof String.prototype.trim !== 'function') {
+                String.prototype.trim = function() {
+                    return this.replace(/^\s+|\s+$/g, ''); 
+                }
+            }
         </script>
     </head>
     <body>
