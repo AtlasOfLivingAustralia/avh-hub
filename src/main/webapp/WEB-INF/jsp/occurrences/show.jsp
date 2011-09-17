@@ -216,15 +216,6 @@
                     });
                 </c:if>
             }); // end JQuery document ready
-            
-            /*
-             * IE doesn't support String.trim(), so add it in manually
-             */
-            if(typeof String.prototype.trim !== 'function') {
-                String.prototype.trim = function() {
-                    return this.replace(/^\s+|\s+$/g, ''); 
-                }
-            }
         </script>
     </head>
     <body>
@@ -360,6 +351,9 @@
                         <c:forEach items="${record.processed.occurrence.images}" var="imageUrl">
                            <a href="${not empty record.raw.occurrence.occurrenceDetails ?  record.raw.occurrence.occurrenceDetails : imageUrl}"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
                         </c:forEach>
+                        <c:if test="${not empty record.raw.occurrence.rights}">
+                        <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                        </c:if>
                     </div>
                 </c:if>
                 <c:if test="${not empty record.processed.location.decimalLatitude && not empty record.processed.location.decimalLongitude}">
@@ -446,8 +440,7 @@
                     <c:if test="${not empty record.raw.occurrence.rights}">
                     <cite>Rights: ${record.raw.occurrence.rights}</cite>
                     </c:if>
-                    <p>Please press the play button to hear the sound file associated with this occurrence record.
-                    </p>
+                    <p>Please press the play button to hear the sound file associated with this occurrence record.</p>
                 </div>
              </c:if>
             </div><!-- end div#SidebarBox -->
