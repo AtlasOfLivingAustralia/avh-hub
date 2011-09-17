@@ -404,7 +404,7 @@ public class OccurrenceController {
 
         //send the request to the fieldguide webservice
         HttpClient httpClient = new HttpClient();
-        PostMethod post = new PostMethod("http://ala-biocache2.vm.csiro.au:8080/fieldguides/generate");
+        PostMethod post = new PostMethod("http://fieldguide.ala.org.au/generate");
         ObjectMapper om = new ObjectMapper();
         String jsonRequest = om.writeValueAsString(fg);
         System.out.println("Sending body: " + jsonRequest);
@@ -412,7 +412,7 @@ public class OccurrenceController {
         httpClient.executeMethod(post);
 
         String fileID = post.getResponseHeader("Fileid").getValue();
-        response.sendRedirect("http://ala-biocache2.vm.csiro.au:8080/fieldguides/guide/"+fileID);
+        response.sendRedirect("http://fieldguide.ala.org.au/guide/"+fileID);
         return null;
     }
 
