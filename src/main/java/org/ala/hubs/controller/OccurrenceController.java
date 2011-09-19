@@ -120,6 +120,7 @@ public class OccurrenceController {
     @RequestMapping(value="/refreshUidCache", method = RequestMethod.GET)
     public String refreshCaches() throws Exception {
         collectoryUidCache.updateCache();
+        collectionsCache.updateCache();
         return null;
     }
 
