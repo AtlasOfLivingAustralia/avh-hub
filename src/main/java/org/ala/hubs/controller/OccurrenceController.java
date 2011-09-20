@@ -392,12 +392,15 @@ public class OccurrenceController {
             HttpServletResponse response) throws Exception {
         logger.debug("Field guide download starting");
 
-        requestParams.setFlimit(500);
+        requestParams.setFlimit(250);
         SearchResultDTO dto = biocacheService.findByFulltextQuery(requestParams);
         Collection<FacetResultDTO> facets = dto.getFacetResults();
         FacetResultDTO facet = facets.iterator().next();
         List<FieldResultDTO> results = facet.getFieldResult();
         FieldGuideDTO fg = new FieldGuideDTO();
+
+        fg.setTitle("");
+
 
         for(FieldResultDTO fr : results){
             fg.getGuids().add(fr.getLabel());
@@ -408,7 +411,7 @@ public class OccurrenceController {
         PostMethod post = new PostMethod("http://fieldguide.ala.org.au/generate");
         ObjectMapper om = new ObjectMapper();
         String jsonRequest = om.writeValueAsString(fg);
-        System.out.println("Sending body: " + jsonRequest);
+        System.out.println("##### Sending body: " + jsonRequest);
         post.setRequestBody(jsonRequest);
         httpClient.executeMethod(post);
 
