@@ -30,9 +30,7 @@
             </p>
             <input type="submit" value="Download All Records" id="downloadSubmitButton"/>&nbsp;
             <input type="submit" value="Download Species Checklist" id="downloadCheckListSubmitButton"/>&nbsp;
-            <!--
             <input type="submit" value="Download Species Field Guide" id="downloadFieldGuideSubmitButton"/>&nbsp;
-            -->
             <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
         </fieldset>
     </form>

@@ -18,8 +18,8 @@ package org.ala.hubs.controller;
 import au.org.ala.biocache.BasisOfRecord;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,11 +29,6 @@ import au.org.ala.biocache.FullRecord;
 import au.org.ala.biocache.SpeciesGroups;
 import au.org.ala.biocache.TypeStatus;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
@@ -372,7 +367,7 @@ public class OccurrenceController {
             requestParams.setQ("lsid:" + query);
         } 
         
-		doFullTextSearch(null, model, requestParams, request);
+        doFullTextSearch(null, model, requestParams, request);
         
         return RECORD_LIST;
     }
@@ -387,31 +382,43 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/fieldguide/download", method = RequestMethod.GET)
     public String downloadFieldGuide(
+            @RequestParam(value="maxSpecies", required=false, defaultValue = "250") Integer maxSpecies,
             SearchRequestParams requestParams,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        logger.debug("Field guide download starting");
 
-        requestParams.setFlimit(250);
+        logger.debug("Field guide download starting");
+        requestParams.setFlimit(maxSpecies);
         SearchResultDTO dto = biocacheService.findByFulltextQuery(requestParams);
         Collection<FacetResultDTO> facets = dto.getFacetResults();
         FacetResultDTO facet = facets.iterator().next();
         List<FieldResultDTO> results = facet.getFieldResult();
         FieldGuideDTO fg = new FieldGuideDTO();
 
-        fg.setTitle("");
-
-
+        //add the GUIDs to add to the field guide
         for(FieldResultDTO fr : results){
             fg.getGuids().add(fr.getLabel());
         }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
+        //set the properties of the query
+        fg.setTitle("This field guide was generated on "+ sdf.format(new Date()));
+
+        String serverName = request.getSession().getServletContext().getInitParameter("serverName");
+        String contextPath = request.getSession().getServletContext().getInitParameter("contextPath");
+        if(contextPath == null){
+            contextPath = "";
+        }
+        fg.setLink(serverName + contextPath + "/occurrences/search?" + request.getQueryString());
+
+        System.out.println(fg.getLink());
 
         //send the request to the fieldguide webservice
         HttpClient httpClient = new HttpClient();
         PostMethod post = new PostMethod("http://fieldguide.ala.org.au/generate");
         ObjectMapper om = new ObjectMapper();
         String jsonRequest = om.writeValueAsString(fg);
-        System.out.println("##### Sending body: " + jsonRequest);
+        logger.debug("Sending body: " + jsonRequest);
         post.setRequestBody(jsonRequest);
         httpClient.executeMethod(post);
 
