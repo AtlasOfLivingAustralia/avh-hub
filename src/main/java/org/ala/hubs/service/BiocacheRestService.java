@@ -59,7 +59,7 @@ public class BiocacheRestService implements BiocacheService {
     
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
     //The pattern to handle the case where a jsinURI contaisn {}
-    protected Pattern restVaribleSubPattern= Pattern.compile("\\{.*?\\}");
+    protected Pattern restVariableSubPattern= Pattern.compile("\\{.*?\\}");
     
     /**
      * @see org.ala.hubs.service.BiocacheService#findByFulltextQuery(SearchRequestParams)
@@ -73,7 +73,7 @@ public class BiocacheRestService implements BiocacheService {
         try {
             final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();            
             logger.info("Requesting: " + jsonUri);
-            Matcher matcher = restVaribleSubPattern.matcher(jsonUri);
+            Matcher matcher = restVariableSubPattern.matcher(jsonUri);            
             //Get a list of all the items that are surrounded by {} so that they can be added as parameters when getting the object
             List<String> variables = new ArrayList<String>();
             while(matcher.find()){
