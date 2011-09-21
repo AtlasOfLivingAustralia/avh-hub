@@ -18,6 +18,8 @@ package org.ala.hubs.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -56,6 +58,8 @@ public class BiocacheRestService implements BiocacheService {
     protected String apiKey ="";
     
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
+    //The pattern to handle the case where a jsinURI contaisn {}
+    protected Pattern restVaribleSubPattern= Pattern.compile("\\{.*?\\}");
     
     /**
      * @see org.ala.hubs.service.BiocacheService#findByFulltextQuery(SearchRequestParams)
@@ -69,7 +73,13 @@ public class BiocacheRestService implements BiocacheService {
         try {
             final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();            
             logger.info("Requesting: " + jsonUri);
-            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
+            Matcher matcher = restVaribleSubPattern.matcher(jsonUri);
+            //Get a list of all the items that are surrounded by {} so that they can be added as parameters when getting the object
+            List<String> variables = new ArrayList<String>();
+            while(matcher.find()){
+                variables.add(matcher.group());
+            }            
+            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class,variables.toArray());
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
             searchResults.setStatus("Error: " + ex.getMessage());
