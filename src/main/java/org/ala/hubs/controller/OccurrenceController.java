@@ -112,6 +112,16 @@ public class OccurrenceController {
      *
      * @return
      */
+    @RequestMapping(value="/", method = RequestMethod.GET)
+    public void home(HttpServletResponse response) throws Exception {
+        response.sendRedirect("search");
+    }
+
+    /**
+     * Expects a request body in JSON
+     *
+     * @return
+     */
     @RequestMapping(value="/refreshUidCache", method = RequestMethod.GET)
     public String refreshCaches() throws Exception {
         collectoryUidCache.updateCache();
@@ -285,18 +295,19 @@ public class OccurrenceController {
             HttpServletRequest request) throws Exception {
         logger.debug("/search* TOP");
 
-        if(requestParams.getFq()!=null){
-            System.out.println("*******requestParams.fq :" + StringUtils.join(requestParams.getFq(), ", "));
-        } else {
-            System.out.println("*******requestParams.fq : NOTHING");
-        }
-        
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
 
         if (result.hasErrors()) {
             logger.warn("BindingResult errors: " + result.toString());
+        }
+
+        if (request.getParameter("sort") == null && request.getParameter("dir") == null ) {
+            requestParams.setSort("occurrence_date");
+            requestParams.setDir("desc");
+            model.addAttribute("sort","occurrence_date");
+            model.addAttribute("dir","occurrence_date");
         }
         
 		doFullTextSearch(taxaQuery, model, requestParams, request);

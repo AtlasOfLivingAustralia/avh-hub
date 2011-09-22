@@ -31,7 +31,12 @@
             <input type="submit" value="Download All Records" id="downloadSubmitButton"/>&nbsp;
             <input type="submit" value="Download Species Checklist" id="downloadCheckListSubmitButton"/>&nbsp;
             <input type="submit" value="Download Species Field Guide" id="downloadFieldGuideSubmitButton"/>&nbsp;
+            <!--
             <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
+            -->
+            <p style="margin-top:10px;">
+                <strong>Note</strong>: The field guide may take several minutes to prepare and download.
+            </p>
         </fieldset>
     </form>
 </div>

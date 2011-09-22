@@ -105,7 +105,7 @@
                                     <c:set var="pageSizeVar">
                                         <c:choose>
                                             <c:when test="${not empty param.pageSize}">${param.pageSize}</c:when>
-                                            <c:otherwise>10</c:otherwise>
+                                            <c:otherwise>20</c:otherwise>
                                         </c:choose>
                                     </c:set>
                                     <option value="10" <c:if test="${pageSizeVar eq '10'}">selected</c:if>>10</option>
@@ -113,21 +113,21 @@
                                     <option value="50" <c:if test="${pageSizeVar eq '50'}">selected</c:if>>50</option>
                                     <option value="100" <c:if test="${pageSizeVar eq '100'}">selected</c:if>>100</option>
                                 </select>
+                                <c:set var="useDefault" value="${empty param.sort && empty param.dir ? true : false }"/>
                                 Sort by:
                                 <select id="sort" name="sort">
                                     <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>best match</option>
                                     <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>scientific name</option>
                                     <option value="common_name" <c:if test="${param.sort eq 'common_name'}">selected</c:if>>common name</option>
                                     <!--                            <option value="rank">rank</option>-->
-                                    <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>record date</option>
+                                    <option value="occurrence_date" <c:if test="${useDefault || param.sort eq 'occurrence_date'}">selected</c:if>>record date</option>
                                     <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>record type</option>
                                 </select>
                                 Sort order:
                                 <select id="dir" name="dir">
                                     <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>normal</option>
-                                    <option value="desc" <c:if test="${param.dir eq 'desc'}">selected</c:if>>reverse</option>
+                                    <option value="desc" <c:if test="${useDefault || param.dir eq 'desc'}">selected</c:if>>reverse</option>
                                 </select>
-
                             </div><!-- sortWidget -->
                         </div><!-- searchControls -->
                         <div id="results">

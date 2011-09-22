@@ -175,7 +175,9 @@ $(document).ready(function() {
     $("#downloadFieldGuideSubmitButton").click(function(e) {
         e.preventDefault();
         var downloadUrl = $("input#downloadFieldGuideUrl").val().replace(/\\ /g, " ") + "&facets=species_guid";
-        window.location.href = downloadUrl;
+
+        window.open(downloadUrl);
+
         $.fancybox.close();
     });
 
