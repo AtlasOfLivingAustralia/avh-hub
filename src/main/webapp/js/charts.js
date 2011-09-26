@@ -21,11 +21,10 @@ function jpLoadTaxonChart(uid, name, rank) {
   // store current state for back-tracking
   taxonHistory.push(rank + ":" + name);
   pageUid = uid;
-  var url = taxaBreakdownUrl + wsEntityForBreakdown(uid) + "/" + uid + "?rank=" + rank;
+  var url = taxaBreakdownUrl + wsEntityForBreakdown(uid) + "/" + uid + ".json?rank=" + rank;
   if (name != undefined) {
     url = url + "&name=" + name;
   }
-  url = url + ".json";
   $.ajax({
     url: url,
     dataType: 'jsonp',
@@ -676,7 +675,7 @@ function loadFacetCharts() {
  *******                                   *****/
 
 function loadDownloadStats(uid) {
-    var url = loggerServicesUrl + uid + "/downloads/counts.json";
+    var url = loggerServicesUrl + uid + "/events/1002/counts.json";
     $.ajax({
       url: url,
       dataType: 'jsonp',
@@ -685,12 +684,12 @@ function loadDownloadStats(uid) {
         alert(textStatus);
       },
       success: function(data) {
-        $('span#downloadedRecordsThisMonth').html(data.thisMonth.numberOfDownloadedRecords);
-        $('span#downloadedRecordsLast3Months').html(data.last3Months.numberOfDownloadedRecords);
-        $('span#downloadedRecordsAll').html(data.all.numberOfDownloadedRecords);
-        $('span#downloadsThisMonth').html(data.thisMonth.numberOfDownloads);
-        $('span#downloadsLast3Months').html(data.last3Months.numberOfDownloads);
-        $('span#downloadsAll').html(data.all.numberOfDownloads);
+        $('span#downloadedRecordsThisMonth').html(data.thisMonth.numberOfEventItems);
+        $('span#downloadedRecordsLast3Months').html(data.last3Months.numberOfEventItems);
+        $('span#downloadedRecordsAll').html(data.all.numberOfEventItems);
+        $('span#downloadsThisMonth').html(data.thisMonth.numberOfEvents);
+        $('span#downloadsLast3Months').html(data.last3Months.numberOfEvents);
+        $('span#downloadsAll').html(data.all.numberOfEvents);
       }
     });
 }

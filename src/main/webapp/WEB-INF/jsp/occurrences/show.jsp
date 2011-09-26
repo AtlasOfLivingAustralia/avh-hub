@@ -19,6 +19,9 @@
 </c:choose>
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
 <c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
+<c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
+<c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
+<%--<c:set var="sensitiveDatasets" scope="request"><ala:propertyLoader bundle="hubs" property="sensitiveDatasets.NSW_DECCW"/></c:set>--%>
 <c:set var="scientificName">
     <c:choose>
         <c:when test="${not empty record.processed.classification.scientificName}">
@@ -35,7 +38,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OzCam Hub - Occurrence Record ${recordId}</title>
+        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
+        <title>Record ${recordId} | ${hubDisplayName} </title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
@@ -50,7 +54,7 @@
                     { assertionUuid: assertionUuid },
                     function(data) {
                         //retrieve all asssertions
-                        $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/groupedAssertions/', function(data) {
+                        $.get('${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/groupedAssertions/', function(data) {
                             $('#'+assertionUuid).fadeOut('slow', function() {
                                 $('#userAssertions').html(data);
 
@@ -63,6 +67,13 @@
                         });
                     }
                 );
+            }
+            
+            /**
+            * Convert camel case text to pretty version (all lower case)
+            */
+            function fileCase(str) {
+                return str.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
             }
 
             /**
@@ -82,6 +93,25 @@
                     'padding': 15,
                     'margin': 10
                 });
+                
+                // raw vs processed popup
+                $("#showRawProcessed").fancybox({
+                    //'href': '#loginOrFlag',
+                    'hideOnContentClick' : false,
+                    'hideOnOverlayClick': true,
+                    'showCloseButton': true,
+                    'titleShow' : false,
+                    'centerOnScroll': true,
+                    'transitionIn': 'elastic',
+                    'transitionOut': 'elastic',
+                    'speedIn': 500,
+                    'speedOut': 500,
+                    'autoDimensions' : false,
+                    'width': '80%',
+                    'height': '80%',
+                    'padding': 15,
+                    'margin': 10
+                });
 
                 // bind to form submit for assertions
                 $("form#issueForm").submit(function(e) {
@@ -91,7 +121,7 @@
                     var userId = '${userId}';
                     var userDisplayName = '${userDisplayName}';
                     if(code!=""){
-                        $.post("${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/assertions/add",
+                        $.post("${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/assertions/add",
                             { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
                             function(data) {
                                 $("#submitSuccess").html("Thanks for flagging the problem!");
@@ -99,7 +129,7 @@
                                 $("input:reset").hide();
                                 $("input#close").show();
                                 //retrieve all asssertions
-                                $.get('${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/groupedAssertions/', function(data) {
+                                $.get('${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/groupedAssertions/', function(data) {
                                     //console.log("data", data);
                                     $('#userAssertions').html(data);
                                     $('#userAssertionsContainer').show("slow");
@@ -130,11 +160,71 @@
                     var assertionUuid = $(this).attr("id");
                     var isConfirmed = confirm('Are you sure you want to delete this issue?');
                     if (isConfirmed === true) {
-                        deleteAssertion('${record.raw.uuid}', assertionUuid);
+                        deleteAssertion('${record.raw.rowKey}', assertionUuid);
                     }
                     //isConfirmed = false; // don't remember the confirm
                 });
+                
+                // give every second row a class="grey-bg"
+                $('table#datasetTable, table#taxonomyTable, table#geospatialTable, table.inner').each(function(i, el) {
+                    $(this).find('tr').each(function(j, tr) {
+                        if (j % 2 == 0) {
+                            $(this).addClass("grey-bg");
+                        }
+                    });
+                });
+                
+                // convert camel case field names to "normal"
+                $("td.dwc").each(function(i, el) {
+                    var html = $(el).html();
+                    $(el).html(fileCase(html)); // conver it
+                });
+                
+                // load a JS map with sensitiveDatasets values from hubs.properties file
+                var sensitiveDatasets = {
+                    <c:forEach var="sds" items="${sensitiveDatasets}" varStatus="s">
+                        ${sds}: '<ala:propertyLoader bundle="hubs" property="sensitiveDatasets.${sds}"/>'<c:if test="${not s.last}">,</c:if>
+                    </c:forEach>
+                }
+                
+                // add links for dataGeneralizations pages in collectory
+                $("span.dataGeneralizations").each(function(i, el) {
+                    var field = $(this);
+                    var text = $(this).text().match(/\[.*?\]/g);
+                    
+                    $.each(text, function(i, el) {
+                        var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
+                        var code = list.replace(/\s/g, "_").toUpperCase();
+
+                        if (sensitiveDatasets[code]) {
+                            var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
+                                + " sensitive species list information page' target='collectory'>" + list + "</a>";
+                            var regex = new RegExp(list, "g");
+                            var html = $(field).html().replace(regex, linked);
+                            $(field).html(html);
+                        }
+                    });
+                });
+
+                <c:if test="${not empty record.sounds}">
+                    var myCirclePlayer = new CirclePlayer("#jquery_jplayer_1",
+                    {
+                        oga: "${record.sounds[0].alternativeFormats['audio/ogg']}",
+                        mp4: "${record.sounds[0].alternativeFormats['audio/mpeg']}"
+                    }, {
+                        cssSelectorAncestor: "#cp_container_1"
+                    });
+                </c:if>
             }); // end JQuery document ready
+            
+            /*
+             * IE doesn't support String.trim(), so add it in manually
+             */
+            if(typeof String.prototype.trim !== 'function') {
+                String.prototype.trim = function() {
+                    return this.replace(/^\s+|\s+$/g, ''); 
+                }
+            }
         </script>
     </head>
     <body>
@@ -194,7 +284,9 @@
                         <ul id="systemAssertions">
                             <c:forEach var="systemAssertion" items="${record.systemAssertions}">
                                 <li>
-                                    <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
+                                    <c:if test="${empty systemAssertion.comment}">
+                                        <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
+                                    </c:if>
                                     ${systemAssertion.comment}
                                 </li>
                             </c:forEach>
@@ -211,15 +303,16 @@
                     </div>
                 </div>
                 <div class="sidebar">
-                    <p style="margin:20px 0 20px 0;">
-                        <button class="rounded" id="assertionButton">
-                            <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
+                    <c:if test="${false && isCollectionAdmin}">
+                        <button class="rounded" id="verifyButton">
+                            <span id="assertionMaker" href="#verifyRecord" title="">Verify Record</span>
                         </button>
-                        
-                    </p>
-                    <!--c:if test="${isCollectionAdmin}"-->
-                        <!--div>You are able to modify assertions!</div-->
-                    <!--/c:if-->
+                    </c:if>
+                </div>
+                <div class="sidebar">
+                    <button class="rounded" id="assertionButton">
+                        <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
+                    </button>
                     <div style="display:none">
                         <c:choose>
                         <c:when test="${empty userId}">
@@ -256,12 +349,20 @@
                         </c:choose>
                     </div>
                 </div>
+                <div class="sidebar">
+                    <button class="rounded" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
+                        <span id="assertionMaker" href="#processedVsRawView" title="">Original vs Processed</span>
+                    </button>
+                </div>  
                 <c:if test="${not empty record.processed.occurrence.images}">
                     <div class="sidebar">
                         <h2>Images</h2>
                         <c:forEach items="${record.processed.occurrence.images}" var="imageUrl">
                            <a href="${not empty record.raw.occurrence.occurrenceDetails ?  record.raw.occurrence.occurrenceDetails : imageUrl}"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
                         </c:forEach>
+                        <c:if test="${not empty record.raw.occurrence.rights}">
+                        <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                        </c:if>
                     </div>
                 </c:if>
                 <c:if test="${not empty record.processed.location.decimalLatitude && not empty record.processed.location.decimalLongitude}">
@@ -316,45 +417,87 @@
                         <div id="occurrenceMap"></div>
                     </div>
                 </c:if>
+                <c:if test="${not empty record.sounds}">
+                <style type="text/css">
+                  .cp-play { left:-20px; top: -5px;}
+                  .cp-pause { left:-20px; top: -5px; }
+                  #soundsHeader { margin-top:15px; }
+                </style>
+                <div class="sidebar">
+                    <h2 id="soundsHeader">Sounds</h2>
+                    <!-- The jPlayer div must not be hidden. Keep it at the root of the body element to avoid any such problems. -->
+                    <div id="jquery_jplayer_1" class="cp-jplayer"></div>
+                    <div class="prototype-wrapper"> <!-- A wrapper to emulate use in a webpage and center align -->
+                        <!-- The container for the interface can go where you want to display it. Show and hide it as you need. -->
+                        <div id="cp_container_1" class="cp-container">
+                            <div class="cp-buffer-holder"> <!-- .cp-gt50 only needed when buffer is > than 50% -->
+                                <div class="cp-buffer-1"></div>
+                                <div class="cp-buffer-2"></div>
+                            </div>
+                            <div class="cp-progress-holder"> <!-- .cp-gt50 only needed when progress is > than 50% -->
+                                <div class="cp-progress-1"></div>
+                                <div class="cp-progress-2"></div>
+                            </div>
+                            <div class="cp-circle-control"></div>
+                            <ul class="cp-controls">
+                                <li><a href="#" class="cp-play" tabindex="1">play</a></li>
+                                <li><a href="#" class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
+                                <!-- Needs the inline style here, or jQuery.show() uses display:inline instead of display:block -->
+                            </ul>
+                        </div>
+                    </div>
+                    <c:if test="${not empty record.raw.occurrence.rights}">
+                    <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                    </c:if>
+                    <p>Please press the play button to hear the sound file associated with this occurrence record.</p>
+                </div>
+             </c:if>
             </div><!-- end div#SidebarBox -->
-            <div id="content">
+            <div id="content2">
                 <div id="occurrenceDataset">
                     <h3>Dataset</h3>
                     <table class="occurrenceTable" id="datasetTable">
-                        <%--
-                        <!-- Data Provider -->
-                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data Provider">
-                            <c:choose>
-                                <c:when test="${record.processed.attribution.dataProviderUid != null && not empty record.processed.attribution.dataProviderUid}">
-                                    <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataProviderUid}">
+                        <c:if test="${useAla == 'true'}">
+                            <!-- Data Provider -->
+                            <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data Provider">
+                                <c:choose>
+                                    <c:when test="${record.processed.attribution.dataProviderUid != null && not empty record.processed.attribution.dataProviderUid}">
+                                        <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataProviderUid}">
+                                            ${record.processed.attribution.dataProviderName}
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
                                         ${record.processed.attribution.dataProviderName}
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    ${record.processed.attribution.dataProviderName}
-                                </c:otherwise>
-                            </c:choose>
-                        </alatag:occurrenceTableRow>
-                        <!-- Data Resource -->
-                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data Set">
-                            <c:choose>
-                                <c:when test="${record.processed.attribution.dataResourceUid != null && not empty record.processed.attribution.dataResourceUid}">
-                                    <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataResourceUid}">
+                                    </c:otherwise>
+                                </c:choose>
+                            </alatag:occurrenceTableRow>
+                            <!-- Data Resource -->
+                            <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data Set">
+                                <c:choose>
+                                    <c:when test="${record.raw.attribution.dataResourceUid != null && not empty record.raw.attribution.dataResourceUid}">
+                                        <a href="${collectionsWebappContext}/public/show/${record.raw.attribution.dataResourceUid}">
+                                            ${record.processed.attribution.dataResourceName}
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
                                         ${record.processed.attribution.dataResourceName}
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    ${record.processed.attribution.dataResourceName}
-                                </c:otherwise>
-                            </c:choose>
-                        </alatag:occurrenceTableRow>
-                        --%>
+                                    </c:otherwise>
+                                </c:choose>
+                            </alatag:occurrenceTableRow>
+                        </c:if>
                         <!-- Institution -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="institutionCode" fieldName="Institution">
                             <c:choose>
                                 <c:when test="${record.processed.attribution.institutionUid != null && not empty record.processed.attribution.institutionUid}">
                                     <!-- <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.institutionUid}"> -->
-                                    <a href="${pageContext.request.contextPath}/institution/${record.processed.attribution.institutionUid}">
+                                    <c:choose>
+                                        <c:when test="${useAla == 'true'}">
+                                            <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.institutionUid}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/institution/${record.processed.attribution.institutionUid}">
+                                        </c:otherwise>
+                                    </c:choose>
                                         ${record.processed.attribution.institutionName}
                                     </a>
                                 </c:when>
@@ -370,7 +513,14 @@
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="collectionCode" fieldName="Collection">
                             <c:if test="${not empty record.processed.attribution.collectionUid}">
 <!--                                <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">-->
-                                <a href="${pageContext.request.contextPath}/collection/${record.processed.attribution.collectionUid}" title="view collection page">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                       <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">
+                                    </c:when>
+                                    <c:otherwise>
+                                       <a href="${pageContext.request.contextPath}/collection/${record.processed.attribution.collectionUid}" title="view collection page">
+                                    </c:otherwise>
+                                </c:choose>
                             </c:if>
                             <c:choose>
                                 <c:when test="${not empty record.processed.attribution.collectionName}">
@@ -415,6 +565,9 @@
                                 </c:otherwise>
                             </c:choose>
                         </alatag:occurrenceTableRow>
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="citation" fieldName="Record citation">
+                            ${record.raw.attribution.citation}
+                        </alatag:occurrenceTableRow>                        
                         <!-- Occurrence ID -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceID" fieldName="Occurrence ID">
                             <c:choose>
@@ -544,6 +697,10 @@
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="preparations" fieldName="Preparations">
                             ${record.raw.occurrence.preparations}
                         </alatag:occurrenceTableRow>
+                        <!-- Rights -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="rights" fieldName="Rights">
+                            ${record.raw.occurrence.rights}
+                        </alatag:occurrenceTableRow>
                     </table>
                 </div>
                 <div id="occurrenceTaxonomy">
@@ -585,12 +742,23 @@
                             </c:set>
                             <c:choose>
                                 <c:when test="${not empty record.processed.classification.taxonConceptID}">
-                                    <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.taxonConceptID}">${displaySciName}</a>
+                                    <c:choose>
+                                        <c:when  test="${useAla == 'true'}">
+                                            <a href="${bieWebappContext}/species/${record.processed.classification.taxonConceptID}">${displaySciName}</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.taxonConceptID}">${displaySciName}</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="${bieWebappContext}/search?q=${fn:replace(scientificName, '  ', ' ')}">${displaySciName}</a>
                                 </c:otherwise>
                             </c:choose>
+                            <c:if test="${not empty record.raw.classification.scientificName && !fn:contains(displaySciName, record.raw.classification.scientificName)}">
+                                <br/><span class="originalValue">Supplied as &quot;${record.raw.classification.scientificName}&quot;</span>
+                                <!-- ${record.raw.classification.scientificName} || ${displaySciName} -->
+                            </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Taxon Rank -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon Rank">
@@ -624,7 +792,14 @@
                         <!-- Kingdom -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="kingdom" fieldName="Kingdom">
                             <c:if test="${not empty record.processed.classification.kingdomID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.kingdomID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.kingdomID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.kingdomID}">
+                                    </c:otherwise>
+                                </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.kingdom}">
                                     ${record.processed.classification.kingdom}
@@ -642,7 +817,14 @@
                         <!-- Phylum -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="phylum" fieldName="Phylum">
                             <c:if test="${not empty record.processed.classification.phylumID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.phylumID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.phylumID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.phylumID}">
+                                    </c:otherwise>
+                                </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.phylum}">
                                     ${record.processed.classification.phylum}
@@ -660,7 +842,14 @@
                         <!-- Class -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="classs" fieldName="Class">
                             <c:if test="${not empty record.processed.classification.classID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.classID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.classID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.classID}">
+                                    </c:otherwise>
+                                </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.classs}">
                                     ${record.processed.classification.classs}
@@ -678,7 +867,14 @@
                         <!-- Order -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="order" fieldName="Order">
                             <c:if test="${not empty record.processed.classification.orderID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.orderID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.orderID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.orderID}">
+                                    </c:otherwise>
+                                </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.order}">
                                     ${record.processed.classification.order}
@@ -696,7 +892,14 @@
                         <!-- Family -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="family" fieldName="Family">
                             <c:if test="${not empty record.processed.classification.familyID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.familyID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.familyID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.familyID}">
+                                    </c:otherwise>
+                                 </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.family}">
                                     ${record.processed.classification.family}
@@ -714,7 +917,14 @@
                         <!-- Genus -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="genus" fieldName="Genus">
                             <c:if test="${not empty record.processed.classification.genusID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.genusID}">
+                                 <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.genusID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.genusID}">
+                                    </c:otherwise>
+                                  </c:choose>
                                 </c:if>
                                 <c:if test="${not empty record.processed.classification.genus}">
                                     <i>${record.processed.classification.genus}</i>
@@ -732,7 +942,14 @@
                         <!-- Species -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="species" fieldName="Species">
                             <c:if test="${not empty record.processed.classification.speciesID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.speciesID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.speciesID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.speciesID}">
+                                    </c:otherwise>
+                                </c:choose>
                             </c:if>
                             <c:choose>
                                 <c:when test="${not empty record.processed.classification.species}">
@@ -882,22 +1099,33 @@
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field Notes">
                             ${record.raw.occurrence.fieldNotes}
                         </alatag:occurrenceTableRow>
-                        <!-- Coordinate Accuracy -->
+                        <!-- Coordinate Precision -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate Precision">
                             <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
                                 ${not empty record.processed.location.coordinatePrecision ? record.processed.location.coordinatePrecision : 'Unknown'}
                             </c:if>
                         </alatag:occurrenceTableRow>
-                        <!-- Coordinate Accuracy -->
-                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate Accuracy (metres)">
+                        <!-- Coordinate Uncertainty -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate Uncertainty (metres)">
                             <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
                                 ${not empty record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
                             </c:if>
                         </alatag:occurrenceTableRow>
-                        <!-- Coordinates Generalised -->
+                        <!-- Data Generalizations -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="generalisedInMetres" fieldName="Coordinates Generalised">
-                            <c:if test="${not empty record.processed.location.coordinatePrecision}">
-                                Due to sensitivity concerns, the coordinates of this record have been generalised to ${rawOccurrence.generalisedInMetres} metres.
+                            <c:choose>
+                                <c:when test="${not empty record.processed.occurrence.dataGeneralizations && fn:contains(record.processed.occurrence.dataGeneralizations, 'is already generalised')}">
+                                    ${record.processed.occurrence.dataGeneralizations}
+                                </c:when>
+                                <c:when test="${not empty record.processed.occurrence.dataGeneralizations}">
+                                    Due to sensitivity concerns, the coordinates of this record have been generalised: &quot;<span class="dataGeneralizations">${record.processed.occurrence.dataGeneralizations}</span>&quot;.
+                                </c:when>
+                            </c:choose>
+                        </alatag:occurrenceTableRow>
+                        <!-- Information Withheld -->
+                        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="informationWithheld" fieldName="Information Withheld">
+                            <c:if test="${not empty record.processed.occurrence.informationWithheld}">
+                                <span class="dataGeneralizations">${record.processed.occurrence.informationWithheld}</span>
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- GeoreferenceVerificationStatus -->
@@ -912,16 +1140,36 @@
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceProtocol" fieldName="Georeference Protocol">
                             ${record.raw.location.georeferenceProtocol}
                         </alatag:occurrenceTableRow> 
-                        <!-- georeferencedBy -->                      
+                        <!-- georeferenceProtocol -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferencedBy" fieldName="Georeferenced By">
                             ${record.raw.location.georeferencedBy}
-                        </alatag:occurrenceTableRow>                        
+                        </alatag:occurrenceTableRow>  
                     </table>
+                </div>
+            </div>
+            
+            <div style="display:none;clear:both;">
+                <div id="processedVsRawView">
+                    <h2>&quot;Original versus Processed&quot; Comparison Table</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:15%;text-align:center;">Group</th>
+                                <th style="width:15%;text-align:center;">Field Name</th>
+                                <th style="width:35%;text-align:center;">Original</th>
+                                <th style="width:35%;text-align:center;">Processed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <alatag:formatRawVsProcessed map="${compareRecord}"/>
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </c:if>
         <c:if test="${empty record.raw}">
-            <div id="content">
+            <div id="content2">
                 <h1>Record Not Found</h1>
                 <p>The requested record ID "${uuid}" was not found</p>
             </div>

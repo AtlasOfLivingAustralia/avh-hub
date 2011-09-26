@@ -39,8 +39,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProxyController {
     /** Logger initialisation */
 	private final static Logger logger = Logger.getLogger(ProxyController.class);
-    /** WordPress URL */
+    /** Gazetteer URL */
     private final String SPATIAL_PORTAL_URL = "http://spatial.ala.org.au";
+    /** WordPress URL */
+    private final String WORDPRESS_URL = "http://www.ala.org.au/";
 
     /**
      * Proxy to WordPress site using page_id URI format
@@ -51,7 +53,7 @@ public class ProxyController {
      * @throws Exception
      */
     @RequestMapping(value = "/gazetteer/search", method = RequestMethod.GET)
-    public void getWordPressContentforPageId(
+    public void getGazetteerContentforPageId(
             @RequestParam(value="q", required=true) String query,
             @RequestParam(value="layer", required=false) String layerName,
             HttpServletResponse response) throws Exception {
@@ -67,6 +69,40 @@ public class ProxyController {
         try {
             String contentAsString = getUrlContentAsString(urlString.toString(), 10000);
             response.setContentType("text/xml;charset=UTF-8");
+            response.getWriter().write(contentAsString);
+        } catch (Exception ex) {
+            // send a 500 so ajax client does not display WP not found page
+            response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write(ex.getMessage());
+            logger.error("Proxy error: "+ex.getMessage(), ex);
+        }
+    }
+    
+    /**
+     * Proxy to WordPress site using page_id URI format
+     * 
+     * @param pageId
+     * @param contentOnly
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = "/wordpress", method = RequestMethod.GET)
+    public void getWordPressContentforPageId(
+            @RequestParam(value="page_id", required=true) String pageId,
+            @RequestParam(value="content-only", required=false) String contentOnly,
+            HttpServletResponse response) throws Exception {
+
+        StringBuilder urlString = new StringBuilder(WORDPRESS_URL+"?page_id="+pageId);
+        
+        if (contentOnly != null && !contentOnly.isEmpty()) {
+            urlString.append("&content-only=").append(contentOnly);
+        }
+
+        logger.info("proxy URI: "+urlString);
+
+        try {
+            String contentAsString = getUrlContentAsString(urlString.toString(), 10000);
+            response.setContentType("text/html;charset=UTF-8");
             response.getWriter().write(contentAsString);
         } catch (Exception ex) {
             // send a 500 so ajax client does not display WP not found page

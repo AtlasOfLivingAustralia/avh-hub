@@ -14,7 +14,15 @@
     <c:if test="${empty maxPageLinks}"><c:set var="maxPageLinks" value="10"/></c:if>
     <fmt:formatNumber var="pageNumber" value="${(startIndex / pageSize) + 1}" pattern="0" />
     <c:set var="hash" value=""/>
-    <c:set var="coreParams">?q=${param.q}<c:if test="${not empty paramValues.fq}">&fq=${fn:join(paramValues.fq, "&fq=")}</c:if>&sort=${param.sort}&dir=${param.dir}&pageSize=${pageSize}</c:set>
+    <c:set var="coreParams">?<c:if test="${not empty param.q}">q=<c:out escapeXml="true" value="${param.q}"/>&</c:if><c:if 
+            test="${not empty param.taxa}">taxa=${param.taxa}&</c:if><c:if 
+            test="${not empty paramValues.fq}">fq=${fn:join(paramValues.fq, "&fq=")}&</c:if><c:if 
+            test="${not empty param.sort}">sort=${param.sort}&</c:if><c:if 
+            test="${not empty param.dir}">dir=${param.dir}&</c:if><c:if 
+            test="${not empty param.pageSize}">pageSize=${pageSize}&</c:if><c:if 
+            test="${not empty param.lat}">lat=${param.lat}&</c:if><c:if 
+            test="${not empty param.lon}">lon=${param.lon}&</c:if><c:if 
+            test="${not empty param.radius}">radius=${param.radius}&</c:if></c:set>
     <!-- coreParams = ${coreParams} || lastPage = ${lastPage} || startIndex = ${startIndex} || pageNumber = ${pageNumber} -->
     <c:set var="startPageLink">
         <c:choose>
@@ -42,7 +50,7 @@
     <ul>
         <c:choose>
             <c:when test="${startIndex > 0}">
-                <li id="prevPage"><a href="${coreParams}&start=${startIndex - pageSize}${hash}&title=${title}">&laquo; Previous</a></li>
+                <li id="prevPage"><a href="${coreParams}start=${startIndex - pageSize}${hash}&title=${title}">&laquo; Previous</a></li>
             </c:when>
             <c:otherwise>
                 <li id="prevPage">&laquo; Previous</li>
@@ -51,12 +59,12 @@
         <c:forEach var="pageLink" begin="${startPageLink}" end="${endPageLink}" step="1">
             <c:choose>
                 <c:when test="${pageLink == pageNumber}"><li class="currentPage">${pageLink}</li></c:when>
-                <c:otherwise><li><a href="${coreParams}&start=${(pageLink * pageSize) - pageSize}${hash}&title=${title}">${pageLink}</a></li></c:otherwise>
+                <c:otherwise><li><a href="${coreParams}start=${(pageLink * pageSize) - pageSize}${hash}&title=${title}">${pageLink}</a></li></c:otherwise>
             </c:choose>
         </c:forEach>
         <c:choose>
             <c:when test="${!(pageNumber == lastPage)}">
-                <li id="nextPage"><a href="${coreParams}&start=${startIndex + pageSize}${hash}&title=${title}">Next &raquo;</a></li>
+                <li id="nextPage"><a href="${coreParams}start=${startIndex + pageSize}${hash}&title=${title}">Next &raquo;</a></li>
             </c:when>
             <c:otherwise>
                 <li id="nextPage">Next &raquo;</li>

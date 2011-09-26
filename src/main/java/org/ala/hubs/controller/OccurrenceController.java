@@ -17,28 +17,37 @@ package org.ala.hubs.controller;
 
 import au.org.ala.biocache.BasisOfRecord;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import au.org.ala.biocache.QualityAssertion;
-import org.ala.biocache.dto.SearchResultDTO;
-import org.ala.biocache.dto.SearchRequestParams;
+import org.ala.biocache.dto.*;
 import au.org.ala.biocache.FullRecord;
 import au.org.ala.biocache.SpeciesGroups;
 import au.org.ala.biocache.TypeStatus;
-import java.util.List;
-import java.util.Map;
+import java.net.URLDecoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.AssertionDTO;
+import org.ala.hubs.dto.FieldGuideDTO;
+import org.ala.hubs.service.BieService;
 import org.ala.hubs.service.BiocacheService;
+import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
+import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
@@ -46,12 +55,14 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestOperations;
 
 /**
@@ -60,7 +71,7 @@ import org.springframework.web.client.RestOperations;
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
 @Controller("occurrenceController")
-@RequestMapping(value = "/occurrences")
+@RequestMapping(value = {"/occurrences","/occurrence"})
 public class OccurrenceController {
 
 	private final static Logger logger = Logger.getLogger(OccurrenceController.class);
@@ -69,14 +80,24 @@ public class OccurrenceController {
     @Inject
     private BiocacheService biocacheService;
     @Inject
+    private BieService bieService;
+//    @Inject
+//    protected SearchUtils searchUtils;
+    @Inject
 	protected RestfulClient restfulClient;
     @Inject
     protected CollectionsCache collectionsCache;
     @Inject
     protected GazetteerCache gazetteerCache;
+    @Inject
+    protected CollectoryUidCache collectoryUidCache;
+
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
+    @Value("${sensitiveDataset.list}")
+    String sensitiveDatasets = null;
+    
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
@@ -84,12 +105,33 @@ public class OccurrenceController {
     private final String ANNOTATE_EDITOR = "occurrences/annotationEditor";
     protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
-    private String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
+    protected String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
+
+    /**
+     * Expects a request body in JSON
+     *
+     * @return
+     */
+    @RequestMapping(value="/", method = RequestMethod.GET)
+    public void home(HttpServletResponse response) throws Exception {
+        response.sendRedirect("search");
+    }
+
+    /**
+     * Expects a request body in JSON
+     *
+     * @return
+     */
+    @RequestMapping(value="/refreshUidCache", method = RequestMethod.GET)
+    public String refreshCaches() throws Exception {
+        collectoryUidCache.updateCache();
+        collectionsCache.updateCache();
+        return null;
+    }
 
     /**
      * Sets up state variables and calls the annotation editor jsp.
      * @param uuid
-     * @param result
      * @param model
      * @param request
      * @return
@@ -100,7 +142,6 @@ public class OccurrenceController {
 
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
-        
         if (assertion != null) {
         	
             AttributePrincipal principal = assertion.getPrincipal();
@@ -118,6 +159,123 @@ public class OccurrenceController {
 
         return ANNOTATE_EDITOR;
     }
+    
+    /**
+     * Spatial search for either a taxon name or full text text search
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/searchByArea*", method = RequestMethod.GET)
+	public String occurrenceSearchByArea(
+			@RequestParam(value="taxa", required=false) String taxaQuery,
+            SpatialSearchRequestParams requestParams,
+            BindingResult result,
+            HttpServletRequest request,
+			Model model) throws Exception {
+        logger.debug("/searchByArea* TOP");
+        
+        if (requestParams.getQ() == null || requestParams.getQ().isEmpty()) {
+			return RECORD_LIST;
+		}
+
+		if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20); // default is 10
+        }
+        
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        
+        String query = requestParams.getQ();
+        logger.debug("searchByArea - requestParams = " + requestParams);
+
+        if (requestParams.getLat() == null && requestParams.getLon() == null && requestParams.getRadius() == null && query.contains("|")) {
+            // check for lat/long/rad encoded in q param, delimited by |
+            // order is query, latitude, longitude, radius
+            String[] queryParts = StringUtils.split(query, "|", 4);
+            query = queryParts[0];
+            logger.info("(spatial) query: "+query);
+
+            if (query.contains("%%")) {
+                // mulitple parts (%% separated) need to be OR'ed (yes a hack for now)
+                String prefix = StringUtils.substringBefore(query, ":");
+                String suffix = StringUtils.substringAfter(query, ":");
+                String[] chunks = StringUtils.split(suffix, "%%");
+                ArrayList<String> formatted = new ArrayList<String>();
+
+                for (String s : chunks) {
+                    formatted.add(prefix+":"+s);
+                }
+
+                query = StringUtils.join(formatted, " OR ");
+                logger.debug("new query: "+query);
+            }
+
+            requestParams.setLat(Float.parseFloat(queryParts[1]));
+            requestParams.setLon(Float.parseFloat(queryParts[2]));
+            requestParams.setRadius(Float.parseFloat(queryParts[3]));
+        }
+
+		StringBuilder displayQuery = new StringBuilder(StringUtils.substringAfter(query, ":").replace("*", "(all taxa)"));
+        displayQuery.append(" - within "+requestParams.getRadius()+" km of point ("+requestParams.getLat()+", "+requestParams.getLon()+")");
+		requestParams.setDisplayString(displayQuery.toString());
+        // perform the search
+        doFullTextSearch(taxaQuery, model, requestParams, request);
+
+		return RECORD_LIST;
+	}
+
+    /**
+     * Performs a search for occurrence records via Biocache web services
+     *
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return view
+     * @throws Exception
+     */
+    @RequestMapping(value = "/dataResource/{dataResourceUid}/search*", method = RequestMethod.GET)
+    public String search(
+            @RequestParam(value="taxa", required=false) String taxaQuery,
+            @PathVariable String dataResourceUid,
+            SearchRequestParams requestParams,
+            BindingResult result,
+            Model model,
+            HttpServletRequest request) throws Exception {
+        logger.debug("/search* TOP");
+
+        if(requestParams.getFq()!=null){
+            System.out.println("*******requestParams.fq :" + StringUtils.join(requestParams.getFq(), ", "));
+        } else {
+            System.out.println("*******requestParams.fq : NOTHING");
+        }
+
+
+        String[] filterQueries = requestParams.getFq();
+        if(filterQueries!=null){
+            String[] filterQueriesWithDR = new String[filterQueries.length+1];
+            ArrayUtils.addAll(filterQueries, filterQueriesWithDR);
+            filterQueriesWithDR[filterQueriesWithDR.length -1] = "data_resource_uid:" + dataResourceUid;
+            requestParams.setFq(filterQueriesWithDR);
+        } else {
+            requestParams.setFq(new String[]{"data_resource_uid:" + dataResourceUid});
+        }
+
+        if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+
+		doFullTextSearch(taxaQuery, model, requestParams, request);
+
+        return RECORD_LIST;
+    }
 
     /**
      * Performs a search for occurrence records via Biocache web services
@@ -130,27 +288,13 @@ public class OccurrenceController {
      * @throws Exception 
      */
     @RequestMapping(value = "/search*", method = RequestMethod.GET)
-    public String search(SearchRequestParams requestParams, BindingResult result, Model model,
+    public String search(
+            @RequestParam(value="taxa", required=false) String taxaQuery,
+            SearchRequestParams requestParams, 
+            BindingResult result, 
+            Model model,
             HttpServletRequest request) throws Exception {
-        final HttpSession session = request.getSession(false);
-        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
-
-        // *****
-        String userId = null;
-        if (assertion != null) {
-            AttributePrincipal principal = assertion.getPrincipal();
-            model.addAttribute("userId", principal.getName());
-            userId = principal.getName();
-
-            String fullName = "";
-            if (principal.getAttributes().get("firstname") != null && principal.getAttributes().get("lastname") != null) {
-                fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
-            }
-            model.addAttribute("userDisplayName", fullName);
-        }
-
-        model.addAttribute("errorCodes", biocacheService.getUserCodes());
-        // *****
+        logger.debug("/search* TOP");
 
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
@@ -160,16 +304,15 @@ public class OccurrenceController {
             logger.warn("BindingResult errors: " + result.toString());
         }
 
-        //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
-        //sortDirection = getSortDirection(sortField, sortDirection);
-
-        requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
-        SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
-        logger.debug("searchResult: " + searchResult.getTotalRecords());
-        model.addAttribute("searchResults", searchResult);
-        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
-        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        addCommonDataToModel(model);
+        if (request.getParameter("sort") == null && request.getParameter("dir") == null ) {
+            requestParams.setSort("occurrence_date");
+            requestParams.setDir("desc");
+            model.addAttribute("sort","occurrence_date");
+            model.addAttribute("dir","occurrence_date");
+        }
+        
+		doFullTextSearch(taxaQuery, model, requestParams, request);
+        
         return RECORD_LIST;
     }
 
@@ -184,18 +327,154 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/taxa/{guid:.+}*", method = RequestMethod.GET)
 	public String occurrenceSearchByTaxon(
-			SearchRequestParams requestParams,
+			@RequestParam(value="taxa", required=false) String taxaQuery,
+            SearchRequestParams requestParams,
             @PathVariable("guid") String guid,
+            HttpServletRequest request,
             Model model) throws Exception {
 
         //requestParams.setQ("taxonConceptID:" + guid);
         requestParams.setDisplayString("taxonConcept: "+guid); // replace with sci name if a match is found
+        String[] userFacets = getFacetsFromCookie(request);
+        if (userFacets.length > 0) requestParams.setFacets(userFacets);
         SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
+        model.addAttribute("searchRequestParams", requestParams);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
         addCommonDataToModel(model);
+        return RECORD_LIST;
+    }
+
+    /**
+     * Display records for a given taxon concept id (with request param)
+     * 
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception 
+     */
+    @RequestMapping(value = "/searchByTaxon*", method = RequestMethod.GET)
+    public String searchByTaxon(
+            SearchRequestParams requestParams, 
+            BindingResult result, 
+            Model model,
+            HttpServletRequest request) throws Exception {
+        logger.debug("/searchByTaxon TOP");
+        
+        if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        
+        String query = requestParams.getQ();
+        
+        if (!query.startsWith("lsid")) {
+            requestParams.setQ("lsid:" + query);
+        } 
+        
+        doFullTextSearch(null, model, requestParams, request);
+        
+        return RECORD_LIST;
+    }
+
+    /**
+     * Display records for a given taxon concept id (with request param)
+     *
+     * @param requestParams
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/fieldguide/download", method = RequestMethod.GET)
+    public String downloadFieldGuide(
+            @RequestParam(value="maxSpecies", required=false, defaultValue = "250") Integer maxSpecies,
+            SearchRequestParams requestParams,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        logger.debug("Field guide download starting");
+        requestParams.setFlimit(maxSpecies);
+        SearchResultDTO dto = biocacheService.findByFulltextQuery(requestParams);
+        Collection<FacetResultDTO> facets = dto.getFacetResults();
+        FacetResultDTO facet = facets.iterator().next();
+        List<FieldResultDTO> results = facet.getFieldResult();
+        FieldGuideDTO fg = new FieldGuideDTO();
+
+        //add the GUIDs to add to the field guide
+        for(FieldResultDTO fr : results){
+            fg.getGuids().add(fr.getLabel());
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
+        //set the properties of the query
+        fg.setTitle("This field guide was generated on "+ sdf.format(new Date()));
+
+        String serverName = request.getSession().getServletContext().getInitParameter("serverName");
+        String contextPath = request.getSession().getServletContext().getInitParameter("contextPath");
+        if(contextPath == null){
+            contextPath = "";
+        }
+        fg.setLink(serverName + contextPath + "/occurrences/search?" + request.getQueryString());
+
+        System.out.println(fg.getLink());
+
+        //send the request to the fieldguide webservice
+        HttpClient httpClient = new HttpClient();
+        PostMethod post = new PostMethod("http://fieldguide.ala.org.au/generate");
+        ObjectMapper om = new ObjectMapper();
+        String jsonRequest = om.writeValueAsString(fg);
+        logger.debug("Sending body: " + jsonRequest);
+        post.setRequestBody(jsonRequest);
+        httpClient.executeMethod(post);
+
+        String fileID = post.getResponseHeader("Fileid").getValue();
+        response.sendRedirect("http://fieldguide.ala.org.au/guide/"+fileID);
+        return null;
+    }
+
+    /**
+     * UID search for links via collectory
+     * 
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception 
+     */
+    @RequestMapping(value = "/searchForUID*", method = RequestMethod.GET)
+    public String searchForUid(
+            SearchRequestParams requestParams, 
+            BindingResult result, 
+            Model model,
+            HttpServletRequest request) throws Exception {
+        logger.debug("/searchForUID TOP");
+        
+        if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        
+        String query = requestParams.getQ();
+        
+        if (query.startsWith("in")) {
+            requestParams.setQ("institution_uid:" + query);
+        } else if (query.startsWith("co")) {
+            requestParams.setQ("collection_uid:" + query);
+        }
+        
+		doFullTextSearch(null, model, requestParams, request);
+        
         return RECORD_LIST;
     }
 
@@ -250,9 +529,8 @@ public class OccurrenceController {
 
         if(assertion!=null){
             AttributePrincipal principal = assertion.getPrincipal();
-            model.addAttribute("userId", principal.getName());
             userId = principal.getName();
-
+            model.addAttribute("userId", userId);
             String fullName = "";
             if (principal.getAttributes().get("firstname")!=null &&  principal.getAttributes().get("lastname")!=null) {
                 fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
@@ -267,6 +545,9 @@ public class OccurrenceController {
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
 
         String collectionUid = null;
+        String rowKey = (record != null && record.getRaw() != null)? record.getRaw().getRowKey() : uuid;
+        // add the rowKey for the record.
+        model.addAttribute("rowKey", rowKey);
 
         if (record != null && record.getProcessed() != null) { // .getAttribution().getCollectionCodeUid()
             FullRecord  pr = record.getProcessed();
@@ -294,7 +575,7 @@ public class OccurrenceController {
             // Check is user has role: ROLE_COLLECTION_EDITOR or ROLE_COLLECTION_ADMIN
             // and then call Collections WS to see if they are a member of the current collection uid
 
-            if (userId != null && (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_COLLECTION_ADMIN") || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
+            if (userId != null && collectionUid != null && (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_COLLECTION_ADMIN") || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
                 logger.info("User has appropriate ROLE...");
                 try {
                     final String jsonUri = collectionContactsUrl + "/" + collectionUid + "/contacts.json";
@@ -316,13 +597,20 @@ public class OccurrenceController {
                 } catch (Exception ex) {
                     logger.error("RestTemplate error: " + ex.getMessage(), ex);
                 }
-            }            
+            }
+            
+            if (record.getUserAssertions() != null) {
+            	Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
+                model.addAttribute("groupedAssertions", grouped);
+            }
+            
+            model.addAttribute("record", record);
+            model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
+            // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
+            Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
+            model.addAttribute("compareRecord", compareRecord);
 		}
-
-        Collection<AssertionDTO> grouped = AssertionUtils
-                .groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
-        model.addAttribute("groupedAssertions", grouped);
-        model.addAttribute("record", record);
+        
 		return RECORD_SHOW;
 	}
 
@@ -397,6 +685,105 @@ public class OccurrenceController {
     }
 
     /**
+     * Common search code for full text searches
+     * 
+     * @param model
+     * @param requestParams
+     * @param request 
+     */
+    protected void doFullTextSearch(String taxaQuery, Model model, SearchRequestParams requestParams, HttpServletRequest request) {
+        // Prepare request obj
+        prepareSearchRequest(taxaQuery, request, requestParams);
+        // Perform search via webservice
+        try {
+            SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
+            logger.debug("searchResult: " + searchResult.getTotalRecords());
+            addToModel(model, requestParams, searchResult);
+            
+            if (taxaQuery != null && !taxaQuery.isEmpty()) {
+                // attempt to add the mathced name/common name to displayQuery
+                String displayQuery = searchResult.getQueryTitle();
+                Pattern exp = Pattern.compile("<span>(.*)</span>");
+                Matcher matcher = exp.matcher(displayQuery);
+                if (matcher.find()) {
+                    logger.info("Generator: "+matcher.group(1));
+                    requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
+                }
+            }
+            
+        } catch (Exception ex) {
+        	logger.error(ex.getMessage(),ex);
+            model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
+        }
+    }
+    
+    /**
+     * Common search code for spatial full text searches
+     * 
+     * @param model
+     * @param requestParams
+     * @param request 
+     */
+    protected void doFullTextSearch(String taxaQuery, Model model, SpatialSearchRequestParams requestParams, HttpServletRequest request) {
+        // Prepare request obj
+        prepareSearchRequest(taxaQuery, request, requestParams);
+        // Perform search via webservice
+        try {
+            SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
+            model.addAttribute("latitude", requestParams.getLat());
+            model.addAttribute("longitude", requestParams.getLon());
+            model.addAttribute("radius", requestParams.getRadius());
+            logger.debug("searchResult: " + searchResult.getTotalRecords());
+            addToModel(model, requestParams, searchResult);
+        } catch (Exception ex) {
+        	logger.error(ex.getMessage(),ex);
+            model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
+        }
+    }
+
+    /**
+     * Common code to check for facets cookie and manipulate query, etc
+     * 
+     * @param request
+     * @param requestParams 
+     */
+    protected void prepareSearchRequest(String taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
+        // check for user facets via cookie
+        String[] userFacets = getFacetsFromCookie(request);
+        if (userFacets.length > 0) requestParams.setFacets(userFacets);
+        
+        if (requestParams.getQ().isEmpty()) 
+            requestParams.setQ("*:*"); // assume search for everything
+        
+        if (taxaQuery != null && !taxaQuery.isEmpty()) {
+            StringBuilder query = new StringBuilder();
+            String guid = bieService.getGuidForName(taxaQuery);
+            logger.info("GUID = " + guid);
+            
+            if (guid != null && !guid.isEmpty()) {
+                query.append("lsid:").append(guid);
+                taxaQuery = taxaQuery + " <span id='queryGuid'>" + guid + "</span>";
+                requestParams.setDisplayString(taxaQuery);
+                // add raw_scientificName facet so we can show breakdown of taxa contributing to search
+                List<String> facets = new ArrayList<String>(Arrays.asList(requestParams.getFacets()));    
+                if (!facets.contains("raw_taxon_name")) {
+                    facets.add("raw_taxon_name");
+                    requestParams.setFacets(facets.toArray(new String[0]));
+                } 
+                
+            } else {
+                query.append(taxaQuery); // full text search
+                requestParams.setDisplayString(taxaQuery);
+            }
+            
+            logger.info("query = " + query);
+            requestParams.setQ(query.toString());
+        } else {
+            //requestParams.setDisplayString(requestParams.getQ());
+        }
+    } 
+
+    /**
      * Create a HashMap for the filter queries
      *
      * @param filterQuery
@@ -435,6 +822,29 @@ public class OccurrenceController {
         
         return lastPage;
     }
+    
+    /**
+     * Common code to add stuff to the MVC model (for search methods)
+     * 
+     * @param model
+     * @param requestParams
+     * @param searchResult 
+     */
+    protected void addToModel(Model model, SearchRequestParams requestParams, SearchResultDTO searchResult) {
+        if (requestParams.getDisplayString() == null || requestParams.getDisplayString().isEmpty()) {
+            requestParams.setDisplayString(searchResult.getQueryTitle());
+        }
+        
+        if ("*:*".equals(searchResult.getQueryTitle())) {
+            searchResult.setQueryTitle("[all records]");
+        }
+        
+        model.addAttribute("searchRequestParams", requestParams);
+        model.addAttribute("searchResults", searchResult);
+        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+        addCommonDataToModel(model);
+    }
 
     /**
      * Add "common" data structures required for search pages (list.jsp).
@@ -444,16 +854,58 @@ public class OccurrenceController {
      * @param model
      */
     private void addCommonDataToModel(Model model) {
-        model.addAttribute("collectionCodes", collectionsCache.getCollections());
-        model.addAttribute("institutionCodes", collectionsCache.getInstitutions());
-        model.addAttribute("collections", collectionsCache.getCollections());
-        model.addAttribute("institutions", collectionsCache.getInstitutions());
-        model.addAttribute("typeStatus", TypeStatus.getStringList());
-        model.addAttribute("basisOfRecord", BasisOfRecord.getStringList());
-        model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
-        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
-        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
-//        model.addAttribute("lga", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.LGA));
-        model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
+        List<String> inguids = collectoryUidCache.getInstitutions();
+        List<String> coguids = collectoryUidCache.getCollections();
+        model.addAttribute("collectionCodes", collectionsCache.getCollections(inguids, coguids));
+        model.addAttribute("institutionCodes", collectionsCache.getInstitutions(inguids, coguids));
+        model.addAttribute("dataResourceCodes", collectionsCache.getDataResources(inguids, coguids));
+        model.addAttribute("defaultFacets", biocacheService.getDefaultFacets());
     }
-}
+
+    /**
+     * Get an array of facets from the cookie "user_facets". 
+     * Note: the cookie is a simple String so the list is encoded as a common-separated list.
+     * 
+     * @param request
+     * @return facets
+     */
+    private String[] getFacetsFromCookie(HttpServletRequest request) {
+        String userFacets = null;
+        String[] facets = {};
+        String rawCookie = getCookieValue(request.getCookies(), "user_facets", null);
+        
+        if (rawCookie != null) {
+            try {
+                userFacets = URLDecoder.decode(rawCookie, "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                logger.error(ex.getMessage(), ex);
+            }
+            
+            if (userFacets != null) {
+                facets = userFacets.split(",");
+            }
+        }
+        
+        return facets;
+    }
+    
+    /**
+     * Utility for getting a named cookie value from the HttpServletRepsonse cookies array
+     * 
+     * @param cookies
+     * @param cookieName
+     * @param defaultValue
+     * @return 
+     */
+    public static String getCookieValue(Cookie[] cookies, String cookieName, String defaultValue) {
+    	if(cookies!=null){
+	        for (int i = 0; i < cookies.length; i++) {
+	            Cookie cookie = cookies[i];
+	            if (cookieName.equals(cookie.getName())) {
+	                return (cookie.getValue());
+	            }
+	        }
+    	}
+        return (defaultValue);
+    }
+    }

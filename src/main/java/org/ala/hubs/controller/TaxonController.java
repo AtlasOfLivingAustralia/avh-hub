@@ -43,7 +43,6 @@ public class TaxonController {
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     private final String BIE_URL = "http://bie.ala.org.au";
     private final String BIE_TAXA_PATH = "/species/";
-    private final String EXTENDED_TAXON_CONCEPTDTO = "extendedTaxonConceptDTO";
     private final String TAXON_SHOW = "taxa/show";
 
     /**
@@ -71,11 +70,11 @@ public class TaxonController {
         try {
             final String jsonUri = BIE_URL + BIE_TAXA_PATH + guid + ".json";
             logger.debug("Requesting: " + jsonUri);
-            Map<String, Map<String, Object>> entities = restTemplate.getForObject(jsonUri, Map.class);
-            logger.debug("number of entities = " + entities.size());
+            Map<String, Object> etc = restTemplate.getForObject(jsonUri, Map.class);
+            logger.debug("number of entities = " + etc.size() + " - " + etc);
             
-            if (entities.containsKey(EXTENDED_TAXON_CONCEPTDTO)) {
-                Map<String, Object> etc = entities.get(EXTENDED_TAXON_CONCEPTDTO);
+            if (etc.size() > 0) {
+                //Map<String, Object> etc = entities;
                 //logger.debug("etc: " + etc);
                 int maxDescriptionBlocks = 5; 
                 

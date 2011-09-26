@@ -80,7 +80,14 @@
      <rtexprvalue>true</rtexprvalue>
     </attribute>              
   </tag>    
- 
+
+ <tag>
+    <description>Logged In User Id</description>
+    <name>loggedInUserId</name>
+    <tag-class>au.org.ala.commonui.tag.LoggedInUserIdTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+
   <tag>
     <description>Property Loader Tag</description>
     <name>propertyLoader</name>

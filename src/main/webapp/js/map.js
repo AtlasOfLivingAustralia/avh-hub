@@ -264,6 +264,61 @@ var Maps = (function() {
                 opts += '<option value="'+key+'">'+value[1]+'</option>';
             });
             $('#envLyrList').html(opts);
+            
+            // if spatial FT search (e.g. via explore your area) then zoom in
+            var zoomForRadius = {
+                1: 14,
+                5: 12,
+                10: 11
+            };
+            var lat = $.urlParam('lat');
+            var lon = $.urlParam('lon');
+            var rad = $.urlParam('radius');
+            
+            if (lat && lon && rad) {
+                var latLng = new google.maps.LatLng(lat, lon);
+                var zoom = zoomForRadius[rad];
+                map.setCenter(latLng);
+                if (zoom) {
+                    map.setZoom(zoom);
+                } else {
+                    map.setZoom(11);
+                }
+                
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: 'Centre of spatial search',
+                    map: map,
+                    draggable: false
+                });
+                
+                var infowindow1 = new google.maps.InfoWindow({
+                    content: "Centre of spatial search <br/> with radius of " + rad + " km"
+                });
+                
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow1.open(map, marker);
+                });
+                
+                // Add a Circle overlay to the map.
+                var circle = new google.maps.Circle({
+                    map: map,
+                    radius: rad * 1000,
+                    strokeWeight: 1,
+                    strokeColor: 'white',
+                    strokeOpacity: 0.5,
+                    fillColor: '#222', // '#2C48A6'
+                    fillOpacity: 0.2,
+                    zIndex: -10
+                });
+                
+                // bind circle to marker
+                circle.bindTo('center', marker, 'position');
+                // add event listener so dots can be clicked on
+                google.maps.event.addListener(circle, 'click', function(event) {
+                    loadOccurrencePopup(event.latLng);
+                });
+            }
 
         },
 
@@ -347,7 +402,7 @@ var Maps = (function() {
                 insertWMSOverlay("All occurrences", "&colourby="+ colour +"&symsize="+$('#sizeslider').slider('value')); //fHashes[key]);
                 legHtml += "<div>";
                 legHtml += "<input type='checkbox' class='layer' id='lyr"+key+"' checked='checked' /> ";
-                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+ colour +"&width=10&height=10' /> ";
+                legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+ colour +"&width=10&height=10&qc="+Config.QUERY_CONTEXT+"' /> ";
                 legHtml += "<label for='lyr"+key+"'>" + label + "</label>";
                 legHtml += "</div>";
 
@@ -375,6 +430,9 @@ var Maps = (function() {
                 if (facetLabels[_idx].indexOf('Other') > -1) {
                     otherInc = true;
                 }
+                
+                // list to store species GUIDs in (to substitute names for)
+                var lsidList = [];
 
                 $.each(fValues, function(key, value) {
                     //var ptcolour = '#'+(Math.abs(fHashes[key])).toString(16);
@@ -382,6 +440,23 @@ var Maps = (function() {
                     //Maps.loadOccurrences("fq="+cbf+":"+value+"&colourby="+fHashes[key]);
 
                     var label = fLabels[key];
+                    
+                    if (cbf == "species_guid") {
+                        if (label != "Other") {
+                            // add gid to list
+                            lsidList[key+1] = label;
+                        } else {
+                            lsidList[0] = label;
+                        }
+                    } 
+                    
+                    if (cbf == "geospatial_kosher") {
+                        if (label != "true") {
+                            label = "Questionable";
+                        } else {
+                            label = "OK";
+                        }
+                    }
                     // year and month facets use a different colour scheme
                     var hexCode = otherColour;
                     if (label == "Other") {
@@ -409,12 +484,26 @@ var Maps = (function() {
 
                         legHtml += "<div class='layerWrapper'>";
                         legHtml += "<input type='checkbox' class='layer' id='lyr"+layerIdx+"' checked='checked' /> ";
-                        legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+colour+"&width=10&height=10' /> ";
+                        legHtml += "<img src='"+Config.BIOCACHE_SERVICE_URL+"/occurrences/legend?colourby="+colour+"&width=10&height=10&qc="+Config.QUERY_CONTEXT+"' /> ";
                         legHtml += "<label for='lyr"+layerIdx+"'>" + label + "</label>";
                         legHtml += "</div>";
                     }
 
                 });
+                
+                // Do JSON lookup for GUID -> taxon name
+                if (cbf == "species_guid" && lsidList) {
+                    var jsonUrl = bieWebappUrl + "/species/namesFromGuids.json?guid=" + lsidList.join("&guid=") + "&callback=?";
+                    $.getJSON(jsonUrl, function(data) {
+                        // set the name in place of LSID
+                        $.each(data, function(i, el) {
+                            var j = i; // + ((lsidList.length >= 30) ? 1 : 0);
+                            if (data[i]) {
+                                $("label[for='lyr"+j+"']").html("<i>"+data[i]+"</i>");
+                            }
+                        });
+                    });
+                }
             }
 
             // display the legend content
@@ -588,4 +677,17 @@ function isInteger(value) {
     } else {
         return false;
     }
+}
+
+/**
+ * utility to get URL params
+ * E.g. $.urlParam('foo')
+ */
+$.urlParam = function(name){
+    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (!results)
+    { 
+        return 0; 
+    }
+    return results[1] || 0;
 }

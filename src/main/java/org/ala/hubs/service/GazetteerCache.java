@@ -44,6 +44,7 @@ public class GazetteerCache {
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     /** Log4J logger */
     private final static Logger logger = Logger.getLogger(GazetteerCache.class);
+    protected boolean disabled = true;
 
     /*
      * Initialise regionMap from RegionType enum
@@ -85,8 +86,10 @@ public class GazetteerCache {
      */
     protected void updateCache(RegionType regionType) {
         logger.info("Updating gazetteer cache...");
-        List<String> names = getAllNames(regionType);
-        regionsMap.put(regionType.getType(), names);
+        if(!disabled){
+	        List<String> names = getAllNames(regionType);
+    	    regionsMap.put(regionType.getType(), names);
+    	}
     }
 
     /**

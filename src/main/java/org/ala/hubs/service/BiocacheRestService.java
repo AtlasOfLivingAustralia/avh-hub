@@ -17,11 +17,15 @@ package org.ala.hubs.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
+import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -32,6 +36,7 @@ import org.springframework.web.client.RestOperations;
 
 import au.org.ala.biocache.ErrorCode;
 import au.org.ala.biocache.QualityAssertion;
+import com.googlecode.ehcache.annotations.Cacheable;
 
 /**
  * Implementation of BiocacheService.java that calls the biocache-service application
@@ -45,10 +50,16 @@ public class BiocacheRestService implements BiocacheService {
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
-    /** URI prefix for biocache-service - may be overridden in properties file */
+    /** URI prefix for biocache-service - should be overridden in properties file */
     protected String biocacheUriPrefix = "http://localhost:9999/biocache-service";
+    /** A comma separated list of context to apply to the query - may be overridden in the properties file */
+    protected String queryContext ="";
+    /** The API key to use to add and delete assertions */
+    protected String apiKey ="";
     
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
+    //The pattern to handle the case where a jsinURI contaisn {}
+    protected Pattern restVariableSubPattern= Pattern.compile("\\{.*?\\}");
     
     /**
      * @see org.ala.hubs.service.BiocacheService#findByFulltextQuery(SearchRequestParams)
@@ -56,12 +67,19 @@ public class BiocacheRestService implements BiocacheService {
     @Override
     public SearchResultDTO findByFulltextQuery(SearchRequestParams requestParams) {
         Assert.notNull(requestParams.getQ(), "query must not be null");
+        addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
-        
+ 
         try {
-            final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();
-            logger.debug("Requesting: " + jsonUri);
-            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
+            final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();            
+            logger.info("Requesting: " + jsonUri);
+            Matcher matcher = restVariableSubPattern.matcher(jsonUri);            
+            //Get a list of all the items that are surrounded by {} so that they can be added as parameters when getting the object
+            List<String> variables = new ArrayList<String>();
+            while(matcher.find()){
+                variables.add(matcher.group());
+            }            
+            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class,variables.toArray());
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
             searchResults.setStatus("Error: " + ex.getMessage());
@@ -101,10 +119,11 @@ public class BiocacheRestService implements BiocacheService {
      * @return
      */
     protected SearchResultDTO getSearchResultsForEntity(String uid, SearchRequestParams requestParams, String occurrencesPath) {
+        addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
         try {
             final String jsonUri = biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.toString();
-            logger.debug("Requesting: " + jsonUri);
+            logger.info("Entity Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
@@ -113,6 +132,12 @@ public class BiocacheRestService implements BiocacheService {
         return searchResults;
     }
 
+    protected void addQueryContext(SearchRequestParams requestParams){
+        if(requestParams != null){
+            requestParams.setQc(queryContext);
+        }
+    }
+    
     /**
      * @see org.ala.hubs.service.BiocacheService#getRecordByUuid(String)
      */
@@ -189,6 +214,7 @@ public class BiocacheRestService implements BiocacheService {
             m.setParameter("comment", comment);
             m.setParameter("userId", userId);
             m.setParameter("userDisplayName", userDisplayName);
+            m.setParameter("apiKey", apiKey);
             int status = h.executeMethod(m);
             logger.debug("STATUS: " + status);
             if(status == 201){
@@ -209,6 +235,7 @@ public class BiocacheRestService implements BiocacheService {
         PostMethod m = new PostMethod(uri);
         try {
             m.setParameter("assertionUuid", assertionUuid);
+            m.setParameter("apiKey", apiKey);
             int status = h.executeMethod(m);
             logger.debug("STATUS: " + status);
             if(status == 201){
@@ -247,4 +274,82 @@ public class BiocacheRestService implements BiocacheService {
     public void setBiocacheUriPrefix(String biocacheUriPrefix) {
         this.biocacheUriPrefix = biocacheUriPrefix;
     }
+
+    public String getQueryContext() {
+        return queryContext;
+    }
+
+    public void setQueryContext(String queryContext) {
+        this.queryContext = queryContext;
+    }
+    
+    
+    
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    /**
+     * @see org.ala.hubs.service.BiocacheService#findBySpatialFulltextQuery(org.ala.biocache.dto.SpatialSearchRequestParams) 
+     * 
+     * @param requestParams
+     * @return 
+     */
+    @Override
+    public SearchResultDTO findBySpatialFulltextQuery(SpatialSearchRequestParams requestParams) {
+        Assert.notNull(requestParams.getQ(), "query must not be null");
+        addQueryContext(requestParams);
+        SearchResultDTO searchResults = new SearchResultDTO();
+ 
+        try {
+            final String jsonUri = biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.toString();            
+            logger.debug("Requesting: " + jsonUri);
+            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+            searchResults.setStatus("Error: " + ex.getMessage());
+        }
+
+        return searchResults;
+    }
+
+    @Override
+    public Map<String, Object> getCompareRecord(String uuid) {
+        Assert.notNull(uuid, "UUID must not be null");
+        Map<String, Object> compareRecord = null;
+        
+        try {
+            final String jsonUri = biocacheUriPrefix + "/occurrence/compare/" + uuid + ".json";            
+            logger.debug("Requesting: " + jsonUri);
+            compareRecord = restTemplate.getForObject(jsonUri, Map.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+            //searchResults.setStatus("Error: " + ex.getMessage());
+        }
+        
+        return compareRecord;
+    }
+
+    @Override
+    @Cacheable(cacheName = "facetsCache")
+    public List<String> getDefaultFacets() {
+        List<String> facets = null;
+        
+        try {
+            final String jsonUri = biocacheUriPrefix + "/search/facets";            
+            logger.info("Requesting facets via: " + jsonUri);
+            facets = restTemplate.getForObject(jsonUri, List.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+        
+        return facets;
+    }
+    
+    
+    
 }

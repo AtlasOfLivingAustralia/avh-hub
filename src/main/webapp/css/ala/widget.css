@@ -1,0 +1,173 @@
+/*------------------------------------------------*/
+/*---------------SIDEBAR---------------*/
+/*------------------------------------------------*/
+#border #content {
+    /*width: 90%;*/
+    /*min-width: 998px;*/
+}
+#SidebarBox{
+	float: left;
+    /*min-width: 240px;*/
+    /*max-width: 260px;*/
+    margin-right: 10px;
+}
+
+#content > div.facets {
+    width: 260px;
+    margin-right: 0px;
+}
+.sidebar {
+	float: left;
+	clear: left;
+	width: 90%;
+	margin: 0;
+	padding-left: 10px;
+}
+
+.sidebar li {
+	font-size: 12px;
+/*	list-style-image: url(images/arrow_r.jpg);
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #E8E8E8;*/
+	margin-right: 20px;
+	margin-bottom: 5px;
+	padding-top: 7px;
+	padding-right: 3px;
+	padding-bottom: 7px;
+	padding-left: 3px;
+	behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */
+/*	margin-left: 20px;*/
+}
+
+/*.sidebar li a {
+	color:#005A8E;
+	text-decoration:none;
+}*/
+/*.sidebar li a:hover  {
+	color:#6DB71D;
+	text-decoration:none;
+}*/
+.sidebar p {
+	font-size: 12px;
+	line-height: 18px;
+	color: #545454;
+}
+
+#content #headingBar {
+    margin-left: 0;
+    min-height: 55px;
+}
+
+#content #headingBar h1 {
+    padding-left: 15px;
+    padding-top: 12px;
+    width: 360px;
+}
+
+#border #content .recordHeader  {
+     padding: 0 15px !important;
+    margin-bottom: 10px;
+}
+
+#border #content .recordHeader h1 {
+     width:100%;
+    padding-left: 0;
+}
+
+#headingBar #searchBox {
+    float: right;
+    margin-top: 15px;
+    padding-right: 10px;
+}
+
+/*#headingBar #advancedSearchLink a {
+    font-size: 12px;
+}*/
+div#advancedSearch {
+    /*margin-left: 30px;*/
+    /*margin-bottom: 20px;*/
+    margin: 10px 30px 10px 0px;
+    background-color: #eeeeee;
+}
+
+#content form {
+    padding-bottom: 5px;
+}
+
+#advancedSearch table {
+    border-bottom: none;
+}
+
+#content2 {
+    margin-right: 10px;
+    float: left;
+}
+
+#content2 > p {
+    padding: 15px;
+}
+
+#content #loginId {
+    display: none;
+}
+
+#results .rowA {
+    padding-bottom: 4px;
+}
+
+#content .sidebar h4 {
+    padding: 6px 0 2px 0;
+}
+
+.sidebar #subnavlist > ul {
+    list-style: none;
+    margin-left: -4px;
+}
+
+.sidebar #subnavlist > ul li {
+    margin-left: 14px;
+}
+
+#headingBar h1 {
+    color: inherit;
+}
+
+.sidebar #currentFilter h4 {
+    color: #718804;
+}
+
+input::-webkit-input-placeholder {
+    color: #666666;
+}
+
+.facets a:link, .facets a:visited {
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.facets .sidebar ul li {
+    margin:  3px 0px 3px 10px;
+    text-indent: 0px;
+}
+
+.solrResults #searchNavBar ul li {
+    font-size: 13px;
+}
+
+#content ul {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+#content2 > div > h3 {
+    color: #718804;
+}
+
+span#assertionMaker {
+    font-size: 100%;
+}
+
+input[type="submit"] {
+    color: #000000;
+}

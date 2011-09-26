@@ -1,14 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> 
+<%@ include file="/common/taglibs.jsp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US"> 
 <head profile="http://gmpg.org/xfn/11"> 
-<title>OZCAM</title> 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ozcam-0.3/style.css" type="text/css" media="screen,projection" />
+    <title>OZCAM</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="decorator" content="bare"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ozcam-0.3/style.css" type="text/css" media="screen,projection" />
  
-<meta name='robots' content='noindex,nofollow' /> 
+    <meta name='robots' content='noindex,nofollow' />
  
-<link rel="stylesheet" href="http://www.ozcam.org.au/wp-content/plugins/fancybox-for-wordpress/css/fancybox.css" type="text/css" media="screen" /> 
+    <link rel="stylesheet" href="http://www.ozcam.org.au/wp-content/plugins/fancybox-for-wordpress/css/fancybox.css" type="text/css" media="screen" />
 
 	<style type="text/css">
 		div#fancy_inner {border-color:#BBBBBB}
@@ -17,91 +19,91 @@
 			</style>
 
 	<script type='text/javascript' src='http://www.ozcam.org.au/wp-includes/js/jquery/jquery.js?ver=1.4.2'></script> 
-<script type='text/javascript' src='http://www.ozcam.org.au/wp-content/plugins/s3slider-plugin/js/s3slider.js?ver=3.0.4'></script> 
-<script type='text/javascript'> 
-/* <![CDATA[ */
-var ie6w = {
-	url: "http://www.ozcam.org.au/wp-content/plugins/shockingly-big-ie6-warning",
-	test: "false",
-	jstest: "false",
-	t1: "WARNING",
-	t2: "You are using Internet Explorer version 6.0 or lower. Due to security issues and lack of support for Web Standards it is highly recommended that you upgrade to a modern browser.",
-	t3: "After the update you can acess this site normally.",
-	firefox: "true",
-	opera: "true",
-	chrome: "true",
-	safari: "true",
-	ie: "false",
-	firefoxu: "http://www.getfirefox.net/",
-	operau: "http://www.opera.com/",
-	chromeu: "http://www.google.com/chrome/",
-	safariu: "http://www.apple.com/safari/",
-	ieu: "http://www.microsoft.com/windows/ie/"
-};
-/* ]]> */
-</script> 
-<script type='text/javascript' src='http://www.ozcam.org.au/wp-content/plugins/shockingly-big-ie6-warning/js/ie6w_center.js?ver=3.0.4'></script> 
-<script type='text/javascript' src='http://www.ozcam.org.au/wp-content/plugins/fancybox-for-wordpress/js/jquery.fancybox-1.2.6.min.js?ver=1.3.2'></script> 
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.ozcam.org.au/xmlrpc.php?rsd" /> 
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.ozcam.org.au/wp-includes/wlwmanifest.xml" /> 
-<link rel='index' title='OZCAM' href='http://www.ozcam.org.au/' /> 
-<link rel='next' title='About &lt;span class=&quot;caps&quot;&gt;OZCAM&lt;/span&gt;' href='http://www.ozcam.org.au/ozcam-data/' /> 
-<meta name="generator" content="WordPress 3.0.4" /> 
-<link rel='canonical' href='http://www.ozcam.org.au/' /> 
- 
- 
-<!-- Fancybox for WordPress v2.7.2 --> 
+    <script type='text/javascript' src='http://www.ozcam.org.au/wp-content/plugins/s3slider-plugin/js/s3slider.js?ver=3.0.4'></script>
+    <script type='text/javascript'>
+    /* <![CDATA[ */
+    var ie6w = {
+        url: "http://www.ozcam.org.au/wp-content/plugins/shockingly-big-ie6-warning",
+        test: "false",
+        jstest: "false",
+        t1: "WARNING",
+        t2: "You are using Internet Explorer version 6.0 or lower. Due to security issues and lack of support for Web Standards it is highly recommended that you upgrade to a modern browser.",
+        t3: "After the update you can acess this site normally.",
+        firefox: "true",
+        opera: "true",
+        chrome: "true",
+        safari: "true",
+        ie: "false",
+        firefoxu: "http://www.getfirefox.net/",
+        operau: "http://www.opera.com/",
+        chromeu: "http://www.google.com/chrome/",
+        safariu: "http://www.apple.com/safari/",
+        ieu: "http://www.microsoft.com/windows/ie/"
+    };
+    /* ]]> */
+    </script>
+    <script type='text/javascript' src='http://www.ozcam.org.au/wp-content/plugins/shockingly-big-ie6-warning/js/ie6w_center.js?ver=3.0.4'></script>
+    <script type='text/javascript' src='http://www.ozcam.org.au/wp-content/plugins/fancybox-for-wordpress/js/jquery.fancybox-1.2.6.min.js?ver=1.3.2'></script>
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.ozcam.org.au/xmlrpc.php?rsd" />
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.ozcam.org.au/wp-includes/wlwmanifest.xml" />
+    <link rel='index' title='OZCAM' href='http://www.ozcam.org.au/' />
+    <link rel='next' title='About &lt;span class=&quot;caps&quot;&gt;OZCAM&lt;/span&gt;' href='http://www.ozcam.org.au/ozcam-data/' />
+    <meta name="generator" content="WordPress 3.0.4" />
+    <link rel='canonical' href='http://www.ozcam.org.au/' />
 
-<script type="text/javascript">
 
-	jQuery.noConflict();
+    <!-- Fancybox for WordPress v2.7.2 -->
 
-	jQuery(function(){
+    <script type="text/javascript">
 
-				jQuery.fn.getTitle = function() {
-			var arr = jQuery("a.fancybox");
-			jQuery.each(arr, function() {
-				var title = jQuery(this).children("img").attr("title");
-				jQuery(this).attr('title',title);
-			})
-		}
+        jQuery.noConflict();
 
-		// Supported file extensions
-		var thumbnails = 'a:has(img)[href$=".bmp"],a:has(img)[href$=".gif"],a:has(img)[href$=".jpg"],a:has(img)[href$=".jpeg"],a:has(img)[href$=".png"],a:has(img)[href$=".BMP"],a:has(img)[href$=".GIF"],a:has(img)[href$=".JPG"],a:has(img)[href$=".JPEG"],a:has(img)[href$=".PNG"]';
+        jQuery(function(){
 
-	
-		jQuery(thumbnails).addClass("fancybox").attr("rel","fancybox").getTitle();
+                    jQuery.fn.getTitle = function() {
+                var arr = jQuery("a.fancybox");
+                jQuery.each(arr, function() {
+                    var title = jQuery(this).children("img").attr("title");
+                    jQuery(this).attr('title',title);
+                })
+            }
 
-			jQuery("a.fancybox").fancybox({
-			'imageScale': true,
-			'padding': 10,
-			'zoomOpacity': true,
-			'zoomSpeedIn': 500,
-			'zoomSpeedOut': 500,
-			'zoomSpeedChange': 300,
-			'overlayShow': true,
-			'overlayColor': "#666666",
-			'overlayOpacity': 0.3,
-			'enableEscapeButton': true,
-			'showCloseButton': true,
-			'hideOnOverlayClick': true,
-			'hideOnContentClick': false,
-			'frameWidth':  560,
-			'frameHeight':  340,
-												'centerOnScroll': true
-		});
+            // Supported file extensions
+            var thumbnails = 'a:has(img)[href$=".bmp"],a:has(img)[href$=".gif"],a:has(img)[href$=".jpg"],a:has(img)[href$=".jpeg"],a:has(img)[href$=".png"],a:has(img)[href$=".BMP"],a:has(img)[href$=".GIF"],a:has(img)[href$=".JPG"],a:has(img)[href$=".JPEG"],a:has(img)[href$=".PNG"]';
 
-})
 
-</script>
-<!-- END Fancybox for WordPress --> 
+            jQuery(thumbnails).addClass("fancybox").attr("rel","fancybox").getTitle();
+
+                jQuery("a.fancybox").fancybox({
+                'imageScale': true,
+                'padding': 10,
+                'zoomOpacity': true,
+                'zoomSpeedIn': 500,
+                'zoomSpeedOut': 500,
+                'zoomSpeedChange': 300,
+                'overlayShow': true,
+                'overlayColor': "#666666",
+                'overlayOpacity': 0.3,
+                'enableEscapeButton': true,
+                'showCloseButton': true,
+                'hideOnOverlayClick': true,
+                'hideOnContentClick': false,
+                'frameWidth':  560,
+                'frameHeight':  340,
+                                                    'centerOnScroll': true
+            });
+
+    })
+
+    </script>
+    <!-- END Fancybox for WordPress -->
 
     <!-- Start vslider -->
     <style type="text/css">
         #sliderbody, #sliderbody img {width: 444px;height: 270px;}
         #vslider {margin: 0px 0px 0px 0px;
-padding: 0;
-border: none;}
+        padding: 0;
+        border: none;}
         #vslider {height: 270px;overflow: hidden;}
         #vslider ul {list-style: none !important;margin: 0 !important;padding: 0 !important;}
         #vslider ul li {list-style: none !important;margin: 0 !important;padding: 0 !important;}
@@ -124,36 +126,36 @@ border: none;}
     </script>
     <!-- End vslider -->
 
-<style type="text/css">
-sup {
-	vertical-align: 60%;
-	font-size: 75%;
-	line-height: 100%;
-}
-sub {
-	vertical-align: -10%;
-	font-size: 75%;
-	line-height: 100%;
-}
-.amp {
-	font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", "Warnock Pro", serif;
-	font-weight: normal;
-	font-style: italic;
-	font-size: 1.1em;
-	line-height: 1em;
-}
-.caps {
-	font-size: 90%;
-}
-.dquo {
-	margin-left:-.40em;
-}
-.quo {
-	margin-left:-.2em;
-}
-/* because formatting .numbers should consider your current font settings, we will not style it here */
+    <style type="text/css">
+    sup {
+        vertical-align: 60%;
+        font-size: 75%;
+        line-height: 100%;
+    }
+    sub {
+        vertical-align: -10%;
+        font-size: 75%;
+        line-height: 100%;
+    }
+    .amp {
+        font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", "Warnock Pro", serif;
+        font-weight: normal;
+        font-style: italic;
+        font-size: 1.1em;
+        line-height: 1em;
+    }
+    .caps {
+        font-size: 90%;
+    }
+    .dquo {
+        margin-left:-.40em;
+    }
+    .quo {
+        margin-left:-.2em;
+    }
+    /* because formatting .numbers should consider your current font settings, we will not style it here */
 
-</style>
+    </style>
  
 </head> 
  

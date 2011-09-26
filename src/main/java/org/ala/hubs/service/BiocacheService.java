@@ -19,6 +19,7 @@ import au.org.ala.biocache.ErrorCode;
 import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
+import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -65,6 +66,14 @@ public interface BiocacheService {
      * @return
      */
     public OccurrenceDTO getRecordByUuid(String uuid);
+    
+    /**
+     * full text search with spatial restriction (lat/lon/radius)
+     * 
+     * @param requestParams
+     * @return 
+     */
+    public SearchResultDTO findBySpatialFulltextQuery(SpatialSearchRequestParams requestParams);
 
     public List<ErrorCode> getErrorCodes();
 
@@ -83,4 +92,8 @@ public interface BiocacheService {
     public boolean deleteAssertion(String uuid, String assertionUuid);
 
     public QualityAssertion[] getUserAssertions(String recordUuid);
+
+    public Map<String, Object> getCompareRecord(String uuid);
+
+    public List<String> getDefaultFacets();
 }

@@ -1,4 +1,4 @@
-/* *************************************************************************
+/**************************************************************************
  *  Copyright (C) 2011 Atlas of Living Australia
  *  All Rights Reserved.
  * 
@@ -17,13 +17,20 @@ package org.ala.hubs.controller;
 
 import org.ala.biocache.util.CollectionsCache;
 import au.org.ala.biocache.BasisOfRecord;
+import au.org.ala.biocache.SpeciesGroup;
 import au.org.ala.biocache.SpeciesGroups;
+import au.org.ala.biocache.Term;
 import au.org.ala.biocache.TypeStatus;
+import java.util.List;
 import javax.inject.Inject;
+import org.ala.hubs.dto.AdvancedSearchParams;
+import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -41,9 +48,14 @@ public class HomePageController {
     protected CollectionsCache collectionsCache;
     @Inject
     protected GazetteerCache gazetteerCache;
+    @Inject
+    protected CollectoryUidCache collectoryUidCache;
+
     /** View name for home page */
     protected final String HOME_PAGE = "homePage";
-    protected final String OZCAM_PAGE = "ozcamHome";
+    protected String homePage = ""; // injected via hubs.properties & can be different to HOME_PAGE
+    /* Get the skin name form the hubs.properties file (via context:property-placeholder conf) */
+    protected @Value("${sitemesh.skin}") String skin;
 
     /**
      * Site root - dummy Ozcam front page
@@ -51,8 +63,17 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String ozcamPage() {
-        return "redirect:/index";
+    public String ozcamPage(Model model) {
+        //return "redirect:/index";
+        String page = null;
+        
+        if ("ozcam".equalsIgnoreCase(skin)) {
+            page = homePage;
+        } else {
+            page = homePage(model);
+        }
+        
+        return page;
     }
 
     /**
@@ -62,7 +83,7 @@ public class HomePageController {
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String indexPage() {
-        return OZCAM_PAGE;
+        return homePage;
     }
 
     /**
@@ -71,11 +92,13 @@ public class HomePageController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = {"/home", "/advancedSearch"}, method = RequestMethod.GET)
     public String homePage(Model model) {
-        logger.info("Home Page request.");
-        model.addAttribute("collections", collectionsCache.getCollections());
-        model.addAttribute("institutions", collectionsCache.getInstitutions());
+        logger.debug("Home Page request.");
+        List<String>inguids = collectoryUidCache.getInstitutions();
+        List<String> coguids = collectoryUidCache.getCollections();
+        model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));
+        model.addAttribute("institutions", collectionsCache.getInstitutions(inguids, coguids));
         model.addAttribute("typeStatus", TypeStatus.getStringList());
         model.addAttribute("basisOfRecord", BasisOfRecord.getStringList());
         model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
@@ -83,5 +106,26 @@ public class HomePageController {
         model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
         model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
         return HOME_PAGE;
+    }
+    
+    /**
+     * Advanced search - POST 
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
+    public String homePagePost(AdvancedSearchParams requestParams, BindingResult result, Model model) {
+        logger.debug("Advanced search POST: " + requestParams.toString());
+        
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+        // Note: AdvancedSearchParams.toString() contains the logic for building query
+        return "redirect:/occurrences/search?q=" + requestParams.toString();
+    }
+
+    public void setHomePage(String homePage) {
+        this.homePage = homePage;
     }
 }

@@ -1,32 +1,73 @@
-button {
+/*button.rounded {
     border: 0 none;
     cursor: pointer;
+    display: block;
+    float: left;
+    background: transparent url("../images/btn_right.png") no-repeat scroll top right;
     font-weight: bold;
-    padding: 0 15px 0 0;
+    padding: 0 12px 0 0;
     text-align: center;
     height: 30px;
     line-height: 30px;
     width: auto;
-}
-
-button.rounded {
-    background: transparent url("../images/btn_right.png") no-repeat scroll right top;
     clear: left;
-    font-size: 1.1em;
+    font-size: 1.0em;
 }
 
-button span {
+*+html button.rounded {
+    padding: 0 8px 0 0;
+    text-align: left;
+    width: auto;
+}
+
+button.rounded span {
     display: block;
-    padding: 0 0 0 15px;
+    padding: 0 0 0 12px;
+    background: transparent url("../images/btn_left.png") no-repeat scroll top left;
+    color: #FFFFFF;
     position: relative;
     white-space: nowrap;
     height: 30px;
     line-height: 30px;
 }
 
+*+html button.rounded span {
+    display: inline-block;
+    padding: 0 12px 0 12px;
+    text-align: left;
+}*/
+
+button.rounded {
+    background: transparent url("../images/btn_right.png") no-repeat scroll top right;
+    color: #444;
+    display: block;
+    float: left;
+    font: normal 12px arial, sans-serif;
+    height: 30px;
+    margin: 10px 0;
+    margin-right: 6px;
+    padding: 0 12px 0 0;
+    text-decoration: none;
+    border: 0 none;
+    cursor: pointer;
+}
+
+*+html button.rounded {
+    padding: 0 4px 0 0;
+}
+
 button.rounded span {
-    background: transparent url("../images/btn_left.png") no-repeat scroll left top;
+    background: transparent url("../images/btn_left.png") no-repeat top left;
+    display: block;
+    line-height: 22px;
+    margin: 0;
+    padding: 4px 0 5px 12px;
     color: #FFFFFF;
+    font-weight: bold;
+}
+
+*+html button.rounded span {
+    padding: 4px 0 5px 6px;
 }
 
 button.rounded:hover {
@@ -37,7 +78,7 @@ button.rounded:hover span {
     background-position: 0% -30px;
 }
 
-button::-moz-focus-inner {
+button.rounded::-moz-focus-inner {
     border: none;
 }
 

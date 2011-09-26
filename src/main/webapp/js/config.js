@@ -17,14 +17,16 @@ var Config = (function() {
         OCC_INFO_URL_HTML: contextPath+'/occurrences/fragment/_uuid_',
         OCC_INFO_URL_JSON: contextPath+'/occurrences/_uuid_.json',
         OCC_ANNOTATE_URL_HTML: contextPath+'/occurrences/annotate/_uuid_',
+        QUERY_CONTEXT:"",
 
         /**
          * setup the Config with the base url 
          */
-        setupUrls: function(baseurl) {
+        setupUrls: function(baseurl, qc) {
             this.BIOCACHE_SERVICE_URL = baseurl;
             this.OCC_WMS_BASE_URL = baseurl + '/occurrences/wms?';
             this.OCC_SEARCH_URL = baseurl + '/occurrences/info';
+            this.QUERY_CONTEX= qc;
         }
 
     } // return: public variables and methods

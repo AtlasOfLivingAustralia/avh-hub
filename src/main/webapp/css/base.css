@@ -5,30 +5,39 @@
     Description:
         Purpose of the stylesheet follows.
 */
+html #content img {
+    -moz-border-radius: 0px; /* FF1+ */
+    -webkit-border-radius: 0px; /* Saf3+, Chrome */
+    -o-border-radius: 0px;
+    -icab-border-radius: 0px;
+    -khtml-border-radius: 0px;
+    border-radius: 0px; /* Opera 7.7, IE 9 */
+}
 
-#content p, #content div, #headingBar, #contentBox div {
+
+#content2 p, #content2 div, #headingBar, #contentBox div {
     font-size: 13px;
     line-height: 1.5em;
 }
-#content {
+#content2 {
     width: 720px;
 }
 .sidebar {
     width: 210px;
 }
-a:link, a:visited, #content a:link, #content a:visited {
+a:link, a:visited, #content2 a:link, #content2 a:visited {
     font-size: 13px;
     text-decoration: none;
-    color: #005A8E;
+/*    color: #005A8E;*/
 }
-a:hover, #content a:hover {
+a:hover, #content2 a:hover {
     text-decoration: underline;
 }
-h1, h2, h3, h4, h5, h6, #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
+/*h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, #content2 h5, #content2 h6 {
     padding: 0 0 8px;
     color: #444;
     font-family: 'Rockwell', arial, helvetica, sans-serif;
-}
+}*/
 #nav li a {
     font-size: 100%;
 }
@@ -55,7 +64,7 @@ table th {
 }
 table td,table th  {
     text-align: left;
-    padding: 6px 12px;
+    padding: 6px 6px;
     line-height: 1.3em;
     vertical-align: top;
 /*    color: #666;*/
@@ -77,15 +86,15 @@ td.label {
     padding-left: 30px;
 }
 #headingBar h1 {
-    font-family: 'Rockwell', arial, helvetica, sans-serif;
-    color: #1775BA;
+/*    font-family: 'Rockwell', arial, helvetica, sans-serif;*/
+/*    color: #1775BA;*/
     font-size: 200%;
     /*text-shadow: 1px 1px 1px #bbbaba;*/
     margin-bottom: 10px;
     font-weight: lighter;
-    border-bottom-width: 1px;
+/*    border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: #CCC;
+    border-bottom-color: #CCC;*/
     /*padding: 5px 0; */
     margin-top: 0px;
 }
@@ -99,7 +108,7 @@ td.label {
 }
 .sidebar h4 {
     font-size: 100%;
-    padding: 6px 0;
+    padding: 4px 0;
 }
 .sidebar li {
     border-bottom: none;
@@ -107,14 +116,7 @@ td.label {
 .sidebar li {
     font-size: 13px;
 }
-#advancedSearchLink {
-    display: inline-block;
-    padding: 2px 0;
-}
-#advancedSearchLink a {
-    font-size: 12px;
-    margin-left: 5px;
-}
+
 #advancedSearch {
     display: none;
     margin-top: 5px;
@@ -171,6 +173,9 @@ div.fullWidthHeader {
 span#taxonName {
     color: black;
 }
-#content div.taxaDescription p {
+#content2 div.taxaDescription p {
     padding-bottom: 10px;
+}
+.bold {
+    font-weight: bold;
 }

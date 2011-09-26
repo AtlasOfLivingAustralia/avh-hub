@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <!DOCTYPE html>
 <html>
     <head>
@@ -75,6 +76,7 @@
                 </c:if>
                 <script type="text/javascript">
                     Config.BIOCACHE_SERVICE_URL = "${biocacheServiceUrl}";
+                    Config.QUERY_CONTEXT = "${queryContext}"
                 </script>
         </div>
     </body>

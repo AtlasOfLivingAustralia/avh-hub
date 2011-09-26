@@ -27,7 +27,7 @@
                     var userId = '${userId}';
                     var userDisplayName = '${userDisplayName}';
                     if(code!=""){
-                        $.post("${pageContext.request.contextPath}/occurrences/${uuid}/assertions/add",
+                        $.post("${pageContext.request.contextPath}/occurrences/${rowKey}/assertions/add",
                             { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
                             function(data) {
                                 alert("Thanks for flagging the problem!");

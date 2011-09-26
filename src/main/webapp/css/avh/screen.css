@@ -1,0 +1,1194 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 80%;
+	background-color: #ffffff;
+	line-height: 1.5em;
+}
+
+body {
+	margin: 0px;
+}
+
+img {
+	border: 0px none;
+}
+
+#container {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#page_content {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+html>body #container {
+	height: auto;
+}
+
+#toc {
+	clear: left;
+	float: left;
+	width: 270px;
+	height: 100%;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-right: 10px;
+	margin-top: 20px;
+	padding-top: 5px;
+	background-color: #F5F5F5;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+}
+
+#main_content {
+	float: left;
+	width: 998px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+/*	padding-left: 5px;
+	padding-right: 5px;*/
+}
+
+.notoc {
+	margin-left: 135px;
+}
+
+
+#toc li {
+	color: #006600;
+}
+
+#toc ul li {
+	position: relative;
+	left: -15px;
+}
+
+#toc ul li ul li{
+	position: relative;
+	left: -25px;
+}
+
+#toc ul>ul>li {
+	position: relative;
+	left: -40px;
+}
+
+#toc li li li {
+	list-style-type: none;
+        width: 120%;
+}
+
+div.gototop {
+	width: 100%;
+	text-align: right;
+}
+
+/* wiki specific styles */
+.editsection {
+	display: none;
+}
+
+#toctitle {
+	display: none;
+}
+
+span.tocnumber {
+	display: none;
+}
+
+.wikitable {
+	border-collapse: collapse;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #006600;
+}
+
+.wikitable caption {
+	text-align: left;
+	padding-bottom: 3px;
+}
+
+.wikitable th {
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: #006600;
+	padding-top: 8px;
+	padding-bottom: 5px;
+	background-color: #EFFFD1;
+}
+
+.wikitable td, .wikitable th {
+	border-collapse: collapse;
+	border-right-style: solid;
+	border-width: 1px;
+	border-color: #006600;
+	padding-left: 0.3em;
+	padding-right: 0.5em;
+}
+
+#footer {
+	margin-top: 12pt;
+	clear: both;
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#footer_left {
+	width: 660px;
+	float:left;
+	margin-left: 5px;
+}
+
+#footer_right {
+	float: left;
+	width: 330px;
+	margin-right: 5px;
+	text-align: right;
+}
+
+#bottombanner {
+	border-top: 4px solid #F5D447;
+	border-bottom: 4px solid #F5D447;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+
+
+h1 {
+	font-size: 200%;
+	font-weight: bold;
+	color: #006600;
+	font-style: normal;
+	font-family: Arial, Helvetica, sans-serif
+}
+
+h2, h1 > span.subtitle {
+	font-weight: bold;
+	color: #006600;
+	font-size: 180%;
+	font-style: normal;
+	font-family: Arial, Helvetica, sans-serif
+}
+
+h2, h3, h4 { /*added NK */
+	margin-bottom: 0px;
+}
+
+h1 > span.subtitle {
+	color: black;
+	font-size: 67%;
+	position: relative;
+	top: 8px;
+}
+
+h3 {
+	font-weight: bold;
+	font-size: 130%; /* 160%; changed NK */
+	color: #006600;
+	font-style: normal;
+	font-family: Arial, Helvetica, sans-serif
+}
+
+h4 {
+	font-weight: bold;
+	font-size: 120%; /* 140%; changed NK */
+	color: #006600;
+	font-style: normal;
+	font-family: Arial, Helvetica, sans-serif
+}
+
+h5 {
+	font-weight: bold;
+	font-size: 100%;
+	font-style: normal;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+h6 {
+	font-weight: bold;
+	font-size: 80%;
+	color: #006600;
+	font-style: normal;
+	font-family: Arial, Helvetica, sans-serif
+}
+
+/* Style for text */
+
+p, input, button {
+	font-weight: normal;
+	font-family: Arial, Helvetica, sans-serif
+}
+
+p i {
+	font-style: italic;
+}
+
+p {/* added NK */
+	margin-top: 5px;
+}
+
+ul {
+	font-size: 10pt;
+	font-weight: normal;
+	font-style: normal;
+	font-family: Arial, Helvetica, sans-serif
+}
+
+li {
+	font-size: 10pt;
+	font-weight: normal;
+	font-style: normal;
+	font-family: Arial, Helvetica, sans-serif
+}
+
+blockquote {
+	margin-left: 2em;
+	margin-right: 2em
+}
+
+a {
+	color: #006600;
+	text-decoration: none;
+}
+
+
+a:link {
+	color: #006600
+}
+
+a:visited {
+	color: #006600
+}
+
+a:hover {
+	/*color: #ffcc33*/
+	text-decoration: underline;
+}
+
+a:active {
+	color: #DC143C;
+}
+
+.tiny {
+	border-right: medium none;
+	border-top: medium none;
+	font-size: 60%;
+	border-left: medium none;
+	border-bottom: medium none
+}
+.small {
+	border-right: medium none;
+	border-top: medium none;
+	font-size: 80%;
+	border-left: medium none;
+	border-bottom: medium none
+}
+.medium {
+	border-right: medium none;
+	border-top: medium none;
+	font-size: 100%;
+	border-left: medium none;
+	border-bottom: medium none
+}
+.big {
+	border-right: medium none;
+	border-top: medium none;
+	font-size: 120%;
+	border-left: medium none;
+	border-bottom: medium none
+}
+.strong {
+	font-weight: bold
+}
+
+.ok {
+	color: green
+}
+
+.error {
+	color: red
+}
+
+/* Style for trail */
+#trail {
+	width: 100%;
+	text-align: right;
+	font-size: 9pt;
+	margin-bottom: 12pt;
+	padding-top: 3px;
+	padding-right: 5px;
+}
+#trail a:active {
+	color: #ff0000;
+	background: #ffffff;
+}
+#trail a:hover {
+	color: #ff0000;
+	background: #ffffff;
+}
+
+/* Style for banner [replaced '.banner' with '#mainmenu' -- NK]*/
+div#logo { /* [added -- NK] */
+	float: left;
+	width: 300px;
+}
+
+div#header { /* [added -- NK] */
+	float: left;
+	width: 700px;
+	min-height: 90px;
+	text-align: right;
+}
+
+
+div#mainmenu {
+	clear: both; /* [added -- NK] */
+	border: none;
+	color: #ffffff;
+	margin: 0;
+	padding: 0.1em;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #f5d447;
+	width: 100%;
+	height: 22px;
+}
+
+#mainmenu div {
+	float: left;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-right-color: #ffffff;
+	margin-top: 2px;
+}
+
+div#mainmenu a {
+	text-decoration: none;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+div#mainmenu a:link, div#mainmenu a:visited {
+	color: #006600;
+	background: #f5d447;
+}
+
+div#mainmenu a:hover {
+	color: #006600;
+	background: #f5d447;
+	text-decoration: underline;
+}
+
+/*#bottommenu {
+	width: 805px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#bottommenu div {
+	float: left;
+	width: 110px;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+*/
+
+#bottommenu {
+	float: right;
+}
+
+#bottommenu div {
+	float: left;
+	border-left-style: solid;
+	border-left-color: #006600;
+	border-left-width: 1px;
+	padding-right: 0.5em;
+	padding-left: 0.5em;
+}
+
+#bottommenu div:first-child {
+	border-left-style: none;
+}
+
+div#participants {
+	clear: both;
+	width: 100%;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+/* style="width:100%; margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px;"*/
+
+div#participants div {
+	float: left;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.spacer {
+	clear: both;
+	height: 0px;
+}
+
+p.updated_date {
+	clear: left;
+	font-size: 9pt;
+	text-align: center;
+}
+
+form {
+    margin-left: 5px;
+}
+
+.exquery_table {
+	border: 1px solid #CCC;
+	border-collapse: collapse;
+	margin-bottom: 10pt;
+	width: 100%;
+}
+
+tbody {
+	border-collapse: collapse;
+}
+
+.exquery_table td, .exquery_table th {
+	border-collapse: collapse;
+	border-bottom: 1px solid #CCC;
+	border-right: 1px solid #CCC;
+	padding: 3px;
+	vertical-align: top;
+}
+
+.exquery_table th {
+	background-color: #EEE;
+	text-align: left;
+}
+
+.exquery_table .highlight {
+	background-color: #FF9;
+}
+
+.exquery_table .deemphasise {
+	color: #666;
+}
+
+.exquery_navtable {
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	border-collapse: collapse;
+	margin-bottom: 10pt;
+	width: 100%;
+}
+
+.exquery_navtable td, .exquery_navtable th {
+	/*border-collapse: collapse;*/
+	padding: 3px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.admin_table {
+	border: 1px solid #CCC;
+	border-collapse: collapse;
+	margin-bottom: 10pt;
+	width: 100%;
+}
+
+.admin_table td, .admin_table th {
+	border-collapse: collapse;
+	border-bottom: 1px solid #CCC;
+	border-right: 1px solid #CCC;
+	padding: 3px;
+	vertical-align: top;
+}
+
+.admin_table th {
+	background-color: #EEE;
+	text-align: left;
+}
+
+input.admin_input {
+	padding: 3px;
+	width: 50%;
+}
+
+input.admin_logon_input {
+	padding: 3px;
+	width: 33%;
+}
+
+textarea.admin_textarea {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	height: 5em;
+	padding: 3px;
+	width: 50%;
+}
+
+select.admin_select {
+	padding: 1px;
+	width: 50%;
+}
+
+select.admin_select option {
+	padding: 1px;
+}
+
+input.admin_checkbox {
+	padding: 3px;
+}
+
+/* map styles */
+		#maptd_left, #maptd_right {
+			float: left;
+			width: 193px;
+			height: 601px;
+		}
+
+		#maptd_left {
+			margin-right: 3px;
+		}
+
+		#maptd {
+			float: left;
+			width: 600px;
+			height: 600px;
+		}
+
+		#mapdiv {
+			border-style: solid;
+			border-color: #cccccc;
+			border-width: 1px;
+		}
+
+		#maptd_right {
+			margin-left: 3px;
+		}
+
+		.block {
+			border-style: solid;
+			border-width: 1px;
+			border-color: #cccccc;
+			margin-bottom: 3px;
+			clear: left;
+			background-color: #ffffff;
+			position: relative;
+			z-index: 1;
+		}
+
+		.blockheader {
+			width: 188px;
+			padding-left: 3px;
+			background-color: #eeeeee;
+			border-bottom-style: solid;
+			border-bottom-width: 1px;
+			border-bottom-color: #cccccc;
+			cursor: move;
+		}
+
+		#overviewmap {
+			width: 140px;
+			height: 128px;
+			overflow: hidden;
+			text-align: left;
+		}
+
+		#overviewmap>img {
+			vertical-align: top;
+		}
+
+		#overviewmap>input {
+			position: relative;
+			top: -20px;
+			z-index: -10;
+		}
+
+
+		#query p {
+			height: 43px;
+		}
+
+		.block p, .block ul {
+			font-size: 90%;
+			line-height: 100%;
+			margin-top: 0px;
+		}
+
+		#legend p {
+			max-height: 332px;
+			overflow: auto;
+			margin-bottom: 0px;
+			background-color: #ffffff;
+		}
+
+		#downloadoptions p {
+			padding: 5px;
+		}
+
+		.l_box {
+			float: left;
+			clear: left;
+		}
+
+		.l_box img {
+			position: relative;
+			bottom: 4px;
+		}
+
+		.l_label {
+			float: left;
+			width: 140px;
+			padding-top: 3px;
+		}
+
+		#recordsource {
+			margin-top: 0px;
+			margin-left: 8px;
+		}
+
+		#recordsource td {
+			line-height: 95%;
+			margin-top: 0px;
+			margin-bottom: 0px;
+			font-size: 90%;
+		}
+
+		#mapactions label {
+			float: left;
+			width: 140px;
+			padding-top: 5px;
+			padding-left: 2px;
+		}
+
+		#map_submitbuttons {
+			clear: left;
+			float: right;
+			padding-top: 5px;
+		}
+
+		#clearselectall {
+			padding-left: 3px;
+			line-height: 140%;
+		}
+
+		.blockheader>img {
+			float: right;
+			padding: 2px;
+			cursor: pointer;
+		}
+
+
+/*#maptab {
+	width: 1000px;
+}
+
+#maptab td {
+	border-collapse: collapse;
+}
+
+#maptd_left {
+	width: 195px;
+	padding: 0;
+}
+
+#maptd_left h6 {
+	font-size: 100%;
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+#maptd_left img {
+	margin-right: 0.3em;
+}
+
+#maptd_right p {
+	width: 195px;
+	padding-left: 1em;
+}
+
+
+#maptd {
+	width: 600px;
+	margin-left: 0px;
+}
+
+#maptab #maptd iframe {
+	border: 1px solid black;
+	height: 600px;
+	overflow: hidden;
+	width: 600px;
+}
+
+#maptab td p {
+	margin: 0 0 1em 0;
+	padding: 0;
+}
+
+#maptab td h5 + h5 {
+	margin-top: 1em;
+}
+*
+
+.map_legend {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#redrawmap {
+	width: 1000px;
+	text-align: right;
+}
+
+
+.map_detail_table {
+	border: 1px solid #CCC;
+	border-collapse: collapse;
+	margin: 0;
+	margin-bottom: 10pt;
+	padding: 0;
+	width: 100%;
+}
+
+.map_detail_table td, .map_detail_table th {
+	border-collapse: collapse;
+	border: 1px solid #CCC;
+	padding: 1px;
+	vertical-align: top;
+}
+
+.map_detail_table th {
+	background-color: #EEE;
+	text-align: left;
+}
+*/
+
+/* styles for query forms */
+fieldset {
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-color: #006600;
+}
+
+legend {
+	color: #006600;
+	font-weight: bold;
+}
+
+td {
+	vertical-align: top;
+}
+
+img.help {
+	border: 0;
+	margin-left: 5px;
+}
+
+
+/* query forms */
+.exquery_table .qry_field {
+	width: 220px;
+}
+
+.exquery_table tr td:first-child {
+	padding-top: 6px;
+}
+
+#taxonname_table {
+	margin-top: 15px;
+}
+
+caption {
+	display: none;
+}
+
+#taxonname_table td,
+#select_countries_herbaria td{
+	padding-top: 3px;
+}
+
+.exquery_table .qry_display,
+.exquery_table .qry_sortorder {
+	width: 80px;
+}
+
+#output_options td,
+#select_countries_herbaria td {
+	border-style: none;
+}
+
+#select_countries_herbaria td {
+	width: 50%;
+}
+
+#submitbuttons {
+	width: 100%;
+	text-align: right;
+	padding-bottom: 15px;
+}
+
+label {
+	margin-right: 0.6em;
+}
+
+p.dms_space {
+	margin-bottom: 3px;
+	margin-top: 0px;
+}
+
+span.dms {
+	float: left;
+	width: 5em;
+	margin-right: 1em;
+	padding-top: 3px;
+}
+
+.vallevellabel {
+	float: left;
+	width: 20em;
+	margin-right: 1em;
+}
+
+.outputfileformat {
+	margin-left: 4em;
+	line-height: 1.5em;
+	margin-bottom: 20px;
+}
+
+.outputfileformat span {
+	float: left;
+	width: 2em;
+	margin-right: 1em;
+	position: relative;
+	left: -15px;
+}
+
+#resulttable_wrapper {
+	margin-top: 15px;
+}
+
+#resulttable {
+	clear: both;
+}
+
+#resulttable th,
+#resulttable td {
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: left;
+	vertical-align: top;
+}
+
+#resulttable th {
+	padding-right: 3em;
+}
+
+#resulttable td {
+	font-size: 12px;
+	line-height: 100%;
+}
+
+
+/* DATATABLES styles */
+.dataTables_length {
+	width: 20%;
+	float: left;
+	clear: left;
+}
+
+div.dataTables_info {
+	width: 30%;
+	float: left;
+}
+
+.dataTables_paginate {
+	float: left;
+	text-align: right;
+	width: 50%;
+}
+
+.top, .bottom {
+	width: 980px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	background-color: #F5F5F5;
+	border: 1px solid #CCCCCC;
+	margin-bottom: 10px;
+	height: 30px;
+}
+
+.top .dataTables_info {
+	float: left;
+}
+
+div.dataTables_paginate span.paginate_button,
+div.dataTables_paginate span.paginate_active {
+	border: 1px solid #aaa;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	padding: 2px 5px;
+	margin: 0 3px;
+	cursor: pointer;
+}
+
+div.dataTables_paginate span.paginate_button {
+	background-color: #ddd;
+}
+
+div.dataTables_paginate span.paginate_button:hover {
+	background-color: #f5d447;
+}
+
+div.dataTables_paginate span.paginate_active {
+	background-color: #ddee99;
+}
+
+div.table {
+	width: 980px;
+	overflow: auto;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	background-color: #F5F5F5;
+	border: 1px solid #CCCCCC;
+}
+
+
+
+
+tr.odd {
+	background-color: #FFFFCC;/*#E2E4FF;*/
+}
+
+tr.even {
+	background-color: white;
+}
+
+
+/*
+ * Sorting classes for columns
+ */
+/* For the standard odd/even */
+.sorting_asc {
+	background: url('../images/sort_asc.jpg') no-repeat top right;
+}
+
+.sorting_desc {
+	background: url('../images/sort_desc.jpg') no-repeat top right;
+}
+
+.sorting {
+	background: url('../images/sort_both.jpg') no-repeat top right;
+}
+
+tr.odd td.sorting_1 {
+	background-color: #DDE599; /*#B3B8EF;*/
+}
+
+tr.even td.sorting_1 {
+	background-color: #DDEE99; /*#D1D3EF;*/
+}
+
+tr.odd td.sorting_2 {
+	background-color: #E7E599; /*#C2C5EF;*/
+}
+
+tr.even td.sorting_2 {
+	background-color: #E7EE99; /*#D1D3EF;*/
+}
+
+tr.odd td.sorting_3 {
+	background-color: #EFE599; /*#C2C6EF;*/
+}
+
+tr.even td.sorting_3 {
+	background-color: #EFEE99; /*#E0E0EF;*/
+}
+
+
+/* alternative restricted query page */
+.exquery_field option {
+	width: 150px;
+}
+
+.exquery_field optgroup {
+	font-style: normal;
+	padding-top: 5px;
+}
+
+.super {
+	position: relative;
+	left: 3px;
+	top: -5px;
+}
+
+#wildcardnote {
+	line-height:100%;
+	margin-top:0px;
+	padding-top:0px;
+	margin-bottom:20px;
+}
+
+.message {
+	color: #006600;
+}
+
+.already {
+	color: #999999;
+}
+
+.addrowlink:link, .deleterowlink:link {
+	border-style: none;
+}
+
+.addrowlink:hover, .deleterowlink:hover, .indexedlink:hover {
+	cursor: pointer;
+}
+
+.deleterowlink:hover {
+	text-decoration: none;
+}
+
+.outputcolumn {
+	width:245px;
+	float:left;
+}
+
+button.indexedlink {
+	border-style: none;
+	background-color: #ffffff;
+	color: #006600;
+}
+
+button.deleterowlink, button.addrowlink {
+	width: 35px;
+	height: 20px;
+}
+
+th button.indexedlink {
+	background-color: #eeeeee;
+	padding-left: 0px;
+	font-weight: bold;
+}
+
+/* styles for index page */
+#index_text {
+	width: 350px;
+	font-size: 110%;
+	padding-top: 20px;
+	margin-left: 10px;
+	padding-bottom: 20px;
+}
+
+#index_menu {
+	border-right: #f5d447 4px solid;
+	padding-right: 15px;
+	width: 240px;
+	text-align: right;
+	font-size: 150%;
+	font-weight: bold;
+	line-height: 170%;
+}
+
+#index_bground {
+	background: url(../images/avh_index_img.jpg) no-repeat top right;
+	height: 600px;
+	width: 1000px;
+}
+
+#mainmenu div.float_right {
+	float: right;
+	border-right-style: none;
+	border-left-style: solid;
+	border-left-width: 1px;
+}
+
+/* columns */
+.row {
+	clear: both;
+}
+
+.column {
+	float: left;
+	padding-bottom: 20px;
+}
+
+.col1 {
+	width: 75px;
+	clear: left;
+	text-align: center;
+}
+
+.col2 {
+	width: 625px;
+	clear: right;
+}
+
+/* ordered list */
+ol li {
+	font-weight: bold;
+}
+
+ol li span {
+	font-weight: normal;
+}
+
+.ui-resizable-handle { position: absolute; font-size: 0.1px; z-index: 99999; display: block;}
+.ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
+.ui-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0px; }
+.ui-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0px; }
+.ui-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0px; height: 100%; }
+.ui-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0px; height: 100%; }
+.ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+.ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+.ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+.ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
+
+table.map_detail_table th {
+	text-align: left;
+	vertical-align: top;
+	width: 150px;
+}
+
+/* ALA Changes TODO move into another css file */
+
+#SidebarBox {
+    float: left;
+}
+
+#content2 {
+    float: left;
+    margin-left: 40px;
+/*    width: 640px;*/
+}
+
+#main_content > #headingBar {
+    min-height: 55px;
+    margin: 0;
+}
+
+#main_content > #headingBar > h1 {
+    padding-top: 15px;
+}
+
+#SidebarBox, #resultsReturned {
+    margin-top: 5px;
+}
+
+h1, h2, h3, h4, h5 {
+    line-height: 1.2em;
+}
+
+#mapLayerControls label {
+    margin: 0;
+}

@@ -4,15 +4,31 @@
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ include file="/common/taglibs.jsp" %>
-<div id="SidebarBox">
+<div id="SidebarBox" class="facets">
     <div class="sidebar">
-        <h3>Refine Results</h3>
+        <h3 style="display: inline-block;float:left;">Refine Results </h3>
+        <div id="customiseFacets"><a href="#">customise</a></div>
+        <div id="facetOptions">
+            <h4>Select the filter categories that are to<br/> appear in the &quot;Refine Results&quot; column</h4>
+            <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
+            <div id="facetCheckboxes">
+                Select: <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a><br/>
+                <c:forEach var="facet" items="${defaultFacets}">
+                    <input type="checkbox" name="facets" class="facetOpts" value="${facet}" checked="checked">&nbsp;<fmt:message key="facet.${facet}"/><br>
+                </c:forEach>
+            </div>
+            <input type="button" id="updateFacetOptions" value="Update"/>
+        </div>
     </div>
-    <div class="sidebar">
+    <div class="sidebar" style="clear:both;">
         <c:if test="${not empty searchResults.query}">
-            <c:set var="queryParam">q=<c:out value="${param['q']}" escapeXml="true"/><c:if test="${not empty param.fq}">&fq=${fn:join(paramValues.fq, "&fq=")}</c:if>
-            </c:set>
+            <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=${param.taxa}</c:when><c:otherwise>q=<c:out escapeXml="true" value="${param.q}"/></c:otherwise></c:choose><c:if 
+                    test="${not empty param.fq}">&fq=${fn:join(paramValues.fq, "&fq=")}</c:if><c:if 
+                    test="${not empty param.lat}">&lat=${param.lat}</c:if><c:if 
+                    test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if 
+                    test="${not empty param.radius}">&radius=${param.radius}</c:if></c:set>
         </c:if>
         <c:if test="${not empty facetMap}">
             <div id="currentFilter">
@@ -42,6 +58,15 @@
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'collection_uid')}">
                                         <b><fmt:message key="${collectionCodes[item.value]}"/></b>${closeLink}
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'data_resource_uid')}">
+                                        <b><fmt:message key="${dataResourceCodes[item.value]}"/></b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'species_guid')}">
+                                        <b class="species_guid" id="${item.value}"><fmt:message key="${fn:substring(item.value,0,20)}"/></b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'geospatial_kosher')}">
+                                        <b><fmt:message key="geospatial_kosher.${item.value}"/></b>${closeLink}
+                                    </c:when>  
                                     <c:otherwise>
                                         <b><fmt:message key="${item.value}"/></b>${closeLink}
                                     </c:otherwise>
@@ -53,7 +78,7 @@
             </div>
         </c:if>
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
-            <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
+            <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
                 <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/></span></h4>
                 <div id="subnavlist">
                     <ul class="facets">
@@ -65,38 +90,52 @@
                             </li>
                         </c:if>
                         <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs"> <!-- ${facetResult.fieldName}:${fieldResult.label} -->
-                            <c:if test="${fieldResult.count > 0}">
+                            <c:if test="${fieldResult.count >= 0}">
                                 <c:set var="dateRangeTo"><c:choose><c:when test="${vs.last || facetResult.fieldResult[vs.count].label=='before'}">*</c:when><c:otherwise>${facetResult.fieldResult[vs.count].label}</c:otherwise></c:choose></c:set>
                                 <c:choose>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_') && fn:endsWith(fieldResult.label, 'Z')}">
                                         <li><c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
                                             <a href="?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${dateRangeTo}]">${startYear}<i>s</i></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                        </c:when>
-                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource_uid')}">
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${dataResourceCodes[fieldResult.label]}</a>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></a>
-                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                        </c:when>
-                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_uid')}">
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'institution_uid')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${institutionCodes[fieldResult.label]}</a>
-                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                        </c:when>
-                                        <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collection_uid')}">
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collection_uid')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${collectionCodes[fieldResult.label]}</a>
-                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                        </c:when>
-                                        <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><!-- skipping --> <%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:endsWith(fieldResult.label, 'before')}"><!-- skipping --> <%-- skip, otherwise gets inserted at bottom, not top of list --%></c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'month')}">
-                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="month.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
-                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                        </c:when>
-                                        <c:otherwise>
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="month.${not empty fieldResult.label ? fieldResult.label : 'unknown'}" /></a>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'species_guid')}">
+                                        <c:set var="lsidLength" value="${fn:length(fieldResult.label)}"/>
+                                        <li class="species_guid" id="${fieldResult.label}"><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message 
+                                            key="${lsidLength > 30 ? fn:substring(fieldResult.label,0,20) : fieldResult.label}..${lsidLength > 30 ? fn:substring(fieldResult.label, (lsidLength - 10), lsidLength) : fieldResult.label}"/></a>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'geospatial_kosher')}">
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="geospatial_kosher.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:otherwise>
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
-                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:if>
-                            </c:forEach>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                        </c:forEach>
                     </ul>
                 </div>
             </c:if>
@@ -153,6 +192,10 @@ ${collectionCodes}
                     <c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
                     <c:set var="cffv" value="[${fieldResult.label} TO ${dateRangeTo}]" />
                     <c:set var="cffl" value="${startYear} - ${startYear + 10}" />
+                </c:when>
+                <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource_uid')}">
+                    <c:set var="cffv" value="${fieldResult.label}" />
+                    <c:set var="cffl" value="${dataResourceCodes[fieldResult.label]}" />
                 </c:when>
                 <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
                     <c:set var="cffv" value="${fieldResult.label}" />

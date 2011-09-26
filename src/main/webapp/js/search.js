@@ -22,6 +22,10 @@ function reloadWithParam(paramName, paramValue) {
     var fqList = $.getQueryParam('fq'); //$.query.get('fq');
     var sort = $.getQueryParam('sort');
     var dir = $.getQueryParam('dir');
+    var lat = $.getQueryParam('lat');
+    var lon = $.getQueryParam('lon');
+    var rad = $.getQueryParam('radius');
+    var taxa = $.getQueryParam('taxa');
     // add query param
     if (q != null) {
         paramList.push("q=" + q);
@@ -38,6 +42,16 @@ function reloadWithParam(paramName, paramValue) {
     if (paramName != null && paramValue != null) {
         paramList.push(paramName + "=" +paramValue);
     }
+    
+    if (lat && lon && rad) {
+        paramList.push("lat=" + lat);
+        paramList.push("lon=" + lon);
+        paramList.push("radius=" + rad);
+    }
+    
+    if (taxa) {
+        paramList.push("taxa=" + taxa);
+    }
 
     //alert("params = "+paramList.join("&"));
     //alert("url = "+window.location.pathname);
@@ -51,9 +65,23 @@ function reloadWithParam(paramName, paramValue) {
 function removeFacet(facet) {
     var q = $.getQueryParam('q'); //$.query.get('q')[0];
     var fqList = $.getQueryParam('fq'); //$.query.get('fq');
+    var lat = $.getQueryParam('lat');
+    var lon = $.getQueryParam('lon');
+    var rad = $.getQueryParam('radius');
+    var taxa = $.getQueryParam('taxa');
     var paramList = [];
     if (q != null) {
         paramList.push("q=" + q);
+    }
+    
+    if (lat && lon && rad) {
+        paramList.push("lat=" + lat);
+        paramList.push("lon=" + lon);
+        paramList.push("radius=" + rad);
+    }
+    
+    if (taxa) {
+        paramList.push("taxa=" + taxa);
     }
 
     //alert("this.facet = "+facet+"; fqList = "+fqList.join('|'));
@@ -81,6 +109,9 @@ function removeFacet(facet) {
 
     window.location.href = window.location.pathname + '?' + paramList.join('&') + window.location.hash;
 }
+
+// vars for hiding drop-dpwn divs on click outside tem
+var hoverDropDownDiv = false;
 
 // Jquery Document.onLoad equivalent
 $(document).ready(function() {
@@ -122,7 +153,7 @@ $(document).ready(function() {
     // catch download submit button
     $("#downloadSubmitButton").click(function(e) {
         e.preventDefault();
-        var downloadUrl = $("input#downloadUrl").val();
+        var downloadUrl = $("input#downloadUrl").val().replace(/\\ /g, " ");
         var reason = $("#reason").val();
         if(typeof reason == "undefined")
             reason = "";
@@ -131,9 +162,29 @@ $(document).ready(function() {
         window.location.href = downloadUrl;
         $.fancybox.close();
     });
+    // catch checklist download submit button
+    $("#downloadCheckListSubmitButton").click(function(e) {
+        e.preventDefault();
+        var downloadUrl = $("input#downloadChecklistUrl").val().replace(/\\ /g, " ") + "&facets=species_guid&lookup=true&file="+$("#filename").val();
+        //alert("downloadUrl = " + downloadUrl);
+        window.location.href = downloadUrl;
+        $.fancybox.close();
+    });
+
+    // catch checklist download submit button
+    $("#downloadFieldGuideSubmitButton").click(function(e) {
+        e.preventDefault();
+        var downloadUrl = $("input#downloadFieldGuideUrl").val().replace(/\\ /g, " ") + "&facets=species_guid";
+
+        window.open(downloadUrl);
+
+        $.fancybox.close();
+    });
 
     // set height of resultsOuter div to solrResults height
-    var solrHeight = $("div.solrResults").height() + 50;
+    var pageLength = $("select#per-page").val() || 20;
+    var solrHeight = $("div.solrResults").height() + (2 * pageLength) + 70;
+    //console.log("solrHeight", solrHeight, pageLength);
     var mapHeight = $("div#mapwrapper").height();
     $("#resultsOuter").css("height", (solrHeight > mapHeight ) ? solrHeight : mapHeight );
 
@@ -165,7 +216,7 @@ $(document).ready(function() {
         // make list & map div slide left & right
         var $listDiv = $("div.solrResults"); // list
         $listDiv.animate({
-            left: parseInt($listDiv.css('left'),10) == 0 ? -$listDiv.outerWidth() : 0 },
+            left: parseInt($listDiv.css('left'),10) == 0 ? -$listDiv.outerWidth() : 0},
             {duration: "slow"}
         );
         var $mapDiv = $("div#mapwrapper"); // map
@@ -193,10 +244,190 @@ $(document).ready(function() {
     });
 
     // add show/hide links to facets
-    $('#subnavlist ul.facets').oneShowHide({
-        numShown: 3,
-        showText : '+ show more',
-        hideText : '- show less',
-        className: 'showHide'
+    $('ul.facets').oneShowHide({
+            numShown: 3,
+            showText : '+ show more',
+            hideText : '- show less',
+            className: 'showHide'
+        });
+    
+    // Substitute LSID strings for tacon names in facet values for species
+    var guidList = [];
+    $("li.species_guid").each(function(i, el) {
+        guidList[i] = $(el).attr("id");
     });
+    
+    if (guidList.length > 0) {
+        // AJAX call to get names for LSIDs
+        // IE7< has limit of 2000 chars on URL so split into 2 requests        
+        var guidListA = guidList.slice(0, 15) // first 15 elements
+        var jsonUrlA = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListA.join("&guid=") + "&callback=?";
+        $.getJSON(jsonUrlA, function(data) {
+            // set the name in place of LSID
+            $("li.species_guid").each(function(i, el) {
+                if (i < 15) {
+                    $(el).find("a").html("<i>"+data[i]+"</i>");
+                } else {
+                    return false; // breaks each loop
+                }
+            });
+        });
+        
+        if (guidList.length > 15) {
+            var guidListB = guidList.slice(15)
+            var jsonUrlB = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListB.join("&guid=") + "&callback=?";
+            $.getJSON(jsonUrlB, function(data) {
+                // set the name in place of LSID
+                $("li.species_guid").each(function(i, el) {
+                    // skip forst 15 elements
+                    if (i > 14) {
+                        var k = i - 15;
+                        $(el).find("a").html("<i>"+data[k]+"</i>");
+                    }
+                });
+            });
+        }
+    }
+    
+    // do the same for the selected facet
+    var selectedLsid = $("b.species_guid").attr("id");
+    if (selectedLsid) {
+        var jsonUrl2 = bieWebappUrl + "/species/namesFromGuids.json?guid=" + selectedLsid + "&callback=?";
+        $.getJSON(jsonUrl2, function(data) {
+            // set the name in place of LSID
+            $("b.species_guid").html("<i>"+data[0]+"</i>");
+        });
+    }
+    
+    // remove *:* query from search bar
+    var q = $.getQueryParam('q');
+    if (q && q[0] == "*:*") {
+        $(":input#solrQuery").val("");
+    }
+    
+    // show hide facet display options
+    $("#customiseFacets a").click(function(e) {
+        e.preventDefault();
+        $('#facetOptions').toggle();
+    });
+    
+    $("#facetOptions").position({
+        my: "left top",
+        at: "left bottom",
+        of: $("#customiseFacets"), // or this
+        offset: "0 -1",
+        collision: "none"
+    });
+    $("#facetOptions").hide();
+    
+    var userFacets = $.cookie("user_facets");
+    //console.log("userFacets", userFacets);
+    // load stored prefs from cookie
+    if (userFacets) {
+        $(":input.facetOpts").removeAttr("checked"); 
+        var facetList = userFacets.split(",");
+        for (i in facetList) {
+            if (typeof facetList[i] === "string") {
+                var thisFacet = facetList[i];
+                //console.log("thisFacet", thisFacet);
+                $(":input.facetOpts[value='"+thisFacet+"']").attr("checked","checked");
+            }
+        }
+    }
+    
+    $("a#selectNone").click(function(e) {
+        e.preventDefault();
+        $(":input.facetOpts").removeAttr("checked");
+    });
+    $("a#selectAll").click(function(e) {
+        e.preventDefault();
+        $(":input.facetOpts").attr("checked","checked");
+    });
+    
+    $(":input#updateFacetOptions").click(function(e) {
+        e.preventDefault();
+        var selectedFacets = [];
+        $(":input.facetOpts").each(function() {
+            var selected = ($(this).attr("checked")) ? true : false;
+            if (selected) {
+                selectedFacets.push($(this).val());
+            }
+        });
+        //console.log("selectedFacets", selectedFacets);
+        $.cookie("user_facets", selectedFacets);
+        document.location.reload(true);
+    });
+    
+    // taxa search - show included synonyms with popup to allow user to refine to a single name
+    
+    $("span.lsid").each(function(i, el) {
+        var lsid = $(this).attr("id");
+        var nameString = $(this).html();
+        var jsonUri = biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
+        $.getJSON(jsonUri, function(data) {
+            // list of synonyms
+            var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" + 
+                "This taxon search will include records with synonyms and child taxa of " +
+                "<a href='" + bieWebappUrl + "/species/" + lsid + "' title='Species page' class='bold'>" +
+                nameString + "</a>.<br/>Below are the <u>original scientific names</u> " + 
+                "which appear on records in this result set:<ul>";
+            var synListSize = 0;
+            $.each(data.facetResults, function(k, el) {
+                //console.log("el", el);
+                if (el.fieldName == "raw_taxon_name") {
+                    $.each(el.fieldResult, function(j, el1) {
+                        synListSize++;
+                        synList += "<li><a href='" + contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")";
+                    });
+                    
+                }
+            });
+            
+            if (synListSize == 0) {
+                synList += "<li style='list-style:none;'>[no records found]</li>";
+            }
+            
+            synList += "</ul>";
+            
+            if (synListSize >= 50) {
+                synList += "<div>[Only showing the top 50 names]</div>";
+            } 
+            
+            synList += "</div>";
+            $("#resultsReturned").append(synList);
+            // position it under the drop down
+            $("#refineTaxaSearch_"+i).position({
+                my: "right top",
+                at: "right bottom",
+                of: $(el), // or this
+                offset: "0 -1",
+                collision: "none"
+            });
+            $("#refineTaxaSearch_"+i).hide();
+        });
+        // format display with drop-down
+        //$("span.lsid").before("<span class='plain'> which matched: </span>");
+        $(el).html("<a href='#' title='display query info' id='" + i + "'>" + nameString + "</a>");
+        $(el).addClass("dropDown");
+    });
+        
+    $("#queryDisplay a").click(function(e) {
+        e.preventDefault();
+        var j = $(this).attr("id");
+        $("#refineTaxaSearch_"+j).toggle();
+    });
+    
+    // close drop-down divs when clicked outside 
+    $('#customiseFacets > a, #refineTaxaSearch, #queryDisplay a, #facetOptions').live("mouseover mouseout", function(event) {
+        if ( event.type == "mouseover" ) {
+            hoverDropDownDiv = true;
+        } else {
+            hoverDropDownDiv = false;
+        }
+    });
+    
+    $("body").mouseup(function(){ 
+        if (!hoverDropDownDiv) $('.refineTaxaSearch, #facetOptions').hide();
+    });
+    
 }); // end JQuery document ready

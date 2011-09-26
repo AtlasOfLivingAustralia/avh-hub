@@ -9,6 +9,7 @@
         <pattern>/static/*</pattern>
         <pattern>/occurrences/*/assertions/</pattern>
         <pattern>/occurrences/*/groupedAssertions/</pattern>
+        <pattern>/proxy/*</pattern>
         <pattern>/index</pattern>
     </excludes>
 
@@ -16,9 +17,14 @@
         <pattern>/occurrences/fragment/*</pattern>
         <pattern>/occurrences/annotate/*</pattern>
     </decorator>
+
+    <decorator name="ala" page="ala-skin.jsp" />
+    <decorator name="ozcam" page="ozcam-skin.jsp" />
+    <decorator name="avh" page="avh-skin.jsp" />
     
-    <decorator name="main" page="ozcam-skin.jsp">
+    <decorator name="main" page="ala-skin.jsp">
         <pattern>/*</pattern>
     </decorator>
+
 
 </decorators>

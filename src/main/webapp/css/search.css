@@ -24,27 +24,59 @@
     float: left;
     height: 32px;
 }
-#searchBox {
+
+#headingBar > #searchBox {
+    margin: 0;
+    padding:0;
     width: 60%;
     float: left;
     height: 36px;
     text-align: right;
 }
+
+#searchBox > #searchLabel { 
+    display:inline-block;
+    padding-top:0px; 
+}
+
+#searchBox #advancedSearchLink {
+    display: block;
+    padding: 0;
+/*    margin: 0;*/
+    margin-bottom: 0;
+    margin-right: 70px;
+    font-size: 11px;
+}
+*+html #searchBox #advancedSearchLink {
+    display: block;
+    padding: 0;
+    margin-right: 80px;
+    margin-bottom: -6px;
+}
+
+#searchBox  #advancedSearchLink a {
+    font-size: 10px;
+}
+#searchBox #advancedSearchLink > a {
+    font-size: 11px; 
+}
 #solrSearchForm input {
     margin: 0
 }
-#solrSearchForm input#solrQuery {
+#solrSearchForm > input#taxaQuery {
     display: inline-block;
-    float: right;
     margin-top: 2px;
     font-size: 13px;
-    width: 500px;
+    width: 450px;
 }
-#solrSearchForm input#solrSubmit {
+#solrSearchForm > input#solrSubmit {
     display: inline-block;
-    float: right;
     font-size: 13px;
     margin: 3px 6px;
+}
+
+#listMapToggle {
+    margin-top: 2px;
 }
 .sidebar li {
     border: none;
@@ -78,7 +110,7 @@ div#currentFilter {
     padding-left: 5px;
 }
 #currentFilter h4 {
-    color: #1775BA;
+/*    color: #1775BA;*/
 }
 .removeLink {
     font-family: sans-serif;
@@ -118,20 +150,23 @@ div#currentFilter {
     font-weight: normal;
     color: #555;
 }
-#dropdowns {
+#searchControls {
     background-color: #F0F0F0;
     border-bottom: 1px solid #D9D9D9;
     border-top: 1px solid #D9D9D9;
     /*                margin-left: 15px;*/
     padding: 5px;
+    height: 22px;
 }
-#resultsStats {
-    float: left;
-    text-align: left;
-    width: 50%;
+
+#results {
+    clear: both;
 }
-#sortWidget {
+
+#sortWidgets {
     text-align: right;
+    float: right;
+    width: 70%;
 }
 #searchNavBar {
     text-align: center;
@@ -165,12 +200,12 @@ li.currentPage {
     color: #DD3102;
 }
 #searchNavBar li a {
-    color:#005A8E;
+    /*color:#005A8E;*/
     text-decoration:none;
     font-size: 14px;
 }
 #searchNavBar li a:hover  {
-    color:#6DB71D;
+    /*color:#6DB71D;*/
     text-decoration:none;
 }
 div.recordHeader {
@@ -231,11 +266,126 @@ li.showHide {
     margin-left: 0px;
 }
 li.showHide a:link, li.showHide a:visited  {
-    color: #005A8E;
+    /*color: #005A8E;*/
     font-size: 12px;
     text-decoration: none;
 }
 div#advancedSearch {
     margin-left: 30px;
     margin-bottom: 20px;
+}
+#customiseFacets {
+    display: inline-block;
+    float: left;
+    text-align: left;
+    padding: 0px 5px;
+    margin: 4px 10px;
+    border: 1px solid #BBBBBB;
+    background-color: #EEEEEE;
+    font-weight: bold;
+}
+#facetOptions {
+    position: absolute;
+    left: -9999px;
+    padding: 0px 8px 10px 8px;
+    margin: 4px 10px;
+    border: 1px solid #BBBBBB;
+    background-color: #EEEEEE;
+    z-index: 500;
+}
+
+#facetCheckboxes {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+#queryGuid {
+    display:none;
+}
+
+.refineTaxaSearch {
+    position: absolute;
+    top: -9999px;
+    width: 500px;
+    z-index: 501;
+    background-color: #EEEEEE;
+    border: 1px solid #BBBBBB;
+    padding: 10px;
+    margin-top: 0;
+}
+
+span#queryDisplay {
+    font-weight: bold;
+}
+
+span#queryDisplay a:hover {
+    text-decoration: none;
+}
+
+.dropDown {
+    display: inline-block;
+/*    float: left;*/
+    text-align: left;
+    padding: 2px 5px;
+    margin: 4px 0px;
+    background-color: #EEEEEE;
+    border: 1px solid #BBBBBB;
+}
+
+#downloads {
+    display: inline-block;
+    float: left;
+    text-align: left;
+    font-weight: bold;
+    padding: 2px 5px;
+    margin-top: -1px;
+    background-color: #FFFFFF;
+    border: 1px solid #BBBBBB;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#customiseFacets a::after, .dropDown::after {
+    width: 7px;
+    height: 7px;
+    display: inline-block;
+    background: transparent url(../images/sprite-icons.png) no-repeat scroll -111px -68px;
+    content: "&darr;";
+    text-indent: -99999px;
+    vertical-align: top;
+    margin-top: 8px;
+    margin-left: 4px;
+}
+
+.plain {
+    font-weight: normal;
+    color: #444444;
+}
+
+#mapLayerControls > label {
+    clear: both;
+    display: block;
+    float: left;
+    width: 20%;
+    text-align: right;
+}
+
+#mapLayerControls > .layerControls {
+    display: block;
+    float: left;
+    width: 80%;
+    margin-bottom: 4px;
+}
+
+#mapLayerControls #sizeslider-val {
+    padding-right: 12px;
+    padding-left: 6px;
+}
+
+.layerControls #sizeslider-val, .layerControls #sizeslider {
+    display: block;
+    float:left;
+    margin-bottom: 5px;
 }
