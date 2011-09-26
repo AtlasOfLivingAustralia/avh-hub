@@ -143,6 +143,7 @@ public class OccurrenceController {
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
         if (assertion != null) {
+        	
             AttributePrincipal principal = assertion.getPrincipal();
             model.addAttribute("userId", principal.getName());
 

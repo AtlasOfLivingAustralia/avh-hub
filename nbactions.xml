@@ -4,6 +4,7 @@
             <actionName>CUSTOM-Jetty Run</actionName>
             <displayName>Jetty Run</displayName>
             <goals>
+                <goal>clean</goal>
                 <goal>jetty:run</goal>
                 
                 
@@ -18,6 +19,7 @@
             <actionName>CUSTOM-Jetty Run Fast</actionName>
             <displayName>Jetty Run Fast</displayName>
             <goals>
+                <goal>clean</goal>
                 <goal>jetty:run</goal>
                 <goal>-o</goal>
                 <goal>-npu</goal>
