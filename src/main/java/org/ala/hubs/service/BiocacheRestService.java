@@ -206,10 +206,11 @@ public class BiocacheRestService implements BiocacheService {
 //        logger.debug("Posting to: " + jsonUri);
 //        restTemplate.postForLocation(jsonUri,qualityAssertion);       //, new HashMap<String, String>());
 
-        final String uri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/add";
+        final String uri = biocacheUriPrefix + "/occurrences/assertions/add";
         HttpClient h = new HttpClient();
         PostMethod m = new PostMethod(uri);
         try {
+            m.setParameter("recordUuid", recordUuid);
             m.setParameter("code", code);
             m.setParameter("comment", comment);
             m.setParameter("userId", userId);
@@ -230,10 +231,11 @@ public class BiocacheRestService implements BiocacheService {
 
     @Override
     public boolean deleteAssertion(String recordUuid, String assertionUuid) {
-        final String uri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/delete";
+        final String uri = biocacheUriPrefix + "/occurrences/assertions/delete";
         HttpClient h = new HttpClient();
         PostMethod m = new PostMethod(uri);
         try {
+            m.setParameter("recordUuid", recordUuid);
             m.setParameter("assertionUuid", assertionUuid);
             m.setParameter("apiKey", apiKey);
             int status = h.executeMethod(m);
@@ -252,7 +254,7 @@ public class BiocacheRestService implements BiocacheService {
     @Override
     public QualityAssertion[] getUserAssertions(String recordUuid) {
         //occurrences/0352f657-98fa-436e-81c8-28e54fe06d8c/assertions/
-        final String jsonUri = biocacheUriPrefix + "/occurrences/"+recordUuid+"/assertions/";
+        final String jsonUri = biocacheUriPrefix + "/occurrences/assertions?recordUuid="+recordUuid;
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, QualityAssertion[].class);
     }
@@ -323,7 +325,7 @@ public class BiocacheRestService implements BiocacheService {
         Map<String, Object> compareRecord = null;
         
         try {
-            final String jsonUri = biocacheUriPrefix + "/occurrence/compare/" + uuid + ".json";            
+            final String jsonUri = biocacheUriPrefix + "/occurrence/compare?uuid=" + uuid;            
             logger.debug("Requesting: " + jsonUri);
             compareRecord = restTemplate.getForObject(jsonUri, Map.class);
         } catch (Exception ex) {

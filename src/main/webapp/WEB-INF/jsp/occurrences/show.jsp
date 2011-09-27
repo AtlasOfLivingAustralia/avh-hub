@@ -50,11 +50,11 @@
              * Delete a user assertion
              */
             function deleteAssertion(recordUuid, assertionUuid){
-                $.post('${pageContext.request.contextPath}/occurrences/'+recordUuid+'/assertions/delete',
-                    { assertionUuid: assertionUuid },
+                $.post('${pageContext.request.contextPath}/occurrences/assertions/delete',
+                    { recordUuid: recordUuid,assertionUuid: assertionUuid },
                     function(data) {
                         //retrieve all asssertions
-                        $.get('${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/groupedAssertions/', function(data) {
+                        $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${record.raw.rowKey}', function(data) {
                             $('#'+assertionUuid).fadeOut('slow', function() {
                                 $('#userAssertions').html(data);
 
@@ -120,16 +120,17 @@
                     var code = $("#issue").val();
                     var userId = '${userId}';
                     var userDisplayName = '${userDisplayName}';
+                    var recordUuid = '${record.raw.rowKey}';
                     if(code!=""){
-                        $.post("${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/assertions/add",
-                            { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
+                        $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
+                            { recordUuid: recordUuid, code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
                             function(data) {
                                 $("#submitSuccess").html("Thanks for flagging the problem!");
                                 $("#issueFormSubmit").hide();
                                 $("input:reset").hide();
                                 $("input#close").show();
                                 //retrieve all asssertions
-                                $.get('${pageContext.request.contextPath}/occurrences/${record.raw.rowKey}/groupedAssertions/', function(data) {
+                                $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${record.raw.rowKey}', function(data) {
                                     //console.log("data", data);
                                     $('#userAssertions').html(data);
                                     $('#userAssertionsContainer').show("slow");
@@ -968,6 +969,19 @@
                             <c:if test="${not empty record.processed.classification.species && not empty record.raw.classification.species && (fn:toLowerCase(record.processed.classification.species) != fn:toLowerCase(record.raw.classification.species))}">
                                 <br/><span class="originalValue">Supplied as "<i>${record.raw.classification.species}</i>"</span>
                             </c:if>
+                        </alatag:occurrenceTableRow>
+                        <!-- Associated Taxa -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="assocatedTaxa" fieldName="Associated Species">
+                        <c:set var="colon" value=":"/>
+                            <c:choose>
+                                <c:when test="${fn:contains(record.raw.occurrence.associatedTaxa,colon)}">
+                                	<c:set var="associatedName" value="${fn:substringAfter(record.raw.occurrence.associatedTaxa,colon)}"/>
+                                    ${fn:substringBefore(record.raw.occurrence.associatedTaxa,colon) }: <a href="${bieWebappContext}/species/${fn:replace(associatedName, '  ', ' ')}">${associatedName}</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${bieWebappContext}/species/${fn:replace(record.raw.occurrence.associatedTaxa, '  ', ' ')}">${record.raw.occurrence.associatedTaxa}</a>
+                                </c:otherwise>
+                            </c:choose>                      	                            
                         </alatag:occurrenceTableRow>
                     </table>
                 </div>

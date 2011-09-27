@@ -30,6 +30,16 @@ public class AssertionController {
     private final String ASSERTIONS =  "occurrences/assertions";
     private final String GROUPED_ASSERTIONS =  "occurrences/groupedAssertions";
 
+    
+    @RequestMapping(value={"/occurrences/assertions/add"}, method = RequestMethod.POST)
+    public void addAssertionWithParams(
+            @RequestParam(value="recordUuid", required=true) String recordUuid,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception{
+            
+        addAssertion(recordUuid, request,response);
+    }
+    
     /**
      * add an assertion
      */
@@ -72,6 +82,27 @@ public class AssertionController {
            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
     }
+    
+    /**
+     * Removes an assertion
+     * 
+     * This version of the method can handle the situation where we use rowKeys as Uuids. Thus
+     * URL style rowKeys can be correctly supported.
+     * 
+     * @param recordUuid
+     * @param assertionUuid
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = {"/occurrences/assertions/delete"}, method = RequestMethod.POST)
+    public void deleteAssertionWithParams(
+            @RequestParam(value="recordUuid", required=true) String recordUuid,
+            @RequestParam(value="assertionUuid", required=true) String assertionUuid,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+            deleteAssertion(recordUuid, assertionUuid, response);
+    }
 
     /**
      * Remove an assertion
@@ -86,6 +117,16 @@ public class AssertionController {
 
         biocacheService.deleteAssertion(recordUuid, assertionUuid);
         response.setStatus(HttpServletResponse.SC_OK);
+    }
+    
+    @RequestMapping(value = {"/occurrences/assertions"}, method = RequestMethod.GET)
+    public String getUserAssertionsWithParams(
+            @RequestParam(value="recordUuid", required=true) String recordUuid,
+            HttpServletRequest request,
+            Model model
+            ) throws Exception{
+        
+            return getUserAssertions(recordUuid, request,model);
     }
 
     /**
@@ -117,6 +158,12 @@ public class AssertionController {
         logger.debug("Number of assertions: " + assertions.length);
         model.addAttribute("assertions", assertions);
         return ASSERTIONS;
+    }
+    @RequestMapping(value = {"/occurrences/groupedAssertions*", "/occurrences/groupedAssertions.json*"}, method = RequestMethod.GET)
+    public String getGroupedUserAssertionsWithParams(@RequestParam(value="recordUuid", required=true) String recordUuid,
+            HttpServletRequest request,
+            Model model)throws Exception {
+        return getGroupedUserAssertions(recordUuid, request, model);
     }
 
     /**

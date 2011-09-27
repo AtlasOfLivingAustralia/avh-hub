@@ -26,9 +26,10 @@
                     var code = $("#issue").val();
                     var userId = '${userId}';
                     var userDisplayName = '${userDisplayName}';
+                    var recordUuid = ${rowKey}
                     if(code!=""){
-                        $.post("${pageContext.request.contextPath}/occurrences/${rowKey}/assertions/add",
-                            { code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
+                        $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
+                            { recordUuid:recordUuid, code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
                             function(data) {
                                 alert("Thanks for flagging the problem!");
                                 parent.$.fancybox.close();
