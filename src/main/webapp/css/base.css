@@ -73,6 +73,9 @@ table.compact, table.nested {
     width: 100%;
     margin: 2px 0 4px 0;
 }
+table.compact thead {
+    border: none;
+}
 table.compact th, table.compact td {
     padding: 4px;
 }

@@ -49,13 +49,12 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/redmond/jquery.ui.redmond.css" type="text/css" media="screen" />
     </head>
     <body>
-
         <input type="hidden" id="userId" value="${userId}">
         <div id="headingBar">
             <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/advancedSearch">Advanced Search</a></span>
+                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>
                     <span id="#searchLabel">Species:</span>
                     <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
                     <input type="submit" id="solrSubmit" value="Search"/>

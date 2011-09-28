@@ -6,8 +6,25 @@
 <%@ include file="/common/taglibs.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div id="advancedSearch">
-    <h4>Advanced search options</h4>
+    <h3>Simple Search</h3>
+    <form name="simpleSearchForm" id="simpleSearchForm" action="${pageContext.request.contextPath}/occurrences/search" method="GET">
+    <table border="0" width="100" cellspacing="2" class="compact" style="">
+        <thead/>
+        <tbody>
+            <tr>
+                <td class="label">Full-Text/Name Search</td>
+                <td>
+                    <input type="text" name="taxa" id="taxa" class="name_autocomplete" placeholder="" size="80" value=""/>
+                    &nbsp;
+                    <input type="submit" value="Search" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </form>
+    <div style="border-top: 2px solid gray; margin: 6px 0 12px 0;"></div>
     <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/advancedSearch" method="POST">
+    <h3>Advanced Search</h3>
         <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;">${param.q}</input>
         <b>Find records that have</b>
         <table border="0" width="100" cellspacing="2" class="compact">
@@ -25,27 +42,6 @@
         <table border="0" width="100" cellspacing="2" class="compact">
             <thead/>
             <tbody>
-<%--                <tr>
-                    <td class="label">Search for taxon name</td>
-                    <td>
-                        <input type="text" value="" id="name_autocomplete" 
-                               placeholder="Start typing a common name or scientific name..." style="width:600px;">
-                        <br/>
-                        <div id="taxonSearchHint">Start typing a common name or scientific name and click on a matched name from the autocomplete dropdown list.
-                        You can add up to 6 taxa to use in your search.</div>
-                    </td>
-                </tr>
-                <c:forEach begin="1" end="6" step="1" var="i">
-                    <c:set var="lsidParam" value="lsid_${i}"/>
-                    <tr style="display: none" id="taxon_row_${i}">
-                        <td class="label">Species/Taxon</td>
-                        <td>
-                            <div class="matchedName" id="sciname_${i}"></div>
-                            <input type="hidden" name="lsid" id="${lsidParam}" value="${param.lsid}"/>
-                            <input type="button" id="clear_${i}" class="clear_taxon" value="clear" title="Remove this taxon" style="display: none; float:left"/>
-                        </td>
-                    </tr>
-                </c:forEach>--%>
                 <c:forEach begin="1" end="4" step="1" var="i">
                     <c:set var="lsidParam" value="lsid_${i}"/>
                     <tr style="" id="taxon_row_${i}">
@@ -53,9 +49,6 @@
                         <td>
                             <input type="text" value="" id="taxa_${i}" name="taxa" class="name_autocomplete" style="width:35%">
                             <input type="hidden" name="lsid" class="lsidInput" id="taxa_${i}" value=""/>
-                            <%-- <div class="matchedName" id="sciname_${i}"></div>
-                            
-                            <input type="button" id="clear_${i}" class="clear_taxon" value="clear" title="Remove this taxon" style="display: none; float:left"/> --%>
                         </td>
                     </tr>
                 </c:forEach>
@@ -249,10 +242,8 @@
                 </tr>
             </tbody>
         </table>
-<!--       <input type="button" id="advancedSubmit" value="Search" onClick="$('#advancedSearchForm').submit()"/>-->
         <input type="submit" value="Search" />
         &nbsp;&nbsp;
         <input type="reset" value="Clear all" id="clearAll" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
-<!--        &nbsp;&nbsp;<a id="showHideAdvancedOptions" href="#advanced_search_show">Hide advanced search options</a>-->
     </form>
 </div>
