@@ -107,7 +107,8 @@ $(document).ready(function() {
         buttons: {
             'Download File': function() {
                 var downloadUrl = biocacheServiceUrl + "/explore/group/"+speciesGroup+"/download?lat="+
-                    $('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val();
+                    $('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val()+
+                    "&file=data.xls";
                 window.location.replace(downloadUrl);
                 $(this).dialog('close');
             },
