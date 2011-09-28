@@ -19,6 +19,7 @@ ul.css-tabs li {
 ul.css-tabs a { 
 	float:left;
 	font-size:15px;
+    font-weight: bold;
 	display:block;
 	padding:4px 30px;	
 	text-decoration:none;
