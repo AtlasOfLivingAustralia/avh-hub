@@ -419,40 +419,56 @@
                     </div>
                 </c:if>
                 <c:if test="${not empty record.sounds}">
-                <style type="text/css">
-                  .cp-play { left:-20px; top: -5px;}
-                  .cp-pause { left:-20px; top: -5px; }
-                  #soundsHeader { margin-top:15px; }
-                </style>
-                <div class="sidebar">
-                    <h2 id="soundsHeader">Sounds</h2>
-                    <!-- The jPlayer div must not be hidden. Keep it at the root of the body element to avoid any such problems. -->
-                    <div id="jquery_jplayer_1" class="cp-jplayer"></div>
-                    <div class="prototype-wrapper"> <!-- A wrapper to emulate use in a webpage and center align -->
-                        <!-- The container for the interface can go where you want to display it. Show and hide it as you need. -->
-                        <div id="cp_container_1" class="cp-container">
-                            <div class="cp-buffer-holder"> <!-- .cp-gt50 only needed when buffer is > than 50% -->
-                                <div class="cp-buffer-1"></div>
-                                <div class="cp-buffer-2"></div>
+                    <style type="text/css">
+                      .cp-play { left:-20px; top: -5px;}
+                      .cp-pause { left:-20px; top: -5px; }
+                      #soundsHeader { margin-top:15px; }
+                    </style>
+                    <div class="sidebar">
+                        <h2 id="soundsHeader">Sounds</h2>
+                        <!-- The jPlayer div must not be hidden. Keep it at the root of the body element to avoid any such problems. -->
+                        <div id="jquery_jplayer_1" class="cp-jplayer"></div>
+                        <div class="prototype-wrapper"> <!-- A wrapper to emulate use in a webpage and center align -->
+                            <!-- The container for the interface can go where you want to display it. Show and hide it as you need. -->
+                            <div id="cp_container_1" class="cp-container">
+                                <div class="cp-buffer-holder"> <!-- .cp-gt50 only needed when buffer is > than 50% -->
+                                    <div class="cp-buffer-1"></div>
+                                    <div class="cp-buffer-2"></div>
+                                </div>
+                                <div class="cp-progress-holder"> <!-- .cp-gt50 only needed when progress is > than 50% -->
+                                    <div class="cp-progress-1"></div>
+                                    <div class="cp-progress-2"></div>
+                                </div>
+                                <div class="cp-circle-control"></div>
+                                <ul class="cp-controls">
+                                    <li><a href="#" class="cp-play" tabindex="1">play</a></li>
+                                    <li><a href="#" class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
+                                    <!-- Needs the inline style here, or jQuery.show() uses display:inline instead of display:block -->
+                                </ul>
                             </div>
-                            <div class="cp-progress-holder"> <!-- .cp-gt50 only needed when progress is > than 50% -->
-                                <div class="cp-progress-1"></div>
-                                <div class="cp-progress-2"></div>
-                            </div>
-                            <div class="cp-circle-control"></div>
-                            <ul class="cp-controls">
-                                <li><a href="#" class="cp-play" tabindex="1">play</a></li>
-                                <li><a href="#" class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
-                                <!-- Needs the inline style here, or jQuery.show() uses display:inline instead of display:block -->
-                            </ul>
                         </div>
+                        <c:if test="${not empty record.raw.occurrence.rights}">
+                        <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                        </c:if>
+                        <p>Please press the play button to hear the sound file associated with this occurrence record.</p>
                     </div>
-                    <c:if test="${not empty record.raw.occurrence.rights}">
-                    <cite>Rights: ${record.raw.occurrence.rights}</cite>
-                    </c:if>
-                    <p>Please press the play button to hear the sound file associated with this occurrence record.</p>
-                </div>
-             </c:if>
+                 </c:if>
+                 <c:if test="${not empty record.raw.lastModifiedTime && not empty record.processed.lastModifiedTime}">
+                     <div class="sidebar" style="margin-top: 10px;font-size: 12px; color: #555;">
+                         <c:catch var="parseError">
+                             <fmt:parseDate var="rawLastModified" value="${record.raw.lastModifiedTime}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
+                             <fmt:formatDate var="rawLastModifiedString" value="${rawLastModified}" pattern="yyyy-MM-dd"/>
+                             <fmt:parseDate var="processedLastModified" value="${record.processed.lastModifiedTime}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
+                             <fmt:formatDate var="processedLastModifiedString" value="${processedLastModified}" pattern="yyyy-MM-dd"/>
+                         </c:catch>
+                         <c:if test="${not empty parseError}">
+                             <c:set var="rawLastModifiedString" value="${record.raw.lastModifiedTime}"/>
+                             <c:set var="processedLastModifiedString" value="${record.processed.lastModifiedTime}"/>
+                         </c:if>
+                         Date loaded: ${rawLastModifiedString}<br/>
+                         Date last processed: ${processedLastModifiedString}<br/>
+                     </div>
+                 </c:if>
             </div><!-- end div#SidebarBox -->
             <div id="content2">
                 <div id="occurrenceDataset">
