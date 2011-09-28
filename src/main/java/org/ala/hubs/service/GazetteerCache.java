@@ -44,7 +44,7 @@ public class GazetteerCache {
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     /** Log4J logger */
     private final static Logger logger = Logger.getLogger(GazetteerCache.class);
-    protected boolean disabled = true;
+    protected boolean disabled = false; // set to true to turn cache off (states, etc will be blank)
 
     /*
      * Initialise regionMap from RegionType enum
