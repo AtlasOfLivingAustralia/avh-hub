@@ -669,16 +669,22 @@
                         </alatag:occurrenceTableRow>
                         <!-- Collector/Observer -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="Collector/Observer">
+                            <c:set var="rawRecordedBy" value="${(fn:contains(record.raw.occurrence.recordedBy, '@')) 
+                                                                ? fn:substringBefore(record.raw.occurrence.recordedBy,'@') 
+                                                                : record.raw.occurrence.recordedBy}"/>
+                            <c:set var="proRecordedBy" value="${(fn:contains(record.processed.occurrence.recordedBy, '@')) 
+                                                                ? fn:substringBefore(record.processed.occurrence.recordedBy,'@') 
+                                                                : record.processed.occurrence.recordedBy}"/>
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.recordedBy && not empty record.raw.occurrence.recordedBy}">
-                                    ${record.processed.occurrence.recordedBy}
-                                    <br/><span class="originalValue">Supplied as "${record.raw.occurrence.recordedBy}"</span>
+                                    ${proRecordedBy}
+                                    <br/><span class="originalValue">Supplied as "${rawRecordedBy}"</span>
                                 </c:when>
                                 <c:when test="${not empty record.processed.occurrence.recordedBy}">
-                                    ${record.processed.occurrence.recordedBy}
+                                    ${proRecordedBy}
                                 </c:when>
                                 <c:when test="${not empty record.raw.occurrence.recordedBy}">
-                                    ${record.raw.occurrence.recordedBy}
+                                    ${rawRecordedBy}
                                 </c:when>
                             </c:choose>
                         </alatag:occurrenceTableRow>
