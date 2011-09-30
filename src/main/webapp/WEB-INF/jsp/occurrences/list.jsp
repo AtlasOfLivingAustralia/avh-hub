@@ -22,10 +22,13 @@
         <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
         <title>Occurrence search results | ${hubDisplayName}</title>
         <script type="text/javascript">
-            contextPath = "${pageContext.request.contextPath}";
-            searchString = '${searchResults.urlParameters}'; 
-            bieWebappUrl = "${bieWebappContext}";
-            biocacheServiceUrl = "${biocacheServiceUrl}";
+            // single global var for app conf settings
+            var BC_CONF = {
+                contextPath: "${pageContext.request.contextPath}",
+                searchString: '${searchResults.urlParameters}', // keep as single quotes as JSTL var can contain double quotes
+                bieWebappUrl: "${bieWebappContext}",
+                biocacheServiceUrl: "${biocacheServiceUrl}"
+            };
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
@@ -33,7 +36,6 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ui.position.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
-<!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.3&sensor=false"></script>
@@ -41,6 +43,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms.js"></script>
         <script type="text/javascript">
+            // Conf for map JS (Ajay)
             Config.setupUrls("${biocacheServiceUrl}", "${queryContext}");
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
@@ -63,7 +66,6 @@
            <input type="hidden" id="lsid" value="${param.lsid}"/>
         </div>
         <div style="clear: both;"></div>
-        <%-- <jsp:include page="../advancedSearchDiv.jsp"/> --%>
         <c:if test="${searchResults.totalRecords > 0}">
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>

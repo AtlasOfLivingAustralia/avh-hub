@@ -103,7 +103,7 @@ var Maps = (function() {
         }
 
         var baseurl = Config.OCC_SEARCH_URL;
-        var wmsinfo = baseurl + ((searchString) ? encodeURI(searchString) : "?"); // window.location.search;
+        var wmsinfo = baseurl + ((BC_CONF.searchString) ? encodeURI(BC_CONF.searchString) : "?"); // window.location.search;
         wmsinfo += "&zoom=" + map.getZoom();
         wmsinfo += "&lat=" + location.lat();
         wmsinfo += "&lon=" + location.lng();
@@ -174,7 +174,7 @@ var Maps = (function() {
         }
 
         //Add query string params to custom params
-        var searchParam = encodeURI(searchString); // NdR - fixes bug where terms have quotes around them
+        var searchParam = encodeURI(BC_CONF.searchString); // NdR - fixes bug where terms have quotes around them
         var pairs = searchParam.substring(1).split('&');
         for (var j = 0; j < pairs.length; j++) {
             customParams.push(pairs[j]);
@@ -206,7 +206,7 @@ var Maps = (function() {
          */
         loadMap: function() {
             var baseurl = "http://localhost:8080/biocache-service/occurrences/static";
-            var wmsimg = baseurl + encodeURI(searchString); // window.location.search;
+            var wmsimg = baseurl + encodeURI(BC_CONF.searchString); // window.location.search;
             document.getElementById('wmsimg').src= wmsimg;
         },
         
@@ -258,68 +258,21 @@ var Maps = (function() {
                 $('#legend').show();
             });
             
+            // listener - so that map.getBounds() is not undef
+            var zoomed = false; 
+            google.maps.event.addListener(map, 'bounds_changed', function() {
+                if (!zoomed) {
+                    fitMapToBounds();
+                }
+                zoomed = true;
+            }); 
+            
             // populate the env.layer dropdown
             var opts='<option value="-1">None</option>';
             $.each(envLayers, function(key, value) {
                 opts += '<option value="'+key+'">'+value[1]+'</option>';
             });
             $('#envLyrList').html(opts);
-            
-            // if spatial FT search (e.g. via explore your area) then zoom in
-            var zoomForRadius = {
-                1: 14,
-                5: 12,
-                10: 11
-            };
-            var lat = $.urlParam('lat');
-            var lon = $.urlParam('lon');
-            var rad = $.urlParam('radius');
-            
-            if (lat && lon && rad) {
-                var latLng = new google.maps.LatLng(lat, lon);
-                var zoom = zoomForRadius[rad];
-                map.setCenter(latLng);
-                if (zoom) {
-                    map.setZoom(zoom);
-                } else {
-                    map.setZoom(11);
-                }
-                
-                var marker = new google.maps.Marker({
-                    position: latLng,
-                    title: 'Centre of spatial search',
-                    map: map,
-                    draggable: false
-                });
-                
-                var infowindow1 = new google.maps.InfoWindow({
-                    content: "Centre of spatial search <br/> with radius of " + rad + " km"
-                });
-                
-                google.maps.event.addListener(marker, 'click', function() {
-                    infowindow1.open(map, marker);
-                });
-                
-                // Add a Circle overlay to the map.
-                var circle = new google.maps.Circle({
-                    map: map,
-                    radius: rad * 1000,
-                    strokeWeight: 1,
-                    strokeColor: 'white',
-                    strokeOpacity: 0.5,
-                    fillColor: '#222', // '#2C48A6'
-                    fillOpacity: 0.2,
-                    zIndex: -10
-                });
-                
-                // bind circle to marker
-                circle.bindTo('center', marker, 'position');
-                // add event listener so dots can be clicked on
-                google.maps.event.addListener(circle, 'click', function(event) {
-                    loadOccurrencePopup(event.latLng);
-                });
-            }
-
         },
 
         /**
@@ -690,4 +643,75 @@ $.urlParam = function(name){
         return 0; 
     }
     return results[1] || 0;
+}
+
+/**
+ * Triggered on map bounds change event.
+ * Zooms map to either spatial search or from WMS data bounds 
+ */
+function fitMapToBounds() {
+    
+    // all other searches (non-spatial)
+    // do webservice call to get max extent of WMS data
+    var jsonUrl = BC_CONF.biocacheServiceUrl + "/webportal/bounds.json" + BC_CONF.searchString + "&callback=?";
+
+    $.getJSON(jsonUrl, function(data) {
+        if (data.length == 4) {
+            var sw = new google.maps.LatLng(data[1],data[0]);
+            var ne = new google.maps.LatLng(data[3],data[2]);
+            var dataBounds = new google.maps.LatLngBounds(sw, ne);
+            var mapBounds = map.getBounds()
+
+            if (mapBounds && mapBounds.contains(sw) && mapBounds.contains(ne) && dataBounds) {
+                // data bounds is smaller than all of Aust
+                //console.log("smaller bounds",dataBounds,mapBounds)
+                map.fitBounds(dataBounds);
+            }
+        }
+    });
+    
+    // if spatial FT search (e.g. via explore your area) then 
+    // draw circle and add marker for centre of area
+    var lat = $.urlParam('lat');
+    var lon = $.urlParam('lon');
+    var rad = $.urlParam('radius');
+
+    if (lat && lon && rad) {
+        // spatial query (e.g. from EYA)
+        var latLng = new google.maps.LatLng(lat, lon);
+        
+        var marker = new google.maps.Marker({
+            position: latLng,
+            title: 'Centre of spatial search',
+            map: map,
+            draggable: false
+        });
+
+        var infowindow1 = new google.maps.InfoWindow({
+            content: "Centre of spatial search <br/> with radius of " + rad + " km"
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow1.open(map, marker);
+        });
+
+        // Add a Circle overlay to the map.
+        var circle = new google.maps.Circle({
+            map: map,
+            radius: rad * 1000,
+            strokeWeight: 1,
+            strokeColor: 'white',
+            strokeOpacity: 0.5,
+            fillColor: '#222', // '#2C48A6'
+            fillOpacity: 0.2,
+            zIndex: -10
+        });
+
+        // bind circle to marker
+        circle.bindTo('center', marker, 'position');
+        // add event listener so dots can be clicked on
+        google.maps.event.addListener(circle, 'click', function(event) {
+            loadOccurrencePopup(event.latLng);
+        });
+    } 
 }
