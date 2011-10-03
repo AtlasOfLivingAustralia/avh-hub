@@ -137,16 +137,6 @@ $(document).ready(function() {
         } else {
             attemptGeolocation();
         }
-        
-        function bookmarkedSearch(lat, lng, zoom1, group) {
-            radius = radiusForZoom[zoom1];  // set global var
-            zoom = parseInt(zoom1);
-            $('select#radius').val(radius); // update drop-down widget
-            if (group) speciesGroup = group;
-            updateMarkerPosition(new google.maps.LatLng(lat, lng));
-            // load map and groups
-            initialize();
-        }
     } else {
         //console.log("url not set, geolocating...");
         attemptGeolocation();
@@ -740,4 +730,14 @@ function populateSpeciesGroups(data) {
         var h = "<tr"+rc+" title='click to view group on map'><td class='indent"+indent+"'><a href='#' id='"+group+"' class='taxonBrowse' title='click to view group on map'>"+label+"</a></td><td>"+count+"</td></tr>";
         $("#taxa-level-0 tbody").append(h);
     }
+}
+
+function bookmarkedSearch(lat, lng, zoom1, group) {
+    radius = radiusForZoom[zoom1];  // set global var
+    zoom = parseInt(zoom1);
+    $('select#radius').val(radius); // update drop-down widget
+    if (group) speciesGroup = group;
+    updateMarkerPosition(new google.maps.LatLng(lat, lng));
+    // load map and groups
+    initialize();
 }
