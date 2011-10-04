@@ -43,6 +43,7 @@ import org.ala.hubs.service.BieService;
 import org.ala.hubs.service.BiocacheService;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 
@@ -101,6 +102,7 @@ public class OccurrenceController {
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
+    private final String FIELDGUIDE_ERROR = "error/fieldguideGeneration";
     private final String RECORD_MAP = "occurrences/map";
     private final String ANNOTATE_EDITOR = "occurrences/annotationEditor";
     protected String collectoryBaseUrl = "http://collections.ala.org.au";
@@ -247,12 +249,6 @@ public class OccurrenceController {
             HttpServletRequest request) throws Exception {
         logger.debug("/search* TOP");
 
-        if(requestParams.getFq()!=null){
-            System.out.println("*******requestParams.fq :" + StringUtils.join(requestParams.getFq(), ", "));
-        } else {
-            System.out.println("*******requestParams.fq : NOTHING");
-        }
-
 
         String[] filterQueries = requestParams.getFq();
         if(filterQueries!=null){
@@ -272,7 +268,7 @@ public class OccurrenceController {
             logger.warn("BindingResult errors: " + result.toString());
         }
 
-		doFullTextSearch(taxaQuery, model, requestParams, request);
+        doFullTextSearch(taxaQuery, model, requestParams, request);
 
         return RECORD_LIST;
     }
@@ -394,8 +390,9 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/fieldguide/download", method = RequestMethod.GET)
     public String downloadFieldGuide(
-            @RequestParam(value="maxSpecies", required=false, defaultValue = "250") Integer maxSpecies,
+            @RequestParam(value="maxSpecies", required=false, defaultValue = "150") Integer maxSpecies,
             SearchRequestParams requestParams,
+            Model model,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
@@ -414,7 +411,7 @@ public class OccurrenceController {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
         //set the properties of the query
-        fg.setTitle("This field guide was generated on "+ sdf.format(new Date()));
+        fg.setTitle("This document was generated on "+ sdf.format(new Date()));
 
         String serverName = request.getSession().getServletContext().getInitParameter("serverName");
         String contextPath = request.getSession().getServletContext().getInitParameter("contextPath");
@@ -423,7 +420,7 @@ public class OccurrenceController {
         }
         fg.setLink(serverName + contextPath + "/occurrences/search?" + request.getQueryString());
 
-        System.out.println(fg.getLink());
+        logger.debug(fg.getLink());
 
         //send the request to the fieldguide webservice
         HttpClient httpClient = new HttpClient();
@@ -434,8 +431,15 @@ public class OccurrenceController {
         post.setRequestBody(jsonRequest);
         httpClient.executeMethod(post);
 
-        String fileID = post.getResponseHeader("Fileid").getValue();
-        response.sendRedirect("http://fieldguide.ala.org.au/guide/"+fileID);
+        Header fileIdHeader = post.getResponseHeader("Fileid");
+        if(fileIdHeader!=null){
+            //happy days, redirect to the fieldguide
+            String fileID = fileIdHeader.getValue();
+            response.sendRedirect("http://fieldguide.ala.org.au/guide/"+fileID);
+        } else {
+            //send an error response
+            return FIELDGUIDE_ERROR;
+        }
         return null;
     }
 
