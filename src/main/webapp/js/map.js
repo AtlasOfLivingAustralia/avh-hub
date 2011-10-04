@@ -273,6 +273,52 @@ var Maps = (function() {
                 opts += '<option value="'+key+'">'+value[1]+'</option>';
             });
             $('#envLyrList').html(opts);
+            
+            // if spatial FT search (e.g. via explore your area) then 
+            // draw circle and add marker for centre of area
+            var lat = $.urlParam('lat');
+            var lon = $.urlParam('lon');
+            var rad = $.urlParam('radius');
+
+            if (lat && lon && rad) {
+                // spatial query (e.g. from EYA)
+                var latLng = new google.maps.LatLng(lat, lon);
+
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    title: 'Centre of spatial search',
+                    map: map,
+                    draggable: false
+                });
+
+                var infowindow1 = new google.maps.InfoWindow({
+                    content: "Centre of spatial search <br/> with radius of " + rad + " km"
+                });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow1.open(map, marker);
+                });
+
+                // Add a Circle overlay to the map.
+                var circle = new google.maps.Circle({
+                    map: map,
+                    radius: rad * 1000,
+                    strokeWeight: 1,
+                    strokeColor: 'white',
+                    strokeOpacity: 0.5,
+                    fillColor: '#222', // '#2C48A6'
+                    fillOpacity: 0.2,
+                    zIndex: -100
+                });
+
+                // bind circle to marker
+                circle.bindTo('center', marker, 'position');
+                // add event listener so dots can be clicked on
+                google.maps.event.addListener(circle, 'click', function(event) {
+                    loadOccurrencePopup(event.latLng);
+                });
+            } 
+            
         },
 
         /**
@@ -669,49 +715,4 @@ function fitMapToBounds() {
             }
         }
     });
-    
-    // if spatial FT search (e.g. via explore your area) then 
-    // draw circle and add marker for centre of area
-    var lat = $.urlParam('lat');
-    var lon = $.urlParam('lon');
-    var rad = $.urlParam('radius');
-
-    if (lat && lon && rad) {
-        // spatial query (e.g. from EYA)
-        var latLng = new google.maps.LatLng(lat, lon);
-        
-        var marker = new google.maps.Marker({
-            position: latLng,
-            title: 'Centre of spatial search',
-            map: map,
-            draggable: false
-        });
-
-        var infowindow1 = new google.maps.InfoWindow({
-            content: "Centre of spatial search <br/> with radius of " + rad + " km"
-        });
-
-        google.maps.event.addListener(marker, 'click', function() {
-            infowindow1.open(map, marker);
-        });
-
-        // Add a Circle overlay to the map.
-        var circle = new google.maps.Circle({
-            map: map,
-            radius: rad * 1000,
-            strokeWeight: 1,
-            strokeColor: 'white',
-            strokeOpacity: 0.5,
-            fillColor: '#222', // '#2C48A6'
-            fillOpacity: 0.2,
-            zIndex: -10
-        });
-
-        // bind circle to marker
-        circle.bindTo('center', marker, 'position');
-        // add event listener so dots can be clicked on
-        google.maps.event.addListener(circle, 'click', function(event) {
-            loadOccurrencePopup(event.latLng);
-        });
-    } 
 }
