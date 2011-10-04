@@ -311,6 +311,7 @@
                         </button>
                     </c:if>
                 </div>
+                <c:if test="${!isReadOnly}">
                 <div class="sidebar">
                     <button class="rounded" id="assertionButton">
                         <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
@@ -351,6 +352,7 @@
                         </c:choose>
                     </div>
                 </div>
+                </c:if>
                 <div class="sidebar">
                     <button class="rounded" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
                         <span id="assertionMaker" href="#processedVsRawView" title="">Original vs Processed</span>
