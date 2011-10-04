@@ -12,19 +12,11 @@
         <pattern>/proxy/*</pattern>
         <pattern>/index</pattern>
     </excludes>
-
-    <decorator name="bare" page="bare-skin.jsp">
-        <pattern>/occurrences/fragment/*</pattern>
-        <pattern>/occurrences/annotate/*</pattern>
-    </decorator>
-
-    <decorator name="ala" page="ala-skin.jsp" />
+    <decorator name="ala"   page="ala-skin.jsp" />
     <decorator name="ozcam" page="ozcam-skin.jsp" />
-    <decorator name="avh" page="avh-skin.jsp" />
-    
-    <decorator name="main" page="ala-skin.jsp">
-        <pattern>/*</pattern>
-    </decorator>
+    <decorator name="avh"   page="avh-skin.jsp" />
 
-
+    <decorator name="ala-bare"  page="ala-bare.jsp"/>
+    <decorator name="ozcam-bare"  page="ozcam-bare.jsp"/>
+    <decorator name="avh-bare"  page="avh-bare.jsp"/>
 </decorators>

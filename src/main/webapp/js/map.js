@@ -341,8 +341,8 @@ var Maps = (function() {
          */
         loadOccurrenceInfo: function(curr) {
 
-            var pbutton = '';
-            var nbutton = '';
+            var pbutton = '<span class="pagebutton">&nbsp;</span>';
+            var nbutton = '<span class="pagebutton" style="float: right">&nbsp;</span>';
             if (curr > 0) {
                 pbutton = '<span class="pagebutton"><a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr-1)+')">&lt; Previous</a></span>';
             }
@@ -361,12 +361,26 @@ var Maps = (function() {
 
                 displayHtml += "Scientific Name: " + formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID) + '<br />';
                 displayHtml += "Family: " + data.record.raw.classification.family + '<br />';
-                displayHtml += "Institution: " + data.record.processed.attribution.institutionName + '<br />';
+                if(data.record.processed.attribution.institutionName != null){
+                    displayHtml += "Institution: " + data.record.processed.attribution.institutionName + '<br />';
+                } else  if(data.record.processed.attribution.dataResourceName != null){
+                    displayHtml += data.record.processed.attribution.dataResourceName + '<br />';
+                }
+
+                //http://biocache.ala.org.au/biocache-media/dr360/19673/0a0e05bb-f68b-443c-9670-355622cdaed8/5286199529_c6ae5672b4.jpg
+                if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
+                    //displayHtml += "<img style='width:150px;' src ='"+data.record.processed.occurrence.images[0].replace('\/data\/','http:\/\/biocache.ala.org.au\/')+"' />";
+
+                    displayHtml += "<img style='margin-top:8px; width:150px;' src ='"+data.record.processed.occurrence.images[0]+"' />";
+                    displayHtml += "<br/>"
+                }
 
                 displayHtml += "<br />";
-                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a> | ';
-                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
-                displayHtml += "<br /><br />";
+                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a>';
+
+                //displayHtml += ' | ';
+                //displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
+                displayHtml += "<br />";
                 displayHtml += pbutton + "&nbsp;" + nbutton;
                 
                 displayHtml += '</div>';
