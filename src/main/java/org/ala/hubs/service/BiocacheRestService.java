@@ -260,42 +260,6 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     /**
-     * Get the biocacheUriPrefix
-     * 
-     * @return biocacheUriPrefix
-     */
-    public String getBiocacheUriPrefix() {
-        return biocacheUriPrefix;
-    }
-
-    /**
-     * Set the biocacheUriPrefix
-     *
-     * @param biocacheUriPrefix to set
-     */
-    public void setBiocacheUriPrefix(String biocacheUriPrefix) {
-        this.biocacheUriPrefix = biocacheUriPrefix;
-    }
-
-    public String getQueryContext() {
-        return queryContext;
-    }
-
-    public void setQueryContext(String queryContext) {
-        this.queryContext = queryContext;
-    }
-    
-    
-    
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    /**
      * @see org.ala.hubs.service.BiocacheService#findBySpatialFulltextQuery(org.ala.biocache.dto.SpatialSearchRequestParams) 
      * 
      * @param requestParams
@@ -351,7 +315,51 @@ public class BiocacheRestService implements BiocacheService {
         
         return facets;
     }
-    
-    
-    
+
+    @Override
+    public boolean isReadOnly() {
+        try {
+            final String jsonUri = biocacheUriPrefix + "/admin/isReadOnly";
+            logger.info("Requesting facets via: " + jsonUri);
+            String isReadOnlyAsString = restTemplate.getForObject(jsonUri, String.class);
+            return Boolean.parseBoolean(isReadOnlyAsString);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+        return false;
+    }
+
+    /**
+     * Get the biocacheUriPrefix
+     *
+     * @return biocacheUriPrefix
+     */
+    public String getBiocacheUriPrefix() {
+        return biocacheUriPrefix;
+    }
+
+    /**
+     * Set the biocacheUriPrefix
+     *
+     * @param biocacheUriPrefix to set
+     */
+    public void setBiocacheUriPrefix(String biocacheUriPrefix) {
+        this.biocacheUriPrefix = biocacheUriPrefix;
+    }
+
+    public String getQueryContext() {
+        return queryContext;
+    }
+
+    public void setQueryContext(String queryContext) {
+        this.queryContext = queryContext;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
 }

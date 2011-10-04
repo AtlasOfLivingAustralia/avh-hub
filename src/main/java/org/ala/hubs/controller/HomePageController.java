@@ -23,6 +23,8 @@ import au.org.ala.biocache.Term;
 import au.org.ala.biocache.TypeStatus;
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+
 import org.ala.hubs.dto.AdvancedSearchParams;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
@@ -54,8 +56,6 @@ public class HomePageController {
     /** View name for home page */
     protected final String HOME_PAGE = "homePage";
     protected String homePage = ""; // injected via hubs.properties & can be different to HOME_PAGE
-    /* Get the skin name form the hubs.properties file (via context:property-placeholder conf) */
-    protected @Value("${sitemesh.skin}") String skin;
 
     /**
      * Site root - dummy Ozcam front page
@@ -63,17 +63,13 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String ozcamPage(Model model) {
+    public String ozcamPage(HttpServletRequest request, Model model) {
         //return "redirect:/index";
-        String page = null;
-        
-        if ("ozcam".equalsIgnoreCase(skin)) {
-            page = homePage;
+        if ("ozcam".equalsIgnoreCase((String) request.getAttribute("skin"))) {
+            return homePage;
         } else {
-            page = homePage(model);
+            return homePage(model);
         }
-        
-        return page;
     }
 
     /**

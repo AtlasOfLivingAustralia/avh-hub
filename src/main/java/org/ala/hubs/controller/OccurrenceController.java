@@ -547,6 +547,7 @@ public class OccurrenceController {
         logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
+        model.addAttribute("isReadOnly", biocacheService.isReadOnly());
 
         String collectionUid = null;
         String rowKey = (record != null && record.getRaw() != null)? record.getRaw().getRowKey() : uuid;
