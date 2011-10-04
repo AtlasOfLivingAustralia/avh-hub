@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>OzCam Hub - Occurrence Map</title>
+        <title>Occurrence Map</title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>

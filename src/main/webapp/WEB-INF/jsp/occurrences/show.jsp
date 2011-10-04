@@ -37,8 +37,9 @@
 </c:set>
 <html>
     <head>
+        <!-- Skin selected: ${skin} -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
+        <meta name="decorator" content="${skin}"/>
         <title>Record ${recordId} | ${hubDisplayName} </title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
@@ -993,7 +994,8 @@
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Associated Taxa -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="assocatedTaxa" fieldName="Associated Species">
+                        <c:if test="${not empty record.raw.occurrence.associatedTaxa}">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedTaxa" fieldName="Associated Species">
                         <c:set var="colon" value=":"/>
                             <c:choose>
                                 <c:when test="${fn:contains(record.raw.occurrence.associatedTaxa,colon)}">
@@ -1005,6 +1007,7 @@
                                 </c:otherwise>
                             </c:choose>                      	                            
                         </alatag:occurrenceTableRow>
+                        </c:if>
                     </table>
                 </div>
                 <div id="geospatialTaxonomy">

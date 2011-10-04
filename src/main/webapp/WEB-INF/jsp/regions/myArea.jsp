@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
+        <meta name="decorator" content="${skin}"/>
         <title>Explore Your Area | Atlas of Living Australia</title>
         <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/ala/biocache.css" />
         <script type="text/javascript" src="https://www.google.com/jsapi?key=${googleKey}"></script>
