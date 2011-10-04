@@ -109,6 +109,24 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- Specify the skin to use -->
+    <filter>
+        <filter-name>skinFilter</filter-name>
+        <filter-class>org.ala.hubs.skins.SkinFilter</filter-class>
+        <init-param>
+            <param-name>barePatterns</param-name>
+            <param-value>/fragment/,/annotation/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>skin</param-name>
+            <param-value>ala</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>skinFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!-- SiteMesh -->
     <filter>
         <filter-name>sitemesh</filter-name>
