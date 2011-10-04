@@ -222,7 +222,8 @@ var Maps = (function() {
                 center: myLatlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 scaleControl: true, 
-                streetViewControl: false
+                streetViewControl: false,
+                draggableCursor: 'pointer'
             }
             map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
             map.enableKeyDragZoom();
