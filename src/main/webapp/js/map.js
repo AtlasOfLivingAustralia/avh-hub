@@ -127,7 +127,7 @@ var Maps = (function() {
 
             Maps.loadOccurrenceInfo(0);
 
-            infomarker.setPosition(clickLocation);            
+            infomarker.setPosition(clickLocation);
         } else {
             //occids = new Array(); 
             occids == null; // did you mean occids = null ?
@@ -234,7 +234,7 @@ var Maps = (function() {
                 map: map
             });
             infowindow = new google.maps.InfoWindow({
-                size: new google.maps.Size(300, 200)
+                maxWidth: 600
             });
 
             map.setOptions({
@@ -341,48 +341,53 @@ var Maps = (function() {
          */
         loadOccurrenceInfo: function(curr) {
 
-            var pbutton = '<span class="pagebutton">&nbsp;</span>';
-            var nbutton = '<span class="pagebutton" style="float: right">&nbsp;</span>';
+            var pbutton = '';
+            var nbutton = '';
             if (curr > 0) {
-                pbutton = '<span class="pagebutton"><a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr-1)+')">&lt; Previous</a></span>';
+                pbutton = '<a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr-1)+')">&lt; Previous</a>';
             }
             if (curr < occids.length-1) {
-                nbutton = '<span class="pagebutton" style="float: right"><a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr+1)+')">Next &gt;</a></span>';
+                nbutton = '<a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr+1)+')">Next &gt;</a>';
             }
 
-            infowindow.setContent('<div style="height:200px">Loading occurrence info. Please wait...</div>');
+            //infowindow.setContent('<div style="height:200px">Loading occurrence info. Please wait...</div>');
 
             $.get(Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]), function(data){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
-                displayHtml = '';
-                displayHtml = '<div id="occinfo">';
+
+                var minHeight = "150px";
+                if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
+                    minHeight = "250px";
+                }
+
+                displayHtml = '<div id="occinfo" style="min-height:' + minHeight + ';">';
                 displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
-                displayHtml += "<br /><br />";
+                displayHtml += '<div id="textfields">';
 
                 displayHtml += "Scientific Name: " + formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID) + '<br />';
                 displayHtml += "Family: " + data.record.raw.classification.family + '<br />';
                 if(data.record.processed.attribution.institutionName != null){
-                    displayHtml += "Institution: " + data.record.processed.attribution.institutionName + '<br />';
+                    displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
                 } else  if(data.record.processed.attribution.dataResourceName != null){
-                    displayHtml += data.record.processed.attribution.dataResourceName + '<br />';
+                    displayHtml += data.record.processed.attribution.dataResourceName;
                 }
+                displayHtml += '</div>';
 
                 //http://biocache.ala.org.au/biocache-media/dr360/19673/0a0e05bb-f68b-443c-9670-355622cdaed8/5286199529_c6ae5672b4.jpg
                 if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
-                    //displayHtml += "<img style='width:150px;' src ='"+data.record.processed.occurrence.images[0].replace('\/data\/','http:\/\/biocache.ala.org.au\/')+"' />";
-
-                    displayHtml += "<img style='margin-top:8px; width:150px;' src ='"+data.record.processed.occurrence.images[0]+"' />";
-                    displayHtml += "<br/>"
+                    displayHtml += "<img style='margin-top:8px; width:150px;' src ='"+data.record.processed.occurrence.images[0]+"'/>";
                 }
 
-                displayHtml += "<br />";
-                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a>';
+                displayHtml += '<div id="occactions"">';
+                displayHtml += '<a class="iframe fancy_iframe moreinfolink" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a>';
 
-                //displayHtml += ' | ';
-                //displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
-                displayHtml += "<br />";
-                displayHtml += pbutton + "&nbsp;" + nbutton;
-                
+                displayHtml += '<span class="pagebutton" style="padding-left:30px;">';
+                if(pbutton.length>0) displayHtml +=  pbutton
+                if(pbutton.length>0 && nbutton.length>0) displayHtml += "&nbsp;|&nbsp;"
+                if(nbutton.length>0) displayHtml +=  nbutton
+                displayHtml += '</span>';
+
+                displayHtml += '</div>';
                 displayHtml += '</div>';
 
                 infowindow.setContent(displayHtml);
