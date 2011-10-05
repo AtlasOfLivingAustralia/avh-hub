@@ -364,8 +364,12 @@ var Maps = (function() {
                 displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
                 displayHtml += '<div id="textfields">';
 
-                displayHtml += "Scientific Name: " + formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID) + '<br />';
-                displayHtml += "Family: " + data.record.raw.classification.family + '<br />';
+                displayHtml += "Scientific name: " + formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID) + '<br />';
+                if(data.record.raw.classification.vernacularName!=null){
+                    displayHtml += "Common name: " + data.record.raw.classification.vernacularName + '<br />';
+                } else if(data.record.processed.classification.vernacularName!=null){
+                    displayHtml += "Common name: " + data.record.processed.classification.vernacularName + '<br />';
+                }
                 if(data.record.processed.attribution.institutionName != null){
                     displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
                 } else  if(data.record.processed.attribution.dataResourceName != null){
