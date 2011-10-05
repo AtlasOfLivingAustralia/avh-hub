@@ -361,7 +361,10 @@ var Maps = (function() {
                 }
 
                 displayHtml = '<div id="occinfo" style="min-height:' + minHeight + ';">';
-                displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
+                if(occids.length>1){
+                    displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
+                }
+
                 displayHtml += '<div id="textfields">';
 
                 if(data.record.raw.classification.vernacularName!=null){
@@ -381,11 +384,17 @@ var Maps = (function() {
                 } else  if(data.record.processed.attribution.dataResourceName != null){
                     displayHtml += data.record.processed.attribution.dataResourceName;
                 }
+
+                if(data.record.processed.event.eventDate != null){
+                    displayHtml += "<br/>";
+                    displayHtml += data.record.processed.event.eventDate;
+                }
+
                 displayHtml += '</div>';
 
                 //http://biocache.ala.org.au/biocache-media/dr360/19673/0a0e05bb-f68b-443c-9670-355622cdaed8/5286199529_c6ae5672b4.jpg
                 if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
-                    displayHtml += "<img style='margin-top:8px; max-width:150px; max-height:180px;' src ='"+data.record.processed.occurrence.images[0]+"'/>";
+                    displayHtml += "<img style='margin-top:8px; max-width:150px; max-height:120px;' src ='"+data.record.processed.occurrence.images[0]+"'/>";
                 }
 
                 displayHtml += '<div id="occactions"">';
