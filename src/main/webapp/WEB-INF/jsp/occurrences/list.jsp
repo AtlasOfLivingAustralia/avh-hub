@@ -134,10 +134,22 @@
                         <div id="results">
                             <c:forEach var="occurrence" items="${searchResults.occurrences}">
                                 <p class="rowA">
-                                    <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${occurrence.raw_scientificName}"/></span>
+                                    <c:set var="rawScientificName">
+                                        <c:choose>
+                                            <c:when test="${not empty occurrence.raw_scientificName}">${occurrence.raw_scientificName}</c:when>
+                                            <c:when test="${not empty occurrence.species}">${occurrence.species}</c:when>
+                                            <c:when test="${not empty occurrence.genus}">${occurrence.genus}</c:when>
+                                            <c:when test="${not empty occurrence.family}">${occurrence.family}</c:when>
+                                            <c:when test="${not empty occurrence.order}">${occurrence.order}</c:when>
+                                            <c:when test="${not empty occurrence.phylum}">${occurrence.phylum}</c:when>
+                                            <c:when test="${not empty occurrence.kingdom}">${occurrence.kingdom}</c:when>
+                                            <c:otherwise>No name supplied</c:otherwise>
+                                        </c:choose>
+                                    </c:set>
+                                    <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${rawScientificName}"/></span>
                                     <c:if test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
 
-                                    <span style="margin-left: 15px;">
+                                    <span style="margin-left: 8px;">
                                     <c:if test="${not empty occurrence.eventDate}">
                                         <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
                                     </c:if>
@@ -157,10 +169,10 @@
                                         <span style="text-transform: capitalize;"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
                                     </c:if>
                                     <c:if test="${not empty occurrence.basisOfRecord}">
-                                        <span style="text-transform: capitalize;"><strong class="resultsLabel">Basis of record:</strong>&nbsp;${occurrence.basisOfRecord}</span>
+                                        <span style="text-transform: capitalize;"><strong class="resultsLabel">Basis&nbsp;of&nbsp;record:</strong>&nbsp;${occurrence.basisOfRecord}</span>
                                     </c:if>
                                     <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
-                                        <strong class="resultsLabel">Catalog number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
+                                        <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
                                     </c:if>
                                     <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
                                 </p>

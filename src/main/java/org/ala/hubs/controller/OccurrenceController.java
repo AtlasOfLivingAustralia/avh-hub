@@ -392,7 +392,6 @@ public class OccurrenceController {
     public String downloadFieldGuide(
             @RequestParam(value="maxSpecies", required=false, defaultValue = "150") Integer maxSpecies,
             SearchRequestParams requestParams,
-            Model model,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
@@ -400,6 +399,13 @@ public class OccurrenceController {
         requestParams.setFlimit(maxSpecies);
         SearchResultDTO dto = biocacheService.findByFulltextQuery(requestParams);
         Collection<FacetResultDTO> facets = dto.getFacetResults();
+
+        if(facets == null || facets.isEmpty()) {
+            logger.error("Problem generating the field guide. Facet query result was empty.");
+            return FIELDGUIDE_ERROR;
+        }
+
+        //retrieve the first facet
         FacetResultDTO facet = facets.iterator().next();
         List<FieldResultDTO> results = facet.getFieldResult();
         FieldGuideDTO fg = new FieldGuideDTO();

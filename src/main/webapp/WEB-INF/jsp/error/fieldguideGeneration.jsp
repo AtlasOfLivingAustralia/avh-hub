@@ -12,8 +12,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
-        <title>Field Guide GenerationError</title>
+        <meta name="decorator" content="${skin}"/>
+        <title>Field Guide Generation Error</title>
     </head>
     <body>
         <div id="column-one" class="full-width">
