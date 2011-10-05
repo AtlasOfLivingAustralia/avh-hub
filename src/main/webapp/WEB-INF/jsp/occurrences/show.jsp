@@ -1077,7 +1077,7 @@
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Habitat -->
-                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Habitat">
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Terrestrial/Marine">
                             ${record.processed.location.habitat}
                         </alatag:occurrenceTableRow>
                         <!-- Latitude -->

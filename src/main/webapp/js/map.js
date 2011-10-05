@@ -364,12 +364,18 @@ var Maps = (function() {
                 displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
                 displayHtml += '<div id="textfields">';
 
-                displayHtml += "Scientific name: " + formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID) + '<br />';
                 if(data.record.raw.classification.vernacularName!=null){
-                    displayHtml += "Common name: " + data.record.raw.classification.vernacularName + '<br />';
+                    displayHtml += data.record.raw.classification.vernacularName + '<br />';
                 } else if(data.record.processed.classification.vernacularName!=null){
-                    displayHtml += "Common name: " + data.record.processed.classification.vernacularName + '<br />';
+                    displayHtml += data.record.processed.classification.vernacularName + '<br />';
                 }
+
+                if(data.record.raw.classification.scientificName != null){
+                    displayHtml += formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID)  + '<br />';
+                } else {
+                    displayHtml += formatSciName(data.record.processed.classification.scientificName, data.record.processed.classification.taxonRankID)  + '<br />';
+                }
+
                 if(data.record.processed.attribution.institutionName != null){
                     displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
                 } else  if(data.record.processed.attribution.dataResourceName != null){
@@ -379,7 +385,7 @@ var Maps = (function() {
 
                 //http://biocache.ala.org.au/biocache-media/dr360/19673/0a0e05bb-f68b-443c-9670-355622cdaed8/5286199529_c6ae5672b4.jpg
                 if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
-                    displayHtml += "<img style='margin-top:8px; width:150px;' src ='"+data.record.processed.occurrence.images[0]+"'/>";
+                    displayHtml += "<img style='margin-top:8px; max-width:150px; max-height:180px;' src ='"+data.record.processed.occurrence.images[0]+"'/>";
                 }
 
                 displayHtml += '<div id="occactions"">';
