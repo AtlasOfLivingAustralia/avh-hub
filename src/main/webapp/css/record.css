@@ -180,6 +180,11 @@ a.annotationIcon {
 .sidebar {
     width: 290px;
 }
+
+.sidebar h2 {
+    margin-top: 20px;
+}
+
 .sidebar > button {
     margin: 10px 0;
 }

@@ -9,7 +9,7 @@ include file="/common/taglibs.jsp" %>
 <c:set var="avhUrl" value="http://chah.gov.au/avh/"/>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
-    <head><title><decorator:title default="AVH" /></title>
+    <head><title><decorator:title default="AVH"/></title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/avh/favicon.ico" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/avh/reset.css" />
