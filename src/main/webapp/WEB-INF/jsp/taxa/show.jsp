@@ -6,12 +6,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="hostName" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}"/>
+<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
-        <title>OzCam Hub - Taxa Page: </title>
+        <title>${taxon.scientificName} | ${hubDisplayName}</title>
         <script type="text/javascript">
             /**
              * JQuery on document ready callback
@@ -40,6 +42,11 @@
                     </div>
                 </div><!-- end div#SidebarBox --> 
                 <div id="content2">
+
+                    <img src="http://biocache.ala.org.au/ws/density/map?q=lft:[${taxon.left} TO ${taxon.right}] AND ${queryContext}"/>
+                    <img src="http://biocache.ala.org.au/ws/density/legend?q=lft:[${taxon.left} TO ${taxon.right}] AND ${queryContext}"/>
+
+
                     <c:if test="${not empty taxon.description}">
                         <h3>Description</h3>
                         <div class="taxaDescription">${taxon.description}</div>

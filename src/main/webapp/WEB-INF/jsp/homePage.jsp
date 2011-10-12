@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
-        <title><ala:propertyLoader bundle="hubs" property="site.displayName"/> - Search for records</title>
+        <title>Search for records | <ala:propertyLoader bundle="hubs" property="site.displayName"/></title>
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script> --%>
@@ -54,7 +54,7 @@
                                 <tr>
 <!--                                    <td>Species Search</td>-->
                                     <td>
-                                        <input type="text" name="taxa" id="taxa" class="name_autocomplete" placeholder="" size="100" value=""/>
+                                        <input type="text" name="taxa" id="taxa" class="name_autocomplete freetext" placeholder="" size="100" value=""/>
                                         &nbsp;
                                         <input type="submit" value="Search" />
                                     </td>

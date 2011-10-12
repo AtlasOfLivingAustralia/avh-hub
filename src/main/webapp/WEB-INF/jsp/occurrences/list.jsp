@@ -211,7 +211,7 @@
                             <!-- size slider end -->
 
                             <!-- Link to spatial portal -->
-                            <a id="spatialPortalLink" href="${spatialPortalUrl}?${searchResults.urlParameters}">View in spatial portal</a>
+                            <a id="spatialPortalLink" href="${spatialPortalUrl}${searchResults.urlParameters}">View in spatial portal</a>
                         </div>
                         <div id="mapcanvas"></div>
                         <div id="maploading">Loading...</div>

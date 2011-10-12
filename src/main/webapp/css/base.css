@@ -182,3 +182,7 @@ span#taxonName {
 .bold {
     font-weight: bold;
 }
+
+.freetext {
+    font-size: 16px;
+}

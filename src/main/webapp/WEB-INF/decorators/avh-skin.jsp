@@ -65,7 +65,19 @@ include file="/common/taglibs.jsp" %>
             <div><a href="${avhUrl}partners.html">Partners</a></div>
             <div><a href="${avhUrl}help.html">Help</a></div>
             <div><a href="${avhUrl}links.html">Links</a></div>
-            <div class="float_right"><a href="https://auth.ala.org.au/cas/login?service=http://avh-demo.ala.org.au">Log in/Register</a></div>
+            <div class="float_right">
+                <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                <c:choose>
+                    <c:when test="${not empty userDisplayName}">
+                        <a href="https://auth.ala.org.au/cas/logout?url=${returnUrlPath}">
+                            Logged in as: ${userDisplayName} - log out
+                        </a>
+                    </c:when>
+                   <c:otherwise>
+                       <a href="https://auth.ala.org.au/cas/login?service=${returnUrlPath}">Login/Register</a>
+                   </c:otherwise>
+                </c:choose>
+             </div>
         </div>
     </div>
 	<div id="main_content" class="">
