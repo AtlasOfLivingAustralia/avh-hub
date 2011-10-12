@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader bundle="hubs" property="spatialPortalUrl"/></c:set>
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>    
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
@@ -208,6 +209,9 @@
                                 <div id="sizeslider"></div>
                             </div>
                             <!-- size slider end -->
+
+                            <!-- Link to spatial portal -->
+                            <a id="spatialPortalLink" href="${spatialPortalUrl}?${searchResults.urlParameters}">View in spatial portal</a>
                         </div>
                         <div id="mapcanvas"></div>
                         <div id="maploading">Loading...</div>

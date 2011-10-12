@@ -36,7 +36,7 @@
     </head>
     <body>
         <div id="headingBar">
-            <h1 style="width:100%;">Search for records in <ala:propertyLoader bundle="hubs" property="site.displayName"/></h1>
+            <h1 style="width:100%;" id="searchHeader">Search for records in <ala:propertyLoader bundle="hubs" property="site.displayName"/></h1>
         </div>
         <div id="content3">
             <!-- the tabs -->

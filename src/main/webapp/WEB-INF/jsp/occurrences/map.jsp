@@ -40,7 +40,9 @@
         </c:if>
         <div id="content">
             <c:if test="${searchResults.totalRecords == 0}">
-                <p>No records found for <b>${searchRequestParams.displayString}</b></p>
+                <p>No records found for
+                    <b>${not empty searchRequestParams.displayString ? searchRequestParams.displayString : ' this search.'}</b>
+                </p>
             </c:if>
             <c:if test="${searchResults.totalRecords > 0}">
                 <div>
@@ -52,7 +54,7 @@
                     <div id="resultsReturned"><strong>${searchResults.totalRecords}</strong> results
                         returned for <strong>${searchResults.query}</strong>
                     </div>
-                    <div>
+                    <div id="colourBy">
                         <a id="listLink"></a>
                         Colour by: 
                         <select name="colourFacets" id="colourFacets">
@@ -65,6 +67,7 @@
                         </select>
                     </div>
                 </div>
+
 
                 <div id="mapwrapper">
                     <div id="mapcanvas" style="width: 730px; height: 540px">

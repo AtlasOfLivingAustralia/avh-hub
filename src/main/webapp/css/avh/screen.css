@@ -980,15 +980,15 @@ tr.even {
  */
 /* For the standard odd/even */
 .sorting_asc {
-	background: url('../images/sort_asc.jpg') no-repeat top right;
+	background: url('images/sort_asc.jpg') no-repeat top right;
 }
 
 .sorting_desc {
-	background: url('../images/sort_desc.jpg') no-repeat top right;
+	background: url('images/sort_desc.jpg') no-repeat top right;
 }
 
 .sorting {
-	background: url('../images/sort_both.jpg') no-repeat top right;
+	background: url('images/sort_both.jpg') no-repeat top right;
 }
 
 tr.odd td.sorting_1 {
@@ -1101,7 +1101,7 @@ th button.indexedlink {
 }
 
 #index_bground {
-	background: url(../images/avh_index_img.jpg) no-repeat top right;
+	background: url(images/avh_index_img.jpg) no-repeat top right;
 	height: 600px;
 	width: 1000px;
 }
@@ -1192,3 +1192,5 @@ h1, h2, h3, h4, h5 {
 #mapLayerControls label {
     margin: 0;
 }
+
+#searchHeader { padding-left: 20px;}
