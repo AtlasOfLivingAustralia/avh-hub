@@ -54,8 +54,9 @@ public class HomePageController {
     protected CollectoryUidCache collectoryUidCache;
 
     /** View name for home page */
-    protected final String HOME_PAGE = "homePage";
-    protected String homePage = ""; // injected via hubs.properties & can be different to HOME_PAGE
+    protected String homePage = "homePage"; // injected via hubs.properties & can be different to HOME_PAGE
+    protected String searchPage = "homePage"; // injected via hubs.properties & can be different to HOME_PAGE
+
 
     /**
      * Site root - dummy Ozcam front page
@@ -63,13 +64,8 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String ozcamPage(HttpServletRequest request, Model model) {
-        //return "redirect:/index";
-        if ("ozcam".equalsIgnoreCase((String) request.getAttribute("skin"))) {
-            return homePage;
-        } else {
-            return homePage(model);
-        }
+    public String homePage() {
+        return homePage;
     }
 
     /**
@@ -88,7 +84,7 @@ public class HomePageController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"/home", "/advancedSearch"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/home", "/advancedSearch", "/search", "/query"}, method = RequestMethod.GET)
     public String homePage(Model model) {
         logger.debug("Home Page request.");
         List<String>inguids = collectoryUidCache.getInstitutions();
@@ -101,7 +97,7 @@ public class HomePageController {
         model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
         model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
         model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
-        return HOME_PAGE;
+        return searchPage;
     }
     
     /**

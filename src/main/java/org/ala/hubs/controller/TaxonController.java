@@ -42,6 +42,7 @@ public class TaxonController {
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     private final String BIE_URL = "http://bie.ala.org.au";
+    private final String BHL_ROOT_URL = "http://bhl.ala.org.au/page/";
     private final String BIE_TAXA_PATH = "/species/";
     private final String TAXON_SHOW = "taxa/show";
 
@@ -202,9 +203,8 @@ public class TaxonController {
 
         if (refMap.containsKey("pageIdentifiers") && refMap.get("pageIdentifiers") != null) {
             List<String> pageNos = (List<String>) refMap.get("pageIdentifiers");
-
             if (pageNos != null && !pageNos.isEmpty()) {
-                output += "<a href='http://library.ala.org.au/page/"+ pageNos.get(0);
+                output += "<a href='" + BHL_ROOT_URL + pageNos.get(0);
                 output += "' title='view original publication' target='_blank'>Biodiversity Heritage Library</a>";
             }
         }
