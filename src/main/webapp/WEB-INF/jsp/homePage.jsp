@@ -56,7 +56,7 @@
                                     <td>
                                         <input type="text" name="taxa" id="taxa" class="name_autocomplete freetext" placeholder="" size="100" value=""/>
                                         &nbsp;
-                                        <input type="submit" value="Search" />
+                                        <input type="submit" value="Search" class="freetext"/>
                                     </td>
                                 </tr>
                                 <tr>
