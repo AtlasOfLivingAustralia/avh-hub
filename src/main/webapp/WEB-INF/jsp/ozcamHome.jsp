@@ -258,6 +258,15 @@
 </div> 
 <div class="footer">OZCAM is an initiative of the Council of Heads of Australian Faunal Collections (CHAFC)</div> 
  
-</div> 
+</div>
+
+<script type="text/javascript">
+  var uvOptions = {};
+  (function() {
+    var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+    uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/5XG4VblqrwiubphT3ktPQ.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+  })();
+</script>
 </body> 
 </html> 

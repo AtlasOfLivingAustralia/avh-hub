@@ -149,10 +149,18 @@ include file="/common/taglibs.jsp" %>
             <a href="${avhUrl}disclaimer.jsp">Disclaimer</a> |
             <a href="${avhUrl}privacy.jsp">Privacy statement</a>
         </div>
-        <div id="footer_right">Updated 17 December 2010 |
+        <div id="footer_right">Updated 13 October 2011 |
            <a href="mailto:webmaster@chah.gov.au">webmaster@chah.gov.au</a>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+  var uvOptions = {};
+  (function() {
+    var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+    uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/Jjd4Fw3ep6Cy6dvBvPR1A.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+  })();
+</script>
 </body>
 </html>
