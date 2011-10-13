@@ -194,18 +194,20 @@
                     var field = $(this);
                     var text = $(this).text().match(/\[.*?\]/g);
                     
-                    $.each(text, function(i, el) {
-                        var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
-                        var code = list.replace(/\s/g, "_").toUpperCase();
-
-                        if (sensitiveDatasets[code]) {
-                            var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
-                                + " sensitive species list information page' target='collectory'>" + list + "</a>";
-                            var regex = new RegExp(list, "g");
-                            var html = $(field).html().replace(regex, linked);
-                            $(field).html(html);
-                        }
-                    });
+                    if (text) {
+                        $.each(text, function(j, el) {
+                            var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
+                            var code = list.replace(/\s/g, "_").toUpperCase();
+                            
+                            if (sensitiveDatasets[code]) {
+                                var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
+                                    + " sensitive species list information page' target='collectory'>" + list + "</a>";
+                                var regex = new RegExp(list, "g");
+                                var html = $(field).html().replace(regex, linked);
+                                $(field).html(html);
+                            }
+                        });
+                    }
                 });
 
                 <c:if test="${not empty record.sounds}">
