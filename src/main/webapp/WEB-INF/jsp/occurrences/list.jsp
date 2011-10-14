@@ -59,7 +59,7 @@
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
                     <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>
-                    <span id="#searchLabel">Species:</span>
+                    <span id="#searchLabel">Search:</span>
                     <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
                     <input type="submit" id="solrSubmit" value="Search"/>
                 </form>
@@ -211,7 +211,7 @@
                             <!-- size slider end -->
 
                             <!-- Link to spatial portal -->
-                            <a id="spatialPortalLink" href="${spatialPortalUrl}${searchResults.urlParameters}">View in spatial portal</a>
+                            <a id="spatialPortalLink" href="${spatialPortalUrl}${searchResults.urlParameters}&fq=${searchRequestParams.qc}">View in spatial portal</a>
                         </div>
                         <div id="mapcanvas"></div>
                         <div id="maploading">Loading...</div>

@@ -64,8 +64,7 @@
                 <div>Australia's Commonwealth, state and territory herbaria house over six million plant, algae and
                     fungi specimens.
                     The collecting information stored with these specimens provides the most complete picture of the
-                    distribution of
-                    Australia’s flora to date.
+                    distribution of Australia's flora to date.
                 </div>
                 <br>
 
