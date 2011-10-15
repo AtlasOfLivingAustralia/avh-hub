@@ -133,7 +133,7 @@
         </init-param>
         <init-param>
             <param-name>skin</param-name>
-            <param-value>avh</param-value>
+            <param-value>ala</param-value>
         </init-param>
     </filter>
     <filter-mapping>
