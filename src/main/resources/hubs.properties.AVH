@@ -29,6 +29,8 @@ collectionController.collectionsFragContext=/ws/fragment/
 homePageController.homePage=avhHome
 homePageController.searchPage=homePage
 
+spatialPortalUrl=http://spatial.ala.org.au/
+
 # URI prefix for requests to biocache-service
 biocacheRestService.biocacheUriPrefix=http://biocache.ala.org.au/ws
 # data hub UID ozcam = data_hub_uid:dh1 || avh = data_hub_uid:dh2
