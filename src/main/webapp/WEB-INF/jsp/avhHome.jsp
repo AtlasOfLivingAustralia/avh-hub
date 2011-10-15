@@ -52,7 +52,13 @@
 
         </div>
         <div id="mainmenu">
-            <div class="float_right"><a href="https://auth.ala.org.au/cas/login?service=http://avh-demo.ala.org.au">Log in/Register</a></div>
+            <div class="float_right">
+                <span style="padding:0px 2px 0px 2px; color:#060">
+                    <ala:loggedInUserId/>
+                    <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                    <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
+                </span>
+            </div>
         </div>
     </div>
 
