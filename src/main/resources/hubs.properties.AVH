@@ -38,7 +38,7 @@ biocacheRestService.apiKey=api-key-to-use
 # Google Map Key
 # biocache.ala.org.au = ABQIAAAAoBSAWIKN0nq5ftlHnSqAURRYnbqkszd6zrcg1s-Fm7JsBxVj5xRaQWSGnjeflao2CYtNRBZxuDrYyg
 # localhost = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRYnbqkszd6zrcg1s-Fm7JsBxVj5xQqiGGg3eS8Xwep7kHT7lbU5pN8kw
-googleKey=ABQIAAAAoBSAWIKN0nq5ftlHnSqAURRYnbqkszd6zrcg1s-Fm7JsBxVj5xRaQWSGnjeflao2CYtNRBZxuDrYyg
+googleKey=ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRfpAwcVWjzY5tkC1SRUnn6Wn7WfBTe0Hh2qnCTELZCOBc6XCT0whvECw
 
 # map of sensitive dataset URIs - NOTE sensitiveDataset.list must contain each key in sensitiveDatasets.XXX 
 sensitiveDataset.list=NSW_DECCW,NT_DNRETA,QLD_DERM,TAS_DPIPWE,VIC_DSE,WA_DEC,BIRDS_AUSTRALIA
