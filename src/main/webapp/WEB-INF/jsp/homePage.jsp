@@ -168,6 +168,17 @@
                             <thead/>
                             <tbody>
                                 <tr>
+                                    <td class="label">Country</td>
+                                    <td>
+                                        <select class="country" name="country" id="country">
+                                            <option value="">-- select a country --</option>
+                                            <c:forEach var="country" items="${countries}">
+                                                <option value="${country}">${country}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="label">State/Territory</td>
                                     <td>
                                         <select class="state" name="state" id="state">
@@ -211,6 +222,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <c:if test="${fn:length(typeStatus) >1}">
                         <b>Find records from the following type status</b>
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
@@ -228,6 +240,8 @@
                                 </tr>
                             </tbody>
                         </table>
+                        </c:if>
+                        <c:if test="${fn:length(typeStatus) >1}">
                         <b>Find records from the following basis of record (record type)</b>
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
@@ -245,6 +259,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        </c:if>
                         <b>Find records with the following dataset fields</b>
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
