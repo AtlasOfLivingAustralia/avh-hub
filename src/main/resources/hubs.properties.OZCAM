@@ -36,8 +36,8 @@ biocacheRestService.apiKey=api-key-to-use
 # Google Map Key
 # biocache.ala.org.au = ABQIAAAAoBSAWIKN0nq5ftlHnSqAURRYnbqkszd6zrcg1s-Fm7JsBxVj5xRaQWSGnjeflao2CYtNRBZxuDrYyg
 # localhost = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRYnbqkszd6zrcg1s-Fm7JsBxVj5xQqiGGg3eS8Xwep7kHT7lbU5pN8kw
-# ozcam = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhTWaVZ9pmANXT45Pp_tP8xo2OKqiBQaftzR1bgNi2LhfPG76wIk_yxC6A
-googleKey=ABQIAAAA-3PPe-HBV33KJbGlAmg4xhTWaVZ9pmANXT45Pp_tP8xo2OKqiBQaftzR1bgNi2LhfPG76wIk_yxC6A
+# ozcam = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRXo3XKjtg4T4N424iVxgGlL70VqBQYc1gBTr4WFBUkfCJ6vp4OiN9yGQ
+googleKey=ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRXo3XKjtg4T4N424iVxgGlL70VqBQYc1gBTr4WFBUkfCJ6vp4OiN9yGQ
 
 # map of sensitive dataset URIs - NOTE sensitiveDataset.list must contain each key in sensitiveDatasets.XXX 
 sensitiveDataset.list=NSW_DECCW,NT_DNRETA,QLD_DERM,TAS_DPIPWE,VIC_DSE,WA_DEC,BIRDS_AUSTRALIA
