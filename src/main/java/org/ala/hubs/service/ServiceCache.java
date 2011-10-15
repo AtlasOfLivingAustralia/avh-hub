@@ -84,7 +84,7 @@ public class ServiceCache {
         Long timeSinceUpdate = currentDate.getTime() - lastUpdated.getTime();
         logger.debug("timeSinceUpdate = " + timeSinceUpdate);
 
-        if (timeSinceUpdate > this.timeout) {
+        if (timeSinceUpdate > this.timeout || species_group.isEmpty()) {
             updateCache();
             lastUpdated = new Date(); // update timestamp
         }
