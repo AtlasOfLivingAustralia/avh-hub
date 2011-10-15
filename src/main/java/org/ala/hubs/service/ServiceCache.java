@@ -84,10 +84,7 @@ public class ServiceCache {
         Long timeSinceUpdate = currentDate.getTime() - lastUpdated.getTime();
         logger.debug("timeSinceUpdate = " + timeSinceUpdate);
 
-        if (timeSinceUpdate > this.timeout
-                || (type_status.size() < 1
-                && basis_of_record.size() < 1
-                && species_group.size()<1)) {
+        if (timeSinceUpdate > this.timeout) {
             updateCache();
             lastUpdated = new Date(); // update timestamp
         }
@@ -114,6 +111,7 @@ public class ServiceCache {
                 try{
                     Field f = this.getClass().getDeclaredField(res.getFieldName()); // field is plural form
                     list = (List<String>) f.get(this);
+                    list.clear(); //reset this list
                     //now add all the values
                     for(FieldResultDTO fieldResult :res.getFieldResult()){
                         list.add(fieldResult.getLabel());
