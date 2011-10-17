@@ -56,7 +56,7 @@ public class AdvancedSearchParams {
         if (!raw_taxon_name.isEmpty()) q.append(" raw_taxon_name:\"").append(raw_taxon_name).append("\"");
         if (!species_group.isEmpty()) q.append(" species_group:").append(species_group);
         if (!state.isEmpty()) q.append(" state:\"").append(state).append("\"");
-        if (!state.isEmpty()) q.append(" country:\"").append(country).append("\"");        
+        if (!country.isEmpty()) q.append(" country:\"").append(country).append("\"");
         if (!ibra.isEmpty()) q.append(" ibra:\"").append(ibra).append("\"");
         if (!imcra.isEmpty()) q.append(" imcra:\"").append(imcra).append("\"");
         if (!places.isEmpty()) q.append(" places:\"").append(places.trim()).append("\"");
