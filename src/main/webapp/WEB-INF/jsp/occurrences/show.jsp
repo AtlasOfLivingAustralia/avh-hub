@@ -114,6 +114,26 @@
                     'margin': 10
                 });
 
+                // raw vs processed popup
+                $("#showUserFlaggedIssues").fancybox({
+                    //'href': '#loginOrFlag',
+                    'hideOnContentClick' : false,
+                    'hideOnOverlayClick': true,
+                    'showCloseButton': true,
+                    'titleShow' : false,
+                    'centerOnScroll': true,
+                    'transitionIn': 'elastic',
+                    'transitionOut': 'elastic',
+                    'speedIn': 500,
+                    'speedOut': 500,
+                    'autoDimensions' : false,
+                    'width': '50%',
+                    'height': '50%',
+                    'padding': 15,
+                    'margin': 10
+                });
+
+
                 // bind to form submit for assertions
                 $("form#issueForm").submit(function(e) {
                     e.preventDefault();
@@ -194,18 +214,20 @@
                     var field = $(this);
                     var text = $(this).text().match(/\[.*?\]/g);
                     
-                    $.each(text, function(i, el) {
-                        var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
-                        var code = list.replace(/\s/g, "_").toUpperCase();
-
-                        if (sensitiveDatasets[code]) {
-                            var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
-                                + " sensitive species list information page' target='collectory'>" + list + "</a>";
-                            var regex = new RegExp(list, "g");
-                            var html = $(field).html().replace(regex, linked);
-                            $(field).html(html);
-                        }
-                    });
+                    if (text) {
+                        $.each(text, function(j, el) {
+                            var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
+                            var code = list.replace(/\s/g, "_").toUpperCase();
+                            
+                            if (sensitiveDatasets[code]) {
+                                var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
+                                    + " sensitive species list information page' target='collectory'>" + list + "</a>";
+                                var regex = new RegExp(list, "g");
+                                var html = $(field).html().replace(regex, linked);
+                                $(field).html(html);
+                            }
+                        });
+                    }
                 });
 
                 <c:if test="${not empty record.sounds}">
@@ -307,14 +329,14 @@
                 <div class="sidebar">
                     <c:if test="${false && isCollectionAdmin}">
                         <button class="rounded" id="verifyButton">
-                            <span id="assertionMaker" href="#verifyRecord" title="">Verify Record</span>
+                            <span id="verifyRecordSpan" href="#verifyRecord" title="">Verify Record</span>
                         </button>
                     </c:if>
                 </div>
                 <c:if test="${!isReadOnly}">
                 <div class="sidebar">
                     <button class="rounded" id="assertionButton">
-                        <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
+                        <span id="loginOrFlagSpan" href="#loginOrFlag" title="">Flag an Issue</span>
                     </button>
                     <div style="display:none">
                         <c:choose>
@@ -355,9 +377,15 @@
                 </c:if>
                 <div class="sidebar">
                     <button class="rounded" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
-                        <span id="assertionMaker" href="#processedVsRawView" title="">Original vs Processed</span>
+                        <span id="processedVsRawViewSpan" href="#processedVsRawView" title="">Original vs Processed</span>
                     </button>
-                </div>  
+                </div>
+                <div class="sidebar">
+                    <button class="rounded" id="showUserFlaggedIssues" href="#userFlaggedIssuesDetails" title="Details of user flagged issues">
+                        <span id="showUserFlaggedIssuesSpan" href="#userFlaggedIssuesDetails" title="">User Flagged Issues</span>
+                    </button>
+                </div>
+
                 <c:if test="${not empty record.processed.occurrence.images}">
                     <div class="sidebar">
                         <h2>Images</h2>
@@ -1175,10 +1203,23 @@
                             <alatag:formatRawVsProcessed map="${compareRecord}"/>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </c:if>
+
+       <div style="display:none;clear:both;">
+            <div id="userFlaggedIssuesDetails">
+                <h2>User flagged Issues</h2>
+                <c:forEach items="${record.userAssertions}" var="userAssertion">
+                    <p>
+                       User name: ${userAssertion.userDisplayName} <br/>
+                       Comment: ${userAssertion.comment} <br/>
+                       Created: ${userAssertion.created} <br/>
+                    </p>
+                </c:forEach>
+            </div>
+        </div>
+
         <c:if test="${empty record.raw}">
             <div id="content2">
                 <h1>Record Not Found</h1>
