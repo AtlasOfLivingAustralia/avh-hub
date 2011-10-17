@@ -114,6 +114,26 @@
                     'margin': 10
                 });
 
+                // raw vs processed popup
+                $("#showUserFlaggedIssues").fancybox({
+                    //'href': '#loginOrFlag',
+                    'hideOnContentClick' : false,
+                    'hideOnOverlayClick': true,
+                    'showCloseButton': true,
+                    'titleShow' : false,
+                    'centerOnScroll': true,
+                    'transitionIn': 'elastic',
+                    'transitionOut': 'elastic',
+                    'speedIn': 500,
+                    'speedOut': 500,
+                    'autoDimensions' : false,
+                    'width': '50%',
+                    'height': '50%',
+                    'padding': 15,
+                    'margin': 10
+                });
+
+
                 // bind to form submit for assertions
                 $("form#issueForm").submit(function(e) {
                     e.preventDefault();
@@ -309,14 +329,14 @@
                 <div class="sidebar">
                     <c:if test="${false && isCollectionAdmin}">
                         <button class="rounded" id="verifyButton">
-                            <span id="assertionMaker" href="#verifyRecord" title="">Verify Record</span>
+                            <span id="verifyRecordSpan" href="#verifyRecord" title="">Verify Record</span>
                         </button>
                     </c:if>
                 </div>
                 <c:if test="${!isReadOnly}">
                 <div class="sidebar">
                     <button class="rounded" id="assertionButton">
-                        <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
+                        <span id="loginOrFlagSpan" href="#loginOrFlag" title="">Flag an Issue</span>
                     </button>
                     <div style="display:none">
                         <c:choose>
@@ -357,9 +377,15 @@
                 </c:if>
                 <div class="sidebar">
                     <button class="rounded" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
-                        <span id="assertionMaker" href="#processedVsRawView" title="">Original vs Processed</span>
+                        <span id="processedVsRawViewSpan" href="#processedVsRawView" title="">Original vs Processed</span>
                     </button>
-                </div>  
+                </div>
+                <div class="sidebar">
+                    <button class="rounded" id="showUserFlaggedIssues" href="#userFlaggedIssuesDetails" title="Details of user flagged issues">
+                        <span id="showUserFlaggedIssuesSpan" href="#userFlaggedIssuesDetails" title="">User Flagged Issues</span>
+                    </button>
+                </div>
+
                 <c:if test="${not empty record.processed.occurrence.images}">
                     <div class="sidebar">
                         <h2>Images</h2>
@@ -734,60 +760,30 @@
                 <div id="occurrenceTaxonomy">
                     <h3>Taxonomy</h3>
                     <table class="occurrenceTable" id="taxonomyTable">
-                        <!-- Preparations -->
+                        <!-- Higher classification -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="higherClassification" fieldName="Higher Classification">
                             ${record.raw.classification.higherClassification}
                         </alatag:occurrenceTableRow>
-                        <!-- Scientific Name -->
-                        <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="scientificName" fieldName="Scientific Name">
-                            <c:if test="${not empty record.processed.classification.taxonConceptID}">
-                                <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.taxonConceptID}">
-                            </c:if>
-                            <c:set var="displaySciName">
+
+                        <!-- Scientific name -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="scientificName" fieldName="Scientific name">
+                            <c:set var="baseTaxonUrl">
                                 <c:choose>
-                                    <c:when test="${not empty record.processed.classification.scientificName}">
-                                        <alatag:formatSciName rankId="${record.processed.classification.taxonRankID}" name="${record.processed.classification.scientificName}"/>
-                                        ${record.processed.classification.scientificNameAuthorship}
-                                    </c:when>
-                                    <c:when test="${not empty record.processed.classification.scientificName && not empty record.raw.classification.scientificName}">
-                                        <alatag:formatSciName rankId="${record.processed.classification.taxonRankID}" name="${record.processed.classification.scientificName}"/>
-                                        ${record.processed.classification.scientificNameAuthorship}
-                                        (interpreted as <alatag:formatSciName rankId="${record.raw.classification.taxonRankID}" name="${record.raw.classification.scientificName}"/>
-                                        ${record.raw.classification.scientificNameAuthorship})
-                                    </c:when>
-                                    <c:when test="${not empty record.raw.classification.scientificName}">
-                                        <alatag:formatSciName rankId="${record.raw.classification.taxonRankID}" name="${record.raw.classification.scientificName}"/>
-                                        ${record.raw.classification.scientificNameAuthorship}
-                                    </c:when>
-                                    <c:when test="${not empty record.raw.classification.genus && not empty record.raw.classification.specificEpithet}">
-                                        <i>${record.raw.classification.genus} ${record.raw.classification.specificEpithet}</i>
-                                        ${record.raw.classification.scientificNameAuthorship}
-                                    </c:when>
-                                    <c:otherwise>
-                                        
-                                    </c:otherwise>
+                                    <c:when test="${useAla == 'true'}">${bieWebappContext}/species/</c:when>
+                                    <c:otherwise>${pageContext.request.contextPath}/taxa/</c:otherwise>
                                 </c:choose>
                             </c:set>
-                            <c:choose>
-                                <c:when test="${not empty record.processed.classification.taxonConceptID}">
-                                    <c:choose>
-                                        <c:when  test="${useAla == 'true'}">
-                                            <a href="${bieWebappContext}/species/${record.processed.classification.taxonConceptID}">${displaySciName}</a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.taxonConceptID}">${displaySciName}</a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="${bieWebappContext}/search?q=${fn:replace(scientificName, '  ', ' ')}">${displaySciName}</a>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:if test="${not empty record.raw.classification.scientificName && !fn:contains(displaySciName, record.raw.classification.scientificName)}">
-                                <br/><span class="originalValue">Supplied as &quot;${record.raw.classification.scientificName}&quot;</span>
-                                <!-- ${record.raw.classification.scientificName} || ${displaySciName} -->
+                            <c:if test="${not empty record.processed.classification.taxonConceptID}">
+                                <a href="${baseTaxonUrl}${record.processed.classification.taxonConceptID}">
+                            </c:if>
+                            <c:if test="${record.processed.classification.taxonRankID > 5000}"><i></c:if>
+                            ${record.raw.classification.scientificName}
+                            <c:if test="${record.processed.classification.taxonRankID > 5000}"></i></c:if>
+                            <c:if test="${not empty record.processed.classification.taxonConceptID}">
+                                </a>
                             </c:if>
                         </alatag:occurrenceTableRow>
+
                         <!-- Taxon Rank -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon Rank">
                             <c:choose>
@@ -1207,10 +1203,23 @@
                             <alatag:formatRawVsProcessed map="${compareRecord}"/>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </c:if>
+
+       <div style="display:none;clear:both;">
+            <div id="userFlaggedIssuesDetails">
+                <h2>User flagged Issues</h2>
+                <c:forEach items="${record.userAssertions}" var="userAssertion">
+                    <p>
+                       User name: ${userAssertion.userDisplayName} <br/>
+                       Comment: ${userAssertion.comment} <br/>
+                       Created: ${userAssertion.created} <br/>
+                    </p>
+                </c:forEach>
+            </div>
+        </div>
+
         <c:if test="${empty record.raw}">
             <div id="content2">
                 <h1>Record Not Found</h1>

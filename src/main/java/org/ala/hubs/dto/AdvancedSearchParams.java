@@ -31,6 +31,7 @@ public class AdvancedSearchParams {
     protected String species_group = "";
     protected String institution_collection = "";
     protected String state = "";
+    protected String country = "";    
     protected String ibra = "";
     protected String imcra = "";
     protected String places = "";
@@ -55,6 +56,7 @@ public class AdvancedSearchParams {
         if (!raw_taxon_name.isEmpty()) q.append(" raw_taxon_name:\"").append(raw_taxon_name).append("\"");
         if (!species_group.isEmpty()) q.append(" species_group:").append(species_group);
         if (!state.isEmpty()) q.append(" state:\"").append(state).append("\"");
+        if (!country.isEmpty()) q.append(" country:\"").append(country).append("\"");
         if (!ibra.isEmpty()) q.append(" ibra:\"").append(ibra).append("\"");
         if (!imcra.isEmpty()) q.append(" imcra:\"").append(imcra).append("\"");
         if (!places.isEmpty()) q.append(" places:\"").append(places.trim()).append("\"");
@@ -138,7 +140,7 @@ public class AdvancedSearchParams {
     /**
      * Set the value of start_date
      *
-     * @param start_date new value of start_date
+     * @param startDate new value of start_date
      */
     public void setStart_date(String startDate) {
         this.start_date = startDate;
@@ -404,4 +406,11 @@ public class AdvancedSearchParams {
         this.taxa = taxa;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 }

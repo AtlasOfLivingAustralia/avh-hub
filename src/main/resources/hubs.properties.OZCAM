@@ -1,11 +1,11 @@
 #  Copyright (C) 2011 Atlas of Living Australia
 #  All Rights Reserved.
-#
+# 
 #  The contents of this file are subject to the Mozilla Public
 #  License Version 1.1 (the "License"); you may not use this file
 #  except in compliance with the License. You may obtain a copy of
 #  the License at http://www.mozilla.org/MPL/
-#
+# 
 #  Software distributed under the License is distributed on an "AS
 #  IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
 #  implied. See the License for the specific language governing
@@ -25,24 +25,23 @@ collectionController.collectory=http://collections.ala.org.au
 collectionController.collectionsFragContext=/ws/fragment/
 
 # Inject the start page to load on root context - homePage || ozcamHome
-homePageController.homePage=homePage
+homePageController.homePage=ozcamHome
 
 spatialPortalUrl=http://spatial.ala.org.au/
 
 # URI prefix for requests to biocache-service
 biocacheRestService.biocacheUriPrefix=http://biocache.ala.org.au/ws
 # data hub UID ozcam = data_hub_uid:dh1 || avh = data_hub_uid:dh2
-biocacheRestService.queryContext=
+biocacheRestService.queryContext=data_hub_uid:dh1
 # apiKey necessary to add and delete assertions
 biocacheRestService.apiKey=api-key-to-use
 # Google Map Key
 # biocache.ala.org.au = ABQIAAAAoBSAWIKN0nq5ftlHnSqAURRYnbqkszd6zrcg1s-Fm7JsBxVj5xRaQWSGnjeflao2CYtNRBZxuDrYyg
 # localhost = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRYnbqkszd6zrcg1s-Fm7JsBxVj5xQqiGGg3eS8Xwep7kHT7lbU5pN8kw
-# ozcam-demo.ala.org.au = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhTWaVZ9pmANXT45Pp_tP8xo2OKqiBQaftzR1bgNi2LhfPG76wIk_yxC6A
-# avh-demo.ala.org.au = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRfpAwcVWjzY5tkC1SRUnn6Wn7WfBTe0Hh2qnCTELZCOBc6XCT0whvECw
-googleKey=ABQIAAAAoBSAWIKN0nq5ftlHnSqAURRYnbqkszd6zrcg1s-Fm7JsBxVj5xRaQWSGnjeflao2CYtNRBZxuDrYyg
+# ozcam = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRXo3XKjtg4T4N424iVxgGlL70VqBQYc1gBTr4WFBUkfCJ6vp4OiN9yGQ
+googleKey=ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRXo3XKjtg4T4N424iVxgGlL70VqBQYc1gBTr4WFBUkfCJ6vp4OiN9yGQ
 
-# map of sensitive dataset URIs - NOTE sensitiveDataset.list must contain each key in sensitiveDatasets.XXX
+# map of sensitive dataset URIs - NOTE sensitiveDataset.list must contain each key in sensitiveDatasets.XXX 
 sensitiveDataset.list=NSW_DECCW,NT_DNRETA,QLD_DERM,TAS_DPIPWE,VIC_DSE,WA_DEC,BIRDS_AUSTRALIA
 sensitiveDatasets.NSW_DECCW=http://collections.ala.org.au/public/show/dr487
 sensitiveDatasets.NT_DNRETA=http://collections.ala.org.au/public/show/dr492
@@ -58,7 +57,7 @@ bieWebappContext=http://bie.ala.org.au
 collectionsWebappContext=http://collections.ala.org.au
 
 # Whether or not to use the ALA base urls used to query/display information about the collection/institution or species.
-useAla=true
+useAla=false
 
 # Google Analytics Key - either "UA-4355440-1" or "N/A"
 googleAnalyticsKey=N/A
@@ -68,4 +67,4 @@ googleAnalyticsKey=N/A
 #sitemesh.skin=ala  - THIS IS NO LONGER IN USE
 
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
-site.displayName=Atlas of Living Australia
+site.displayName=OZCAM

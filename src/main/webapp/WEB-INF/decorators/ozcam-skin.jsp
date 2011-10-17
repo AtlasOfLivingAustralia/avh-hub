@@ -26,9 +26,16 @@ include file="/common/taglibs.jsp" %>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.transform.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.grab.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.jplayer.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mod.csstransforms.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/circle.player.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bieAutocomplete.js"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
+        <!-- CIRCLE PLAYER -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/circle.skin/circle.player.css" type="text/css" media="screen" />
         <decorator:head />
     </head>
     <body>
@@ -64,5 +71,13 @@ include file="/common/taglibs.jsp" %>
                 <span style="padding-left:80px;">OZCAM is an initiative of the Council of Heads of Australian Faunal Collections (CHAFC)</span>
             </div>
         </div>
+<script type="text/javascript">
+  var uvOptions = {};
+  (function() {
+    var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+    uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/5XG4VblqrwiubphT3ktPQ.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+  })();
+</script>
     </body>
 </html>

@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.ala.hubs.dto.AdvancedSearchParams;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
+import org.ala.hubs.service.ServiceCache;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -52,11 +53,13 @@ public class HomePageController {
     protected GazetteerCache gazetteerCache;
     @Inject
     protected CollectoryUidCache collectoryUidCache;
+    @Inject
+    protected ServiceCache serviceCache;
 
     /** View name for home page */
     protected String homePage = "homePage"; // injected via hubs.properties & can be different to HOME_PAGE
-    protected String searchPage = "homePage"; // injected via hubs.properties & can be different to HOME_PAGE
 
+    protected String searchPage = "homePage"; // injected via hubs.properties & can be different to HOME_PAGE
 
     /**
      * Site root - dummy Ozcam front page
@@ -91,12 +94,13 @@ public class HomePageController {
         List<String> coguids = collectoryUidCache.getCollections();
         model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));
         model.addAttribute("institutions", collectionsCache.getInstitutions(inguids, coguids));
-        model.addAttribute("typeStatus", TypeStatus.getStringList());
-        model.addAttribute("basisOfRecord", BasisOfRecord.getStringList());
-        model.addAttribute("states", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.STATE)); // extractTermsList(States.all())
-        model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
-        model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
-        model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
+        model.addAttribute("typeStatus", serviceCache.getTypeStatuses());
+        model.addAttribute("basisOfRecord", serviceCache.getBasisOfRecord());
+        model.addAttribute("speciesGroups", serviceCache.getSpeciesGroups());
+        model.addAttribute("states", serviceCache.getStates()); // extractTermsList(States.all())
+        model.addAttribute("ibra", serviceCache.getIBRA());
+        model.addAttribute("imcra", serviceCache.getIMCRA());
+        model.addAttribute("countries", serviceCache.getCountries());
         return searchPage;
     }
     
@@ -119,5 +123,25 @@ public class HomePageController {
 
     public void setHomePage(String homePage) {
         this.homePage = homePage;
+    }
+
+    public void setCollectionsCache(CollectionsCache collectionsCache) {
+        this.collectionsCache = collectionsCache;
+    }
+
+    public void setGazetteerCache(GazetteerCache gazetteerCache) {
+        this.gazetteerCache = gazetteerCache;
+    }
+
+    public void setCollectoryUidCache(CollectoryUidCache collectoryUidCache) {
+        this.collectoryUidCache = collectoryUidCache;
+    }
+
+    public void setServiceCache(ServiceCache serviceCache) {
+        this.serviceCache = serviceCache;
+    }
+
+    public void setSearchPage(String searchPage) {
+        this.searchPage = searchPage;
     }
 }

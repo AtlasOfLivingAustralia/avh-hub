@@ -41,7 +41,7 @@
 
         <div id="logo">
             <a title="Australia&#39;s Virtual Herbarium (Home)" href="http://chah.gov.au/avh/index.jsp">
-                <img src="/static/css/avh/images/AVHlogo_web.gif" alt="Australia’s Virtual Herbarium logo" height="100"
+                <img src="/static/css/avh/images/AVHlogo_web.gif" alt="Australia�s Virtual Herbarium logo" height="100"
                      width="249" style="border:0px">
             </a>
         </div>
@@ -52,7 +52,13 @@
 
         </div>
         <div id="mainmenu">
-            <div class="float_right"><a href="https://auth.ala.org.au/cas/login?service=http://avh-demo.ala.org.au">Log in/Register</a></div>
+            <div class="float_right">
+                <span style="padding:0px 2px 0px 2px; color:#060">
+                    <ala:loggedInUserId/>
+                    <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                    <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
+                </span>
+            </div>
         </div>
     </div>
 
@@ -61,15 +67,14 @@
 
         <div id="index_bground">
             <div id="index_text">
-                <div>Australia’s Commonwealth, state and territory herbaria house over six million plant, algae and
+                <div>Australia's Commonwealth, state and territory herbaria house over six million plant, algae and
                     fungi specimens.
                     The collecting information stored with these specimens provides the most complete picture of the
-                    distribution of
-                    Australia’s flora to date.
+                    distribution of Australia's flora to date.
                 </div>
                 <br>
 
-                <div>Australia’s Virtual Herbarium (AVH) is an online resource that provides immediate access to
+                <div>Australia's Virtual Herbarium (AVH) is an online resource that provides immediate access to
                     this invaluable information.
                 </div>
             </div>
@@ -164,13 +169,19 @@
             <a href="http://avh-demo.ala.org.au/sp/privacy.html">Privacy statement</a>
         </div>
 
-
-        <div id="footer_right">Updated 17 December 2010 |
+        <div id="footer_right">Updated 13 October 2011 |
             <a href="mailto:webmaster@chah.gov.au">webmaster@chah.gov.au</a>
         </div>
     </div>
 
 </div>
-
+<script type="text/javascript">
+  var uvOptions = {};
+  (function() {
+    var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+    uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/Jjd4Fw3ep6Cy6dvBvPR1A.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+  })();
+</script>
 </body>
 </html>

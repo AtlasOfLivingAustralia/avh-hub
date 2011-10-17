@@ -1174,7 +1174,8 @@ table.map_detail_table th {
 
 #main_content > #headingBar {
     min-height: 55px;
-    margin: 0;
+    margin: 0 0 20px 0;
+    /*border-bottom: none; */
 }
 
 #main_content > #headingBar > h1 {

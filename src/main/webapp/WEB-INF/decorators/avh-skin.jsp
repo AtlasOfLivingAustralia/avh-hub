@@ -39,9 +39,16 @@ include file="/common/taglibs.jsp" %>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.transform.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.grab.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.jplayer.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mod.csstransforms.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/circle.player.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bieAutocomplete.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
+    <!-- CIRCLE PLAYER -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/circle.skin/circle.player.css" type="text/css" media="screen" />
     <decorator:head />
 </head>
 
@@ -66,18 +73,12 @@ include file="/common/taglibs.jsp" %>
             <div><a href="${avhUrl}help.html">Help</a></div>
             <div><a href="${avhUrl}links.html">Links</a></div>
             <div class="float_right">
-                <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
-                <c:choose>
-                    <c:when test="${not empty userDisplayName}">
-                        <a href="https://auth.ala.org.au/cas/logout?url=${returnUrlPath}">
-                            Logged in as: ${userDisplayName} - log out
-                        </a>
-                    </c:when>
-                   <c:otherwise>
-                       <a href="https://auth.ala.org.au/cas/login?service=${returnUrlPath}">Login/Register</a>
-                   </c:otherwise>
-                </c:choose>
-             </div>
+                <span style="padding:0px 2px 0px 2px; color:#060">
+                    <ala:loggedInUserId/>
+                    <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                    <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
+                </span>
+            </div>
         </div>
     </div>
 	<div id="main_content" class="">
@@ -149,10 +150,18 @@ include file="/common/taglibs.jsp" %>
             <a href="${avhUrl}disclaimer.jsp">Disclaimer</a> |
             <a href="${avhUrl}privacy.jsp">Privacy statement</a>
         </div>
-        <div id="footer_right">Updated 17 December 2010 |
+        <div id="footer_right">Updated 13 October 2011 |
            <a href="mailto:webmaster@chah.gov.au">webmaster@chah.gov.au</a>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+  var uvOptions = {};
+  (function() {
+    var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+    uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/Jjd4Fw3ep6Cy6dvBvPR1A.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+  })();
+</script>
 </body>
 </html>

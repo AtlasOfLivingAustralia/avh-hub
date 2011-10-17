@@ -68,7 +68,7 @@
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
                     <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>
-                    <span id="#searchLabel">Species:</span>
+                    <span id="#searchLabel">Search:</span>
                     <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
                     <input type="submit" id="solrSubmit" value="Search"/>
                 </form>
@@ -197,6 +197,7 @@
                                                           lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
                         </div>
                     </div><!--end solrResults-->
+<<<<<<< .working
                     <div id="mapwrapper" class="paneDiv">
                         <table id="mapLayerControls">
                             <tr>
@@ -221,7 +222,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a id="spatialPortalLink" href="${spatialPortalUrl}${searchResults.urlParameters}">View in spatial portal</a>
+                                    <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
+                                    <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}">View in spatial portal</a>
                                 </td>
                             </tr>
                         </table>
