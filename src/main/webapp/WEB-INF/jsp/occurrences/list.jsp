@@ -211,7 +211,13 @@
                             <!-- size slider end -->
 
                             <!-- Link to spatial portal -->
-                            <a id="spatialPortalLink" href="${spatialPortalUrl}${searchResults.urlParameters}&fq=${searchRequestParams.qc}">View in spatial portal</a>
+
+                            <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
+
+                            <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}">View in spatial portal</a>
+                            <!--
+                            <input type="text" value="${spatialPortalUrl}${spatialPortalLink}" size="100"/>
+                            -->
                         </div>
                         <div id="mapcanvas"></div>
                         <div id="maploading">Loading...</div>
