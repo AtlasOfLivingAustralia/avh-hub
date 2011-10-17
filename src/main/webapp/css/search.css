@@ -248,16 +248,16 @@ div#download {
     width: 730px;
 }
 #resultsOuter div.solrResults {
-  position: absolute;
+/*  position: absolute;
   left: 0;
-  top: 0;
+  top: 0;*/
   width: 730px;
 }
 
 #resultsOuter div#mapwrapper {
-    position: absolute;
+/*    position: absolute;
     left: 730px;
-    top: 0;
+    top: 0;*/
     width: 730px;
     /*display:none;*/
 }
@@ -364,19 +364,19 @@ span#queryDisplay a:hover {
     color: #444444;
 }
 
-#mapLayerControls > label {
-    clear: both;
-    display: block;
-    float: left;
-    width: 20%;
-    text-align: right;
+#mapLayerControls {
+    border-bottom: none;
+    margin-bottom: 6px;
+    width: 100%;
 }
 
-#mapLayerControls > .layerControls {
-    display: block;
-    float: left;
-    width: 80%;
-    margin-bottom: 4px;
+#mapLayerControls label {
+    display: inline-block;
+}
+
+#mapLayerControls .layerControls, #mapLayerControls #sizeslider {
+    display: inline-block;
+    float: none;
 }
 
 #mapLayerControls #sizeslider-val {
@@ -384,8 +384,11 @@ span#queryDisplay a:hover {
     padding-left: 6px;
 }
 
-.layerControls #sizeslider-val, .layerControls #sizeslider {
-    display: block;
-    float:left;
-    margin-bottom: 5px;
+/* Collection charts */
+.link {
+    color: #01716E;
+    cursor: pointer;
+}
+.under {
+    text-decoration: underline;
 }

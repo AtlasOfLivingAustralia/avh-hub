@@ -6,10 +6,10 @@
 taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %><%@
 taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 include file="/common/taglibs.jsp" %>
-<c:set var="avhUrl" value="http://chah.gov.au/avh/"/>
+<c:set var="avhUrl" value="http://avh-demo.ala.org.au/sp/"/>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
-    <head><title><decorator:title default="AVH" /></title>
+    <head><title><decorator:title default="AVH"/></title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/avh/favicon.ico" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/avh/reset.css" />
@@ -50,7 +50,7 @@ include file="/common/taglibs.jsp" %>
 	<div id="banner">
 		<div id="logo">
 			<a title="Australia's Virtual Herbarium (Home)" href="index.jsp">
-				<img src="${avhUrl}images/AVHlogo_web.gif" alt="Australia&rsquo;s Virtual Herbarium logo" height="100" width="249" style="border:0px" />
+				<img src="${pageContext.request.contextPath}/static/css/avh/images/AVHlogo_web.gif" alt="Australia&rsquo;s Virtual Herbarium logo" height="100" width="249" style="border:0px" />
 			</a>
 		</div>
         <div id="header">
@@ -59,14 +59,25 @@ include file="/common/taglibs.jsp" %>
         </h1>-->
     </div>
     	<div id="mainmenu">
-            <div><a href="${avhUrl}index.jsp">Home</a></div>
-            <div><a href="${pageContext.request.contextPath}/">Query AVH</a></div>
-            <div><a href="${avhUrl}about.jsp">About AVH</a></div>
-            <div><a href="${avhUrl}partners.jsp">Partners</a></div>
-            <div><a href="${avhUrl}public_query_help.jsp">Help</a></div>
-            <div><a href="${avhUrl}links.jsp">Links</a></div>
-            <div class="float_right"><a href="${avhUrl}adminServlet?task=register">Register</a></div>
-            <div class="float_right"><a href="${avhUrl}avhServlet?task=logon">Log in</a></div>
+            <div><a href="${pageContext.request.contextPath}/">Home</a></div>
+            <div><a href="${pageContext.request.contextPath}/query">Query AVH</a></div>
+            <div><a href="${avhUrl}about.html">About AVH</a></div>
+            <div><a href="${avhUrl}partners.html">Partners</a></div>
+            <div><a href="${avhUrl}help.html">Help</a></div>
+            <div><a href="${avhUrl}links.html">Links</a></div>
+            <div class="float_right">
+                <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                <c:choose>
+                    <c:when test="${not empty userDisplayName}">
+                        <a href="https://auth.ala.org.au/cas/logout?url=${returnUrlPath}">
+                            Logged in as: ${userDisplayName} - log out
+                        </a>
+                    </c:when>
+                   <c:otherwise>
+                       <a href="https://auth.ala.org.au/cas/login?service=${returnUrlPath}">Login/Register</a>
+                   </c:otherwise>
+                </c:choose>
+             </div>
         </div>
     </div>
 	<div id="main_content" class="">
@@ -77,57 +88,57 @@ include file="/common/taglibs.jsp" %>
             <div id="participants">
                 <div>
                     <a href="http://www.dec.wa.gov.au/content/category/41/831/1821/">
-                        <img src="${avhUrl}images/logo_WA.jpg" alt="Western Australian Herbarium, Department of Environment and Conservation" width="80" height="100" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_WA.jpg" alt="Western Australian Herbarium, Department of Environment and Conservation" width="80" height="100" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.nt.gov.au/nreta/wildlife/plants/herbarium/index.html">
-                        <img src="${avhUrl}images/logo_NT.jpg" alt="NT logo" height="100" width="80" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_NT.jpg" alt="NT logo" height="100" width="80" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.environment.sa.gov.au/science/state-herbarium/overview.html">
-                        <img src="${avhUrl}images/logo_SA.jpg" alt="State Herbarium of South Australia, Plant Biodiversity Centre" width="80" height="100" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_SA.jpg" alt="State Herbarium of South Australia, Plant Biodiversity Centre" width="80" height="100" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.derm.qld.gov.au/wildlife-ecosystems/plants/queensland_herbarium/">
-                        <img src="${avhUrl}images/logo_BRI.jpg" alt="Queensland Herbarium, Environmental Protection Agency" height="100" width="80" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_BRI.jpg" alt="Queensland Herbarium, Environmental Protection Agency" height="100" width="80" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.rbgsyd.nsw.gov.au/science/Herbarium_and_resources">
-                        <img src="${avhUrl}images/logo_NSW.jpg" alt="NSW logo" height="100" width="80" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_NSW.jpg" alt="NSW logo" height="100" width="80" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.cpbr.gov.au/cpbr/">
-                        <img src="${avhUrl}images/logo_CPBR.jpg" alt="Australian National Herbarium, Centre for Plant Biodiversity Research" height="100" width="80" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_CPBR.jpg" alt="Australian National Herbarium, Centre for Plant Biodiversity Research" height="100" width="80" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.rbg.vic.gov.au/science/information-and-resources/national-herbarium-of-victoria">
-                        <img alt="National Herbarium of Victoria, Royal Botanic Gardens Melbourne"  src="${avhUrl}images/logo_MEL.jpg" height="100" width="80" />
+                        <img alt="National Herbarium of Victoria, Royal Botanic Gardens Melbourne"  src="${pageContext.request.contextPath}/static/css/avh/images/logo_MEL.jpg" height="100" width="80" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.tmag.tas.gov.au/">
-                        <img src="${avhUrl}images/logo_TAS.jpg" width="80" height="100" alt="Tasmanian Herbarium, Tasmanian Museum and Art Gallery" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_TAS.jpg" width="80" height="100" alt="Tasmanian Herbarium, Tasmanian Museum and Art Gallery" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.ath.org.au/">
-                        <img src="${avhUrl}images/logo_ATH.jpg" alt="ATH logo" width="80" height="100" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_ATH.jpg" alt="ATH logo" width="80" height="100" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.environment.gov.au/biodiversity/abrs/">
-                        <img src="${avhUrl}images/logo_ABRS.jpg" alt="Australian Biological Resources Study" width="80" height="100" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_ABRS.jpg" alt="Australian Biological Resources Study" width="80" height="100" />
                     </a>
                 </div>
                 <div>
                     <a href="http://www.virtualherbarium.org.nz/index.jsp">
-                        <img src="${avhUrl}images/logo_NZVH.jpg" alt="DEH logo" width="80" height="100" />
+                        <img src="${pageContext.request.contextPath}/static/css/avh/images/logo_NZVH.jpg" alt="DEH logo" width="80" height="100" />
                     </a>
                 </div>
             </div>

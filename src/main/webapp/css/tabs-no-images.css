@@ -53,8 +53,9 @@ ul.css-tabs a.current {
 
 	
 /* tab pane */
-.css-panes div {
+.css-panes div.paneDiv {
 	display:none;
+    width: 680px;
 	border:1px solid #666;
 	border-width:1px 1px 1px 1px;
     -moz-border-radius: 0 5px 5px 5px;	

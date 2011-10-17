@@ -10,7 +10,7 @@ include file="/common/taglibs.jsp" %>
 <html dir="ltr" lang="en-US">
     <head profile="http://gmpg.org/xfn/11">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><decorator:title default="OZCAM" /></title>
+        <title><decorator:title default="OZCAM"/></title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ozcam-0.3/style.css" type="text/css" media="screen,projection" />
         <!--<link rel="icon" type="image/x-icon" href="http://www.ozcam.org.au/favicon.ico" />-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
@@ -33,8 +33,9 @@ include file="/common/taglibs.jsp" %>
     </head>
     <body>
         <div class="wrapper">
-            <div id="contentBox" style="margin-top: 10px;">
+            <div id="contentBox" style="margin-top: 20px;">
                 <decorator:body />
+                <div class="push"></div>
             </div>
         </div>
     </body>

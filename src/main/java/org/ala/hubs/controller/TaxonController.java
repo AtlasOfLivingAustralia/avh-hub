@@ -42,6 +42,7 @@ public class TaxonController {
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     private final String BIE_URL = "http://bie.ala.org.au";
+    private final String BHL_ROOT_URL = "http://bhl.ala.org.au/page/";
     private final String BIE_TAXA_PATH = "/species/";
     private final String TAXON_SHOW = "taxa/show";
 
@@ -87,6 +88,8 @@ public class TaxonController {
                         taxon.setAuthor((String) tc.get("author"));
                         taxon.setRank((String) tc.get("rankString"));
                         taxon.setRankId((Integer) tc.get("rankID"));
+                        taxon.setLeft((Integer) tc.get("left"));
+                        taxon.setRight((Integer) tc.get("right"));
                     } else if (key.contentEquals("commonNames")) {
                         List<Map<String, Object>> commonNames = (List<Map<String, Object>>) etc.get("commonNames");
                         Set<String> names = new LinkedHashSet<String>(); // avoid duplicates
@@ -195,16 +198,15 @@ public class TaxonController {
      * @return
      */
     private String formatReference(Map<String, Object> refMap) {
-        String output = "Scientific name: " + getStringValue(refMap, "scientificName") + ". ";
+        String output = ""; //"Scientific name: " + getStringValue(refMap, "scientificName") + ". ";
         output += getStringValue(refMap, "title") + " ";
         output += (!getStringValue(refMap, "year").isEmpty()) ? ("(" + getStringValue(refMap, "year") + ") ") : "";
         output += (!getStringValue(refMap, "volume").isEmpty()) ? ("Volume: " + getStringValue(refMap, "volume") + ". ") : "";
 
-        if (refMap.containsKey("pageIdentifiers") && refMap.get("pageIdentifiers") != null) {
+        if (refMap!=null && refMap.containsKey("pageIdentifiers") && refMap.get("pageIdentifiers") != null) {
             List<String> pageNos = (List<String>) refMap.get("pageIdentifiers");
-
             if (pageNos != null && !pageNos.isEmpty()) {
-                output += "<a href='http://library.ala.org.au/page/"+ pageNos.get(0);
+                output += "<a href='" + BHL_ROOT_URL + pageNos.get(0);
                 output += "' title='view original publication' target='_blank'>Biodiversity Heritage Library</a>";
             }
         }
@@ -221,7 +223,7 @@ public class TaxonController {
     private String getStringValue(Map<String, Object> map, String key) {
         String value = "";
 
-        if (key != null && map.containsKey(key)) {
+        if (key != null && map!=null && map.containsKey(key)) {
             String temp = (String) map.get(key);
             if (temp != null || StringUtils.containsIgnoreCase(temp, "null")) {
                 // If the JSON value is null, then the String gets a value of null (type)
@@ -241,6 +243,8 @@ public class TaxonController {
         String author;
         String rank;
         Integer rankId;
+        Integer left;
+        Integer right;
         Set<String> commonNames;
         Boolean isAustralian;
         String description;
@@ -344,6 +348,30 @@ public class TaxonController {
 
         public void setReferences(List<String> references) {
             this.references = references;
+        }
+
+        public Integer getLeft() {
+            return left;
+        }
+
+        public void setLeft(Integer left) {
+            this.left = left;
+        }
+
+        public Integer getRight() {
+            return right;
+        }
+
+        public void setRight(Integer right) {
+            this.right = right;
+        }
+
+        public Boolean getAustralian() {
+            return isAustralian;
+        }
+
+        public void setAustralian(Boolean australian) {
+            isAustralian = australian;
         }
 
         @Override

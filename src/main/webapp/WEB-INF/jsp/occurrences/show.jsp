@@ -37,8 +37,9 @@
 </c:set>
 <html>
     <head>
+        <!-- Skin selected: ${skin} -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
+        <meta name="decorator" content="${skin}"/>
         <title>Record ${recordId} | ${hubDisplayName} </title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
@@ -193,18 +194,20 @@
                     var field = $(this);
                     var text = $(this).text().match(/\[.*?\]/g);
                     
-                    $.each(text, function(i, el) {
-                        var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
-                        var code = list.replace(/\s/g, "_").toUpperCase();
-
-                        if (sensitiveDatasets[code]) {
-                            var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
-                                + " sensitive species list information page' target='collectory'>" + list + "</a>";
-                            var regex = new RegExp(list, "g");
-                            var html = $(field).html().replace(regex, linked);
-                            $(field).html(html);
-                        }
-                    });
+                    if (text) {
+                        $.each(text, function(j, el) {
+                            var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
+                            var code = list.replace(/\s/g, "_").toUpperCase();
+                            
+                            if (sensitiveDatasets[code]) {
+                                var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
+                                    + " sensitive species list information page' target='collectory'>" + list + "</a>";
+                                var regex = new RegExp(list, "g");
+                                var html = $(field).html().replace(regex, linked);
+                                $(field).html(html);
+                            }
+                        });
+                    }
                 });
 
                 <c:if test="${not empty record.sounds}">
@@ -310,6 +313,7 @@
                         </button>
                     </c:if>
                 </div>
+                <c:if test="${!isReadOnly}">
                 <div class="sidebar">
                     <button class="rounded" id="assertionButton">
                         <span id="assertionMaker" href="#loginOrFlag" title="">Flag an Issue</span>
@@ -350,6 +354,7 @@
                         </c:choose>
                     </div>
                 </div>
+                </c:if>
                 <div class="sidebar">
                     <button class="rounded" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
                         <span id="assertionMaker" href="#processedVsRawView" title="">Original vs Processed</span>
@@ -359,7 +364,7 @@
                     <div class="sidebar">
                         <h2>Images</h2>
                         <c:forEach items="${record.processed.occurrence.images}" var="imageUrl">
-                           <a href="${not empty record.raw.occurrence.occurrenceDetails ?  record.raw.occurrence.occurrenceDetails : imageUrl}"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
+                           <a href="${not empty record.raw.occurrence.occurrenceDetails ?  record.raw.occurrence.occurrenceDetails : imageUrl}" target="_blank"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
                         </c:forEach>
                         <c:if test="${not empty record.raw.occurrence.rights}">
                         <cite>Rights: ${record.raw.occurrence.rights}</cite>
@@ -589,13 +594,13 @@
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceID" fieldName="Occurrence ID">
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.occurrenceID && not empty record.raw.occurrence.occurrenceID}">
-                                    <c:if test="${fn:startsWith(record.processed.occurrence.occurrenceID,'http://')}"><a href="${record.processed.occurrence.occurrenceID}"></c:if>
+                                    <c:if test="${fn:startsWith(record.processed.occurrence.occurrenceID,'http://')}"><a href="${record.processed.occurrence.occurrenceID}" target="_blank"></c:if>
                                     ${record.processed.occurrence.occurrenceID}
                                     <c:if test="${fn:startsWith(record.processed.occurrence.occurrenceID,'http://')}"></a></c:if>                                    
                                     <br/><span class="originalValue">Supplied as "${record.raw.occurrence.occurrenceID}"</span>
                                 </c:when>
                                 <c:otherwise>
-                                    <c:if test="${fn:startsWith(record.raw.occurrence.occurrenceID,'http://')}"><a href="${record.raw.occurrence.occurrenceID}"></c:if>                                
+                                    <c:if test="${fn:startsWith(record.raw.occurrence.occurrenceID,'http://')}"><a href="${record.raw.occurrence.occurrenceID}" target="_blank"></c:if>
                                     ${record.raw.occurrence.occurrenceID}
                                     <c:if test="${fn:startsWith(record.raw.occurrence.occurrenceID,'http://')}"></a></c:if>                                                                        
                                 </c:otherwise>
@@ -669,16 +674,22 @@
                         </alatag:occurrenceTableRow>
                         <!-- Collector/Observer -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="Collector/Observer">
+                            <c:set var="rawRecordedBy" value="${(fn:contains(record.raw.occurrence.recordedBy, '@')) 
+                                                                ? fn:substringBefore(record.raw.occurrence.recordedBy,'@') 
+                                                                : record.raw.occurrence.recordedBy}"/>
+                            <c:set var="proRecordedBy" value="${(fn:contains(record.processed.occurrence.recordedBy, '@')) 
+                                                                ? fn:substringBefore(record.processed.occurrence.recordedBy,'@') 
+                                                                : record.processed.occurrence.recordedBy}"/>
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.recordedBy && not empty record.raw.occurrence.recordedBy}">
-                                    ${record.processed.occurrence.recordedBy}
-                                    <br/><span class="originalValue">Supplied as "${record.raw.occurrence.recordedBy}"</span>
+                                    ${proRecordedBy}
+                                    <br/><span class="originalValue">Supplied as "${rawRecordedBy}"</span>
                                 </c:when>
                                 <c:when test="${not empty record.processed.occurrence.recordedBy}">
-                                    ${record.processed.occurrence.recordedBy}
+                                    ${proRecordedBy}
                                 </c:when>
                                 <c:when test="${not empty record.raw.occurrence.recordedBy}">
-                                    ${record.raw.occurrence.recordedBy}
+                                    ${rawRecordedBy}
                                 </c:when>
                             </c:choose>
                         </alatag:occurrenceTableRow>
@@ -987,7 +998,8 @@
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Associated Taxa -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="assocatedTaxa" fieldName="Associated Species">
+                        <c:if test="${not empty record.raw.occurrence.associatedTaxa}">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedTaxa" fieldName="Associated Species">
                         <c:set var="colon" value=":"/>
                             <c:choose>
                                 <c:when test="${fn:contains(record.raw.occurrence.associatedTaxa,colon)}">
@@ -999,6 +1011,7 @@
                                 </c:otherwise>
                             </c:choose>                      	                            
                         </alatag:occurrenceTableRow>
+                        </c:if>
                     </table>
                 </div>
                 <div id="geospatialTaxonomy">
@@ -1066,7 +1079,7 @@
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Habitat -->
-                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Habitat">
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Terrestrial/Marine">
                             ${record.processed.location.habitat}
                         </alatag:occurrenceTableRow>
                         <!-- Latitude -->

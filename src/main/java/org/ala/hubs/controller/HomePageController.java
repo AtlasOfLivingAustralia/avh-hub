@@ -23,6 +23,8 @@ import au.org.ala.biocache.Term;
 import au.org.ala.biocache.TypeStatus;
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+
 import org.ala.hubs.dto.AdvancedSearchParams;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
@@ -52,10 +54,9 @@ public class HomePageController {
     protected CollectoryUidCache collectoryUidCache;
 
     /** View name for home page */
-    protected final String HOME_PAGE = "homePage";
-    protected String homePage = ""; // injected via hubs.properties & can be different to HOME_PAGE
-    /* Get the skin name form the hubs.properties file (via context:property-placeholder conf) */
-    protected @Value("${sitemesh.skin}") String skin;
+    protected String homePage = "homePage"; // injected via hubs.properties & can be different to HOME_PAGE
+    protected String searchPage = "homePage"; // injected via hubs.properties & can be different to HOME_PAGE
+
 
     /**
      * Site root - dummy Ozcam front page
@@ -63,17 +64,8 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String ozcamPage(Model model) {
-        //return "redirect:/index";
-        String page = null;
-        
-        if ("ozcam".equalsIgnoreCase(skin)) {
-            page = homePage;
-        } else {
-            page = homePage(model);
-        }
-        
-        return page;
+    public String homePage() {
+        return homePage;
     }
 
     /**
@@ -92,7 +84,7 @@ public class HomePageController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"/home", "/advancedSearch"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/home", "/advancedSearch", "/search", "/query"}, method = RequestMethod.GET)
     public String homePage(Model model) {
         logger.debug("Home Page request.");
         List<String>inguids = collectoryUidCache.getInstitutions();
@@ -105,7 +97,7 @@ public class HomePageController {
         model.addAttribute("ibra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IBRA));
         model.addAttribute("imcra", gazetteerCache.getNamesForRegionType(GazetteerCache.RegionType.IMCRA));
         model.addAttribute("speciesGroups", SpeciesGroups.getStringList());
-        return HOME_PAGE;
+        return searchPage;
     }
     
     /**

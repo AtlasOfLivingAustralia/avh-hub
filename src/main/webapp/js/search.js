@@ -261,7 +261,7 @@ $(document).ready(function() {
         // AJAX call to get names for LSIDs
         // IE7< has limit of 2000 chars on URL so split into 2 requests        
         var guidListA = guidList.slice(0, 15) // first 15 elements
-        var jsonUrlA = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListA.join("&guid=") + "&callback=?";
+        var jsonUrlA = BC_CONF.bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListA.join("&guid=") + "&callback=?";
         $.getJSON(jsonUrlA, function(data) {
             // set the name in place of LSID
             $("li.species_guid").each(function(i, el) {
@@ -275,7 +275,7 @@ $(document).ready(function() {
         
         if (guidList.length > 15) {
             var guidListB = guidList.slice(15)
-            var jsonUrlB = bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListB.join("&guid=") + "&callback=?";
+            var jsonUrlB = BC_CONF.bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListB.join("&guid=") + "&callback=?";
             $.getJSON(jsonUrlB, function(data) {
                 // set the name in place of LSID
                 $("li.species_guid").each(function(i, el) {
@@ -292,7 +292,7 @@ $(document).ready(function() {
     // do the same for the selected facet
     var selectedLsid = $("b.species_guid").attr("id");
     if (selectedLsid) {
-        var jsonUrl2 = bieWebappUrl + "/species/namesFromGuids.json?guid=" + selectedLsid + "&callback=?";
+        var jsonUrl2 = BC_CONF.bieWebappUrl + "/species/namesFromGuids.json?guid=" + selectedLsid + "&callback=?";
         $.getJSON(jsonUrl2, function(data) {
             // set the name in place of LSID
             $("b.species_guid").html("<i>"+data[0]+"</i>");
@@ -363,12 +363,12 @@ $(document).ready(function() {
     $("span.lsid").each(function(i, el) {
         var lsid = $(this).attr("id");
         var nameString = $(this).html();
-        var jsonUri = biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
+        var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
         $.getJSON(jsonUri, function(data) {
             // list of synonyms
             var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" + 
                 "This taxon search will include records with synonyms and child taxa of " +
-                "<a href='" + bieWebappUrl + "/species/" + lsid + "' title='Species page' class='bold'>" +
+                "<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' class='bold'>" +
                 nameString + "</a>.<br/>Below are the <u>original scientific names</u> " + 
                 "which appear on records in this result set:<ul>";
             var synListSize = 0;
@@ -377,7 +377,7 @@ $(document).ready(function() {
                 if (el.fieldName == "raw_taxon_name") {
                     $.each(el.fieldResult, function(j, el1) {
                         synListSize++;
-                        synList += "<li><a href='" + contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")";
+                        synList += "<li><a href='" + BC_CONF.contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")";
                     });
                     
                 }
@@ -428,6 +428,39 @@ $(document).ready(function() {
     
     $("body").mouseup(function(){ 
         if (!hoverDropDownDiv) $('.refineTaxaSearch, #facetOptions').hide();
+    });
+    
+    var facetChartOptions = {
+        query: BC_CONF.searchString.replace("?q=",""), 
+        charts: ['institution_uid','state','species_group','assertions','type_status','biogeographic_region','state_conservation','occurrence_year'],
+        institution_uid: {backgroundColor: "#eeeeee"},
+        state: {backgroundColor: "#eeeeee"},
+        species_group: {backgroundColor: "#eeeeee"},
+        assertions: {backgroundColor: "#eeeeee"},
+        type_status: {backgroundColor: "#eeeeee"},
+        biogeographic_region: {backgroundColor: "#eeeeee"},
+        state_conservation: {backgroundColor: "#eeeeee"},
+        occurrence_year:{backgroundColor: "#eeeeee"}
+    }
+
+    var init = { 
+        map: false,
+        charts: false
+    };
+
+    $(".css-tabs").tabs(".css-panes > div", { 
+        history: true,
+        effect: 'fade',
+        onClick: function(event, tabIndex) {
+            if (tabIndex == 1 && !init.map) {
+                initialiseMap();
+                init.map = true; // only initialise once!
+            } else if (tabIndex == 2 && !init.charts) {
+                loadTaxonomyChart({ query: BC_CONF.searchString.replace("?q=",""),  backgroundColor: "#eeeeee" });
+                loadFacetCharts(facetChartOptions);
+                init.charts = true; // only initialise once!
+            }
+        }
     });
     
 }); // end JQuery document ready

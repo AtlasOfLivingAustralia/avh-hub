@@ -103,7 +103,9 @@ var Maps = (function() {
         }
 
         var baseurl = Config.OCC_SEARCH_URL;
-        var wmsinfo = baseurl + ((searchString) ? encodeURI(searchString) : "?"); // window.location.search;
+        var wmsinfo = baseurl + ((BC_CONF.searchString) ? encodeURI(BC_CONF.searchString) : "?"); // window.location.search;
+        // remove spatial params from searchString param
+        wmsinfo = wmsinfo.replace(/&lat\=.*/, '');
         wmsinfo += "&zoom=" + map.getZoom();
         wmsinfo += "&lat=" + location.lat();
         wmsinfo += "&lon=" + location.lng();
@@ -127,7 +129,7 @@ var Maps = (function() {
 
             Maps.loadOccurrenceInfo(0);
 
-            infomarker.setPosition(clickLocation);            
+            infomarker.setPosition(clickLocation);
         } else {
             //occids = new Array(); 
             occids == null; // did you mean occids = null ?
@@ -174,7 +176,7 @@ var Maps = (function() {
         }
 
         //Add query string params to custom params
-        var searchParam = encodeURI(searchString); // NdR - fixes bug where terms have quotes around them
+        var searchParam = encodeURI(BC_CONF.searchString); // NdR - fixes bug where terms have quotes around them
         var pairs = searchParam.substring(1).split('&');
         for (var j = 0; j < pairs.length; j++) {
             customParams.push(pairs[j]);
@@ -206,7 +208,7 @@ var Maps = (function() {
          */
         loadMap: function() {
             var baseurl = "http://localhost:8080/biocache-service/occurrences/static";
-            var wmsimg = baseurl + encodeURI(searchString); // window.location.search;
+            var wmsimg = baseurl + encodeURI(BC_CONF.searchString); // window.location.search;
             document.getElementById('wmsimg').src= wmsimg;
         },
         
@@ -222,7 +224,8 @@ var Maps = (function() {
                 center: myLatlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 scaleControl: true, 
-                streetViewControl: false
+                streetViewControl: false,
+                draggableCursor: 'pointer'
             }
             map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
             map.enableKeyDragZoom();
@@ -233,7 +236,7 @@ var Maps = (function() {
                 map: map
             });
             infowindow = new google.maps.InfoWindow({
-                size: new google.maps.Size(300, 200)
+                maxWidth: 600
             });
 
             map.setOptions({
@@ -258,6 +261,15 @@ var Maps = (function() {
                 $('#legend').show();
             });
             
+            // listener - so that map.getBounds() is not undef
+            var zoomed = false; 
+            google.maps.event.addListener(map, 'bounds_changed', function() {
+                if (!zoomed) {
+                    fitMapToBounds();
+                }
+                zoomed = true;
+            }); 
+            
             // populate the env.layer dropdown
             var opts='<option value="-1">None</option>';
             $.each(envLayers, function(key, value) {
@@ -265,41 +277,31 @@ var Maps = (function() {
             });
             $('#envLyrList').html(opts);
             
-            // if spatial FT search (e.g. via explore your area) then zoom in
-            var zoomForRadius = {
-                1: 14,
-                5: 12,
-                10: 11
-            };
+            // if spatial FT search (e.g. via explore your area) then 
+            // draw circle and add marker for centre of area
             var lat = $.urlParam('lat');
             var lon = $.urlParam('lon');
             var rad = $.urlParam('radius');
-            
+
             if (lat && lon && rad) {
+                // spatial query (e.g. from EYA)
                 var latLng = new google.maps.LatLng(lat, lon);
-                var zoom = zoomForRadius[rad];
-                map.setCenter(latLng);
-                if (zoom) {
-                    map.setZoom(zoom);
-                } else {
-                    map.setZoom(11);
-                }
-                
+
                 var marker = new google.maps.Marker({
                     position: latLng,
                     title: 'Centre of spatial search',
                     map: map,
                     draggable: false
                 });
-                
+
                 var infowindow1 = new google.maps.InfoWindow({
                     content: "Centre of spatial search <br/> with radius of " + rad + " km"
                 });
-                
+
                 google.maps.event.addListener(marker, 'click', function() {
                     infowindow1.open(map, marker);
                 });
-                
+
                 // Add a Circle overlay to the map.
                 var circle = new google.maps.Circle({
                     map: map,
@@ -309,17 +311,17 @@ var Maps = (function() {
                     strokeOpacity: 0.5,
                     fillColor: '#222', // '#2C48A6'
                     fillOpacity: 0.2,
-                    zIndex: -10
+                    zIndex: -100
                 });
-                
+
                 // bind circle to marker
                 circle.bindTo('center', marker, 'position');
                 // add event listener so dots can be clicked on
                 google.maps.event.addListener(circle, 'click', function(event) {
                     loadOccurrencePopup(event.latLng);
                 });
-            }
-
+            } 
+            
         },
 
         /**
@@ -344,31 +346,69 @@ var Maps = (function() {
             var pbutton = '';
             var nbutton = '';
             if (curr > 0) {
-                pbutton = '<span class="pagebutton"><a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr-1)+')">&lt; Previous</a></span>';
+                pbutton = '<a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr-1)+')">&lt; Previous</a>';
             }
             if (curr < occids.length-1) {
-                nbutton = '<span class="pagebutton" style="float: right"><a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr+1)+')">Next &gt;</a></span>';
+                nbutton = '<a href="#map" onClick="Maps.loadOccurrenceInfo('+(curr+1)+')">Next &gt;</a>';
             }
 
-            infowindow.setContent('<div style="height:200px">Loading occurrence info. Please wait...</div>');
+            //infowindow.setContent('<div style="height:200px">Loading occurrence info. Please wait...</div>');
 
             $.get(Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]), function(data){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
-                displayHtml = '';
-                displayHtml = '<div id="occinfo">';
-                displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
-                displayHtml += "<br /><br />";
 
-                displayHtml += "Scientific Name: " + formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID) + '<br />';
-                displayHtml += "Family: " + data.record.raw.classification.family + '<br />';
-                displayHtml += "Institution: " + data.record.processed.attribution.institutionName + '<br />';
+                var minHeight = "150px";
+                if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
+                    minHeight = "250px";
+                }
 
-                displayHtml += "<br />";
-                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a> | ';
-                displayHtml += '<a class="iframe fancy_iframe" href="'+(Config.OCC_ANNOTATE_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">Flag an issue</a>';
-                displayHtml += "<br /><br />";
-                displayHtml += pbutton + "&nbsp;" + nbutton;
-                
+                displayHtml = '<div id="occinfo" style="min-height:' + minHeight + ';">';
+                if(occids.length>1){
+                    displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
+                }
+
+                displayHtml += '<div id="textfields">';
+
+                if(data.record.raw.classification.vernacularName!=null){
+                    displayHtml += data.record.raw.classification.vernacularName + '<br />';
+                } else if(data.record.processed.classification.vernacularName!=null){
+                    displayHtml += data.record.processed.classification.vernacularName + '<br />';
+                }
+
+                if(data.record.raw.classification.scientificName != null){
+                    displayHtml += formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID)  + '<br />';
+                } else {
+                    displayHtml += formatSciName(data.record.processed.classification.scientificName, data.record.processed.classification.taxonRankID)  + '<br />';
+                }
+
+                if(data.record.processed.attribution.institutionName != null){
+                    displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
+                } else  if(data.record.processed.attribution.dataResourceName != null){
+                    displayHtml += data.record.processed.attribution.dataResourceName;
+                }
+
+                if(data.record.processed.event.eventDate != null){
+                    displayHtml += "<br/>";
+                    displayHtml += data.record.processed.event.eventDate;
+                }
+
+                displayHtml += '</div>';
+
+                //http://biocache.ala.org.au/biocache-media/dr360/19673/0a0e05bb-f68b-443c-9670-355622cdaed8/5286199529_c6ae5672b4.jpg
+                if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
+                    displayHtml += "<img style='margin-top:8px; max-width:150px; max-height:120px;' src ='"+data.record.processed.occurrence.images[0]+"'/>";
+                }
+
+                displayHtml += '<div id="occactions"">';
+                displayHtml += '<a class="iframe fancy_iframe moreinfolink" href="'+(Config.OCC_INFO_URL_HTML.replace(/_uuid_/g,occids[curr]))+'">More information</a>';
+
+                displayHtml += '<span class="pagebutton" style="padding-left:30px;">';
+                if(pbutton.length>0) displayHtml +=  pbutton
+                if(pbutton.length>0 && nbutton.length>0) displayHtml += "&nbsp;|&nbsp;"
+                if(nbutton.length>0) displayHtml +=  nbutton
+                displayHtml += '</span>';
+
+                displayHtml += '</div>';
                 displayHtml += '</div>';
 
                 infowindow.setContent(displayHtml);
@@ -531,7 +571,8 @@ var Maps = (function() {
 })();
 
 // Jquery Document.onLoad equivalent
-$(document).ready(function() {
+//$(document).ready(function() {
+function initialiseMap() {
 
     // setup the size slider first
     $('#sizeslider').slider({
@@ -599,7 +640,8 @@ $(document).ready(function() {
 
     });
 
-}); // end JQuery document ready
+}
+//}); // end JQuery document ready
 
 /**
  * Format the disaply of a scientific name.
@@ -690,4 +732,30 @@ $.urlParam = function(name){
         return 0; 
     }
     return results[1] || 0;
+}
+
+/**
+ * Triggered on map bounds change event.
+ * Zooms map to either spatial search or from WMS data bounds 
+ */
+function fitMapToBounds() {
+    
+    // all other searches (non-spatial)
+    // do webservice call to get max extent of WMS data
+    var jsonUrl = BC_CONF.biocacheServiceUrl + "/webportal/bounds.json" + BC_CONF.searchString + "&callback=?";
+
+    $.getJSON(jsonUrl, function(data) {
+        if (data.length == 4) {
+            var sw = new google.maps.LatLng(data[1],data[0]);
+            var ne = new google.maps.LatLng(data[3],data[2]);
+            var dataBounds = new google.maps.LatLngBounds(sw, ne);
+            var mapBounds = map.getBounds()
+
+            if (mapBounds && mapBounds.contains(sw) && mapBounds.contains(ne) && dataBounds) {
+                // data bounds is smaller than all of Aust
+                //console.log("smaller bounds",dataBounds,mapBounds)
+                map.fitBounds(dataBounds);
+            }
+        }
+    });
 }

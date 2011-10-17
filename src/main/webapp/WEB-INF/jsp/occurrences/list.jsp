@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader bundle="hubs" property="spatialPortalUrl"/></c:set>
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>    
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
@@ -19,13 +20,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
+        <meta name="decorator" content="${skin}"/>
         <title>Occurrence search results | ${hubDisplayName}</title>
         <script type="text/javascript">
-            contextPath = "${pageContext.request.contextPath}";
-            searchString = '${searchResults.urlParameters}'; 
-            bieWebappUrl = "${bieWebappContext}";
-            biocacheServiceUrl = "${biocacheServiceUrl}";
+            // single global var for app conf settings
+            var BC_CONF = {
+                contextPath: "${pageContext.request.contextPath}",
+                searchString: '${searchResults.urlParameters}', // keep as single quotes as JSTL var can contain double quotes
+                bieWebappUrl: "${bieWebappContext}",
+                biocacheServiceUrl: "${biocacheServiceUrl}"
+            };
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.oneshowhide.js"></script>
@@ -33,16 +37,25 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ui.position.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
-<!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.3&sensor=false"></script>
-        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
+<!--        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.3&sensor=false"></script>-->
+        <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="http://jquery-jsonp.googlecode.com/files/jquery.jsonp-2.1.4.min.js"></script>
+        <script type="text/javascript" src="http://collections.ala.org.au/js/charts.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms.js"></script>
         <script type="text/javascript">
+            // Conf for map JS (Ajay)
             Config.setupUrls("${biocacheServiceUrl}", "${queryContext}");
+            
+            google.load('maps','3.3',{ other_params: "sensor=false" });
+            google.load("visualization", "1", {packages:["corechart"]});
+            
         </script>
+        <script src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
+        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
@@ -63,7 +76,6 @@
            <input type="hidden" id="lsid" value="${param.lsid}"/>
         </div>
         <div style="clear: both;"></div>
-        <%-- <jsp:include page="../advancedSearchDiv.jsp"/> --%>
         <c:if test="${searchResults.totalRecords > 0}">
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
@@ -78,11 +90,11 @@
             <c:if test="${searchResults.totalRecords > 0 && empty errors}">
                 <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
                 <div>
-                    <div id="listMapToggle" class="row" >
+<!--                    <div id="listMapToggle" class="row" >
                         <button class="rounded" id="listMapButton">
                             <span id="listMapLink">Map</span>
                         </button>
-                    </div>
+                    </div>-->
                     <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
                         for <span id="queryDisplay">${queryDisplay}</span>
 <!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
@@ -92,8 +104,13 @@
                         <jsp:include page="downloadDiv.jsp"/>
                     </div>
                 </div>
-                <div id="resultsOuter">
-                    <div class="solrResults">
+                <ul class="css-tabs">
+                    <li><a id="t1" href="#recordsView">Records</a></li>
+                    <li><a id="t2" href="#mapView">Map</a></li>
+                    <li><a id="t3" href="#chartsView">Charts</a></li>
+                </ul>
+                <div class="css-panes">
+                    <div class="paneDiv solrResults">
                         <div id="searchControls">
                             <div id="downloads">
                                 <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
@@ -131,26 +148,47 @@
                         </div><!-- searchControls -->
                         <div id="results">
                             <c:forEach var="occurrence" items="${searchResults.occurrences}">
-                                <p class="rowA">Record: <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink">
-                                    <c:choose>
-                                        <c:when test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
-                                            ${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${occurrence.uuid}
-                                        </c:otherwise>
-                                    </c:choose>
-                                            </a> &mdash;
-                                    <span style="text-transform: capitalize">${occurrence.taxonRank}</span>: <span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${occurrence.raw_scientificName}"/></span>
-                                    <c:if test="${not empty occurrence.vernacularName}"> | <span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
+                                <p class="rowA">
+                                    <c:set var="rawScientificName">
+                                        <c:choose>
+                                            <c:when test="${not empty occurrence.raw_scientificName}">${occurrence.raw_scientificName}</c:when>
+                                            <c:when test="${not empty occurrence.species}">${occurrence.species}</c:when>
+                                            <c:when test="${not empty occurrence.genus}">${occurrence.genus}</c:when>
+                                            <c:when test="${not empty occurrence.family}">${occurrence.family}</c:when>
+                                            <c:when test="${not empty occurrence.order}">${occurrence.order}</c:when>
+                                            <c:when test="${not empty occurrence.phylum}">${occurrence.phylum}</c:when>
+                                            <c:when test="${not empty occurrence.kingdom}">${occurrence.kingdom}</c:when>
+                                            <c:otherwise>No name supplied</c:otherwise>
+                                        </c:choose>
+                                    </c:set>
+                                    <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${rawScientificName}"/></span>
+                                    <c:if test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
+                                    <span style="margin-left: 8px;">
+                                    <c:if test="${not empty occurrence.eventDate}">
+                                        <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
+                                    </c:if>
+                                    <c:if test="${not empty occurrence.stateProvince}">
+                                        <span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span>
+                                    </c:if>
+                                    </span>
                                 </p>
                                 <p class="rowB">
-                                    <c:if test="${not empty occurrence.institutionName}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span></c:if>
-                                    <c:if test="${not empty occurrence.collectionName}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span></c:if>
-                                    <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span></c:if>
-                                    <c:if test="${not empty occurrence.basisOfRecord}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Basis of record:</strong>&nbsp;${occurrence.basisOfRecord}</span></c:if>
-                                    <c:if test="${not empty occurrence.eventDate}"><span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span></c:if>
-                                    <c:if test="${not empty occurrence.stateProvince}"><span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span></c:if>
+                                    <c:if test="${not empty occurrence.institutionName}">
+                                        <span style="text-transform: capitalize;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
+                                    </c:if>
+                                    <c:if test="${not empty occurrence.collectionName}">
+                                        <span style="text-transform: capitalize;"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
+                                    </c:if>
+                                    <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
+                                        <span style="text-transform: capitalize;"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
+                                    </c:if>
+                                    <c:if test="${not empty occurrence.basisOfRecord}">
+                                        <span style="text-transform: capitalize;"><strong class="resultsLabel">Basis&nbsp;of&nbsp;record:</strong>&nbsp;${occurrence.basisOfRecord}</span>
+                                    </c:if>
+                                    <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
+                                        <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
+                                    </c:if>
+                                    <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
                                 </p>
                             </c:forEach>
                         </div><!--close results-->
@@ -159,33 +197,34 @@
                                                           lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
                         </div>
                     </div><!--end solrResults-->
-                    <div id="mapwrapper">
-                        <div id="mapLayerControls">
-                            <label for="colourFacets">Colour by:&nbsp;</label>
-                            <div class="layerControls">
-                                <select name="colourFacets" id="colourFacets">
-                                    <option value=""> None </option>
-                                    <c:forEach var="facetResult" items="${searchResults.facetResults}">
-                                        <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
-                                            <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
-                                        </c:if>
-                                    </c:forEach>
-                                </select>
-                                </div>
-                            <%--<label for="envLyrList">Environmental Layer:&nbsp;</label>
-                            <div class="layerControls">
-                                <select id="envLyrList">
-                                    <option value="">None</option>
-                                </select>
-                            </div>--%>
-                            <!-- size slider start -->
-                            <label for="sizeslider">Size:&nbsp;</label>
-                            <div class="layerControls">
-                                <span id="sizeslider-val">4</span>
-                                <div id="sizeslider"></div>
-                            </div>
-                            <!-- size slider end -->
-                        </div>
+                    <div id="mapwrapper" class="paneDiv">
+                        <table id="mapLayerControls">
+                            <tr>
+                                <td>
+                                    <label for="colourFacets">Colour by:&nbsp;</label>
+                                    <div class="layerControls">
+                                        <select name="colourFacets" id="colourFacets">
+                                            <option value=""> None </option>
+                                            <c:forEach var="facetResult" items="${searchResults.facetResults}">
+                                                <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
+                                                    <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
+                                                </c:if>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label for="sizeslider">Size:</label>
+                                    <div class="layerControls">
+                                        <span id="sizeslider-val">4</span>
+                                        <div id="sizeslider"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a id="spatialPortalLink" href="${spatialPortalUrl}${searchResults.urlParameters}">View in spatial portal</a>
+                                </td>
+                            </tr>
+                        </table>
                         <div id="mapcanvas"></div>
                         <div id="maploading">Loading...</div>
                         <div id="legend" title="Toggle layers/legend display">                            
@@ -195,7 +234,10 @@
                                 <div id="legendContent"></div>
                             </div>
                         </div>
-                    </div>
+                    </div><!--end mapwrapper-->
+                    <div id="chartsWrapper" class="paneDiv">
+                        <div id="charts"></div>
+                    </div><!--end chartsWrapper-->
                 </div>
             </c:if>
         </div>

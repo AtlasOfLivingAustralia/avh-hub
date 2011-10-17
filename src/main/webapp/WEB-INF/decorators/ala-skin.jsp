@@ -10,7 +10,7 @@ include file="/common/taglibs.jsp" %>
     <head profile="http://gmpg.org/xfn/11">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <title><decorator:title default="Atlas of Living Australia" /></title>
+        <title><decorator:title default="Atlas of Living Australia"/></title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala/style.css" type="text/css" media="screen" />
         <link rel="icon" type="image/x-icon" href="${initParam.centralServer}/wp-content/themes/ala/images/favicon.ico" />

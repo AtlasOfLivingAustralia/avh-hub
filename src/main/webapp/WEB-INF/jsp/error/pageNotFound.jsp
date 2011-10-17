@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="decorator" content="<ala:propertyLoader bundle="hubs" property="sitemesh.skin"/>"/>
+        <meta name="decorator" content="${skin}"/>
         <title>Page Not Found</title>
         <script type="text/javascript">
             $(document).ready(function() {

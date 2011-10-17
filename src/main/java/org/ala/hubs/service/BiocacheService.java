@@ -96,4 +96,7 @@ public interface BiocacheService {
     public Map<String, Object> getCompareRecord(String uuid);
 
     public List<String> getDefaultFacets();
+
+    public boolean isReadOnly();
+
 }

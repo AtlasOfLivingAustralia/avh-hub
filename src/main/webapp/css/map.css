@@ -12,13 +12,13 @@
 */
 
 #mapcanvas {
-    width: 730px;
+    width: 680px;
     height: 560px;
 }
 
 #maploading {
     position: absolute;
-    top: 60px;
+    top: 50px;
     width: 100%;
     background-color: #1775BA;
     color: white;

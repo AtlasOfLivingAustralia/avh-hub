@@ -216,7 +216,7 @@ h2 {
     text-indent: 0;
     color: #333;
 	padding-left: 0px;
-    padding-top: 10px;
+    /*padding-top: 10px; */
 /*	text-align: center;*/
 }
 .hp-contentbutton a:hover  {
@@ -472,4 +472,6 @@ h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, 
 
 #SidebarBox, #resultsReturned {
     margin-top: 5px;
-} 
+}
+
+#searchHeader { padding-left:30px; }
