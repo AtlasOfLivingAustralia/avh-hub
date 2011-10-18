@@ -329,3 +329,12 @@ td.dwc {
     text-align: right;
     white-space: nowrap;
 }
+
+div#userAssertionsDetailsLink {
+    margin-left: 10px;
+    margin-top: -5px;
+}
+
+div#userAssertionsDetailsLink > a {
+    font-size: 12px;
+}

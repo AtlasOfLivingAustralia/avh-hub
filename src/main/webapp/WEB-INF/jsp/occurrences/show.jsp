@@ -114,7 +114,7 @@
                     'margin': 10
                 });
 
-                // raw vs processed popup
+                // user flagged issues popup
                 $("#showUserFlaggedIssues").fancybox({
                     //'href': '#loginOrFlag',
                     'hideOnContentClick' : false,
@@ -323,6 +323,7 @@
                         <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
                             <alatag:groupedAssertions groupedAssertions="${groupedAssertions}" />
                         </ul>
+                        <div id="userAssertionsDetailsLink"><a id="showUserFlaggedIssues" href="#userFlaggedIssuesDetails">View Detailed List</a></div>
                         </div>
                     </div>
                 </div>
@@ -380,12 +381,6 @@
                         <span id="processedVsRawViewSpan" href="#processedVsRawView" title="">Original vs Processed</span>
                     </button>
                 </div>
-                <div class="sidebar">
-                    <button class="rounded" id="showUserFlaggedIssues" href="#userFlaggedIssuesDetails" title="Details of user flagged issues">
-                        <span id="showUserFlaggedIssuesSpan" href="#userFlaggedIssuesDetails" title="">User Flagged Issues</span>
-                    </button>
-                </div>
-
                 <c:if test="${not empty record.processed.occurrence.images}">
                     <div class="sidebar">
                         <h2>Images</h2>

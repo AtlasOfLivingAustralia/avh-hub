@@ -104,6 +104,8 @@ var Maps = (function() {
 
         var baseurl = Config.OCC_SEARCH_URL;
         var wmsinfo = baseurl + ((BC_CONF.searchString) ? encodeURI(BC_CONF.searchString) : "?"); // window.location.search;
+        // remove spatial params from searchString param
+        wmsinfo = wmsinfo.replace(/&lat\=.*/, '');
         wmsinfo += "&zoom=" + map.getZoom();
         wmsinfo += "&lat=" + location.lat();
         wmsinfo += "&lon=" + location.lng();
@@ -569,7 +571,8 @@ var Maps = (function() {
 })();
 
 // Jquery Document.onLoad equivalent
-$(document).ready(function() {
+//$(document).ready(function() {
+function initialiseMap() {
 
     // setup the size slider first
     $('#sizeslider').slider({
@@ -637,7 +640,8 @@ $(document).ready(function() {
 
     });
 
-}); // end JQuery document ready
+}
+//}); // end JQuery document ready
 
 /**
  * Format the disaply of a scientific name.

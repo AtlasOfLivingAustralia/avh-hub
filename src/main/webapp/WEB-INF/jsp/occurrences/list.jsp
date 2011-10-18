@@ -39,14 +39,23 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.3&sensor=false"></script>
-        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
+<!--        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.3&sensor=false"></script>-->
+        <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="http://jquery-jsonp.googlecode.com/files/jquery.jsonp-2.1.4.min.js"></script>
+        <script type="text/javascript" src="http://collections.ala.org.au/js/charts.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms.js"></script>
         <script type="text/javascript">
             // Conf for map JS (Ajay)
             Config.setupUrls("${biocacheServiceUrl}", "${queryContext}");
+            
+            google.load('maps','3.3',{ other_params: "sensor=false" });
+            google.load("visualization", "1", {packages:["corechart"]});
+            
         </script>
+        <script src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
+        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
@@ -81,11 +90,11 @@
             <c:if test="${searchResults.totalRecords > 0 && empty errors}">
                 <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
                 <div>
-                    <div id="listMapToggle" class="row" >
+<!--                    <div id="listMapToggle" class="row" >
                         <button class="rounded" id="listMapButton">
                             <span id="listMapLink">Map</span>
                         </button>
-                    </div>
+                    </div>-->
                     <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
                         for <span id="queryDisplay">${queryDisplay}</span>
 <!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
@@ -95,8 +104,13 @@
                         <jsp:include page="downloadDiv.jsp"/>
                     </div>
                 </div>
-                <div id="resultsOuter">
-                    <div class="solrResults">
+                <ul class="css-tabs">
+                    <li><a id="t1" href="#recordsView">Records</a></li>
+                    <li><a id="t2" href="#mapView">Map</a></li>
+                    <li><a id="t3" href="#chartsView">Charts</a></li>
+                </ul>
+                <div class="css-panes">
+                    <div class="paneDiv solrResults">
                         <div id="searchControls">
                             <div id="downloads">
                                 <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
@@ -183,44 +197,37 @@
                                                           lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
                         </div>
                     </div><!--end solrResults-->
-                    <div id="mapwrapper">
-                        <div id="mapLayerControls">
-                            <label for="colourFacets">Colour by:&nbsp;</label>
-                            <div class="layerControls">
-                                <select name="colourFacets" id="colourFacets">
-                                    <option value=""> None </option>
-                                    <c:forEach var="facetResult" items="${searchResults.facetResults}">
-                                        <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
-                                            <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
-                                        </c:if>
-                                    </c:forEach>
-                                </select>
-                                </div>
-                            <%--<label for="envLyrList">Environmental Layer:&nbsp;</label>
-                            <div class="layerControls">
-                                <select id="envLyrList">
-                                    <option value="">None</option>
-                                </select>
-                            </div>--%>
-                            <!-- size slider start -->
-                            <label for="sizeslider">Size:&nbsp;</label>
-                            <div class="layerControls">
-                                <span id="sizeslider-val">4</span>
-                                <div id="sizeslider"></div>
-                            </div>
-                            <!-- size slider end -->
-
-                            <!-- Link to spatial portal -->
-
-                            <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
-
-                            <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}">View in spatial portal</a>
-                            <!--
-                            <input type="text" value="${spatialPortalUrl}${spatialPortalLink}" size="100"/>
-                            -->
-                        </div>
-                        <div id="mapcanvas"></div>
+                    <div id="mapwrapper" class="paneDiv">
+                        <table id="mapLayerControls">
+                            <tr>
+                                <td>
+                                    <label for="colourFacets">Colour by:&nbsp;</label>
+                                    <div class="layerControls">
+                                        <select name="colourFacets" id="colourFacets">
+                                            <option value=""> None </option>
+                                            <c:forEach var="facetResult" items="${searchResults.facetResults}">
+                                                <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
+                                                    <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
+                                                </c:if>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label for="sizeslider">Size:</label>
+                                    <div class="layerControls">
+                                        <span id="sizeslider-val">4</span>
+                                        <div id="sizeslider"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
+                                    <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}">View in spatial portal</a>
+                                </td>
+                            </tr>
+                        </table>
                         <div id="maploading">Loading...</div>
+                        <div id="mapcanvas"></div>
                         <div id="legend" title="Toggle layers/legend display">                            
                             <div class="title">Legend<span>&nabla;</span></div>
                             <div id="layerlist">
@@ -228,7 +235,10 @@
                                 <div id="legendContent"></div>
                             </div>
                         </div>
-                    </div>
+                    </div><!--end mapwrapper-->
+                    <div id="chartsWrapper" class="paneDiv">
+                        <div id="charts"></div>
+                    </div><!--end chartsWrapper-->
                 </div>
             </c:if>
         </div>

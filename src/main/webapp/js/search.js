@@ -430,4 +430,37 @@ $(document).ready(function() {
         if (!hoverDropDownDiv) $('.refineTaxaSearch, #facetOptions').hide();
     });
     
+    var facetChartOptions = {
+        query: BC_CONF.searchString.replace("?q=",""), 
+        charts: ['institution_uid','state','species_group','assertions','type_status','biogeographic_region','state_conservation','occurrence_year'],
+        institution_uid: {backgroundColor: "#eeeeee"},
+        state: {backgroundColor: "#eeeeee"},
+        species_group: {backgroundColor: "#eeeeee"},
+        assertions: {backgroundColor: "#eeeeee"},
+        type_status: {backgroundColor: "#eeeeee"},
+        biogeographic_region: {backgroundColor: "#eeeeee"},
+        state_conservation: {backgroundColor: "#eeeeee"},
+        occurrence_year:{backgroundColor: "#eeeeee"}
+    }
+
+    var init = { 
+        map: false,
+        charts: false
+    };
+
+    $(".css-tabs").tabs(".css-panes > div", { 
+        history: true,
+        effect: 'fade',
+        onClick: function(event, tabIndex) {
+            if (tabIndex == 1 && !init.map) {
+                initialiseMap();
+                init.map = true; // only initialise once!
+            } else if (tabIndex == 2 && !init.charts) {
+                loadTaxonomyChart({ query: BC_CONF.searchString.replace("?q=",""),  backgroundColor: "#eeeeee" });
+                loadFacetCharts(facetChartOptions);
+                init.charts = true; // only initialise once!
+            }
+        }
+    });
+    
 }); // end JQuery document ready

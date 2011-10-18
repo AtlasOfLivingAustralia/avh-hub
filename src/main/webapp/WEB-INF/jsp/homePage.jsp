@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="isALA" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,7 +46,7 @@
                 <li><a id="t2" href="#advanced">Advanced Search</a></li>
             </ul>
             <div class="css-panes">
-                <div id="simpleSearchDiv">
+                <div id="simpleSearchDiv" class="paneDiv homePane">
 <!--                    <h3>Simple Search</h3>-->
                     <form name="simpleSearchForm" id="simpleSearchForm" action="${pageContext.request.contextPath}/occurrences/search" method="GET">
                         <table border="0" width="100" cellspacing="2" class="compact" style="margin-top: 15px;">
@@ -69,7 +70,7 @@
                         </table>
                     </form>
                 </div><!-- end simpleSearch div -->
-                <div id="advancedSearchDiv">
+                <div id="advancedSearchDiv" class="paneDiv homePane">
                     <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/advancedSearch" method="POST">
 <!--                        <h3>Advanced Search</h3>-->
                         <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;">${param.q}</input>
@@ -167,17 +168,19 @@
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
                             <tbody>
-                                <tr>
-                                    <td class="label">Country</td>
-                                    <td>
-                                        <select class="country" name="country" id="country">
-                                            <option value="">-- select a country --</option>
-                                            <c:forEach var="country" items="${countries}">
-                                                <option value="${country}">${country}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                </tr>
+                                <c:if test="${not isALA}">
+                                    <tr>
+                                        <td class="label">Country</td>
+                                        <td>
+                                            <select class="country" name="country" id="country">
+                                                <option value="">-- select a country --</option>
+                                                <c:forEach var="country" items="${countries}">
+                                                    <option value="${country}">${country}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </c:if>
                                 <tr>
                                     <td class="label">State/Territory</td>
                                     <td>
