@@ -17,6 +17,7 @@ img {
 	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
+    padding: 0 10px;
 }
 
 #page_content {
@@ -1121,6 +1122,10 @@ th button.indexedlink {
 .column {
 	float: left;
 	padding-bottom: 20px;
+}
+
+#charts .column {
+    float: none;
 }
 
 .col1 {

@@ -430,6 +430,8 @@ $(document).ready(function() {
         if (!hoverDropDownDiv) $('.refineTaxaSearch, #facetOptions').hide();
     });
     
+    // Jquery Tools Tabs setup
+    // triggers charts widgets
     var facetChartOptions = {
         query: BC_CONF.searchString.replace("?q=",""), 
         charts: ['institution_uid','state','species_group','assertions','type_status','biogeographic_region','state_conservation','occurrence_year'],
@@ -440,10 +442,12 @@ $(document).ready(function() {
         type_status: {backgroundColor: "#eeeeee"},
         biogeographic_region: {backgroundColor: "#eeeeee"},
         state_conservation: {backgroundColor: "#eeeeee"},
-        occurrence_year:{backgroundColor: "#eeeeee"}
+        occurrence_year:{backgroundColor: "#eeeeee"},
+        biocacheServicesUrl: BC_CONF.biocacheServiceUrl.replace(/ws$/,''),
+        biocacheWebappUrl: BC_CONF.serverName
     }
 
-    var init = { 
+    var tabsInit = { 
         map: false,
         charts: false
     };
@@ -452,13 +456,13 @@ $(document).ready(function() {
         history: true,
         effect: 'fade',
         onClick: function(event, tabIndex) {
-            if (tabIndex == 1 && !init.map) {
+            if (tabIndex == 1 && !tabsInit.map) {
                 initialiseMap();
-                init.map = true; // only initialise once!
-            } else if (tabIndex == 2 && !init.charts) {
+                tabsInit.map = true; // only initialise once!
+            } else if (tabIndex == 2 && !tabsInit.charts) {
                 loadTaxonomyChart({ query: BC_CONF.searchString.replace("?q=",""),  backgroundColor: "#eeeeee" });
                 loadFacetCharts(facetChartOptions);
-                init.charts = true; // only initialise once!
+                tabsInit.charts = true; // only initialise once!
             }
         }
     });

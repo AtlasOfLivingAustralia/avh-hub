@@ -28,7 +28,8 @@
                 contextPath: "${pageContext.request.contextPath}",
                 searchString: '${searchResults.urlParameters}', // keep as single quotes as JSTL var can contain double quotes
                 bieWebappUrl: "${bieWebappContext}",
-                biocacheServiceUrl: "${biocacheServiceUrl}"
+                biocacheServiceUrl: "${biocacheServiceUrl}",
+                serverName: "${initParam.serverName}${initParam.contextPath}/"
             };
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
@@ -43,6 +44,7 @@
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="http://jquery-jsonp.googlecode.com/files/jquery.jsonp-2.1.4.min.js"></script>
         <script type="text/javascript" src="http://collections.ala.org.au/js/charts.js"></script>
+        <!-- <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script> -->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms.js"></script>
         <script type="text/javascript">

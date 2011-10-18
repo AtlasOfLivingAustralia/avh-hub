@@ -4,6 +4,7 @@ ul.css-tabs {
 	margin:0 !important; 
 	padding:0;
 	height:30px;
+    list-style:none !important;
 /*	border-bottom:1px solid #666;	*/
 }
 
