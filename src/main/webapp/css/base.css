@@ -190,3 +190,13 @@ span#taxonName {
 .freetext {
     font-size: 16px;
 }
+
+#userFlaggedIssuesDetails {
+    text-align: left;
+}
+
+#userFlaggedIssuesDetails p {
+    margin-top:5px;
+    padding:3px;
+    border-bottom: 1px solid #CCC;
+}

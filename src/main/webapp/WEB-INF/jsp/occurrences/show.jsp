@@ -1,4 +1,4 @@
-<%--
+<%--                                                                                       userAssertionComments
     Document   : list
     Created on : Feb 2, 2011, 10:54:57 AM
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
@@ -163,6 +163,12 @@
                     }
                 });
 
+                $(".userAssertionComment").each(function(i, el) {
+                    var html = $(el).html();
+                    $(el).html(replaceURLWithHTMLLinks(html)); // conver it
+                });
+
+
                 // bind to form "close" button
                 $("input#close").live("click", function(e) {
                     // close the popup
@@ -249,6 +255,12 @@
                     return this.replace(/^\s+|\s+$/g, ''); 
                 }
             }
+
+        function replaceURLWithHTMLLinks(text) {
+            var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+            return text.replace(exp,"<a href='$1'>$1</a>");
+        }
+
         </script>
     </head>
     <body>
@@ -323,7 +335,9 @@
                         <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
                             <alatag:groupedAssertions groupedAssertions="${groupedAssertions}" />
                         </ul>
-                        <div id="userAssertionsDetailsLink"><a id="showUserFlaggedIssues" href="#userFlaggedIssuesDetails">View Detailed List</a></div>
+                        <div id="userAssertionsDetailsLink"><a id="showUserFlaggedIssues" href="#userFlaggedIssuesDetails">
+                            View issue list & comments
+                        </a></div>
                         </div>
                     </div>
                 </div>
@@ -1204,12 +1218,15 @@
 
        <div style="display:none;clear:both;">
             <div id="userFlaggedIssuesDetails">
-                <h2>User flagged Issues</h2>
+                <h2>User flagged issues</h2>
                 <c:forEach items="${record.userAssertions}" var="userAssertion">
                     <p>
-                       User name: ${userAssertion.userDisplayName} <br/>
-                       Comment: ${userAssertion.comment} <br/>
+                       <strong><spring:message code="${userAssertion.name}" text="$userAssertion.name}"/></strong><br/>
+                       Comment: <span class="userAssertionComment">${userAssertion.comment}</span><br/>
+                       Flagged by: ${userAssertion.userDisplayName} <br/>
+                       <c:if test="${not empty userAssertion.created}">
                        Created: ${userAssertion.created} <br/>
+                       </c:if>
                     </p>
                 </c:forEach>
             </div>
