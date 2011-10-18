@@ -67,7 +67,8 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String homePage() {
+    public String homePage(Model model) {
+        addLookupToModel(model);
         return homePage;
     }
 
@@ -77,7 +78,8 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String indexPage() {
+    public String indexPage(Model model) {
+        addLookupToModel(model);
         return homePage;
     }
 
@@ -88,9 +90,14 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = {"/home", "/advancedSearch", "/search", "/query"}, method = RequestMethod.GET)
-    public String homePage(Model model) {
+    public String search(Model model) {
         logger.debug("Home Page request.");
-        List<String>inguids = collectoryUidCache.getInstitutions();
+        addLookupToModel(model);
+        return searchPage;
+    }
+
+    private void addLookupToModel(Model model) {
+        List<String> inguids = collectoryUidCache.getInstitutions();
         List<String> coguids = collectoryUidCache.getCollections();
         model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));
         model.addAttribute("institutions", collectionsCache.getInstitutions(inguids, coguids));
@@ -101,9 +108,8 @@ public class HomePageController {
         model.addAttribute("ibra", serviceCache.getIBRA());
         model.addAttribute("imcra", serviceCache.getIMCRA());
         model.addAttribute("countries", serviceCache.getCountries());
-        return searchPage;
     }
-    
+
     /**
      * Advanced search - POST 
      *
