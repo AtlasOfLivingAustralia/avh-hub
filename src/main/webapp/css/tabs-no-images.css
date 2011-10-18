@@ -67,6 +67,10 @@ ul.css-tabs a.current {
 	background-color:#eee;	
 }
 
+.css-panes div.homePane {
+    width: 90%;
+}
+
 #content3 {
     padding: 0 40px 0 40px;
     margin-bottom: 20px;

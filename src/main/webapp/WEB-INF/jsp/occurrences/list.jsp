@@ -197,7 +197,6 @@
                                                           lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
                         </div>
                     </div><!--end solrResults-->
-<<<<<<< .working
                     <div id="mapwrapper" class="paneDiv">
                         <table id="mapLayerControls">
                             <tr>
