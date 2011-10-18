@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="isALA" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
 <!DOCTYPE html>
 <html>
     <head>
@@ -167,17 +168,19 @@
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
                             <tbody>
-                                <tr>
-                                    <td class="label">Country</td>
-                                    <td>
-                                        <select class="country" name="country" id="country">
-                                            <option value="">-- select a country --</option>
-                                            <c:forEach var="country" items="${countries}">
-                                                <option value="${country}">${country}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                </tr>
+                                <c:if test="${not isALA}">
+                                    <tr>
+                                        <td class="label">Country</td>
+                                        <td>
+                                            <select class="country" name="country" id="country">
+                                                <option value="">-- select a country --</option>
+                                                <c:forEach var="country" items="${countries}">
+                                                    <option value="${country}">${country}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </c:if>
                                 <tr>
                                     <td class="label">State/Territory</td>
                                     <td>
