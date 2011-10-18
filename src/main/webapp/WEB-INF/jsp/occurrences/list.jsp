@@ -226,8 +226,8 @@
                                 </td>
                             </tr>
                         </table>
-                        <div id="mapcanvas"></div>
                         <div id="maploading">Loading...</div>
+                        <div id="mapcanvas"></div>
                         <div id="legend" title="Toggle layers/legend display">                            
                             <div class="title">Legend<span>&nabla;</span></div>
                             <div id="layerlist">

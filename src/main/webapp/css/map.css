@@ -18,14 +18,17 @@
 
 #maploading {
     position: absolute;
-    top: 50px;
-    width: 100%;
+    top: 180px;
+    left: auto;
+    right: auto;
+    width: 670px;
     background-color: #1775BA;
     color: white;
     padding: 5px;
     text-align: center; 
     font-family: Helvetica, sans-serif;
     display: none;
+    z-index: 9999;
 }
 
 #occinfo {
