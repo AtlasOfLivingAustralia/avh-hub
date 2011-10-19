@@ -110,6 +110,38 @@ function removeFacet(facet) {
     window.location.href = window.location.pathname + '?' + paramList.join('&') + window.location.hash;
 }
 
+/**
+ * Load all the charts 
+ */
+function loadAllCharts() {
+    var queryString = BC_CONF.searchString.replace("?q=","");
+    var biocacheServiceUrl = "http://ala-macropus.it.csiro.au/biocache-service"; //BC_CONF.biocacheServiceUrl,
+    
+    var taxonomyChartOptions = {
+        query: queryString,
+        backgroundColor: "#eeeeee",
+        biocacheServicesUrl: biocacheServiceUrl
+    };
+    
+    var facetChartOptions = {
+        query: queryString, 
+        charts: ['institution_uid','state','species_group','assertions','type_status','biogeographic_region','state_conservation','occurrence_year'],
+        institution_uid: {backgroundColor: "#eeeeee"},
+        state: {backgroundColor: "#eeeeee"},
+        species_group: {backgroundColor: "#eeeeee"},
+        assertions: {backgroundColor: "#eeeeee"},
+        type_status: {backgroundColor: "#eeeeee"},
+        biogeographic_region: {backgroundColor: "#eeeeee"},
+        state_conservation: {backgroundColor: "#eeeeee"},
+        occurrence_year:{backgroundColor: "#eeeeee"},
+        biocacheServicesUrl: biocacheServiceUrl,
+        biocacheWebappUrl: BC_CONF.serverName
+    };
+    
+    loadTaxonomyChart(taxonomyChartOptions);
+    loadFacetCharts(facetChartOptions);
+}
+
 // vars for hiding drop-dpwn divs on click outside tem
 var hoverDropDownDiv = false;
 
@@ -431,22 +463,6 @@ $(document).ready(function() {
     });
     
     // Jquery Tools Tabs setup
-    // triggers charts widgets
-    var facetChartOptions = {
-        query: BC_CONF.searchString.replace("?q=",""), 
-        charts: ['institution_uid','state','species_group','assertions','type_status','biogeographic_region','state_conservation','occurrence_year'],
-        institution_uid: {backgroundColor: "#eeeeee"},
-        state: {backgroundColor: "#eeeeee"},
-        species_group: {backgroundColor: "#eeeeee"},
-        assertions: {backgroundColor: "#eeeeee"},
-        type_status: {backgroundColor: "#eeeeee"},
-        biogeographic_region: {backgroundColor: "#eeeeee"},
-        state_conservation: {backgroundColor: "#eeeeee"},
-        occurrence_year:{backgroundColor: "#eeeeee"},
-        biocacheServicesUrl: BC_CONF.biocacheServiceUrl.replace(/ws$/,''),
-        biocacheWebappUrl: BC_CONF.serverName
-    }
-
     var tabsInit = { 
         map: false,
         charts: false
@@ -457,11 +473,12 @@ $(document).ready(function() {
         effect: 'fade',
         onClick: function(event, tabIndex) {
             if (tabIndex == 1 && !tabsInit.map) {
+                // trigger map load
                 initialiseMap();
                 tabsInit.map = true; // only initialise once!
             } else if (tabIndex == 2 && !tabsInit.charts) {
-                loadTaxonomyChart({ query: BC_CONF.searchString.replace("?q=",""),  backgroundColor: "#eeeeee" });
-                loadFacetCharts(facetChartOptions);
+                // trigger charts load
+                loadAllCharts();
                 tabsInit.charts = true; // only initialise once!
             }
         }
