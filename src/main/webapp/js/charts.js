@@ -1,9 +1,12 @@
 /*------------------------- RECORD BREAKDOWN CHARTS ------------------------------*/
 
-// the server base url
+/***** external services & links *****/
+// an instance of the collections app - used for name lookup services
 var collectionsUrl = "http://collections.ala.org.au";  // should be overridden from config by the calling page
-var biocacheUrl = "http://biocache.ala.org.au/";  // should be overridden from config by the calling page
-var displayRecordsUrl = biocacheUrl;  // should be overridden from config by the calling page
+// an instance of the biocache web services app - used for facet and taxonomic breakdowns
+var biocacheServicesUrl = "http://biocache.ala.org.au/ws";  // should be overridden from config by the calling page
+// an instance of a web app - used to display search results
+var biocacheWebappUrl = "http://biocache.ala.org.au";  // should be overridden from config by the calling page
 
 // defaults for taxa chart
 var taxonomyPieChartOptions = {
@@ -65,14 +68,14 @@ var syncTransforms = {
 \********************************************************************************/
 function loadFacetCharts(chartOptions) {
     if (chartOptions.collectionsUrl != undefined) { collectionsUrl = chartOptions.collectionsUrl; }
-    if (chartOptions.biocacheUrl != undefined) { biocacheUrl = chartOptions.biocacheUrl; }
-    if (chartOptions.displayRecordsUrl != undefined) { displayRecordsUrl = chartOptions.displayRecordsUrl; }
+    if (chartOptions.biocacheServicesUrl != undefined) { biocacheServicesUrl = chartOptions.biocacheServicesUrl; }
+    if (chartOptions.displayRecordsUrl != undefined) { biocacheWebappUrl = chartOptions.displayRecordsUrl; }
 
     var chartsDiv = $('#' + (chartOptions.targetDivId ? chartOptions.targetDivId : 'charts'));
     chartsDiv.append($("<span>Loading charts...</span>"));
     var query = chartOptions.query ? chartOptions.query : buildQueryString(chartOptions.instanceUid);
     $.ajax({
-      url: biocacheUrl + "ws/occurrences/search.json?pageSize=0&q=" + query,
+      url: urlConcat(biocacheServicesUrl, "/occurrences/search.json?pageSize=0&q=") + query,
       dataType: 'jsonp',
       error: function() {
         cleanUp();
@@ -175,7 +178,7 @@ function buildGenericFacetChart(name, data, query, chartsDiv, chartOptions) {
     }
 
     // specify the type (for css tweaking)
-    $container.addClass(opts.chartType);
+    $container.addClass('chart-' + opts.chartType);
             
     // create the chart
     var chart;
@@ -215,7 +218,7 @@ function buildGenericFacetChart(name, data, query, chartsDiv, chartOptions) {
             }
 
             // show the records
-            document.location = displayRecordsUrl + "occurrences/search?q=" + query +
+            document.location = urlConcat(biocacheWebappUrl,"/occurrences/search?q=") + query +
                     "&fq=" + facetQuery;
         });
     }
@@ -276,12 +279,12 @@ function lookupEntityName(chart, table, opts, entity) {
 \********************************************************************************/
 function loadTaxonomyChart(chartOptions) {
     if (chartOptions.collectionsUrl != undefined) { collectionsUrl = chartOptions.collectionsUrl; }
-    if (chartOptions.biocacheUrl != undefined) { biocacheUrl = chartOptions.biocacheUrl; }
-    if (chartOptions.displayRecordsUrl != undefined) { displayRecordsUrl = chartOptions.displayRecordsUrl; }
+    if (chartOptions.biocacheServicesUrl != undefined) { biocacheServicesUrl = chartOptions.biocacheServicesUrl; }
+    if (chartOptions.displayRecordsUrl != undefined) { biocacheWebappUrl = chartOptions.displayRecordsUrl; }
 
     var query = chartOptions.query ? chartOptions.query : buildQueryString(chartOptions.instanceUid);
 
-    var url = biocacheUrl + "ws/breakdown.json?q=" + query;
+    var url = urlConcat(biocacheServicesUrl, "/breakdown.json?q=") + query;
 
     // add url params to set state
     if (chartOptions.rank) {
@@ -350,7 +353,7 @@ function drawTaxonomyChart(data, chartOptions, query) {
     // create the chart container if not already there
     var $container = $('#taxaChart');
     if ($container.length == 0) {
-        $container = $("<div id='taxaChart' class='pie'></div>");
+        $container = $("<div id='taxaChart' class='chart-pie'></div>");
         $outerContainer.append($container);
     }
 
@@ -404,7 +407,7 @@ function drawTaxonomyChart(data, chartOptions, query) {
             if (chartOptions.rank != undefined && chartOptions.name != undefined) {
                 fq = "&fq=" + chartOptions.rank + ":" + chartOptions.name;
             }
-            document.location = displayRecordsUrl + "occurrences/search?q=" + query + fq;
+            document.location = urlConcat(biocacheWebappUrl, "/occurrences/search?q=") + query + fq;
         });
     }
     // set link text
@@ -443,7 +446,7 @@ function drawTaxonomyChart(data, chartOptions, query) {
             /* SHOW RECORDS */
             else {
                 // show occurrence records
-                document.location = displayRecordsUrl + "occurrences/search?q=" + query +
+                document.location = urlConcat(biocacheWebappUrl, "/occurrences/search?q=") + query +
                     "&fq=" + data.rank + ":" + name;
             }
         });
@@ -516,7 +519,7 @@ function initTaxonTree(treeOptions) {
         ajax: {
           url: function(node) {
               var rank = $(node).attr("rank");
-              var u = biocacheUrl + "ws/breakdown.json?q=" + query + "&rank=";
+              var u = urlConcat(biocacheServicesUrl, "/breakdown.json?q=") + query + "&rank=";
               if (rank == 'kingdoms') {
                   u += 'kingdom';  // starting node
               }
@@ -570,7 +573,7 @@ function showRecords(node, query) {
   if (rank == 'kingdoms') return;
   var name = node.attr('id');
   // url for records list
-  var recordsUrl = displayRecordsUrl + "occurrences/search?q=" + query +
+  var recordsUrl = urlConcat(biocacheWebappUrl, "/occurrences/search?q=") + query +
     "&fq=" + rank + ":" + name;
   document.location.href = recordsUrl;
 }
@@ -627,6 +630,18 @@ function wsEntityForBreakdown(uid) {
         default: return "";
     }
 }
+/************************************************************\
+* Concatenate url fragments handling stray slashes
+\************************************************************/
+function urlConcat(base, context) {
+    // remove any trailing slash from base
+    base = base.replace(/\/$/, '');
+    // remove any leading slash from context
+    context = context.replace(/^\//, '');
+    // join
+    return base + "/" + context;
+}
+
 /************************************************************\
 * Add commas to number strings
 \************************************************************/
