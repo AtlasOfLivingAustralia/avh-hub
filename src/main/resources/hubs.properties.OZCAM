@@ -29,6 +29,10 @@ homePageController.homePage=ozcamHome
 
 spatialPortalUrl=http://spatial.ala.org.au/
 
+# For sandbox environment
+#spatialPortalUrlParams=&ws=http%3A%2F%2Fsandbox.ala.org.au%2Fhubs-webapp&bs=http%3A%2F%2Fsandbox.ala.org.au%2Fbiocache-service
+spatialPortalUrlParams=
+
 # URI prefix for requests to biocache-service
 biocacheRestService.biocacheUriPrefix=http://biocache.ala.org.au/ws
 # data hub UID ozcam = data_hub_uid:dh1 || avh = data_hub_uid:dh2
