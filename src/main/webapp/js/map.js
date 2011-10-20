@@ -533,7 +533,7 @@ var Maps = (function() {
                 
                 // Do JSON lookup for GUID -> taxon name
                 if (cbf == "species_guid" && lsidList) {
-                    var jsonUrl = bieWebappUrl + "/species/namesFromGuids.json?guid=" + lsidList.join("&guid=") + "&callback=?";
+                    var jsonUrl = BC_CONF.bieWebappUrl + "/species/namesFromGuids.json?guid=" + lsidList.join("&guid=") + "&callback=?";
                     $.getJSON(jsonUrl, function(data) {
                         // set the name in place of LSID
                         $.each(data, function(i, el) {
