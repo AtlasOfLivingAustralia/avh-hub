@@ -72,7 +72,7 @@ public class BiocacheRestService implements BiocacheService {
  
         try {
             final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();            
-            logger.info("Requesting: " + jsonUri);
+            logger.debug("Requesting: " + jsonUri);
             Matcher matcher = restVariableSubPattern.matcher(jsonUri);            
             //Get a list of all the items that are surrounded by {} so that they can be added as parameters when getting the object
             List<String> variables = new ArrayList<String>();
@@ -123,7 +123,7 @@ public class BiocacheRestService implements BiocacheService {
         SearchResultDTO searchResults = new SearchResultDTO();
         try {
             final String jsonUri = biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.toString();
-            logger.info("Entity Requesting: " + jsonUri);
+            logger.debug("Entity Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
@@ -307,7 +307,7 @@ public class BiocacheRestService implements BiocacheService {
         
         try {
             final String jsonUri = biocacheUriPrefix + "/search/facets";            
-            logger.info("Requesting facets via: " + jsonUri);
+            logger.debug("Requesting facets via: " + jsonUri);
             facets = restTemplate.getForObject(jsonUri, List.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
@@ -320,7 +320,7 @@ public class BiocacheRestService implements BiocacheService {
     public boolean isReadOnly() {
         try {
             final String jsonUri = biocacheUriPrefix + "/admin/isReadOnly";
-            logger.info("Requesting facets via: " + jsonUri);
+            logger.debug("Requesting facets via: " + jsonUri);
             String isReadOnlyAsString = restTemplate.getForObject(jsonUri, String.class);
             return Boolean.parseBoolean(isReadOnlyAsString);
         } catch (Exception ex) {
