@@ -26,7 +26,7 @@ include file="/common/taglibs.jsp" %>
         <link rel="stylesheet" type="text/css" media="screen,projection" href="${pageContext.request.contextPath}/static/css/ala/widget.css" />
         <!-- CIRCLE PLAYER -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/circle.skin/circle.player.css" type="text/css" media="screen" />
-        <c:set var="dev" value="${true}"/><%-- should be false in prod --%>
+        <c:set var="dev" value="${false}"/><%-- should be false in prod --%>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
@@ -40,10 +40,10 @@ include file="/common/taglibs.jsp" %>
     </c:otherwise>
 </c:choose>--%>
         <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/form.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script>
+<!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script>-->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
         <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/hoverintent-min.js"></script>
         <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/superfish/superfish.js"></script>
-<!--        <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/jquery.autocomplete.js"></script>-->
 		<script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/uservoice.js"></script>
         <!-- Items below added when copied to the hubs-webapp -->
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
@@ -112,11 +112,6 @@ include file="/common/taglibs.jsp" %>
         </style>
         <meta name='robots' content='index,follow' />
         <link rel='stylesheet' id='external-links-css'  href='${initParam.centralServer}/wp-content/plugins/sem-external-links/sem-external-links.css?ver=20090903' type='text/css' media='' />
-        <!--<link rel="EditURI" type="application/rsd+xml" title="RSD" href="${initParam.centralServer}/xmlrpc.php?rsd" />
-        <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="${initParam.centralServer}/wp-includes/wlwmanifest.xml" />
-        <link rel='index' title='Atlas Living Australia NG' href='${initParam.centralServer}' />
-        <meta name="generator" content="WordPress 2.9.2" />
-        <link rel='canonical' href='${initParam.centralServer}' />-->
         <decorator:head />
         <!-- WP Menubar 4.7: start CSS -->
         <!-- WP Menubar 4.7: end CSS -->
