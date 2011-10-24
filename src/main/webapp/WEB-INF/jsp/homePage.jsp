@@ -86,7 +86,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <b>Find records for the ANY of the following taxa (matched/processed taxon concepts)</b>
+                        <b>Find records for ANY of the following taxa (matched/processed taxon concepts)</b>
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
                             <tbody>
