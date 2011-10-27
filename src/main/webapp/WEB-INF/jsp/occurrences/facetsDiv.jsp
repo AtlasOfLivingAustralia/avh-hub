@@ -25,7 +25,7 @@
     <div class="sidebar" style="clear:both;">
         <c:if test="${not empty searchResults.query}">
             <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=${param.taxa}</c:when><c:otherwise>q=<c:out escapeXml="true" value="${param.q}"/></c:otherwise></c:choose><c:if 
-                    test="${not empty param.fq}">&fq=${fn:join(paramValues.fq, "&fq=")}</c:if><c:if 
+                    test="${not empty param.fq}">&fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/></c:if><c:if 
                     test="${not empty param.lat}">&lat=${param.lat}</c:if><c:if 
                     test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if 
                     test="${not empty param.radius}">&radius=${param.radius}</c:if></c:set>
