@@ -491,9 +491,9 @@ var Maps = (function() {
                     } 
                     
                     if (cbf == "geospatial_kosher") {
-                        if (label != "true") {
+                        if (label == "false") {
                             label = "Questionable";
-                        } else {
+                        } else if (label == "true") {
                             label = "OK";
                         }
                     }
