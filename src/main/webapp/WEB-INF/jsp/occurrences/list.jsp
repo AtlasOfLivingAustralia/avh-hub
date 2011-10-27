@@ -28,7 +28,8 @@
                 contextPath: "${pageContext.request.contextPath}",
                 searchString: '${searchResults.urlParameters}', // keep as single quotes as JSTL var can contain double quotes
                 bieWebappUrl: "${bieWebappContext}",
-                biocacheServiceUrl: "${biocacheServiceUrl}"
+                biocacheServiceUrl: "${biocacheServiceUrl}",
+                hasMultimedia: ${(not empty hasMultimedia) ? hasMultimedia : 'false'} // will be either true or false
             };
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
@@ -90,11 +91,6 @@
             <c:if test="${searchResults.totalRecords > 0 && empty errors}">
                 <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
                 <div>
-<!--                    <div id="listMapToggle" class="row" >
-                        <button class="rounded" id="listMapButton">
-                            <span id="listMapLink">Map</span>
-                        </button>
-                    </div>-->
                     <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
                         for <span id="queryDisplay">${queryDisplay}</span>
 <!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
@@ -108,6 +104,9 @@
                     <li><a id="t1" href="#recordsView">Records</a></li>
                     <li><a id="t2" href="#mapView">Map</a></li>
                     <li><a id="t3" href="#chartsView">Charts</a></li>
+                    <c:if test="${hasMultimedia}">
+                        <li><a id="t3" href="#imagesView">Images</a></li>
+                    </c:if>
                 </ul>
                 <div class="css-panes">
                     <div class="paneDiv solrResults">
@@ -236,10 +235,21 @@
                                 <div id="legendContent"></div>
                             </div>
                         </div>
-                    </div><!--end mapwrapper-->
+                    </div><!-- end #mapwrapper -->
                     <div id="chartsWrapper" class="paneDiv">
                         <div id="charts"></div>
-                    </div><!--end chartsWrapper-->
+                    </div><!-- end #chartsWrapper -->
+                    <c:if test="${hasMultimedia}">
+                        <div id="imagesWrapper" class="paneDiv">
+<!--                            <h3>Associated Multimedia</h3>-->
+                            <div id="imagesGrid">
+                                loading images...
+                            </div>
+                            <div id="loadMoreImages" style="display:none;">
+                                <button>Show more images</button>
+                            </div>
+                        </div><!-- end #imagesWrapper -->
+                    </c:if>
                 </div>
             </c:if>
         </div>

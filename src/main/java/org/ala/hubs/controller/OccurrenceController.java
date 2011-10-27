@@ -854,6 +854,7 @@ public class OccurrenceController {
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
+        model.addAttribute("hasMultimedia", resultsHaveMultimedia(searchResult));
         addCommonDataToModel(model);
     }
 
@@ -871,6 +872,37 @@ public class OccurrenceController {
         model.addAttribute("institutionCodes", collectionsCache.getInstitutions(inguids, coguids));
         model.addAttribute("dataResourceCodes", collectionsCache.getDataResources(inguids, coguids));
         model.addAttribute("defaultFacets", biocacheService.getDefaultFacets());
+    }
+    
+    /**
+     * Check search results for multimedia facets values
+     * 
+     * @param searchResult
+     * @return 
+     */
+    private Boolean resultsHaveMultimedia(SearchResultDTO searchResult) {
+        Boolean hasMultimedia = false;
+        String facetName = "multimedia"; // fieldResult label is Multimedia
+        
+        List<FacetResultDTO> facetResults = new ArrayList(searchResult.getFacetResults());
+        
+        for (FacetResultDTO facetResult : facetResults) {
+            if (facetName.equals(facetResult.getFieldName())) {
+                List<FieldResultDTO> fieldResults = facetResult.getFieldResult();
+            
+                for (FieldResultDTO fieldResult : fieldResults) {
+                    if (facetName.equalsIgnoreCase(fieldResult.getLabel())) {
+                         hasMultimedia = true;
+                    }
+                }
+                
+                break;
+            }
+        }
+        
+        logger.debug("hasMultimedia = " + hasMultimedia);
+        
+        return hasMultimedia;
     }
 
     /**
@@ -919,4 +951,4 @@ public class OccurrenceController {
     	}
         return (defaultValue);
     }
-    }
+}

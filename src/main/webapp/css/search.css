@@ -391,3 +391,48 @@ span#queryDisplay a:hover {
 .under {
     text-decoration: underline;
 }
+
+/*
+#imagesGrid {
+    margin: 10px 2px;
+}
+
+#imagesGrid ul {
+    list-style: none;
+    margin-left: 0;
+}
+
+#imagesGrid ul li {
+    display: inline-block;
+    padding: 0 3px;
+}*/
+
+#imagesGrid {
+    padding:10px;
+}
+#imagesGrid img {
+/*    float:left;*/
+    display: inline-block;
+    height:100px;
+    margin:5px;
+    padding:0px;
+}
+#ibox {
+    position:absolute;
+    overflow-y:none;
+    background:#fff;
+    border:1px solid #ccc;
+    z-index:1001;
+    display:none;
+    padding:4px;
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 6px 0px #bbb;
+    -moz-box-shadow: 0px 0px 6px 0px #bbb;
+    box-shadow: 0px 0px 6px 0px #bbb;
+}
+#ibox img {
+    border:1px solid #444;
+}
+#ibox br {
+    clear:both;
+}

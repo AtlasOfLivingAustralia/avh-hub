@@ -128,7 +128,7 @@ function loadAllCharts() {
         charts: ['institution_uid','state','species_group','assertions','type_status','biogeographic_region','state_conservation','occurrence_year'],
         institution_uid: {backgroundColor: "#eeeeee"},
         state: {backgroundColor: "#eeeeee"},
-        species_group: {backgroundColor: "#eeeeee"},
+        species_group: {backgroundColor: "#eeeeee", title: 'By higher-level group', ignore: ['Animals','Insects','Crustaceans']},
         assertions: {backgroundColor: "#eeeeee"},
         type_status: {backgroundColor: "#eeeeee"},
         biogeographic_region: {backgroundColor: "#eeeeee"},
@@ -141,6 +141,120 @@ function loadAllCharts() {
     loadTaxonomyChart(taxonomyChartOptions);
     loadFacetCharts(facetChartOptions);
 }
+
+/**
+ * Load images in images tab
+ */
+function loadImagesInTab() {
+    loadImages(0);
+}
+
+function loadImages(start) {
+    start = (start) ? start : 0;
+    var imagesJsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json" + BC_CONF.searchString + 
+        "&fq=multimedia:Multimedia&facet=false&pageSize=20&start=" + start + "&callback=?";
+    $.getJSON(imagesJsonUri, function(data) {
+        //console.log("data",data);
+        if (data.occurrences) {
+            //var htmlUl = "";
+            if (start == 0) {
+                $("#imagesGrid").html("");
+            }
+            var count = 0;
+            $.each(data.occurrences, function(i, el) {
+                count++;
+                var imgEl = $("<img src='" + el.image.replace(/^\/data/,'http://biocache.ala.org.au') + 
+                    "' style='height: 100px; cursor: pointer;'/>");
+                var metaData = {
+                    uuid: el.uuid,
+                    rank: el.taxonRank,
+                    rankId: el.taxonRankID,
+                    sciName: el.raw_scientificName,
+                    commonName: (el.raw_vernacularName) ? "| " + el.raw_vernacularName : "",
+                    date: new Date(el.eventDate * 1000),
+                    basisOfRecord: el.basisOfRecord
+                };
+                imgEl.data(metaData);
+                //htmlUl += htmlLi;
+                $("#imagesGrid").append(imgEl);
+                
+            });
+            
+            if (count + start < data.totalRecords) {
+                //console.log("load more", count, start, count + start, data.totalRecords);
+                $('#imagesGrid').data('count', count + start);
+                $("#loadMoreImages").show();
+            } else {
+                $("#loadMoreImages").hide();
+            }
+            
+            $('#imagesGrid img').ibox(); // enable hover effect
+        }
+    });
+}
+
+/**
+ * iBox Jquery plugin for Google Images hover effect.
+ * Origina by roxon http://stackoverflow.com/users/383904/roxon
+ * Posted to stack overflow: 
+ *   http://stackoverflow.com/questions/7411393/pop-images-like-google-images/7412302#7412302
+ */
+(function($) {
+    $.fn.ibox = function() {
+        // set zoom ratio //
+        resize = 50;
+        ////////////////////
+        var img = this;
+        img.parent().append('<div id="ibox" />');
+        var ibox = $('#ibox');
+        var elX = 0;
+        var elY = 0;
+
+        img.each(function() {
+            var el = $(this);
+
+            el.mouseenter(function() {
+                ibox.html('');
+                var elH = el.height();
+                elX = el.position().left - 6; // 6 = CSS#ibox padding+border
+                elY = el.position().top - 6;
+                var h = el.height();
+                var w = el.width();
+                var wh;
+                checkwh = (h < w) ? (wh = (w / h * resize) / 2) : (wh = (w * resize / h) / 2);
+
+                $(this).clone().prependTo(ibox);
+                var md = $(el).data();
+                var link = BC_CONF.contextPath + "/occurrences/"  + md.uuid;
+                var itals = (md.rankId >= 6000) ? "<span style='font-style: italic;'>" : "<span>";
+                var infoDiv = "<div style=''><a href='" + link + "'><span style='text-transform: capitalize'>" + 
+                    md.rank + "</span>: " +  itals + md.sciName + "</span> " + 
+                    md.commonName + "</a></div>";
+                $(ibox).append(infoDiv);
+                $(ibox).click(function(e) {
+                    e.preventDefault();
+                    window.location.href = link;
+                });
+                
+                ibox.css({
+                    top: elY + 'px',
+                    left: elX + 'px',
+                    "max-width": $(el).width() + (2 * wh) + 12
+                });
+
+                ibox.stop().fadeTo(200, 1, function() {
+                    //$(this).animate({top: '-='+(resize/2), left:'-='+wh},200).children('img').animate({height:'+='+resize},200);
+                    $(this).children('img').animate({height:'+='+resize},200);
+                });
+                
+            });
+
+            ibox.mouseleave(function() {
+                ibox.html('').hide();
+            });
+        });
+    };
+})(jQuery);
 
 // vars for hiding drop-dpwn divs on click outside tem
 var hoverDropDownDiv = false;
@@ -465,7 +579,8 @@ $(document).ready(function() {
     // Jquery Tools Tabs setup
     var tabsInit = { 
         map: false,
-        charts: false
+        charts: false,
+        images: false
     };
 
     $(".css-tabs").tabs(".css-panes > div", { 
@@ -480,8 +595,30 @@ $(document).ready(function() {
                 // trigger charts load
                 loadAllCharts();
                 tabsInit.charts = true; // only initialise once!
+            } else if (tabIndex == 3 && !tabsInit.images && BC_CONF.hasMultimedia) {
+                loadImagesInTab();
+                tabsInit.images = true;
             }
         }
     });
+    
+//    $("#imagesGrid img").live("mouseover mouseout", function(event) {
+//        event.preventDefault();
+//        if ( event.type == "mouseover" ) {
+//            // do something on mouseover
+//            $(this).height("150px");
+//        } else {
+//            // do something on mouseout
+//            $(this).height("100px");
+//        }
+//        
+//    });
+    $("#loadMoreImages").live("click", function(e) {
+        e.preventDefault();
+        var start = $("#imagesGrid").data('count');
+        console.log("start", start);
+        loadImages(start);
+    });
+            
     
 }); // end JQuery document ready
