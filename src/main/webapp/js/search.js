@@ -139,8 +139,6 @@ function loadAllCharts() {
         displayRecordsUrl: BC_CONF.serverName
     };
     
-    console.log("chart params", taxonomyChartOptions, facetChartOptions);
-    
     loadTaxonomyChart(taxonomyChartOptions);
     loadFacetCharts(facetChartOptions);
 }
