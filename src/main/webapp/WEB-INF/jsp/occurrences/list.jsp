@@ -26,6 +26,7 @@
             // single global var for app conf settings
             var BC_CONF = {
                 contextPath: "${pageContext.request.contextPath}",
+                serverName: "${initParam.serverName}${pageContext.request.contextPath}",
                 searchString: '${searchResults.urlParameters}', // keep as single quotes as JSTL var can contain double quotes
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",

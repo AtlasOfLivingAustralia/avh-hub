@@ -115,12 +115,13 @@ function removeFacet(facet) {
  */
 function loadAllCharts() {
     var queryString = BC_CONF.searchString.replace("?q=","");
-    var biocacheServiceUrl = "http://ala-macropus.it.csiro.au/biocache-service"; //BC_CONF.biocacheServiceUrl,
+    var biocacheServiceUrl = BC_CONF.biocacheServiceUrl; //BC_CONF.biocacheServiceUrl, // "http://ala-macropus.it.csiro.au/biocache-service";
     
     var taxonomyChartOptions = {
         query: queryString,
         backgroundColor: "#eeeeee",
-        biocacheServicesUrl: biocacheServiceUrl
+        biocacheServicesUrl: biocacheServiceUrl,
+        displayRecordsUrl: BC_CONF.serverName
     };
     
     var facetChartOptions = {
@@ -135,8 +136,10 @@ function loadAllCharts() {
         state_conservation: {backgroundColor: "#eeeeee"},
         occurrence_year:{backgroundColor: "#eeeeee"},
         biocacheServicesUrl: biocacheServiceUrl,
-        biocacheWebappUrl: BC_CONF.serverName
+        displayRecordsUrl: BC_CONF.serverName
     };
+    
+    console.log("chart params", taxonomyChartOptions, facetChartOptions);
     
     loadTaxonomyChart(taxonomyChartOptions);
     loadFacetCharts(facetChartOptions);
