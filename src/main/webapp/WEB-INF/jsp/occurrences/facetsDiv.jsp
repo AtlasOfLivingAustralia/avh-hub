@@ -37,7 +37,7 @@
                     <ul>
                         <c:forEach var="item" items="${facetMap}">
                             <li>
-                                <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:${item.value}'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
+                                <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value}"/>'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
                                 <fmt:message key="facet.${item.key}"/>:
                                 <c:choose>
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
