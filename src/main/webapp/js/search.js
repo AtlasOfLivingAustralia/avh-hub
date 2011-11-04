@@ -481,7 +481,7 @@ $(document).ready(function() {
             }
         }
     }
-    
+    // select all and none buttons
     $("a#selectNone").click(function(e) {
         e.preventDefault();
         $(":input.facetOpts").removeAttr("checked");
@@ -491,17 +491,16 @@ $(document).ready(function() {
         $(":input.facetOpts").attr("checked","checked");
     });
     
-    $(":input#updateFacetOptions").click(function(e) {
+    $(":input#updateFacetOptions").live("click",function(e) {
         e.preventDefault();
         var selectedFacets = [];
-        $(":input.facetOpts").each(function() {
-            var selected = ($(this).attr("checked")) ? true : false;
-            if (selected) {
-                selectedFacets.push($(this).val());
-            }
+        // iterate over seleted facet options
+        $(":input.facetOpts:checked").each(function(i, el) {
+            selectedFacets.push($(el).val());
         });
-        //console.log("selectedFacets", selectedFacets);
-        $.cookie("user_facets", selectedFacets);
+        // save facets to the user_facets cookie
+        $.cookie("user_facets", selectedFacets, { expires: 7 });
+        // reload page
         document.location.reload(true);
     });
     
