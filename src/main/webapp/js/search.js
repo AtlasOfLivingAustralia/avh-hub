@@ -617,9 +617,21 @@ $(document).ready(function() {
     $("#loadMoreImages").live("click", function(e) {
         e.preventDefault();
         var start = $("#imagesGrid").data('count');
-        console.log("start", start);
+        //console.log("start", start);
         loadImages(start);
     });
             
-    
+    // add click even on each record row in results list
+    $(".recordRow").click(function(e) {
+        e.preventDefault();
+        window.location.href = BC_CONF.contextPath + "/occurrence/" + $(this).attr("id");
+    }).hover(function(){
+        // mouse in
+        $(this).css('cursor','pointer');
+        $(this).css('background-color','#FFF');
+    }, function(){
+        // mouse out
+        $(this).css('cursor','default');
+        $(this).css('background-color','transparent');
+    });
 }); // end JQuery document ready
