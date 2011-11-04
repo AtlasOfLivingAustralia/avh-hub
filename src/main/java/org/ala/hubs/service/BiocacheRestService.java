@@ -72,7 +72,7 @@ public class BiocacheRestService implements BiocacheService {
  
         try {
             final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();            
-            logger.debug("Requesting: " + jsonUri);
+            logger.info("Requesting: " + jsonUri);
             Matcher matcher = restVariableSubPattern.matcher(jsonUri);            
             //Get a list of all the items that are surrounded by {} so that they can be added as parameters when getting the object
             List<String> variables = new ArrayList<String>();

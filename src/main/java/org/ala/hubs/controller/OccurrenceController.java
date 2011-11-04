@@ -708,12 +708,12 @@ public class OccurrenceController {
         // Perform search via webservice
         try {
             SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
-            logger.debug("searchResult: " + searchResult.getTotalRecords());
+            logger.info("searchResult: " + searchResult.getTotalRecords());
             addToModel(model, requestParams, searchResult);
+            String displayQuery = searchResult.getQueryTitle();
             
-            if (taxaQuery != null && !taxaQuery.isEmpty()) {
+            if (taxaQuery != null && !taxaQuery.isEmpty() && displayQuery != null) {
                 // attempt to add the mathced name/common name to displayQuery
-                String displayQuery = searchResult.getQueryTitle();
                 Pattern exp = Pattern.compile("<span>(.*)</span>");
                 Matcher matcher = exp.matcher(displayQuery);
                 if (matcher.find()) {
@@ -883,20 +883,23 @@ public class OccurrenceController {
     private Boolean resultsHaveMultimedia(SearchResultDTO searchResult) {
         Boolean hasMultimedia = false;
         String facetName = "multimedia"; // fieldResult label is Multimedia
+        Collection facets = searchResult.getFacetResults();
         
-        List<FacetResultDTO> facetResults = new ArrayList(searchResult.getFacetResults());
+        if (facets != null) {
+            List<FacetResultDTO> facetResults = new ArrayList(facets); // convert to ArrayList
         
-        for (FacetResultDTO facetResult : facetResults) {
-            if (facetName.equals(facetResult.getFieldName())) {
-                List<FieldResultDTO> fieldResults = facetResult.getFieldResult();
-            
-                for (FieldResultDTO fieldResult : fieldResults) {
-                    if (facetName.equalsIgnoreCase(fieldResult.getLabel())) {
-                         hasMultimedia = true;
+            for (FacetResultDTO facetResult : facetResults) {
+                if (facetName.equals(facetResult.getFieldName())) {
+                    List<FieldResultDTO> fieldResults = facetResult.getFieldResult();
+
+                    for (FieldResultDTO fieldResult : fieldResults) {
+                        if (facetName.equalsIgnoreCase(fieldResult.getLabel())) {
+                             hasMultimedia = true;
+                        }
                     }
+
+                    break;
                 }
-                
-                break;
             }
         }
         
