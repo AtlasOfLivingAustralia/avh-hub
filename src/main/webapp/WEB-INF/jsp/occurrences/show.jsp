@@ -82,15 +82,15 @@
              */
             $(document).ready(function() {
                 // add assertion form display
-                $("#assertionButton").fancybox({
-                    'href': '#loginOrFlag',
+                $("#assertionButton, #verifyButton").fancybox({
+                    //'href': '#loginOrFlag',
                     'hideOnContentClick' : false,
                     'hideOnOverlayClick': true,
                     'showCloseButton': true,
                     'titleShow' : false,
-                    'autoDimensions' : false,
-                    'width': '500',
-                    'height': '300',
+                    'autoDimensions' : true,
+                    //'width': '500',
+                    //'height': '400',
                     'padding': 15,
                     'margin': 10
                 });
@@ -245,6 +245,31 @@
                         cssSelectorAncestor: "#cp_container_1"
                     });
                 </c:if>
+                
+                <c:if test="${isCollectionAdmin}">
+                    $("#confirmVerifyCheck").click(function(e) {
+                        $("#verifyAsk").hide();
+                        $("#verifyDone").show();
+                    });
+                    $(".cancelVerify").click(function(e) {
+                        $.fancybox.close();
+                    });
+                    $("#confirmVerify").click(function(e) {
+                        var code = "50000";
+                        var userId = '${userId}';
+                        var userDisplayName = '${userDisplayName}';
+                        var recordUuid = '${record.raw.rowKey}';
+                        // send assertion via AJAX... TODO catach errors
+                        $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
+                            { recordUuid: recordUuid, code: code, userId: userId, userDisplayName: userDisplayName},
+                            function(data) {
+                                // service simply returns status or OK or FORBIDDEN, so assume it worked...
+                                $("#verifyAsk").fadeOut();
+                                $("#verifyDone").fadeIn();
+                            }
+                        );
+                    });
+                </c:if>
             }); // end JQuery document ready
             
             /*
@@ -342,16 +367,31 @@
                     </div>
                 </div>
                 <div class="sidebar">
-                    <c:if test="${false && isCollectionAdmin}">
-                        <button class="rounded" id="verifyButton">
-                            <span id="verifyRecordSpan" href="#verifyRecord" title="">Verify Record</span>
+                    <c:if test="${isCollectionAdmin}">
+                        <button class="rounded" id="verifyButton" href="#verifyRecord" >
+                            <span id="verifyRecordSpan" title="">Verify Record</span>
                         </button>
+                        <div style="display:none;">
+                            <div id="verifyRecord">
+                                <h3>Confirmation</h3>
+                                <div id="verifyAsk">
+                                    <p style="margin-bottom:10px;">Are you sure you want to verify this record as being correct?</p>
+                                    <button id="confirmVerify">Confirm</button> 
+                                    <button class="cancelVerify">Cancel</button> 
+                                </div>
+                                <div id="verifyDone" style="display:none;">
+                                    Record successfully verified
+                                    <br/>
+                                    <button class="cancelVerify">Close</button> 
+                                </div>
+                            </div>
+                        </div>
                     </c:if>
                 </div>
                 <c:if test="${!isReadOnly}">
                 <div class="sidebar">
-                    <button class="rounded" id="assertionButton">
-                        <span id="loginOrFlagSpan" href="#loginOrFlag" title="">Flag an Issue</span>
+                    <button class="rounded" id="assertionButton" href="#loginOrFlag">
+                        <span id="loginOrFlagSpan" title="">Flag an Issue</span>
                     </button>
                     <div style="display:none">
                         <c:choose>
