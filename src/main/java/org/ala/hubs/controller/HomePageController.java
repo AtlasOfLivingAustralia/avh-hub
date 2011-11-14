@@ -16,21 +16,14 @@
 package org.ala.hubs.controller;
 
 import org.ala.biocache.util.CollectionsCache;
-import au.org.ala.biocache.BasisOfRecord;
-import au.org.ala.biocache.SpeciesGroup;
-import au.org.ala.biocache.SpeciesGroups;
-import au.org.ala.biocache.Term;
-import au.org.ala.biocache.TypeStatus;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import org.ala.hubs.dto.AdvancedSearchParams;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.ala.hubs.service.ServiceCache;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
