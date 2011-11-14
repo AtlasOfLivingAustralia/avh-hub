@@ -16,6 +16,7 @@
         <c:when test="${not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when>
         <c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
 </c:set>
+<c:set var="showImages" value="${hasMultimedia && skin != 'ala'}"/>
 <!DOCTYPE html>
 <html>
     <head>
@@ -105,7 +106,7 @@
                     <li><a id="t1" href="#recordsView">Records</a></li>
                     <li><a id="t2" href="#mapView">Map</a></li>
                     <li><a id="t3" href="#chartsView">Charts</a></li>
-                    <c:if test="${hasMultimedia}">
+                    <c:if test="${showImages}">
                         <li><a id="t3" href="#imagesView">Images</a></li>
                     </c:if>
                 </ul>
@@ -242,7 +243,7 @@
                     <div id="chartsWrapper" class="paneDiv">
                         <div id="charts"></div>
                     </div><!-- end #chartsWrapper -->
-                    <c:if test="${hasMultimedia}">
+                    <c:if test="${showImages}">
                         <div id="imagesWrapper" class="paneDiv">
 <!--                            <h3>Associated Multimedia</h3>-->
                             <div id="imagesGrid">
