@@ -137,8 +137,10 @@
                                     <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>scientific name</option>
                                     <option value="common_name" <c:if test="${param.sort eq 'common_name'}">selected</c:if>>common name</option>
                                     <!--                            <option value="rank">rank</option>-->
-                                    <option value="occurrence_date" <c:if test="${useDefault || param.sort eq 'occurrence_date'}">selected</c:if>>record date</option>
+                                    <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>record date</option>
                                     <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>record type</option>
+                                    <option value="last_load_date" <c:if test="${useDefault || param.sort eq 'last_load_date'}">selected</c:if>>date added</option>
+                                    <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>last annotated</option>
                                 </select>
                                 Sort order:
                                 <select id="dir" name="dir">
