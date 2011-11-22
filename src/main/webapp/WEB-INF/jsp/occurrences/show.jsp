@@ -804,6 +804,11 @@
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="rights" fieldName="Rights">
                             ${record.raw.occurrence.rights}
                         </alatag:occurrenceTableRow>
+                        <!-- Occurrence details -->
+                        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="occurrenceDetails" fieldName="More details">
+                            <c:if test="${not empty record.raw.occurrence.occurrenceDetails && fn:startsWith(record.raw.occurrence.occurrenceDetails,'http://')}"><a href="${record.raw.occurrence.occurrenceDetails}" target="_blank">${record.raw.occurrence.occurrenceDetails}</a>
+                            </c:if>
+                        </alatag:occurrenceTableRow>
                     </table>
                 </div>
                 <div id="occurrenceTaxonomy">
