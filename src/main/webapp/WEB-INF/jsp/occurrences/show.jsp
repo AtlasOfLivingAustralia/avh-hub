@@ -732,19 +732,19 @@
                             </c:choose>
                         </alatag:occurrenceTableRow>
                         <!-- Identifier Name -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierName" fieldName="Identifier">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierName" fieldName="Identified by">
                             ${record.raw.identification.identifiedBy}
                         </alatag:occurrenceTableRow>
                         <!-- Identified Date -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierDate" fieldName="Identified Date">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierDate" fieldName="Identified date">
                             ${record.raw.identification.dateIdentified}
                         </alatag:occurrenceTableRow>
                         <!-- Field Number -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="fieldNumber" fieldName="Field Number">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="fieldNumber" fieldName="Field number">
                             ${record.raw.occurrence.fieldNumber}
                         </alatag:occurrenceTableRow>
                         <!-- Field Number -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationRemarks" fieldName="Identification Remarks">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationRemarks" fieldName="Identification remarks">
                             ${record.raw.identification.identificationRemarks}
                         </alatag:occurrenceTableRow>
                         <!-- Collector/Observer -->
@@ -769,15 +769,15 @@
                             </c:choose>
                         </alatag:occurrenceTableRow>
                         <!-- Sampling Protocol -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="samplingProtocol" fieldName="Sampling Protocol">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="samplingProtocol" fieldName="Sampling protocol">
                             ${record.raw.occurrence.samplingProtocol}
                         </alatag:occurrenceTableRow>
                         <!-- Type Status -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="typeStatus" fieldName="Type Status">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="typeStatus" fieldName="Type status">
                             ${record.raw.identification.typeStatus}
                         </alatag:occurrenceTableRow>
                         <!-- Reproductive Condition -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="reproductiveCondition" fieldName="Reproductive Condition">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="reproductiveCondition" fieldName="Reproductive condition">
                             ${record.raw.occurrence.reproductiveCondition}
                         </alatag:occurrenceTableRow>
                         <!-- Sex -->
@@ -789,7 +789,7 @@
                             ${record.raw.occurrence.behavior}
                         </alatag:occurrenceTableRow>
                         <!-- Individual count -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="individualCount" fieldName="Individual Count">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="individualCount" fieldName="Individual count">
                             ${record.raw.occurrence.individualCount}
                         </alatag:occurrenceTableRow>
                         <!-- Life stage -->
@@ -815,7 +815,7 @@
                     <h3>Taxonomy</h3>
                     <table class="occurrenceTable" id="taxonomyTable">
                         <!-- Higher classification -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="higherClassification" fieldName="Higher Classification">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="higherClassification" fieldName="Higher classification">
                             ${record.raw.classification.higherClassification}
                         </alatag:occurrenceTableRow>
 
@@ -839,7 +839,7 @@
                         </alatag:occurrenceTableRow>
 
                         <!-- Taxon Rank -->
-                        <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon Rank">
+                        <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon rank">
                             <c:choose>
                                 <c:when test="${not empty record.processed.classification.taxonRank}">
                                     <span style="text-transform: capitalize;">${record.processed.classification.taxonRank}</span>
@@ -856,7 +856,7 @@
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Common name -->
-                        <alatag:occurrenceTableRow annotate="false" section="taxonomy" fieldCode="commonName" fieldName="Common Name">
+                        <alatag:occurrenceTableRow annotate="false" section="taxonomy" fieldCode="commonName" fieldName="Common name">
                             <c:if test="${not empty record.processed.classification.vernacularName}">
                                 ${record.processed.classification.vernacularName}
                             </c:if>
@@ -1049,7 +1049,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Associated Taxa -->
                         <c:if test="${not empty record.raw.occurrence.associatedTaxa}">
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedTaxa" fieldName="Associated Species">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedTaxa" fieldName="Associated species">
                         <c:set var="colon" value=":"/>
                             <c:choose>
                                 <c:when test="${fn:contains(record.raw.occurrence.associatedTaxa,colon)}">
@@ -1068,7 +1068,7 @@
                     <h3>Geospatial</h3>
                     <table class="occurrenceTable" id="geospatialTable">
                         <!-- Higher Geography -->
-                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="higherGeography" fieldName="Higher Geography">
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="higherGeography" fieldName="Higher geography">
                              ${record.raw.location.higherGeography}
                         </alatag:occurrenceTableRow>
                         <!-- Country -->
@@ -1111,7 +1111,7 @@
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Biogeographic Region -->
-                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="biogeographicRegion" fieldName="Biogeographic Region">
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="biogeographicRegion" fieldName="Biogeographic region">
                             <c:if test="${not empty record.processed.location.ibra}">
                                 ${record.processed.location.ibra}
                             </c:if>
@@ -1141,11 +1141,11 @@
                             ${(not empty record.processed.location.decimalLongitude) ? record.processed.location.decimalLongitude : record.raw.location.decimalLongitude}
                         </alatag:occurrenceTableRow>
                         <!-- Geodetic datum -->
-                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic Datum">
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic datum">
                             ${record.raw.location.geodeticDatum}
                         </alatag:occurrenceTableRow>
                         <!-- verbatimCoordinateSystem -->
-                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Vverbatim Coordinate System">
+                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Verbatim Coordinate System">
                             ${record.raw.location.verbatimCoordinateSystem}
                         </alatag:occurrenceTableRow>
                         <!-- Verbatim locality -->
