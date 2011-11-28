@@ -182,6 +182,7 @@ ${collectionCodes}
     var facetValues = new Array();
     var facetValueCounts = new Array();
     <c:forEach var="facetResult" items="${searchResults.facetResults}">
+        <c:set var="frlabels" value="0"/>
         <c:set var="frlabelcount" value="0"/>
         <c:set var="ffl" value="" />
         <c:set var="ffv" value="" />
@@ -195,7 +196,8 @@ ${collectionCodes}
             <c:set var="ffc" value="${lastElement.count}" />
         </c:if>
 
-        <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs">  
+        <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs">
+            <c:set var="frlabels" value="${vs.count}"/>
             <c:set var="frlabelcount" value="${fieldResult.count + frlabelcount}"/>
             <c:if test="${!empty ffv && not fn:endsWith(fieldResult.label, 'before')}">
                 <c:set var="ffl" value="${ffl}|" />
@@ -243,7 +245,7 @@ ${collectionCodes}
             <c:set var="ffv" value="${ffv}${cffv}" />
             <c:set var="ffc" value="${ffc}${fieldResult.count}" />
         </c:forEach>
-        <c:if test="${frlabelcount < searchResults.totalRecords}">
+        <c:if test="${frlabelcount < searchResults.totalRecords && frlabels >= searchRequestParams.flimit}">
             <c:set var="ffl" value="${ffl}|Other" />
             <c:set var="ffv" value="${ffv}|" />
             <c:set var="ffc" value="${ffc}|${searchResults.totalRecords - frlabelcount}" />
@@ -253,5 +255,6 @@ ${collectionCodes}
             facetLabels.push("${ffl}");
             facetValues.push("${ffv}");
             facetValueCounts.push("${ffc}");
+            // console.log("facet labels", "${facetResult.fieldName}", "${frlabels}", "${searchRequestParams.flimit}");
     </c:forEach>
 </script>
