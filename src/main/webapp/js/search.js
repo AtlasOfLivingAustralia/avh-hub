@@ -509,13 +509,13 @@ $(document).ready(function() {
     $("span.lsid").each(function(i, el) {
         var lsid = $(this).attr("id");
         var nameString = $(this).html();
-        var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
+        var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&" + BC_CONF.facetQueries + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
         $.getJSON(jsonUri, function(data) {
             // list of synonyms
             var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" + 
-                "This taxon search will include records with synonyms and child taxa of " +
-                "<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' class='bold'>" +
-                nameString + "</a>.<br/>Below are the <u>original scientific names</u> " + 
+                "This taxon search includes records with synonyms and child taxa of <b>" + nameString + 
+                "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
+                "view species page</a>).<br/><br/><u>Original (unprocessed) scientific names</u> " + 
                 "which appear on records in this result set:<ul>";
             var synListSize = 0;
             $.each(data.facetResults, function(k, el) {
@@ -553,13 +553,13 @@ $(document).ready(function() {
         });
         // format display with drop-down
         //$("span.lsid").before("<span class='plain'> which matched: </span>");
-        $(el).html("<a href='#' title='display query info' id='" + i + "'>" + nameString + "</a>");
+        $(el).html("<a href='#' title='click for details about this search' id='lsid_" + i + "'>" + nameString + "</a>");
         $(el).addClass("dropDown");
     });
         
     $("#queryDisplay a").click(function(e) {
         e.preventDefault();
-        var j = $(this).attr("id");
+        var j = $(this).attr("id").replace("lsid_", "");
         $("#refineTaxaSearch_"+j).toggle();
     });
     

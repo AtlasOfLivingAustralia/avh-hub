@@ -24,7 +24,7 @@
     </div>
     <div class="sidebar" style="clear:both;">
         <c:if test="${not empty searchResults.query}">
-            <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=${param.taxa}</c:when><c:otherwise>q=<c:out escapeXml="true" value="${param.q}"/></c:otherwise></c:choose><c:if 
+            <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/></c:when><c:otherwise>q=<c:out escapeXml="true" value="${param.q}"/></c:otherwise></c:choose><c:if 
                     test="${not empty param.fq}">&fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/></c:if><c:if 
                     test="${not empty param.lat}">&lat=${param.lat}</c:if><c:if 
                     test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if 
@@ -38,19 +38,25 @@
                         <c:forEach var="item" items="${facetMap}">
                             <li>
                                 <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value}"/>'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
-                                <fmt:message key="facet.${item.key}"/>:
+                                <fmt:message key="facet.${item.key}"/><!-- ${item.key} -->:
                                 <c:choose>
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
                                         <b><fmt:message key="month.${item.value}"/></b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_') && fn:startsWith(item.value, '[*')}">
+                                    <c:when test="${fn:startsWith(item.key, 'occurrence_') && fn:startsWith(item.value, '[*')}">
                                         <c:set var="endYear" value="${fn:substring(item.value, 6, 10)}"/><b>Before ${endYear}</b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_') && fn:endsWith(item.value, '*]')}">
+                                    <c:when test="${fn:startsWith(item.key, 'occurrence_') && fn:endsWith(item.value, '*]')}">
                                         <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>After ${startYear}</b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'occurrence_') && fn:endsWith(item.value, 'Z]')}">
+                                    <c:when test="${fn:startsWith(item.key, 'occurrence_') && fn:endsWith(item.value, 'Z]')}">
                                         <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear}<i>s</i></b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:startsWith(item.key, 'last_') && fn:endsWith(item.value, '*]')}">
+                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 11)}"/><b>since ${startYear}</b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:startsWith(item.key, 'last_') && fn:startsWith(item.value, '[*')}">
+                                        <c:set var="startYear" value="${fn:substring(item.value, 6, 16)}"/><b> before ${startYear}</b>${closeLink}
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'institution_uid')}">
                                         <b><fmt:message key="${institutionCodes[item.value]}"/></b>${closeLink}
