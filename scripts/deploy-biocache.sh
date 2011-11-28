@@ -7,12 +7,12 @@ wget http://maven.ala.org.au/repository/au/org/ala/hubs-webapp/1.0-SNAPSHOT/hubs
 echo "Copying war file to tomcat/webapps..."
 cp hubs-webapp-1.0-SNAPSHOT.war /usr/share/tomcat6/webapps/hubs-webapp.war
 #sleep 5
-webappExploded=false
+webappExploded=""
 while [ ! $webappExploded ]; 
 do
     sleep 2
     if [  -d "/usr/share/tomcat6/webapps/hubs-webapp/WEB-INF/" ]; then
-       webappExploded=true
+       webappExploded="true"
     fi
 done
 echo "Editting web.xml and restarting tomcat..."
