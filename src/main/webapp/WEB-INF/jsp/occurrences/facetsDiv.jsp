@@ -53,10 +53,15 @@
                                         <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear}<i>s</i></b>${closeLink}
                                     </c:when>
                                     <c:when test="${fn:startsWith(item.key, 'last_') && fn:endsWith(item.value, '*]')}">
-                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 11)}"/><b>since ${startYear}</b>${closeLink}
+                                        <c:set var="startDate" value="${fn:substring(item.value, 1, 11)}"/><b>since ${startDate}</b>${closeLink}
                                     </c:when>
                                     <c:when test="${fn:startsWith(item.key, 'last_') && fn:startsWith(item.value, '[*')}">
-                                        <c:set var="startYear" value="${fn:substring(item.value, 6, 16)}"/><b> before ${startYear}</b>${closeLink}
+                                        <c:set var="startDate" value="${fn:substring(item.value, 6, 16)}"/><b> before ${startDate}</b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:startsWith(item.key, 'last_') && fn:endsWith(item.value, 'Z]')}">
+                                        <c:set var="startDate" value="${fn:substring(item.value, 1, 11)}"/>
+                                        <c:set var="endDate" value="${fn:substring(item.value, 25, 35)}"/>
+                                        <b>${startDate} to ${endDate}</b>${closeLink}
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'institution_uid')}">
                                         <b><fmt:message key="${institutionCodes[item.value]}"/></b>${closeLink}
