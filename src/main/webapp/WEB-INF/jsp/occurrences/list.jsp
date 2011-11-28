@@ -29,6 +29,7 @@
                 contextPath: "${pageContext.request.contextPath}",
                 serverName: "${initParam.serverName}${pageContext.request.contextPath}",
                 searchString: '${searchResults.urlParameters}', // keep as single quotes as JSTL var can contain double quotes
+                facetQueries: 'fq=<c:out escapeXml="false" value="${fn:join(paramValues.fq, '&fq=')}"/>',
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
                 hasMultimedia: ${(not empty hasMultimedia) ? hasMultimedia : 'false'} // will be either true or false
