@@ -72,7 +72,7 @@ $(document).ready(function() {
             } else if (row.rankString) {
                 result = result + "<div class='autoLine2'>" + row.rankString + "</div>";
             }
-            result = "<input type='button' value='Add' style='float:right'/>" + result
+            //result = "<input type='button' value='Add' style='float:right'/>" + result
             return result;
         },
         cacheLength: 10,
@@ -124,6 +124,16 @@ $(document).ready(function() {
 //        }
 //        window.location.href = url;
 //    });
+    $("#advancedSearchForm").submit(function(e) {
+        e.preventDefault();
+        //save cookie with taxonText input values
+        var taxaList = [];
+        $(":input[name='taxonText']").each(function(i, el) {
+            taxaList.push($(el).val()); // we want empty inputs added too!
+        });
+        $.cookie("taxa_inputs", taxaList, { expires: 7 }); // save cookie
+        this.submit();
+    });
 
     // Catch onChange event on all select elements (except institution)
     $("form#advancedSearchForm select").not("select#institution_collection").change(function() {
@@ -281,6 +291,18 @@ $(document).ready(function() {
             }
         }
     }
+
+    // fill in autocomplete fields with saved values (cookie) from back button
+    var taxaInputs = $.cookie("taxa_inputs"); // read cookie
+    if (taxaInputs) {
+        var taxaList = taxaInputs.split(",");
+        $(taxaList).each(function(i, el) {
+            // set input with saved value
+            //console.log("Setting taxonText " + i, el);
+            $(":input#taxa_" + (i + 1)).val(el);
+        });
+    }
+
 }); // end document ready
 
 function selectChange(fieldName, fieldValue) {

@@ -16,7 +16,6 @@
 package org.ala.hubs.controller;
 
 import au.org.ala.biocache.BasisOfRecord;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -171,7 +170,7 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/searchByArea*", method = RequestMethod.GET)
 	public String occurrenceSearchByArea(
-			@RequestParam(value="taxa", required=false) String taxaQuery,
+			@RequestParam(value="taxa", required=false) String[] taxaQuery,
             SpatialSearchRequestParams requestParams,
             BindingResult result,
             HttpServletRequest request,
@@ -241,7 +240,7 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/dataResource/{dataResourceUid}/search*", method = RequestMethod.GET)
     public String search(
-            @RequestParam(value="taxa", required=false) String taxaQuery,
+            @RequestParam(value="taxa", required=false) String[] taxaQuery,
             @PathVariable String dataResourceUid,
             SearchRequestParams requestParams,
             BindingResult result,
@@ -285,13 +284,13 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/search*", method = RequestMethod.GET)
     public String search(
-            @RequestParam(value="taxa", required=false) String taxaQuery,
+            @RequestParam(value="taxa", required=false) String[] taxaQuery,
             SearchRequestParams requestParams, 
             BindingResult result, 
             Model model,
             HttpServletRequest request) throws Exception {
         logger.debug("/search* TOP");
-
+        logger.info("requestParams.q = " + requestParams.getQ());
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
@@ -323,7 +322,7 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/taxa/{guid:.+}*", method = RequestMethod.GET)
 	public String occurrenceSearchByTaxon(
-			@RequestParam(value="taxa", required=false) String taxaQuery,
+			@RequestParam(value="taxa", required=false) String[] taxaQuery,
             SearchRequestParams requestParams,
             @PathVariable("guid") String guid,
             HttpServletRequest request,
@@ -375,7 +374,8 @@ public class OccurrenceController {
             requestParams.setQ("lsid:" + query);
         } 
         
-        doFullTextSearch(null, model, requestParams, request);
+        String[] tq = {""};
+        doFullTextSearch(tq, model, requestParams, request);
         
         return RECORD_LIST;
     }
@@ -483,7 +483,8 @@ public class OccurrenceController {
             requestParams.setQ("collection_uid:" + query);
         }
         
-		doFullTextSearch(null, model, requestParams, request);
+		String[] tq = {""};
+        doFullTextSearch(tq, model, requestParams, request);
         
         return RECORD_LIST;
     }
@@ -661,26 +662,6 @@ public class OccurrenceController {
 
         return RECORD_MAP;
     }
-
-    /**
-     * Test for bug in Spring with commas in parameter.
-     *
-     * @param requestParams
-     * @param result
-     * @param response
-     * @throws IOException
-     */
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public void test(SearchRequestParams requestParams, BindingResult result, HttpServletResponse response) throws IOException {
-        if (result.hasErrors()) {
-            logger.warn("BindingResult errors: " + result.toString());
-        }
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("text/plain");
-        String msg = "fq = " + StringUtils.join(requestParams.getFq(), "|");
-        response.getWriter().println(msg);
-        logger.debug(msg);
-    }
     
     /**
      * Remove the URI extension from the input String
@@ -694,15 +675,29 @@ public class OccurrenceController {
         uuid = StringUtils.removeEndIgnoreCase(uuid, ".html");
         return uuid;
     }
-
+    
     /**
      * Common search code for full text searches
      * 
+     * @param taxaQuery
      * @param model
      * @param requestParams
      * @param request 
      */
     protected void doFullTextSearch(String taxaQuery, Model model, SearchRequestParams requestParams, HttpServletRequest request) {
+        String[] taxaQueryList = {taxaQuery};
+        doFullTextSearch(taxaQueryList,  model, requestParams, request);
+    }
+
+    /**
+     * Common search code for full text searches
+     * 
+     * @param taxaQuery
+     * @param model
+     * @param requestParams
+     * @param request 
+     */
+    protected void doFullTextSearch(String[] taxaQuery, Model model, SearchRequestParams requestParams, HttpServletRequest request) {
         // Prepare request obj
         prepareSearchRequest(taxaQuery, request, requestParams);
         // Perform search via webservice
@@ -712,16 +707,19 @@ public class OccurrenceController {
             addToModel(model, requestParams, searchResult);
             String displayQuery = searchResult.getQueryTitle();
             
-            if (taxaQuery != null && !taxaQuery.isEmpty() && displayQuery != null) {
-                // attempt to add the mathced name/common name to displayQuery
-                Pattern exp = Pattern.compile("<span>(.*)</span>");
-                Matcher matcher = exp.matcher(displayQuery);
-                if (matcher.find()) {
-                    logger.info("Generator: "+matcher.group(1));
-                    requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
+            if (taxaQuery != null) {
+                for (String tq : taxaQuery) {
+                    if (!tq.isEmpty() && displayQuery != null) {
+                        // attempt to add the mathced name/common name to displayQuery
+                        Pattern exp = Pattern.compile("<span>(.*)</span>");
+                        Matcher matcher = exp.matcher(displayQuery);
+                        if (matcher.find()) {
+                            logger.info("Generator: "+matcher.group(1));
+                            requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
+                        }
+                    }
                 }
             }
-            
         } catch (Exception ex) {
         	logger.error(ex.getMessage(),ex);
             model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
@@ -735,7 +733,7 @@ public class OccurrenceController {
      * @param requestParams
      * @param request 
      */
-    protected void doFullTextSearch(String taxaQuery, Model model, SpatialSearchRequestParams requestParams, HttpServletRequest request) {
+    protected void doFullTextSearch(String[] taxaQuery, Model model, SpatialSearchRequestParams requestParams, HttpServletRequest request) {
         // Prepare request obj
         prepareSearchRequest(taxaQuery, request, requestParams);
         // Perform search via webservice
@@ -758,39 +756,69 @@ public class OccurrenceController {
      * @param request
      * @param requestParams 
      */
-    protected void prepareSearchRequest(String taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
+    protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
         // check for user facets via cookie
         String[] userFacets = getFacetsFromCookie(request);
         if (userFacets.length > 0) requestParams.setFacets(userFacets);
         
-        if (requestParams.getQ().isEmpty()) 
-            requestParams.setQ("*:*"); // assume search for everything
+        List<String> displayString = new ArrayList<String>();
+        List<String> query = new ArrayList<String>();
         
-        if (taxaQuery != null && !taxaQuery.isEmpty()) {
-            StringBuilder query = new StringBuilder();
-            String guid = bieService.getGuidForName(taxaQuery);
-            logger.info("GUID = " + guid);
-            
-            if (guid != null && !guid.isEmpty()) {
-                query.append("lsid:").append(guid);
-                taxaQuery = taxaQuery + " <span id='queryGuid'>" + guid + "</span>";
-                requestParams.setDisplayString(taxaQuery);
-                // add raw_scientificName facet so we can show breakdown of taxa contributing to search
-                List<String> facets = new ArrayList<String>(Arrays.asList(requestParams.getFacets()));    
-                if (!facets.contains("raw_taxon_name")) {
-                    facets.add("raw_taxon_name");
-                    requestParams.setFacets(facets.toArray(new String[0]));
+        if (taxaQuery != null) {
+            for (String tq : taxaQuery) {
+                if (!tq.isEmpty()) {
+                    String guid = bieService.getGuidForName(tq.replaceAll("\"", ""));
+                    logger.info("GUID for " + tq + " = " + guid);
+
+                    if (guid != null && !guid.isEmpty()) {
+                        // gota GUID match so perform a lsid search
+                        //query.append("lsid:").append(guid);
+                        query.add("lsid:" + guid);
+                        tq = tq + " <span id='queryGuid'>" + guid + "</span>";
+                        //requestParams.setDisplayString(tq);
+                        displayString.add(tq);
+                        // add raw_scientificName facet so we can show breakdown of taxa contributing to search
+                        List<String> facets = new ArrayList<String>(Arrays.asList(requestParams.getFacets()));    
+                        if (!facets.contains("raw_taxon_name")) {
+                            facets.add("raw_taxon_name");
+                            requestParams.setFacets(facets.toArray(new String[0]));
+                        } 
+
+                    } else {
+                        // no GUID atch so do full-text search
+                        query.add(tq); 
+                        //requestParams.setDisplayString(tq);
+                        displayString.add(tq);
+                    }
+
+
                 } 
-                
-            } else {
-                query.append(taxaQuery); // full text search
-                requestParams.setDisplayString(taxaQuery);
             }
             
-            logger.info("query = " + query);
-            requestParams.setQ(query.toString());
+            StringBuilder queryString = new StringBuilder();
+            
+            if (requestParams.getQ() != null && !requestParams.getQ().isEmpty()) {
+                //combine any other seaerch inputs from advanced form
+                queryString.append(requestParams.getQ()).append(" AND ");
+            }
+            
+            // if more than one taxa query, add braces so we get correct Boolean precedence
+            String[] braces = {"",""};
+            if (query.size() > 1) {
+                braces[0] = "(";
+                braces[1] = ")";
+            }
+            
+            queryString.append(braces[0]).append(StringUtils.join(query, " OR ")).append(braces[1]); // taxa terms should be OR'ed
+            logger.info("query = " + queryString);
+            requestParams.setQ(queryString.toString().trim());
+            requestParams.setDisplayString(StringUtils.join(displayString, " OR ")); // join up mulitple taxa queries
+            
+        } else if (requestParams.getQ().isEmpty())  {
+            requestParams.setQ("*:*"); // assume search for everything
         } else {
-            //requestParams.setDisplayString(requestParams.getQ());
+            // unescape URI encoded query
+            requestParams.setQ(URLDecoder.decode(requestParams.getQ()));
         }
     } 
 

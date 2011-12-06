@@ -17,6 +17,7 @@
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script> --%>
         <script src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>
         <script type="text/javascript">
@@ -86,7 +87,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <b>Find records for ANY of the following taxa (matched/processed taxon concepts)</b>
+                        <b>Find records for ANY of the following species/taxa</b>
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
                             <tbody>
@@ -95,14 +96,26 @@
                                     <tr style="" id="taxon_row_${i}">
                                         <td class="label">Species/Taxon</td>
                                         <td>
-                                            <input type="text" value="" id="taxa_${i}" name="taxa" class="name_autocomplete" style="width:35%">
-                                            <input type="hidden" name="lsid" class="lsidInput" id="taxa_${i}" value=""/>
+                                            <input type="text" name="taxonText" id="taxa_${i}" class="name_autocomplete" size="50" value="">
+                                            <input type="hidden" name="lsid" class="lsidInput" id="lsid_${i}" value=""/>
                                         </td>
                                     </tr>
                                 </c:forEach>
+                                <tr>
+                                    <td>
+                                        Name matching options:</td>
+                                    <td style="font-size: 12px;line-height: 1.5em;">
+                                        <input type="radio" name="nameType" value="matched_name_children" checked="checked"/> Match 
+                                        all known names (including synonyms) and include records for child taxa<br/>
+                                        <input type="radio" name="nameType" value="matched_name"/> Match 
+                                        all known names (including synonyms) but do NOT include records for child taxa<br/>
+                                        <input type="radio" name="nameType" value="raw_name"/> Only match the original/unprocessed name on records (will NOT include
+                                        records with synonyms or child taxa)
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
-                        <b>Find records that specify the following scientific name (verbatim/unprocessed name)</b>
+<%--                        <b>Find records that specify the following scientific name (verbatim/unprocessed name)</b>
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
                             <tbody>
@@ -113,24 +126,8 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
-                        <b>Find records from the following species group</b>
-                        <table border="0" width="100" cellspacing="2" class="compact">
-                            <thead/>
-                            <tbody>
-                                <tr>
-                                    <td class="label">Species Group</td>
-                                    <td>
-                                         <select class="species_group" name="species_group" id="species_group">
-                                            <option value="">-- select a species group --</option>
-                                            <c:forEach var="group" items="${speciesGroups}">
-                                                <option value="${group}">${group}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        </table>--%>
+
                         <b>Find records from the following institution or collection</b>
                         <table border="0" width="100" cellspacing="2" class="compact">
                             <thead/>
@@ -164,67 +161,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <b>Find records from the following regions</b>
-                        <table border="0" width="100" cellspacing="2" class="compact">
-                            <thead/>
-                            <tbody>
-                                <c:if test="${not isALA}">
-                                    <tr>
-                                        <td class="label">Country</td>
-                                        <td>
-                                            <select class="country" name="country" id="country">
-                                                <option value="">-- select a country --</option>
-                                                <c:forEach var="country" items="${countries}">
-                                                    <option value="${country}">${country}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </c:if>
-                                <tr>
-                                    <td class="label">State/Territory</td>
-                                    <td>
-                                        <select class="state" name="state" id="state">
-                                            <option value="">-- select a state/territory --</option>
-                                            <c:forEach var="state" items="${states}">
-                                                <option value="${state}">${state}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <c:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
-                                <tr>
-                                    <td class="label">IBRA region</td>
-                                    <td>
-                                        <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                                        <select class="biogeographic_region" name="ibra" id="ibra">
-                                            <option value="">-- select an IBRA region --</option>
-                                            <c:forEach var="region" items="${ibra}">
-                                                <option value="${region}">${region}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="label">IMCRA region</td>
-                                    <td>
-                                        <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                                        <select class="biogeographic_region" name="imcra" id="imcra">
-                                            <option value="">-- select an IMCRA region --</option>
-                                            <c:forEach var="region" items="${imcra}">
-                                                <option value="${region}">${region}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="label">LGA region</td>
-                                    <td>
-                                        <input type="text" name="places" id="lga" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        
                         <c:if test="${fn:length(typeStatus) >1}">
                         <b>Find records from the following type status</b>
                         <table border="0" width="100" cellspacing="2" class="compact">
@@ -307,6 +244,85 @@
                                 </tr>
                             </tbody>
                         </table>
+                                                <b>Find records from the following life form (species group)</b>
+                        <table border="0" width="100" cellspacing="2" class="compact">
+                            <thead/>
+                            <tbody>
+                                <tr>
+                                    <td class="label">Species Group</td>
+                                    <td>
+                                         <select class="species_group" name="species_group" id="species_group">
+                                            <option value="">-- select a species group --</option>
+                                            <c:forEach var="group" items="${speciesGroups}">
+                                                <option value="${group}">${group}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <b>Find records from the following regions</b>
+                        <table border="0" width="100" cellspacing="2" class="compact">
+                            <thead/>
+                            <tbody>
+                                <c:if test="${not isALA}">
+                                    <tr>
+                                        <td class="label">Country</td>
+                                        <td>
+                                            <select class="country" name="country" id="country">
+                                                <option value="">-- select a country --</option>
+                                                <c:forEach var="country" items="${countries}">
+                                                    <option value="${country}">${country}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                <tr>
+                                    <td class="label">State/Territory</td>
+                                    <td>
+                                        <select class="state" name="state" id="state">
+                                            <option value="">-- select a state/territory --</option>
+                                            <c:forEach var="state" items="${states}">
+                                                <option value="${state}">${state}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <c:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
+                                <tr>
+                                    <td class="label">IBRA region</td>
+                                    <td>
+                                        <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
+                                        <select class="biogeographic_region" name="ibra" id="ibra">
+                                            <option value="">-- select an IBRA region --</option>
+                                            <c:forEach var="region" items="${ibra}">
+                                                <option value="${region}">${region}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">IMCRA region</td>
+                                    <td>
+                                        <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
+                                        <select class="biogeographic_region" name="imcra" id="imcra">
+                                            <option value="">-- select an IMCRA region --</option>
+                                            <c:forEach var="region" items="${imcra}">
+                                                <option value="${region}">${region}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">LGA region</td>
+                                    <td>
+                                        <input type="text" name="places" id="lga" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                                    
                         <input type="submit" value="Search" />
                         &nbsp;&nbsp;
                         <input type="reset" value="Clear all" id="clearAll" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>

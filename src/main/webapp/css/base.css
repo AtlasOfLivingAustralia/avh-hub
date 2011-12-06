@@ -62,7 +62,7 @@ table th {
     font-weight: bold;
     color: #444;
 }
-table td,table th  {
+table td, table th  {
     text-align: left;
     padding: 6px 6px;
     line-height: 1.3em;
@@ -72,6 +72,9 @@ table td,table th  {
 table.compact, table.nested {
     width: 100%;
     margin: 2px 0 4px 0;
+}
+#content3 table.compact  {
+    border-bottom: 1px solid #CCC;
 }
 table.compact thead {
     border: none;

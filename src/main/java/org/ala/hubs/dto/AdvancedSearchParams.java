@@ -14,8 +14,26 @@
  ***************************************************************************/
 package org.ala.hubs.dto;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import org.ala.hubs.util.HubsQueryParser;
+import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 
 /**
  * Request parameters for the advanced search form (form backing bean)
@@ -23,10 +41,12 @@ import org.apache.commons.lang.StringUtils;
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 public class AdvancedSearchParams {
-
+    private final static Logger logger = Logger.getLogger(AdvancedSearchParams.class);
+    
     protected String text = "";
-    protected String[] lsid = {};
-    protected String[] taxa = {};
+    protected String[] lsid = {};  // deprecated 
+    protected String[] taxonText = {};
+    protected String nameType = "";
     protected String raw_taxon_name = "";
     protected String species_group = "";
     protected String institution_collection = "";
@@ -42,6 +62,8 @@ public class AdvancedSearchParams {
     protected String collector = "";
     protected String start_date = "";
     protected String end_date = "";
+    
+    private final String QUOTE = "\"";
 
     /**
      * This custom toString method outputs a valid SOLR query (q param value).
@@ -51,44 +73,52 @@ public class AdvancedSearchParams {
     @Override
     public String toString() {
         StringBuilder q = new StringBuilder();
-        
-        if (!text.isEmpty()) q.append("text:").append(text);
-        if (!raw_taxon_name.isEmpty()) q.append(" raw_taxon_name:\"").append(raw_taxon_name).append("\"");
-        if (!species_group.isEmpty()) q.append(" species_group:").append(species_group);
-        if (!state.isEmpty()) q.append(" state:\"").append(state).append("\"");
-        if (!country.isEmpty()) q.append(" country:\"").append(country).append("\"");
-        if (!ibra.isEmpty()) q.append(" ibra:\"").append(ibra).append("\"");
-        if (!imcra.isEmpty()) q.append(" imcra:\"").append(imcra).append("\"");
-        if (!places.isEmpty()) q.append(" places:\"").append(places.trim()).append("\"");
-        if (!type_status.isEmpty()) q.append(" type_status:").append(type_status);
-        if (!basis_of_record.isEmpty()) q.append(" basis_of_record:").append(basis_of_record);
-        if (!catalogue_number.isEmpty()) q.append(" catalogue_number:").append(catalogue_number);
-        if (!record_number.isEmpty()) q.append(" record_number:").append(record_number);
-        if (!collector.isEmpty()) q.append(" collector:").append(collector);
+        // build up q from the simple fields first...
+        if (!text.isEmpty()) q.append("+text:").append(text);
+        if (!raw_taxon_name.isEmpty()) q.append(" +raw_taxon_name:").append(quoteText(raw_taxon_name));
+        if (!species_group.isEmpty()) q.append(" +species_group:").append(species_group);
+        if (!state.isEmpty()) q.append(" +state:").append(quoteText(state));
+        if (!country.isEmpty()) q.append(" +country:").append(quoteText(country));
+        if (!ibra.isEmpty()) q.append(" +ibra:").append(quoteText(ibra));
+        if (!imcra.isEmpty()) q.append(" +imcra:").append(quoteText(imcra));
+        if (!places.isEmpty()) q.append(" +places:").append(quoteText(places.trim()));
+        if (!type_status.isEmpty()) q.append(" +type_status:").append(type_status);
+        if (!basis_of_record.isEmpty()) q.append(" +basis_of_record:").append(basis_of_record);
+        if (!catalogue_number.isEmpty()) q.append(" +catalogue_number:").append(catalogue_number);
+        if (!record_number.isEmpty()) q.append(" +record_number:").append(record_number);
+        if (!collector.isEmpty()) q.append(" +collector:").append(collector);
         
         ArrayList<String> lsids = new ArrayList<String>();
         ArrayList<String> taxas = new ArrayList<String>();
         
-        // iterate over the taxa search inputs and if lsid is set use it otherwisw use taxa input
-        for (int i = 0; i < lsid.length; i++) {
-            if (!lsid[i].isEmpty()) {
-                lsids.add(lsid[i]);
-            } else if (!taxa[i].isEmpty()) {
-                taxas.add(taxa[i]);
+        // iterate over the taxa search inputs and if lsid is set use it otherwise use taxa input
+        for (int i = 0; i < taxonText.length; i++) {
+            if (!taxonText[i].isEmpty()) {
+                taxas.add(quoteText(taxonText[i])); // taxonText[i].replaceAll(" ", "+")
             }
         }
-        
-        if (!lsids.isEmpty()) {
-            q.append(" lsid:").append(StringUtils.join(lsids, " OR lsid:"));
+
+        // if more than one taxa query, add braces so we get correct Boolean precedence
+        String[] braces = {"",""};
+        if (taxas.size() > 1) {
+            braces[0] = "(";
+            braces[1] = ")";
         }
         
         if (!taxas.isEmpty()) {
-            if (!lsids.isEmpty()) q.append(" OR ");
-            q.append(" taxon_name:\"").append(StringUtils.join(taxas, "\" OR taxon_name:\"")).append("\"");
+            // build up OR'ed taxa query with braces if more than one taxon
+            q.append(" +").append(braces[0]).append(nameType).append(":");
+            q.append(StringUtils.join(taxas, " OR " + nameType + ":")).append(braces[1]);
         }
+
+        // TODO: deprecate this code (?)
+        if (!lsids.isEmpty()) {
+            q.append(" lsid:").append(StringUtils.join(lsids, " OR lsid:"));
+        }
+
         
         if (!institution_collection.isEmpty()) {
-            String label = (StringUtils.startsWith(institution_collection, "in")) ? " institution_uid" : " collection_uid";
+            String label = (StringUtils.startsWith(institution_collection, "in")) ? " +institution_uid" : " +collection_uid";
             q.append(label).append(":").append(institution_collection);
         }
         
@@ -104,10 +134,24 @@ public class AdvancedSearchParams {
             } else {
                 value = value + "*]";
             }
-            q.append(" occurrence_date:").append(value);
+            q.append(" +occurrence_date:").append(value);
         }
         
-        return q.toString().trim();
+        return URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
+    }
+    
+    /**
+     * Surround phrase search with quotes
+     * 
+     * @param text
+     * @return 
+     */
+    private String quoteText(String text) {
+        if (StringUtils.contains(text, " ")) {
+            text = QUOTE + text + QUOTE;
+        }
+        
+        return text;
     }
 
     /**
@@ -398,12 +442,12 @@ public class AdvancedSearchParams {
         this.text = text;
     }
 
-    public String[] getTaxa() {
-        return taxa;
+    public String[] getTaxonText() {
+        return taxonText;
     }
 
-    public void setTaxa(String[] taxa) {
-        this.taxa = taxa;
+    public void setTaxonText(String[] taxonText) {
+        this.taxonText = taxonText;
     }
 
     public String getCountry() {
@@ -412,5 +456,13 @@ public class AdvancedSearchParams {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getNameType() {
+        return nameType;
+    }
+
+    public void setNameType(String nameType) {
+        this.nameType = nameType;
     }
 }
