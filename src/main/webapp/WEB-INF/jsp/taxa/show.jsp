@@ -22,7 +22,20 @@
              * JQuery on document ready callback
              */
             $(document).ready(function() {
-                $("a.imgThumb").fancybox({titlePosition: 'inside'});
+              $("a.imgThumb").fancybox({titlePosition: 'inside'});
+                
+              $('img.distroLegend').each(function(i, n) {
+               // if img doesn't load, then hide its surround div
+                $(this).error(function() {
+                    //alert("img error");
+                    $(this).parent().hide();
+                 });
+                 // IE hack as IE doesn't trigger the error handler
+                 if ($.browser.msie && !n.complete) {
+                     //alert("IE img error");
+                     $(this).parent().hide();
+                 }
+              });                
             });
         </script>
     </head>
@@ -46,8 +59,8 @@
                 </div><!-- end div#SidebarBox --> 
                 <div id="content2">
 
-                    <img src="${biocacheServiceUrl}/density/map?q=lft:[${taxon.left} TO ${taxon.right}] AND ${queryContext}"/>
-                    <img src="${biocacheServiceUrl}/density/legend?q=lft:[${taxon.left} TO ${taxon.right}] AND ${queryContext}"/>
+                    <div><img src="${biocacheServiceUrl}/density/map?q=lft:[${taxon.left} TO ${taxon.right}] AND ${queryContext}"/></div>
+                    <div><img class="img.distroLegend" src="${biocacheServiceUrl}/density/legend?q=lft:[${taxon.left} TO ${taxon.right}] AND ${queryContext}"/></div>
 
                     <c:if test="${not empty taxon.description}">
                         <h3>Description</h3>
