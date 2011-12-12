@@ -90,23 +90,28 @@
                                                     </td>
                                                 </tr>
                                             </c:forEach>
-                                            <c:if test="${skin != 'avh'}">
-                                                <tr>
-                                                    <td>
-                                                         <a href="#nameMatchingOptions" id="#nameMatchingOptions" class="toggleOptions" style="font-size: 11px;">Name matching options</a>
-                                                    </td>
-                                                    <td style="font-size: 12px;line-height: 1.5em;">
-                                                        <div id="nameMatchingOptions">
-                                                            <input type="radio" name="nameType" value="matched_name_children" checked="checked"/> Match
-                                                            all known names (including synonyms) and include records for child taxa<br/>
-                                                            <input type="radio" name="nameType" value="matched_name"/> Match
-                                                            all known names (including synonyms) but do NOT include records for child taxa<br/>
-                                                            <input type="radio" name="nameType" value="raw_name"/> Match the verbatim scientific name on records (will NOT include
-                                                            records with synonyms or child taxa)
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </c:if>
+                                            <c:choose>
+                                                <c:when test="${skin != 'avh'}">
+                                                    <tr>
+                                                        <td>
+                                                             <a href="#nameMatchingOptions" id="#nameMatchingOptions" class="toggleOptions" style="font-size: 11px;">Name matching options</a>
+                                                        </td>
+                                                        <td style="font-size: 12px;line-height: 1.5em;">
+                                                            <div id="nameMatchingOptions">
+                                                                <input type="radio" name="nameType" value="matched_name_children" checked="checked"/> Match
+                                                                all known names (including synonyms) and include records for child taxa<br/>
+                                                                <input type="radio" name="nameType" value="matched_name"/> Match
+                                                                all known names (including synonyms) but do NOT include records for child taxa<br/>
+                                                                <input type="radio" name="nameType" value="raw_name"/> Match the verbatim scientific name on records (will NOT include
+                                                                records with synonyms or child taxa)
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="hidden" name="nameType" value="matched_name_children"/>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </tbody>
                                     </table>
                                 </div>
