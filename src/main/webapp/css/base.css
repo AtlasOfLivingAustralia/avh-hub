@@ -203,3 +203,64 @@ span#taxonName {
     padding:3px;
     border-bottom: 1px solid #CCC;
 }
+
+#simpleSearchDiv  input[type=text] {
+    width: 240px;
+}
+
+#simpleSearchDiv  input.occurrence_date {
+    width: 110px;
+}
+
+#extendedOptions {
+    padding-left:10px;
+}
+
+.toggleSection {
+    display:none;
+    padding-left: 10px;
+}
+#taxonomySection {
+    display:block;
+}
+a.toggleTitle {
+    background: url("../images/plus.gif") 0 5px no-repeat;
+    display: block;
+    padding-left: 14px;
+    font-weight: bold;
+}
+a.toggleTitleActive {
+    background: url("../images/minus.gif") 0 5px  no-repeat;
+    display: block;
+    padding-left: 14px;
+}
+a.toggleOptions {
+    background: url("../images/plus.gif") 0 3px no-repeat;
+    display: block;
+    padding-left: 14px;
+}
+a.toggleOptionsActive {
+    background: url("../images/minus.gif") 0 3px  no-repeat;
+    display: block;
+    padding-left: 14px;
+}
+#content3 #simpleSearchDiv table.compact  {
+    border-bottom: none;
+}
+table#taxonomyOptions {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+#taxonSearchDiv {
+    border: 1px solid #AAA !important;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    width: 95%;
+}
+
+#nameMatchingOptions {
+    display:none;
+}

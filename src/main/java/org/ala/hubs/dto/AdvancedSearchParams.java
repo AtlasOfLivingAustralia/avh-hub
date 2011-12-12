@@ -16,24 +16,9 @@ package org.ala.hubs.dto;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.logging.Level;
-import org.ala.hubs.util.HubsQueryParser;
-import org.apache.commons.httpclient.URIException;
-import org.apache.commons.httpclient.util.URIUtil;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.util.Version;
 
 /**
  * Request parameters for the advanced search form (form backing bean)
@@ -56,12 +41,16 @@ public class AdvancedSearchParams {
     protected String imcra = "";
     protected String places = "";
     protected String type_status = "";
+    protected Boolean type_material = false;
     protected String basis_of_record = "";
     protected String catalogue_number = "";
     protected String record_number = "";
     protected String collector = "";
+    protected String collectors_number = "";
     protected String start_date = "";
     protected String end_date = "";
+    protected String last_load_start = "";
+    protected String last_load_end = "";
     
     private final String QUOTE = "\"";
 
@@ -75,7 +64,7 @@ public class AdvancedSearchParams {
         StringBuilder q = new StringBuilder();
         // build up q from the simple fields first...
         if (!text.isEmpty()) q.append("+text:").append(text);
-        if (!raw_taxon_name.isEmpty()) q.append(" +raw_taxon_name:").append(quoteText(raw_taxon_name));
+        if (!raw_taxon_name.isEmpty()) q.append(" +raw_name:").append(quoteText(raw_taxon_name));
         if (!species_group.isEmpty()) q.append(" +species_group:").append(species_group);
         if (!state.isEmpty()) q.append(" +state:").append(quoteText(state));
         if (!country.isEmpty()) q.append(" +country:").append(quoteText(country));
@@ -83,10 +72,12 @@ public class AdvancedSearchParams {
         if (!imcra.isEmpty()) q.append(" +imcra:").append(quoteText(imcra));
         if (!places.isEmpty()) q.append(" +places:").append(quoteText(places.trim()));
         if (!type_status.isEmpty()) q.append(" +type_status:").append(type_status);
+        if (type_material) q.append(" +type_status:").append("*");
         if (!basis_of_record.isEmpty()) q.append(" +basis_of_record:").append(basis_of_record);
         if (!catalogue_number.isEmpty()) q.append(" +catalogue_number:").append(catalogue_number);
         if (!record_number.isEmpty()) q.append(" +record_number:").append(record_number);
         if (!collector.isEmpty()) q.append(" +collector:").append(collector);
+        //if (!collectors_number.isEmpty()) q.append(" +collector:").append(collectors_number); // TODO field in SOLR not active
         
         ArrayList<String> lsids = new ArrayList<String>();
         ArrayList<String> taxas = new ArrayList<String>();
@@ -123,23 +114,42 @@ public class AdvancedSearchParams {
         }
         
         if (!start_date.isEmpty() || !end_date.isEmpty()) {
-            String value = "";
-            if (!start_date.isEmpty()) {
-                value = "[" + start_date + "T12:00:00Z TO ";
-            } else {
-                value = "[* TO ";
-            }
-            if (!end_date.isEmpty()) {
-                value = value + end_date + "T12:00:00Z]";
-            } else {
-                value = value + "*]";
-            }
+            String value = combineDates(start_date, end_date);
             q.append(" +occurrence_date:").append(value);
         }
-        
+
+        if (!last_load_start.isEmpty() || !last_load_end.isEmpty()) {
+            String value = combineDates(last_load_start, last_load_end);
+            q.append(" +last_load_date:").append(value);
+        }
+
         return URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
     }
-    
+
+    /**
+     * Combine two dates [YYYY-MM-DD] into a SOLR date range String
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    private String combineDates(String startDate, String endDate) {
+        logger.info("dates check: " + startDate + "|" + endDate);
+        String value = "";
+        // TODO check input dates are valid
+        if (!startDate.isEmpty()) {
+            value = "[" + startDate + "T12:00:00Z TO ";
+        } else {
+            value = "[* TO ";
+        }
+        if (!endDate.isEmpty()) {
+            value = value + endDate + "T12:00:00Z]";
+        } else {
+            value = value + "*]";
+        }
+        return value;
+    }
+
     /**
      * Surround phrase search with quotes
      * 
@@ -464,5 +474,37 @@ public class AdvancedSearchParams {
 
     public void setNameType(String nameType) {
         this.nameType = nameType;
+    }
+
+    public String getCollectors_number() {
+        return collectors_number;
+    }
+
+    public void setCollectors_number(String collectors_number) {
+        this.collectors_number = collectors_number;
+    }
+
+    public Boolean getType_material() {
+        return type_material;
+    }
+
+    public void setType_material(Boolean type_material) {
+        this.type_material = type_material;
+    }
+
+    public String getLast_load_start() {
+        return last_load_start;
+    }
+
+    public void setLast_load_start(String last_load_start) {
+        this.last_load_start = last_load_start;
+    }
+
+    public String getLast_load_end() {
+        return last_load_end;
+    }
+
+    public void setLast_load_end(String last_load_end) {
+        this.last_load_end = last_load_end;
     }
 }

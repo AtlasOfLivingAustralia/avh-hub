@@ -48,7 +48,7 @@ include file="/common/taglibs.jsp" %>
                         <li></li>
                     </ul>
                     <ul id="nav">
-                        <li class="page_item page-item-4"><a href="${pageContext.request.contextPath}/home" title="Home">Home</a></li>
+                        <li class="page_item page-item-4"><a href="http://www.ozcam.org.au/" title="Home">Home</a></li>
                         <li class="page_item page-item-6"><a href="http://www.ozcam.org.au/ozcam-data/" title="About OZCAM">About <span class="caps">OZCAM</span></a></li>
                         <li class="page_item page-item-9 current_page_item"><a href="http://www.ozcam.org.au/using-ozcam-data/" title="OZCAM Data"><span class="caps">OZCAM</span> Data</a></li>
                         <li class="page_item page-item-11"><a href="http://www.ozcam.org.au/rights/" title="Copyright">Copyright</a></li>

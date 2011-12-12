@@ -101,6 +101,10 @@ public class HomePageController {
         model.addAttribute("ibra", serviceCache.getIBRA());
         model.addAttribute("imcra", serviceCache.getIMCRA());
         model.addAttribute("countries", serviceCache.getCountries());
+        String[] botanicalGroups = {"trees","herbs","palms","moss","algae"};
+        model.addAttribute("botanicalGroups", botanicalGroups); // TODO get proper list of botanicalGroups
+        String[] cultivationStatus = {"is cultivated", "is not cultivated"};
+        model.addAttribute("cultivationStatus", cultivationStatus); // TODO get proper list of cultivationStatus
     }
 
     /**
@@ -111,7 +115,7 @@ public class HomePageController {
      */
     @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
     public String homePagePost(AdvancedSearchParams requestParams, BindingResult result, Model model) {
-        logger.debug("Advanced search POST: " + requestParams.toString());
+        logger.info("Advanced search POST: " + requestParams.toString());
         
         if (result.hasErrors()) {
             logger.warn("BindingResult errors: " + result.toString());

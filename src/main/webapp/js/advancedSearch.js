@@ -21,7 +21,7 @@ $(document).ready(function() {
     $(window).hashchange( function() {
         var hash = window.location.hash.replace( /^#/, '');
         // remember advanced option hide/show on reload
-        var show = (hash.indexOf("advanced_search_show") != -1) ? true : false; // boolean
+        var show = (hash.indexOf("advanced") != -1) ? true : false; // boolean
         showHideAdvancedSearch(show);
 
 //        var solrQuery = $("input#solrQuery");
@@ -303,6 +303,27 @@ $(document).ready(function() {
         });
     }
 
+    // Toggle show/hide sections with plus/minus icon
+    $(".toggleTitle").click(function(e) {
+        e.preventDefault();
+        var $this = this;
+        $(this).next(".toggleSection").slideToggle('slow', function(){
+            // change plus/minus icon when transition is complete
+            $($this).toggleClass('toggleTitleActive');
+        });
+    });
+    
+    $(".toggleOptions").click(function(e) {
+        e.preventDefault();
+        var $this = this;
+        var targetEl = $(this).attr("id");
+        $(targetEl).slideToggle('slow', function(){
+            // change plus/minus icon when transition is complete
+            $($this).toggleClass('toggleOptionsActive');
+        });
+    });
+
+
 }); // end document ready
 
 function selectChange(fieldName, fieldValue) {
@@ -361,15 +382,20 @@ function removeFromQuery(query, fieldName) {
  */
 function showHideAdvancedSearch(doShow) {
     var advDiv = $("div#advancedSearch");
-
+    console.log("showHideAdvancedSearch", doShow);
     //if ($(advDiv).css("display") == "none") {
     if (doShow) {
-        advDiv.slideDown();
-        $("a#showHideAdvancedOptions").attr("href", "#advanced_search_hide");
+        //advDiv.slideDown();
+        //$("a#showHideAdvancedOptions").attr("href", "#advanced_search_hide");
+        //$("a#extendedOptionsLink").click();
+        $(".toggleSection").not("#taxonomySection").slideToggle('slow', function(){
+            // change plus/minus icon when transition is complete
+            $(this).prev(".toggleTitle").toggleClass('toggleTitleActive');
+        });
         //window.location.hash = "advanced_search";
     } else {
-         advDiv.slideUp();
-         $("a#showHideAdvancedOptions").attr("href", "#advanced_search_show");
+         //advDiv.slideUp();
+         //$("a#showHideAdvancedOptions").attr("href", "#advanced_search_show");
          //window.location.hash = '';
          //var stripped = window.location.href.replace(/#.*$/,'');
     }
