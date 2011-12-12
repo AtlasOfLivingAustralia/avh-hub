@@ -138,12 +138,12 @@ public class AdvancedSearchParams {
         String value = "";
         // TODO check input dates are valid
         if (!startDate.isEmpty()) {
-            value = "[" + startDate + "T12:00:00Z TO ";
+            value = "[" + startDate + "T00:00:00Z TO ";
         } else {
             value = "[* TO ";
         }
         if (!endDate.isEmpty()) {
-            value = value + endDate + "T12:00:00Z]";
+            value = value + endDate + "T00:00:00Z]";
         } else {
             value = value + "*]";
         }

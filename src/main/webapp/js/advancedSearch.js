@@ -168,12 +168,12 @@ $(document).ready(function() {
             return; // both fields are blank
         }
         if (start) {
-            fieldValue = "[" + start + "T12:00:00Z TO ";
+            fieldValue = "[" + start + "T00:00:00Z TO ";
         } else {
             fieldValue = "[* TO ";
         }
         if (end) {
-            fieldValue = fieldValue + end + "T12:00:00Z]";
+            fieldValue = fieldValue + end + "T00:00:00Z]";
         } else {
             fieldValue = fieldValue + "*]";
         }
@@ -283,7 +283,7 @@ $(document).ready(function() {
             } else if (fieldName.indexOf("_date") != -1) {
                 // date range search
                 fieldValue = fieldValue.replace(/\[|\]/g, ''); // remove [ & ]
-                fieldValue = fieldValue.replace(/T12:00:00Z/g, ''); // remove time portion of ISO date
+                fieldValue = fieldValue.replace(/T00:00:00Z/g, ''); // remove time portion of ISO date
                 fieldValue = fieldValue.replace(/\*/g, ''); // remove wildcard char
                 var dates = fieldValue.split(" TO ");
                 $("#startDate").val(dates[0].trim());

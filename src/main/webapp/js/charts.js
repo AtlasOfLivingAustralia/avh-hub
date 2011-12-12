@@ -208,12 +208,12 @@ function buildGenericFacetChart(name, data, query, chartsDiv, chartOptions) {
             // the facet query can be overridden for date ranges
             if (name == 'occurrence_year') {
                 if (id.match("^before") == 'before') { // startWith
-                    facetQuery = "occurrence_year:[*%20TO%20" + "1850" + "-01-01T12:00:00Z]";
+                    facetQuery = "occurrence_year:[*%20TO%20" + "1850" + "-01-01T00:00:00Z]";
                 }
                 else {
                     var decade = id.substr(0,4);
                     var dateTo = parseInt(decade) + 10;
-                    facetQuery = "occurrence_year:[" + decade + "-01-01T12:00:00Z%20TO%20" + dateTo + "-01-01T12:00:00Z]";
+                    facetQuery = "occurrence_year:[" + decade + "-01-01T00:00:00Z%20TO%20" + dateTo + "-01-01T00:00:00Z]";
                 }
             }
 
