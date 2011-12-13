@@ -62,6 +62,7 @@ public class HomePageController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String homePage(Model model) {
         addLookupToModel(model);
+        logger.debug("/ homepage = " + homePage);
         return homePage;
     }
 
@@ -73,6 +74,7 @@ public class HomePageController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String indexPage(Model model) {
         addLookupToModel(model);
+        logger.debug("/index homepage = " + homePage);
         return homePage;
     }
 
