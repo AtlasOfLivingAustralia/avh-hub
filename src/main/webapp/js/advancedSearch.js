@@ -85,7 +85,7 @@ $(document).ready(function() {
         //addTaxonConcept(item);
         //console.log("result",  item, this);
         var id = $(this).attr("id");
-        console.log("event", event, item);
+        //console.log("event", event, item);
         $(".lsidInput#" + id).val(item.guid);
     });
 
@@ -382,7 +382,7 @@ function removeFromQuery(query, fieldName) {
  */
 function showHideAdvancedSearch(doShow) {
     var advDiv = $("div#advancedSearch");
-    console.log("showHideAdvancedSearch", doShow);
+    //console.log("showHideAdvancedSearch", doShow);
     //if ($(advDiv).css("display") == "none") {
     if (doShow) {
         //advDiv.slideDown();

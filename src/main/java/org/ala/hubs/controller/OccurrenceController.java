@@ -311,6 +311,34 @@ public class OccurrenceController {
         return RECORD_LIST;
     }
 
+    @RequestMapping(value = "/search*", method = RequestMethod.POST)
+    public String search(@RequestParam(value="raw_taxon_guid", required=false) String[] rawNames,
+            Model model,
+            HttpServletRequest request) throws Exception {
+        
+        logger.info("raw_taxon_guid list: " + StringUtils.join(rawNames, "|"));
+        String queryString = "raw_taxon_name:\"" + StringUtils.join(rawNames, "\" OR raw_taxon_name:\"") + "\"";
+        
+        SearchRequestParams requestParams = new SearchRequestParams();
+        requestParams.setQ(queryString);
+        
+        if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (request.getParameter("sort") == null && request.getParameter("dir") == null ) {
+            requestParams.setSort("last_load_date");
+            requestParams.setDir("desc");
+            model.addAttribute("sort","last_load_date");
+            model.addAttribute("dir","desc");
+        }
+
+        doFullTextSearch((String) null, model, requestParams, request);
+
+        return RECORD_LIST;
+    }
+
+
     /**
      * Display records for a given taxon concept id
      *
@@ -685,7 +713,12 @@ public class OccurrenceController {
      * @param request 
      */
     protected void doFullTextSearch(String taxaQuery, Model model, SearchRequestParams requestParams, HttpServletRequest request) {
-        String[] taxaQueryList = {taxaQuery};
+        String[] taxaQueryList = null;
+
+        if (taxaQuery != null) {
+            taxaQueryList[0] = taxaQuery;
+        }
+
         doFullTextSearch(taxaQueryList,  model, requestParams, request);
     }
 

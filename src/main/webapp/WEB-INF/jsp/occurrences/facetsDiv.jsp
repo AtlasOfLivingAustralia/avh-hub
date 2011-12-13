@@ -24,7 +24,8 @@
     </div>
     <div class="sidebar" style="clear:both;">
         <c:if test="${not empty searchResults.query}">
-            <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/></c:when><c:otherwise>q=<c:out escapeXml="true" value="${param.q}"/></c:otherwise></c:choose><c:if 
+            <c:set var="queryStr" value="${param.q ? param.q : searchRequestParams.q}"/>
+            <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/></c:when><c:otherwise>q=<c:out escapeXml="true" value="${queryStr}"/></c:otherwise></c:choose><c:if
                     test="${not empty param.fq}">&fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/></c:if><c:if 
                     test="${not empty param.lat}">&lat=${param.lat}</c:if><c:if 
                     test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if 
@@ -107,11 +108,11 @@
                         </c:if>
                         <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs"> <!-- ${facetResult.fieldName}:${fieldResult.label} -->
                             <c:if test="${fieldResult.count >= 0}">
-                                <c:set var="dateRangeTo"><c:choose><c:when test="${vs.last || facetResult.fieldResult[vs.count].label=='before'}">*</c:when><c:otherwise>${facetResult.fieldResult[vs.count].label}</c:otherwise></c:choose></c:set>
                                 <c:choose>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_') && fn:endsWith(fieldResult.label, 'Z')}">
                                         <li><c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
-                                            <a href="?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${dateRangeTo}]">${startYear}<i>s</i></a>
+                                            <c:set var="endYear" value="${fn:replace(fieldResult.label,'0-01-01','9-12-31')}"/><%-- assumes decade gaps --%>
+                                            <a href="?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${endYear}]">${startYear}<i>s</i></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource_uid')}">

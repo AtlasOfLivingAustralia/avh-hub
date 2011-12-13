@@ -509,37 +509,44 @@ $(document).ready(function() {
     $("span.lsid").each(function(i, el) {
         var lsid = $(this).attr("id");
         var nameString = $(this).html();
-        var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&" + BC_CONF.facetQueries + "&facets=raw_taxon_name&pageSize=0&flimit=50&callback=?";
+        var maxFacets = 30;
+        var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&" + BC_CONF.facetQueries + "&facets=raw_taxon_name&pageSize=0&flimit=" + maxFacets + "&callback=?";
         $.getJSON(jsonUri, function(data) {
             // list of synonyms
-            var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" + 
+            var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" +
+                "<form name='raw_taxon_search' class='rawTaxonSearch' id='rawTaxonSearch_"+i+"' action='" +
+                 BC_CONF.contextPath + "/occurrences/search' method='POST'>" +
                 "This taxon search includes records with synonyms and child taxa of <b>" + nameString + 
                 "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
-                "view species page</a>).<br/><br/><u>Original (unprocessed) scientific names</u> " + 
-                "which appear on records in this result set:<ul>";
+                "view species page</a>).<br/><br/>Verbatim scientific names " +
+                "which appear on records in this result set: <input type='submit' class='rawTaxonSumbit' id='rawTaxonSumbit_"+i+
+                "' value='Search with selected verbatim names' style='display:inline-block;float:right;'/>" +
+                "<div class='rawTaxaList'>";
             var synListSize = 0;
             $.each(data.facetResults, function(k, el) {
                 //console.log("el", el);
                 if (el.fieldName == "raw_taxon_name") {
                     $.each(el.fieldResult, function(j, el1) {
                         synListSize++;
-                        synList += "<li><a href='" + BC_CONF.contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")";
+                        synList += "<input type='checkbox' name='raw_taxon_guid' id='rawTaxon_" + j +
+                            "' class='rawTaxonCheckBox' value='" + el1.label + "'/>&nbsp;" +
+                            "<a href='" + BC_CONF.contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")<br/>";
                     });
                     
                 }
             });
             
             if (synListSize == 0) {
-                synList += "<li style='list-style:none;'>[no records found]</li>";
+                synList += "[no records found]";
             }
             
-            synList += "</ul>";
+            synList += "</div>";
             
-            if (synListSize >= 50) {
-                synList += "<div>[Only showing the top 50 names]</div>";
+            if (synListSize >= maxFacets) {
+                synList += "<div>[Only showing the top " + maxFacets + " names]</div>";
             } 
             
-            synList += "</div>";
+            synList += "</form></div>";
             $("#resultsReturned").append(synList);
             // position it under the drop down
             $("#refineTaxaSearch_"+i).position({
@@ -556,6 +563,27 @@ $(document).ready(function() {
         $(el).html("<a href='#' title='click for details about this search' id='lsid_" + i + "'>" + nameString + "</a>");
         $(el).addClass("dropDown");
     });
+
+    // form validation for raw_taxon_name popup div with checkboxes
+    $(":input.rawTaxonSumbit").live("click", function(e) {
+        e.preventDefault();
+        var submitId = $(this).attr("id");
+        var formNum = submitId.replace("rawTaxonSumbit_",""); // 1, 2, etc
+        var checkedFound = false;
+
+        $("form#rawTaxonSearch_" + formNum).find(":input.rawTaxonCheckBox").each(function(i, el) {
+            if ($(el).is(':checked')) {
+                checkedFound = true;
+                return false; // break loop
+            }
+        });
+
+        if (checkedFound) {
+            $("form#rawTaxonSearch_" + formNum).submit();
+        } else {
+            alert("Please check at least one \"verbatim scientific name\" checkbox.");
+        }
+    });
         
     $("#queryDisplay a").click(function(e) {
         e.preventDefault();
@@ -571,9 +599,13 @@ $(document).ready(function() {
             hoverDropDownDiv = false;
         }
     });
-    
-    $("body").mouseup(function(){ 
-        if (!hoverDropDownDiv) $('.refineTaxaSearch, #facetOptions').hide();
+
+    // Hide taxonConcept popup div if clicked outside popup
+    $("body").mouseup(function(e) {
+        var target = $(e.target);
+        if (!hoverDropDownDiv && target.parents(".refineTaxaSearch").length == 0) {
+            $('.refineTaxaSearch, #facetOptions').hide();
+        }
     });
     
     // Jquery Tools Tabs setup
