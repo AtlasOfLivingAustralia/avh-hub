@@ -258,6 +258,12 @@
                         </div><!-- end #imagesWrapper -->
                     </c:if>
                 </div>
+                <form name="raw_taxon_search" class="rawTaxonSearch" id="rawTaxonSearchForm" action="${pageContext.request.contextPath}/occurrences/search" method="POST">
+                    <%-- taxon concept search drop-down div are put in here via Jquery --%>
+                    <div style="display:none;">
+                        
+                    </div>
+                </form>
             </c:if>
         </div>
   </body>

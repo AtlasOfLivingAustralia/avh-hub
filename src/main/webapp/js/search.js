@@ -514,8 +514,8 @@ $(document).ready(function() {
         $.getJSON(jsonUri, function(data) {
             // list of synonyms
             var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" +
-                "<form name='raw_taxon_search' class='rawTaxonSearch' id='rawTaxonSearch_"+i+"' action='" +
-                 BC_CONF.contextPath + "/occurrences/search' method='POST'>" +
+                //"<form name='raw_taxon_search' class='rawTaxonSearch' id='rawTaxonSearch_"+i+"' action='" +
+                // BC_CONF.contextPath + "/occurrences/search' method='POST'>" +
                 "This taxon search includes records with synonyms and child taxa of <b>" + nameString + 
                 "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
                 "view species page</a>).<br/><br/>Verbatim scientific names " +
@@ -546,8 +546,8 @@ $(document).ready(function() {
                 synList += "<div>[Only showing the top " + maxFacets + " names]</div>";
             } 
             
-            synList += "</form></div>";
-            $("#resultsReturned").append(synList);
+            synList += "</div>";
+            $("#rawTaxonSearchForm").append(synList);
             // position it under the drop down
             $("#refineTaxaSearch_"+i).position({
                 my: "right top",
@@ -571,7 +571,7 @@ $(document).ready(function() {
         var formNum = submitId.replace("rawTaxonSumbit_",""); // 1, 2, etc
         var checkedFound = false;
 
-        $("form#rawTaxonSearch_" + formNum).find(":input.rawTaxonCheckBox").each(function(i, el) {
+        $("#refineTaxaSearch_" + formNum).find(":input.rawTaxonCheckBox").each(function(i, el) {
             if ($(el).is(':checked')) {
                 checkedFound = true;
                 return false; // break loop
@@ -579,7 +579,7 @@ $(document).ready(function() {
         });
 
         if (checkedFound) {
-            $("form#rawTaxonSearch_" + formNum).submit();
+            $("form#rawTaxonSearchForm").submit();
         } else {
             alert("Please check at least one \"verbatim scientific name\" checkbox.");
         }
