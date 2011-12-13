@@ -38,7 +38,7 @@
                         <c:forEach var="item" items="${facetMap}">
                             <li>
                                 <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value}"/>'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
-                                <fmt:message key="facet.${item.key}"/><!-- ${item.key} -->:
+                                <fmt:message key="facet.${item.key}"/><!-- ${item.value} -->:
                                 <c:choose>
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
                                         <b><fmt:message key="month.${item.value}"/></b>${closeLink}
@@ -49,8 +49,13 @@
                                     <c:when test="${fn:startsWith(item.key, 'occurrence_') && fn:endsWith(item.value, '*]')}">
                                         <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>After ${startYear}</b>${closeLink}
                                     </c:when>
-                                    <c:when test="${fn:startsWith(item.key, 'occurrence_') && fn:endsWith(item.value, 'Z]')}">
+                                    <c:when test="${fn:startsWith(item.key, 'occurrence_year') && fn:endsWith(item.value, 'Z]')}">
                                         <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear}<i>s</i></b>${closeLink}
+                                    </c:when>
+                                    <c:when test="${fn:startsWith(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
+                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/>
+                                        <c:set var="endYear" value="${fn:substring(item.value, 25, 29)}"/>
+                                        <b>${startYear} to ${endYear}</b>${closeLink}
                                     </c:when>
                                     <c:when test="${fn:startsWith(item.key, 'last_') && fn:endsWith(item.value, '*]')}">
                                         <c:set var="startDate" value="${fn:substring(item.value, 1, 11)}"/><b>since ${startDate}</b>${closeLink}
