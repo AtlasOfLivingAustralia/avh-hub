@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div id="index_menu">
-                <div><a href="query">Query AVH</a></div>
+                <div><a href="query">Search</a></div>
                 <div><a href="http://avh-demo.ala.org.au/sp/about.html">About AVH</a></div>
                 <div><a href="http://avh-demo.ala.org.au/sp/partners.html">Partners</a></div>
                 <div><a href="http://avh-demo.ala.org.au/sp/sponsors.html">Sponsors</a></div>
