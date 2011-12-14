@@ -22,7 +22,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
-        <title>Occurrence search results | ${hubDisplayName}</title>
+        <title>${skin == 'avh' ? 'Specimen records' : 'Occurrence'} search results | ${hubDisplayName}</title>
         <script type="text/javascript">
             // single global var for app conf settings
             var BC_CONF = {
@@ -68,7 +68,7 @@
     <body>
         <input type="hidden" id="userId" value="${userId}">
         <div id="headingBar">
-            <h1>Occurrence Records<a name="resultsTop">&nbsp;</a></h1>
+            <h1>${skin == 'avh' ? 'Specimen' : 'Occurrence'} Records<a name="resultsTop">&nbsp;</a></h1>
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
                     <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>
