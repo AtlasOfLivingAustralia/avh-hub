@@ -356,7 +356,7 @@ var Maps = (function() {
 
             $.get(Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]), function(data){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
-
+                console.log("data.record", data.record);
                 var minHeight = "150px";
                 if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
                     minHeight = "250px";
@@ -369,9 +369,16 @@ var Maps = (function() {
 
                 displayHtml += '<div id="textfields">';
 
-                if(data.record.raw.classification.vernacularName!=null){
+                // catalogNumber 
+                if(data.record.raw.occurrence.catalogNumber != null){
+                    displayHtml += "Catalog Number: " + data.record.raw.occurrence.catalogNumber + '<br />';
+                } else if(data.record.processed.occurrence.catalogNumber != null){
+                    displayHtml += "Catalog Number: " + data.record.processed.occurrence.catalogNumber + '<br />';
+                }
+
+                if(data.record.raw.classification.vernacularName!=null && BC_CONF.skin != 'avh'){
                     displayHtml += data.record.raw.classification.vernacularName + '<br />';
-                } else if(data.record.processed.classification.vernacularName!=null){
+                } else if(data.record.processed.classification.vernacularName!=null && BC_CONF.skin != 'avh'){
                     displayHtml += data.record.processed.classification.vernacularName + '<br />';
                 }
 
@@ -381,15 +388,32 @@ var Maps = (function() {
                     displayHtml += formatSciName(data.record.processed.classification.scientificName, data.record.processed.classification.taxonRankID)  + '<br />';
                 }
 
-                if(data.record.processed.attribution.institutionName != null){
-                    displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
-                } else  if(data.record.processed.attribution.dataResourceName != null){
-                    displayHtml += data.record.processed.attribution.dataResourceName;
+                if (BC_CONF.skin == 'avh') {
+                    if(data.record.processed.attribution.collectionName != null){
+                        displayHtml += "Collection: " + data.record.processed.attribution.collectionName;
+                    } else  if(data.record.processed.attribution.institutionName != null){
+                        displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
+                    }
+                } else {
+                    if(data.record.processed.attribution.institutionName != null){
+                        displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
+                    } else  if(data.record.processed.attribution.dataResourceName != null){
+                        displayHtml += data.record.processed.attribution.dataResourceName;
+                    }
+                }
+
+                if (BC_CONF.skin == 'avh') {
+                    if(data.record.raw.occurrence.recordedBy != null){
+                        displayHtml += "Collector: : " + data.record.raw.occurrence.recordedBy;
+                    } else if(data.record.processed.occurrence.recordedBy != null){
+                        displayHtml += "Collector: : " + data.record.processed.occurrence.recordedBy;
+                    }
                 }
 
                 if(data.record.processed.event.eventDate != null){
                     displayHtml += "<br/>";
-                    displayHtml += data.record.processed.event.eventDate;
+                    var label = (BC_CONF.skin == 'avh') ? "Collection Date: " : "Record Date: ";
+                    displayHtml += label + data.record.processed.event.eventDate;
                 }
 
                 displayHtml += '</div>';

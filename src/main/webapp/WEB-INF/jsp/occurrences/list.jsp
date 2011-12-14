@@ -32,6 +32,7 @@
                 facetQueries: 'fq=<c:out escapeXml="false" value="${fn:join(paramValues.fq, '&fq=')}"/>',
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
+                skin: "${skin}",
                 hasMultimedia: ${(not empty hasMultimedia) ? hasMultimedia : 'false'} // will be either true or false
             };
         </script>
