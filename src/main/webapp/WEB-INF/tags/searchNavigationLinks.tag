@@ -15,8 +15,8 @@
     <fmt:formatNumber var="pageNumber" value="${(startIndex / pageSize) + 1}" pattern="0" />
     <c:set var="hash" value=""/>
     <c:set var="coreParams">?<c:if test="${not empty param.q}">q=<c:out escapeXml="true" value="${param.q}"/>&</c:if><c:if 
-            test="${not empty param.taxa}">taxa=${param.taxa}&</c:if><c:if 
-            test="${not empty paramValues.fq}">fq=${fn:join(paramValues.fq, "&fq=")}&</c:if><c:if 
+            test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/>&</c:if><c:if
+            test="${not empty paramValues.fq}">fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/>&</c:if><c:if
             test="${not empty param.sort}">sort=${param.sort}&</c:if><c:if 
             test="${not empty param.dir}">dir=${param.dir}&</c:if><c:if 
             test="${not empty param.pageSize}">pageSize=${pageSize}&</c:if><c:if 
