@@ -290,7 +290,7 @@ public class OccurrenceController {
             Model model,
             HttpServletRequest request) throws Exception {
         logger.debug("/search* TOP");
-        logger.info("requestParams.q = " + requestParams.getQ());
+        logger.info("requestParams.q = " + requestParams.getQ() + " || taxaQuery = " + StringUtils.join(taxaQuery, "|"));
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
@@ -311,6 +311,15 @@ public class OccurrenceController {
         return RECORD_LIST;
     }
 
+    /**
+     * POST version of occurrence search
+     *
+     * @param rawNames
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/search*", method = RequestMethod.POST)
     public String search(@RequestParam(value="raw_taxon_guid", required=false) String[] rawNames,
             Model model,
@@ -715,7 +724,7 @@ public class OccurrenceController {
     protected void doFullTextSearch(String taxaQuery, Model model, SearchRequestParams requestParams, HttpServletRequest request) {
         String[] taxaQueryList = null;
 
-        if (taxaQuery != null) {
+        if (taxaQuery != null && !taxaQuery.isEmpty()) {
             taxaQueryList[0] = taxaQuery;
         }
 
@@ -844,6 +853,12 @@ public class OccurrenceController {
             
             queryString.append(braces[0]).append(StringUtils.join(query, " OR ")).append(braces[1]); // taxa terms should be OR'ed
             logger.info("query = " + queryString);
+
+            if (queryString.length() == 0) {
+                // empty taxaQuery - so show all records
+                queryString.append("*:*");
+            }
+
             requestParams.setQ(queryString.toString().trim());
             requestParams.setDisplayString(StringUtils.join(displayString, " OR ")); // join up mulitple taxa queries
             
