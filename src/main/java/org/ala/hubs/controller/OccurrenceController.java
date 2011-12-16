@@ -95,8 +95,14 @@ public class OccurrenceController {
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
+
+    // fields injected from properties file
     @Value("${sensitiveDataset.list}")
     String sensitiveDatasets = null;
+    @Value("${facets.exclude}")
+    String facetsExclude = null;
+    @Value("${facets.hide}")
+    String facetsHide = null;
     
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
@@ -290,7 +296,7 @@ public class OccurrenceController {
             Model model,
             HttpServletRequest request) throws Exception {
         logger.debug("/search* TOP");
-        logger.info("requestParams.q = " + requestParams.getQ() + " || taxaQuery = " + StringUtils.join(taxaQuery, "|"));
+        logger.info("requestParams.q = " + requestParams.getQ() + " || facets = " + StringUtils.join(requestParams.getFacets(), "|"));
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
@@ -802,7 +808,9 @@ public class OccurrenceController {
         // check for user facets via cookie
         String[] userFacets = getFacetsFromCookie(request);
         if (userFacets.length > 0) requestParams.setFacets(userFacets);
-        
+
+        requestParams.setFacets(filterFacets(requestParams.getFacets()));
+
         List<String> displayString = new ArrayList<String>();
         List<String> query = new ArrayList<String>();
         
@@ -947,9 +955,55 @@ public class OccurrenceController {
         model.addAttribute("collectionCodes", collectionsCache.getCollections(inguids, coguids));
         model.addAttribute("institutionCodes", collectionsCache.getInstitutions(inguids, coguids));
         model.addAttribute("dataResourceCodes", collectionsCache.getDataResources(inguids, coguids));
-        model.addAttribute("defaultFacets", biocacheService.getDefaultFacets());
+        model.addAttribute("defaultFacets", filterFacets(biocacheService.getDefaultFacets()));
     }
-    
+
+    /**
+     * Filter facets by checking an exclude list specified in hubs.properties
+     *
+     * @param defaultFacets
+     * @return facetsList
+     */
+    private LinkedHashMap<String, Boolean> filterFacets(List<String> defaultFacets) {
+        LinkedHashMap<String, Boolean> facetsMap = new LinkedHashMap<String, Boolean>();
+        String[] excludeArray = null;
+        String[] hideArray = null;
+
+        if (StringUtils.isNotEmpty(facetsExclude)) {
+            excludeArray = StringUtils.split(facetsExclude, ",");
+        }
+
+        if (StringUtils.isNotEmpty(facetsHide)) {
+            hideArray = StringUtils.split(facetsHide, ",");
+        }
+
+        for (String facet : defaultFacets) {
+            if (StringUtils.indexOfAny(facet, excludeArray) < 0) {
+                // add facet if its not in exclude list (match >= 0 && null or no match = -1)
+                //facetsList.add(facet);
+                facetsMap.put(facet, (StringUtils.indexOfAny(facet, hideArray) < 0));
+                logger.debug("facetsMap = "+facet+" - " + (StringUtils.indexOfAny(facet, hideArray) < 0));
+            }
+        }
+        logger.info("facetsMap = " + StringUtils.join(facetsMap.keySet(), "|"));
+        return facetsMap;
+    }
+
+    /**
+     * Filter facets by checking an exclude list specified in hubs.properties
+     *
+     * @param defaultFacets
+     * @return
+     */
+    protected String[] filterFacets(String[] defaultFacets) {
+        logger.info("defaultFacets = " + StringUtils.join(defaultFacets, "|"));
+        LinkedHashMap<String, Boolean> finalFacetsMap = filterFacets(Arrays.asList(defaultFacets));
+        logger.info("finalFacetsMap = " + StringUtils.join(finalFacetsMap.keySet(), "|"));
+        List<String> finalFacets = new ArrayList<String>(finalFacetsMap.keySet());
+        String[] filteredFacets = finalFacets.toArray(new String[finalFacets.size()]);
+        return filteredFacets;
+    }
+
     /**
      * Check search results for multimedia facets values
      * 

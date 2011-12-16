@@ -23,10 +23,17 @@
     <!-- Where to load static resources (css, js, images) -->
     <mvc:resources mapping="/static/**" location="/" />
 
+    <!-- Over-ride bean properties - including dataSource configs -->
+    <context:property-override location="classpath:hubs.properties" ignore-unresolvable="true" ignore-resource-not-found="true"/>
+
+    <!-- Also make hubs properties available for lookup (via Spring EL) -->
+    <context:property-placeholder location="classpath:hubs.properties" />
+
     <!--
     <mvc:resources mapping="/robots.txt" location="/robots.txt" />
     <mvc:resources mapping="/sitemap*" location="/" />
     -->
+    
     <!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="10">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -39,6 +46,20 @@
         <property name="basename" value="/WEB-INF/messages"/>
         <property name="cacheSeconds" value="10"/><!-- loads changes without restarting container -->
         <property name="useCodeAsDefaultMessage" value="true"/>
+    </bean>
+
+    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="lang" />
+    </bean>
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="${i18n.code}"/><!-- value from hubs.properties -->
+    </bean>
+
+    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors">
+            <ref bean="localeChangeInterceptor" />
+        </property>
     </bean>
 
     <!-- This will override the default DefaultAnnotationHandlerMapping that is created,
@@ -101,12 +122,6 @@
         <constructor-arg index="1" value="html" />
     </bean>
 
-    <!-- Over-ride bean properties - including dataSource configs -->
-    <context:property-override location="classpath:hubs.properties" ignore-unresolvable="true" ignore-resource-not-found="true"/>
-    
-    <!-- Also make hubs properties available for lookup -->
-    <context:property-placeholder location="classpath:hubs.properties" />
-    
     <!-- beans for RestTemplate  -->
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
         <property name="messageConverters">

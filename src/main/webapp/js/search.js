@@ -163,8 +163,13 @@ function loadImages(start) {
             }
             var count = 0;
             $.each(data.occurrences, function(i, el) {
+                console.log("el", el.image);
+                var imgSrc = el.image;
+                if (imgSrc.match("biocache-media")) {
+                    imgSrc = imgSrc.replace(/^\/data/,'http://biocache.ala.org.au').replace(/\.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG)$/, "__small.$1");
+                }
                 count++;
-                var imgEl = $("<img src='" + el.image.replace(/^\/data/,'http://biocache.ala.org.au') + 
+                var imgEl = $("<img src='" + imgSrc +
                     "' style='height: 100px; cursor: pointer;'/>");
                 var metaData = {
                     uuid: el.uuid,
@@ -203,7 +208,7 @@ function loadImages(start) {
 (function($) {
     $.fn.ibox = function() {
         // set zoom ratio //
-        resize = 50;
+        resize = 80; // pixels to add to img height
         ////////////////////
         var img = this;
         img.parent().append('<div id="ibox" />');
@@ -217,7 +222,13 @@ function loadImages(start) {
             el.mouseenter(function() {
                 ibox.html('');
                 var elH = el.height();
-                elX = el.position().left - 6; // 6 = CSS#ibox padding+border
+                var elW = el.width();
+                var ratio = elW / elH; //(elW > elH) ? elW / elH : elH / elW;
+                var newH = elH + resize;
+                var newW = newH * ratio;
+                var offset = (((newW - elW) / 2) + 6);
+                //console.log(ratio, elW, newW, offset);
+                elX = el.position().left - offset ; // 6 = CSS#ibox padding+border
                 elY = el.position().top - 6;
                 var h = el.height();
                 var w = el.width();
@@ -466,33 +477,11 @@ $(document).ready(function() {
         collision: "none"
     });
     $("#facetOptions").hide();
-    
-    var userFacets = $.cookie("user_facets");
-    //console.log("userFacets", userFacets);
-    // load stored prefs from cookie
-    if (userFacets) {
-        $(":input.facetOpts").removeAttr("checked"); 
-        var facetList = userFacets.split(",");
-        for (i in facetList) {
-            if (typeof facetList[i] === "string") {
-                var thisFacet = facetList[i];
-                //console.log("thisFacet", thisFacet);
-                $(":input.facetOpts[value='"+thisFacet+"']").attr("checked","checked");
-            }
-        }
-    }
-    // select all and none buttons
-    $("a#selectNone").click(function(e) {
-        e.preventDefault();
-        $(":input.facetOpts").removeAttr("checked");
-    });
-    $("a#selectAll").click(function(e) {
-        e.preventDefault();
-        $(":input.facetOpts").attr("checked","checked");
-    });
-    
+
+    // user selectable facets...
     $(":input#updateFacetOptions").live("click",function(e) {
         e.preventDefault();
+        //alert("about to reload with new facets...");
         var selectedFacets = [];
         // iterate over seleted facet options
         $(":input.facetOpts:checked").each(function(i, el) {
@@ -503,6 +492,40 @@ $(document).ready(function() {
         // reload page
         document.location.reload(true);
     });
+
+
+    // load stored prefs from cookie
+    var userFacets = $.cookie("user_facets");
+    if (userFacets) {
+        $(":input.facetOpts").removeAttr("checked"); 
+        var facetList = userFacets.split(",");
+        for (i in facetList) {
+            if (typeof facetList[i] === "string") {
+                var thisFacet = facetList[i];
+                //console.log("thisFacet", thisFacet);
+                $(":input.facetOpts[value='"+thisFacet+"']").attr("checked","checked");
+            }
+        }
+    } else {
+        // trigger reload if any default facets are un-checked (AVH)
+        $(":input.facetOpts").each(function(i, el) {
+            if (!this.checked) {
+                //alert($(el).val() + " is " + $(el).attr('checked'));
+                $(":input#updateFacetOptions").click();
+                return false;
+            }
+        });
+    }
+    // select all and none buttons
+    $("a#selectNone").click(function(e) {
+        e.preventDefault();
+        $(":input.facetOpts").removeAttr("checked");
+    });
+    $("a#selectAll").click(function(e) {
+        e.preventDefault();
+        $(":input.facetOpts").attr("checked","checked");
+    });
+
     
     // taxa search - show included synonyms with popup to allow user to refine to a single name
     

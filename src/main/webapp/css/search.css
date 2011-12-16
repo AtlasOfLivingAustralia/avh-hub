@@ -130,7 +130,7 @@ div#currentFilter {
 }
 #results .rowA {
     color: #555;
-    padding-top: 4px;
+    margin-top: 4px;
     font-weight: bold;
 }
 #results .rowA .occurrenceNames {
@@ -419,7 +419,7 @@ span#queryDisplay a:hover {
 }
 #ibox {
     position:absolute;
-    overflow-y:none;
+    overflow-y: hidden;
     background:#fff;
     border:1px solid #ccc;
     z-index:1001;
@@ -435,4 +435,27 @@ span#queryDisplay a:hover {
 }
 #ibox br {
     clear:both;
+}
+.resultListItem {
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+table.avhRowB {
+    width: 100%;
+    border-bottom: 1px solid silver;
+    margin: 2px 0 4px 0;
+}
+table.avhRowB td {
+    padding: 2px 0;
+}
+
+table.avhRowB td:first-child {
+    width: 50%;
+}
+table.avhRowB td {
+    /*width: 40%;*/
+}
+table.avhRowB  td.viewRecord {
+    text-align: right;
 }

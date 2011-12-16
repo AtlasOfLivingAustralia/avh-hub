@@ -63,6 +63,9 @@ collectionsWebappContext=http://collections.ala.org.au
 # Whether or not to use the ALA base urls used to query/display information about the collection/institution or species.
 useAla=false
 
+# i18n versions of messages.properties for the external hubs (ala leave as empty)
+i18n.code=ozcam
+
 # Google Analytics Key - either "UA-4355440-1" or "N/A"
 googleAnalyticsKey=N/A
 
@@ -72,3 +75,7 @@ googleAnalyticsKey=N/A
 
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
 site.displayName=OZCAM
+
+# skin-specific facets to exclude from search results (comma separated list)
+facets.exclude=
+facets.hide=

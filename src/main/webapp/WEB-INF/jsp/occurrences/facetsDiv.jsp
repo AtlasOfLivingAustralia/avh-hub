@@ -16,7 +16,8 @@
             <div id="facetCheckboxes">
                 Select: <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a><br/>
                 <c:forEach var="facet" items="${defaultFacets}">
-                    <input type="checkbox" name="facets" class="facetOpts" value="${facet}" checked="checked">&nbsp;<fmt:message key="facet.${facet}"/><br>
+                    <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
+                           ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
                 </c:forEach>
             </div>
             <input type="button" id="updateFacetOptions" value="Update"/>

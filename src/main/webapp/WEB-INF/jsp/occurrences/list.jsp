@@ -16,13 +16,13 @@
         <c:when test="${not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when>
         <c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
 </c:set>
-<c:set var="showImages" value="${hasMultimedia && skin != 'ala'}"/>
+<c:set var="showImages" value="${hasMultimedia && skin != ''}"/>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
-        <title>${skin == 'avh' ? 'Specimen records' : 'Occurrence'} search results | ${hubDisplayName}</title>
+        <title><fmt:message key="heading.list"/> search results | ${hubDisplayName}</title>
         <script type="text/javascript">
             // single global var for app conf settings
             var BC_CONF = {
@@ -69,7 +69,7 @@
     <body>
         <input type="hidden" id="userId" value="${userId}">
         <div id="headingBar">
-            <h1>${skin == 'avh' ? 'Specimen' : 'Occurrence'} Records<a name="resultsTop">&nbsp;</a></h1>
+            <h1><fmt:message key="heading.list"/><a name="resultsTop">&nbsp;</a><!--<fmt:message key="test.value"/>--></h1>
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
                     <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>
@@ -154,48 +154,111 @@
                         <div id="results">
                             <c:forEach var="occurrence" items="${searchResults.occurrences}">
                                 <div class="recordRow" id="${occurrence.uuid}">
-                                    <p class="rowA">
-                                        <c:set var="rawScientificName">
-                                            <c:choose>
-                                                <c:when test="${not empty occurrence.raw_scientificName}">${occurrence.raw_scientificName}</c:when>
-                                                <c:when test="${not empty occurrence.species}">${occurrence.species}</c:when>
-                                                <c:when test="${not empty occurrence.genus}">${occurrence.genus}</c:when>
-                                                <c:when test="${not empty occurrence.family}">${occurrence.family}</c:when>
-                                                <c:when test="${not empty occurrence.order}">${occurrence.order}</c:when>
-                                                <c:when test="${not empty occurrence.phylum}">${occurrence.phylum}</c:when>
-                                                <c:when test="${not empty occurrence.kingdom}">${occurrence.kingdom}</c:when>
-                                                <c:otherwise>No name supplied</c:otherwise>
-                                            </c:choose>
-                                        </c:set>
-                                        <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${rawScientificName}"/></span>
-                                        <c:if test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
-                                        <span style="margin-left: 8px;">
-                                        <c:if test="${not empty occurrence.eventDate}">
-                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
-                                        </c:if>
-                                        <c:if test="${not empty occurrence.stateProvince}">
-                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span>
-                                        </c:if>
-                                        </span>
-                                    </p>
-                                    <p class="rowB">
-                                        <c:if test="${not empty occurrence.institutionName}">
-                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
-                                        </c:if>
-                                        <c:if test="${not empty occurrence.collectionName}">
-                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
-                                        </c:if>
-                                        <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
-                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
-                                        </c:if>
-                                        <c:if test="${not empty occurrence.basisOfRecord}">
-                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Basis&nbsp;of&nbsp;record:</strong>&nbsp;${occurrence.basisOfRecord}</span>
-                                        </c:if>
-                                        <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
-                                            <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
-                                        </c:if>
-                                        <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
-                                    </p>
+                                    <c:set var="rawScientificName">
+                                        <c:choose>
+                                            <c:when test="${not empty occurrence.raw_scientificName}">${occurrence.raw_scientificName}</c:when>
+                                            <c:when test="${not empty occurrence.species}">${occurrence.species}</c:when>
+                                            <c:when test="${not empty occurrence.genus}">${occurrence.genus}</c:when>
+                                            <c:when test="${not empty occurrence.family}">${occurrence.family}</c:when>
+                                            <c:when test="${not empty occurrence.order}">${occurrence.order}</c:when>
+                                            <c:when test="${not empty occurrence.phylum}">${occurrence.phylum}</c:when>
+                                            <c:when test="${not empty occurrence.kingdom}">${occurrence.kingdom}</c:when>
+                                            <c:otherwise>No name supplied</c:otherwise>
+                                        </c:choose>
+                                    </c:set>
+                                    <c:choose>
+                                        <c:when test="${skin == 'avh'}"><%-- AVH hubs --%>
+                                            <p class="rowA">
+                                                <span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${rawScientificName}"/></span>
+                                                <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
+                                                    <span style="display:inline-block;float:right;">
+                                                        <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
+                                                    </span>
+                                                </c:if>
+                                            </p>
+                                            <table class="avhRowB">
+                                                <tr>
+                                                    <c:if test="${not empty occurrence.stateProvince}">
+                                                        <td><strong class="resultsLabel">State:</strong>&nbsp;${occurrence.stateProvince}</td>
+                                                    </c:if>
+                                                    <c:if test="${not empty occurrence.lga}">
+                                                        <td colspan="2"><strong class="resultsLabel">Locality:</strong>&nbsp;<fmt:message key="${occurrence.lga}"/></td>
+                                                    </c:if>
+                                                </tr>
+                                                <tr>
+                                                    <c:if test="${not empty occurrence.collectionName}">
+                                                        <td><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</td>
+                                                    </c:if>
+                                                    <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
+                                                        <td><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</td>
+                                                    </c:if>
+                                                    <c:if test="${not empty occurrence.eventDate}">
+                                                        <td><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></td>
+                                                    </c:if>
+                                                    <td class="viewRecord"><a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a></td>
+                                                </tr>
+                                            </table>
+                                            <p class="rowB" style="display:none">
+                                                <c:if test="${not empty occurrence.stateProvince}">
+                                                    <span class="resultListItem"><strong class="resultsLabel">State:</strong>&nbsp;${occurrence.stateProvince}</span>
+                                                </c:if>
+                                                <c:if test="${not empty occurrence.lga}">
+                                                    <span class="resultListItem"><strong class="resultsLabel">Locality:</strong>&nbsp;<fmt:message key="${occurrence.lga}"/></span>
+                                                </c:if>
+                                                <br/>
+                                                <%--<c:if test="${not empty occurrence.institutionName}">
+                                                    <span class="resultListItem" style="text-transform: capitalize;white-space: nowrap;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
+                                                </c:if>--%>
+                                                <c:if test="${not empty occurrence.collectionName}">
+                                                    <span class="resultListItem"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
+                                                </c:if>
+                                                <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
+                                                    <span class="resultListItem"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
+                                                </c:if>
+                                                <%--<c:if test="${occurrence.collector != null && not empty occurrence.collector}">
+                                                    <span class="resultListItem"><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}</span>
+                                                </c:if>--%>
+                                                <c:if test="${not empty occurrence.eventDate}">
+                                                    <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
+                                                </c:if>
+                                                <span style="display:inline-block;float:right;">
+                                                    <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
+                                                </span>
+                                            </p>
+                                        </c:when>
+                                        <c:otherwise><%-- All other hubs --%>
+                                            <p class="rowA">
+                                                <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${rawScientificName}"/></span>
+                                                <c:if test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
+                                                <span style="margin-left: 8px;">
+                                                <c:if test="${not empty occurrence.eventDate}">
+                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
+                                                </c:if>
+                                                <c:if test="${not empty occurrence.stateProvince}">
+                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span>
+                                                </c:if>
+                                                </span>
+                                            </p>
+                                            <p class="rowB">
+                                                <c:if test="${not empty occurrence.institutionName}">
+                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
+                                                </c:if>
+                                                <c:if test="${not empty occurrence.collectionName}">
+                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
+                                                </c:if>
+                                                <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
+                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
+                                                </c:if>
+                                                <c:if test="${not empty occurrence.basisOfRecord}">
+                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Basis&nbsp;of&nbsp;record:</strong>&nbsp;${occurrence.basisOfRecord}</span>
+                                                </c:if>
+                                                <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
+                                                    <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
+                                                </c:if>
+                                                <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
+                                            </p>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </c:forEach>
                         </div><!--close results-->
