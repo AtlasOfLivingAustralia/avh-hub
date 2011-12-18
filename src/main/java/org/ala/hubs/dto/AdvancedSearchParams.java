@@ -29,6 +29,7 @@ public class AdvancedSearchParams {
     private final static Logger logger = Logger.getLogger(AdvancedSearchParams.class);
     
     protected String text = "";
+    protected String taxa = "";
     protected String[] lsid = {};  // deprecated 
     protected String[] taxonText = {};
     protected String nameType = "";
@@ -123,7 +124,16 @@ public class AdvancedSearchParams {
             q.append(" +last_load_date:").append(value);
         }
 
-        return URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
+        String finalQuery = "";
+
+        if (!taxa.isEmpty()) {
+            String query = URLEncoder.encode(q.toString().replace("?", ""));
+            finalQuery = "taxa=" + taxa + "&q=" + query;
+        } else {
+            finalQuery = "q=" + URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
+        }
+
+        return finalQuery;
     }
 
     /**
@@ -506,5 +516,13 @@ public class AdvancedSearchParams {
 
     public void setLast_load_end(String last_load_end) {
         this.last_load_end = last_load_end;
+    }
+
+    public String getTaxa() {
+        return taxa;
+    }
+
+    public void setTaxa(String taxa) {
+        this.taxa = taxa;
     }
 }

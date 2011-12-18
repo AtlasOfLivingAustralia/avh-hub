@@ -848,7 +848,7 @@ public class OccurrenceController {
             StringBuilder queryString = new StringBuilder();
             
             if (requestParams.getQ() != null && !requestParams.getQ().isEmpty()) {
-                //combine any other seaerch inputs from advanced form
+                //combine any other search inputs from advanced form
                 queryString.append(requestParams.getQ()).append(" AND ");
             }
             
@@ -867,7 +867,7 @@ public class OccurrenceController {
                 queryString.append("*:*");
             }
 
-            requestParams.setQ(queryString.toString().trim());
+            requestParams.setQ(URLDecoder.decode(queryString.toString().trim()));
             requestParams.setDisplayString(StringUtils.join(displayString, " OR ")); // join up mulitple taxa queries
             
         } else if (requestParams.getQ().isEmpty())  {
@@ -985,7 +985,7 @@ public class OccurrenceController {
                 logger.debug("facetsMap = "+facet+" - " + (StringUtils.indexOfAny(facet, hideArray) < 0));
             }
         }
-        logger.info("facetsMap = " + StringUtils.join(facetsMap.keySet(), "|"));
+        logger.debug("facetsMap = " + StringUtils.join(facetsMap.keySet(), "|"));
         return facetsMap;
     }
 
@@ -996,9 +996,9 @@ public class OccurrenceController {
      * @return
      */
     protected String[] filterFacets(String[] defaultFacets) {
-        logger.info("defaultFacets = " + StringUtils.join(defaultFacets, "|"));
+        logger.debug("defaultFacets = " + StringUtils.join(defaultFacets, "|"));
         LinkedHashMap<String, Boolean> finalFacetsMap = filterFacets(Arrays.asList(defaultFacets));
-        logger.info("finalFacetsMap = " + StringUtils.join(finalFacetsMap.keySet(), "|"));
+        logger.debug("finalFacetsMap = " + StringUtils.join(finalFacetsMap.keySet(), "|"));
         List<String> finalFacets = new ArrayList<String>(finalFacetsMap.keySet());
         String[] filteredFacets = finalFacets.toArray(new String[finalFacets.size()]);
         return filteredFacets;

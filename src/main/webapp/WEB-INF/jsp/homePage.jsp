@@ -238,7 +238,7 @@
                                         <tr>
                                             <td class="label">Collector Name</td>
                                             <td>
-                                                 <input type="text" name="collector" id="collector" class="dataset" placeholder="" value=""/>
+                                                 <input type="text" name="collector" id="collector" class="dataset" placeholder="not currently available, coming soon" readonly="readonly" value=""/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -277,6 +277,12 @@
                                 <table border="0" width="100" cellspacing="2" class="compact">
                                     <thead/>
                                     <tbody>
+                                        <tr>
+                                            <td class="label">Full Text (all fields)</td>
+                                            <td>
+                                                <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
+                                            </td>
+                                        </tr>
                                         <c:if test="${skin != 'avh'}">
                                             <tr>
                                                 <td class="label">Basis of record</td>

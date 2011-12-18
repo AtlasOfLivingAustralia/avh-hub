@@ -123,7 +123,7 @@ public class HomePageController {
             logger.warn("BindingResult errors: " + result.toString());
         }
         // Note: AdvancedSearchParams.toString() contains the logic for building query
-        return "redirect:/occurrences/search?q=" + requestParams.toString();
+        return "redirect:/occurrences/search?" + requestParams.toString();
     }
 
     public void setHomePage(String homePage) {
