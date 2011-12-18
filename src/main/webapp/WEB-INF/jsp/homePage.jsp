@@ -278,7 +278,7 @@
                                     <thead/>
                                     <tbody>
                                         <tr>
-                                            <td class="label">Full Text (all fields)</td>
+                                            <td class="label">Full Text</td>
                                             <td>
                                                 <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
                                             </td>
@@ -348,7 +348,8 @@
                                             <tr>
                                                 <td class="label">Duplicates held at</td>
                                                 <td>
-                                                     <select class="institution_uid collection_uid" name="dudplicates_institution_collection" id="dudplicates_institution_collection">
+                                                     <select class="institution_uid collection_uid" name="dudplicates_institution_collection" id="dudplicates_institution_collection"
+                                                             onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
                                                         <option value="">-- select an institution or collection --</option>
                                                         <c:forEach var="inst" items="${institutions}">
                                                             <optgroup label="${inst.value}">
@@ -395,13 +396,13 @@
                                             <tr>
                                                 <td class="label">Loan Number</td>
                                                 <td>
-                                                    <input type="text" name="loan_number" id="loan_number" class="dataset" placeholder="" value=""/>
+                                                    <input type="text" name="loan_number" id="loan_number" class="dataset" placeholder="not currently available, coming soon" readonly="readonly" value=""/>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="label">Exchange Number</td>
                                                 <td>
-                                                    <input type="text" name="exchange_number" id="exchange_number" class="dataset" placeholder="" value=""/>
+                                                    <input type="text" name="exchange_number" id="exchange_number" class="dataset" placeholder="not currently available, coming soon" readonly="readonly" value=""/>
                                                 </td>
                                             </tr>
                                         </tbody>
