@@ -118,12 +118,14 @@
                                 <table border="0" width="100" cellspacing="2" class="compact" style="margin-left: 1px;">
                                     <thead/>
                                     <tbody>
-                                        <tr>
-                                            <td class="label">Verbatim Scientific Name</td>
-                                            <td>
-                                                 <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
-                                            </td>
-                                        </tr>
+                                        <c:if test="${skin != 'avh'}">
+                                            <tr>
+                                                <td class="label">Verbatim Scientific Name</td>
+                                                <td>
+                                                     <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
+                                                </td>
+                                            </tr>
+                                        </c:if>
                                         <c:choose>
                                             <c:when test="${skin == 'avh'}">
                                                 <tr>
@@ -260,7 +262,7 @@
                                             <tr>
                                                 <td class="label">Cultivation Status</td>
                                                 <td>
-                                                     <select class="" name="cultivation_status" id="cultivation_status">
+                                                     <select class="" name="cultivation_status" id="cultivation_status" onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
                                                         <option value="">-- select a cultivation status --</option>
                                                         <c:forEach var="cs" items="${cultivationStatus}">
                                                             <option value="${cs}">${cs}</option>
