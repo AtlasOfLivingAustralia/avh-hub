@@ -129,7 +129,7 @@
                                                 <tr>
                                                     <td class="label">Botanical Group</td>
                                                     <td>
-                                                        <select class="taxaGroup" name="botanical_group" id="botanical_group">
+                                                        <select class="taxaGroup" name="botanical_group" id="botanical_group" onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
                                                             <option value="">-- select a botanical group --</option>
                                                             <c:forEach var="group" items="${botanicalGroups}">
                                                                 <option value="${group}">${group}</option>
