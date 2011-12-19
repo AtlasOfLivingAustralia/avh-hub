@@ -356,7 +356,7 @@ var Maps = (function() {
 
             $.get(Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]), function(data){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
-                console.log("data.record", data.record);
+                //console.log("data.record", data.record);
                 var minHeight = "150px";
                 if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
                     minHeight = "250px";
