@@ -68,7 +68,7 @@ include file="/common/taglibs.jsp" %>
     </div>
     	<div id="mainmenu">
             <div><a href="${pageContext.request.contextPath}/">Home</a></div>
-            <div><a href="${pageContext.request.contextPath}/query">Query AVH</a></div>
+            <div><a href="${pageContext.request.contextPath}/query">Search</a></div>
             <div><a href="${avhUrl}about.html">About AVH</a></div>
             <div><a href="${avhUrl}partners.html">Partners</a></div>
             <div><a href="${avhUrl}help.html">Help</a></div>
