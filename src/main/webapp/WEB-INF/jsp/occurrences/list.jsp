@@ -10,6 +10,7 @@
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>    
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
+<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="queryDisplay">
     <c:choose>
         <c:when test="${fn:contains(searchRequestParams.displayString,'matchedTaxon')}">${searchRequestParams.displayString}</c:when>
@@ -33,6 +34,7 @@
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
                 skin: "${skin}",
+                queryContext: "${queryContext}",
                 hasMultimedia: ${(not empty hasMultimedia) ? hasMultimedia : 'false'} // will be either true or false
             };
         </script>

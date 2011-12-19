@@ -533,7 +533,9 @@ $(document).ready(function() {
         var lsid = $(this).attr("id");
         var nameString = $(this).html();
         var maxFacets = 30;
-        var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&" + BC_CONF.facetQueries + "&facets=raw_taxon_name&pageSize=0&flimit=" + maxFacets + "&callback=?";
+        var queryContextParam = (BC_CONF.queryContext) ? "&qc=" + BC_CONF.queryContext : "";
+        var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&" + BC_CONF.facetQueries +
+            "&facets=raw_taxon_name&pageSize=0&flimit=" + maxFacets + queryContextParam + "&callback=?";
         $.getJSON(jsonUri, function(data) {
             // list of synonyms
             var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" +
