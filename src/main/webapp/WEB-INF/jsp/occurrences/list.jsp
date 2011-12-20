@@ -266,7 +266,7 @@
                         </div><!--close results-->
                         <div id="searchNavBar">
                             <alatag:searchNavigationLinks totalRecords="${searchResults.totalRecords}" startIndex="${searchResults.startIndex}"
-                                                          lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
+                                       queryString="${searchRequestParams.q}" lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
                         </div>
                     </div><!--end solrResults-->
                     <div id="mapwrapper" class="paneDiv">

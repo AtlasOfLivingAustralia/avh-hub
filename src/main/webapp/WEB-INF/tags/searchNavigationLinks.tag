@@ -10,11 +10,13 @@
 <%@ attribute name="lastPage" required="true" type="java.lang.Integer" %>
 <%@ attribute name="maxPageLinks" required="false" type="java.lang.Integer" %>
 <%@ attribute name="title" required="false" type="java.lang.String" %>
+<%@ attribute name="queryString" required="false" type="java.lang.String" %>
 <div id="navLinks">
     <c:if test="${empty maxPageLinks}"><c:set var="maxPageLinks" value="10"/></c:if>
     <fmt:formatNumber var="pageNumber" value="${(startIndex / pageSize) + 1}" pattern="0" />
     <c:set var="hash" value=""/>
-    <c:set var="coreParams">?<c:if test="${not empty param.q}">q=<c:out escapeXml="true" value="${param.q}"/>&</c:if><c:if 
+    <c:set var="queryStr" value="${param.q ? param.q : queryString}"/>
+    <c:set var="coreParams">?<c:if test="${not empty queryStr}">q=<c:out escapeXml="true" value="${queryStr}"/>&</c:if><c:if
             test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/>&</c:if><c:if
             test="${not empty paramValues.fq}">fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/>&</c:if><c:if
             test="${not empty param.sort}">sort=${param.sort}&</c:if><c:if 
