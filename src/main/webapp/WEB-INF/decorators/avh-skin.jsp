@@ -154,6 +154,7 @@ include file="/common/taglibs.jsp" %>
         <div id="footer_right">Updated 13 October 2011 |
            <a href="mailto:webmaster@chah.gov.au">webmaster@chah.gov.au</a>
         </div>
+        <div style="margin:-6px auto 0 auto;width:200px"><a href="http://www.ala.org.au/" target="_black"><img src="${pageContext.request.contextPath}/static/images/atlas-poweredby_rgb-lightbg.png" alt=""/></a></div>
     </div>
 </div>
 <script type="text/javascript">
