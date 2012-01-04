@@ -296,7 +296,7 @@ public class OccurrenceController {
             Model model,
             HttpServletRequest request) throws Exception {
         logger.debug("/search* TOP");
-        logger.info("requestParams.q = " + requestParams.getQ() + " || facets = " + StringUtils.join(requestParams.getFacets(), "|"));
+        logger.info("requestParams.q = " + requestParams.getQ() + " || fq = " + StringUtils.join(requestParams.getFq(), "|"));
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }

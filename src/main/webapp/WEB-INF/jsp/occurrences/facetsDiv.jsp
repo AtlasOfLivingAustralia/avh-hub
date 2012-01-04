@@ -27,7 +27,7 @@
         <c:if test="${not empty searchResults.query}">
             <c:set var="queryStr" value="${param.q ? param.q : searchRequestParams.q}"/>
             <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/></c:when><c:otherwise>q=<c:out escapeXml="true" value="${queryStr}"/></c:otherwise></c:choose><c:if
-                    test="${not empty param.fq}">&fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/></c:if><c:if 
+                    test="${not empty param.fq}">&fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/></c:if><c:if
                     test="${not empty param.lat}">&lat=${param.lat}</c:if><c:if 
                     test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if 
                     test="${not empty param.radius}">&radius=${param.radius}</c:if></c:set>
@@ -84,7 +84,10 @@
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(item.key, 'geospatial_kosher')}">
                                         <b><fmt:message key="geospatial_kosher.${item.value}"/></b>${closeLink}
-                                    </c:when>  
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(item.key, 'collector')}">
+                                        <b><fmt:message key="${(fn:contains(item.value,'@')) ? fn:substringBefore(item.value,'@') : item.value}"/></b>${closeLink}
+                                    </c:when>
                                     <c:otherwise>
                                         <b><fmt:message key="${item.value}"/></b>${closeLink}
                                     </c:otherwise>
@@ -153,6 +156,11 @@
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'geospatial_kosher')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="geospatial_kosher.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collector')}">
+                                        <c:set var="fqValue" value="${fn:replace(fieldResult.label, '\"','%22')}"/><!-- fqValue = ${fqValue} -->
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22<c:out escapeXml='true' value='${fqValue}'/>%22"><fmt:message key="${(fn:contains(fieldResult.label,'@')) ? fn:substringBefore(fieldResult.label,'@') : fieldResult.label}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:otherwise>
