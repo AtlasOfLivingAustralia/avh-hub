@@ -487,10 +487,17 @@ $(document).ready(function() {
         $(":input.facetOpts:checked").each(function(i, el) {
             selectedFacets.push($(el).val());
         });
-        // save facets to the user_facets cookie
-        $.cookie("user_facets", selectedFacets, { expires: 7 });
-        // reload page
-        document.location.reload(true);
+
+        //Check user has selected at least 1 facet
+        if (selectedFacets.length > 0) {
+            // save facets to the user_facets cookie
+            $.cookie("user_facets", selectedFacets, { expires: 7 });
+            // reload page
+            document.location.reload(true);
+        } else {
+            alert("Please select at least 1 filter category to display");
+        }
+
     });
 
 

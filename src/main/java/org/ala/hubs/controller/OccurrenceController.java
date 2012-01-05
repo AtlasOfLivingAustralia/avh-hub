@@ -374,7 +374,7 @@ public class OccurrenceController {
         //requestParams.setQ("taxonConceptID:" + guid);
         requestParams.setDisplayString("taxonConcept: "+guid); // replace with sci name if a match is found
         String[] userFacets = getFacetsFromCookie(request);
-        if (userFacets.length > 0) requestParams.setFacets(userFacets);
+        if (userFacets != null && userFacets.length > 0) requestParams.setFacets(userFacets);
         SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
@@ -807,7 +807,8 @@ public class OccurrenceController {
     protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
         // check for user facets via cookie
         String[] userFacets = getFacetsFromCookie(request);
-        if (userFacets.length > 0) requestParams.setFacets(userFacets);
+        logger.info("userFacets = " + StringUtils.join(userFacets, "|"));
+        if (userFacets != null && userFacets.length > 0) requestParams.setFacets(userFacets);
 
         requestParams.setFacets(filterFacets(requestParams.getFacets()));
 
@@ -1047,7 +1048,7 @@ public class OccurrenceController {
      */
     private String[] getFacetsFromCookie(HttpServletRequest request) {
         String userFacets = null;
-        String[] facets = {};
+        String[] facets = null;
         String rawCookie = getCookieValue(request.getCookies(), "user_facets", null);
         
         if (rawCookie != null) {
@@ -1057,7 +1058,7 @@ public class OccurrenceController {
                 logger.error(ex.getMessage(), ex);
             }
             
-            if (userFacets != null) {
+            if (!StringUtils.isBlank(userFacets)) {
                 facets = userFacets.split(",");
             }
         }
