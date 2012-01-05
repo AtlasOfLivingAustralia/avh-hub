@@ -126,10 +126,20 @@ $(document).ready(function() {
 
     // Handle back button and saved URLs
     // hash coding: #lat|lng|zoom
-    var url = encodeURIComponent(window.location.hash.replace( /^#/, '')); // escape used to prevent injection attacks
+    var hash = window.location.hash.replace( /^#/, '');
+    var hash2;
 
-    if (url) {
-        var hashParts = url.split("%7C"); // note escaped version of |
+    if (hash.indexOf("%7C") != -1) {
+        // already escaped
+        hash2 = hash;
+    } else {
+        // escape used to prevent injection attacks
+        hash2 = encodeURIComponent(hash);
+    }
+
+    if (hash2) {
+        //console.log("url hash", hash2);
+        var hashParts = hash2.split("%7C"); // note escaped version of |
         if (hashParts.length == 3) {
             bookmarkedSearch(hashParts[0], hashParts[1], hashParts[2], null);
         } else if (hashParts.length == 4) {
