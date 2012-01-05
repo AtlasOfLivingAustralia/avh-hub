@@ -267,8 +267,8 @@ ${collectionCodes}
         </c:if>
             // add filter queries
             facetNames.push("${facetResult.fieldName}");
-            facetLabels.push("${ffl}");
-            facetValues.push("${ffv}");
+            facetLabels.push("<c:out escapeXml='true' value='${ffl}'/>");
+            facetValues.push("<c:out escapeXml='true' value='${ffv}'/>");
             facetValueCounts.push("${ffc}");
             // console.log("facet labels", "${facetResult.fieldName}", "${frlabels}", "${searchRequestParams.flimit}");
     </c:forEach>
