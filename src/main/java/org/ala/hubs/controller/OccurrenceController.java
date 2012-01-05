@@ -828,13 +828,6 @@ public class OccurrenceController {
                         tq = tq + " <span id='queryGuid'>" + guid + "</span>";
                         //requestParams.setDisplayString(tq);
                         displayString.add(tq);
-                        // add raw_scientificName facet so we can show breakdown of taxa contributing to search
-                        List<String> facets = new ArrayList<String>(Arrays.asList(requestParams.getFacets()));    
-                        if (!facets.contains("raw_taxon_name")) {
-                            facets.add("raw_taxon_name");
-                            requestParams.setFacets(facets.toArray(new String[0]));
-                        } 
-
                     } else {
                         // no GUID atch so do full-text search
                         query.add(tq); 
