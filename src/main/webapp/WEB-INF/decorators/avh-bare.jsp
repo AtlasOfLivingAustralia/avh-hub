@@ -32,7 +32,8 @@ include file="/common/taglibs.jsp" %>
     <script type="text/javascript">
         contextPath = "${pageContext.request.contextPath}";
     </script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script>
+    <!-- <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script> -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
