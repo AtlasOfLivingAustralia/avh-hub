@@ -665,18 +665,7 @@ $(document).ready(function() {
             }
         }
     });
-    
-//    $("#imagesGrid img").live("mouseover mouseout", function(event) {
-//        event.preventDefault();
-//        if ( event.type == "mouseover" ) {
-//            // do something on mouseover
-//            $(this).height("150px");
-//        } else {
-//            // do something on mouseout
-//            $(this).height("100px");
-//        }
-//        
-//    });
+
     $("#loadMoreImages").live("click", function(e) {
         e.preventDefault();
         var start = $("#imagesGrid").data('count');
