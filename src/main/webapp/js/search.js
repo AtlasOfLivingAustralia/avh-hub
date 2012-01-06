@@ -208,7 +208,7 @@ function loadImages(start) {
 (function($) {
     $.fn.ibox = function() {
         // set zoom ratio //
-        resize = 80; // pixels to add to img height
+        resize = 50; // pixels to add to img height
         ////////////////////
         var img = this;
         img.parent().append('<div id="ibox" />');
