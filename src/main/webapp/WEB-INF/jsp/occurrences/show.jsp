@@ -842,6 +842,32 @@
                             </c:if>
                         </alatag:occurrenceTableRow>
 
+                        <!-- original name usage -->
+                        <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="originalNameUsage" fieldName="Original Name">
+                            <c:if test="${not empty record.processed.classification.originalNameUsageID}">
+                                <c:choose>
+                                    <c:when test="${useAla == 'true'}">
+                                         <a href="${bieWebappContext}/species/${record.processed.classification.originalNameUsageID}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.originalNameUsageID}">
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.originalNameUsage}">
+                                ${record.processed.classification.originalNameUsage}
+                            </c:if>
+                            <c:if test="${empty record.processed.classification.originalNameUsage && not empty record.raw.classification.originalNameUsage}">
+                                ${record.raw.classification.originalNameUsage}
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.originalNameUsageID}">
+                                </a>
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.originalNameUsage && not empty record.raw.classification.originalNameUsage && (fn:toLowerCase(record.processed.classification.originalNameUsage) != fn:toLowerCase(record.raw.classification.originalNameUsage))}">
+                                <br/><span class="originalValue">Supplied as "${record.raw.classification.originalNameUsage}"</span>
+                            </c:if>
+                        </alatag:occurrenceTableRow>
+
                         <!-- Taxon Rank -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon rank">
                             <c:choose>
@@ -882,14 +908,14 @@
                                         <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.kingdomID}">
                                     </c:otherwise>
                                 </c:choose>
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.kingdom}">
-                                    ${record.processed.classification.kingdom}
-                                </c:if>
-                                <c:if test="${empty record.processed.classification.kingdom && not empty record.raw.classification.kingdom}">
-                                    ${record.raw.classification.kingdom}
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.kingdomID}">
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.kingdom}">
+                                ${record.processed.classification.kingdom}
+                            </c:if>
+                            <c:if test="${empty record.processed.classification.kingdom && not empty record.raw.classification.kingdom}">
+                                ${record.raw.classification.kingdom}
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.kingdomID}">
                                 </a>
                             </c:if>
                             <c:if test="${not empty record.processed.classification.kingdom && not empty record.raw.classification.kingdom && (fn:toLowerCase(record.processed.classification.kingdom) != fn:toLowerCase(record.raw.classification.kingdom))}">
@@ -907,14 +933,14 @@
                                         <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.phylumID}">
                                     </c:otherwise>
                                 </c:choose>
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.phylum}">
-                                    ${record.processed.classification.phylum}
-                                </c:if>
-                                <c:if test="${empty record.processed.classification.phylum && not empty record.raw.classification.phylum}">
-                                    ${record.raw.classification.phylum}
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.phylumID}">
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.phylum}">
+                                ${record.processed.classification.phylum}
+                            </c:if>
+                            <c:if test="${empty record.processed.classification.phylum && not empty record.raw.classification.phylum}">
+                                ${record.raw.classification.phylum}
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.phylumID}">
                                 </a>
                             </c:if>
                             <c:if test="${not empty record.processed.classification.phylum && not empty record.raw.classification.phylum && (fn:toLowerCase(record.processed.classification.phylum) != fn:toLowerCase(record.raw.classification.phylum))}">
@@ -932,14 +958,14 @@
                                         <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.classID}">
                                     </c:otherwise>
                                 </c:choose>
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.classs}">
-                                    ${record.processed.classification.classs}
-                                </c:if>
-                                <c:if test="${empty record.processed.classification.classs && not empty record.raw.classification.classs}">
-                                    ${record.raw.classification.classs}
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.classID}">
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.classs}">
+                                ${record.processed.classification.classs}
+                            </c:if>
+                            <c:if test="${empty record.processed.classification.classs && not empty record.raw.classification.classs}">
+                                ${record.raw.classification.classs}
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.classID}">
                                 </a>
                             </c:if>
                             <c:if test="${not empty record.processed.classification.classs && not empty record.raw.classification.classs && (fn:toLowerCase(record.processed.classification.classs) != fn:toLowerCase(record.raw.classification.classs))}">
@@ -957,14 +983,14 @@
                                         <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.orderID}">
                                     </c:otherwise>
                                 </c:choose>
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.order}">
-                                    ${record.processed.classification.order}
-                                </c:if>
-                                <c:if test="${empty record.processed.classification.order && not empty record.raw.classification.order}">
-                                    ${record.raw.classification.order}
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.orderID}">
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.order}">
+                                ${record.processed.classification.order}
+                            </c:if>
+                            <c:if test="${empty record.processed.classification.order && not empty record.raw.classification.order}">
+                                ${record.raw.classification.order}
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.orderID}">
                                 </a>
                             </c:if>
                             <c:if test="${not empty record.processed.classification.order && not empty record.raw.classification.order && (fn:toLowerCase(record.processed.classification.order) != fn:toLowerCase(record.raw.classification.order))}">
@@ -981,15 +1007,15 @@
                                     <c:otherwise>
                                         <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.familyID}">
                                     </c:otherwise>
-                                 </c:choose>
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.family}">
-                                    ${record.processed.classification.family}
-                                </c:if>
-                                <c:if test="${empty record.processed.classification.family && not empty record.raw.classification.family}">
-                                    ${record.raw.classification.family}
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.familyID}">
+                                </c:choose>
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.family}">
+                                ${record.processed.classification.family}
+                            </c:if>
+                            <c:if test="${empty record.processed.classification.family && not empty record.raw.classification.family}">
+                                ${record.raw.classification.family}
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.familyID}">
                                 </a>
                             </c:if>
                             <c:if test="${not empty record.processed.classification.family && not empty record.raw.classification.family && (fn:toLowerCase(record.processed.classification.family) != fn:toLowerCase(record.raw.classification.family))}">
@@ -999,22 +1025,22 @@
                         <!-- Genus -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="genus" fieldName="Genus">
                             <c:if test="${not empty record.processed.classification.genusID}">
-                                 <c:choose>
+                                <c:choose>
                                     <c:when test="${useAla == 'true'}">
                                          <a href="${bieWebappContext}/species/${record.processed.classification.genusID}">
                                     </c:when>
                                     <c:otherwise>
                                         <a href="${pageContext.request.contextPath}/taxa/${record.processed.classification.genusID}">
                                     </c:otherwise>
-                                  </c:choose>
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.genus}">
-                                    <i>${record.processed.classification.genus}</i>
-                                </c:if>
-                                <c:if test="${empty record.processed.classification.genus && not empty record.raw.classification.genus}">
-                                    <i>${record.raw.classification.genus}</i>
-                                </c:if>
-                                <c:if test="${not empty record.processed.classification.genusID}">
+                                </c:choose>
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.genus}">
+                                <i>${record.processed.classification.genus}</i>
+                            </c:if>
+                            <c:if test="${empty record.processed.classification.genus && not empty record.raw.classification.genus}">
+                                <i>${record.raw.classification.genus}</i>
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.genusID}">
                                 </a>
                             </c:if>
                             <c:if test="${not empty record.processed.classification.genus && not empty record.raw.classification.genus && (fn:toLowerCase(record.processed.classification.genus) != fn:toLowerCase(record.raw.classification.genus))}">
