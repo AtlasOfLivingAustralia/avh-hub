@@ -10,8 +10,8 @@ attribute name="map" required="true" type="java.util.Map" %>
                         <td rowspan="${fn:length(group.value)}">${group.key}</td>
                     </c:if>
                     <td class="${grayBg} dwc">${field.name}</td>
-                    <td class="${grayBg}">${field.raw}</td>
-                    <td class="${grayBg}">${field.processed}</td>
+                    <td class="${grayBg}">${(field.name == 'recordedBy' && fn:contains(field.raw,'@')) ? fn:substringBefore(field.raw,'@') : field.raw}<%-- we're obfuscating email addresses --%></td>
+                    <td class="${grayBg}">${(field.name == 'recordedBy' && fn:contains(field.processed,'@')) ? fn:substringBefore(field.processed,'@') : field.processed}<%-- we're obfuscating email addresses --%></td>
                 </tr>
             </c:forEach>
         </c:when>
