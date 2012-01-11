@@ -776,6 +776,10 @@
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="typeStatus" fieldName="Type status">
                             ${record.raw.identification.typeStatus}
                         </alatag:occurrenceTableRow>
+                        <!-- Identification Qualifier -->
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationQualifier" fieldName="Identification Qualifier">
+                            ${record.raw.identification.identificationQualifier}
+                        </alatag:occurrenceTableRow>
                         <!-- Reproductive Condition -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="reproductiveCondition" fieldName="Reproductive condition">
                             ${record.raw.occurrence.reproductiveCondition}
