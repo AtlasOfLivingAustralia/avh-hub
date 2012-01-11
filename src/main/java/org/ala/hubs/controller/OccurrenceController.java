@@ -376,12 +376,8 @@ public class OccurrenceController {
         String[] userFacets = getFacetsFromCookie(request);
         if (userFacets != null && userFacets.length > 0) requestParams.setFacets(userFacets);
         SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
-        logger.debug("searchResult: " + searchResult.getTotalRecords());
-        model.addAttribute("searchResults", searchResult);
-        model.addAttribute("searchRequestParams", requestParams);
-        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
-        model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        addCommonDataToModel(model);
+        addToModel(model, requestParams, searchResult);
+        
         return RECORD_LIST;
     }
 
@@ -1027,7 +1023,7 @@ public class OccurrenceController {
             }
         }
         
-        logger.debug("hasMultimedia = " + hasMultimedia);
+        logger.info("hasMultimedia = " + hasMultimedia);
         
         return hasMultimedia;
     }
