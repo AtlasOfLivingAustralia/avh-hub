@@ -29,16 +29,7 @@ include file="/common/taglibs.jsp" %>
 	<meta name="DC.Rights" content="(c) Council of Heads of Australasian Herbaria, 2010" />
 	<meta name="DC.Rights" content="Unless other stated, Intellectual Property associated with this resource resides with the Council of Heads of Australasian Herbaria and individual herbaria. Applications, source code and data are freely available for research, non-commercial and public good purposes" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-    <script type="text/javascript">
-        contextPath = "${pageContext.request.contextPath}";
-    </script>
-    <!-- <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script> -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bieAutocomplete.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/circle.player.js"></script>
+    <<%@ include file="commonJS.jspf" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
     <decorator:head />

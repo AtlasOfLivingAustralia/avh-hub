@@ -26,36 +26,13 @@ include file="/common/taglibs.jsp" %>
         <!-- CIRCLE PLAYER -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/circle.skin/circle.player.css" type="text/css" media="screen" />
         <c:set var="dev" value="${true}"/><%-- should be false in prod --%>
-        <script type="text/javascript">
-            contextPath = "${pageContext.request.contextPath}";
-        </script>
-<%--<c:choose>
-    <c:when test="${dev}">
-        <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/ala/biocache.css" />
-         
-    </c:when>
-    <c:otherwise>
-        <!--link rel="stylesheet" type="text/css" media="screen" href="${initParam.centralServer}/wp-content/themes/ala/css/biocache.css" /-->
-    </c:otherwise>
-</c:choose>--%>
-        <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/form.js"></script>
-        <!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script>-->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/hoverintent-min.js"></script>
-        <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/superfish/superfish.js"></script>
-<!--        <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/jquery.autocomplete.js"></script>-->
-		<!--<script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala/scripts/uservoice.js"></script>-->
-        <!-- Items below added when copied to the hubs-webapp -->
-<!--        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script>-->
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.transform.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.grab.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.jplayer.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mod.csstransforms.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/circle.player.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bieAutocomplete.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://www.ala.org.au/wp-content/themes/ala/scripts/form.js"></script>
+
+        <%@ include file="commonJS.jspf" %>
+        
+        <script language="JavaScript" type="text/javascript" src="http://www.ala.org.au/wp-content/themes/ala/scripts/hoverintent-min.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://www.ala.org.au/wp-content/themes/ala/scripts/superfish/superfish.js"></script>
+        <script language="JavaScript" type="text/javascript" src="http://www.ala.org.au/wp-content/themes/ala/scripts/uservoice.js"></script>
         <script type="text/javascript">
 
             //add the indexOf method for IE7

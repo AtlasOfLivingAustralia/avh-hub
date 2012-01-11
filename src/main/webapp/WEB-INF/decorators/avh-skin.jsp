@@ -8,12 +8,9 @@ taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 include file="/common/taglibs.jsp" %>
 <c:set var="avhUrl" value="http://avh-demo.ala.org.au/sp/"/>
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">
-    <head><title><decorator:title default="AVH"/></title>
-	<link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/avh/favicon.ico" />
+<html dir="ltr" lang="en-US">    
+<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/avh/reset.css" />
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/avh/screen.css" />
 	<link href="http://www.naa.gov.au/recordkeeping/gov_online/agls/1.1" rel="schema.AGLS" />
 	<meta name="DC.Title" content="Partners" lang="en" />	<meta name="DC.Function" content="Public information" />
 	<meta name="DC.Description" content="Australia's Virtual Herbarium (AVH) is an online resource that provides immediate access to the wealth of plant specimen information held by Australian herbaria. AVH is a collaborative project of the state, Commonwealth and territory herbaria, developed under the auspices of the Council of Heads of Australasian Herbaria (CHAH), representing the major Australian collections." />
@@ -28,24 +25,15 @@ include file="/common/taglibs.jsp" %>
 	<meta name="DC.Availability" content="Freely available. Some parts of this resource are username and password restricted" />
 	<meta name="DC.Rights" content="(c) Council of Heads of Australasian Herbaria, 2010" />
 	<meta name="DC.Rights" content="Unless other stated, Intellectual Property associated with this resource resides with the Council of Heads of Australasian Herbaria and individual herbaria. Applications, source code and data are freely available for research, non-commercial and public good purposes" />
-<!--	<script type="text/javascript" src="/avh/js/jquery-1.3.2.min.js"></script>
-    <script type="text/javascript" src="/avh/js/jquery.avh.googleanalytics.js"></script>-->
-    
+
+    <title><decorator:title default="AVH"/></title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/avh/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/avh/reset.css" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/avh/screen.css" />    
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-    <script type="text/javascript">
-        contextPath = "${pageContext.request.contextPath}";
-    </script>
-<!--    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-1.5.min.js"></script>-->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.transform.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.grab.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.jplayer.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mod.csstransforms.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/circle.player.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bieAutocomplete.js"></script>
+    
+    <%@ include file="commonJS.jspf" %>
+    
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
     <!-- CIRCLE PLAYER -->
