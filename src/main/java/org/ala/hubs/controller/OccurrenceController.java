@@ -413,7 +413,7 @@ public class OccurrenceController {
             requestParams.setQ("lsid:" + query);
         } 
         
-        String[] tq = {""};
+        String[] tq = null;
         doFullTextSearch(tq, model, requestParams, request);
         
         return RECORD_LIST;
@@ -522,7 +522,7 @@ public class OccurrenceController {
             requestParams.setQ("collection_uid:" + query);
         }
         
-		String[] tq = {""};
+		String[] tq = null;
         doFullTextSearch(tq, model, requestParams, request);
         
         return RECORD_LIST;
