@@ -264,3 +264,8 @@ table#taxonomyOptions {
 #nameMatchingOptions {
     display:none;
 }
+
+abbr {
+    border-bottom: black dashed 1px;
+    cursor: help;
+}

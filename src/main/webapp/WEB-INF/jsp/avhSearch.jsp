@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
 <c:set var="isALA" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -420,7 +421,16 @@
                     </form>
                 </div><!-- end simpleSearch div -->
                 <div id="uploadDiv" class="paneDiv homePane">
-                    <p>Coming Soon</p>
+                    <form name="taxaUploadForm" id="taxaUploadForm" action="${biocacheServiceUrl}/occurrences/taxaList" method="POST">
+                        <p>Enter a list of taxa (one taxon per line) and either <strong>download</strong> a <abbr title="comma separated values">CSV</abbr>
+                            file containing records OR perform a <strong>search</strong>.</p>
+                        <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
+                        <p><textarea name="names" id="names" rows="15" cols="60"></textarea></p>
+                        <p> <input type="submit" name="action" value="Download" />
+                            &nbsp;&nbsp;
+                            <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                            <input type="submit" name="action" value="Search" /></p>
+                    </form>
                 </div><!-- end advancedSearch div -->
             </div><!-- end panes div -->
 
