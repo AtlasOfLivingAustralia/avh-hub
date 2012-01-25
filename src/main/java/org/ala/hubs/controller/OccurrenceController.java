@@ -16,10 +16,15 @@
 package org.ala.hubs.controller;
 
 import au.org.ala.biocache.BasisOfRecord;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.inject.Inject;
+import javax.management.monitor.StringMonitor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import au.org.ala.biocache.QualityAssertion;
@@ -52,9 +57,20 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
+import org.geotools.data.FeatureSource;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
+import org.opengis.feature.Feature;
+import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.simple.SimpleFeature;
+import com.vividsolutions.jts.geom.Geometry;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,6 +80,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestOperations;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Occurrence record Controller
@@ -103,6 +120,8 @@ public class OccurrenceController {
     String facetsExclude = null;
     @Value("${facets.hide}")
     String facetsHide = null;
+    @Value("${biocacheRestService.biocacheUriPrefix}")
+    String biocacheUriPrefix = null;
     
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
@@ -291,7 +310,7 @@ public class OccurrenceController {
     @RequestMapping(value = "/search*", method = RequestMethod.GET)
     public String search(
             @RequestParam(value="taxa", required=false) String[] taxaQuery,
-            SearchRequestParams requestParams, 
+            SpatialSearchRequestParams requestParams,
             BindingResult result, 
             Model model,
             HttpServletRequest request) throws Exception {
@@ -590,7 +609,7 @@ public class OccurrenceController {
 
         uuid = removeUriExtension(uuid);
         model.addAttribute("uuid", uuid);
-        logger.debug("Retrieving occurrence record with guid: '"+uuid+"'");
+        logger.debug("Retrieving occurrence record with guid: '" + uuid + "'");
         OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
         model.addAttribute("isReadOnly", biocacheService.isReadOnly());
@@ -701,7 +720,129 @@ public class OccurrenceController {
 
         return RECORD_MAP;
     }
-    
+
+    /**
+     * Shape file upload - extract WKT from first feature in file and run search via biocache-service and then
+     * reload search via the QID cached query parameter
+     *
+     * @param multipartFile
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/shapeUpload", method = RequestMethod.POST)
+	public String uploadShapeSearch(
+            HttpServletResponse response,
+            HttpServletRequest request,
+            @RequestParam("file") MultipartFile multipartFile,
+            Model model) throws Exception {
+
+        logger.debug("path = /occurrences/shapeUpload");
+        
+        if (!multipartFile.isEmpty()) {
+            String originalName = multipartFile.getOriginalFilename();
+            final String baseTempPath = "/data/cache"; //System.getProperty("java.io.tmpdir"); // use System temp directory
+            String filePath = baseTempPath + File.separator + originalName;
+            File dest = new File(filePath);
+
+            try {
+                multipartFile.transferTo(dest); // save the file
+            } catch (Exception e) {
+                logger.error("Error reading upload: " + e.getMessage(), e);
+                //response.sendError(HttpServletResponse.SC_BAD_REQUEST, "File uploaded failed: " + originalName);
+            }
+
+            if (dest.length() > 0) {
+                String wkt = extractGeometryFromFile(dest); // remove spaces for URL
+
+                if (wkt != null) {
+                    String serverName = request.getSession().getServletContext().getInitParameter("serverName");
+                    String contextPath = request.getSession().getServletContext().getInitParameter("contextPath");
+                    String url = biocacheUriPrefix + "/webportal/params";
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("wkt", changeSeparator(wkt));
+                    String qid = ProxyController.getPostUrlContentAsString(url, params);
+
+                    if (qid != null) {
+                        response.sendRedirect(serverName + contextPath + "/occurrence/search?q=qid:" +
+                                ""+qid);
+                    } else {
+                        model.addAttribute("errors", "Shape file upload failed.");
+                    }
+                } else {
+                    logger.error("Error extracting WKT");
+                    model.addAttribute("errors", "Error extracting WKT from shape file.");
+                    //response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Extracting geometry from file failed: " + originalName);
+                }
+            }
+        }
+
+        return RECORD_LIST;
+    }
+
+    /**
+     * WKT format for SOLR spatial plugin requires spaces to be encoded as colon ":"
+     * This method converts the String to the requiered format.
+     *
+     * @param wkt
+     * @return
+     */
+    private static String changeSeparator(String wkt) {
+        String encodedWkt = StringUtils.trimToEmpty(new String(wkt));
+        encodedWkt = StringUtils.replace(encodedWkt, " (", "("); // "MULTIPOLYGON ((" to "MULTIPOLYGON(("
+        encodedWkt = StringUtils.replace(encodedWkt, ", ", ","); // "140 -37, 151: -37" to "140 -37,151 -37"
+        encodedWkt = StringUtils.replace(encodedWkt, " ", ":"); // "140 -37,151 -37" to "140:-37,151:-37"
+        return encodedWkt;
+    }
+
+    /**
+     * Read a shape file and get the WKT for the first feature in the file.
+     *
+     * @param file
+     * @return
+     */
+    private String extractGeometryFromFile(File file) {
+        String wkt = null;
+        //file = new File("/data/cache/states.shp");
+        //file = new File("/var/folders/No/NoP-toBNE2esClaNHW+R5U+++TI/-Tmp-/as.shp");
+
+        try {
+            logger.info("Reading shape file at: " + file.getAbsolutePath());
+            Map<String,Serializable> connectParameters = new HashMap<String,Serializable>();
+            connectParameters.put("url", file.toURI().toURL());
+            connectParameters.put("create spatial index", true);
+            DataStore dataStore = DataStoreFinder.getDataStore(connectParameters);
+            // we are now connected
+            String[] typeNames = dataStore.getTypeNames();
+            String typeName = typeNames[0];
+            FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = dataStore.getFeatureSource(typeName);
+            FeatureCollection collection = featureSource.getFeatures();
+            FeatureIterator<SimpleFeature> iterator = collection.features();
+
+            try {
+                while (iterator.hasNext()) {
+                    SimpleFeature feature = iterator.next();
+                    logger.info("feature info: " + feature.toString());
+                    Geometry geometry = (Geometry) feature.getDefaultGeometry();
+
+                    if (geometry != null && geometry.isValid()) {
+                        wkt = geometry.toText();
+                        logger.info("WKT = " + StringUtils.abbreviate(wkt, 1024));
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                logger.error("Error reading feature: " + e.getMessage(), e);
+            } finally {
+                iterator.close();
+            }
+
+        } catch (Throwable e) {
+            logger.error("extractGeometryFromFile error: " + e.getMessage(), e);
+        }
+
+        return wkt;
+    }
+
     /**
      * Remove the URI extension from the input String
      * 
@@ -916,14 +1057,19 @@ public class OccurrenceController {
      * @param searchResult 
      */
     protected void addToModel(Model model, SearchRequestParams requestParams, SearchResultDTO searchResult) {
-        if (requestParams.getDisplayString() == null || requestParams.getDisplayString().isEmpty()) {
-            requestParams.setDisplayString(searchResult.getQueryTitle());
-        }
-        
         if ("*:*".equals(searchResult.getQueryTitle())) {
             searchResult.setQueryTitle("[all records]");
         }
-        
+
+        if (StringUtils.isEmpty(searchResult.getQueryTitle())) {
+            // if queryTitle is empty use the raw query (truncated)
+            searchResult.setQueryTitle(StringUtils.abbreviate(searchResult.getQuery(), 2048));
+        }
+
+        if (requestParams.getDisplayString() == null || requestParams.getDisplayString().isEmpty()) {
+            requestParams.setDisplayString(searchResult.getQueryTitle());
+        }
+
         model.addAttribute("searchRequestParams", requestParams);
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));

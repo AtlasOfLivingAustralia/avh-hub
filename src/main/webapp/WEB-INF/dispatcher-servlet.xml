@@ -42,6 +42,12 @@
     <mvc:resources mapping="/robots.txt" location="/robots.txt" />
     <mvc:resources mapping="/sitemap*" location="/" />
     -->
+
+    <!-- File uploads need this bean defined -->
+    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="10000000"/>
+    </bean>
     
     <!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="10">

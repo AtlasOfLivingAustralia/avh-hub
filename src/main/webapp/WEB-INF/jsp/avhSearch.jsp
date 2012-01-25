@@ -45,7 +45,8 @@
             <!-- the tabs -->
             <ul class="css-tabs">
                 <li><a id="t1" href="#search">Search</a></li>
-                <li><a id="t2" href="#upload">Taxa Upload</a></li>
+                <li><a id="t2" href="#taxaUpload">Taxa Upload</a></li>
+                <li><a id="t3" href="#shapeFileUpload">Shape File Upload</a></li>
             </ul>
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
@@ -427,11 +428,18 @@
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
                         <p><textarea name="names" id="names" rows="15" cols="60"></textarea></p>
                         <p> <input type="submit" name="action" value="Download" />
-                            &nbsp;&nbsp;
+                            &nbsp;OR&nbsp;
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
                             <input type="submit" name="action" value="Search" /></p>
                     </form>
-                </div><!-- end advancedSearch div -->
+                </div><!-- end #uploadDiv div -->
+                <div id="shapeDiv" class="paneDiv homePane">
+                    <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrence/shapeUpload" method="POST" enctype="multipart/form-data">
+                        <p>Upload a shape file (.shx):</p>
+                        <p><input type="file" name="file"/></p>
+                        <p><input type="submit" value="Search" /></p>
+                    </form>
+                </div>
             </div><!-- end panes div -->
 
         </div>

@@ -16,17 +16,23 @@
 package org.ala.hubs.controller;
 
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpConnectionManager;
-import org.apache.commons.httpclient.SimpleHttpConnectionManager;
+
+import org.apache.commons.codec.net.URLCodec;
+import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * Simple proxy controller to proxy requests to other ALA domains and thus overcome the
@@ -119,7 +125,7 @@ public class ProxyController {
 	 * @return
 	 * @throws Exception
 	 */
-	public String getUrlContentAsString(String url, int timeoutInMillisec) throws Exception {
+	public static String getUrlContentAsString(String url, int timeoutInMillisec) throws Exception {
 		GetMethod gm = null;
         String content = null;
 
@@ -153,4 +159,54 @@ public class ProxyController {
 
 		return content;
 	}
+
+    /**
+     * Perform am HTTP POST on a URL and return the content as String
+     *
+     * @param url
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public static String getPostUrlContentAsString(String url, Map<String, String> params) throws Exception {
+        String content = null;
+
+        HttpClient httpClient = new HttpClient();
+        PostMethod postMethod = new PostMethod(url);
+
+        for (String key : params.keySet()) {
+            // set POST params
+            postMethod.addParameter(key, params.get(key));
+            //postMethod.addParameter("wkt", "POLYGON((140:-37,151:-37,151:-26,140.1310:-26,140:-37))");
+        }
+
+        postMethod.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=UTF-8");
+        postMethod.setRequestHeader("Accept", "application/json;charset=UTF-8");
+        //postMethod.setFollowRedirects(true);
+
+        logger.debug("Attempting POST to " + url + " with params: " + StringUtils.abbreviate(postMethod.getParameter("wkt").getValue(), 2048));
+
+        try {
+            httpClient.executeMethod(postMethod);
+            
+            if (postMethod.getStatusCode() == HttpStatus.SC_OK) {
+                content = postMethod.getResponseBodyAsString();
+                logger.debug("content = " + content);
+            } else {
+                logger.error("POST to " + url + " returned status: " + postMethod.getStatusLine());
+            }
+
+        } catch (HttpException e) {
+            logger.error("HttpException error: " + e.getMessage(), e);
+        } catch (IOException e) {
+            logger.error("IOException error: " + e.getMessage(), e);
+        } finally {
+            if (postMethod != null) {
+				logger.debug("Releasing connection");
+				postMethod.releaseConnection();
+			}
+        }
+
+        return content;
+    }
 }
