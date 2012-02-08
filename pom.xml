@@ -52,6 +52,12 @@
             <artifactId>ala-common-ui</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!-- ALA header and tails -->
+        <dependency>
+            <groupId>au.org.ala</groupId>
+            <artifactId>ala-header-and-tails</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- SPRING -->
         <dependency>
             <groupId>org.springframework</groupId>

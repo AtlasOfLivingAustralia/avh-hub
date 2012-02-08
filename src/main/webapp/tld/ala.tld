@@ -8,7 +8,32 @@
   <display-name>ALA core</display-name>
   <tlib-version>1.0</tlib-version>
   <short-name>ala</short-name>
-  <uri>http://www.ala.org.au/jsp/core</uri>	
+  <uri>http://www.ala.org.au/jsp/core</uri>
+
+    <tag>
+        <description>Banner Menu Tag</description>
+        <name>header</name>
+        <tag-class>au.org.ala.commonui.headertails.BannerMenuTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The return url path for the login/logout anchor</description>
+            <name>returnUrlPath</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The search path to use</description>
+            <name>searchPath</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <description>Footer Menu Tag</description>
+        <name>footer</name>
+        <tag-class>au.org.ala.commonui.headertails.FooterMenuTag</tag-class>
+        <body-content>JSP</body-content>
+    </tag>
 
   <tag>
     <description>Banner Menu Tag</description>
