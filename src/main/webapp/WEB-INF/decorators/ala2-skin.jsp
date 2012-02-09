@@ -47,6 +47,7 @@
         .species .nav-species a,
         .regions .nav-locations a,
         .collections .nav-collections a,
+        .getinvolved .nav-getinvolved a,
         .datasets .nav-datasets a {
             text-decoration: none;
             background: #3d464c; /* color 3 */
