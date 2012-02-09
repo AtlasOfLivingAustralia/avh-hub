@@ -35,7 +35,7 @@
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/explore/yourAreaMap.js"></script>
     </head>
-    <body>
+    <body class="regions">
         <div id="header">
             <div id="breadcrumb">
                 <a href="${initParam.centralServer}">Home</a>

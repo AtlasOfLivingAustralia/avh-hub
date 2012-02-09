@@ -118,7 +118,14 @@
         });
     </script>
 </head>
-<body class="datasets two-column-right">
+<c:set var="callingBodyClass"><decorator:getProperty property='body.class'/></c:set>
+<c:set var="bodyClass">
+    <c:choose>
+        <c:when test="${not empty callingBodyClass}">${callingBodyClass}</c:when>
+        <c:otherwise>datasets</c:otherwise>
+    </c:choose>
+</c:set>
+<body class="${bodyClass}">
 <div id="wrapper">
     <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
     <ala:header returnUrlPath="${returnUrlPath}" />
