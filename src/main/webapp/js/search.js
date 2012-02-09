@@ -342,9 +342,9 @@ $(document).ready(function() {
     // set height of resultsOuter div to solrResults height
     var pageLength = $("select#per-page").val() || 20;
     var solrHeight = $("div.solrResults").height() + (2 * pageLength) + 70;
-    //console.log("solrHeight", solrHeight, pageLength);
     var mapHeight = $("div#mapwrapper").height();
-    $("#resultsOuter").css("height", (solrHeight > mapHeight ) ? solrHeight : mapHeight );
+    //console.log("solrHeight", solrHeight, mapHeight, pageLength);
+    $("div.solrResults").css("height", (solrHeight > mapHeight ) ? solrHeight : mapHeight );
 
     // animate the display of showing results list vs map
     // TODO: make this a toggle() so that double clicks don't break it

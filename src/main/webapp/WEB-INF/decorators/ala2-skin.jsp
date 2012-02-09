@@ -65,32 +65,7 @@
                 dropShadows:false
             });
 
-            jQuery("form#search-form input#search").autocomplete('http://bie.ala.org.au/search/auto.jsonp', {
-                extraParams: {limit: 100},
-                dataType: 'jsonp',
-                parse: function(data) {
-                    var rows = new Array();
-                    data = data.autoCompleteList;
-                    for(var i=0; i<data.length; i++){
-                        rows[i] = {
-                            data:data[i],
-                            value: data[i].matchedNames[0],
-                            result: data[i].matchedNames[0]
-                        };
-                    }
-                    return rows;
-                },
-                matchSubset: false,
-                formatItem: function(row, i, n) {
-                    return row.matchedNames[0];
-                },
-                cacheLength: 10,
-                minChars: 3,
-                scroll: false,
-                max: 10,
-                selectFirst: false
-            });
-            jQuery("form#search-inpage input#search").autocomplete('http://bie.ala.org.au/search/auto.jsonp', {
+            jQuery("form#search-form-2011 input#search-2011").autocomplete('http://bie.ala.org.au/search/auto.jsonp', {
                 extraParams: {limit: 100},
                 dataType: 'jsonp',
                 parse: function(data) {
