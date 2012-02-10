@@ -39,7 +39,7 @@
         <div id="header">
             <div id="breadcrumb">
                 <a href="${initParam.centralServer}">Home</a>
-                <a href="${initParam.centralServer}/explore">Explore</a>
+                <a href="${initParam.centralServer}/species-by-location/">Locations</a>
                 Your Area
             </div>
             <h1>Explore Your Area</h1>
