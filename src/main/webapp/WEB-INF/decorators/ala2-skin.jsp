@@ -13,52 +13,35 @@
     <title><decorator:title default="Atlas of Living Australia" /></title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
-    <%--<link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/style.css" type="text/css" media="screen" />--%>
     <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/style2010.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/style2011.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/css/wp-styles.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/css/buttons.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/css/jquery.autocomplete.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/css/search.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/css/skin.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala2011/css/sf.css" type="text/css" media="screen" />
+
     <link rel="icon" type="image/x-icon" href="${initParam.centralServer}/wp-content/themes/ala2011/images/favicon.ico" />
     <link rel="shortcut icon" type="image/x-icon" href="${initParam.centralServer}/wp-content/themes/ala2011/images/favicon.ico" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${initParam.centralServer}/wp-content/themes/ala2011/css/jquery.autocomplete.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${initParam.centralServer}/wp-content/themes/ala2011/css/search.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${initParam.centralServer}/wp-content/themes/ala2011/css/skin.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${initParam.centralServer}/wp-content/themes/ala2011/css/sf.css" />
 
     <%@ include file="commonJS.jspf" %>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-    <link rel="stylesheet" type="text/css" media="screen,projection" href="${pageContext.request.contextPath}/static/css/ala/widget.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ala/widget.css" type="text/css" media="screen,projection" />
     <!-- CIRCLE PLAYER -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/circle.skin/circle.player.css" type="text/css" media="screen" />
     <c:set var="dev" value="${false}"/><%-- should be false in prod --%>
 
     <decorator:head />
 
-    <script type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>
+    <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>
     <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/superfish/superfish.js"></script>
     <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/jquery.autocomplete.js"></script>
     <script language="JavaScript" type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/uservoice.js"></script>
-    <style type="text/css">
-        /**************************
-        to highlight the correct menu item - should be in style.css
-        ***************************/
-        .species .nav-species a,
-        .regions .nav-locations a,
-        .collections .nav-collections a,
-        .getinvolved .nav-getinvolved a,
-        .datasets .nav-datasets a {
-            text-decoration: none;
-            background: #3d464c; /* color 3 */
-            outline: 0;
-            z-index: 100;
-        }
-    </style>
     <script type="text/javascript">
-
         // initialise plugins
-
         jQuery(function(){
             jQuery('ul.sf').superfish( {
                 delay:500,
@@ -104,16 +87,16 @@
 <body class="${bodyClass}">
 <div id="wrapper">
     <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
-    <ala:header returnUrlPath="${returnUrlPath}" populateSearchBox="false" />
+    <ala:header returnUrlPath="${returnUrlPath}" populateSearchBox="true" />
     <ala:menu />
-        <div id="wrapper_border"><!--main content area-->
+        <div id="wrapper_border"><!-- div#wrapper_border - main content area-->
             <div id="border">
                 <div id="content" style="">
                     <ala:loggedInUserId />
                     <decorator:body />
-                </div>
-            </div>
-        </div>
+                </div><!-- end div#content -->
+            </div><!-- end div#border -->
+        </div><!-- end div#wrapper_border -->
     <ala:footer />
     <ala:analytics />
 </div>
