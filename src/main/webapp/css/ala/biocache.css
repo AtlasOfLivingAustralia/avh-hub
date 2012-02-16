@@ -549,13 +549,13 @@ div.results span.occurrenceNames {
 #facets  h3 {
     padding: 0px 10px !important;
 }
-#subnavlist li {
+.subnavlist li {
     text-transform: capitalize;
 }
 #facets #accordion {
     display: block;
 }
-#subnavlist {
+.subnavlist {
     font-size: 90%;
 }
 div.results span.commonNameSummary {
@@ -616,7 +616,7 @@ a.occurrenceLink {
     float: right;
     padding-bottom: 5px;
 }
-#subnavlist > ul {
+.subnavlist > ul {
     margin: 0 1em 0 2em;
     padding-bottom: 0.5em;
 }

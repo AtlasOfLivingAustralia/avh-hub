@@ -90,11 +90,11 @@
 #listMapToggle > label {
     
 }
-#subnavlist > ul {
+.subnavlist > ul {
     margin-left: 7px;
     /*padding-left: 24px;*/
 }
-#subnavlist > ul> li {
+.subnavlist > ul> li {
     text-indent: -4px;
     text-transform: none;
     line-height: 1.2em;

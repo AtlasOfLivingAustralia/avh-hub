@@ -395,7 +395,7 @@ $(document).ready(function() {
     }
 
     // add hash to URIs for facet links, so map/list state is maintained
-    $("#subnavlist a").click(function(e) {
+    $(".subnavlist a").click(function(e) {
         e.preventDefault();
         var url = $(this).attr("href");
         window.location.href = url + window.location.hash;
@@ -500,7 +500,6 @@ $(document).ready(function() {
 
     });
 
-
     // load stored prefs from cookie
     var userFacets = $.cookie("user_facets");
     if (userFacets) {
@@ -532,10 +531,8 @@ $(document).ready(function() {
         e.preventDefault();
         $(":input.facetOpts").attr("checked","checked");
     });
-
     
     // taxa search - show included synonyms with popup to allow user to refine to a single name
-    
     $("span.lsid").each(function(i, el) {
         var lsid = $(this).attr("id");
         var nameString = $(this).html();
@@ -686,4 +683,7 @@ $(document).ready(function() {
         $(this).css('cursor','default');
         $(this).css('background-color','transparent');
     });
+
+    // fancybox div for refining search with multiple facet values
+
 }); // end JQuery document ready

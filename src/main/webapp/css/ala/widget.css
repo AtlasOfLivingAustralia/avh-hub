@@ -120,12 +120,17 @@ div#advancedSearch {
     padding: 6px 0 2px 0;
 }
 
-.sidebar #subnavlist > ul {
+#content ul {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+#content .sidebar > .subnavlist > ul {
     list-style: none;
     margin-left: -4px;
 }
 
-.sidebar #subnavlist > ul li {
+.sidebar > .subnavlist > ul li {
     margin-left: 14px;
 }
 
@@ -153,11 +158,6 @@ input::-webkit-input-placeholder {
 
 .solrResults #searchNavBar ul li {
     font-size: 13px;
-}
-
-#content ul {
-    list-style: disc;
-    margin-left: 20px;
 }
 
 #content2 > div > h3 {

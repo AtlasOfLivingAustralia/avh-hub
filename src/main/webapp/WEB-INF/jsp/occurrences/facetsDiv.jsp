@@ -35,7 +35,7 @@
         <c:if test="${not empty facetMap}">
             <div id="currentFilter">
                 <h4><span class="FieldName">Current Filters</span></h4>
-                <div id="subnavlist">
+                <div class="subnavlist">
                     <ul>
                         <c:forEach var="item" items="${facetMap}">
                             <li>
@@ -101,7 +101,7 @@
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
             <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
                 <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/></span></h4>
-                <div id="subnavlist">
+                <div class="subnavlist">
                     <ul class="facets">
                         <c:set var="lastElement" value="${facetResult.fieldResult[fn:length(facetResult.fieldResult)-1]}"/>
                         <c:if test="${lastElement.label eq 'before' && lastElement.count > 0}">
