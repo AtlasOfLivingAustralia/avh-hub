@@ -13,11 +13,17 @@
     <tag>
         <description>Banner Menu Tag</description>
         <name>header</name>
-        <tag-class>au.org.ala.commonui.headertails.BannerMenuTag</tag-class>
+        <tag-class>au.org.ala.commonui.headertails.BannerTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <description>The return url path for the login/logout anchor</description>
             <name>returnUrlPath</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The return logout url path for the logout anchor</description>
+            <name>returnLogoutUrlPath</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -27,14 +33,31 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <description>Whether or not to populate the search box</description>
+            <name>populateSearchBox</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
-        <description>Footer Menu Tag</description>
-        <name>footer</name>
-        <tag-class>au.org.ala.commonui.headertails.FooterMenuTag</tag-class>
+        <description>Menu Tag</description>
+        <name>menu</name>
+        <tag-class>au.org.ala.commonui.headertails.MenuTag</tag-class>
         <body-content>JSP</body-content>
     </tag>
-
+    <tag>
+        <description>Footer Tag</description>
+        <name>footer</name>
+        <tag-class>au.org.ala.commonui.headertails.FooterTag</tag-class>
+        <body-content>JSP</body-content>
+    </tag>
+    <tag>
+        <description>Google Analytics Tag</description>
+        <name>analytics</name>
+        <tag-class>au.org.ala.commonui.headertails.AnayticsTag</tag-class>
+        <body-content>JSP</body-content>
+    </tag>
   <tag>
     <description>Banner Menu Tag</description>
     <name>bannerMenu</name>

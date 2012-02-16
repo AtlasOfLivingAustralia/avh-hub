@@ -104,7 +104,8 @@
 <body class="${bodyClass}">
 <div id="wrapper">
     <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
-    <ala:header returnUrlPath="${returnUrlPath}" />
+    <ala:header returnUrlPath="${returnUrlPath}" populateSearchBox="false" />
+    <ala:menu />
         <div id="wrapper_border"><!--main content area-->
             <div id="border">
                 <div id="content" style="">
@@ -114,6 +115,7 @@
             </div>
         </div>
     <ala:footer />
+    <ala:analytics />
 </div>
 </body>
 </html>
