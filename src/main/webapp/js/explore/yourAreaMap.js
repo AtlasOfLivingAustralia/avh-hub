@@ -164,7 +164,7 @@ $(document).ready(function() {
     $('#addressHelp').qtip({
         content: {
             url: contextPath + '/proxy/wordpress',
-            data: { 'page_id': 16658, 'content-only': 1},
+            data: { 'page_id': 27726, 'content-only': 1},
             method: 'get',
             title: {
                text: 'About the matched address',
