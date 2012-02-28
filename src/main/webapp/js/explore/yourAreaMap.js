@@ -358,7 +358,7 @@ function loadRecordsLayer(retry) {
         zoom: zoom
     };
     if (taxon) {
-        params.q = "species:\"" + taxon + "\"";
+        params.q = "taxon_name:\"" + taxon + "\"";
     } else {
         params.group = speciesGroup;
     }
@@ -599,7 +599,7 @@ function processSpeciesJsonData(data, appendResults) {
                     '"><img src="'+ contextPath +'/static/images/page_white_go.png" alt="species page icon" style="margin-bottom:-3px;" class="no-rounding"/>'+
                     ' species profile</a> | ';
             }
-            speciesInfo = speciesInfo + '<a href="'+ contextPath +'/occurrences/searchByArea?q=species:%22'+data[i].name+
+            speciesInfo = speciesInfo + '<a href="'+ contextPath +'/occurrences/searchByArea?q=taxon_name:%22'+data[i].name+
                     '%22&lat='+$('input#latitude').val()+'&lon='+$('input#longitude').val()+'&radius='+$('select#radius').val()+'" title="'+
                     recsTitle+'"><img src="'+ contextPath +'/static/images/database_go.png" '+
                     'alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"/> list of records</a></div>';
