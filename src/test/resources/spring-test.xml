@@ -15,11 +15,23 @@
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
     <context:component-scan base-package="org.ala.hubs"/>
 
+    <!-- Over-ride bean properties - including dataSource configs -->
+    <context:property-override location="classpath:hubs.properties" ignore-unresolvable="true" ignore-resource-not-found="true"/>
+
+    <!-- Also make hubs properties available for lookup (via Spring EL) -->
+    <context:property-placeholder location="classpath:hubs.properties" />
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="testMessages"/>
+        <property name="useCodeAsDefaultMessage" value="true"/>
+    </bean>
+
     <!-- beans for RestTemplate  -->
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
         <property name="messageConverters">
             <list>
                 <!-- <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/> -->
+                <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
                 <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
             </list>
         </property>
@@ -28,7 +40,7 @@
     <!-- Force Jackson to omit properties that are null (smaller json files) -->
     <bean id="jacksonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
     <bean id="jacksonSerializationConfig" class="org.codehaus.jackson.map.SerializationConfig"
-        factory-bean="jacksonObjectMapper" factory-method="getSerializationConfig" />
+          factory-bean="jacksonObjectMapper" factory-method="getSerializationConfig" />
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetObject" ref="jacksonSerializationConfig" />
         <property name="targetMethod" value="setSerializationInclusion" />
@@ -41,5 +53,8 @@
 
     <!-- ALA RestfulClient (from ala-logger) -->
     <bean id="restfulClient" class="org.ala.client.util.RestfulClient"/>
+
+    <!-- CollectionCache from biocache-service -->
+    <bean id="collectionCache" class="org.ala.biocache.util.CollectionsCache"/>
 
 </beans>

@@ -15,23 +15,19 @@
 
 package org.ala.hubs.controller;
 
-import au.org.ala.biocache.BasisOfRecord;
-
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.management.monitor.StringMonitor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.*;
 import au.org.ala.biocache.FullRecord;
-import au.org.ala.biocache.SpeciesGroups;
-import au.org.ala.biocache.TypeStatus;
+
 import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
+import org.ala.hubs.dto.ActiveFacet;
 import org.ala.hubs.dto.AssertionDTO;
+import org.ala.hubs.dto.FacetValueDTO;
 import org.ala.hubs.dto.FieldGuideDTO;
 import org.ala.hubs.service.BieService;
 import org.ala.hubs.service.BiocacheService;
@@ -65,20 +63,15 @@ import org.geotools.feature.FeatureIterator;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
-import org.opengis.feature.Feature;
-import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import com.vividsolutions.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,8 +91,6 @@ public class OccurrenceController {
     private BiocacheService biocacheService;
     @Inject
     private BieService bieService;
-//    @Inject
-//    protected SearchUtils searchUtils;
     @Inject
 	protected RestfulClient restfulClient;
     @Inject
@@ -108,6 +99,8 @@ public class OccurrenceController {
     protected GazetteerCache gazetteerCache;
     @Inject
     protected CollectoryUidCache collectoryUidCache;
+    @Inject
+    private AbstractMessageSource messageSource;
 
     /** Spring injected RestTemplate object */
     @Inject
@@ -133,6 +126,25 @@ public class OccurrenceController {
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
     protected String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
 
+    protected static final Pattern TERM_PATTERN = Pattern.compile("([a-zA-z_]+?):((\".*?\")|(\\\\ |[^: \\)\\(])+)"); // matches foo:bar, foo:"bar bash" & foo:bar\ bash
+
+    protected static LinkedHashMap<String, String> collectionMap = null;
+    protected static LinkedHashMap<String, String> institutionMap = null;
+    protected static LinkedHashMap<String, String> dataResourceMap = null;
+
+    /**
+     * Initialisation method to load some field values
+     */
+    @PostConstruct
+    public void init() {
+        List<String> inguids = collectoryUidCache.getInstitutions();
+        List<String> coguids = collectoryUidCache.getCollections();
+        collectionMap = collectionsCache.getCollections(inguids, coguids);
+        institutionMap = collectionsCache.getInstitutions(inguids, coguids);
+        dataResourceMap = collectionsCache.getDataResources(inguids, coguids);
+        //logger.info("institutionMap: " + StringUtils.join(institutionMap.keySet(), "|") + " => " + StringUtils.join(institutionMap.values(), "|"));
+    }
+
     /**
      * Expects a request body in JSON
      *
@@ -152,6 +164,7 @@ public class OccurrenceController {
     public String refreshCaches() throws Exception {
         collectoryUidCache.updateCache();
         collectionsCache.updateCache();
+        init(); // update LinkedHashMap cached versions
         return null;
     }
 
@@ -315,7 +328,7 @@ public class OccurrenceController {
             Model model,
             HttpServletRequest request) throws Exception {
         logger.debug("/search* TOP");
-        logger.info("requestParams.q = " + requestParams.getQ() + " || fq = " + StringUtils.join(requestParams.getFq(), "|"));
+        logger.debug("requestParams.q = " + requestParams.getQ() + " || fq = " + StringUtils.join(requestParams.getFq(), "|"));
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
@@ -345,8 +358,8 @@ public class OccurrenceController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/search*", method = RequestMethod.POST)
-    public String search(@RequestParam(value="raw_taxon_guid", required=false) String[] rawNames,
+    @RequestMapping(value = "/search/taxa*", method = RequestMethod.POST)
+    public String taxaSearch(@RequestParam(value="raw_taxon_guid", required=false) String[] rawNames,
             Model model,
             HttpServletRequest request) throws Exception {
         
@@ -365,6 +378,54 @@ public class OccurrenceController {
             requestParams.setDir("desc");
             model.addAttribute("sort","last_load_date");
             model.addAttribute("dir","desc");
+        }
+
+        doFullTextSearch((String) null, model, requestParams, request);
+
+        return RECORD_LIST;
+    }
+
+    /**
+     * Multi facet search via POST or GET
+     *
+     * @param multiFacets
+     * @param requestParams
+     * @param result
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/search/facets*")
+    public String multiFacetSearch(
+            @RequestParam(value="fqs", required=false) String[] multiFacets,
+            SpatialSearchRequestParams requestParams,
+            BindingResult result,
+            Model model,
+            HttpServletRequest request) throws Exception {
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+
+        if (request.getParameter("pageSize") == null) {
+            requestParams.setPageSize(20);
+        }
+
+        if (request.getParameter("sort") == null && request.getParameter("dir") == null ) {
+            requestParams.setSort("last_load_date");
+            requestParams.setDir("desc");
+            model.addAttribute("sort","last_load_date");
+            model.addAttribute("dir","desc");
+        }
+        
+        if (multiFacets != null && multiFacets.length > 0) {
+            String fqs = StringUtils.join(multiFacets, " OR ");
+            //List<String> fqList =  Arrays.asList(requestParams.getFq()); // convert to List
+            List<String> fqList = new ArrayList<String>();
+            Collections.addAll(fqList, requestParams.getFq());
+            fqList.add(fqs); // add fqs
+            requestParams.setFq(fqList.toArray(new String[]{})); // shove back into requestParams
         }
 
         doFullTextSearch((String) null, model, requestParams, request);
@@ -780,6 +841,184 @@ public class OccurrenceController {
     }
 
     /**
+     * JSON service to return a list of facet values for a given search query & facet.
+     * Supports paging* and return both the code and display value for each value.
+     *
+     * *coming soon
+     *
+     * @return facetValues
+     * @throws Exception
+     */
+    @RequestMapping(value = "/facet/values.json")
+    public @ResponseBody List<FacetValueDTO> getFacetValues(
+            SpatialSearchRequestParams requestParams,
+            BindingResult result) throws Exception {
+
+        if (result.hasErrors()) {
+            logger.warn("BindingResult errors: " + result.toString());
+        }
+
+        List<FacetValueDTO> facetValues = new ArrayList<FacetValueDTO>();
+        String facet = requestParams.getFacets()[0]; // assumes only single facet requested
+        // TODO: add ability to page through facets
+        SearchResultDTO results = biocacheService.getFacetValues(requestParams);
+
+        for (FacetResultDTO facetResults : results.getFacetResults()) {
+            // check the facet is the one we're after
+            if (StringUtils.contains(facetResults.getFieldName(), facet)) {
+                // iterate over facet values (fieldResultsDTO)
+                for (FieldResultDTO field : facetResults.getFieldResult()) {
+                    FacetValueDTO fv = new FacetValueDTO(field.getFieldValue(), field.getCount());
+                    facetValues.add(fv);
+                }
+            }
+        }
+
+        // Lookup displayLabel values for certain facet fields (collection_uid, species_guid, etc)
+        facetValues = LookupDisplayValuesForFacet(facet, facetValues);
+
+        return facetValues;
+    }
+
+    /**
+     * Check facet against FacetsWithCodes enum and perform lookup for a displayLabel
+     *
+     * @param facet
+     * @param facetValues
+     */
+    private List<FacetValueDTO> LookupDisplayValuesForFacet(String facet, List<FacetValueDTO> facetValues) {
+        try {
+            FacetsWithCodes fwc = FacetsWithCodes.valueOf(facet);
+            //List<String> inGuids = collectoryUidCache.getInstitutions();
+            //List<String> coGuids = collectoryUidCache.getCollections();
+
+            switch(fwc) {
+                case institution_uid:
+                    //Map<String, String> instMap = collectionsCache.getInstitutions(inGuids, coGuids);
+                    for (FacetValueDTO fv : facetValues) {
+                        if (institutionMap.containsKey(fv.getLabel())) {
+                            fv.setDisplayLabel(institutionMap.get(fv.getLabel()));
+                        }
+                    }
+                    break;
+                case collection_uid:
+                    //Map<String, String> collMap = collectionsCache.getCollections(inGuids, coGuids);
+                    for (FacetValueDTO fv : facetValues) {
+                        if (collectionMap.containsKey(fv.getLabel())) {
+                            fv.setDisplayLabel(collectionMap.get(fv.getLabel()));
+                        }
+                    }
+                    break;
+                case data_resource_uid:
+                    //Map<String, String> drMap = collectionsCache.getDataResources(inGuids, coGuids);
+                    for (FacetValueDTO fv : facetValues) {
+                        if (dataResourceMap.containsKey(fv.getLabel())) {
+                            fv.setDisplayLabel(dataResourceMap.get(fv.getLabel()));
+                        }
+                    }
+                    break;
+                case species_guid:
+                    List<String> guids = new ArrayList<String>();
+                    for (FacetValueDTO fv : facetValues) {
+                        guids.add(fv.getLabel());
+                    }
+                    List<String> names = bieService.getNamesForGuids(guids); // lookup via BIE
+                    int i = 0;
+                    for (FacetValueDTO fv : facetValues) {
+                        if (names.size() > i) {
+                            fv.setDisplayLabel("<i>" + names.get(i) + "</i>");
+                        }
+                        i++;
+                    }
+                    break;
+                case month:
+                    for (FacetValueDTO fv : facetValues) {
+                        try {
+                            int m = Integer.parseInt(fv.getLabel());
+                            Month month = Month.get(m - 1); // 1 index months
+                            fv.setDisplayLabel(month.name());
+                        } catch (Exception e) {
+                            // ignore
+                        }
+                    }
+                    break;
+                case year:
+                    facetValues = formatYearFacets(facetValues);
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            // do nothing - normal facet without code value
+        }
+
+        return facetValues;
+    }
+
+    /**
+     * Process the "year" facet values to produce the decade fq link and display label
+     *
+     * @param facetValues
+     * @return
+     */
+    protected List<FacetValueDTO> formatYearFacets(List<FacetValueDTO> facetValues) {
+        Boolean hasBeforeLabel = false;
+        Integer earliestYear = 2010;
+
+        for (FacetValueDTO fv : facetValues) {
+            String label = fv.getLabel();
+
+            if (StringUtils.containsIgnoreCase(label, "before")) {
+                hasBeforeLabel = true;
+                fv.setDisplayLabel("Before " + earliestYear);
+                fv.setLabel("[* TO " + (earliestYear - 1) + "-12-31T23:59:59Z]"); // create date range fq
+            } else {
+                String year = StringUtils.substringBefore(label, "-"); //  fv.getLabel();
+                fv.setDisplayLabel(year); // in case parseInt fails
+                try {
+                    Integer yearInt = Integer.parseInt(year);
+                    if (yearInt < earliestYear) {
+                        earliestYear = yearInt;
+                    }
+                    fv.setDisplayLabel(yearInt + "-" + (yearInt + 9)); // TODO assumes decade
+                } catch (NumberFormatException e) {
+                    // ignore
+                }
+                String toDate = StringUtils.replace(label, "0-01-01T00:00:00Z","9-12-31T23:59:59Z"); // TODO assumes decade
+                fv.setLabel("[" + label + " TO " + toDate + "]"); // create date range fq
+            }
+        }
+
+        if (hasBeforeLabel) {
+            // re-order the List so that the "before" value goes at the front
+            List<FacetValueDTO> newFvs = new ArrayList<FacetValueDTO>();
+            FacetValueDTO last = facetValues.get(facetValues.size() - 1); // get last element
+            newFvs.add(last); // add last to the front of new list
+            facetValues.remove(last); //  remove the last
+            newFvs.addAll(facetValues); // add the rest
+            facetValues = newFvs; // clobber with new copy
+        }
+
+        return facetValues;
+    }
+
+    /**
+     * Enum for facets indexed with a "code" value vs String value (e.g. collection_uid)
+     */
+    protected enum FacetsWithCodes {
+        institution_uid, collection_uid, data_resource_uid, species_guid, month, year;
+    }
+
+    /**
+     * Enum for months lookup
+     */
+    protected enum Month {
+        January, February, March, April, May, June, July, August, September, October, November, December;
+
+        public static Month get(int i){
+            return values()[i];
+        }
+    }
+
+    /**
      * WKT format for SOLR spatial plugin requires spaces to be encoded as colon ":"
      * This method converts the String to the requiered format.
      *
@@ -1010,27 +1249,148 @@ public class OccurrenceController {
     } 
 
     /**
-     * Create a HashMap for the filter queries
+     * Create a HashMap for the filter queries, using the first SOLR field as the key and subsequent
+     * query string as the value.
+     *
+     * Refactor: now returns a Map<String, ActiveFacet> with an additional field "label" that is used to
+     * provide a human readable version of the filter query.
      *
      * @param filterQuery
      * @return
      */
-    private HashMap<String, String> addFacetMap(String[] filterQuery) {
-               HashMap<String, String> facetMap = new HashMap<String, String>();
+    protected Map<String, ActiveFacet> addFacetMap(String[] filterQuery) {
+        Map<String, ActiveFacet> afs = new HashMap<String, ActiveFacet>();
 
         if (filterQuery != null && filterQuery.length > 0) {
-            logger.debug("filterQuery = "+StringUtils.join(filterQuery, "|"));
+            // iterate over the fq params
             for (String fq : filterQuery) {
                 if (fq != null && !fq.isEmpty()) {
                     String[] fqBits = StringUtils.split(fq, ":", 2);
-                    logger.debug("bits = " + StringUtils.join(fqBits, "|"));
-                    facetMap.put(fqBits[0], fqBits[1]);
+                    // extract key for map
+                    if (fqBits.length  == 2) {
+                        String key = fqBits[0];
+                        String value = fqBits[1];
+                        ActiveFacet af = new ActiveFacet(key, value);
+                        logger.debug("1. fq = " + key + " => " + value);
+                        // if there are internal Boolean operators, iterate over sub queries
+                        String patternStr = "[ ]+(OR)[ ]+";
+                        String[] tokens = fq.split(patternStr, -1);
+                        List<String> labels = new ArrayList<String>(); // store sub-queries in this list
+
+                        for (String token : tokens) {
+                            logger.debug("token: " + token);
+                            String[] tokenBits = StringUtils.split(token, ":", 2);
+                            if (tokenBits.length == 2) {
+                                String fn = tokenBits[0];
+                                String fv = tokenBits[1];
+                                String i18n = messageSource.getMessage("facet."+fn, null, fn, null);
+
+                                if (StringUtils.equals(fn, "species_guid")) {
+                                    fv = substituteLsidsForNames(fv);
+                                } else if (StringUtils.equals(fn, "occurrence_year")) {
+                                    fv = substituteYearsForDates(fv);
+                                } else if (StringUtils.equals(fn, "month")) {
+                                    fv = substituteMonthNamesForNums(fv);
+                                } else {
+                                    fv = substituteCollectoryNames(fv);
+                                }
+
+                                labels.add(i18n + ":" + fv);
+                            }
+                        }
+
+                        String label = StringUtils.join(labels, " OR "); // join sub-queies back together
+                        logger.info("label = " + label);
+                        af.setLabel(label);
+
+                        afs.put(key, af); // add to map
+                    }
                 }
             }
         }
-        return facetMap;
+
+        return afs;
     }
-    
+
+    /**
+     * Convert month number to its name. E.g. 12 -> December
+     *
+     * @param fv
+     * @return monthStr
+     */
+    private String substituteMonthNamesForNums(String fv) {
+        String monthStr = new String(fv);
+        try {
+            int m = Integer.parseInt(monthStr);
+            Month month = Month.get(m - 1); // 1 index months
+            monthStr = month.name();
+        } catch (Exception e) {
+            // ignore
+        }
+        return monthStr;
+    }
+
+    /**
+     * Turn SOLR date range into year range.
+     * E.g. [1940-01-01T00:00:00Z TO 1949-12-31T00:00:00Z]
+     * to
+     * 1940-1949
+     * 
+     * @param fieldValue
+     * @return
+     */
+    private String substituteYearsForDates(String fieldValue) {
+        String dateRange = URLDecoder.decode(fieldValue);
+        String formattedDate = StringUtils.replaceChars(dateRange, "[]", "");
+        String[] dates =  formattedDate.split(" TO ");
+        
+        if (dates != null && dates.length > 1) {
+            // grab just the year portions
+            dateRange = StringUtils.substring(dates[0], 0, 4) + "-" + StringUtils.substring(dates[1], 0, 4);
+        }
+
+        return dateRange;
+    }
+
+    /**
+     * Lookup a taxon name for a GUID
+     *
+     * @param fieldValue
+     * @return
+     */
+    private String substituteLsidsForNames(String fieldValue) {
+        String name = fieldValue;
+        List<String> guids = new ArrayList<String>();
+        guids.add(fieldValue);
+        List<String> names = bieService.getNamesForGuids(guids);
+        
+        if (names != null && names.size() >= 1) {
+            name = names.get(0);
+        }
+
+        return name;
+    }
+
+    /**
+     * Lookup an institution/collection/data resource name via its collectory ID
+     *
+     * @param fieldValue
+     * @return
+     */
+    private String substituteCollectoryNames(String fieldValue) {
+        // substitute collectory names
+        logger.debug("collectory maps: " + fieldValue);
+        if (collectionMap.containsKey(fieldValue)) {
+            fieldValue = collectionMap.get(fieldValue);
+        } else if (institutionMap.containsKey(fieldValue)) {
+            fieldValue = institutionMap.get(fieldValue);
+        } else if (dataResourceMap.containsKey(fieldValue)) {
+            fieldValue = dataResourceMap.get(fieldValue);
+        }
+        logger.debug("=> " + fieldValue);
+        return fieldValue;
+    }
+
     /**
      * Calculate the last page number for pagination
      * 
@@ -1081,16 +1441,16 @@ public class OccurrenceController {
     /**
      * Add "common" data structures required for search pages (list.jsp).
      *
-     * TODO: move static methods from HomePAgeController into utility class.
+     * TODO: move static methods from HomePageController into utility class.
      *
      * @param model
      */
     private void addCommonDataToModel(Model model) {
         List<String> inguids = collectoryUidCache.getInstitutions();
         List<String> coguids = collectoryUidCache.getCollections();
-        model.addAttribute("collectionCodes", collectionsCache.getCollections(inguids, coguids));
-        model.addAttribute("institutionCodes", collectionsCache.getInstitutions(inguids, coguids));
-        model.addAttribute("dataResourceCodes", collectionsCache.getDataResources(inguids, coguids));
+        model.addAttribute("collectionCodes", collectionMap);
+        model.addAttribute("institutionCodes", institutionMap);
+        model.addAttribute("dataResourceCodes", dataResourceMap);
         model.addAttribute("defaultFacets", filterFacets(biocacheService.getDefaultFacets()));
     }
 

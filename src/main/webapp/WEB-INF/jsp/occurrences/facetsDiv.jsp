@@ -9,7 +9,7 @@
 <div id="SidebarBox" class="facets">
     <div class="sidebar">
         <h3 style="display: inline-block;float:left;">Refine Results </h3>
-        <div id="customiseFacets"><a href="#">customise</a></div>
+        <div id="customiseFacets"><a href="#" title="customise which categories are displayed below">customise</a></div>
         <div id="facetOptions">
             <h4>Select the filter categories that are to<br/> appear in the &quot;Refine Results&quot; column</h4>
             <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
@@ -36,62 +36,12 @@
             <div id="currentFilter">
                 <h4><span class="FieldName">Current Filters</span></h4>
                 <div class="subnavlist">
-                    <ul>
+                    <ul id="refinedFacets">
                         <c:forEach var="item" items="${facetMap}">
                             <li>
-                                <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value}"/>'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
-                                <fmt:message key="facet.${item.key}"/><!-- ${item.value} -->:
-                                <c:choose>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'month')}">
-                                        <b><fmt:message key="month.${item.value}"/></b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:startsWith(item.key, 'occurrence_') && fn:startsWith(item.value, '[*')}">
-                                        <c:set var="endYear" value="${fn:substring(item.value, 6, 10)}"/><b>Before ${endYear}</b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:startsWith(item.key, 'occurrence_') && fn:endsWith(item.value, '*]')}">
-                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>After ${startYear}</b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:startsWith(item.key, 'occurrence_year') && fn:endsWith(item.value, 'Z]')}">
-                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/><b>${startYear}<i>s</i></b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:startsWith(item.key, 'occurrence_date') && fn:endsWith(item.value, 'Z]')}">
-                                        <c:set var="startYear" value="${fn:substring(item.value, 1, 5)}"/>
-                                        <c:set var="endYear" value="${fn:substring(item.value, 25, 29)}"/>
-                                        <b>${startYear} to ${endYear}</b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:startsWith(item.key, 'last_') && fn:endsWith(item.value, '*]')}">
-                                        <c:set var="startDate" value="${fn:substring(item.value, 1, 11)}"/><b>since ${startDate}</b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:startsWith(item.key, 'last_') && fn:startsWith(item.value, '[*')}">
-                                        <c:set var="startDate" value="${fn:substring(item.value, 6, 16)}"/><b> before ${startDate}</b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:startsWith(item.key, 'last_') && fn:endsWith(item.value, 'Z]')}">
-                                        <c:set var="startDate" value="${fn:substring(item.value, 1, 11)}"/>
-                                        <c:set var="endDate" value="${fn:substring(item.value, 25, 35)}"/>
-                                        <b>${startDate} to ${endDate}</b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'institution_uid')}">
-                                        <b><fmt:message key="${institutionCodes[item.value]}"/></b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'collection_uid')}">
-                                        <b><fmt:message key="${collectionCodes[item.value]}"/></b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'data_resource_uid')}">
-                                        <b><fmt:message key="${dataResourceCodes[item.value]}"/></b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'species_guid')}">
-                                        <b class="species_guid" id="${item.value}"><fmt:message key="${fn:substring(item.value,0,20)}"/></b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'geospatial_kosher')}">
-                                        <b><fmt:message key="geospatial_kosher.${item.value}"/></b>${closeLink}
-                                    </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(item.key, 'collector')}">
-                                        <b><fmt:message key="${(fn:contains(item.value,'@')) ? fn:substringBefore(item.value,'@') : item.value}"/></b>${closeLink}
-                                    </c:when>
-                                    <c:otherwise>
-                                        <b><fmt:message key="${item.value}"/></b>${closeLink}
-                                    </c:otherwise>
-                                </c:choose>
+                                <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value.value}"/>'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
+                                <!-- ${item.key}:${item.value.value} || ${item.value.label} -->
+                                <b><fmt:message key="${item.value.label}"/></b>${closeLink}
                             </li>
                         </c:forEach>
                     </ul>
@@ -100,7 +50,13 @@
         </c:if>
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
             <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
-                <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/></span></h4>
+                <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/>
+                    <c:if test="${fn:length(facetResult.fieldResult) > 1}">
+                        <a href="#multipleFacets" class="multipleFacetsLink" id="${facetResult.fieldName}" data-displayname="<fmt:message key="facet.${facetResult.fieldName}"/>"
+                           title="Refine with multiple values"><img src="${pageContext.request.contextPath}/static/images/options_icon.jpg" class="optionsIcon"/></a>
+                    </c:if>
+                    </span>
+                </h4>
                 <div class="subnavlist">
                     <ul class="facets">
                         <c:set var="lastElement" value="${facetResult.fieldResult[fn:length(facetResult.fieldResult)-1]}"/>
@@ -176,6 +132,12 @@
         </c:forEach>
     </div>
 </div><!--end facets-->
+<div style="display:none"><!-- fancybox popup div -->
+    <div id="multipleFacets">
+        <h3>Refine your search</h3>
+        <div id="dynamic"></div>
+    </div>
+</div>
 <!--
 ${false && collectionCodes}
 -->

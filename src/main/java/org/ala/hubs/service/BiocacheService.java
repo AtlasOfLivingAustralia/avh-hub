@@ -75,6 +75,16 @@ public interface BiocacheService {
      */
     public SearchResultDTO findBySpatialFulltextQuery(SpatialSearchRequestParams requestParams);
 
+    /**
+     * Get a list of facet values for a given query & facet
+     *
+     * @param facets
+     * @param flimit
+     * @param requestParams
+     * @return
+     */
+    public SearchResultDTO getFacetValues(SpatialSearchRequestParams requestParams);
+
     public List<ErrorCode> getErrorCodes();
 
     public List<ErrorCode> getUserCodes();

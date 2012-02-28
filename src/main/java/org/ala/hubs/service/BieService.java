@@ -14,6 +14,8 @@
  ***************************************************************************/
 package org.ala.hubs.service;
 
+import java.util.List;
+
 /**
  * Service layer interface for accessing BIE data
  * 
@@ -27,12 +29,13 @@ public interface BieService {
      * @return 
      */
     public String getGuidForName(String name);
-    
+
     /**
-     * Lookup acccepted name and common name for a TC GUID
-     * 
-     * @param guid
-     * @return 
+     * Lookup service for list of guids to names
+     *
+     * @param guids
+     * @return
      */
-    //public String getDisplayNameForGuid(String guid);
+    public List<String> getNamesForGuids(List<String> guids);
+
 }

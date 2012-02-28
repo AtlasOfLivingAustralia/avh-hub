@@ -152,7 +152,7 @@ input::-webkit-input-placeholder {
 }
 
 .facets .sidebar ul li {
-    margin:  3px 0px 3px 10px;
+    margin:  3px 0px 3px 3px;
     text-indent: 0px;
 }
 

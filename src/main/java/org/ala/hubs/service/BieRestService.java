@@ -14,11 +14,20 @@
  ***************************************************************************/
 package org.ala.hubs.service;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestOperations;
 
 /**
@@ -65,6 +74,35 @@ public class BieRestService implements BieService {
         }
         
         return guid;
+    }
+
+    /**
+     * @see org.ala.hubs.service.BieService#getNamesForGuids(java.util.List)
+     *
+     * @param guids
+     * @return
+     */
+    @Override
+    public List<String> getNamesForGuids(List<String> guids) {
+        List<String> names = null;
+
+        try {
+            final String jsonUri = bieUriPrefix + "/species/namesFromGuids.json";
+            MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+
+            for (String guid : guids) {
+                map.add("guid", guid);
+            }
+
+            logger.debug("Requesting: " + jsonUri + " guid params = " + StringUtils.join(map.values(), "|"));
+            HttpHeaders requestHeaders = new HttpHeaders();
+            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(map, requestHeaders);
+            names = restTemplate.postForObject(jsonUri, requestEntity, List.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+        
+        return names;
     }
     
     public String getBieUriPrefix() {

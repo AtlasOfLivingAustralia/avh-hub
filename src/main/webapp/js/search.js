@@ -589,7 +589,7 @@ $(document).ready(function() {
         });
         // format display with drop-down
         //$("span.lsid").before("<span class='plain'> which matched: </span>");
-        $(el).html("<a href='#' title='click for details about this search' id='lsid_" + i + "'>" + nameString + "</a>");
+        $(el).html("<a href='#' title='click for details about this taxon search' id='lsid_" + i + "'>" + nameString + "</a>");
         $(el).addClass("dropDown");
     });
 
@@ -685,5 +685,103 @@ $(document).ready(function() {
     });
 
     // fancybox div for refining search with multiple facet values
+    $(".multipleFacetsLink").fancybox({
+        'hideOnContentClick' : false,
+        'hideOnOverlayClick': true,
+        'showCloseButton': true,
+        'titleShow' : false,
+        'transitionIn': 'elastic',
+        'transitionOut': 'elastic',
+        'speedIn': 400,
+        'speedOut': 400,
+        'scrolling': 'auto',
+        'centerOnScroll': true,
+        'autoDimensions' : false,
+        'width': '40%',
+        'height': '60%',
+        'padding': 10,
+        'margin': 10,
+        onCleanup: function() {
+            // clear the div#dynamic html
+            $("#dynamic").html("");
+        },
+        onComplete: function(links) {
+            $("#dynamic").html("Loading...");
+            var link = links[0];
+            var facetName = link.id;
+            var displayName = $(link).data("displayname");
+            var facet = (facetName == "occurrence_year") ? "year" : facetName; // Date facets have different name
+            // pull params out of BC_CONF.searchString
+            var params = BC_CONF.searchString.replace(/^\?/, "").split("&");
+            var inputsHtml = "";
+            $.each(params, function(i, el) {
+                var pair = el.split("=");
+                if (pair.length == 2) {
+                    inputsHtml += "<input type='hidden' name='" + pair[0] + "' value='" + pair[1] + "'/>";
+                }
+            });
+            var jsonUri = BC_CONF.contextPath + "/occurrences/facet/values.json" + BC_CONF.searchString +
+                "&facets=" + facet + "&flimit=100";
+            $.getJSON(jsonUri, function(data) {
+                //console.log("data",data);
+                if (data.length > 0) {
+                    $("#dynamic").html("");
+                    var html = "<form name='facetRefineForm' id='facetRefineForm' method='GET' action='" +
+                        BC_CONF.contextPath + "/occurrences/search/facets'>";
+                    html += inputsHtml ;// add existing params
+                    html += "<table class='compact' id='fullFacets' style=''>";
+                    html += "<tr><th style='border:none'></th><th>" + displayName + "</th><th>Count</th></tr>";
+                    $.each(data, function(i, el) {
+                        if (el.count > 0) {
+                            // surround with quotes: fq value if contains spaces but not for range queries
+                            var fqEsc = (el.label.indexOf(" ") != -1 && el.label.indexOf("[") != 0) ? "\"" + el.label + "\"" : el.label;
+                            var link = BC_CONF.searchString + "&fq=" + facetName + ":" + fqEsc;
+                            html += "<tr><td style='text-align: right;display:none;'>" + (i + 1) + ".</td><td style='text-align: right;'>" +
+                                "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
+                                "'/></td><td><a href='" + link + "'> " + el.displayLabel + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
+                        }
+                    });
+                    html += "</table><input type='submit' class='submit'/></form>";
+                    $("div#dynamic").append(html);
+                    $.fancybox.resize();
+                }
+            });
+        }
+    });
 
+    // form validation for form#facetRefineForm
+    $("form#facetRefineForm :input.submit").live("click", function(e) {
+        e.preventDefault();
+        var fq = ""; // build up OR'ed fq query
+        var checkedFound = false;
+        var selectedCount = 0;
+        var maxSelected = 15;
+        $("form#facetRefineForm").find(":input.fqs").each(function(i, el) {
+            //console.log("checking ", el);
+            if ($(el).is(':checked')) {
+                checkedFound = true;
+                selectedCount++;
+                fq += $(el).val() + " OR ";
+                //return false; // break loop
+            }
+        });
+        fq = fq.replace(/ OR $/, ""); // remove trailing OR
+
+        if (checkedFound && selectedCount > maxSelected) {
+            alert("Too many options selected - maximum is " + maxSelected + ", you have selected " + selectedCount + ", please de-select " +
+                (selectedCount - maxSelected) + " options");
+        } else if (checkedFound) {
+            //$("form#facetRefineForm").submit();
+            var hash = window.location.hash;
+            window.location.href = window.location.pathname + BC_CONF.searchString + "&fq=" + fq + hash;
+        } else {
+            alert("Please check at least one checkbox.");
+        }
+    });
+
+    $("a.multipleFacetsLink, a#downloadLink, span.dropDown a, div#customiseFacets > a").qtip({
+        style: {
+            classes: 'ui-tooltip-rounded ui-tooltip-shadow'
+        }
+    });
 }); // end JQuery document ready

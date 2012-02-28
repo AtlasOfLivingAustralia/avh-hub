@@ -283,6 +283,34 @@ public class BiocacheRestService implements BiocacheService {
         return searchResults;
     }
 
+    /**
+     * @see org.ala.hubs.service.BiocacheService#getFacetValues(SpatialSearchRequestParams)
+     *
+     * @param requestParams
+     * @return
+     */
+    @Override
+    public SearchResultDTO getFacetValues(SpatialSearchRequestParams requestParams) {
+
+        Assert.notNull(requestParams.getQ(), "query must not be null");
+        addQueryContext(requestParams);
+        requestParams.setPageSize(0);
+        //requestParams.setFacets(facets);
+        //requestParams.setFlimit(flimit);
+        SearchResultDTO searchResults = new SearchResultDTO();
+
+        try {
+            final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();
+            logger.debug("Requesting: " + jsonUri);
+            searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+            searchResults.setStatus("Error: " + ex.getMessage());
+        }
+
+        return searchResults;
+    }
+
     @Override
     public Map<String, Object> getCompareRecord(String uuid) {
         Assert.notNull(uuid, "UUID must not be null");

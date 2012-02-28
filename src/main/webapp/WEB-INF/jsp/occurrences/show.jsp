@@ -1308,7 +1308,7 @@
         </div>
 
         <c:if test="${empty record.raw}">
-            <div id="content2">
+            <div id="headingBar">
                 <h1>Record Not Found</h1>
                 <p>The requested record ID "${uuid}" was not found</p>
             </div>

@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import au.org.ala.biocache.*;
 
 
 import javax.inject.Inject;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:spring-test.xml"})
+@ContextConfiguration(locations={"classpath:src/test/resources/spring-test.xml"})
 public class BiocacheRestServiceTest {
 
     @Inject

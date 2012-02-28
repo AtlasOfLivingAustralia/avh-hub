@@ -24,6 +24,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
         <title><fmt:message key="heading.list"/> search results | ${hubDisplayName}</title>
+
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/redmond/jquery.ui.redmond.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.qtip.min.css" type="text/css" media="screen" />
+
         <script type="text/javascript">
             // single global var for app conf settings
             var BC_CONF = {
@@ -46,6 +54,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.qtip.min.js"></script>
 <!--        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.3&sensor=false"></script>-->
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="http://jquery-jsonp.googlecode.com/files/jquery.jsonp-2.1.4.min.js"></script>
@@ -62,11 +71,6 @@
         </script>
         <script src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
         <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/redmond/jquery.ui.redmond.css" type="text/css" media="screen" />
     </head>
     <body>
         <input type="hidden" id="userId" value="${userId}">
@@ -324,7 +328,7 @@
                         </div><!-- end #imagesWrapper -->
                     </c:if>
                 </div>
-                <form name="raw_taxon_search" class="rawTaxonSearch" id="rawTaxonSearchForm" action="${pageContext.request.contextPath}/occurrences/search" method="POST">
+                <form name="raw_taxon_search" class="rawTaxonSearch" id="rawTaxonSearchForm" action="${pageContext.request.contextPath}/occurrences/search/taxa" method="POST">
                     <%-- taxon concept search drop-down div are put in here via Jquery --%>
                     <div style="display:none;">
                         

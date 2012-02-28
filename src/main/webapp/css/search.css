@@ -114,6 +114,7 @@ div#currentFilter {
 }
 .removeLink {
     font-family: sans-serif;
+    font-weight: bold;
     text-decoration: none;
 }
 #refine-results h3 strong {
@@ -458,4 +459,32 @@ table.avhRowB td {
 }
 table.avhRowB  td.viewRecord {
     text-align: right;
+}
+span.FieldName {
+    font-weight: bold;
+}
+img.optionsIcon {
+    vertical-align: middle;
+    padding:0 0 2px 8px;
+}
+
+#multipleFacets #dynamic {
+    text-align: left;
+    text-align: center;
+    margin-right: 10px;
+}
+
+table#fullFacets {
+    width: inherit;
+    border-bottom: none;
+    padding-right: 10px;
+    margin:10px auto;
+}
+
+table#fullFacets td, table#fullFacets th {
+    border: 1px solid silver;
+}
+
+ul#refinedFacets b {
+    font-weight: normal;
 }
