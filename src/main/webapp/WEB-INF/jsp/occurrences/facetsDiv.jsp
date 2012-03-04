@@ -39,7 +39,7 @@
                     <ul id="refinedFacets">
                         <c:forEach var="item" items="${facetMap}">
                             <li>
-                                <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value.value}"/>'); return false;" class="removeLink" title="remove">X</a></b>]</c:set>
+                                <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value.value}"/>'); return false;" class="removeLink" title="remove filter">X</a></b>]</c:set>
                                 <!-- ${item.key}:${item.value.value} || ${item.value.label} -->
                                 <b><fmt:message key="${item.value.label}"/></b>${closeLink}
                             </li>
@@ -52,7 +52,7 @@
             <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
                 <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/>
                     <c:if test="${fn:length(facetResult.fieldResult) > 1}">
-                        <a href="#multipleFacets" class="multipleFacetsLink" id="${facetResult.fieldName}" data-displayname="<fmt:message key="facet.${facetResult.fieldName}"/>"
+                        <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="<fmt:message key="facet.${facetResult.fieldName}"/>"
                            title="Refine with multiple values"><img src="${pageContext.request.contextPath}/static/images/options_icon.jpg" class="optionsIcon"/></a>
                     </c:if>
                     </span>

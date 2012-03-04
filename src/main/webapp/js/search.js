@@ -268,6 +268,52 @@ function loadImages(start) {
     };
 })(jQuery);
 
+/**
+ * draws the div for selecting multiple facets (popup div)
+ */
+function loadMultiFacets(facetName, displayName, fsort) {
+    fsort = (fsort) ? fsort : "count";
+    $("#dynamic").html("Loading...");
+    var facet = (facetName == "occurrence_year") ? "year" : facetName; // Date facets have different name
+    console.log("loadMultiFacets", facetName,  displayName, fsort);
+    // pull params out of BC_CONF.searchString
+    var params = BC_CONF.searchString.replace(/^\?/, "").split("&");
+    var inputsHtml = "";
+    $.each(params, function(i, el) {
+        var pair = el.split("=");
+        if (pair.length == 2) {
+            inputsHtml += "<input type='hidden' name='" + pair[0] + "' value='" + pair[1] + "'/>";
+        }
+    });
+    var jsonUri = BC_CONF.contextPath + "/occurrences/facet/values.json" + BC_CONF.searchString +
+        "&facets=" + facet + "&flimit=100&fsort=" + fsort;
+    $.getJSON(jsonUri, function(data) {
+        //console.log("data",data);
+        if (data.length > 0) {
+            $("#dynamic").html("");
+            var html = "<form name='facetRefineForm' id='facetRefineForm' method='GET' action='" +
+                BC_CONF.contextPath + "/occurrences/search/facets'>";
+            html += inputsHtml ;// add existing params
+            html += "<table class='compact' id='fullFacets' data-facet='" + facet + "' data-label='" + displayName + "'>";
+            html += "<tr><th style='border:none'></th><th><a href='#index' class='fsort' data-sort='index'>" + displayName + "</a></th>";
+            html += "<th><a href='#count' class='fsort' data-sort='count'>Count</a></th></tr>";
+            $.each(data, function(i, el) {
+                if (el.count > 0) {
+                    // surround with quotes: fq value if contains spaces but not for range queries
+                    var fqEsc = (el.label.indexOf(" ") != -1 && el.label.indexOf("[") != 0) ? "\"" + el.label + "\"" : el.label;
+                    var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + fqEsc;
+                    html += "<tr><td style='text-align: right;display:none;'>" + (i + 1) + ".</td><td style='text-align: right;'>" +
+                        "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
+                        "'/></td><td><a href='" + link + "'> " + el.displayLabel + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
+                }
+            });
+            html += "</table><input type='submit' class='submit'/></form>";
+            $("div#dynamic").append(html);
+            $.fancybox.resize();
+        }
+    });
+}
+
 // vars for hiding drop-dpwn divs on click outside tem
 var hoverDropDownDiv = false;
 
@@ -706,46 +752,10 @@ $(document).ready(function() {
             $("#dynamic").html("");
         },
         onComplete: function(links) {
-            $("#dynamic").html("Loading...");
             var link = links[0];
-            var facetName = link.id;
+            var facetName = link.id.replace("multi-","").replace("_uid","_name");
             var displayName = $(link).data("displayname");
-            var facet = (facetName == "occurrence_year") ? "year" : facetName; // Date facets have different name
-            // pull params out of BC_CONF.searchString
-            var params = BC_CONF.searchString.replace(/^\?/, "").split("&");
-            var inputsHtml = "";
-            $.each(params, function(i, el) {
-                var pair = el.split("=");
-                if (pair.length == 2) {
-                    inputsHtml += "<input type='hidden' name='" + pair[0] + "' value='" + pair[1] + "'/>";
-                }
-            });
-            var jsonUri = BC_CONF.contextPath + "/occurrences/facet/values.json" + BC_CONF.searchString +
-                "&facets=" + facet + "&flimit=100";
-            $.getJSON(jsonUri, function(data) {
-                //console.log("data",data);
-                if (data.length > 0) {
-                    $("#dynamic").html("");
-                    var html = "<form name='facetRefineForm' id='facetRefineForm' method='GET' action='" +
-                        BC_CONF.contextPath + "/occurrences/search/facets'>";
-                    html += inputsHtml ;// add existing params
-                    html += "<table class='compact' id='fullFacets' style=''>";
-                    html += "<tr><th style='border:none'></th><th>" + displayName + "</th><th>Count</th></tr>";
-                    $.each(data, function(i, el) {
-                        if (el.count > 0) {
-                            // surround with quotes: fq value if contains spaces but not for range queries
-                            var fqEsc = (el.label.indexOf(" ") != -1 && el.label.indexOf("[") != 0) ? "\"" + el.label + "\"" : el.label;
-                            var link = BC_CONF.searchString + "&fq=" + facetName + ":" + fqEsc;
-                            html += "<tr><td style='text-align: right;display:none;'>" + (i + 1) + ".</td><td style='text-align: right;'>" +
-                                "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
-                                "'/></td><td><a href='" + link + "'> " + el.displayLabel + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
-                        }
-                    });
-                    html += "</table><input type='submit' class='submit'/></form>";
-                    $("div#dynamic").append(html);
-                    $.fancybox.resize();
-                }
-            });
+            loadMultiFacets(facetName, displayName, "count")
         }
     });
 
@@ -779,9 +789,18 @@ $(document).ready(function() {
         }
     });
 
-    $("a.multipleFacetsLink, a#downloadLink, span.dropDown a, div#customiseFacets > a").qtip({
+    $("a.multipleFacetsLink, a#downloadLink, span.dropDown a, div#customiseFacets > a, a.removeLink").qtip({
         style: {
             classes: 'ui-tooltip-rounded ui-tooltip-shadow'
         }
+    });
+
+    $("a.fsort").live("click", function(e) {
+        e.preventDefault();
+        var criteria = $(this).data('sort');
+        var table = $(this).closest('table');
+        var facetName = $(table).data('facet');
+        var displayName = $(table).data('label');
+        loadMultiFacets(facetName, displayName, criteria);
     });
 }); // end JQuery document ready

@@ -37,7 +37,7 @@
             var BC_CONF = {
                 contextPath: "${pageContext.request.contextPath}",
                 serverName: "${initParam.serverName}${pageContext.request.contextPath}",
-                searchString: '${searchResults.urlParameters}', // keep as single quotes as JSTL var can contain double quotes
+                searchString: "${fn:replace(searchResults.urlParameters, "\"", "\\\"")}", //  JSTL var can contain double quotes
                 facetQueries: 'fq=<c:out escapeXml="false" value="${fn:join(paramValues.fq, '&fq=')}"/>',
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
@@ -289,6 +289,18 @@
                                         </select>
                                     </div>
                                 </td>
+                                <c:if test="${skin == 'avh'}">
+                                <td>
+                                    <label for="envLyrList">Environmental Layer:&nbsp;</label>
+                                    <div class="layerControls">
+                                        <select id="envLyrList">
+                                            <option value="">None</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                </c:if>
                                 <td>
                                     <label for="sizeslider">Size:</label>
                                     <div class="layerControls">
