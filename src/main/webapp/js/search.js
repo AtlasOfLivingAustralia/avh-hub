@@ -268,52 +268,6 @@ function loadImages(start) {
     };
 })(jQuery);
 
-/**
- * draws the div for selecting multiple facets (popup div)
- */
-function loadMultiFacets(facetName, displayName, fsort) {
-    fsort = (fsort) ? fsort : "count";
-    $("#dynamic").html("Loading...");
-    var facet = (facetName == "occurrence_year") ? "year" : facetName; // Date facets have different name
-    console.log("loadMultiFacets", facetName,  displayName, fsort);
-    // pull params out of BC_CONF.searchString
-    var params = BC_CONF.searchString.replace(/^\?/, "").split("&");
-    var inputsHtml = "";
-    $.each(params, function(i, el) {
-        var pair = el.split("=");
-        if (pair.length == 2) {
-            inputsHtml += "<input type='hidden' name='" + pair[0] + "' value='" + pair[1] + "'/>";
-        }
-    });
-    var jsonUri = BC_CONF.contextPath + "/occurrences/facet/values.json" + BC_CONF.searchString +
-        "&facets=" + facet + "&flimit=100&fsort=" + fsort;
-    $.getJSON(jsonUri, function(data) {
-        //console.log("data",data);
-        if (data.length > 0) {
-            $("#dynamic").html("");
-            var html = "<form name='facetRefineForm' id='facetRefineForm' method='GET' action='" +
-                BC_CONF.contextPath + "/occurrences/search/facets'>";
-            html += inputsHtml ;// add existing params
-            html += "<table class='compact' id='fullFacets' data-facet='" + facet + "' data-label='" + displayName + "'>";
-            html += "<tr><th style='border:none'></th><th><a href='#index' class='fsort' data-sort='index'>" + displayName + "</a></th>";
-            html += "<th><a href='#count' class='fsort' data-sort='count'>Count</a></th></tr>";
-            $.each(data, function(i, el) {
-                if (el.count > 0) {
-                    // surround with quotes: fq value if contains spaces but not for range queries
-                    var fqEsc = (el.label.indexOf(" ") != -1 && el.label.indexOf("[") != 0) ? "\"" + el.label + "\"" : el.label;
-                    var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + fqEsc;
-                    html += "<tr><td style='text-align: right;display:none;'>" + (i + 1) + ".</td><td style='text-align: right;'>" +
-                        "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
-                        "'/></td><td><a href='" + link + "'> " + el.displayLabel + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
-                }
-            });
-            html += "</table><input type='submit' class='submit'/></form>";
-            $("div#dynamic").append(html);
-            $.fancybox.resize();
-        }
-    });
-}
-
 // vars for hiding drop-dpwn divs on click outside tem
 var hoverDropDownDiv = false;
 
@@ -743,8 +697,8 @@ $(document).ready(function() {
         'scrolling': 'auto',
         'centerOnScroll': true,
         'autoDimensions' : false,
-        'width': '40%',
-        'height': '60%',
+        'width': 560,
+        'height': 560,
         'padding': 10,
         'margin': 10,
         onCleanup: function() {
@@ -763,6 +717,7 @@ $(document).ready(function() {
     $("form#facetRefineForm :input.submit").live("click", function(e) {
         e.preventDefault();
         var fq = ""; // build up OR'ed fq query
+        var facetName = $(this).siblings("table#fullFacets").data("facet");
         var checkedFound = false;
         var selectedCount = 0;
         var maxSelected = 15;
@@ -777,7 +732,10 @@ $(document).ready(function() {
         });
         fq = fq.replace(/ OR $/, ""); // remove trailing OR
 
-        if (checkedFound && selectedCount > maxSelected) {
+        if (facetName == "species_guid" && false) {
+            // TODO: remove once service is fixed for this
+            alert("Searching with multiple species is temporarily unavailable due to a technical issue. This should be fixed soon.");
+        } else if (checkedFound && selectedCount > maxSelected) {
             alert("Too many options selected - maximum is " + maxSelected + ", you have selected " + selectedCount + ", please de-select " +
                 (selectedCount - maxSelected) + " options");
         } else if (checkedFound) {
@@ -789,18 +747,135 @@ $(document).ready(function() {
         }
     });
 
+    // QTip generated tooltips
     $("a.multipleFacetsLink, a#downloadLink, span.dropDown a, div#customiseFacets > a, a.removeLink").qtip({
         style: {
             classes: 'ui-tooltip-rounded ui-tooltip-shadow'
         }
     });
 
+    // maultiple facets popup - sortable column heading links
     $("a.fsort").live("click", function(e) {
         e.preventDefault();
-        var criteria = $(this).data('sort');
+        var fsort = $(this).data('sort');
+        var foffset = $(this).data('foffset');
         var table = $(this).closest('table');
+        if (table.length == 0) {
+            //console.log("table 1", table);
+            table = $(this).parent().siblings('table#fullFacets');
+        }
+        //console.log("table 2", table);
         var facetName = $(table).data('facet');
         var displayName = $(table).data('label');
-        loadMultiFacets(facetName, displayName, criteria);
+        //loadMultiFacets(facetName, displayName, criteria, foffset);
+        loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, true);
+    });
+
+    // loadMoreVlaues
+    $("a.loadMoreVlaues").live("click", function(e) {
+        e.preventDefault();
+        var fsort = $(this).data('sort');
+        var foffset = $(this).data('foffset');
+        var table = $("table#fullFacets");
+        //console.log("table 2", table);
+        var facetName = $(table).data('facet');
+        var displayName = $(table).data('label');
+        //loadMultiFacets(facetName, displayName, criteria, foffset);
+        loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, false);
     });
 }); // end JQuery document ready
+
+/**
+ * draws the div for selecting multiple facets (popup div)
+ */
+function loadMultiFacets(facetName, displayName, fsort, foffset) {
+    fsort = (fsort) ? fsort : "count";
+    foffset = (foffset) ? foffset : "0";
+    var facetLimit = BC_CONF.facetLimit;
+    //$("#dynamic").html("Loading...");
+    var facet = (facetName == "occurrence_year") ? "year" : facetName; // Date facets have different name
+    //console.log("loadMultiFacets", facetName,  displayName, fsort);
+    // pull params out of BC_CONF.searchString
+    var params = BC_CONF.searchString.replace(/^\?/, "").split("&");
+    var inputsHtml = "";
+    $.each(params, function(i, el) {
+        var pair = el.split("=");
+        if (pair.length == 2) {
+            inputsHtml += "<input type='hidden' name='" + pair[0] + "' value='" + pair[1] + "'/>";
+        }
+    });
+    // draw the table and buttons
+    //$("#dynamic").html(""); // reset div
+    var html = "<form name='facetRefineForm' id='facetRefineForm' method='GET' action='" +
+                BC_CONF.contextPath + "/occurrences/search/facets'>";
+    html += inputsHtml ;// add existing params
+    html += "<table class='compact scrollTable' id='fullFacets' data-facet='" + facet + "' data-label='" + displayName + "'>";
+    html += "<thead class='fixedHeader'><tr class='tableHead'><th>&nbsp;</th><th id='indexCol'><a href='#index' class='fsort' data-sort='index' data-foffset='0'>" + displayName + "</a></th>";
+    html += "<th><a href='#count' class='fsort' data-sort='count'>Count</a></th></tr></thead>";
+    html += "<tbody class='scrollContent'><tr id='loadingRow'><td></td><td colspan='2'>Loading...</td></tr></tbody>";
+    //html += "<tfoot><tr id='submitFacets'><td colspan='3'><input type='submit' class='submit'/></form></td></tr></tfoot>"; // empty row that gets loaded via AJAX
+    html += "</table><div id='submitFacets'><input type='submit' class='submit'/></div></form>";
+    //html += "<input type='submit' class='submit'/></form>";
+    $("div#dynamic").append(html);
+    // perform ajax
+    loadFacetsContent(facet, fsort, foffset, facetLimit);
+}
+
+function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets) {
+    var jsonUri = BC_CONF.contextPath + "/occurrences/facet/values.json" + BC_CONF.searchString +
+        "&facets=" + facetName + "&flimit=" + facetLimit + "&fsort=" + fsort + "&foffset=" + foffset;
+    $.getJSON(jsonUri, function(data) {
+        //console.log("data",data);
+
+        if (data.length > 0) {
+            var hasMoreFacets = false;
+            var html = "";
+            $("tr#loadingRow").remove(); // remove the loading message
+            $("tr#loadMore").remove(); // remove the load more records link
+            if (replaceFacets) {
+                $("table#fullFacets tr").not("tr.tableHead").remove();
+            }
+            $.each(data, function(i, el) {
+                if (el.count > 0) {
+                    // surround with quotes: fq value if contains spaces but not for range queries
+                    var fqEsc = ((el.label.indexOf(" ") != -1 || el.label.indexOf("lsid") != -1) && el.label.indexOf("[") != 0) ? "\"" + el.label + "\"" : el.label; // .replace(/:/g,"\\:")
+                    var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + fqEsc;
+                    var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
+                    html += "<tr class='hidden " + rowType + "'><td style='text-align: right;'>" +
+                        "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
+                        "'/></td><td><a href='" + link + "'> " + el.displayLabel + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
+                }
+                if (i == facetLimit - 1) {
+                    //console.log("got to end of page of facets: " + i);
+                    hasMoreFacets = true;
+                }
+            });
+            $("table#fullFacets tbody").append(html);
+            $("tr.hidden").fadeIn('slow');
+
+            if (hasMoreFacets) {
+                var offsetInt = Number(foffset);
+                var flimitInt = Number(facetLimit);
+                var loadMore =  "<tr id='loadMore' class='hidden'><td colspan='3'><a href='#index' class='loadMoreVlaues' data-sort='" +
+                    fsort + "' data-foffset='" + (offsetInt + flimitInt) +
+                    "'>Show " + facetLimit + " more values</a></td></rt>";
+                $("table#fullFacets tbody").append(loadMore);
+                $("tr#loadMore").fadeIn('slow');
+            }
+
+            var tableHeight = $("#fullFacets tbody").height();
+            var tbodyHeight = 0;
+            $("#fullFacets tbody tr").each(function(i, el) {
+                tbodyHeight += $(el).height();
+            });
+            //console.log("table heights", tableHeight, tbodyHeight);
+            if (tbodyHeight < tableHeight) {
+                // no scroll bar so adjust column widths
+                var thWidth = $(".scrollContent td + td + td").width() + 18; //$("th#indexCol").width() + 36;
+                $(".scrollContent td + td + td").width(thWidth);
+
+            }
+            //$.fancybox.resize();
+        }
+    });
+}

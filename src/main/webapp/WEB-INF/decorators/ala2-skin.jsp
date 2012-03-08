@@ -86,7 +86,7 @@
 </c:set>
 <body class="${bodyClass}">
 <div id="wrapper">
-    <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+    <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${fn:escapeXml(pageContext.request.queryString)}"/>
     <ala:header returnUrlPath="${returnUrlPath}" populateSearchBox="true" />
     <ala:menu />
         <div id="wrapper_border"><!-- div#wrapper_border - main content area-->

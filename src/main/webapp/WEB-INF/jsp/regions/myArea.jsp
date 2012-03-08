@@ -47,7 +47,7 @@
         <div id="column-one" class="full-width">
             <div class="section">
                 <div>
-                    <div id="mapOuter" style="width: 400px; height: 440px; float:right;">
+                    <div id="mapOuter" style="width: 400px; height: 440px; float:right;margin-top:67px">
                         <div id="mapCanvas" style="width: 400px; height: 420px;"></div>
                         <div style="font-size:11px;width:400px;color:black;height:20px;" class="show-80">
                             <table id="cellCountsLegend">

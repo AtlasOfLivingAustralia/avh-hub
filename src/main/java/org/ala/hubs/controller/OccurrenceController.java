@@ -327,8 +327,8 @@ public class OccurrenceController {
             BindingResult result, 
             Model model,
             HttpServletRequest request) throws Exception {
-        logger.debug("/search* TOP");
-        logger.debug("requestParams.q = " + requestParams.getQ() + " || fq = " + StringUtils.join(requestParams.getFq(), "|"));
+        logger.info("/search* TOP");
+        logger.info("requestParams.q = " + requestParams.getQ() + " || fq = " + StringUtils.join(requestParams.getFq(), "|"));
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
@@ -1278,7 +1278,7 @@ public class OccurrenceController {
                         List<String> labels = new ArrayList<String>(); // store sub-queries in this list
 
                         for (String token : tokens) {
-                            logger.debug("token: " + token);
+                            logger.info("token: " + token);
                             String[] tokenBits = StringUtils.split(token, ":", 2);
                             if (tokenBits.length == 2) {
                                 String fn = tokenBits[0];
@@ -1286,7 +1286,7 @@ public class OccurrenceController {
                                 String i18n = messageSource.getMessage("facet."+fn, null, fn, null);
 
                                 if (StringUtils.equals(fn, "species_guid")) {
-                                    fv = substituteLsidsForNames(fv);
+                                    fv = substituteLsidsForNames(fv.replaceAll("\"",""));
                                 } else if (StringUtils.equals(fn, "occurrence_year")) {
                                     fv = substituteYearsForDates(fv);
                                 } else if (StringUtils.equals(fn, "month")) {

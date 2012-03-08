@@ -469,22 +469,33 @@ img.optionsIcon {
 }
 
 #multipleFacets #dynamic {
-    text-align: left;
     text-align: center;
-    margin-right: 10px;
+    margin: 0 auto;
 }
 
 table#fullFacets {
-    width: inherit;
+    /*width: inherit;
     border-bottom: none;
     padding-right: 10px;
-    margin:10px auto;
+    margin:10px auto;*/
 }
 
 table#fullFacets td, table#fullFacets th {
-    border: 1px solid silver;
+    /*border: 1px solid silver;*/
 }
 
 ul#refinedFacets b {
     font-weight: normal;
+}
+
+.hidden {
+    display: none;
+}
+
+tr#loadMore td {
+    text-align: center;
+}
+
+div#submitFacets {
+    padding-top: 10px;
 }

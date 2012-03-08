@@ -135,7 +135,7 @@
 <div style="display:none"><!-- fancybox popup div -->
     <div id="multipleFacets">
         <h3>Refine your search</h3>
-        <div id="dynamic"></div>
+        <div id="dynamic" class="tableContainer"></div>
     </div>
 </div>
 <!--

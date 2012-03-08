@@ -11,6 +11,8 @@
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="facetLimit" scope="request"><ala:propertyLoader bundle="hubs" property="facetLimit"/></c:set>
+
 <c:set var="queryDisplay">
     <c:choose>
         <c:when test="${fn:contains(searchRequestParams.displayString,'matchedTaxon')}">${searchRequestParams.displayString}</c:when>
@@ -31,6 +33,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/redmond/jquery.ui.redmond.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.qtip.min.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/scrollableTable.css" type="text/css" media="screen" />
 
         <script type="text/javascript">
             // single global var for app conf settings
@@ -42,6 +45,7 @@
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
                 skin: "${skin}",
+                facetLimit: "${(not empty facetLimit) ? facetLimit : '50'}",
                 queryContext: "${queryContext}",
                 hasMultimedia: ${(not empty hasMultimedia) ? hasMultimedia : 'false'} // will be either true or false
             };
