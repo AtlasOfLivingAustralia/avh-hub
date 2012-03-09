@@ -45,6 +45,9 @@ biocacheRestService.apiKey=api-key-to-use
 # ozcam = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRXo3XKjtg4T4N424iVxgGlL70VqBQYc1gBTr4WFBUkfCJ6vp4OiN9yGQ
 googleKey=ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRXo3XKjtg4T4N424iVxgGlL70VqBQYc1gBTr4WFBUkfCJ6vp4OiN9yGQ
 
+# max facets to show in popups
+facetLimit=100
+
 # map of sensitive dataset URIs - NOTE sensitiveDataset.list must contain each key in sensitiveDatasets.XXX 
 sensitiveDataset.list=NSW_DECCW,NT_DNRETA,QLD_DERM,TAS_DPIPWE,VIC_DSE,WA_DEC,BIRDS_AUSTRALIA
 sensitiveDatasets.NSW_DECCW=http://collections.ala.org.au/public/show/dr487
