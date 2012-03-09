@@ -37,11 +37,12 @@
 
         <script type="text/javascript">
             // single global var for app conf settings
+            <c:set var="fqParams"><c:out escapeXml="false" value="${fn:join(paramValues.fq, '&fq=')}"/></c:set>
             var BC_CONF = {
                 contextPath: "${pageContext.request.contextPath}",
                 serverName: "${initParam.serverName}${pageContext.request.contextPath}",
                 searchString: "${fn:replace(searchResults.urlParameters, "\"", "\\\"")}", //  JSTL var can contain double quotes
-                facetQueries: 'fq=<c:out escapeXml="false" value="${fn:join(paramValues.fq, '&fq=')}"/>',
+                facetQueries: '${fqParams}',
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
                 skin: "${skin}",
