@@ -89,15 +89,21 @@ tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
     background: #FFF;
     /*border-bottom: none;*/
     /*border-left: none;*/
-    border-right: 1px solid #CCC;
-    border-bottom: 1px solid #DDD;
-    padding: 2px 3px 3px 4px;
+    /*border-right: 1px solid #CCC;*/
+    /*border-bottom: 1px solid #DDD;*/
+    /*padding: 2px 3px 3px 4px;*/
 }
 
 tbody.scrollContent tr.alternateRow td {
     background: #EEE;
     /*border-bottom: none;*/
     /*border-left: none;*/
+    /*border-right: 1px solid #CCC;*/
+    /*border-botom: 1px solid #DDD;*/
+    /*padding: 2px 3px 3px 4px;*/
+}
+
+tbody.scrollContent tr td {
     border-right: 1px solid #CCC;
     border-botom: 1px solid #DDD;
     padding: 2px 3px 3px 4px;
@@ -123,15 +129,20 @@ html>body thead.fixedHeader th + th + th {
 /* All other non-IE browsers.                                            */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 /* Must add up to total width above: 480 */
-html>body tbody.scrollContent td {
-    width: 20px;
+html>body tbody.scrollContent tr td {
+    width: 21px;
+    text-align: center;
+    padding: 2px 3px 3px 3px;
     /*border-left: 1px solid #CCC;*/
 }
 
-html>body tbody.scrollContent td + td {
+html>body tbody.scrollContent tr td + td {
     width: 380px;
+    text-align: left;
 }
 
-html>body tbody.scrollContent td + td + td {
-    width: 80px;
+html>body tbody.scrollContent tr td + td + td {
+    width: 78px;
+    padding-right:6px;
+    text-align: right;
 }

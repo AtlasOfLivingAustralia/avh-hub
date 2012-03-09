@@ -743,7 +743,7 @@ $(document).ready(function() {
             var hash = window.location.hash;
             window.location.href = window.location.pathname + BC_CONF.searchString + "&fq=" + fq + hash;
         } else {
-            alert("Please check at least one checkbox.");
+            alert("Please select at least one checkbox.");
         }
     });
 
@@ -812,7 +812,7 @@ function loadMultiFacets(facetName, displayName, fsort, foffset) {
     html += "<table class='compact scrollTable' id='fullFacets' data-facet='" + facet + "' data-label='" + displayName + "'>";
     html += "<thead class='fixedHeader'><tr class='tableHead'><th>&nbsp;</th><th id='indexCol'><a href='#index' class='fsort' data-sort='index' data-foffset='0'>" + displayName + "</a></th>";
     html += "<th><a href='#count' class='fsort' data-sort='count'>Count</a></th></tr></thead>";
-    html += "<tbody class='scrollContent'><tr id='loadingRow'><td></td><td colspan='2'>Loading...</td></tr></tbody>";
+    html += "<tbody class='scrollContent'><tr id='loadingRow'><td colspan='3'>Loading... <img src='" + BC_CONF.contextPath + "/static/images/loading.gif' alt='loading'/></td></tr></tbody>";
     //html += "<tfoot><tr id='submitFacets'><td colspan='3'><input type='submit' class='submit'/></form></td></tr></tfoot>"; // empty row that gets loaded via AJAX
     html += "</table><div id='submitFacets'><input type='submit' class='submit'/></div></form>";
     //html += "<input type='submit' class='submit'/></form>";
@@ -833,15 +833,18 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
             $("tr#loadingRow").remove(); // remove the loading message
             $("tr#loadMore").remove(); // remove the load more records link
             if (replaceFacets) {
+                // remove any facet values in table
                 $("table#fullFacets tr").not("tr.tableHead").remove();
             }
             $.each(data, function(i, el) {
                 if (el.count > 0) {
                     // surround with quotes: fq value if contains spaces but not for range queries
-                    var fqEsc = ((el.label.indexOf(" ") != -1 || el.label.indexOf("lsid") != -1) && el.label.indexOf("[") != 0) ? "\"" + el.label + "\"" : el.label; // .replace(/:/g,"\\:")
+                    var fqEsc = ((el.label.indexOf(" ") != -1 || el.label.indexOf("lsid") != -1) && el.label.indexOf("[") != 0)
+                        ? "\"" + el.label + "\""
+                        : el.label; // .replace(/:/g,"\\:")
                     var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + fqEsc;
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
-                    html += "<tr class='hidden " + rowType + "'><td style='text-align: right;'>" +
+                    html += "<tr class='" + rowType + "'><td>" +
                         "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
                         "'/></td><td><a href='" + link + "'> " + el.displayLabel + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
                 }
@@ -851,16 +854,16 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                 }
             });
             $("table#fullFacets tbody").append(html);
-            $("tr.hidden").fadeIn('slow');
+            //$("tr.hidden").fadeIn('slow');
 
             if (hasMoreFacets) {
                 var offsetInt = Number(foffset);
                 var flimitInt = Number(facetLimit);
-                var loadMore =  "<tr id='loadMore' class='hidden'><td colspan='3'><a href='#index' class='loadMoreVlaues' data-sort='" +
+                var loadMore =  "<tr id='loadMore' class=''><td colspan='3'><a href='#index' class='loadMoreVlaues' data-sort='" +
                     fsort + "' data-foffset='" + (offsetInt + flimitInt) +
                     "'>Show " + facetLimit + " more values</a></td></rt>";
                 $("table#fullFacets tbody").append(loadMore);
-                $("tr#loadMore").fadeIn('slow');
+                //$("tr#loadMore").fadeIn('slow');
             }
 
             var tableHeight = $("#fullFacets tbody").height();

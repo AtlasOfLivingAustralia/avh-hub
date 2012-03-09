@@ -499,3 +499,7 @@ tr#loadMore td {
 div#submitFacets {
     padding-top: 10px;
 }
+
+tr#loadingRow td {
+    width: 490px;
+}

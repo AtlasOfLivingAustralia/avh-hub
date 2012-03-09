@@ -926,7 +926,11 @@ public class OccurrenceController {
                     int i = 0;
                     for (FacetValueDTO fv : facetValues) {
                         if (names.size() > i) {
-                            fv.setDisplayLabel("<i>" + names.get(i) + "</i>");
+                            if (names.get(i) == null) {
+                                fv.setDisplayLabel("[scientific name not found]");
+                            } else {
+                                fv.setDisplayLabel("<i>" + names.get(i) + "</i>");
+                            }
                         }
                         i++;
                     }

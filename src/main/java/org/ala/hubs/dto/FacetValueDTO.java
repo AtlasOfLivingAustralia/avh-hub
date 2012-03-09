@@ -29,6 +29,11 @@ public class FacetValueDTO extends FieldResultDTO {
         super(value, count);
         this.displayLabel = value;
     }
+    
+    @Override
+    public String toString() {
+        return "{label="+this.getLabel()+"; displayLabel="+this.displayLabel+"; count="+this.getCount()+"}";
+    }
 
     public String getDisplayLabel() {
         return displayLabel;
