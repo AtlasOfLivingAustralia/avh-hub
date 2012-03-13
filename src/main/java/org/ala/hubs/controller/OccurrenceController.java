@@ -327,8 +327,8 @@ public class OccurrenceController {
             BindingResult result, 
             Model model,
             HttpServletRequest request) throws Exception {
-        logger.info("/search* TOP");
-        logger.info("requestParams.q = " + requestParams.getQ() + " || fq = " + StringUtils.join(requestParams.getFq(), "|"));
+        logger.debug("/search* TOP of method");
+        logger.debug("requestParams.q = " + requestParams.getQ() + " || fq = " + StringUtils.join(requestParams.getFq(), "|"));
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }

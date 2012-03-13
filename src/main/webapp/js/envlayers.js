@@ -6,9 +6,16 @@
 
 // envlayerObj => name, displayName, wmsLayerName
 var envLayers = [
-    ["BioClim_bio11","Temperature - coldest quarter mean (Terrestrial - Bio11)","ALA:BioClim_bio11"],
-    ["BioClim_bio12","Precipitation - annual (Terrestrial - bio12)","ALA:BioClim_bio12"],
-    ["BioClim_bio34","Moisture Index - warmest quarter mean (Terrestrial - Bio34)","ALA:BioClim_bio34"],
-    ["mean-oxygen_cars2006","Mean oxygen (Marine - CARS 2006)","ALA:mean-oxygen_cars2006"],
-    ["mean-temperature_cars2009a","Mean temperature (Marine - CARS 2009a)","ALA:mean-temperature_cars2009a"]
+    ["ibra_merged","Interim Biogeographic Regionalisation of Australia (IBRA)","ALA:ibra_merged"],
+    ["landuse","Catchment scale land use (ALUM secondary class)","ALA:landuse"],
+    ["rh2mean","Mean annual relative humidity (%)","ALA:rh2mean"],
+    ["rain_ann","Mean annual rainfall (mm)","ALA:rain_ann"],
+    ["maxtm","Mean annual maximum temperature (&deg;C)","ALA:maxtm"],
+    ["fire_frq","Fire frequency - number of fires between 1997-2008 for each cell","ALA:fire_frq"],
+    ["cw_state_poly","States (including coastal waters) - Australian Maritime Boundaries","ALA:cw_state_poly"],
+    ["substrate_geolrngeage","Geological age range (M years)","ALA:substrate_geolrngeage"],
+    ["lith_geologicalunitpolygons1m","Surface Geology of Australia (1:1,000,000 Scale, 2010 Edition)","ALA:lith_geologicalunitpolygons1m"],
+    ["aspect","Aspect (degree)","ALA:aspect"],
+    ["elevation","Elevation (metres above mean sea level)","ALA:elevation"],
+    ["landcover","Vegetation cover, based on integrated vegetation (class)","ALA:landcover"]
 ];

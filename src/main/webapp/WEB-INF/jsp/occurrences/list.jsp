@@ -329,6 +329,7 @@
                                 <div id="legendContent"></div>
                             </div>
                         </div>
+                        <div id='envLegend'></div>
                     </div><!-- end #mapwrapper -->
                     <div id="chartsWrapper" class="paneDiv">
                         <div id="charts"></div>
