@@ -707,7 +707,8 @@ $(document).ready(function() {
         },
         onComplete: function(links) {
             var link = links[0];
-            var facetName = link.id.replace("multi-","").replace("_uid","_name");
+            // substitute some facet names so sorting works
+            var facetName = link.id.replace("multi-","").replace("_uid","_name").replace("data_resource_name","data_resource");
             var displayName = $(link).data("displayname");
             loadMultiFacets(facetName, displayName, "count")
         }
