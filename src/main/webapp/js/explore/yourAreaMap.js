@@ -406,7 +406,7 @@ function loadNewGeoJsonData(data) {
         });
 
         var solrQuery;
-        if (taxa.indexOf("|") > 0) {
+        if ($.inArray("|", taxa) > 0) {
             var parts = taxa.split("|");
             var newParts = [];
             for (j in parts) {
