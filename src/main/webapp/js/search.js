@@ -93,7 +93,7 @@ function removeFacet(facet) {
             //alert("fq = "+thisFq + " || facet = "+facet);
             if (thisFq.indexOf(facet) != -1) {  // if(str1.indexOf(str2) != -1){
                 //alert("removing fq: "+fqList[i]);
-                fqList.splice(fqList.indexOf(fqList[i]),1);
+                fqList.splice($.inArray(fqList[i], fqList), 1);
             }
         }
     } else {
