@@ -1274,6 +1274,12 @@ public class OccurrenceController {
                     if (fqBits.length  == 2) {
                         String key = fqBits[0];
                         String value = fqBits[1];
+                        
+                        if ("data_hub_uid".equals(key)) {
+                            // exclude these...
+                            continue;
+                        }
+                        
                         ActiveFacet af = new ActiveFacet(key, value);
                         logger.debug("1. fq = " + key + " => " + value);
                         // if there are internal Boolean operators, iterate over sub queries
