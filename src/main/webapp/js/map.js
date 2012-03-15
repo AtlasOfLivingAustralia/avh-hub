@@ -589,7 +589,7 @@ var Maps = (function() {
                 var overlayWMS = new WMSTileLayer(envLayers[selLayer][1], "http://spatial.ala.org.au/geoserver/wms/reflect?", ["format=image/png","layers="+envLayers[selLayer][2]], wmsTileLoaded);
                 map.overlayMapTypes.setAt(0, overlayWMS);
                 // add legend
-                var imgHtml = "Legend<br/><img src='http://spatial.ala.org.au/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=9&LAYER=" +
+                var imgHtml = "Environmental Layer Legend<br/><img src='http://spatial.ala.org.au/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=9&LAYER=" +
                     envLayers[selLayer][0] + "' alt='legend for layer: " + envLayers[selLayer][1] + "'/>";
                 $("#envLegend").html(imgHtml);
             } else {

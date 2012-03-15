@@ -503,3 +503,8 @@ div#submitFacets {
 tr#loadingRow td {
     width: 490px;
 }
+
+div#content2 div#envLegend {
+    padding-top: 5px;
+    line-height: 2em;
+}
