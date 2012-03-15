@@ -81,4 +81,4 @@ site.displayName=OZCAM
 
 # skin-specific facets to exclude from search results (comma separated list)
 facets.exclude=
-facets.hide=
+facets.hide=data_hub_uid
