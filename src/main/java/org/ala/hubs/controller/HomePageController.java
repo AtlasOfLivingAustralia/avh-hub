@@ -99,12 +99,11 @@ public class HomePageController {
         model.addAttribute("typeStatus", serviceCache.getTypeStatuses());
         model.addAttribute("basisOfRecord", serviceCache.getBasisOfRecord());
         model.addAttribute("speciesGroups", serviceCache.getSpeciesGroups());
+        model.addAttribute("loanDestinations", serviceCache.getLoanDestination());
         model.addAttribute("states", serviceCache.getStates()); // extractTermsList(States.all())
         model.addAttribute("ibra", serviceCache.getIBRA());
         model.addAttribute("imcra", serviceCache.getIMCRA());
         model.addAttribute("countries", serviceCache.getCountries());
-        String[] botanicalGroups = {"trees","herbs","palms","moss","algae"};
-        model.addAttribute("botanicalGroups", botanicalGroups); // TODO get proper list of botanicalGroups
         String[] cultivationStatus = {"is cultivated", "is not cultivated"};
         model.addAttribute("cultivationStatus", cultivationStatus); // TODO get proper list of cultivationStatus
     }

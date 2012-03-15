@@ -45,7 +45,7 @@
             <!-- the tabs -->
             <ul class="css-tabs">
                 <li><a id="t1" href="#search">Search</a></li>
-                <li><a id="t2" href="#taxaUpload">Taxa Upload</a></li>
+                <li><a id="t2" href="#taxaUpload">Batch Taxon Search</a></li>
                 <li><a id="t3" href="#shapeFileUpload">Shape File Upload</a></li>
             </ul>
             <div class="css-panes">
@@ -85,7 +85,7 @@
                                             <c:forEach begin="1" end="4" step="1" var="i">
                                                 <c:set var="lsidParam" value="lsid_${i}"/>
                                                 <tr style="" id="taxon_row_${i}">
-                                                    <td class="label">Species/Taxon</td>
+                                                    <td class="label">Taxon Name</td>
                                                     <td>
                                                         <input type="text" name="taxonText" id="taxa_${i}" class="name_autocomplete" size="50" value="">
                                                         <input type="hidden" name="lsid" class="lsidInput" id="lsid_${i}" value=""/>
@@ -128,34 +128,17 @@
                                                 </td>
                                             </tr>
                                         </c:if>
-                                        <c:choose>
-                                            <c:when test="${skin == 'avh'}">
-                                                <tr>
-                                                    <td class="label">Botanical Group</td>
-                                                    <td>
-                                                        <select class="taxaGroup" name="botanical_group" id="botanical_group" onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
-                                                            <option value="">-- select a botanical group --</option>
-                                                            <c:forEach var="group" items="${botanicalGroups}">
-                                                                <option value="${group}">${group}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <tr>
-                                                    <td class="label">Species Group</td>
-                                                    <td>
-                                                        <select class="taxaGroup" name="species_group" id="species_group">
-                                                        <option value="">-- select a species group --</option>
-                                                        <c:forEach var="group" items="${speciesGroups}">
-                                                            <option value="${group}">${group}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                    </td>
-                                                </tr>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <tr>
+                                            <td class="label">Botanical Group</td>
+                                            <td>
+                                                <select class="taxaGroup" name="species_group" id="species_group">
+                                                    <option value="">-- select a botanical group --</option>
+                                                    <c:forEach var="group" items="${speciesGroups}">
+                                                        <option value="${group}">${group}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div><!-- end div.toggleSection -->
@@ -242,15 +225,15 @@
                                         <tr>
                                             <td class="label">Collector Name</td>
                                             <td>
-                                                 <input type="text" name="collector" id="collector" class="dataset" placeholder="not currently available, coming soon" readonly="readonly" value=""/>
+                                                 <input type="text" name="collector" id="collector" class="dataset" placeholder=""  value=""/>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <%--<tr>
                                             <td class="label">Collectors Number</td>
                                             <td>
-                                                 <input type="text" name="collectors_number" id="collectors_number" class="dataset" placeholder="not currently available, coming soon" readonly="readonly" value=""/>
+                                                 <input type="text" name="collectors_number" id="collectors_number" class="dataset" placeholder=""  value=""/>
                                             </td>
-                                        </tr>
+                                        </tr>--%>
                                         <tr>
                                             <td class="label">Collection Date</td>
                                             <td>
@@ -264,7 +247,7 @@
                                             <tr>
                                                 <td class="label">Cultivation Status</td>
                                                 <td>
-                                                     <select class="" name="cultivation_status" id="cultivation_status" onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
+                                                     <select class="" name="cultivation_status" id="cultivation_status">
                                                         <option value="">-- select a cultivation status --</option>
                                                         <c:forEach var="cs" items="${cultivationStatus}">
                                                             <option value="${cs}">${cs}</option>
@@ -328,18 +311,15 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label"><c:choose>
-                                                <c:when test="${skin == 'avh'}">Accession Number</c:when>
-                                                <c:otherwise>Catalogue Number</c:otherwise></c:choose>
-                                            </td>
+                                            <td class="label">Catalogue Number</td>
                                             <td>
-                                                 <input type="text" name="accession_number" id="accession_number" class="dataset" placeholder="" value=""/>
+                                                 <input type="text" name="catalog_number" id="catalog_number" class="dataset" placeholder="" value=""/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="label">Record Number</td>
                                             <td>
-                                                 <input type="text" name="record_number" id="record_number" class="dataset" placeholder="not currently available, coming soon" readonly="readonly" value=""/>
+                                                 <input type="text" name="record_number" id="record_number" class="dataset" placeholder=""  value=""/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -352,7 +332,7 @@
                                             <tr>
                                                 <td class="label">Duplicates held at</td>
                                                 <td>
-                                                     <select class="institution_uid collection_uid" name="dudplicates_institution_collection" id="dudplicates_institution_collection"
+                                                     <%--<select class="institution_uid collection_uid" name="duplicates_institution_collection" id="duplicates_institution_collection"
                                                              onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
                                                         <option value="">-- select an institution or collection --</option>
                                                         <c:forEach var="inst" items="${institutions}">
@@ -364,7 +344,6 @@
                                                                             <option value="${coll.key}">${fn:replace(fn:replace(coll.value, inst.value, ""), " - " ,"")} Collection</option>
                                                                         </c:when>
                                                                         <c:when test="${inst.key == 'in6' && fn:startsWith(coll.value, 'Australian National')}">
-                                                                            <%-- <option value="${coll.key}">${fn:replace(coll.value,"Australian National ", "")}</option> --%>
                                                                             <option value="${coll.key}">${coll.value}</option>
                                                                         </c:when>
                                                                         <c:when test="${fn:startsWith(coll.value, inst.value)}">
@@ -374,7 +353,8 @@
                                                                 </c:forEach>
                                                             </optgroup>
                                                         </c:forEach>
-                                                    </select>
+                                                    </select>--%>
+                                                     <input type="text" name="duplicate_inst" id="duplicate_inst" class="dataset" placeholder=""  value=""/>
                                                 </td>
                                             </tr>
                                         </c:if>
@@ -398,15 +378,27 @@
                                         <thead/>
                                         <tbody>
                                             <tr>
+                                                <td class="label">Borrowing Institution</td>
+                                                <td>
+                                                    <%--<input type="text" name="loan_destination" id="loan_destination" class="dataset" placeholder=""  value=""/>--%>
+                                                    <select class="loan_destination" name="loan_destination" id="basis_of_record">
+                                                        <option value="">-- select a Borrowing Institution --</option>
+                                                        <c:forEach var="ld" items="${loanDestinations}">
+                                                            <option value="${ld}">${ld}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td class="label">Loan Number</td>
                                                 <td>
-                                                    <input type="text" name="loan_number" id="loan_number" class="dataset" placeholder="not currently available, coming soon" readonly="readonly" value=""/>
+                                                    <input type="text" name="loan_number" id="loan_number" class="dataset" placeholder=""  value=""/>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="label">Exchange Number</td>
                                                 <td>
-                                                    <input type="text" name="exchange_number" id="exchange_number" class="dataset" placeholder="not currently available, coming soon" readonly="readonly" value=""/>
+                                                    <input type="text" name="exchange_number" id="exchange_number" class="dataset" placeholder="not currently searchable" readonly="readonly" value=""/>
                                                 </td>
                                             </tr>
                                         </tbody>

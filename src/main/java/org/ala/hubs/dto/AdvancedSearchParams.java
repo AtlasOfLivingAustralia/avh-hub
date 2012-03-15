@@ -48,6 +48,8 @@ public class AdvancedSearchParams {
     protected String record_number = "";
     protected String collector = "";
     protected String collectors_number = "";
+    protected String loan_destination = "";
+    protected String loan_number = "";
     protected String start_date = "";
     protected String end_date = "";
     protected String last_load_start = "";
@@ -77,7 +79,9 @@ public class AdvancedSearchParams {
         if (!basis_of_record.isEmpty()) q.append(" +basis_of_record:").append(basis_of_record);
         if (!catalogue_number.isEmpty()) q.append(" +catalogue_number:").append(catalogue_number);
         if (!record_number.isEmpty()) q.append(" +record_number:").append(record_number);
-        if (!collector.isEmpty()) q.append(" +collector:").append(collector);
+        if (!collector.isEmpty()) q.append(" +collector:").append(quoteText(collector));
+        if (!loan_destination.isEmpty()) q.append(" +loan_destination:").append(loan_destination);
+        if (!loan_number.isEmpty()) q.append(" +loan_number:").append(loan_number);
         //if (!collectors_number.isEmpty()) q.append(" +collector:").append(collectors_number); // TODO field in SOLR not active
         
         ArrayList<String> lsids = new ArrayList<String>();
@@ -524,5 +528,21 @@ public class AdvancedSearchParams {
 
     public void setTaxa(String taxa) {
         this.taxa = taxa;
+    }
+
+    public String getLoan_destination() {
+        return loan_destination;
+    }
+
+    public void setLoan_destination(String loan_destination) {
+        this.loan_destination = loan_destination;
+    }
+
+    public String getLoan_number() {
+        return loan_number;
+    }
+
+    public void setLoan_number(String loan_number) {
+        this.loan_number = loan_number;
     }
 }

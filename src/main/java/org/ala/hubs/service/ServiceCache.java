@@ -25,6 +25,7 @@ public class ServiceCache {
     protected List<String> species_group = new ArrayList<String>();
     protected List<String> ibra = new ArrayList<String>();
     protected List<String> imcra = new ArrayList<String>();
+    protected List<String> loan_destination = new ArrayList<String>();
 
     /** Spring injected RestTemplate object */
     @Inject
@@ -76,6 +77,11 @@ public class ServiceCache {
         return imcra;
     }
 
+    public List<String> getLoanDestination(){
+        checkCacheAge();
+        return loan_destination;
+    }
+
       /**
      * Check age of cache and retrieve new values from biocache webservices if needed.
      */
@@ -97,7 +103,7 @@ public class ServiceCache {
 
         logger.info("Updating collection uid cache...");
         SearchRequestParams srp = new SearchRequestParams();
-        srp.setFacets(new String[]{"basis_of_record","type_status","country", "kingdom","species_group", "state", "ibra", "imcra"});
+        srp.setFacets(new String[]{"basis_of_record","type_status","country", "kingdom","species_group", "state", "ibra", "imcra", "loan_destination"});
         srp.setFlimit(-1);
         srp.setQ("*:*");
         srp.setPageSize(0);
