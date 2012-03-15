@@ -843,11 +843,15 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                     var fqEsc = ((el.label.indexOf(" ") != -1 || el.label.indexOf("lsid") != -1) && el.label.indexOf("[") != 0)
                         ? "\"" + el.label + "\""
                         : el.label; // .replace(/:/g,"\\:")
+                    var label = el.displayLabel;
+                    if (label.indexOf("@") != -1) {
+                        label = label.substring(0,label.indexOf("@"));
+                    }
                     var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + fqEsc;
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
                     html += "<tr class='" + rowType + "'><td>" +
                         "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
-                        "'/></td><td><a href='" + link + "'> " + el.displayLabel + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
+                        "'/></td><td><a href='" + link + "'> " + label + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
                 }
                 if (i == facetLimit - 1) {
                     //console.log("got to end of page of facets: " + i);

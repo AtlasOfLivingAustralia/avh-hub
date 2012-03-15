@@ -1301,6 +1301,8 @@ public class OccurrenceController {
                                     fv = substituteYearsForDates(fv);
                                 } else if (StringUtils.equals(fn, "month")) {
                                     fv = substituteMonthNamesForNums(fv);
+                                } else if (StringUtils.equals(fn, "collector") && StringUtils.contains(fv, "@")) {
+                                    fv = StringUtils.substringBefore(fv, "@"); // hide email addresses
                                 } else {
                                     fv = substituteCollectoryNames(fv);
                                 }
