@@ -63,8 +63,8 @@
                 var reason = $("#reason").val();
                 if(typeof reason == "undefined")
                     reason = "";
-                downloadUrl = downloadUrl + "&type=&email="+$("#email").val()+
-                        "&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
+                downloadUrl = downloadUrl + "&type=&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
+                        $("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
                 //alert("downloadUrl = " + downloadUrl);
                 window.location.href = downloadUrl;
                 notifyDownloadStarted();
@@ -72,7 +72,8 @@
             // catch checklist download submit button
             $("#downloadCheckListSubmitButton").click(function(e) {
                 e.preventDefault();
-                var downloadUrl = $("input#downloadChecklistUrl").val().replace(/\\ /g, " ") + "&facets=species_guid&lookup=true&file="+$("#filename").val();
+                var downloadUrl = $("input#downloadChecklistUrl").val().replace(/\\ /g, " ")+"&facets=species_guid&lookup=true&file="+
+                       $("#filename").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
                 //alert("downloadUrl = " + downloadUrl);
                 window.location.href = downloadUrl;
                 notifyDownloadStarted();
@@ -81,7 +82,8 @@
             // catch checklist download submit button
             $("#downloadFieldGuideSubmitButton").click(function(e) {
                 e.preventDefault();
-                var downloadUrl = $("input#downloadFieldGuideUrl").val().replace(/\\ /g, " ") + "&facets=species_guid";
+                var downloadUrl = $("input#downloadFieldGuideUrl").val().replace(/\\ /g, " ")+"&facets=species_guid"+"&sourceTypeId="+
+                        $("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
                 window.open(downloadUrl);
                 notifyDownloadStarted();
             });
