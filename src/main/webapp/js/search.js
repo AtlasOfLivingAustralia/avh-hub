@@ -843,6 +843,9 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                 }
             });
             $("table#fullFacets tbody").append(html);
+            // Fix some border issues
+            $("table#fullFacets tr:last td").css("border-bottom", "1px solid #CCCCCC");
+            $("table#fullFacets td:last-child, table#fullFacets th:last-child").css("border-right", "none");
             //$("tr.hidden").fadeIn('slow');
 
             if (hasMoreFacets) {
