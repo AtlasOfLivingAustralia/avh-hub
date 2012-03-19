@@ -49,6 +49,7 @@ public class AdvancedSearchParams {
     protected String collector = "";
     protected String collectors_number = "";
     protected String loan_destination = "";
+    protected String duplicate_inst = "";
     protected String loan_number = "";
     protected String start_date = "";
     protected String end_date = "";
@@ -82,6 +83,7 @@ public class AdvancedSearchParams {
         if (!collector.isEmpty()) q.append(" +collector:").append(quoteText(collector));
         if (!loan_destination.isEmpty()) q.append(" +loan_destination:").append(loan_destination);
         if (!loan_number.isEmpty()) q.append(" +loan_number:").append(loan_number);
+        if (!duplicate_inst.isEmpty()) q.append(" +duplicate_inst:").append(duplicate_inst);
         //if (!collectors_number.isEmpty()) q.append(" +collector:").append(collectors_number); // TODO field in SOLR not active
         
         ArrayList<String> lsids = new ArrayList<String>();
@@ -544,5 +546,13 @@ public class AdvancedSearchParams {
 
     public void setLoan_number(String loan_number) {
         this.loan_number = loan_number;
+    }
+
+    public String getDuplicate_inst() {
+        return duplicate_inst;
+    }
+
+    public void setDuplicate_inst(String duplicate_inst) {
+        this.duplicate_inst = duplicate_inst;
     }
 }

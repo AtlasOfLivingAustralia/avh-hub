@@ -41,10 +41,7 @@ import org.ala.hubs.dto.ActiveFacet;
 import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.dto.FacetValueDTO;
 import org.ala.hubs.dto.FieldGuideDTO;
-import org.ala.hubs.service.BieService;
-import org.ala.hubs.service.BiocacheService;
-import org.ala.hubs.service.CollectoryUidCache;
-import org.ala.hubs.service.GazetteerCache;
+import org.ala.hubs.service.*;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -101,20 +98,26 @@ public class OccurrenceController {
     protected CollectoryUidCache collectoryUidCache;
     @Inject
     private AbstractMessageSource messageSource;
+    @Inject
+    protected LoggerService loggerService;
 
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
 
-    // fields injected from properties file
+    // fields injected from properties file (via <context:property-placeholder... />)
     @Value("${sensitiveDataset.list}")
     String sensitiveDatasets = null;
     @Value("${facets.exclude}")
     String facetsExclude = null;
+    @Value("${facets.include}")
+    String facetsInclude = null;
     @Value("${facets.hide}")
     String facetsHide = null;
     @Value("${biocacheRestService.biocacheUriPrefix}")
     String biocacheUriPrefix = null;
+    @Value("${downloads.extra}")
+    String downloadExtraFields = null;
     
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
@@ -1464,6 +1467,9 @@ public class OccurrenceController {
         model.addAttribute("institutionCodes", institutionMap);
         model.addAttribute("dataResourceCodes", dataResourceMap);
         model.addAttribute("defaultFacets", filterFacets(biocacheService.getDefaultFacets()));
+        model.addAttribute("downloadExtraFields", downloadExtraFields); // String[]
+        model.addAttribute("LoggerSources", loggerService.getSources());
+        model.addAttribute("LoggerReason", loggerService.getReasons());
     }
 
     /**
@@ -1474,8 +1480,14 @@ public class OccurrenceController {
      */
     private LinkedHashMap<String, Boolean> filterFacets(List<String> defaultFacets) {
         LinkedHashMap<String, Boolean> facetsMap = new LinkedHashMap<String, Boolean>();
+        ArrayList<String> allFacets = new ArrayList<String>(defaultFacets); // needed for addAll()
         String[] excludeArray = null;
         String[] hideArray = null;
+
+        if (StringUtils.isNotEmpty(facetsInclude)) {
+            // possible to get duplicates if added to default facets but hashmap should combine them back to one
+            allFacets.addAll(Arrays.asList(StringUtils.split(facetsInclude, ",")));
+        }
 
         if (StringUtils.isNotEmpty(facetsExclude)) {
             excludeArray = StringUtils.split(facetsExclude, ",");
@@ -1485,7 +1497,7 @@ public class OccurrenceController {
             hideArray = StringUtils.split(facetsHide, ",");
         }
 
-        for (String facet : defaultFacets) {
+        for (String facet : allFacets) {
             if (StringUtils.indexOfAny(facet, excludeArray) < 0) {
                 // add facet if its not in exclude list (match >= 0 && null or no match = -1)
                 //facetsList.add(facet);

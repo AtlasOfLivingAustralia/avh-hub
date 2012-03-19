@@ -100,12 +100,13 @@ public class HomePageController {
         model.addAttribute("basisOfRecord", serviceCache.getBasisOfRecord());
         model.addAttribute("speciesGroups", serviceCache.getSpeciesGroups());
         model.addAttribute("loanDestinations", serviceCache.getLoanDestination());
+        model.addAttribute("cultivationStatus", serviceCache.getEstablishment_means());
         model.addAttribute("states", serviceCache.getStates()); // extractTermsList(States.all())
         model.addAttribute("ibra", serviceCache.getIBRA());
         model.addAttribute("imcra", serviceCache.getIMCRA());
         model.addAttribute("countries", serviceCache.getCountries());
-        String[] cultivationStatus = {"is cultivated", "is not cultivated"};
-        model.addAttribute("cultivationStatus", cultivationStatus); // TODO get proper list of cultivationStatus
+        //String[] cultivationStatus = {"is cultivated", "is not cultivated"};
+        //model.addAttribute("cultivationStatus", cultivationStatus); // TODO get proper list of cultivationStatus
     }
 
     /**

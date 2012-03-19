@@ -308,37 +308,6 @@ $(document).ready(function() {
         'margin': 10
     });
 
-    // catch download submit button
-    $("#downloadSubmitButton").click(function(e) {
-        e.preventDefault();
-        var downloadUrl = $("input#downloadUrl").val().replace(/\\ /g, " ");
-        var reason = $("#reason").val();
-        if(typeof reason == "undefined")
-            reason = "";
-        downloadUrl = downloadUrl + "&type=&email="+$("#email").val()+"&reason="+encodeURIComponent(reason)+"&file="+$("#filename").val();
-        //alert("downloadUrl = " + downloadUrl);
-        window.location.href = downloadUrl;
-        $.fancybox.close();
-    });
-    // catch checklist download submit button
-    $("#downloadCheckListSubmitButton").click(function(e) {
-        e.preventDefault();
-        var downloadUrl = $("input#downloadChecklistUrl").val().replace(/\\ /g, " ") + "&facets=species_guid&lookup=true&file="+$("#filename").val();
-        //alert("downloadUrl = " + downloadUrl);
-        window.location.href = downloadUrl;
-        $.fancybox.close();
-    });
-
-    // catch checklist download submit button
-    $("#downloadFieldGuideSubmitButton").click(function(e) {
-        e.preventDefault();
-        var downloadUrl = $("input#downloadFieldGuideUrl").val().replace(/\\ /g, " ") + "&facets=species_guid";
-
-        window.open(downloadUrl);
-
-        $.fancybox.close();
-    });
-
     // set height of resultsOuter div to solrResults height
     var pageLength = $("select#per-page").val() || 20;
     var solrHeight = $("div.solrResults").height() + (2 * pageLength) + 70;
@@ -772,11 +741,26 @@ $(document).ready(function() {
         loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, true);
     });
 
-    // loadMoreVlaues
-    $("a.loadMoreVlaues").live("click", function(e) {
+    // loadMoreValues (legacy - now handled by inview)
+    $("a.loadMoreValues").live("click", function(e) {
         e.preventDefault();
-        var fsort = $(this).data('sort');
-        var foffset = $(this).data('foffset');
+        var link = $(this);
+        var fsort = link.data('sort');
+        var foffset = link.data('foffset');
+        var table = $("table#fullFacets");
+        //console.log("table 2", table);
+        var facetName = $(table).data('facet');
+        var displayName = $(table).data('label');
+        //loadMultiFacets(facetName, displayName, criteria, foffset);
+        loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, false);
+    });
+
+    // Inview trigger to load more values when tr comes into view
+    $("tr#loadMore").live("inview", function() {
+        var link = $(this).find("a.loadMoreValues");
+        console.log("inview", link);
+        var fsort = link.data('sort');
+        var foffset = link.data('foffset');
         var table = $("table#fullFacets");
         //console.log("table 2", table);
         var facetName = $(table).data('facet');
@@ -864,9 +848,9 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
             if (hasMoreFacets) {
                 var offsetInt = Number(foffset);
                 var flimitInt = Number(facetLimit);
-                var loadMore =  "<tr id='loadMore' class=''><td colspan='3'><a href='#index' class='loadMoreVlaues' data-sort='" +
+                var loadMore =  "<tr id='loadMore' class=''><td colspan='3'><a href='#index' class='loadMoreValues' data-sort='" +
                     fsort + "' data-foffset='" + (offsetInt + flimitInt) +
-                    "'>Show " + facetLimit + " more values</a></td></rt>";
+                    "'>Loading " + facetLimit + " more values...</a></td></rt>";
                 $("table#fullFacets tbody").append(loadMore);
                 //$("tr#loadMore").fadeIn('slow');
             }
