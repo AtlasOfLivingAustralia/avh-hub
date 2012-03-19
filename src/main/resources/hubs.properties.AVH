@@ -81,7 +81,8 @@ facetLimit=100
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
 site.displayName=Australia's Virtual Herbarium
 
-# skin-specific facets to exclude from search results (comma separated list)
+# skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=basis_of_record
+facets.include=establishment_means
 facets.hide=data_resource_uid,institution_uid,raw_state_conservation
 downloads.extra=collectorFieldNumber,cultivated,duplicates,duplicatesOriginalInstitutionID,duplicatesOriginalUnitID,loanIdentifier,loanSequenceNumber,loanDestination,loanForBotanist,loanDate,loanReturnDate,phenology,preferredFlag,scientificNameWithoutAuthor,identifierRole,typeStatusQualifier,typifiedName,verbatimDateIdentified,verifier,verificationDate,verificationNotes
