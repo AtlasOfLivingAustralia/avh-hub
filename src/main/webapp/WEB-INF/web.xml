@@ -58,7 +58,7 @@
 
     <context-param>
         <param-name>authenticateOnlyIfLoggedInFilterPattern</param-name>
-        <param-value>/occurrences/search,/occurrences/.*,/query,/</param-value>
+        <param-value>/occurrences/.*,/explore/your-area,/query,/</param-value>
     </context-param>
 
     <!-- CAS Authentication Service filters -->
