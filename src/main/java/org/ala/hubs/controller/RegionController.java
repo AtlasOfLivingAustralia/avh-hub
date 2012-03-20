@@ -21,7 +21,9 @@ package org.ala.hubs.controller;
 import com.maxmind.geoip.Location;
 import com.maxmind.geoip.LookupService;
 import org.ala.biocache.util.TaxaGroup;
+import org.ala.hubs.service.LoggerService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +45,10 @@ import java.util.HashMap;
 public class RegionController {
 
 	private final static Logger logger = Logger.getLogger(RegionController.class);
-
+    @Inject
+    protected LoggerService loggerService;
+    @Value("${downloads.extra}")
+    String downloadExtraFields = null;
     /** Name of view for site home page */
     private String MY_AREA = "regions/myArea";
     private String speciesPageUrl = "http://bie.ala.org.au/species/";
@@ -97,6 +102,10 @@ public class RegionController {
         model.addAttribute("radius", radius);
         model.addAttribute("zoom", radiusToZoomLevelMap.get(radius));
         model.addAttribute("taxaGroups", TaxaGroup.values());
+        // Downloads deps
+        model.addAttribute("LoggerSources", loggerService.getSources());
+        model.addAttribute("LoggerReason", loggerService.getReasons());
+        model.addAttribute("downloadExtraFields", downloadExtraFields);
 
         // TODO: get from properties file or load via Spring
         model.addAttribute("speciesPageUrl", speciesPageUrl);

@@ -113,7 +113,7 @@
                     </div>
                     
                     <div style="display:none">
-                        <jsp:include page="downloadDiv.jsp"/>
+                        <jsp:include page="../downloadDiv.jsp"/>
                     </div>
                 </div>
                 <ul class="css-tabs">

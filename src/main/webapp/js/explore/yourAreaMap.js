@@ -89,8 +89,6 @@ $(document).ready(function() {
         }
     );
 
-    
-
     // register click event on download button
     $("button#download").click(
         function(e){
@@ -98,6 +96,20 @@ $(document).ready(function() {
             $("#dialog-confirm").dialog('open');
         }
     );
+
+    // download link
+    $("#downloadLink").fancybox({
+        'hideOnContentClick' : false,
+        'hideOnOverlayClick': true,
+        'showCloseButton': true,
+        'titleShow' : false,
+        'autoDimensions' : false,
+        'width': '500',
+        'height': '300',
+        'padding': 15,
+        'margin': 10
+    });
+
 
     // Configure Dialog box for Download button (JQuery UI)
     $("#dialog-confirm").dialog({
@@ -157,7 +169,7 @@ $(document).ready(function() {
         e.preventDefault();
         //var params = "q=taxon_name:*|"+$('#latitude').val()+"|"+$('#longitude').val()+"|"+$('#radius').val();
         var params = "q=*:*&lat="+$('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val();
-        document.location.href = contextPath +'/occurrences/searchByArea?' + params;
+        document.location.href = contextPath +'/occurrences/search?' + params;
     });
 
     // Tooltip for matched location

@@ -224,11 +224,17 @@ div#download {
 /*    display: none;*/
     font-size: 13px;
 }
+#downloadForm {
+    text-align: left;
+}
 #downloadForm label {
-    width: 85px;
+    width: 35%;
     display: inline-block;
+    text-align: right;
+    padding-right: 10px;
     color: #444;
 }
+
 #download {
     line-height: 1.4em;
 }

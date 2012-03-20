@@ -1252,9 +1252,15 @@ li.showHide a {
 #header #breadcrumb {
     width: 750px;
 }
+
+#downloadForm {
+    text-align: left;
+}
 #downloadForm label {
-    width: 75px;
+    width: 35%;
     display: inline-block;
+    text-align: right;
+    padding-right: 10px;
 }
 
 .originalValue { padding-left:10px; font-style: italic; font-size: 0.9em; }

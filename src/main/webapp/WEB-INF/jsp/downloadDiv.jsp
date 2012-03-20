@@ -7,19 +7,19 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div id="download">
     <p id="termsOfUseDownload">
-        By downloading this content you are agreeing to use it in accordance with the Atlas
-        <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">Terms of Use</a>
-        and individual <a href=" http://www.ala.org.au/support/faq/#q29">Data Provider Terms</a>.
+        By downloading this content you are agreeing to use it in accordance with the Atlas of Living Australia
+        <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">Terms of Use</a>.
         <br/><br/>
         Please provide the following <b>optional</b> details before downloading:
     </p>
     <form id="downloadForm">
-        <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download<c:out value="${searchResults.urlParameters}"/>"/>
-        <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download<c:out value="${searchResults.urlParameters}"/>"/>
-        <input type="hidden" name="url" id="downloadFieldGuideUrl" value="${pageContext.request.contextPath}/occurrences/fieldguide/download<c:out value="${searchResults.urlParameters}"/>"/>
-        <c:if test="${not empty downloadExtraFields}">
+        <input type="hidden" name="searchParams" id="searchParams" value="<c:out value="${searchResults.urlParameters}"/>"/>
+        <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download"/>
+        <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download"/>
+        <input type="hidden" name="url" id="downloadFieldGuideUrl" value="${pageContext.request.contextPath}/occurrences/fieldguide/download"/>
+
             <input type="hidden" name="extra" id="extraFields" value="${downloadExtraFields}"/>
-        </c:if>
+
         <fieldset>
             <p><label for="email">Email</label>
                 <input type="text" name="email" id="email" value="${pageContext.request.remoteUser}" size="30"  />
@@ -40,6 +40,7 @@
                     <c:if test="${fn:toUpperCase(skin) == it.name}">${it.id}</c:if>
                 </c:forEach>
             </c:set>
+            <br/>
             <input type="hidden" name="sourceTypeId" id="sourceTypeId" value="${sourceId}"/>
             <input type="submit" value="Download All Records" id="downloadSubmitButton"/>&nbsp;
             <input type="submit" value="Download Species Checklist" id="downloadCheckListSubmitButton"/>&nbsp;
@@ -57,13 +58,10 @@
 
         $(document).ready(function() {
             // catch download submit button
+
             $("#downloadSubmitButton").click(function(e) {
                 e.preventDefault();
-                var downloadUrl = $("input#downloadUrl").val().replace(/\\ /g, " ");
-                var reason = $("#reason").val();
-                if(typeof reason == "undefined")
-                    reason = "";
-                downloadUrl = downloadUrl + "&type=&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
+                var downloadUrl = generateDownloadPrefix($(":input#downloadUrl"))+"&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
                         $("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
                 //alert("downloadUrl = " + downloadUrl);
                 window.location.href = downloadUrl;
@@ -72,7 +70,7 @@
             // catch checklist download submit button
             $("#downloadCheckListSubmitButton").click(function(e) {
                 e.preventDefault();
-                var downloadUrl = $("input#downloadChecklistUrl").val().replace(/\\ /g, " ")+"&facets=species_guid&lookup=true&file="+
+                downloadUrl = generateDownloadPrefix($("input#downloadChecklistUrl").val())+"&facets=species_guid&lookup=true&file="+
                        $("#filename").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
                 //alert("downloadUrl = " + downloadUrl);
                 window.location.href = downloadUrl;
@@ -82,12 +80,25 @@
             // catch checklist download submit button
             $("#downloadFieldGuideSubmitButton").click(function(e) {
                 e.preventDefault();
-                var downloadUrl = $("input#downloadFieldGuideUrl").val().replace(/\\ /g, " ")+"&facets=species_guid"+"&sourceTypeId="+
+                var downloadUrl = generateDownloadPrefix($("input#downloadFieldGuideUrl").val())+"&facets=species_guid"+"&sourceTypeId="+
                         $("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
                 window.open(downloadUrl);
                 notifyDownloadStarted();
             });
         });
+
+        function generateDownloadPrefix(downloadUrlPrefix) {
+            downloadUrlPrefix = downloadUrlPrefix.replace(/\\ /g, " ");
+            var searchParams = $(":input#searchParams").val();
+            if (searchParams) {
+                downloadUrlPrefix += searchParams;
+            } else {
+                // EYA page is JS driven
+                downloadUrlPrefix += "?q=*:*&lat="+$('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val();
+            }
+
+            return downloadUrlPrefix;
+        }
 
         function notifyDownloadStarted() {
             $("#statusMsg").html("Download has commenced");
