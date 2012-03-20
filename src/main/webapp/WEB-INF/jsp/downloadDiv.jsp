@@ -61,7 +61,7 @@
 
             $("#downloadSubmitButton").click(function(e) {
                 e.preventDefault();
-                var downloadUrl = generateDownloadPrefix($(":input#downloadUrl"))+"&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
+                var downloadUrl = generateDownloadPrefix($(":input#downloadUrl").val())+"&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
                         $("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
                 //alert("downloadUrl = " + downloadUrl);
                 window.location.href = downloadUrl;
