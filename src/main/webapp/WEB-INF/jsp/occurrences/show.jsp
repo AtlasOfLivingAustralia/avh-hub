@@ -21,6 +21,8 @@
 <c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
 <c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
+<c:set var="biocacheService" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+
 <%--<c:set var="sensitiveDatasets" scope="request"><ala:propertyLoader bundle="hubs" property="sensitiveDatasets.NSW_DECCW"/></c:set>--%>
 <c:set var="scientificName">
     <c:choose>
@@ -46,6 +48,8 @@
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/record.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
+        <script type="text/javascript" language="javascript" src="${pageContext.request.contextPath}/static/js/charts2.js"></script>
+        <script type="text/javascript" language="javascript" src="http://collections.ala.org.au/js/datadumper.js"></script>
         <script type="text/javascript">
             /**
              * Delete a user assertion
@@ -81,6 +85,7 @@
              * JQuery on document ready callback
              */
             $(document).ready(function() {
+
                 // add assertion form display
                 $("#assertionButton, #verifyButton").fancybox({
                     //'href': '#loginOrFlag',
@@ -286,7 +291,35 @@
             return text.replace(exp,"<a href='$1'>$1</a>");
         }
 
+        function renderOutlierCharts(data){
+           var query = 'lsid:"urn:lsid:biodiversity.org.au:afd.taxon:0c139726-2add-4abe-a714-df67b1d4b814"';
+           $.each(data, function() {
+               console.log("Render charts for LAYER: " + this.layerId +", outlier values: " +  this.outlierValues);
+               drawChart(this.layerId, query, this.layerId+'Outliers', this.outlierValues, this.recordLayerValue, false);
+               drawChart(this.layerId, query, this.layerId+'OutliersCumm', this.outlierValues, this.recordLayerValue, true);
+           })
+        }
+
+        function drawChart(facetName, biocacheQuery, chartName, outlierValues, valueForThisRecord, cummalative){
+
+            var facetChartOptions = { error: "badQuery", legend: 'right'}
+            facetChartOptions.query = biocacheQuery;
+            facetChartOptions.charts = [chartName];
+            facetChartOptions[facetName] = {chartType: 'scatter'};
+
+            //additional config
+            facetChartOptions.cummalative = cummalative;
+            facetChartOptions.outlierValues = outlierValues;    //retrieved from WS
+            facetChartOptions.highlightedValue = valueForThisRecord;           //retrieved from the record
+
+            console.log('Start the drawing...' + chartName);
+            facetChartGroup.loadAndDrawFacetCharts(facetChartOptions);
+            console.log('Finished the drawing...' + chartName);
+        }
+
+        google.load("visualization", "1", {packages:["corechart"]});
         </script>
+
     </head>
     <body>
         <spring:url var="json" value="/occurrences/${record.raw.uuid}.json" />
@@ -448,6 +481,7 @@
                 </c:if>
                 <c:if test="${not empty record.processed.location.decimalLatitude && not empty record.processed.location.decimalLongitude}">
                     <div class="sidebar">
+
                         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
                         <script type="text/javascript">
                             $(document).ready(function() {
@@ -476,7 +510,7 @@
 
                                 <c:if test="${not empty record.processed.location.coordinateUncertaintyInMeters}">
                                         var radius = parseInt('${record.processed.location.coordinateUncertaintyInMeters}');
-                                    
+
                                         if (!isNaN(radius)) {
                                             // Add a Circle overlay to the map.
                                             circle = new google.maps.Circle({
@@ -1269,6 +1303,62 @@
                         </alatag:occurrenceTableRow>  
                     </table>
                 </div>
+            </div><!-- end of content2 -->
+
+            <style type="text/css">
+                #outlierFeedback { float:left; clear:both; padding-left:10px;margin-top:30px; width:100%; }
+                #outlierFeedback h3 {color: #718804; }
+                #outlierFeedback #outlierInformation { margin-bottom:20px; }
+            </style>
+
+
+            <div id="outlierFeedback">
+                <c:if test="${not empty record.processed.occurrence.outlierForLayers}">
+                    <div id="outlierInformation">
+                        <h2>Outlier information</h2>
+                        <p> This record has been detected as an outlier using the JackKnife algorithm for the following layers:</p>
+                        <ul>
+                        <c:forEach items="${metadataForOutlierLayers}" var="layerMetadata">
+                            <li>
+                                <!--LayerID: ${layerMetadata['id']}<br/> -->
+                                <a href="http://spatial.ala.org.au/layers/more/${layerMetadata['name']}">${layerMetadata['displayname']} - ${layerMetadata['source']}</a><br/>
+                                Notes: ${layerMetadata['notes']}<br/>
+                                Scale: ${layerMetadata['scale']}
+                            </li>
+                        </c:forEach>
+                        </ul>
+                    </div>
+                    <div id="charts"></div>
+                </c:if>
+
+                <div id="outlierInformation">
+                    <c:if test="${not empty contextualSampleInfo}">
+                    <h3>Addtional political boundaries information</h3>
+                    <table class="layerIntersections" style="border-bottom:none;">
+                        <tbody>
+                        <c:forEach items="${contextualSampleInfo}" var="sample">
+                            <alatag:occurrenceTableRow annotate="false" section="contextual"
+                                                   fieldCode="${sample.layerName}" fieldName="${sample.layerDisplayName}">
+                                ${sample.value}
+                            </alatag:occurrenceTableRow>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                    </c:if>
+
+                    <c:if test="${not empty environmentalSampleInfo}">
+                    <h3>Environmental sampling for this location</h3>
+                    <table class="layerIntersections" style="border-bottom:none;">
+                        <tbody>
+                        <c:forEach items="${environmentalSampleInfo}" var="sample">
+                        <alatag:occurrenceTableRow annotate="false" section="contextual" fieldCode="${sample.layerName}"
+                                                   fieldName="${sample.layerDisplayName}">${sample.value}
+                        </alatag:occurrenceTableRow>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                    </c:if>
+                </div>
             </div>
             
             <div style="display:none;clear:both;">
@@ -1313,6 +1403,8 @@
                 <p>The requested record ID "${uuid}" was not found</p>
             </div>
         </c:if>
+
+        <script type="text/javascript" language="javascript" src="${biocacheService}/outlier/record/${uuid}.json?callback=renderOutlierCharts"/>
     </body>
 </html>
 

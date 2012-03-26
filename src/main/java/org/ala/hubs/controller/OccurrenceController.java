@@ -41,6 +41,7 @@ import org.ala.hubs.dto.ActiveFacet;
 import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.dto.FacetValueDTO;
 import org.ala.hubs.dto.FieldGuideDTO;
+import org.ala.hubs.dto.SampleDTO;
 import org.ala.hubs.service.*;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -97,10 +98,11 @@ public class OccurrenceController {
     @Inject
     protected CollectoryUidCache collectoryUidCache;
     @Inject
+    protected LayerMetadataCache layerMetadataCache;
+    @Inject
     private AbstractMessageSource messageSource;
     @Inject
-    protected LoggerService loggerService;
-
+    protected LoggerService loggerService;    
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
@@ -122,6 +124,7 @@ public class OccurrenceController {
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
+    private final String RECORD_OUTLIERINFO = "occurrences/outlierInfo";
     private final String FIELDGUIDE_ERROR = "error/fieldguideGeneration";
     private final String RECORD_MAP = "occurrences/map";
     private final String ANNOTATE_EDITOR = "occurrences/annotationEditor";
@@ -167,6 +170,7 @@ public class OccurrenceController {
     public String refreshCaches() throws Exception {
         collectoryUidCache.updateCache();
         collectionsCache.updateCache();
+        layerMetadataCache.updateCache();
         init(); // update LinkedHashMap cached versions
         return null;
     }
@@ -640,6 +644,53 @@ public class OccurrenceController {
 		return RECORD_LIST;
 	}
 
+
+    @RequestMapping(value = {"/outlier/{uuid:.+}"}, method = RequestMethod.GET)
+    public String getOutlierInfo(@PathVariable("uuid") String uuid, Model model) throws Exception {
+
+        OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
+        model.addAttribute("errorCodes", biocacheService.getUserCodes());
+        model.addAttribute("isReadOnly", biocacheService.isReadOnly());
+
+        String collectionUid = null;
+        String rowKey = (record != null && record.getRaw() != null)? record.getRaw().getRowKey() : uuid;
+        // add the rowKey for the record.
+        model.addAttribute("rowKey", rowKey);
+
+        List<SampleDTO> contextualSampleInfo = new ArrayList<SampleDTO>();
+        List<SampleDTO> environmentalSampleInfo = new ArrayList<SampleDTO>();
+        Map<String, Map<String, Object>> layersMetadata = layerMetadataCache.getLayerMetadataLookup();
+
+        //load up the environmental properties
+        if(record.getProcessed().getEl() != null){
+            for (Map.Entry<String, String> entry :record.getProcessed().getEl().entrySet()){
+                System.out.println(entry.getKey() + "/" + entry.getValue());
+                Map<String,Object> metdata = layersMetadata.get(entry.getKey());
+                if(metdata!=null){
+                    environmentalSampleInfo.add(new SampleDTO((String) metdata.get("uid"),
+                            (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString()));
+                }
+            }
+        }
+
+        if(record.getProcessed().getCl() != null){
+            for (Map.Entry<String, String> entry : record.getProcessed().getCl().entrySet()){
+                System.out.println(entry.getKey() + "/" + entry.getValue());
+                Map<String,Object> metdata = layersMetadata.get(entry.getKey());
+                if(metdata!=null){
+                    contextualSampleInfo.add(new SampleDTO((String)metdata.get("uid"),
+                            (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString()));
+                }
+            }
+        }
+
+        model.addAttribute("contextualSampleInfo", contextualSampleInfo);
+        model.addAttribute("environmentalSampleInfo", environmentalSampleInfo);
+        model.addAttribute("record", record);
+
+        return RECORD_OUTLIERINFO;
+    }
+
     /**
      * Display an occurrence record by retrieving via its uuid.
      *
@@ -652,8 +703,8 @@ public class OccurrenceController {
     @RequestMapping(value = {"/{uuid:.+}", "/fragment/{uuid:.+}"}, method = RequestMethod.GET)
 	public String getOccurrenceRecord(@PathVariable("uuid") String uuid,
             HttpServletRequest request, Model model) throws Exception {
-
-        logger.debug("User prinicipal: " + request.getUserPrincipal());
+        try {
+        logger.debug("User principal: " + request.getUserPrincipal());
 
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
@@ -709,7 +760,10 @@ public class OccurrenceController {
             // Check is user has role: ROLE_COLLECTION_EDITOR or ROLE_COLLECTION_ADMIN
             // and then call Collections WS to see if they are a member of the current collection uid
 
-            if (userId != null && collectionUid != null && (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_COLLECTION_ADMIN") || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
+            if (userId != null && collectionUid != null
+                    && (request.isUserInRole("ROLE_ADMIN")
+                    || request.isUserInRole("ROLE_COLLECTION_ADMIN")
+                    || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
                 logger.info("User has appropriate ROLE...");
                 try {
                     final String jsonUri = collectionContactsUrl + "/" + collectionUid + "/contacts.json";
@@ -737,14 +791,56 @@ public class OccurrenceController {
             	Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
                 model.addAttribute("groupedAssertions", grouped);
             }
-            
+
+
+            List<SampleDTO> environmentalSampleInfo = new ArrayList<SampleDTO>();
+            Map<String, Map<String, Object>> layersMetadata = layerMetadataCache.getLayerMetadataLookup();
+
+            //load up the environmental properties
+            if(record.getProcessed().getEl() != null){
+                for (Map.Entry<String, String> entry :record.getProcessed().getEl().entrySet()){
+                    System.out.println(entry.getKey() + "/" + entry.getValue());
+                    Map<String,Object> metdata = layersMetadata.get(entry.getKey());
+                    if(metdata!=null){
+                        environmentalSampleInfo.add(new SampleDTO((String) metdata.get("uid"),
+                            (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString()));
+                    }
+                }
+            }
+
+            List<SampleDTO> contextualSampleInfo = new ArrayList<SampleDTO>();
+            if(record.getProcessed().getCl() != null){
+                for (Map.Entry<String, String> entry : record.getProcessed().getCl().entrySet()){
+                    System.out.println(entry.getKey() + "/" + entry.getValue());
+                    Map<String,Object> metdata = layersMetadata.get(entry.getKey());
+                    if(metdata!=null){
+                        contextualSampleInfo.add(new SampleDTO((String)metdata.get("uid"),
+                                (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString()));
+                    }
+                }
+            }
+
+            if(record.getProcessed().getOccurrence().getOutlierForLayers() != null){
+                List<Map<String,Object>> metdataForOutlierLayers = new ArrayList<Map<String,Object>>();
+                for(String layerId: record.getProcessed().getOccurrence().getOutlierForLayers()){
+                    metdataForOutlierLayers.add(layersMetadata.get(layerId));
+                }
+                model.addAttribute("metadataForOutlierLayers", metdataForOutlierLayers);
+            }
+
+            model.addAttribute("contextualSampleInfo", contextualSampleInfo);
+            model.addAttribute("environmentalSampleInfo", environmentalSampleInfo);
             model.addAttribute("record", record);
             model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
             // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
             Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
             model.addAttribute("compareRecord", compareRecord);
 		}
-        
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
 		return RECORD_SHOW;
 	}
 
@@ -1480,7 +1576,7 @@ public class OccurrenceController {
      */
     private LinkedHashMap<String, Boolean> filterFacets(List<String> defaultFacets) {
         LinkedHashMap<String, Boolean> facetsMap = new LinkedHashMap<String, Boolean>();
-        ArrayList<String> allFacets = new ArrayList<String>(defaultFacets); // needed for addAll()
+        List<String> allFacets = new ArrayList<String>(defaultFacets); // needed for addAll()        
         String[] excludeArray = null;
         String[] hideArray = null;
 
@@ -1603,5 +1699,9 @@ public class OccurrenceController {
 	        }
     	}
         return (defaultValue);
+    }
+
+    public void setLayerMetadataCache(LayerMetadataCache layerMetadataCache) {
+        this.layerMetadataCache = layerMetadataCache;
     }
 }

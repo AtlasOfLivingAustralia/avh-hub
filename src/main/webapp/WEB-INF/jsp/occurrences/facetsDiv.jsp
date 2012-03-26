@@ -119,6 +119,15 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22<c:out escapeXml='true' value='${fqValue}'/>%22"><fmt:message key="${(fn:contains(fieldResult.label,'@')) ? fn:substringBefore(fieldResult.label,'@') : fieldResult.label}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'outlier_layer')}">
+                                        <c:set var="fqValue" value="${fn:replace(fieldResult.label, '\"','%22')}"/><!-- fqValue = ${fqValue} -->
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:<c:out escapeXml='true' value='${fqValue}'/>">
+                                            <fmt:message key="layer.${fieldResult.label}"/></a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+
+
+
                                     <c:otherwise>
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
