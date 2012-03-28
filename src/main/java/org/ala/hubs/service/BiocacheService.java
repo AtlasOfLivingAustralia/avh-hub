@@ -63,9 +63,10 @@ public interface BiocacheService {
      * Retrieve a record by its UUID
      *
      * @param uuid
+     * @param apiKey
      * @return
      */
-    public OccurrenceDTO getRecordByUuid(String uuid);
+    public OccurrenceDTO getRecordByUuid(String uuid, String apiKey);
     
     /**
      * full text search with spatial restriction (lat/lon/radius)
@@ -107,6 +108,9 @@ public interface BiocacheService {
 
     public List<String> getDefaultFacets();
 
+    public List<Map<String, Object>> getDefaultFacetsWithCategories();
+
     public boolean isReadOnly();
+
 
 }

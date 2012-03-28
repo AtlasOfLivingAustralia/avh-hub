@@ -330,6 +330,10 @@ td.dwc {
     white-space: nowrap;
 }
 
+span.dwc {
+    text-transform: capitalize;
+}
+
 div#userAssertionsDetailsLink {
     margin-left: 10px;
     margin-top: -5px;

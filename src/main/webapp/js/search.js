@@ -380,7 +380,7 @@ $(document).ready(function() {
     
     // Substitute LSID strings for tacon names in facet values for species
     var guidList = [];
-    $("li.species_guid").each(function(i, el) {
+    $("li.species_guid, li.genus_guid").each(function(i, el) {
         guidList[i] = $(el).attr("id");
     });
     
@@ -391,7 +391,7 @@ $(document).ready(function() {
         var jsonUrlA = BC_CONF.bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListA.join("&guid=") + "&callback=?";
         $.getJSON(jsonUrlA, function(data) {
             // set the name in place of LSID
-            $("li.species_guid").each(function(i, el) {
+            $("li.species_guid, li.genus_guid").each(function(i, el) {
                 if (i < 15) {
                     $(el).find("a").html("<i>"+data[i]+"</i>");
                 } else {
@@ -405,7 +405,7 @@ $(document).ready(function() {
             var jsonUrlB = BC_CONF.bieWebappUrl + "/species/namesFromGuids.json?guid=" + guidListB.join("&guid=") + "&callback=?";
             $.getJSON(jsonUrlB, function(data) {
                 // set the name in place of LSID
-                $("li.species_guid").each(function(i, el) {
+                $("li.species_guid, li.genus_guid").each(function(i, el) {
                     // skip forst 15 elements
                     if (i > 14) {
                         var k = i - 15;
@@ -677,7 +677,7 @@ $(document).ready(function() {
         onComplete: function(links) {
             var link = links[0];
             // substitute some facet names so sorting works
-            var facetName = link.id.replace("multi-","").replace("_uid","_name").replace("data_resource_name","data_resource");
+            var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name","data_resource");
             var displayName = $(link).data("displayname");
             loadMultiFacets(facetName, displayName, "count")
         }
@@ -795,13 +795,24 @@ function loadMultiFacets(facetName, displayName, fsort, foffset) {
                 BC_CONF.contextPath + "/occurrences/search/facets'>";
     html += inputsHtml ;// add existing params
     html += "<table class='compact scrollTable' id='fullFacets' data-facet='" + facet + "' data-label='" + displayName + "'>";
-    html += "<thead class='fixedHeader'><tr class='tableHead'><th>&nbsp;</th><th id='indexCol'><a href='#index' class='fsort' data-sort='index' data-foffset='0'>" + displayName + "</a></th>";
-    html += "<th><a href='#count' class='fsort' data-sort='count'>Count</a></th></tr></thead>";
+    html += "<thead class='fixedHeader'><tr class='tableHead'><th>&nbsp;</th><th id='indexCol'><a href='#index' class='fsort' data-sort='index' data-foffset='0' title='Sort by " + displayName + "'>" + displayName + "</a></th>";
+    html += "<th><a href='#count' class='fsort' data-sort='count' title='Sort by record count'>Count</a></th></tr></thead>";
     html += "<tbody class='scrollContent'><tr id='loadingRow'><td colspan='3'>Loading... <img src='" + BC_CONF.contextPath + "/static/images/loading.gif' alt='loading'/></td></tr></tbody>";
     //html += "<tfoot><tr id='submitFacets'><td colspan='3'><input type='submit' class='submit'/></form></td></tr></tfoot>"; // empty row that gets loaded via AJAX
     html += "</table><div id='submitFacets'><input type='submit' class='submit'/></div></form>";
     //html += "<input type='submit' class='submit'/></form>";
     $("div#dynamic").append(html);
+    $("a.fsort").qtip({
+        style: {
+            classes: 'ui-tooltip-rounded ui-tooltip-shadow'
+        },
+        position: {
+            target: 'mouse',
+            adjust: {
+                x: 8, y: 12
+            }
+        }
+    });
     // perform ajax
     loadFacetsContent(facet, fsort, foffset, facetLimit);
 }

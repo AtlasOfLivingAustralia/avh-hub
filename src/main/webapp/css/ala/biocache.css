@@ -1079,6 +1079,12 @@ ul.ui-tabs-nav {
     left: -10000px;
 }
 
+.ui-tooltip-content h2 {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
 em, dfn {
     font-style:normal;
 }
@@ -1286,4 +1292,8 @@ div.section {
 div#mapTips {
     font-size: 12px;
     line-height: 1.4em;
+}
+
+thead.fixedHeader a {
+    text-decoration: none;
 }

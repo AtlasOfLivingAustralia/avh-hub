@@ -175,38 +175,51 @@ $(document).ready(function() {
     // Tooltip for matched location
     $('#addressHelp').qtip({
         content: {
-            url: contextPath + '/proxy/wordpress',
-            data: { 'page_id': 27726, 'content-only': 1},
-            method: 'get',
             title: {
-               text: 'About the matched address',
-               button: 'Close'
+                text: "About the matched address",
+                button: "Close"
             },
-            text: '<img src="' + contextPath + '/static/images/loading.gif" alt="" class="no-rounding"/>'
+            text: "<img src=\"" + contextPath + "/static/images/loading.gif\" alt=\"\" class=\"no-rounding\"/>",
+            ajax: {
+                url: contextPath + "/proxy/wordpress",
+                data: {
+                    page_id: 27726,
+                    "content-only": 1
+                },
+                type: "get"
+            }
         },
         position: {
-            corner: {
-                target: 'bottomRight',
-                tooltip: 'topLeft'
-            }
+            at: "bottom right",
+            my: "top left"
         },
         style: {
             width: 450,
-            padding: 8,
-            background: '#f0f0f0',
-            color: 'black',
-            textAlign: 'left',
-            border: {
-                width: 4,
-                radius: 5,
-                color: '#E66542'// '#E66542' '#DD3102'
-            },
-            tip: 'topLeft',
-            name: 'light' // Inherit the rest of the attributes from the preset light style
+            tip: "topLeft",
+            classes: 'ui-tooltip-light ui-tooltip-rounded ui-tooltip-shadow'
         },
-        show: { effect: { type: 'slide', length: 300 } },
-        hide: { fixed: true, effect: { type: 'slide', length: 300 }, when: { event: 'unfocus' }}
+        show: {
+            effect: function(api) { $(this).slideDown(300, function(){ $(this).dequeue(); }); }
+        },
+        hide: {
+            fixed: true,
+            effect: function(api) { $(this).slideUp(300, function(){ $(this).dequeue(); }); },
+            event: "unfocus"
+        }
     }).bind('click', function(event){ event.preventDefault(); return false;});
+
+    $("#left-col a").qtip({
+        style: {
+            classes: 'ui-tooltip-rounded ui-tooltip-shadow'
+        },
+        position: {
+            target: 'mouse',
+            adjust: {
+                x: 10,
+                y: 12
+            }
+        }
+    });
 
 }); // end onLoad event
 
@@ -626,8 +639,9 @@ function processSpeciesJsonData(data, appendResults) {
         if (data.length == 50) {
             // add load more link
             var newStart = $('#rightList tbody tr').length;
+            var sortOrder = $("div#rightList").data("sort") ? $("div#rightList").data("sort") : "index";
             $('#rightList tbody').append('<tr id="loadMoreSpecies"><td>&nbsp;</td><td colspan="2"><a href="'+newStart+
-                '">Show more species</a></td></tr>');
+                '" data-sort="'+sortOrder+'">Show more species</a></td></tr>');
         }
         
     } else if (appendResults) {
@@ -666,15 +680,30 @@ function processSpeciesJsonData(data, appendResults) {
         loadRecordsLayer();
     });
 
-    // Register onClick for "load more species" link
-    $('#loadMoreSpecies a').click(
-        function(e) {
+    // Register onClick for "load more species" link & sort headers
+    $('#loadMoreSpecies a, thead.fixedHeader a').click(function(e) {
             e.preventDefault(); // ignore the href text - used for data
             var thisTaxon = $('#taxa-level-0 tr.activeRow').find('a.taxonBrowse').attr('id');
             //rank = $('#taxa-level-0 tr.activeRow').find('a.taxonBrowse').attr('id');
             taxa = []; // array of taxa
             taxa = (thisTaxon.indexOf("|") > 0) ? thisTaxon.split("|") : thisTaxon;
             var start = $(this).attr('href');
+            var sortOrder = $(this).data("sort") ? $(this).data("sort") : "index";
+            var sortParam = sortOrder;
+            var commonName = false;
+            if (sortOrder == "common") {
+                commonName = true;
+                sortParam = "index";
+                //$("a#commonSort").insertBefore("a#speciesSort");
+            } else if (sortOrder == "index") {
+                //$("a#speciesSort").insertBefore("a#commonSort");
+            }
+            var append = true;
+            if (start == 0) {
+                append = false;
+                $(".scrollContent").scrollTop(0); // return scroll bar to top of tbody
+            }
+            $("div#rightList").data("sort", sortOrder); // save it to the DOM
             // AJAX...
             var uri = biocacheServiceUrl + "/explore/group/"+speciesGroup+".json?callback=?";
             //var params = "&lat="+$('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val()+"&group="+speciesGroup;
@@ -684,13 +713,16 @@ function processSpeciesJsonData(data, appendResults) {
                 radius: $('#radius').val(),
                 fq: "geospatial_kosher:true",
                 start: start,
+                common: commonName,
+                sort: sortParam,
                 pageSize: 50
             };
+            //console.log("explore params", params, append);
             //$('#taxaDiv').html('[loading...]');
             $('#loadMoreSpecies').detach(); // delete it
             $.getJSON(uri, params, function(data) {
                 // process JSON data from request
-                processSpeciesJsonData(data, true);
+                processSpeciesJsonData(data, append);
             });
         }
     );

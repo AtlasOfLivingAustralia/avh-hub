@@ -5,6 +5,8 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
 <!DOCTYPE html>
 <c:choose>
 <c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
@@ -208,7 +210,7 @@
                 });
                 
                 // convert camel case field names to "normal"
-                $("td.dwc").each(function(i, el) {
+                $("td.dwc, span.dwc").each(function(i, el) {
                     var html = $(el).html();
                     $(el).html(fileCase(html)); // conver it
                 });
@@ -331,7 +333,10 @@
                         <c:set var="admin" value=" - admin"/>
                     </c:if>
                     <c:if test="${not empty userDisplayName}">
-                        Logged in as: ${userDisplayName} (${userId}${admin})
+                        Logged in as: ${userDisplayName} <!--(${userId}${admin})-->
+                    </c:if>
+                    <c:if test="${not empty clubView}">
+                        Viewing "club view" of record
                     </c:if>
                     <!-- <a href="${json}">JSON</a> -->
                 </div>
@@ -480,12 +485,22 @@
                     </div>
                 </c:if>
                 <c:if test="${not empty record.processed.location.decimalLatitude && not empty record.processed.location.decimalLongitude}">
+                    <c:set var="latLngStr">
+                        <c:choose>
+                            <c:when test="${not empty clubView && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
+                                ${record.raw.location.decimalLatitude},${record.raw.location.decimalLongitude}
+                            </c:when>
+                            <c:otherwise>
+                                ${record.processed.location.decimalLatitude},${record.processed.location.decimalLongitude}
+                            </c:otherwise>
+                        </c:choose>
+                    </c:set>
                     <div class="sidebar">
 
                         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
                         <script type="text/javascript">
                             $(document).ready(function() {
-                                var latlng = new google.maps.LatLng(${record.processed.location.decimalLatitude}, ${record.processed.location.decimalLongitude});
+                                var latlng = new google.maps.LatLng(${latLngStr});
                                 var myOptions = {
                                     zoom: 5,
                                     center: latlng,
@@ -585,6 +600,8 @@
                  </c:if>
             </div><!-- end div#SidebarBox -->
             <div id="content2">
+                <% Map fieldsMap = new HashMap(); pageContext.setAttribute("fieldsMap", fieldsMap); %>
+                <%-- c:set target="${fieldsMap}" property="aKey" value="value for a key" /--%>
                 <div id="occurrenceDataset">
                     <h3>Dataset</h3>
                     <table class="occurrenceTable" id="datasetTable">
@@ -593,11 +610,14 @@
                             <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data Provider">
                                 <c:choose>
                                     <c:when test="${record.processed.attribution.dataProviderUid != null && not empty record.processed.attribution.dataProviderUid}">
+                                        <c:set target="${fieldsMap}" property="dataProviderUid" value="true" />
+                                        <c:set target="${fieldsMap}" property="dataProviderName" value="true" />
                                         <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.dataProviderUid}">
                                             ${record.processed.attribution.dataProviderName}
                                         </a>
                                     </c:when>
                                     <c:otherwise>
+                                        <c:set target="${fieldsMap}" property="dataProviderName" value="true" />
                                         ${record.processed.attribution.dataProviderName}
                                     </c:otherwise>
                                 </c:choose>
@@ -606,11 +626,14 @@
                             <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data Set">
                                 <c:choose>
                                     <c:when test="${record.raw.attribution.dataResourceUid != null && not empty record.raw.attribution.dataResourceUid}">
+                                        <c:set target="${fieldsMap}" property="dataResourceUid" value="true" />
+                                        <c:set target="${fieldsMap}" property="dataResourceName" value="true" />
                                         <a href="${collectionsWebappContext}/public/show/${record.raw.attribution.dataResourceUid}">
                                             ${record.processed.attribution.dataResourceName}
                                         </a>
                                     </c:when>
                                     <c:otherwise>
+                                        <c:set target="${fieldsMap}" property="dataResourceName" value="true" />
                                         ${record.processed.attribution.dataResourceName}
                                     </c:otherwise>
                                 </c:choose>
@@ -620,6 +643,8 @@
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="institutionCode" fieldName="Institution">
                             <c:choose>
                                 <c:when test="${record.processed.attribution.institutionUid != null && not empty record.processed.attribution.institutionUid}">
+                                    <c:set target="${fieldsMap}" property="institutionUid" value="true" />
+                                    <c:set target="${fieldsMap}" property="institutionName" value="true" />
                                     <!-- <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.institutionUid}"> -->
                                     <c:choose>
                                         <c:when test="${useAla == 'true'}">
@@ -633,17 +658,19 @@
                                     </a>
                                 </c:when>
                                 <c:otherwise>
+                                    <c:set target="${fieldsMap}" property="institutionName" value="true" />
                                     ${record.processed.attribution.institutionName}
                                 </c:otherwise>
                             </c:choose>
                             <c:if test="${not empty record.raw.occurrence.institutionCode}">
+                                <c:set target="${fieldsMap}" property="institutionCode" value="true" />
                                 <br/><span class="originalValue">Supplied as "${record.raw.occurrence.institutionCode}"</span>
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Collection -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="collectionCode" fieldName="Collection">
                             <c:if test="${not empty record.processed.attribution.collectionUid}">
-<!--                                <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">-->
+                                <c:set target="${fieldsMap}" property="collectionUid" value="true" />
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
                                        <a href="${collectionsWebappContext}/public/show/${record.processed.attribution.collectionUid}">
@@ -655,9 +682,11 @@
                             </c:if>
                             <c:choose>
                                 <c:when test="${not empty record.processed.attribution.collectionName}">
+                                    <c:set target="${fieldsMap}" property="collectionName" value="true" />
                                     ${record.processed.attribution.collectionName}
                                 </c:when>
                                 <c:when test="${not empty collectionName}">
+                                    <c:set target="${fieldsMap}" property="collectionName" value="true" />
                                     ${collectionName}
                                 </c:when>
                             </c:choose>
@@ -665,11 +694,13 @@
                                 </a>
                             </c:if>
                             <c:if test="${not empty record.raw.occurrence.collectionCode}">
+                                <c:set target="${fieldsMap}" property="collectionCode" value="true" />
                                 <br/><span class="originalValue">Supplied as "${record.raw.occurrence.collectionCode}"</span>
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Catalog Number -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="catalogueNumber" fieldName="Catalogue Number">
+                            <c:set target="${fieldsMap}" property="catalogNumber" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.catalogNumber && not empty record.raw.occurrence.catalogNumber}">
                                     ${record.processed.occurrence.catalogNumber}
@@ -682,14 +713,16 @@
                         </alatag:occurrenceTableRow>
                         <!-- Other Catalog Number -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="otherCatalogNumbers" fieldName="Other Catalogue Numbers">
+                            <c:set target="${fieldsMap}" property="otherCatalogNumbers" value="true" />
                             ${record.raw.occurrence.otherCatalogNumbers}
                         </alatag:occurrenceTableRow>
                         <!-- Record Number -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordNumber" fieldName="Record number">
+                        <c:set target="${fieldsMap}" property="recordNumber" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.recordNumber && not empty record.raw.occurrence.recordNumber}">
                                     ${record.processed.occurrence.recordNumber}
-                                    <br/><span class="originalValue">Supplied as "${record.raw.occurrence.basisOfrecordNumberRecord}"</span>
+                                    <br/><span class="originalValue">Supplied as "${record.raw.occurrence.recordNumber}"</span>
                                 </c:when>
                                 <c:otherwise>
                                     ${record.raw.occurrence.recordNumber}
@@ -697,10 +730,12 @@
                             </c:choose>
                         </alatag:occurrenceTableRow>
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="citation" fieldName="Record citation">
+                            <c:set target="${fieldsMap}" property="citation" value="true" />
                             ${record.raw.attribution.citation}
                         </alatag:occurrenceTableRow>                        
                         <!-- Occurrence ID -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceID" fieldName="Occurrence ID">
+                            <c:set target="${fieldsMap}" property="occurrenceID" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.occurrenceID && not empty record.raw.occurrence.occurrenceID}">
                                     <c:if test="${fn:startsWith(record.processed.occurrence.occurrenceID,'http://')}"><a href="${record.processed.occurrence.occurrenceID}" target="_blank"></c:if>
@@ -716,10 +751,12 @@
                             </c:choose>
                         </alatag:occurrenceTableRow>
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="citation" fieldName="Record citation">
+                            <c:set target="${fieldsMap}" property="citation" value="true" />
                             ${record.raw.attribution.citation}
                         </alatag:occurrenceTableRow>                        
                         <!--
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordUuid" fieldName="Record UUID">
+                            <c:set target="${fieldsMap}" property="recordUuid" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.uuid}">
                                     ${record.processed.uuid}
@@ -732,6 +769,7 @@
                         -->
                         <!-- Basis of Record -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="basisOfRecord" fieldName="Basis of Record">
+                            <c:set target="${fieldsMap}" property="basisOfRecord" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.basisOfRecord && not empty record.raw.occurrence.basisOfRecord}">
                                     ${record.processed.occurrence.basisOfRecord}
@@ -745,6 +783,7 @@
 
                         <!-- Record Date -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceDate" fieldName="Record Date">
+                            <c:set target="${fieldsMap}" property="eventDate" value="true" />
                             <c:if test="${empty record.processed.event.eventDate && record.raw.event.eventDate && empty record.raw.event.year && empty record.raw.event.month && empty record.raw.event.day}">
                                 [date not supplied]
                             </c:if>
@@ -767,22 +806,27 @@
                         </alatag:occurrenceTableRow>
                         <!-- Identifier Name -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierName" fieldName="Identified by">
+                            <c:set target="${fieldsMap}" property="identifiedBy" value="true" />
                             ${record.raw.identification.identifiedBy}
                         </alatag:occurrenceTableRow>
                         <!-- Identified Date -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierDate" fieldName="Identified date">
+                            <c:set target="${fieldsMap}" property="identifierDate" value="true" />
                             ${record.raw.identification.dateIdentified}
                         </alatag:occurrenceTableRow>
                         <!-- Field Number -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="fieldNumber" fieldName="Field number">
+                            <c:set target="${fieldsMap}" property="fieldNumber" value="true" />
                             ${record.raw.occurrence.fieldNumber}
                         </alatag:occurrenceTableRow>
                         <!-- Field Number -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationRemarks" fieldName="Identification remarks">
+                            <c:set target="${fieldsMap}" property="identificationRemarks" value="true" />
                             ${record.raw.identification.identificationRemarks}
                         </alatag:occurrenceTableRow>
                         <!-- Collector/Observer -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="Collector/Observer">
+                            <c:set target="${fieldsMap}" property="recordedBy" value="true" />
                             <c:set var="rawRecordedBy" value="${(fn:contains(record.raw.occurrence.recordedBy, '@')) 
                                                                 ? fn:substringBefore(record.raw.occurrence.recordedBy,'@') 
                                                                 : record.raw.occurrence.recordedBy}"/>
@@ -804,49 +848,65 @@
                         </alatag:occurrenceTableRow>
                         <!-- Sampling Protocol -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="samplingProtocol" fieldName="Sampling protocol">
+                            <c:set target="${fieldsMap}" property="samplingProtocol" value="true" />
                             ${record.raw.occurrence.samplingProtocol}
                         </alatag:occurrenceTableRow>
                         <!-- Type Status -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="typeStatus" fieldName="Type status">
+                            <c:set target="${fieldsMap}" property="typeStatus" value="true" />
                             ${record.raw.identification.typeStatus}
                         </alatag:occurrenceTableRow>
                         <!-- Identification Qualifier -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationQualifier" fieldName="Identification Qualifier">
+                            <c:set target="${fieldsMap}" property="identificationQualifier" value="true" />
                             ${record.raw.identification.identificationQualifier}
                         </alatag:occurrenceTableRow>
                         <!-- Reproductive Condition -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="reproductiveCondition" fieldName="Reproductive condition">
+                            <c:set target="${fieldsMap}" property="reproductiveCondition" value="true" />
                             ${record.raw.occurrence.reproductiveCondition}
                         </alatag:occurrenceTableRow>
                         <!-- Sex -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="sex" fieldName="Sex">
+                            <c:set target="${fieldsMap}" property="sex" value="true" />
                             ${record.raw.occurrence.sex}
                         </alatag:occurrenceTableRow>
                         <!-- Behavior -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="behavior" fieldName="Behaviour">
+                            <c:set target="${fieldsMap}" property="behavior" value="true" />
                             ${record.raw.occurrence.behavior}
                         </alatag:occurrenceTableRow>
                         <!-- Individual count -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="individualCount" fieldName="Individual count">
+                            <c:set target="${fieldsMap}" property="individualCount" value="true" />
                             ${record.raw.occurrence.individualCount}
                         </alatag:occurrenceTableRow>
                         <!-- Life stage -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="lifeStage" fieldName="Life stage">
+                            <c:set target="${fieldsMap}" property="lifeStage" value="true" />
                             ${record.raw.occurrence.lifeStage}
                         </alatag:occurrenceTableRow>
                         <!-- Preparations -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="preparations" fieldName="Preparations">
+                            <c:set target="${fieldsMap}" property="preparations" value="true" />
                             ${record.raw.occurrence.preparations}
                         </alatag:occurrenceTableRow>
                         <!-- Rights -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="rights" fieldName="Rights">
+                            <c:set target="${fieldsMap}" property="rights" value="true" />
                             ${record.raw.occurrence.rights}
                         </alatag:occurrenceTableRow>
                         <!-- Occurrence details -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="occurrenceDetails" fieldName="More details">
+                            <c:set target="${fieldsMap}" property="occurrenceDetails" value="true" />
                             <c:if test="${not empty record.raw.occurrence.occurrenceDetails && fn:startsWith(record.raw.occurrence.occurrenceDetails,'http://')}"><a href="${record.raw.occurrence.occurrenceDetails}" target="_blank">${record.raw.occurrence.occurrenceDetails}</a>
                             </c:if>
                         </alatag:occurrenceTableRow>
+                        <!-- output any tags not covered already (excluding those in dwcExcludeFields) -->
+                        <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Attribution" exclude="${dwcExcludeFields}"/>
+                        <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Occurrence" exclude="${dwcExcludeFields}"/>
+                        <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Event" exclude="${dwcExcludeFields}"/>
+                        <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Identification" exclude="${dwcExcludeFields}"/>
                     </table>
                 </div>
                 <div id="occurrenceTaxonomy">
@@ -854,11 +914,14 @@
                     <table class="occurrenceTable" id="taxonomyTable">
                         <!-- Higher classification -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="higherClassification" fieldName="Higher classification">
+                            <c:set target="${fieldsMap}" property="higherClassification" value="true" />
                             ${record.raw.classification.higherClassification}
                         </alatag:occurrenceTableRow>
 
                         <!-- Scientific name -->
                         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="scientificName" fieldName="Scientific name">
+                            <c:set target="${fieldsMap}" property="taxonConceptID" value="true" />
+                            <c:set target="${fieldsMap}" property="scientificName" value="true" />
                             <c:set var="baseTaxonUrl">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">${bieWebappContext}/species/</c:when>
@@ -869,15 +932,20 @@
                                 <a href="${baseTaxonUrl}${record.processed.classification.taxonConceptID}">
                             </c:if>
                             <c:if test="${record.processed.classification.taxonRankID > 5000}"><i></c:if>
-                            ${record.raw.classification.scientificName}
+                            ${record.processed.classification.scientificName}
                             <c:if test="${record.processed.classification.taxonRankID > 5000}"></i></c:if>
                             <c:if test="${not empty record.processed.classification.taxonConceptID}">
                                 </a>
+                            </c:if>
+                            <c:if test="${not empty record.processed.classification.scientificName && not empty record.raw.classification.scientificName && (fn:toLowerCase(record.processed.classification.scientificName) != fn:toLowerCase(record.raw.classification.scientificName))}">
+                                <br/><span class="originalValue">Supplied as "${record.raw.classification.scientificName}"</span>
                             </c:if>
                         </alatag:occurrenceTableRow>
 
                         <!-- original name usage -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="originalNameUsage" fieldName="Original Name">
+                            <c:set target="${fieldsMap}" property="originalNameUsage" value="true" />
+                            <c:set target="${fieldsMap}" property="originalNameUsageID" value="true" />
                             <c:if test="${not empty record.processed.classification.originalNameUsageID}">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
@@ -904,6 +972,8 @@
 
                         <!-- Taxon Rank -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonRank" fieldName="Taxon rank">
+                            <c:set target="${fieldsMap}" property="taxonRank" value="true" />
+                            <c:set target="${fieldsMap}" property="taxonRankID" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.classification.taxonRank}">
                                     <span style="text-transform: capitalize;">${record.processed.classification.taxonRank}</span>
@@ -921,6 +991,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Common name -->
                         <alatag:occurrenceTableRow annotate="false" section="taxonomy" fieldCode="commonName" fieldName="Common name">
+                            <c:set target="${fieldsMap}" property="vernacularName" value="true" />
                             <c:if test="${not empty record.processed.classification.vernacularName}">
                                 ${record.processed.classification.vernacularName}
                             </c:if>
@@ -933,6 +1004,8 @@
                         </alatag:occurrenceTableRow>
                         <!-- Kingdom -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="kingdom" fieldName="Kingdom">
+                            <c:set target="${fieldsMap}" property="kingdom" value="true" />
+                            <c:set target="${fieldsMap}" property="kingdomID" value="true" />
                             <c:if test="${not empty record.processed.classification.kingdomID}">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
@@ -958,6 +1031,8 @@
                         </alatag:occurrenceTableRow>
                         <!-- Phylum -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="phylum" fieldName="Phylum">
+                            <c:set target="${fieldsMap}" property="phylum" value="true" />
+                            <c:set target="${fieldsMap}" property="phylumID" value="true" />
                             <c:if test="${not empty record.processed.classification.phylumID}">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
@@ -983,6 +1058,8 @@
                         </alatag:occurrenceTableRow>
                         <!-- Class -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="classs" fieldName="Class">
+                            <c:set target="${fieldsMap}" property="classs" value="true" />
+                            <c:set target="${fieldsMap}" property="classID" value="true" />
                             <c:if test="${not empty record.processed.classification.classID}">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
@@ -1008,6 +1085,8 @@
                         </alatag:occurrenceTableRow>
                         <!-- Order -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="order" fieldName="Order">
+                            <c:set target="${fieldsMap}" property="order" value="true" />
+                            <c:set target="${fieldsMap}" property="orderID" value="true" />
                             <c:if test="${not empty record.processed.classification.orderID}">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
@@ -1033,6 +1112,8 @@
                         </alatag:occurrenceTableRow>
                         <!-- Family -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="family" fieldName="Family">
+                            <c:set target="${fieldsMap}" property="family" value="true" />
+                            <c:set target="${fieldsMap}" property="familyID" value="true" />
                             <c:if test="${not empty record.processed.classification.familyID}">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
@@ -1058,6 +1139,8 @@
                         </alatag:occurrenceTableRow>
                         <!-- Genus -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="genus" fieldName="Genus">
+                            <c:set target="${fieldsMap}" property="genus" value="true" />
+                            <c:set target="${fieldsMap}" property="genusID" value="true" />
                             <c:if test="${not empty record.processed.classification.genusID}">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
@@ -1083,6 +1166,9 @@
                         </alatag:occurrenceTableRow>
                         <!-- Species -->
                         <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="species" fieldName="Species">
+                            <c:set target="${fieldsMap}" property="species" value="true" />
+                            <c:set target="${fieldsMap}" property="speciesID" value="true" />
+                            <c:set target="${fieldsMap}" property="specificEpithet" value="true" />
                             <c:if test="${not empty record.processed.classification.speciesID}">
                                 <c:choose>
                                     <c:when test="${useAla == 'true'}">
@@ -1113,19 +1199,22 @@
                         </alatag:occurrenceTableRow>
                         <!-- Associated Taxa -->
                         <c:if test="${not empty record.raw.occurrence.associatedTaxa}">
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedTaxa" fieldName="Associated species">
-                        <c:set var="colon" value=":"/>
-                            <c:choose>
-                                <c:when test="${fn:contains(record.raw.occurrence.associatedTaxa,colon)}">
-                                	<c:set var="associatedName" value="${fn:substringAfter(record.raw.occurrence.associatedTaxa,colon)}"/>
-                                    ${fn:substringBefore(record.raw.occurrence.associatedTaxa,colon) }: <a href="${bieWebappContext}/species/${fn:replace(associatedName, '  ', ' ')}">${associatedName}</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="${bieWebappContext}/species/${fn:replace(record.raw.occurrence.associatedTaxa, '  ', ' ')}">${record.raw.occurrence.associatedTaxa}</a>
-                                </c:otherwise>
-                            </c:choose>                      	                            
-                        </alatag:occurrenceTableRow>
+                            <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedTaxa" fieldName="Associated species">
+                                <c:set target="${fieldsMap}" property="associatedTaxa" value="true" />
+                                <c:set var="colon" value=":"/>
+                                <c:choose>
+                                    <c:when test="${fn:contains(record.raw.occurrence.associatedTaxa,colon)}">
+                                        <c:set var="associatedName" value="${fn:substringAfter(record.raw.occurrence.associatedTaxa,colon)}"/>
+                                        ${fn:substringBefore(record.raw.occurrence.associatedTaxa,colon) }: <a href="${bieWebappContext}/species/${fn:replace(associatedName, '  ', ' ')}">${associatedName}</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${bieWebappContext}/species/${fn:replace(record.raw.occurrence.associatedTaxa, '  ', ' ')}">${record.raw.occurrence.associatedTaxa}</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </alatag:occurrenceTableRow>
                         </c:if>
+                        <!-- output any tags not covered already (excluding those in dwcExcludeFields) -->
+                        <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Classification" exclude="${dwcExcludeFields}"/>
                     </table>
                 </div>
                 <div id="geospatialTaxonomy">
@@ -1133,10 +1222,12 @@
                     <table class="occurrenceTable" id="geospatialTable">
                         <!-- Higher Geography -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="higherGeography" fieldName="Higher geography">
-                             ${record.raw.location.higherGeography}
+                            <c:set target="${fieldsMap}" property="higherGeography" value="true" />
+                            ${record.raw.location.higherGeography}
                         </alatag:occurrenceTableRow>
                         <!-- Country -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="country" fieldName="Country">
+                            <c:set target="${fieldsMap}" property="country" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.location.country}">
                                     ${record.processed.location.country}
@@ -1154,6 +1245,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- State/Province -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="state" fieldName="State/Province">
+                            <c:set target="${fieldsMap}" property="stateProvince" value="true" />
                             <c:set var="stateValue" value="${not empty record.processed.location.stateProvince ? record.processed.location.stateProvince : record.raw.location.stateProvince}" />
                             <c:if test="${not empty stateValue}">
                                 <%--<a href="${bieWebappContext}/regions/aus_states/${stateValue}">--%>${stateValue}<%--</a>--%>
@@ -1164,6 +1256,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Locality -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Locality">
+                            <c:set target="${fieldsMap}" property="locality" value="true" />
                             <c:if test="${not empty record.processed.location.locality}">
                                 ${record.processed.location.locality}
                             </c:if>
@@ -1176,6 +1269,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Biogeographic Region -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="biogeographicRegion" fieldName="Biogeographic region">
+                            <c:set target="${fieldsMap}" property="ibra" value="true" />
                             <c:if test="${not empty record.processed.location.ibra}">
                                 ${record.processed.location.ibra}
                             </c:if>
@@ -1185,6 +1279,7 @@
                         </alatag:occurrenceTableRow>
                         <!-- Local Govt Area -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Local Govt Area">
+                            <c:set target="${fieldsMap}" property="lga" value="true" />
                             <c:if test="${not empty record.processed.location.lga}">
                                 ${record.processed.location.lga}
                             </c:if>
@@ -1194,82 +1289,127 @@
                         </alatag:occurrenceTableRow>
                         <!-- Habitat -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Terrestrial/Marine">
+                            <c:set target="${fieldsMap}" property="habitat" value="true" />
                             ${record.processed.location.habitat}
                         </alatag:occurrenceTableRow>
                         <!-- Latitude -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="latitude" fieldName="Latitude">
-                            ${(not empty record.processed.location.decimalLatitude) ? record.processed.location.decimalLatitude : record.raw.location.decimalLatitude}
+                            <c:set target="${fieldsMap}" property="decimalLatitude" value="true" />
+                            <c:choose>
+                                <c:when test="${not empty clubView && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
+                                    ${record.raw.location.decimalLatitude}
+                                </c:when>
+                                <c:when test="${not empty record.raw.location.decimalLatitude && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
+                                    ${record.processed.location.decimalLatitude}<br/><span class="originalValue">Supplied as: "${record.raw.location.decimalLatitude}"</span>
+                                </c:when>
+                                <c:when test="${not empty record.processed.location.decimalLatitude}">
+                                    ${record.processed.location.decimalLatitude}
+                                </c:when>
+                                <c:when test="${not empty record.raw.location.decimalLatitude}">
+                                    ${record.raw.location.decimalLatitude}
+                                </c:when>
+                            </c:choose>
                         </alatag:occurrenceTableRow>
                         <!-- Longitude -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="longitude" fieldName="Longitude">
-                            ${(not empty record.processed.location.decimalLongitude) ? record.processed.location.decimalLongitude : record.raw.location.decimalLongitude}
+                            <c:set target="${fieldsMap}" property="decimalLongitude" value="true" />
+                            <c:choose>
+                                <c:when test="${not empty clubView && record.raw.location.decimalLongitude != record.processed.location.decimalLongitude}">
+                                    ${record.raw.location.decimalLongitude}
+                                </c:when>
+                                <c:when test="${not empty record.raw.location.decimalLongitude && record.raw.location.decimalLongitude != record.processed.location.decimalLongitude}">
+                                    ${record.processed.location.decimalLongitude}<br/><span class="originalValue">Supplied as: "${record.raw.location.decimalLongitude}"</span>
+                                </c:when>
+                                <c:when test="${not empty record.processed.location.decimalLongitude}">
+                                    ${record.processed.location.decimalLongitude}
+                                </c:when>
+                                <c:when test="${not empty record.raw.location.decimalLongitude}">
+                                    ${record.raw.location.decimalLongitude}
+                                </c:when>
+                            </c:choose>
                         </alatag:occurrenceTableRow>
                         <!-- Geodetic datum -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic datum">
+                            <c:set target="${fieldsMap}" property="geodeticDatum" value="true" />
                             ${record.raw.location.geodeticDatum}
                         </alatag:occurrenceTableRow>
                         <!-- verbatimCoordinateSystem -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Verbatim Coordinate System">
+                            <c:set target="${fieldsMap}" property="verbatimCoordinateSystem" value="true" />
                             ${record.raw.location.verbatimCoordinateSystem}
                         </alatag:occurrenceTableRow>
                         <!-- Verbatim locality -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimLocality" fieldName="Verbatim locality">
+                            <c:set target="${fieldsMap}" property="verbatimLocality" value="true" />
                             ${record.raw.location.verbatimLocality}
                         </alatag:occurrenceTableRow>
                         <!-- Water Body -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="waterBody" fieldName="Water body">
+                            <c:set target="${fieldsMap}" property="waterBody" value="true" />
                             ${record.raw.location.waterBody}
                         </alatag:occurrenceTableRow>
                         <!-- Min depth -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumDepthInMeters" fieldName="Minimum Depth In Metres">
+                            <c:set target="${fieldsMap}" property="minimumDepthInMeters" value="true" />
                             ${record.raw.location.minimumDepthInMeters}
                         </alatag:occurrenceTableRow>
                         <!-- Max depth -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumDepthInMeters" fieldName="Maximum Depth In Metres">
+                            <c:set target="${fieldsMap}" property="maximumDepthInMeters" value="true" />
                             ${record.raw.location.maximumDepthInMeters}
                         </alatag:occurrenceTableRow>
                         <!-- Min elevation -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumElevationInMeters" fieldName="Minimum Elevation In Metres">
+                            <c:set target="${fieldsMap}" property="minimumElevationInMeters" value="true" />
                             ${record.raw.location.minimumElevationInMeters}
                         </alatag:occurrenceTableRow>
                         <!-- Max elevation -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumElevationInMeters" fieldName="Maximum Elevation In Metres">
+                            <c:set target="${fieldsMap}" property="maximumElevationInMeters" value="true" />
                             ${record.raw.location.maximumElevationInMeters}
                         </alatag:occurrenceTableRow>
                         <!-- Island -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="island" fieldName="Island">
+                            <c:set target="${fieldsMap}" property="island" value="true" />
                             ${record.raw.location.island}
                         </alatag:occurrenceTableRow>
                         <!-- Island Group-->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="islandGroup" fieldName="Island group">
+                            <c:set target="${fieldsMap}" property="islandGroup" value="true" />
                             ${record.raw.location.islandGroup}
                         </alatag:occurrenceTableRow>
                         <!-- Location remarks -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locationRemarks" fieldName="Location Remarks">
+                            <c:set target="${fieldsMap}" property="locationRemarks" value="true" />
                             ${record.raw.location.locationRemarks}
                         </alatag:occurrenceTableRow>
                         <!-- Occurrence remarks -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="occurrenceRemarks" fieldName="Occurrence Remarks">
+                            <c:set target="${fieldsMap}" property="occurrenceRemarks" value="true" />
                             ${record.raw.occurrence.occurrenceRemarks}
                         </alatag:occurrenceTableRow>
                         <!-- Field notes -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field Notes">
+                            <c:set target="${fieldsMap}" property="fieldNotes" value="true" />
                             ${record.raw.occurrence.fieldNotes}
                         </alatag:occurrenceTableRow>
                         <!-- Coordinate Precision -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate Precision">
+                            <c:set target="${fieldsMap}" property="coordinatePrecision" value="true" />
                             <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
                                 ${not empty record.processed.location.coordinatePrecision ? record.processed.location.coordinatePrecision : 'Unknown'}
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Coordinate Uncertainty -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate Uncertainty (metres)">
+                            <c:set target="${fieldsMap}" property="coordinateUncertaintyInMeters" value="true" />
                             <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
                                 ${not empty record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Data Generalizations -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="generalisedInMetres" fieldName="Coordinates Generalised">
+                            <c:set target="${fieldsMap}" property="generalisedInMetres" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.dataGeneralizations && fn:contains(record.processed.occurrence.dataGeneralizations, 'is already generalised')}">
                                     ${record.processed.occurrence.dataGeneralizations}
@@ -1281,26 +1421,33 @@
                         </alatag:occurrenceTableRow>
                         <!-- Information Withheld -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="informationWithheld" fieldName="Information Withheld">
+                            <c:set target="${fieldsMap}" property="informationWithheld" value="true" />
                             <c:if test="${not empty record.processed.occurrence.informationWithheld}">
                                 <span class="dataGeneralizations">${record.processed.occurrence.informationWithheld}</span>
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- GeoreferenceVerificationStatus -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceVerificationStatus" fieldName="Georeference Verification Status">
+                            <c:set target="${fieldsMap}" property="georeferenceVerificationStatus" value="true" />
                             ${record.raw.location.georeferenceVerificationStatus}
                         </alatag:occurrenceTableRow>                        
                         <!-- georeferenceSources -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceSources" fieldName="Georeference Sources">
+                            <c:set target="${fieldsMap}" property="georeferenceSources" value="true" />
                             ${record.raw.location.georeferenceSources}
                         </alatag:occurrenceTableRow>                        
                         <!-- georeferenceProtocol -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceProtocol" fieldName="Georeference Protocol">
+                            <c:set target="${fieldsMap}" property="georeferenceProtocol" value="true" />
                             ${record.raw.location.georeferenceProtocol}
                         </alatag:occurrenceTableRow> 
                         <!-- georeferenceProtocol -->
                         <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferencedBy" fieldName="Georeferenced By">
+                            <c:set target="${fieldsMap}" property="georeferencedBy" value="true" />
                             ${record.raw.location.georeferencedBy}
-                        </alatag:occurrenceTableRow>  
+                        </alatag:occurrenceTableRow>
+                        <!-- output any tags not covered already (excluding those in dwcExcludeFields) -->
+                        <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Location" exclude="${dwcExcludeFields}"/>
                     </table>
                 </div>
             </div><!-- end of content2 -->

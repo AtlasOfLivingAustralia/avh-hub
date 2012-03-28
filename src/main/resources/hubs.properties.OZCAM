@@ -80,6 +80,8 @@ googleAnalyticsKey=N/A
 site.displayName=OZCAM
 
 # skin-specific facets to exclude from search results (comma separated list)
-facets.exclude=
-facets.hide=data_provider_uid
+facets.exclude=data_provider_uid
+facets.hide=
 downloads.extra=
+
+clubRoleForHub=ROLE_OZCAM_CLUB

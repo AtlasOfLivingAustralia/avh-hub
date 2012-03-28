@@ -106,6 +106,12 @@
                                             key="${lsidLength > 30 ? fn:substring(fieldResult.label,0,20) : fieldResult.label}..${lsidLength > 30 ? fn:substring(fieldResult.label, (lsidLength - 10), lsidLength) : fieldResult.label}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'genus_guid')}">
+                                        <c:set var="lsidLength" value="${fn:length(fieldResult.label)}"/>
+                                        <li class="genus_guid" id="${fieldResult.label}"><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message
+                                                key="${lsidLength > 30 ? fn:substring(fieldResult.label,0,20) : fieldResult.label}..${lsidLength > 30 ? fn:substring(fieldResult.label, (lsidLength - 10), lsidLength) : fieldResult.label}"/></a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'subspecies_name')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><i><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></i></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>

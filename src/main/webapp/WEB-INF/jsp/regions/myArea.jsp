@@ -15,11 +15,12 @@
         <meta name="decorator" content="${skin}"/>
         <title>Explore Your Area | Atlas of Living Australia</title>
         <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/ala/biocache.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.qtip.min.css" type="text/css" media="screen" />
         <script type="text/javascript" src="https://www.google.com/jsapi?key=${googleKey}"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-ui-1.8.4.custom.min.js"></script>
         <link type="text/css" rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala/css/biocache-theme/jquery-ui-1.8.custom.css" charset="utf-8">
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.qtip-1.0.0.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.qtip.min.js"></script>
         <script type="text/javascript">
             // Global variables for yourAreaMap.js
             var contextPath = "${pageContext.request.contextPath}";
@@ -109,8 +110,10 @@
                                         <thead class="fixedHeader">
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th>Species</th>
-                                                <th>Records</th>
+                                                <th><a href="0" id="speciesSort" data-sort="taxa" title="sort by taxa">Species</a>
+                                                    <span id="sortSeparator">:</span>
+                                                    <a href="0" id="commonSort" data-sort="common" title="sort by common name">Common Name</a></th>
+                                                <th><a href="0" data-sort="count" title="sort by record count">Records</a></th>
                                             </tr>
                                         </thead>
                                         <tbody class="scrollContent">

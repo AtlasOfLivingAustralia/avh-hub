@@ -29,6 +29,7 @@ import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -139,15 +140,20 @@ public class BiocacheRestService implements BiocacheService {
     }
     
     /**
-     * @see org.ala.hubs.service.BiocacheService#getRecordByUuid(String)
+     * @see org.ala.hubs.service.BiocacheService#getRecordByUuid(String, String)
      */
     @Override
-    public OccurrenceDTO getRecordByUuid(String uuid) {
+    public OccurrenceDTO getRecordByUuid(String uuid, String apiKey) {
         Assert.notNull(uuid, "uuid must not be null");
         OccurrenceDTO record = new OccurrenceDTO();
+        String apiKeyParam = "";
+        
+        if (StringUtils.isNotBlank(apiKey)) {
+            apiKeyParam = "?apiKey=" + apiKey;
+        }
 
         try {
-            final String jsonUri = biocacheUriPrefix + "/occurrence/" + uuid;
+            final String jsonUri = biocacheUriPrefix + "/occurrence/" + uuid + apiKeyParam;
             logger.debug("Requesting: " + jsonUri);
             record = restTemplate.getForObject(jsonUri, OccurrenceDTO.class);
         } catch (Exception ex) {
@@ -341,6 +347,22 @@ public class BiocacheRestService implements BiocacheService {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }
         
+        return facets;
+    }
+
+    @Override
+    @Cacheable(cacheName = "facetsCache")
+    public List<Map<String, Object>> getDefaultFacetsWithCategories() {
+        List<Map<String, Object>> facets = null;
+
+        try {
+            final String jsonUri = biocacheUriPrefix + "/search/grouped/facets";
+            logger.debug("Requesting facets via: " + jsonUri);
+            facets = restTemplate.getForObject(jsonUri, List.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+
         return facets;
     }
 

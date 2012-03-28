@@ -102,7 +102,8 @@ public class OccurrenceController {
     @Inject
     private AbstractMessageSource messageSource;
     @Inject
-    protected LoggerService loggerService;    
+    protected LoggerService loggerService;
+
     /** Spring injected RestTemplate object */
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
@@ -120,6 +121,12 @@ public class OccurrenceController {
     String biocacheUriPrefix = null;
     @Value("${downloads.extra}")
     String downloadExtraFields = null;
+    @Value("${dwc.exclude}")
+    String dwcExclude = null;
+    @Value("${biocacheRestService.apiKey}")
+    String apiKey = null;
+    @Value("${clubRoleForHub}")
+    String clubRoleForHub = null;
     
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
@@ -131,8 +138,6 @@ public class OccurrenceController {
     protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
     protected String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
-
-    protected static final Pattern TERM_PATTERN = Pattern.compile("([a-zA-z_]+?):((\".*?\")|(\\\\ |[^: \\)\\(])+)"); // matches foo:bar, foo:"bar bash" & foo:bar\ bash
 
     protected static LinkedHashMap<String, String> collectionMap = null;
     protected static LinkedHashMap<String, String> institutionMap = null;
@@ -648,7 +653,7 @@ public class OccurrenceController {
     @RequestMapping(value = {"/outlier/{uuid:.+}"}, method = RequestMethod.GET)
     public String getOutlierInfo(@PathVariable("uuid") String uuid, Model model) throws Exception {
 
-        OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
+        OccurrenceDTO record = biocacheService.getRecordByUuid(uuid, null);
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
         model.addAttribute("isReadOnly", biocacheService.isReadOnly());
 
@@ -706,6 +711,9 @@ public class OccurrenceController {
         try {
         logger.debug("User principal: " + request.getUserPrincipal());
 
+        logger.debug("User principal: " + request.getUserPrincipal());
+        logger.debug("Club role = " + clubRoleForHub);
+
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
 
@@ -721,11 +729,19 @@ public class OccurrenceController {
             }
             model.addAttribute("userDisplayName", fullName);
         }
+        
+        String clubApiKey = null;
+        
+        // Check if user has role to view "club" version of records
+        if (userId != null && (request.isUserInRole(clubRoleForHub))) {
+            clubApiKey = apiKey;
+            model.addAttribute("clubView", true);
+        }
 
         uuid = removeUriExtension(uuid);
         model.addAttribute("uuid", uuid);
         logger.debug("Retrieving occurrence record with guid: '" + uuid + "'");
-        OccurrenceDTO record = biocacheService.getRecordByUuid(uuid);
+        OccurrenceDTO record = biocacheService.getRecordByUuid(uuid, clubApiKey);
         model.addAttribute("errorCodes", biocacheService.getUserCodes());
         model.addAttribute("isReadOnly", biocacheService.isReadOnly());
 
@@ -835,6 +851,7 @@ public class OccurrenceController {
             // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
             Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
             model.addAttribute("compareRecord", compareRecord);
+            model.addAttribute("dwcExcludeFields", dwcExclude);
 		}
 
         } catch (Exception e){
@@ -1016,7 +1033,10 @@ public class OccurrenceController {
                         }
                     }
                     break;
+                case genus_guid:
+                    logger.debug("case check: genus_guid");
                 case species_guid:
+                    logger.debug("case check: species_guid");
                     List<String> guids = new ArrayList<String>();
                     for (FacetValueDTO fv : facetValues) {
                         guids.add(fv.getLabel());
@@ -1107,7 +1127,7 @@ public class OccurrenceController {
      * Enum for facets indexed with a "code" value vs String value (e.g. collection_uid)
      */
     protected enum FacetsWithCodes {
-        institution_uid, collection_uid, data_resource_uid, species_guid, month, year;
+        institution_uid, collection_uid, data_resource_uid, species_guid, genus_guid, month, year;
     }
 
     /**
@@ -1288,6 +1308,8 @@ public class OccurrenceController {
         String[] userFacets = getFacetsFromCookie(request);
         logger.info("userFacets = " + StringUtils.join(userFacets, "|"));
         if (userFacets != null && userFacets.length > 0) requestParams.setFacets(userFacets);
+        String[] defaultFacets = biocacheService.getDefaultFacets().toArray(new String[]{});
+        requestParams.setFacets(filterFacets(defaultFacets));
 
         requestParams.setFacets(filterFacets(requestParams.getFacets()));
 
@@ -1394,7 +1416,7 @@ public class OccurrenceController {
                                 String fv = tokenBits[1];
                                 String i18n = messageSource.getMessage("facet."+fn, null, fn, null);
 
-                                if (StringUtils.equals(fn, "species_guid")) {
+                                if (StringUtils.equals(fn, "species_guid") || StringUtils.equals(fn, "genus_guid")) {
                                     fv = substituteLsidsForNames(fv.replaceAll("\"",""));
                                 } else if (StringUtils.equals(fn, "occurrence_year")) {
                                     fv = substituteYearsForDates(fv);
