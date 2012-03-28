@@ -75,19 +75,19 @@ var baseFacetChart = {
         el895OutliersCumm: 'Moisture Index - lowest period (Bio30)',
         el882: 'Precipitation - seasonality (Bio15)',
        	el882Outliers: 'Precipitation - seasonality (Bio15) - Outliers',
-       	el882OutliersCumm: 'Precipitation - seasonality (Bio15) - Outliers (Cummalative)',
+       	el882OutliersCumm: 'Precipitation - seasonality (Bio15) - Outliers (Cumulative)',
         el889: 'Precipitation - driest quarter (Bio17)',
         el889Outliers: 'Precipitation - driest quarter (Bio17) - Outliers',
-        el889OutliersCumm: 'Precipitation - driest quarter (Bio17) - Outliers (Cummalative)',
+        el889OutliersCumm: 'Precipitation - driest quarter (Bio17) - Outliers (Cumulative)',
         el887: 'Radiation - seasonality (Bio23)',
         el887Outliers: 'Radiation - seasonality (Bio23) - Outliers',
-        el887OutliersCumm: 'Radiation - seasonality (Bio23) - Outliers (Cummalative)',
+        el887OutliersCumm: 'Radiation - seasonality (Bio23) - Outliers (Cumulative)',
         el865: 'Moisture Index - highest quarter mean (Bio32)',
         el865Outliers: 'Moisture Index - highest quarter mean (Bio32) - Outliers',
-        el865OutliersCumm: 'Moisture Index - highest quarter mean (Bio32) - Outliers (Cummalative)',
+        el865OutliersCumm: 'Moisture Index - highest quarter mean (Bio32) - Outliers (Cumulative)',
         el894: 'Radiation - warmest quarter (Bio26)',
         el894Outliers: 'Radiation - warmest quarter (Bio26) - Outliers',
-        el894OutliersCumm: 'Radiation - warmest quarter (Bio26) - Outliers (Cummalative)',
+        el894OutliersCumm: 'Radiation - warmest quarter (Bio26) - Outliers (Cumulative)',
         radiation: 'Radiation',
         precipitation: 'Precipitation',
         moisture: 'Moisture'
@@ -150,7 +150,7 @@ var baseFacetChart = {
     },
     // create the chart
     init: function (data, options) {
-    	console.log('CHART NAME: ' + this.name);
+    	//console.log('CHART NAME: ' + this.name);
         var name = this.name,
             specificOptions = options[name];
 
@@ -183,9 +183,9 @@ var baseFacetChart = {
             }
         }
         
-        console.log('Setting up chart div');
+        //console.log('Setting up chart div');
         this.chartsDiv = $('#' + (this.chartsDiv || 'charts'));
-        console.log('Setting up chart div - done - ' + this.chartsDiv.id);
+        //console.log('Setting up chart div - done - ' + this.chartsDiv.id);
 
         // preserve context for callback
         var that = this;
@@ -230,15 +230,15 @@ var baseFacetChart = {
             google.visualization.events.addListener(this.chart, 'select', function() {
 
                 // default facet value is the name selected
-                console.log('Chart selection.....');
+                //console.log('Chart selection.....');
 
                 var selection = that.chart.getSelection()[0];
 
-                console.log('Chart selection retrieved.....' + selection);
+                //console.log('Chart selection retrieved.....' + selection);
                 if(selection !== undefined && selection.row !== undefined){
-                    console.log('Chart selection retrieved - row.....' + selection.row);
+                    //console.log('Chart selection retrieved - row.....' + selection.row);
                     var id = dataTable.getValue(selection.row,0);
-                    console.log('NO Chart selection BANG.....');
+                    //console.log('NO Chart selection BANG.....');
 
                     // build the facet query
                     var facetQuery = name + ":" + id;
@@ -273,10 +273,10 @@ var baseFacetChart = {
 
         // optionally transform the data
 //        var xformedData = this.transformData(data[name]);
-		console.log('Transform data using data[name] : ' + name );
+		//console.log('Transform data using data[name] : ' + name );
 		var facetData = data[name];
 		if(that.singleFacetName !== "undefined" && that.singleFacetName != null){
-			console.log('########Transform data using singleFacetName : ' + that.singleFacetName );			
+			//console.log('########Transform data using singleFacetName : ' + that.singleFacetName );			
 			facetData = data[that.singleFacetName];
 		}
 		
@@ -286,38 +286,38 @@ var baseFacetChart = {
         var dataTable = new google.visualization.DataTable(),
             dataOptions = this.individualChartOptions[name];
         
-        console.log('building datatable');
+        //console.log('building datatable');
             
         if (dataOptions && dataOptions.facets && options.outlierValues == "undefined") {
-        	console.log('building datatable1');
+        	//console.log('building datatable1');
         
             // add a y-value column for each facet
             dataTable.addColumn(this.column1DataType, this.chartLabel());
             for (var i = 0; i < dataOptions.facets.length; i++) {
-                console.log('Adding columns: ' + dataOptions.facetLabels ? dataOptions.facetLabels[i] : this.chartLabel());
+                //console.log('Adding columns: ' + dataOptions.facetLabels ? dataOptions.facetLabels[i] : this.chartLabel());
                 dataTable.addColumn('number', dataOptions.facetLabels ? dataOptions.facetLabels[i] : this.chartLabel());
             }
         } else if (options.outlierValues !== undefined) {
-            console.log('building datatable for outlier display...');
+            //console.log('building datatable for outlier display...');
             dataTable.addColumn('number', this.chartLabel());
             dataTable.addColumn('number','records');
             dataTable.addColumn('number','outliers');    
             dataTable.addColumn('number','this record');       
           
     	} else if (this.column1DataType == 'number') {
-            console.log('building datatable2');
+            //console.log('building datatable2');
             dataTable.addColumn('number', this.chartLabel());
             dataTable.addColumn('number','records');           
             
         } else {
-            console.log('building datatable3');
+            //console.log('building datatable3');
             dataTable.addColumn('string', this.chartLabel());
             dataTable.addColumn('number','records');
         }
 
         if (dataOptions && dataOptions.facets && dataOptions.facets.length > 1 && options.outlierValues !== undefined) {
         	
-        	console.log('building datatable -  munge data from 2 facets');
+        	//console.log('building datatable -  munge data from 2 facets');
         
             // munge data from 2 facets TODO: only handles 2 facets here
             var facet1 = data[dataOptions.facets[0]],
@@ -343,22 +343,22 @@ var baseFacetChart = {
             
         } else if(options.outlierValues !== undefined) {
         
-        	console.log('building datatable -  handle each data item');        
+        	//console.log('building datatable -  handle each data item');        
             // handle each data item
-           // console.log('xformedData : ' + xformedData);
+           // //console.log('xformedData : ' + xformedData);
             
             $.each(xformedData, function(i,obj) {
                 // filter any crap
-                console.log('building datatable -  obj.label: ' + obj.label);   
+                //console.log('building datatable -  obj.label: ' + obj.label);   
                 if (that.ignore !== "undefined" || $.inArray(obj.label, that.ignore) == -1) {
-                	console.log('building datatable -  crap filtered');   
+                	//console.log('building datatable -  crap filtered');   
                 
                     if (detectCamelCase(obj.label)) {
                         dataTable.addRow([{v: obj.label, f: capitalise(expandCamelCase(obj.label))}, obj.count, null,null]);
                     }
                     else if (that.column1DataType === 'number') {
                         
-                        //console.log('inArray: ' + $.inArray(obj.label, options.outlierValues));
+                        ////console.log('inArray: ' + $.inArray(obj.label, options.outlierValues));
                         
                         if (options.highlightedValue !== undefined && obj.label == options.highlightedValue){
 							dataTable.addRow([parseFloat(obj.label), null, null, obj.count]);    
@@ -375,12 +375,12 @@ var baseFacetChart = {
             
         } else {
         
-        	console.log('building datatable -  handle each data item');        
+        	//console.log('building datatable -  handle each data item');        
             // handle each data item
             $.each(xformedData, function(i,obj) {
                 // filter any crap
                 if (that.ignore == undefined || $.inArray(obj.label, that.ignore) == -1) {
-                	console.log('building datatable -  crap filtered');   
+                	//console.log('building datatable -  crap filtered');   
                 
                     if (detectCamelCase(obj.label)) {
                         dataTable.addRow([{v: obj.label, f: capitalise(expandCamelCase(obj.label))}, obj.count]);
@@ -397,6 +397,14 @@ var baseFacetChart = {
         return dataTable;
     },
     newChart: function(options) {
+        if(typeof Object.create !== 'function'){
+            Object.create = function(o){
+                var F = function(){};
+                F.prototype = o;
+                return new F();
+            };
+        }
+
         var that = Object.create(this);
         for (var prop in options) {
             if (options.hasOwnProperty(prop)) {
@@ -418,7 +426,7 @@ var facetChartTypes = {
     },
     column: function () {
     
-    	console.log('####### Returning a column chart!!!');
+    	//console.log('####### Returning a column chart!!!');
         var chartArea = baseFacetChart.chartArea;
         chartArea.left = 60;
         chartArea.height = "58%";
@@ -426,7 +434,7 @@ var facetChartTypes = {
             hAxis: {slantedText: true}, legend: 'none'});
     },
     scatter: function () {
-    	console.log('####### Returning a scatterplot  chart!!!');    
+    	//console.log('####### Returning a scatterplot  chart!!!');    
     
         var chartArea = baseFacetChart.chartArea;
         chartArea.left = 60;
@@ -502,6 +510,8 @@ var facetChartGroup = {
     },
     // create a set of facets charts - requesting the data
     loadAndDrawFacetCharts: function (options) {
+
+        //console.log('loadAndDrawFacetCharts - CALLED');
         // the base url for getting the facet data
         var url = (options.biocacheServicesUrl == undefined) ? baseFacetChart.biocacheServicesUrl : options.biocacheServicesUrl,
 
@@ -521,11 +531,12 @@ var facetChartGroup = {
         // show a message while requesting data
         chartsDiv.append($("<span>Loading charts...</span>"));
 
-		
 
         // make request
+        var occurrenceSearchUrl = urlConcat(url, "/occurrences/search.json?flimit=1000&fsort=index&pageSize=0&q=") + options.query + facets;
+        //console.log('loadAndDrawFacetCharts - making JSON request with baseURL: ' + occurrenceSearchUrl);
         $.ajax({
-            url: urlConcat(url, "/occurrences/search.json?flimit=1000&fsort=index&pageSize=0&q=") + options.query + facets,
+            url: occurrenceSearchUrl,
             dataType: 'jsonp',
             error: function() {
                 cleanUp(); // TODO:
@@ -553,22 +564,22 @@ var facetChartGroup = {
             $(options.totalRecordsSelector).html(addCommas(data.totalRecords));
         }
 
-		//if the chart is cummalative, keep a running total	
-		if(options.cummalative !== undefined && options.cummalative){
+		//if the chart is Cumulative, keep a running total
+		if(options.cumulative !== undefined && options.cumulative){
 			var runningTotal = 0;
 		    for(var i = 0; i < data.facetResults[0].fieldResult.length; i++){
 
 		     	runningTotal += data.facetResults[0].fieldResult[i].count; 
 		     	data.facetResults[0].fieldResult[i].count = runningTotal;
 		     	
-		     	console.log(data.facetResults[0].fieldResult[i].label +": total, " + runningTotal);  		     	
+		     	//console.log(data.facetResults[0].fieldResult[i].label +": total, " + runningTotal);  		     	
 		    }		    
 		}
 
         // transform facet results list into map keyed on facet name
         var facetMap = {};
         $.each(data.facetResults, function(idx, obj) {
-        	console.log('[FACET] ' + obj.fieldName +' : ' + obj.fieldResult);
+        	//console.log('[FACET] ' + obj.fieldName +' : ' + obj.fieldResult);
             facetMap[obj.fieldName] = obj.fieldResult;
         });
 

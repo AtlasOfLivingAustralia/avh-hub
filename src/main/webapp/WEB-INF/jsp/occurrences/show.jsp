@@ -288,40 +288,52 @@
                 }
             }
 
-        function replaceURLWithHTMLLinks(text) {
-            var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
-            return text.replace(exp,"<a href='$1'>$1</a>");
-        }
+            function replaceURLWithHTMLLinks(text) {
+                var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+                return text.replace(exp,"<a href='$1'>$1</a>");
+            }
 
-        function renderOutlierCharts(data){
-           var query = 'lsid:"urn:lsid:biodiversity.org.au:afd.taxon:0c139726-2add-4abe-a714-df67b1d4b814"';
-           $.each(data, function() {
-               console.log("Render charts for LAYER: " + this.layerId +", outlier values: " +  this.outlierValues);
-               drawChart(this.layerId, query, this.layerId+'Outliers', this.outlierValues, this.recordLayerValue, false);
-               drawChart(this.layerId, query, this.layerId+'OutliersCumm', this.outlierValues, this.recordLayerValue, true);
-           })
-        }
+            function renderOutlierCharts(data){
+               var chartQuery = null;
 
-        function drawChart(facetName, biocacheQuery, chartName, outlierValues, valueForThisRecord, cummalative){
+               <c:choose>
+                <c:when test="${record.processed.classification.taxonRank == 'species'}">
+                chartQuery = 'species_guid:${fn:replace(record.processed.classification.taxonConceptID, ':', '\\:')}';
+                </c:when>
+                <c:when test="${record.processed.classification.taxonRank == 'subspecies'}">
+                chartQuery = 'subspecies_guid:${fn:replace(record.processed.classification.taxonConceptID, ':', '\\:')}';
+                </c:when>
+               </c:choose>
 
-            var facetChartOptions = { error: "badQuery", legend: 'right'}
-            facetChartOptions.query = biocacheQuery;
-            facetChartOptions.charts = [chartName];
-            facetChartOptions[facetName] = {chartType: 'scatter'};
+               if(chartQuery != null){
+                   $.each(data, function() {
+                       //console.log("Render charts for LAYER: " + this.layerId +", outlier values: " +  this.outlierValues);
+                       drawChart(this.layerId, chartQuery, this.layerId+'Outliers', this.outlierValues, this.recordLayerValue, false);
+                       drawChart(this.layerId, chartQuery, this.layerId+'OutliersCumm', this.outlierValues, this.recordLayerValue, true);
+                       //console.log("Rendered charts for LAYER: " + this.layerId);
+                   })
+               }
+            }
 
-            //additional config
-            facetChartOptions.cummalative = cummalative;
-            facetChartOptions.outlierValues = outlierValues;    //retrieved from WS
-            facetChartOptions.highlightedValue = valueForThisRecord;           //retrieved from the record
+            function drawChart(facetName, biocacheQuery, chartName, outlierValues, valueForThisRecord, cumulative){
 
-            console.log('Start the drawing...' + chartName);
-            facetChartGroup.loadAndDrawFacetCharts(facetChartOptions);
-            console.log('Finished the drawing...' + chartName);
-        }
+                var facetChartOptions = { error: "badQuery", legend: 'right'}
+                facetChartOptions.query = biocacheQuery;
+                facetChartOptions.charts = [chartName];
+                facetChartOptions[facetName] = {chartType: 'scatter'};
 
-        google.load("visualization", "1", {packages:["corechart"]});
+                //additional config
+                facetChartOptions.cumulative = cumulative;
+                facetChartOptions.outlierValues = outlierValues;    //retrieved from WS
+                facetChartOptions.highlightedValue = valueForThisRecord;           //retrieved from the record
+
+                //console.log('Start the drawing...' + chartName);
+                facetChartGroup.loadAndDrawFacetCharts(facetChartOptions);
+                //console.log('Finished the drawing...' + chartName);
+            }
+
+            google.load("visualization", "1", {packages:["corechart"]});
         </script>
-
     </head>
     <body>
         <spring:url var="json" value="/occurrences/${record.raw.uuid}.json" />
@@ -333,7 +345,7 @@
                         <c:set var="admin" value=" - admin"/>
                     </c:if>
                     <c:if test="${not empty userDisplayName}">
-                        Logged in as: ${userDisplayName} <!--(${userId}${admin})-->
+                        Logged in as: ${userDisplayName} <!--(${userId}${admin})
                     </c:if>
                     <c:if test="${not empty clubView}">
                         Viewing "club view" of record
@@ -452,7 +464,7 @@
                                         </select>
                                     </p>
                                     <p style="margin-top:30px;">
-                                        <label for="comment" style="vertical-align:top;">Comment:</label>
+                                        <label for="issueComment" style="vertical-align:top;">Comment:</label>
                                         <textarea name="comment" id="issueComment" style="width:380px;height:150px;" placeholder="Please add a comment here..."></textarea>
                                     </p>
                                     <p style="margin-top:20px;">
@@ -1458,16 +1470,20 @@
                 #outlierFeedback #outlierInformation { margin-bottom:20px; }
             </style>
 
+            <script type="text/javascript" src="${biocacheService}/outlier/record/${uuid}.json?callback=renderOutlierCharts"></script>
+
 
             <div id="outlierFeedback">
                 <c:if test="${not empty record.processed.occurrence.outlierForLayers}">
                     <div id="outlierInformation">
                         <h2>Outlier information</h2>
-                        <p> This record has been detected as an outlier using the JackKnife algorithm for the following layers:</p>
+                        <p>
+                            This record has been detected as an outlier using the 
+                            <a href="http://code.google.com/p/ala-dataquality/wiki/DETECTED_OUTLIER_JACKKNIFE">Reverse Jackknife algorithm</a>
+                            for the following layers:</p>
                         <ul>
                         <c:forEach items="${metadataForOutlierLayers}" var="layerMetadata">
                             <li>
-                                <!--LayerID: ${layerMetadata['id']}<br/> -->
                                 <a href="http://spatial.ala.org.au/layers/more/${layerMetadata['name']}">${layerMetadata['displayname']} - ${layerMetadata['source']}</a><br/>
                                 Notes: ${layerMetadata['notes']}<br/>
                                 Scale: ${layerMetadata['scale']}
@@ -1483,12 +1499,11 @@
                     <h3>Addtional political boundaries information</h3>
                     <table class="layerIntersections" style="border-bottom:none;">
                         <tbody>
-                        <c:forEach items="${contextualSampleInfo}" var="sample">
-                            <alatag:occurrenceTableRow annotate="false" section="contextual"
-                                                   fieldCode="${sample.layerName}" fieldName="${sample.layerDisplayName}">
-                                ${sample.value}
-                            </alatag:occurrenceTableRow>
-                        </c:forEach>
+                        <c:forEach items="${contextualSampleInfo}" var="sample"><alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="contextual"
+                                    fieldCode="${sample.layerName}"
+                                    fieldName="${sample.layerDisplayName}">${sample.value}</alatag:occurrenceTableRow></c:forEach>
                         </tbody>
                     </table>
                     </c:if>
@@ -1497,11 +1512,11 @@
                     <h3>Environmental sampling for this location</h3>
                     <table class="layerIntersections" style="border-bottom:none;">
                         <tbody>
-                        <c:forEach items="${environmentalSampleInfo}" var="sample">
-                        <alatag:occurrenceTableRow annotate="false" section="contextual" fieldCode="${sample.layerName}"
-                                                   fieldName="${sample.layerDisplayName}">${sample.value}
-                        </alatag:occurrenceTableRow>
-                        </c:forEach>
+                        <c:forEach items="${environmentalSampleInfo}" var="sample"><alatag:occurrenceTableRow
+                                annotate="false"
+                                section="contextual"
+                                fieldCode="${sample.layerName}"
+                                fieldName="${sample.layerDisplayName}">${sample.value}</alatag:occurrenceTableRow></c:forEach>
                         </tbody>
                     </table>
                     </c:if>
@@ -1551,7 +1566,5 @@
             </div>
         </c:if>
 
-        <script type="text/javascript" language="javascript" src="${biocacheService}/outlier/record/${uuid}.json?callback=renderOutlierCharts"/>
     </body>
 </html>
-
