@@ -1462,6 +1462,17 @@
                         <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Location" exclude="${dwcExcludeFields}"/>
                     </table>
                 </div>
+                <c:if test="${not empty record.raw.miscProperties}">
+                <div id="additionalProperties">
+                    <h3>Additional properties</h3>
+                    <table class="occurrenceTable" id="miscellaneousPropertiesTable">
+                        <!-- Higher Geography -->
+                        <c:forEach items="${record.raw.miscProperties}" var="entry">
+                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="${entry.key}">${entry.value}</alatag:occurrenceTableRow>
+                        </c:forEach>
+                    </table>
+                </div>
+                </c:if>
             </div><!-- end of content2 -->
 
             <style type="text/css">
