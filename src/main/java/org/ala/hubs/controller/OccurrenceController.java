@@ -1307,11 +1307,13 @@ public class OccurrenceController {
         // check for user facets via cookie
         String[] userFacets = getFacetsFromCookie(request);
         logger.info("userFacets = " + StringUtils.join(userFacets, "|"));
-        if (userFacets != null && userFacets.length > 0) requestParams.setFacets(userFacets);
-        String[] defaultFacets = biocacheService.getDefaultFacets().toArray(new String[]{});
-        requestParams.setFacets(filterFacets(defaultFacets));
 
-        requestParams.setFacets(filterFacets(requestParams.getFacets()));
+        if (userFacets != null && userFacets.length > 0) {
+            requestParams.setFacets(userFacets);
+        } else {
+            String[] defaultFacets = biocacheService.getDefaultFacets().toArray(new String[]{});
+            requestParams.setFacets(filterFacets(defaultFacets));
+        }
 
         List<String> displayString = new ArrayList<String>();
         List<String> query = new ArrayList<String>();
