@@ -58,7 +58,7 @@
 
     <context-param>
         <param-name>authenticateOnlyIfLoggedInFilterPattern</param-name>
-        <param-value>/occurrences/.*,/explore/your-area,/query,/</param-value>
+        <param-value>/occurrence/.*,/occurrences/.*,/explore/your-area,/query,/</param-value>
     </context-param>
 
     <!-- CAS Authentication Service filters -->
@@ -168,7 +168,4 @@
     <session-config>
         <session-timeout>1</session-timeout>
     </session-config>
-<!--    <welcome-file-list>
-        <welcome-file>/index.jsp</welcome-file>
-    </welcome-file-list>-->
 </web-app>
