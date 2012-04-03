@@ -8,7 +8,8 @@
 <div id="download">
     <p id="termsOfUseDownload">
         By downloading this content you are agreeing to use it in accordance with the Atlas of Living Australia
-        <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">Terms of Use</a>.
+        <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">Terms of Use</a> and any Data Provider
+        Terms associated with the data download.
         <br/><br/>
         Please provide the following <b>optional</b> details before downloading:
     </p>

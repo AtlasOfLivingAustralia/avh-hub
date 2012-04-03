@@ -345,10 +345,10 @@
                         <c:set var="admin" value=" - admin"/>
                     </c:if>
                     <c:if test="${not empty userDisplayName}">
-                        Logged in as: ${userDisplayName} <!--(${userId}${admin})
+                        Logged in as: ${userDisplayName}${admin} <!--(${userId}${admin})-->
                     </c:if>
                     <c:if test="${not empty clubView}">
-                        Viewing "club view" of record
+                        <br/>Viewing "club view" of record
                     </c:if>
                     <!-- <a href="${json}">JSON</a> -->
                 </div>
