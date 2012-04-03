@@ -9,8 +9,8 @@ attribute name="exclude" required="true" type="java.lang.String" %>
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="${cr.name}" fieldName="<span class='dwc'>${cr.name}</span>">
             <c:choose>
                 <c:when test="${not empty cr.processed && not empty cr.raw && cr.processed == cr.raw}">${cr.processed}</c:when>
-                <c:when test="${empty cr.raw && not empty cr.processed}">${cr.processed}</c:when>
-                <c:when test="${not empty cr.raw && empty cr.processed}">${cr.raw}</c:when>
+                <c:when test="${empty cr.raw && not empty cr.processed}"><fmt:message key="${cr.processed}"/></c:when>
+                <c:when test="${not empty cr.raw && empty cr.processed}"><fmt:message key="${cr.raw}"/></c:when>
                 <c:otherwise>${cr.processed} <br/><span class="originalValue">Supplied as ${cr.raw}</span></c:otherwise>
             </c:choose>
         </alatag:occurrenceTableRow>

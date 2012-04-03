@@ -83,5 +83,5 @@ site.displayName=OZCAM
 facets.exclude=data_provider_uid
 facets.hide=
 downloads.extra=
-
+dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups
 clubRoleForHub=ROLE_OZCAM_CLUB

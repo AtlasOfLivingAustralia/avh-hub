@@ -201,7 +201,7 @@
                 });
                 
                 // give every second row a class="grey-bg"
-                $('table#datasetTable, table#taxonomyTable, table#geospatialTable, table.inner').each(function(i, el) {
+                $('table.occurrenceTable, table.inner').each(function(i, el) {
                     $(this).find('tr').each(function(j, tr) {
                         if (j % 2 == 0) {
                             $(this).addClass("grey-bg");
@@ -1468,7 +1468,7 @@
                     <table class="occurrenceTable" id="miscellaneousPropertiesTable">
                         <!-- Higher Geography -->
                         <c:forEach items="${record.raw.miscProperties}" var="entry">
-                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="${entry.key}">${entry.value}</alatag:occurrenceTableRow>
+                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="<span class='dwc'>${entry.key}</span>">${entry.value}</alatag:occurrenceTableRow>
                         </c:forEach>
                     </table>
                 </div>
