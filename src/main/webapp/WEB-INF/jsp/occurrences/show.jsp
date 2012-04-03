@@ -201,7 +201,7 @@
                 });
                 
                 // give every second row a class="grey-bg"
-                $('table.occurrenceTable, table.inner').each(function(i, el) {
+                $('table.occurrenceTable, table.inner, table.layerIntersections').each(function(i, el) {
                     $(this).find('tr').each(function(j, tr) {
                         if (j % 2 == 0) {
                             $(this).addClass("grey-bg");
