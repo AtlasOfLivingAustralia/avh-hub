@@ -345,10 +345,10 @@
                         <c:set var="admin" value=" - admin"/>
                     </c:if>
                     <c:if test="${not empty userDisplayName}">
-                        Logged in as: ${userDisplayName}${admin} <!--(${userId}${admin})-->
+                        Logged in as: ${userDisplayName} <!--(${userId}${admin})-->
                     </c:if>
                     <c:if test="${not empty clubView}">
-                        <br/>Viewing "club view" of record
+                        <div id="clubView">Showing &quot;Club View&quot;</div>
                     </c:if>
                     <!-- <a href="${json}">JSON</a> -->
                 </div>
@@ -416,9 +416,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="sidebar">
-                    <c:if test="${isCollectionAdmin}">
-                        <button class="rounded" id="verifyButton" href="#verifyRecord" >
+
+                <c:if test="${isCollectionAdmin}">
+                    <div class="sidebar">
+                        <button class="rounded" id="verifyButton" href="#verifyRecord">
                             <span id="verifyRecordSpan" title="">Verify Record</span>
                         </button>
                         <div style="display:none;">
@@ -426,18 +427,18 @@
                                 <h3>Confirmation</h3>
                                 <div id="verifyAsk">
                                     <p style="margin-bottom:10px;">Are you sure you want to verify this record as being correct?</p>
-                                    <button id="confirmVerify">Confirm</button> 
-                                    <button class="cancelVerify">Cancel</button> 
+                                    <button id="confirmVerify">Confirm</button>
+                                    <button class="cancelVerify">Cancel</button>
                                 </div>
                                 <div id="verifyDone" style="display:none;">
                                     Record successfully verified
                                     <br/>
-                                    <button class="cancelVerify">Close</button> 
+                                    <button class="cancelVerify">Close</button>
                                 </div>
                             </div>
                         </div>
-                    </c:if>
-                </div>
+                    </div>
+                </c:if>
                 <c:if test="${!isReadOnly}">
                 <div class="sidebar">
                     <button class="rounded" id="assertionButton" href="#loginOrFlag">

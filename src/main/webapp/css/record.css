@@ -342,3 +342,11 @@ div#userAssertionsDetailsLink {
 div#userAssertionsDetailsLink > a {
     font-size: 12px;
 }
+
+div#clubView {
+    color:red;
+}
+
+div.sidebar > button.rounded {
+    float: none;
+}
