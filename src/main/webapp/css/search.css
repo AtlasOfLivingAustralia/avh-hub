@@ -338,19 +338,30 @@ span#queryDisplay a:hover {
     border: 1px solid #BBBBBB;
 }
 
-#downloads {
+.buttonDiv {
     display: inline-block;
     float: left;
     text-align: left;
     font-weight: bold;
     padding: 2px 5px;
     margin-top: -1px;
+    margin-right: 5px;
     background-color: #FFFFFF;
     border: 1px solid #BBBBBB;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
     border-radius: 5px;
+}
+
+.buttonDiv a {
+    text-decoration: none
+}
+
+div.centered {
+    float: none;
+    margin: 10px auto;
+    background-color: #DDD;
 }
 
 #customiseFacets a::after, .dropDown::after {

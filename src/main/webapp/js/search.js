@@ -296,7 +296,7 @@ $(document).ready(function() {
     });
 
     // download link
-    $("#downloadLink").fancybox({
+    $("#downloadLink, #alertsLink").fancybox({
         'hideOnContentClick' : false,
         'hideOnOverlayClick': true,
         'showCloseButton': true,
@@ -304,7 +304,7 @@ $(document).ready(function() {
         'autoDimensions' : false,
         'width': '500',
         'height': '300',
-        'padding': 15,
+        'padding': 10,
         'margin': 10
     });
 
@@ -718,7 +718,7 @@ $(document).ready(function() {
     });
 
     // QTip generated tooltips
-    $("a.multipleFacetsLink, a#downloadLink, span.dropDown a, div#customiseFacets > a, a.removeLink").qtip({
+    $("a.multipleFacetsLink, a#downloadLink, a#alertsLink, a.tooltip, span.dropDown a, div#customiseFacets > a, a.removeLink").qtip({
         style: {
             classes: 'ui-tooltip-rounded ui-tooltip-shadow'
         }
@@ -767,6 +767,23 @@ $(document).ready(function() {
         var displayName = $(table).data('label');
         //loadMultiFacets(facetName, displayName, criteria, foffset);
         loadFacetsContent(facetName, fsort, foffset, BC_CONF.facetLimit, false);
+    });
+
+    // Email alert buttons
+    var alertsUrlPrefix = "http://alerts.ala.org.au/ws/";
+    $("a#alertNewRecords, a#alertNewAnnotations").click(function(e) {
+        e.preventDefault();
+        var query = $(BC_CONF.queryString).text(); // strips <span> from string
+        var methodName = $(this).data("method");
+        var url = alertsUrlPrefix + methodName + "?";
+        url += "queryDisplayName="+encodeURIComponent(query);
+        url += "&baseUrlForWS=" + encodeURIComponent(BC_CONF.biocacheServiceUrl.replace(/\/ws$/,""));
+        url += "&baseUrlForUI=" + encodeURIComponent(BC_CONF.serverName);
+        url += "&webserviceQuery=%2Fws%2Foccurrences%2Fsearch" + encodeURIComponent(BC_CONF.searchString);
+        url += "&uiQuery=%2Foccurrences%2Fsearch%3Fq%3D*%3A*";
+        url += "&resourceName=" + encodeURIComponent(BC_CONF.resourceName);
+        //console.log("url", query, methodName, url);
+        window.location.href = url;
     });
 }); // end JQuery document ready
 

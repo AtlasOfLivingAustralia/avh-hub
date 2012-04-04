@@ -43,9 +43,11 @@
                 serverName: "${initParam.serverName}${pageContext.request.contextPath}",
                 searchString: "${fn:replace(searchResults.urlParameters, "\"", "\\\"")}", //  JSTL var can contain double quotes
                 facetQueries: '${fqParams}',
+                queryString: "${fn:replace(queryDisplay, "\"", "\\\"")}",
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
                 skin: "${skin}",
+                resourceName: "${hubDisplayName}",
                 facetLimit: "${(not empty facetLimit) ? facetLimit : '50'}",
                 queryContext: "${queryContext}",
                 hasMultimedia: ${(not empty hasMultimedia) ? hasMultimedia : 'false'} // will be either true or false
@@ -111,7 +113,23 @@
                         for <span id="queryDisplay">${queryDisplay}</span>
 <!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
                     </div>
-                    
+                    <div style="display:none">
+                        <div id="alert">
+                            <h2>Email Alerts</h2>
+                            <br/>
+                            <div class="buttonDiv centered">
+                                <a href="#alertNewRecords" id="alertNewRecords" class="tooltip" data-method="createBiocacheNewRecordsAlert" title="Notify me when new records come online for this search">Get
+                                    email alerts for new <u>records</u> </a>
+                            </div>
+                            <br/>
+                            <div class="buttonDiv centered">
+                                <a href="#alertNewAnnotations" id="alertNewAnnotations" data-method="createBiocacheNewAnnotationsAlert" class="tooltip" title="Notify me when new annotations (corrections, comments, etc) come online for this search">Get
+                                    email alerts for new <u>annotations</u></a>
+                            </div>
+                            <p>&nbsp;</p>
+                            <p><a href="http://alerts.ala.org.au/notification/myAlerts">View your current alerts</a></p>
+                        </div>
+                    </div>
                     <div style="display:none">
                         <jsp:include page="../downloadDiv.jsp"/>
                     </div>
@@ -127,8 +145,11 @@
                 <div class="css-panes">
                     <div class="paneDiv solrResults">
                         <div id="searchControls">
-                            <div id="downloads">
+                            <div id="downloads" class="buttonDiv">
                                 <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
+                            </div>
+                            <div id="alerts" class="buttonDiv">
+                                <a href="#alert" id="alertsLink" title="Get email alerts for this search">Alerts</a>
                             </div>
                             <div id="sortWidgets">
                                 Results per page:
