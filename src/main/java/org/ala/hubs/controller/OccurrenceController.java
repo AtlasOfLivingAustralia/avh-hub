@@ -669,7 +669,7 @@ public class OccurrenceController {
         //load up the environmental properties
         if(record.getProcessed().getEl() != null){
             for (Map.Entry<String, String> entry :record.getProcessed().getEl().entrySet()){
-                System.out.println(entry.getKey() + "/" + entry.getValue());
+                logger.debug(entry.getKey() + "/" + entry.getValue());
                 Map<String,Object> metdata = layersMetadata.get(entry.getKey());
                 if(metdata!=null){
                     environmentalSampleInfo.add(new SampleDTO((String) metdata.get("uid"),
@@ -680,7 +680,7 @@ public class OccurrenceController {
 
         if(record.getProcessed().getCl() != null){
             for (Map.Entry<String, String> entry : record.getProcessed().getCl().entrySet()){
-                System.out.println(entry.getKey() + "/" + entry.getValue());
+                logger.debug(entry.getKey() + "/" + entry.getValue());
                 Map<String,Object> metdata = layersMetadata.get(entry.getKey());
                 if(metdata!=null){
                     contextualSampleInfo.add(new SampleDTO((String)metdata.get("uid"),
@@ -815,7 +815,7 @@ public class OccurrenceController {
             //load up the environmental properties
             if(record.getProcessed().getEl() != null){
                 for (Map.Entry<String, String> entry :record.getProcessed().getEl().entrySet()){
-                    System.out.println(entry.getKey() + "/" + entry.getValue());
+                    logger.debug(entry.getKey() + "/" + entry.getValue());
                     Map<String,Object> metdata = layersMetadata.get(entry.getKey());
                     if(metdata!=null){
                         environmentalSampleInfo.add(new SampleDTO((String) metdata.get("uid"),
@@ -827,7 +827,7 @@ public class OccurrenceController {
             List<SampleDTO> contextualSampleInfo = new ArrayList<SampleDTO>();
             if(record.getProcessed().getCl() != null){
                 for (Map.Entry<String, String> entry : record.getProcessed().getCl().entrySet()){
-                    System.out.println(entry.getKey() + "/" + entry.getValue());
+                    logger.debug(entry.getKey() + "/" + entry.getValue());
                     Map<String,Object> metdata = layersMetadata.get(entry.getKey());
                     if(metdata!=null){
                         contextualSampleInfo.add(new SampleDTO((String)metdata.get("uid"),
