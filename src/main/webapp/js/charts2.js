@@ -302,7 +302,7 @@ var baseFacetChart = {
             dataTable.addColumn('number', this.chartLabel());
             dataTable.addColumn('number','records');
             dataTable.addColumn('number','outliers');    
-            dataTable.addColumn('number','this record');       
+            dataTable.addColumn('number','this record (outlier)');
           
     	} else if (this.column1DataType == 'number') {
             //console.log('building datatable2');

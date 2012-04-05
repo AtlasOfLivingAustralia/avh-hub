@@ -1504,6 +1504,13 @@
                             </li>
                         </c:forEach>
                         </ul>
+
+                        <p style="margin-top:20px;">More information on the data quality work being undertaken by the Atlas is available here:
+                            <ul>
+                                <li><a href="http://code.google.com/p/ala-dataquality/wiki/DETECTED_OUTLIER_JACKKNIFE">http://code.google.com/p/ala-dataquality/wiki/DETECTED_OUTLIER_JACKKNIFE</a></li>
+                                <li><a href="https://docs.google.com/open?id=0B7rqu1P0r1N0NGVhZmVhMjItZmZmOS00YmJjLWJjZGQtY2Y0ZjczZmUzZTZl">Notes on Methods for Detecting Spatial Outliers</a></li>
+                            </ul>
+                        </p>
                     </div>
                     <div id="charts"></div>
                 </c:if>
