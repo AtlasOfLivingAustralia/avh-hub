@@ -361,7 +361,7 @@ div#mainmenu {
 	height: 22px;
 }
 
-#mainmenu div {
+#mainmenu > div {
 	float: left;
 	border-right-style: solid;
 	border-right-width: 1px;
@@ -1200,3 +1200,20 @@ h1, h2, h3, h4, h5 {
 }
 
 #searchHeader { padding-left: 20px;}
+
+div#mainmenu > div.rightMenu {
+    float:right;
+    border-right: none;
+    border-left: 1px solid #FFF;
+}
+
+div#mainmenu > div#clubView {
+    font-weight: bold;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+div#mainmenu a div#loginId {
+    display: inline-block;
+    padding-right: 5px;
+}

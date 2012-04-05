@@ -340,18 +340,20 @@
         <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
                 <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>
-                <div id="jsonLink">
-                    <c:if test="${isCollectionAdmin}">
-                        <c:set var="admin" value=" - admin"/>
-                    </c:if>
-                    <c:if test="${not empty userDisplayName}">
-                        Logged in as: ${userDisplayName} <!--(${userId}${admin})-->
-                    </c:if>
-                    <c:if test="${not empty clubView}">
-                        <div id="clubView">Showing &quot;Club View&quot;</div>
-                    </c:if>
-                    <!-- <a href="${json}">JSON</a> -->
-                </div>
+                <c:if test="${skin != 'avh'}">
+                    <div id="jsonLink">
+                        <c:if test="${isCollectionAdmin}">
+                            <c:set var="admin" value=" - admin"/>
+                        </c:if>
+                        <c:if test="${not empty userDisplayName}">
+                            Logged in as: ${userDisplayName} <!--(${userId}${admin})-->
+                        </c:if>
+                        <c:if test="${not empty clubView}">
+                            <div id="clubView">Showing &quot;Club View&quot;</div>
+                        </c:if>
+                        <!-- <a href="${json}">JSON</a> -->
+                    </div>
+                </c:if>
                 <c:if test="${not empty record.raw.classification}">
                     <h2 id="headingSciName">
                         <c:choose>
