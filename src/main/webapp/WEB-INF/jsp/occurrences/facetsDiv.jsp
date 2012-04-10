@@ -41,7 +41,7 @@
                             <li>
                                 <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value.value}"/>'); return false;" class="removeLink" title="remove filter">X</a></b>]</c:set>
                                 <!-- ${item.key}:${item.value.value} || ${item.value.label} -->
-                                <b><fmt:message key="${item.value.label}"/></b>${closeLink}
+                                <span class="activeFq"><fmt:message key="${item.value.label}"/></span>${closeLink}
                             </li>
                         </c:forEach>
                     </ul>

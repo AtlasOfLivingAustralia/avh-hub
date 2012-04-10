@@ -774,6 +774,12 @@ $(document).ready(function() {
     $("a#alertNewRecords, a#alertNewAnnotations").click(function(e) {
         e.preventDefault();
         var query = $("<p>"+BC_CONF.queryString+"</p>").text(); // strips <span> from string
+        var fqueries = [];
+        var fqtext = $("span.activeFq").each(function() { fqueries.push($(this).text()); });
+        if (fqtext) {
+            query += " (" + fqueries.join("; ") + ")"; // append the fq queries to queryString
+        }
+        //console.log("fqueries",fqueries, query);
         var methodName = $(this).data("method");
         var url = alertsUrlPrefix + methodName + "?";
         url += "queryDisplayName="+encodeURIComponent(query);
