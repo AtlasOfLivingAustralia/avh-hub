@@ -773,7 +773,7 @@ $(document).ready(function() {
     var alertsUrlPrefix = "http://alerts.ala.org.au/ws/";
     $("a#alertNewRecords, a#alertNewAnnotations").click(function(e) {
         e.preventDefault();
-        var query = $(BC_CONF.queryString).text(); // strips <span> from string
+        var query = $("<p>"+BC_CONF.queryString+"</p>").text(); // strips <span> from string
         var methodName = $(this).data("method");
         var url = alertsUrlPrefix + methodName + "?";
         url += "queryDisplayName="+encodeURIComponent(query);
