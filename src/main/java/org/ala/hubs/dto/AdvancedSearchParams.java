@@ -138,7 +138,7 @@ public class AdvancedSearchParams {
         } else {
             finalQuery = "q=" + URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
         }
-
+        logger.info("query: " + finalQuery);
         return finalQuery;
     }
 

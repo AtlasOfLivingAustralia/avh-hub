@@ -314,7 +314,7 @@
                                         <tr>
                                             <td class="label">Catalogue Number</td>
                                             <td>
-                                                 <input type="text" name="catalog_number" id="catalog_number" class="dataset" placeholder="" value=""/>
+                                                 <input type="text" name="catalogue_number" id="catalogue_number" class="dataset" placeholder="" value=""/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -415,26 +415,28 @@
                     </form>
                 </div><!-- end simpleSearch div -->
                 <div id="uploadDiv" class="paneDiv homePane">
-                    <form name="taxaUploadForm" id="taxaUploadForm" action="${biocacheServiceUrl}/occurrences/taxaList" method="POST">
+                    <form name="taxaUploadForm" id="taxaUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
                         <p>Enter a list of taxa (one taxon per line) and either <strong>download</strong> a <abbr title="comma separated values">CSV</abbr>
                             file containing records OR perform a <strong>search</strong>.</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
-                        <p><textarea name="names" id="names" rows="15" cols="60"></textarea></p>
+                        <p><textarea name="queries" id="raw_names" rows="15" cols="60"></textarea></p>
                         <p> <input type="submit" name="action" value="Download" />
                             &nbsp;OR&nbsp;
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                            <input type="hidden" name="field" value="raw_name"/>
                             <input type="submit" name="action" value="Search" /></p>
                     </form>
                 </div><!-- end #uploadDiv div -->
                 <div id="catalogUploadDiv" class="paneDiv homePane">
-                    <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/catalogUpload" method="POST">
+                    <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
                         <p>Enter a list of catalog numbers (one per line) and either <strong>download</strong> a <abbr title="comma separated values">CSV</abbr>
                             file containing records OR perform a <strong>search</strong>.</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
-                        <p><textarea name="catalogNumbers" id="catalogNumbers" rows="15" cols="60"></textarea></p>
+                        <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
                         <p> <input type="submit" name="action" value="Download" />
                             &nbsp;OR&nbsp;
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                            <input type="hidden" name="field" value="catalogue_number"/>
                             <input type="submit" name="action" value="Search" /></p>
                     </form>
                 </div><!-- end #uploadDiv div -->

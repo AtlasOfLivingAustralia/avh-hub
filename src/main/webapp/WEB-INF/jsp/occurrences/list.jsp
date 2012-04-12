@@ -139,7 +139,7 @@
                     <li><a id="t2" href="#mapView">Map</a></li>
                     <li><a id="t3" href="#chartsView">Charts</a></li>
                     <c:if test="${showImages}">
-                        <li><a id="t3" href="#imagesView">Images</a></li>
+                        <li><a id="t4" href="#imagesView">Images</a></li>
                     </c:if>
                 </ul>
                 <div class="css-panes">
