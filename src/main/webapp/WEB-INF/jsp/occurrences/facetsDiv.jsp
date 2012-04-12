@@ -11,15 +11,21 @@
         <h3 style="display: inline-block;float:left;">Refine Results </h3>
         <div id="customiseFacets"><a href="#" title="customise which categories are displayed below">customise</a></div>
         <div id="facetOptions">
-            <h4>Select the filter categories that are to<br/> appear in the &quot;Refine Results&quot; column</h4>
+            <h4 style="padding-top: 8px;">Select the filter categories that are to appear in the &quot;Refine Results&quot; column</h4>
             <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
             <div id="facetCheckboxes">
                 Select: <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a><br/>
-                <c:forEach var="facet" items="${defaultFacets}">
-                    <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
-                           ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
-                </c:forEach>
+                <div class="facetsColumn">
+                    <c:forEach var="facet" items="${defaultFacets}" varStatus="status">
+                        <c:if test="${status.index > 0 && status.index % 15 == 0}">
+                            </div><div class="facetsColumn">
+                        </c:if>
+                        <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
+                               ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
+                    </c:forEach>
+                </div>
             </div>
+            <div style="clear:both;"></div>
             <input type="button" id="updateFacetOptions" value="Update"/>
         </div>
     </div>

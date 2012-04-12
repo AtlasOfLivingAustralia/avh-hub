@@ -298,11 +298,18 @@ div#advancedSearch {
     border: 1px solid #BBBBBB;
     background-color: #EEEEEE;
     z-index: 500;
+    width: 700px;
 }
 
 #facetCheckboxes {
     margin-top: 4px;
     margin-bottom: 8px;
+}
+
+div.facetsColumn {
+    float: left;
+    width: 230px;
+    padding: 4px 0;
 }
 
 #queryGuid {
