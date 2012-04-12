@@ -303,8 +303,18 @@ $(document).ready(function() {
         });
     }
 
+    // Toggle advanced options
+    $("#extendedOptionsLink").click(function(e) {
+        e.preventDefault();
+        var $this = this;
+        $("#extendedOptions").slideToggle('slow', function(){
+            // change plus/minus icon when transition is complete
+            $($this).toggleClass('toggleTitleActive');
+        });
+    });
+
     // Toggle show/hide sections with plus/minus icon
-    $(".toggleTitle").click(function(e) {
+    $(".toggleTitle").not("#extendedOptionsLink").click(function(e) {
         e.preventDefault();
         var $this = this;
         $(this).next(".toggleSection").slideToggle('slow', function(){
@@ -385,19 +395,11 @@ function showHideAdvancedSearch(doShow) {
     //console.log("showHideAdvancedSearch", doShow);
     //if ($(advDiv).css("display") == "none") {
     if (doShow) {
-        //advDiv.slideDown();
-        //$("a#showHideAdvancedOptions").attr("href", "#advanced_search_hide");
-        //$("a#extendedOptionsLink").click();
-        $(".toggleSection").not("#taxonomySection").slideToggle('slow', function(){
+        // advanced hash detected...
+        $("#extendedOptions").slideToggle('slow', function(){
             // change plus/minus icon when transition is complete
             $(this).prev(".toggleTitle").toggleClass('toggleTitleActive');
         });
-        //window.location.hash = "advanced_search";
-    } else {
-         //advDiv.slideUp();
-         //$("a#showHideAdvancedOptions").attr("href", "#advanced_search_show");
-         //window.location.hash = '';
-         //var stripped = window.location.href.replace(/#.*$/,'');
     }
 }
 

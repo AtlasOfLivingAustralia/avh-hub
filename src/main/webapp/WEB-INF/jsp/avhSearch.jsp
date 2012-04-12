@@ -46,7 +46,8 @@
             <ul class="css-tabs">
                 <li><a id="t1" href="#search">Search</a></li>
                 <li><a id="t2" href="#taxaUpload">Batch Taxon Search</a></li>
-                <li><a id="t3" href="#shapeFileUpload">Shape File Upload</a></li>
+                <li><a id="t3" href="#catalogUpload">Batch Catalogue Number Search</a></li>
+                <li><a id="t4" href="#shapeFileUpload">Shape File Upload</a></li>
             </ul>
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
@@ -154,7 +155,7 @@
                                     </tr>
                                 </tbody>
                             </table>--%>
-                            <a href="#extendedOptions" class="toggleTitle">Geography</a>
+                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Geography</a>
                             <div class="toggleSection">
                                 <table border="0" width="100" cellspacing="2" class="compact">
                                     <thead/>
@@ -217,7 +218,7 @@
                                     </tbody>
                                 </table>
                             </div><!-- end div.toggleSection geography-->
-                            <a href="#extendedOptions" class="toggleTitle">Collecting Event</a>
+                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Collecting Event</a>
                             <div class="toggleSection">
                                 <table border="0" width="100" cellspacing="2" class="compact">
                                     <thead/>
@@ -259,7 +260,7 @@
                                     </tbody>
                                 </table>
                             </div><!-- end div.toggleSection Collecting Event -->
-                            <a href="#extendedOptions" class="toggleTitle">${(skin == 'avh') ? 'Specimen' : 'Record'}</a>
+                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">${(skin == 'avh') ? 'Specimen' : 'Record'}</a>
                             <div class="toggleSection">
                                 <table border="0" width="100" cellspacing="2" class="compact">
                                     <thead/>
@@ -372,7 +373,7 @@
 
                             </div><!-- end div.toggleSection Speciemen-->
                             <c:if test="${skin == 'avh'}">
-                                <a href="#extendedOptions" class="toggleTitle">Herbarium Transactions</a>
+                                <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Herbarium Transactions</a>
                                 <div class="toggleSection">
                                     <table border="0" width="100" cellspacing="2" class="compact">
                                         <thead/>
@@ -419,6 +420,18 @@
                             file containing records OR perform a <strong>search</strong>.</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
                         <p><textarea name="names" id="names" rows="15" cols="60"></textarea></p>
+                        <p> <input type="submit" name="action" value="Download" />
+                            &nbsp;OR&nbsp;
+                            <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                            <input type="submit" name="action" value="Search" /></p>
+                    </form>
+                </div><!-- end #uploadDiv div -->
+                <div id="catalogUploadDiv" class="paneDiv homePane">
+                    <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/catalogUpload" method="POST">
+                        <p>Enter a list of catalog numbers (one per line) and either <strong>download</strong> a <abbr title="comma separated values">CSV</abbr>
+                            file containing records OR perform a <strong>search</strong>.</p>
+                        <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
+                        <p><textarea name="catalogNumbers" id="catalogNumbers" rows="15" cols="60"></textarea></p>
                         <p> <input type="submit" name="action" value="Download" />
                             &nbsp;OR&nbsp;
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>

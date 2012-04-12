@@ -217,11 +217,11 @@ span#taxonName {
 }
 
 .toggleSection {
-    display:none;
+    display:block;
     padding-left: 10px;
 }
-#taxonomySection {
-    display:block;
+#extendedOptions {
+    display: none;
 }
 a.toggleTitle {
     background: url("../images/plus.gif") 0 5px no-repeat;
