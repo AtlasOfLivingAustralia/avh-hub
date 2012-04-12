@@ -80,7 +80,7 @@ googleAnalyticsKey=N/A
 site.displayName=OZCAM
 
 # skin-specific facets to exclude from search results (comma separated list)
-facets.exclude=data_provider_uid
+facets.exclude=data_provider_uid,cl918
 facets.hide=
 downloads.extra=
 dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups
