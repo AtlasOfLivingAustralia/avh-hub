@@ -16,7 +16,7 @@
     <fmt:formatNumber var="pageNumber" value="${(startIndex / pageSize) + 1}" pattern="0" />
     <c:set var="hash" value=""/>
     <c:set var="queryStr" value="${param.q ? param.q : queryString}"/>
-    <c:set var="coreParams">?<c:if test="${not empty queryStr}">q=<c:out escapeXml="true" value="${queryStr}"/>&</c:if><c:if
+    <c:set var="coreParams">?<c:if test="${not empty queryStr && empty param.taxa}">q=<c:out escapeXml="true" value="${queryStr}"/>&</c:if><c:if
             test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/>&</c:if><c:if
             test="${not empty paramValues.fq}">fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/>&</c:if><c:if
             test="${not empty param.sort}">sort=${param.sort}&</c:if><c:if 
@@ -25,6 +25,7 @@
             test="${not empty param.lat}">lat=${param.lat}&</c:if><c:if 
             test="${not empty param.lon}">lon=${param.lon}&</c:if><c:if 
             test="${not empty param.radius}">radius=${param.radius}&</c:if></c:set>
+    <!-- queryStr = ${queryStr} || ${queryString} || ${param.q} -->
     <!-- coreParams = ${coreParams} || lastPage = ${lastPage} || startIndex = ${startIndex} || pageNumber = ${pageNumber} -->
     <c:set var="startPageLink">
         <c:choose>
