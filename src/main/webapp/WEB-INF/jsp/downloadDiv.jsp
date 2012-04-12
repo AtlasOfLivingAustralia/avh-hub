@@ -11,7 +11,7 @@
         <a href="http://www.ala.org.au/about/terms-of-use/#TOUusingcontent">Terms of Use</a> and any Data Provider
         Terms associated with the data download.
         <br/><br/>
-        Please provide the following <b>optional</b> details before downloading:
+        Please provide the following details before downloading (* required):
     </p>
     <form id="downloadForm">
         <input type="hidden" name="searchParams" id="searchParams" value="<c:out value="${searchResults.urlParameters}"/>"/>
@@ -28,7 +28,7 @@
             <p><label for="filename">File Name</label>
                 <input type="text" name="filename" id="filename" value="data" size="30"  />
             </p>
-            <p><label for="reasonTypeId" style="vertical-align: top">Download Reason</label>
+            <p><label for="reasonTypeId" style="vertical-align: top">Download Reason *</label>
                 <select name="reasonTypeId" id="reasonTypeId">
                     <option value="">-- select a reason --</option>
                     <c:forEach var="it" items="${LoggerReason}">
@@ -59,32 +59,42 @@
 
         $(document).ready(function() {
             // catch download submit button
+            // Note the unbind().bind() syntax - due to Jquery ready being inside <body> tag.
 
-            $("#downloadSubmitButton").click(function(e) {
+            $(":input#downloadSubmitButton").unbind("click").bind("click",function(e) {
                 e.preventDefault();
-                var downloadUrl = generateDownloadPrefix($(":input#downloadUrl").val())+"&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
-                        $("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
-                //alert("downloadUrl = " + downloadUrl);
-                window.location.href = downloadUrl;
-                notifyDownloadStarted();
+
+                if (validateForm()) {
+                    var downloadUrl = generateDownloadPrefix($(":input#downloadUrl").val())+"&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
+                            $("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
+                    //alert("downloadUrl = " + downloadUrl);
+                    window.location.href = downloadUrl;
+                    notifyDownloadStarted();
+                }
             });
             // catch checklist download submit button
-            $("#downloadCheckListSubmitButton").click(function(e) {
+            $("#downloadCheckListSubmitButton").unbind("click").bind("click",function(e) {
                 e.preventDefault();
-                downloadUrl = generateDownloadPrefix($("input#downloadChecklistUrl").val())+"&facets=species_guid&lookup=true&file="+
-                       $("#filename").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
-                //alert("downloadUrl = " + downloadUrl);
-                window.location.href = downloadUrl;
-                notifyDownloadStarted();
+
+                if (validateForm()) {
+                    downloadUrl = generateDownloadPrefix($("input#downloadChecklistUrl").val())+"&facets=species_guid&lookup=true&file="+
+                            $("#filename").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
+                    //alert("downloadUrl = " + downloadUrl);
+                    window.location.href = downloadUrl;
+                    notifyDownloadStarted();
+                }
             });
 
             // catch checklist download submit button
-            $("#downloadFieldGuideSubmitButton").click(function(e) {
+            $("#downloadFieldGuideSubmitButton").unbind("click").bind("click",function(e) {
                 e.preventDefault();
-                var downloadUrl = generateDownloadPrefix($("input#downloadFieldGuideUrl").val())+"&facets=species_guid"+"&sourceTypeId="+
-                        $("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
-                window.open(downloadUrl);
-                notifyDownloadStarted();
+
+                if (validateForm()) {
+                    var downloadUrl = generateDownloadPrefix($("input#downloadFieldGuideUrl").val())+"&facets=species_guid"+"&sourceTypeId="+
+                            $("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
+                    window.open(downloadUrl);
+                    notifyDownloadStarted();
+                }
             });
         });
 
@@ -107,6 +117,21 @@
                 $("#statusMsg").html("");
                 $.fancybox.close();
             }, 2000);
+        }
+
+        function validateForm() {
+            var isValid = false;
+            var reasonId = $("#reasonTypeId option:selected").val();
+
+            if (reasonId) {
+                isValid = true;
+            } else {
+                $("#reasonTypeId").focus();
+                $("label[for='reasonTypeId']").css("color","red");
+                alert("Please select a \"download reason\" from the drop-down list");
+            }
+
+            return isValid;
         }
 
     </script>

@@ -305,7 +305,10 @@ $(document).ready(function() {
         'width': '500',
         'height': '300',
         'padding': 10,
-        'margin': 10
+        'margin': 10,
+        onCleanup: function() {
+            $("label[for='reasonTypeId']").css("color","#444");
+        }
     });
 
     // set height of resultsOuter div to solrResults height
