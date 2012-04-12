@@ -186,7 +186,7 @@
                                         </tr>
                                         <c:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
                                         <tr>
-                                            <td class="label"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
+                                            <td class="label"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> Region</td>
                                             <td>
                                                 <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                                 <select class="biogeographic_region" name="ibra" id="ibra">
@@ -198,7 +198,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia">IMCRA</abbr> region</td>
+                                            <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia">IMCRA</abbr> Region</td>
                                             <td>
                                                 <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                                 <select class="biogeographic_region" name="imcra" id="imcra">
@@ -273,7 +273,7 @@
                                         </tr>
                                         <c:if test="${skin != 'avh'}">
                                             <tr>
-                                                <td class="label">Basis of record</td>
+                                                <td class="label">Basis of Record</td>
                                                 <td>
                                                      <select class="basis_of_record" name="basis_of_record" id="basis_of_record">
                                                         <option value="">-- select a basis of record --</option>
@@ -331,7 +331,7 @@
                                         </tr>
                                         <c:if test="${skin == 'avh'}">
                                             <tr>
-                                                <td class="label">Duplicates held at</td>
+                                                <td class="label">Duplicates Held At</td>
                                                 <td>
                                                      <%--<select class="institution_uid collection_uid" name="duplicates_institution_collection" id="duplicates_institution_collection"
                                                              onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
@@ -360,7 +360,7 @@
                                             </tr>
                                         </c:if>
                                         <tr>
-                                            <td class="label">Record last modified</td>
+                                            <td class="label">Record Last Modified</td>
                                             <td>
                                                 <input type="text" name="last_load_start" id="last_load_start" class="occurrence_date" placeholder="" value=""/>
                                                 to
@@ -382,8 +382,8 @@
                                                 <td class="label">Borrowing Institution</td>
                                                 <td>
                                                     <%--<input type="text" name="loan_destination" id="loan_destination" class="dataset" placeholder=""  value=""/>--%>
-                                                    <select class="loan_destination" name="loan_destination" id="basis_of_record">
-                                                        <option value="">-- select a Borrowing Institution --</option>
+                                                    <select class="dataset" name="loan_destination" id="loan_destination">
+                                                        <option value="">-- select a borrowing institution --</option>
                                                         <c:forEach var="ld" items="${loanDestinations}">
                                                             <option value="${ld}">${ld}</option>
                                                         </c:forEach>
