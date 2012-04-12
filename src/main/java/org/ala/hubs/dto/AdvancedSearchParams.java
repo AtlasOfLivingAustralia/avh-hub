@@ -48,6 +48,7 @@ public class AdvancedSearchParams {
     protected String record_number = "";
     protected String collector = "";
     protected String collectors_number = "";
+    protected String cultivation_status = "";
     protected String loan_destination = "";
     protected String duplicate_inst = "";
     protected String loan_number = "";
@@ -80,6 +81,7 @@ public class AdvancedSearchParams {
         if (!basis_of_record.isEmpty()) q.append(" +basis_of_record:").append(basis_of_record);
         if (!catalogue_number.isEmpty()) q.append(" +catalogue_number:").append(catalogue_number);
         if (!record_number.isEmpty()) q.append(" +record_number:").append(record_number);
+        if (!cultivation_status.isEmpty()) q.append(" +establishment_means:").append(cultivation_status);
         if (!collector.isEmpty()) q.append(" +collector:").append(quoteText(collector));
         if (!loan_destination.isEmpty()) q.append(" +loan_destination:").append(loan_destination);
         if (!loan_number.isEmpty()) q.append(" +loan_number:").append(loan_number);
@@ -138,7 +140,7 @@ public class AdvancedSearchParams {
         } else {
             finalQuery = "q=" + URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
         }
-        logger.info("query: " + finalQuery);
+        logger.debug("query: " + finalQuery);
         return finalQuery;
     }
 
@@ -554,5 +556,13 @@ public class AdvancedSearchParams {
 
     public void setDuplicate_inst(String duplicate_inst) {
         this.duplicate_inst = duplicate_inst;
+    }
+
+    public String getCultivation_status() {
+        return cultivation_status;
+    }
+
+    public void setCultivation_status(String cultivation_status) {
+        this.cultivation_status = cultivation_status;
     }
 }
