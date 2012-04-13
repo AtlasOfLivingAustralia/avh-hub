@@ -15,23 +15,31 @@
 
 package org.ala.hubs.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.HandlerMapping;
 
-import java.io.IOException;
-import java.net.URLEncoder;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,6 +57,9 @@ public class ProxyController {
     private final String SPATIAL_PORTAL_URL = "http://spatial.ala.org.au";
     /** WordPress URL */
     private final String WORDPRESS_URL = "http://www.ala.org.au/";
+
+    @Value("${biocacheRestService.biocacheUriPrefix}")
+    String biocacheUriPrefix = null;
 
     /**
      * Proxy to WordPress site using page_id URI format
@@ -116,6 +127,116 @@ public class ProxyController {
             response.getWriter().write(ex.getMessage());
             logger.error("Proxy error: "+ex.getMessage(), ex);
         }
+    }
+
+    /**
+     * Attempt at proxying the downloads from biocache-service
+     * Does NOT currently work for zip files...
+     *
+     * @param path
+     * @param file
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = "/download/{path}/**", method = RequestMethod.GET)
+    public void proxyBiocacheDownloads(@PathVariable("path") String path,
+                @RequestParam(value="file", required=true) String file,
+                HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String restOfTheUrl = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE); // get bit matched by **
+        
+        if (StringUtils.isNotEmpty(restOfTheUrl)) {
+            path = path + "/" + restOfTheUrl;
+        }
+        
+        logger.debug("path = " + path);
+        String biocacheServiceUrl = biocacheUriPrefix + "/occurrences/" + path + "?";
+        List<String> paramList = new ArrayList<String>();
+        
+        //for (String paramName : (List<String>) request.getParameterNames()) {
+        Enumeration enumeration = request.getParameterNames();
+        while (enumeration.hasMoreElements()) {
+            String paramName = (String) enumeration.nextElement();
+            String[] paramValues = request.getParameterValues(paramName);
+            
+            for (String paramValue : paramValues) {
+                paramList.add(paramName + "=" + paramValue);
+            }
+        }
+        
+        // check for club role...
+
+        String url = biocacheServiceUrl + StringUtils.join(paramList, "&");
+        logger.debug("trying URL: " + url);
+        // Create an instance of HttpClient.
+        //HttpClient client = new HttpClient();
+        // Create a method instance.
+        //GetMethod method = new GetMethod(url);
+        // Provide custom retry handler is necessary
+        //method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
+        //        new DefaultHttpMethodRetryHandler(3, false));
+
+
+        HttpConnectionManagerParams cmParams = new HttpConnectionManagerParams();
+        cmParams.setSoTimeout(5000);
+        cmParams.setConnectionTimeout(5000);
+        HttpConnectionManager manager = new SimpleHttpConnectionManager();
+        manager.setParams(cmParams);
+        HttpClientParams params = new HttpClientParams();
+        params.setContentCharset("UTF-8");
+        HttpClient client = new HttpClient(params, manager);
+        URI uri = new URI(url);
+        GetMethod method = new GetMethod(uri.getEscapedURI());
+
+        try {
+            // Execute the method.
+            int statusCode = client.executeMethod(method);
+
+            if (statusCode != HttpStatus.SC_OK) {
+                logger.error("Method failed: " + method.getStatusLine());
+            }
+
+            // Read the response body.
+            //BufferedReader in = new BufferedReader(new InputStreamReader(method.getResponseBodyAsStream()));
+            DataInputStream stream = new DataInputStream(new BufferedInputStream(method.getResponseBodyAsStream()));
+
+            String filename = (StringUtils.isNotBlank(file)) ? file : "data";
+            String contentType = method.getResponseHeader("Content-Type").getValue(); // e.g. application/json;charset=UTF-8
+            contentType = StringUtils.substringBefore(contentType, ";"); // e.g. application/json
+            String ext = StringUtils.substringAfter(contentType, "/"); // e.g. json
+            logger.debug("Content-Type value = " + contentType);
+            response.setHeader("Content-Disposition", "attachment;filename=" + filename + "." + ext);
+            response.setContentType(contentType);
+            byte[] bytes = new byte[512];
+
+            while ((stream.read(bytes)) != -1) {
+                response.getOutputStream().write(bytes);
+                response.getOutputStream().flush();
+            }
+
+            stream.close();
+        } catch (HttpException e) {
+            logger.error("Fatal protocol violation: " + e.getMessage());
+            //e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("Fatal transport error: " + e.getMessage());
+            //e.printStackTrace();
+        } finally {
+            // Release the connection.
+            method.releaseConnection();
+        }
+
+//        URL url = new URL(biocacheServiceUrl + StringUtils.join(paramList, "&"));
+//        logger.info("trying URL: " + url.toString());
+//        URLConnection urlConnection = url.openConnection();
+//        logger.info("URL contentType = " + urlConnection.getContentType());
+//        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+//        String inputLine;
+//
+//        while ((inputLine = in.readLine()) != null)
+//            response.getWriter().write(inputLine);
+//        in.close();
     }
 
     /**
