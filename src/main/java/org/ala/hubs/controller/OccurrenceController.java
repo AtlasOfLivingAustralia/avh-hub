@@ -247,7 +247,7 @@ public class OccurrenceController {
             // order is query, latitude, longitude, radius
             String[] queryParts = StringUtils.split(query, "|", 4);
             query = queryParts[0];
-            logger.info("(spatial) query: "+query);
+            logger.debug("(spatial) query: "+query);
 
             if (query.contains("%%")) {
                 // mulitple parts (%% separated) need to be OR'ed (yes a hack for now)
@@ -375,7 +375,7 @@ public class OccurrenceController {
             Model model,
             HttpServletRequest request) throws Exception {
         
-        logger.info("raw_taxon_guid list: " + StringUtils.join(rawNames, "|"));
+        logger.debug("raw_taxon_guid list: " + StringUtils.join(rawNames, "|"));
         String queryString = "raw_taxon_name:\"" + StringUtils.join(rawNames, "\" OR raw_taxon_name:\"") + "\"";
         
         SearchRequestParams requestParams = new SearchRequestParams();
@@ -780,7 +780,7 @@ public class OccurrenceController {
                     && (request.isUserInRole("ROLE_ADMIN")
                     || request.isUserInRole("ROLE_COLLECTION_ADMIN")
                     || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
-                logger.info("User has appropriate ROLE...");
+                logger.debug("User has appropriate ROLE...");
                 try {
                     final String jsonUri = collectionContactsUrl + "/" + collectionUid + "/contacts.json";
                     logger.debug("Requesting: " + jsonUri);
@@ -1085,7 +1085,7 @@ public class OccurrenceController {
     protected List<FacetValueDTO> formatYearFacets(List<FacetValueDTO> facetValues) {
         Boolean hasBeforeLabel = false;
         Integer earliestYear = 2010;
-        logger.info("formatYearFacets: " + StringUtils.join(facetValues, "|"));
+        logger.debug("formatYearFacets: " + StringUtils.join(facetValues, "|"));
 
         for (FacetValueDTO fv : facetValues) {
             String label = fv.getLabel();
@@ -1169,7 +1169,7 @@ public class OccurrenceController {
         //file = new File("/var/folders/No/NoP-toBNE2esClaNHW+R5U+++TI/-Tmp-/as.shp");
 
         try {
-            logger.info("Reading shape file at: " + file.getAbsolutePath());
+            logger.debug("Reading shape file at: " + file.getAbsolutePath());
             Map<String,Serializable> connectParameters = new HashMap<String,Serializable>();
             connectParameters.put("url", file.toURI().toURL());
             connectParameters.put("create spatial index", true);
@@ -1184,12 +1184,12 @@ public class OccurrenceController {
             try {
                 while (iterator.hasNext()) {
                     SimpleFeature feature = iterator.next();
-                    logger.info("feature info: " + feature.toString());
+                    logger.debug("feature info: " + feature.toString());
                     Geometry geometry = (Geometry) feature.getDefaultGeometry();
 
                     if (geometry != null && geometry.isValid()) {
                         wkt = geometry.toText();
-                        logger.info("WKT = " + StringUtils.abbreviate(wkt, 1024));
+                        logger.debug("WKT = " + StringUtils.abbreviate(wkt, 1024));
                         break;
                     }
                 }
@@ -1251,7 +1251,7 @@ public class OccurrenceController {
         // Perform search via webservice
         try {
             SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
-            logger.info("searchResult: " + searchResult.getTotalRecords());
+            logger.debug("searchResult: " + searchResult.getTotalRecords());
             addToModel(model, requestParams, searchResult);
             String displayQuery = searchResult.getQueryTitle();
             
@@ -1262,7 +1262,7 @@ public class OccurrenceController {
                         Pattern exp = Pattern.compile("<span>(.*)</span>");
                         Matcher matcher = exp.matcher(displayQuery);
                         if (matcher.find()) {
-                            logger.info("Generator: "+matcher.group(1));
+                            logger.debug("Generator: "+matcher.group(1));
                             requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
                         }
                     }
@@ -1307,7 +1307,7 @@ public class OccurrenceController {
     protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
         // check for user facets via cookie
         String[] userFacets = getFacetsFromCookie(request);
-        logger.info("userFacets = " + StringUtils.join(userFacets, "|"));
+        logger.debug("userFacets = " + StringUtils.join(userFacets, "|"));
 
         if (userFacets != null && userFacets.length > 0) {
             requestParams.setFacets(userFacets);
@@ -1323,7 +1323,7 @@ public class OccurrenceController {
             for (String tq : taxaQuery) {
                 if (!tq.isEmpty()) {
                     String guid = bieService.getGuidForName(tq.replaceAll("\"", ""));
-                    logger.info("GUID for " + tq + " = " + guid);
+                    logger.debug("GUID for " + tq + " = " + guid);
 
                     if (guid != null && !guid.isEmpty()) {
                         // gota GUID match so perform a lsid search
@@ -1358,7 +1358,7 @@ public class OccurrenceController {
             }
             
             queryString.append(braces[0]).append(StringUtils.join(query, " OR ")).append(braces[1]); // taxa terms should be OR'ed
-            logger.info("query = " + queryString);
+            logger.debug("query = " + queryString);
 
             if (queryString.length() == 0) {
                 // empty taxaQuery - so show all records
@@ -1412,7 +1412,7 @@ public class OccurrenceController {
                         List<String> labels = new ArrayList<String>(); // store sub-queries in this list
 
                         for (String token : tokens) {
-                            logger.info("token: " + token);
+                            logger.debug("token: " + token);
                             String[] tokenBits = StringUtils.split(token, ":", 2);
                             if (tokenBits.length == 2) {
                                 String fn = tokenBits[0];
@@ -1436,7 +1436,7 @@ public class OccurrenceController {
                         }
 
                         String label = StringUtils.join(labels, " OR "); // join sub-queies back together
-                        logger.info("label = " + label);
+                        logger.debug("label = " + label);
                         af.setLabel(label);
 
                         afs.put(key, af); // add to map
@@ -1674,7 +1674,7 @@ public class OccurrenceController {
             }
         }
         
-        logger.info("hasMultimedia = " + hasMultimedia);
+        logger.debug("hasMultimedia = " + hasMultimedia);
         
         return hasMultimedia;
     }
