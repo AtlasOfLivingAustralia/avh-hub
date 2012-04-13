@@ -17,6 +17,7 @@ package org.ala.hubs.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -26,6 +27,9 @@ import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.util.AbstractCasFilter;
+import org.jasig.cas.client.validation.Assertion;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +64,10 @@ public class ProxyController {
 
     @Value("${biocacheRestService.biocacheUriPrefix}")
     String biocacheUriPrefix = null;
+    @Value("${biocacheRestService.apiKey}")
+    String apiKey = null;
+    @Value("${clubRoleForHub}")
+    String clubRoleForHub = null;
 
     /**
      * Proxy to WordPress site using page_id URI format
@@ -166,21 +174,26 @@ public class ProxyController {
         }
         
         // check for club role...
-
+        final HttpSession session = request.getSession(false);
+        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
+        String userId = null;
         String url = biocacheServiceUrl + StringUtils.join(paramList, "&");
-        logger.debug("trying URL: " + url);
-        // Create an instance of HttpClient.
-        //HttpClient client = new HttpClient();
-        // Create a method instance.
-        //GetMethod method = new GetMethod(url);
-        // Provide custom retry handler is necessary
-        //method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-        //        new DefaultHttpMethodRetryHandler(3, false));
 
+        if (assertion != null) {
+            AttributePrincipal principal = assertion.getPrincipal();
+            userId = principal.getName();
+        }
+
+        // Check if user has role to view "club" version of records
+        if (userId != null && (request.isUserInRole(clubRoleForHub))) {
+            url = url + "&apiKey=" + apiKey;
+        }
+
+        logger.info("trying URL: " + url);
 
         HttpConnectionManagerParams cmParams = new HttpConnectionManagerParams();
-        cmParams.setSoTimeout(5000);
-        cmParams.setConnectionTimeout(5000);
+        cmParams.setSoTimeout(60000);
+        cmParams.setConnectionTimeout(60000);
         HttpConnectionManager manager = new SimpleHttpConnectionManager();
         manager.setParams(cmParams);
         HttpClientParams params = new HttpClientParams();
@@ -198,7 +211,6 @@ public class ProxyController {
             }
 
             // Read the response body.
-            //BufferedReader in = new BufferedReader(new InputStreamReader(method.getResponseBodyAsStream()));
             DataInputStream stream = new DataInputStream(new BufferedInputStream(method.getResponseBodyAsStream()));
 
             String filename = (StringUtils.isNotBlank(file)) ? file : "data";
@@ -209,12 +221,14 @@ public class ProxyController {
             response.setHeader("Content-Disposition", "attachment;filename=" + filename + "." + ext);
             response.setContentType(contentType);
             byte[] bytes = new byte[512];
-
-            while ((stream.read(bytes)) != -1) {
-                response.getOutputStream().write(bytes);
+            int read = -1;
+            while ((read = stream.read(bytes)) != -1) {
+                response.getOutputStream().write(bytes, 0, read);
                 response.getOutputStream().flush();
             }
 
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
             stream.close();
         } catch (HttpException e) {
             logger.error("Fatal protocol violation: " + e.getMessage());
@@ -226,17 +240,6 @@ public class ProxyController {
             // Release the connection.
             method.releaseConnection();
         }
-
-//        URL url = new URL(biocacheServiceUrl + StringUtils.join(paramList, "&"));
-//        logger.info("trying URL: " + url.toString());
-//        URLConnection urlConnection = url.openConnection();
-//        logger.info("URL contentType = " + urlConnection.getContentType());
-//        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-//        String inputLine;
-//
-//        while ((inputLine = in.readLine()) != null)
-//            response.getWriter().write(inputLine);
-//        in.close();
     }
 
     /**
