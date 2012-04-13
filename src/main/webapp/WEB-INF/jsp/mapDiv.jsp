@@ -40,7 +40,7 @@
                 </select>
             </p>
             <p>
-                <label for="popacity">Opacity (mm)</label>
+                <label for="popacity">Opacity</label>
                 <select name="popacity" id="popacity">
                     <option>1</option>
                     <option>0.9</option>
@@ -62,12 +62,11 @@
                 <label for="widthmm">Width (mm)</label>
                 <input type="text" name="widthmm" id="widthmm" value="150" />
             </p>
-            <!--
             <p>
-                <label for="scale">Include scale</label>
-                <checkbox name="scale" id="scale" value="on"/>
+                <label for="scale_on">Include scale</label>
+                <input type="radio" name="scale" value="on" id="scale_on" checked="checked"/> Yes &nbsp;
+                <input type="radio" name="scale" value="off" /> No
             </p>
-            -->
             <p>
                 <label for="baselayer">Base layer</label>
                 <select name="baselayer" id="baselayer">
@@ -121,7 +120,7 @@
                    '&popacity=' + $('#popacity').val() +
                    '&pcolour=' + $('#pcolour').val() +
                    '&widthmm=' + $('#widthmm').val() +
-                   '&scale=' + $('#scale').val() +
+                   '&scale=' + $(':input[name=scale]:checked').val() +
                    '&baselayer=' + $('#baselayer').val()+
                    '&fileName=' + $('#fileName').val()+'.'+$('#format').val().toLowerCase()
 

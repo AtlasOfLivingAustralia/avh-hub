@@ -45,7 +45,9 @@
             <input type="hidden" name="sourceTypeId" id="sourceTypeId" value="${sourceId}"/>
             <input type="submit" value="Download All Records" id="downloadSubmitButton"/>&nbsp;
             <input type="submit" value="Download Species Checklist" id="downloadCheckListSubmitButton"/>&nbsp;
-            <input type="submit" value="Download Species Field Guide" id="downloadFieldGuideSubmitButton"/>&nbsp;
+            <c:if test="${skin != 'avh'}">
+                <input type="submit" value="Download Species Field Guide" id="downloadFieldGuideSubmitButton"/>&nbsp;
+            </c:if>
             <!--
             <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
             -->
