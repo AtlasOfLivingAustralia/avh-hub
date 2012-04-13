@@ -804,7 +804,7 @@ function loadMultiFacets(facetName, displayName, fsort, foffset) {
     foffset = (foffset) ? foffset : "0";
     var facetLimit = BC_CONF.facetLimit;
     //$("#dynamic").html("Loading...");
-    var facet = (facetName == "occurrence_year") ? "year" : facetName; // Date facets have different name
+    var facet = facetName; //(facetName == "occurrence_year") ? "year" : facetName; // Date facets have different name
     //console.log("loadMultiFacets", facetName,  displayName, fsort);
     // pull params out of BC_CONF.searchString
     var params = BC_CONF.searchString.replace(/^\?/, "").split("&");

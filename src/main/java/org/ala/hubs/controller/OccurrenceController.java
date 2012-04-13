@@ -1065,7 +1065,7 @@ public class OccurrenceController {
                         }
                     }
                     break;
-                case year:
+                case occurrence_year:
                     facetValues = formatYearFacets(facetValues);
                     break;
             }
@@ -1085,6 +1085,7 @@ public class OccurrenceController {
     protected List<FacetValueDTO> formatYearFacets(List<FacetValueDTO> facetValues) {
         Boolean hasBeforeLabel = false;
         Integer earliestYear = 2010;
+        logger.info("formatYearFacets: " + StringUtils.join(facetValues, "|"));
 
         for (FacetValueDTO fv : facetValues) {
             String label = fv.getLabel();
@@ -1127,7 +1128,7 @@ public class OccurrenceController {
      * Enum for facets indexed with a "code" value vs String value (e.g. collection_uid)
      */
     protected enum FacetsWithCodes {
-        institution_uid, collection_uid, data_resource_uid, species_guid, genus_guid, month, year;
+        institution_uid, collection_uid, data_resource_uid, species_guid, genus_guid, month, year, occurrence_year;
     }
 
     /**
