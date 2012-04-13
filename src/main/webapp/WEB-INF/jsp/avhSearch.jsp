@@ -393,7 +393,7 @@
                                             <tr>
                                                 <td class="label">Loan Number</td>
                                                 <td>
-                                                    <input type="text" name="loan_number" id="loan_number" class="dataset" placeholder=""  value=""/>
+                                                    <input type="text" name="loan_identifier" id="loan_identifier" class="dataset" placeholder=""  value=""/>
                                                 </td>
                                             </tr>
                                             <tr>

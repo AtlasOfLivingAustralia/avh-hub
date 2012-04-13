@@ -51,7 +51,7 @@ public class AdvancedSearchParams {
     protected String cultivation_status = "";
     protected String loan_destination = "";
     protected String duplicate_inst = "";
-    protected String loan_number = "";
+    protected String loan_identifier = "";
     protected String start_date = "";
     protected String end_date = "";
     protected String last_load_start = "";
@@ -84,7 +84,7 @@ public class AdvancedSearchParams {
         if (!cultivation_status.isEmpty()) q.append(" +establishment_means:").append(cultivation_status);
         if (!collector.isEmpty()) q.append(" +collector:").append(quoteText(collector));
         if (!loan_destination.isEmpty()) q.append(" +loan_destination:").append(loan_destination);
-        if (!loan_number.isEmpty()) q.append(" +loan_number:").append(loan_number);
+        if (!loan_identifier.isEmpty()) q.append(" +loan_identifier:").append(loan_identifier);
         if (!duplicate_inst.isEmpty()) q.append(" +duplicate_inst:").append(duplicate_inst);
         //if (!collectors_number.isEmpty()) q.append(" +collector:").append(collectors_number); // TODO field in SOLR not active
         
@@ -129,7 +129,7 @@ public class AdvancedSearchParams {
 
         if (!last_load_start.isEmpty() || !last_load_end.isEmpty()) {
             String value = combineDates(last_load_start, last_load_end);
-            q.append(" +last_load_date:").append(value);
+            q.append(" +modified_date:").append(value);
         }
 
         String finalQuery = "";
@@ -542,12 +542,12 @@ public class AdvancedSearchParams {
         this.loan_destination = loan_destination;
     }
 
-    public String getLoan_number() {
-        return loan_number;
+    public String getLoan_identifier() {
+        return loan_identifier;
     }
 
-    public void setLoan_number(String loan_number) {
-        this.loan_number = loan_number;
+    public void setLoan_identifier(String loan_identifier) {
+        this.loan_identifier = loan_identifier;
     }
 
     public String getDuplicate_inst() {
