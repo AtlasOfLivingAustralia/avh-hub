@@ -296,7 +296,7 @@ $(document).ready(function() {
     });
 
     // download link
-    $("#downloadLink, #alertsLink").fancybox({
+    $("#downloadLink, #alertsLink, #downloadMapLink").fancybox({
         'hideOnContentClick' : false,
         'hideOnOverlayClick': true,
         'showCloseButton': true,

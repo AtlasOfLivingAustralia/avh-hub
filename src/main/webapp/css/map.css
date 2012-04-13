@@ -12,8 +12,8 @@
 */
 
 #mapcanvas {
-    width: 680px;
-    height: 560px;
+    width: 740px;
+    height: 580px;
 }
 
 #maploading {
@@ -21,7 +21,7 @@
     /*top: 180px;*/
     left: auto;
     right: auto;
-    width: 670px;
+    width: 720px;
     background-color: #1775BA;
     color: white;
     padding: 5px;

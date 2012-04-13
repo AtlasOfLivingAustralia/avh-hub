@@ -56,7 +56,7 @@ ul.css-tabs a.current {
 /* tab pane */
 .css-panes div.paneDiv {
 	display:none;
-    width: 680px;
+    width: 740px;
 	border:1px solid #666;
 	border-width:1px 1px 1px 1px;
     -moz-border-radius: 0 5px 5px 5px;	
@@ -64,12 +64,12 @@ ul.css-tabs a.current {
     -khtml-border-radius: 0 5px 5px 5px;	
     border-radius: 0 5px 5px 5px;	
 	min-height:100px;
-	padding:15px 20px;
+	padding:15px 10px;
 	background-color:#eee;	
 }
 
 .css-panes div.homePane {
-    width: 90%;
+    width: 100%;
 }
 
 #content3 {
