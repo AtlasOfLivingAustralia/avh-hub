@@ -72,10 +72,8 @@
         <script type="text/javascript">
             // Conf for map JS (Ajay)
             Config.setupUrls("${biocacheServiceUrl}", "${queryContext}");
-            
             google.load('maps','3.3',{ other_params: "sensor=false" });
             google.load("visualization", "1", {packages:["corechart"]});
-            
         </script>
         <script src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
         <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
@@ -132,6 +130,9 @@
                     </div>
                     <div style="display:none">
                         <jsp:include page="../downloadDiv.jsp"/>
+                    </div>
+                    <div style="display:none">
+                        <jsp:include page="../mapDiv.jsp"/>
                     </div>
                 </div>
                 <ul class="css-tabs">
@@ -338,7 +339,13 @@
                                 <td>
                                     <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
                                     <c:set var='spatialPortalUrlParams'><ala:propertyLoader bundle="hubs" property="spatialPortalUrlParams"/></c:set>
-                                    <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
+                                  <!--  <a class="buttonDiv" id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>-->
+                                    <div id="downloadMaps" class="buttonDiv">
+                                        <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
+                                    </div>
+                                    <div id="downloadMaps" class="buttonDiv">
+                                        <a href="#downloadMap" id="downloadMapLink" title="Download a publication map">Download publication map</a>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -371,7 +378,6 @@
                 <form name="raw_taxon_search" class="rawTaxonSearch" id="rawTaxonSearchForm" action="${pageContext.request.contextPath}/occurrences/search/taxa" method="POST">
                     <%-- taxon concept search drop-down div are put in here via Jquery --%>
                     <div style="display:none;">
-                        
                     </div>
                 </form>
             </c:if>
