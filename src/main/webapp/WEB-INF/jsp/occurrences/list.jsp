@@ -310,7 +310,7 @@
                                         <select name="colourFacets" id="colourFacets">
                                             <option value=""> None </option>
                                             <c:forEach var="facetResult" items="${searchResults.facetResults}">
-                                                <c:if test="${fn:length(facetResult.fieldResult) > 1 && empty facetMap[facetResult.fieldName]}">
+                                                <c:if test="${fn:length(facetResult.fieldResult) > 1}">
                                                     <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
                                                 </c:if>
                                             </c:forEach>
