@@ -25,6 +25,7 @@ public class ServiceCache {
     protected List<String> species_group = new ArrayList<String>();
     protected List<String> ibra = new ArrayList<String>();
     protected List<String> imcra = new ArrayList<String>();
+    protected List<String> cl966 = new ArrayList<String>();
     protected List<String> loan_destination = new ArrayList<String>();
     protected List<String> establishment_means = new ArrayList<String>();
 
@@ -78,6 +79,11 @@ public class ServiceCache {
         return imcra;
     }
 
+    public List<String> getIMCRA_MESO(){
+        checkCacheAge();
+        return cl966;
+    }
+
     public List<String> getLoanDestination(){
         checkCacheAge();
         return loan_destination;
@@ -109,7 +115,7 @@ public class ServiceCache {
 
         logger.info("Updating collection uid cache...");
         SearchRequestParams srp = new SearchRequestParams();
-        srp.setFacets(new String[]{"basis_of_record","type_status","country", "kingdom","species_group", "state", "ibra", "imcra", "loan_destination","establishment_means"});
+        srp.setFacets(new String[]{"basis_of_record","type_status","country", "kingdom","species_group", "state", "ibra", "imcra", "cl966", "loan_destination","establishment_means"});
         srp.setFlimit(-1);
         srp.setQ("*:*");
         srp.setPageSize(0);

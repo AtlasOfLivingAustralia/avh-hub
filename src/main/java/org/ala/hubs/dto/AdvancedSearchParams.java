@@ -48,6 +48,9 @@ public class AdvancedSearchParams {
     protected String record_number = "";
     protected String collector = "";
     protected String collectors_number = "";
+    protected String identified_by = "";
+    protected String identified_date_start = "";
+    protected String identified_date_end = "";
     protected String cultivation_status = "";
     protected String loan_destination = "";
     protected String duplicate_inst = "";
@@ -82,7 +85,8 @@ public class AdvancedSearchParams {
         if (!catalogue_number.isEmpty()) q.append(" +catalogue_number:").append(catalogue_number);
         if (!record_number.isEmpty()) q.append(" +record_number:").append(record_number);
         if (!cultivation_status.isEmpty()) q.append(" +establishment_means:").append(cultivation_status);
-        if (!collector.isEmpty()) q.append(" +collector:").append(quoteText(collector));
+        if (!collector.isEmpty()) q.append(" +collector_text:").append(quoteText(collector));
+        if (!identified_by.isEmpty()) q.append(" +identified_by_text:").append(quoteText(identified_by));
         if (!loan_destination.isEmpty()) q.append(" +loan_destination:").append(loan_destination);
         if (!loan_identifier.isEmpty()) q.append(" +loan_identifier:").append(loan_identifier);
         if (!duplicate_inst.isEmpty()) q.append(" +duplicate_inst:").append(duplicate_inst);
@@ -130,6 +134,11 @@ public class AdvancedSearchParams {
         if (!last_load_start.isEmpty() || !last_load_end.isEmpty()) {
             String value = combineDates(last_load_start, last_load_end);
             q.append(" +modified_date:").append(value);
+        }
+
+        if (!identified_date_start.isEmpty() || !identified_date_end.isEmpty()) {
+            String value = combineDates(identified_date_start, identified_date_end);
+            q.append(" +identified_date:").append(value);
         }
 
         String finalQuery = "";
@@ -564,5 +573,29 @@ public class AdvancedSearchParams {
 
     public void setCultivation_status(String cultivation_status) {
         this.cultivation_status = cultivation_status;
+    }
+
+    public String getIdentified_by() {
+        return identified_by;
+    }
+
+    public void setIdentified_by(String identified_by) {
+        this.identified_by = identified_by;
+    }
+
+    public String getIdentified_date_start() {
+        return identified_date_start;
+    }
+
+    public void setIdentified_date_start(String identified_date_start) {
+        this.identified_date_start = identified_date_start;
+    }
+
+    public String getIdentified_date_end() {
+        return identified_date_end;
+    }
+
+    public void setIdentified_date_end(String identified_date_end) {
+        this.identified_date_end = identified_date_end;
     }
 }

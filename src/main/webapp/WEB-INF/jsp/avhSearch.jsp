@@ -198,12 +198,12 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia">IMCRA</abbr> Region</td>
+                                            <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia (meso-scale)">IMCRA (meso-scale)</abbr> Region</td>
                                             <td>
                                                 <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                                 <select class="biogeographic_region" name="imcra" id="imcra">
-                                                    <option value="">-- select an IMCRA region --</option>
-                                                    <c:forEach var="region" items="${imcra}">
+                                                    <option value="">-- select an IMCRA (meso) region --</option>
+                                                    <c:forEach var="region" items="${imcraMeso}">
                                                         <option value="${region}">${region}</option>
                                                     </c:forEach>
                                                 </select>
@@ -359,6 +359,21 @@
                                                 </td>
                                             </tr>
                                         </c:if>
+                                        <tr>
+                                            <td class="label">Determiner</td>
+                                            <td>
+                                                <input type="text" name="identified_by" id="identified_by" class="dataset" placeholder=""  value=""/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Determination Date</td>
+                                            <td>
+                                                <input type="text" name="identified_date_start" id="identified_date_start" class="occurrence_date" placeholder="" value=""/>
+                                                to
+                                                <input type="text" name="identified_date_end" id="identified_date_end" class="occurrence_date" placeholder="" value=""/>
+                                                (YYYY-MM-DD)
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td class="label">Record Last Modified</td>
                                             <td>
