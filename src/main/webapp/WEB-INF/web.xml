@@ -58,7 +58,7 @@
 
     <context-param>
         <param-name>authenticateOnlyIfLoggedInFilterPattern</param-name>
-        <param-value>/occurrence/.*,/occurrences/.*,/explore/your-area,/query,/</param-value>
+        <param-value>/occurrence/.*,/occurrences/.*,/explore/your-area,/query,/proxy/download/.*,/</param-value>
     </context-param>
 
     <!-- CAS Authentication Service filters -->
@@ -152,17 +152,6 @@
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <!-- Spring ETag Support -->
-    <filter>
-        <filter-name>etagFilter</filter-name>
-        <filter-class>org.springframework.web.filter.ShallowEtagHeaderFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>etagFilter</filter-name>
-        <servlet-name>dispatcher</servlet-name>
     </filter-mapping>
 
     <session-config>

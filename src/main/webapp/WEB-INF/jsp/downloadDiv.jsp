@@ -15,7 +15,14 @@
     </p>
     <form id="downloadForm">
         <input type="hidden" name="searchParams" id="searchParams" value="<c:out value="${searchResults.urlParameters}"/>"/>
-        <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download"/>
+        <c:choose>
+            <c:when test="${clubView}">
+                <input type="hidden" name="url" id="downloadUrl" value="${pageContext.request.contextPath}/proxy/download/download"/>
+            </c:when>
+            <c:otherwise>
+                <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download"/>
+            </c:otherwise>
+        </c:choose>
         <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download"/>
         <input type="hidden" name="url" id="downloadFieldGuideUrl" value="${pageContext.request.contextPath}/occurrences/fieldguide/download"/>
 

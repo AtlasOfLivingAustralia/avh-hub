@@ -468,7 +468,7 @@ public class OccurrenceController {
         String[] userFacets = getFacetsFromCookie(request);
         if (userFacets != null && userFacets.length > 0) requestParams.setFacets(userFacets);
         SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
-        addToModel(model, requestParams, searchResult);
+        addToModel(model, requestParams, searchResult, request);
         
         return RECORD_LIST;
     }
@@ -1252,7 +1252,7 @@ public class OccurrenceController {
         try {
             SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
             logger.debug("searchResult: " + searchResult.getTotalRecords());
-            addToModel(model, requestParams, searchResult);
+            addToModel(model, requestParams, searchResult, request);
             String displayQuery = searchResult.getQueryTitle();
             
             if (taxaQuery != null) {
@@ -1291,7 +1291,7 @@ public class OccurrenceController {
             model.addAttribute("longitude", requestParams.getLon());
             model.addAttribute("radius", requestParams.getRadius());
             logger.debug("searchResult: " + searchResult.getTotalRecords());
-            addToModel(model, requestParams, searchResult);
+            addToModel(model, requestParams, searchResult, request);
         } catch (Exception ex) {
         	logger.error(ex.getMessage(),ex);
             model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
@@ -1547,12 +1547,13 @@ public class OccurrenceController {
     
     /**
      * Common code to add stuff to the MVC model (for search methods)
-     * 
+     *
      * @param model
      * @param requestParams
-     * @param searchResult 
+     * @param searchResult
+     * @param request
      */
-    protected void addToModel(Model model, SearchRequestParams requestParams, SearchResultDTO searchResult) {
+    protected void addToModel(Model model, SearchRequestParams requestParams, SearchResultDTO searchResult, HttpServletRequest request) {
         if ("*:*".equals(searchResult.getQueryTitle())) {
             searchResult.setQueryTitle("[all records]");
         }
@@ -1571,7 +1572,32 @@ public class OccurrenceController {
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
         model.addAttribute("hasMultimedia", resultsHaveMultimedia(searchResult));
+        model.addAttribute("clubView", isUserInClub(request));
         addCommonDataToModel(model);
+    }
+
+    /**
+     * Determine whether current user has the "club view" role.
+     *
+     * @param request
+     * @return
+     */
+    private Boolean isUserInClub(HttpServletRequest request) {
+        Boolean userIsInClub = false;
+        final HttpSession session = request.getSession(false);
+        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
+        String userId = null;
+
+        if (assertion != null){
+            AttributePrincipal principal = assertion.getPrincipal();
+            userId = principal.getName();
+        }
+
+        if (userId != null && (request.isUserInRole(clubRoleForHub))) {
+            userIsInClub = true;
+        }
+
+        return userIsInClub;
     }
 
     /**
