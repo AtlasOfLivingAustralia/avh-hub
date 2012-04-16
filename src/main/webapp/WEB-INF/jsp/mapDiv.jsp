@@ -8,7 +8,7 @@
 <div id="downloadMap">
     <h2>Download publication map</h2>
     <form id="downloadMapForm">
-        <input id="mapDownloadUrl" type="hidden" value="http://biocache-test.ala.org.au/ws/webportal/wms/image"/>
+        <input id="mapDownloadUrl" type="hidden" value="http://biocache.ala.org.au/ws/webportal/wms/image"/>
         <fieldset>
             <p><label for="format">Format</label>
                 <select name="format" id="format">
