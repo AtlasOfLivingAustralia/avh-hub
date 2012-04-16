@@ -780,7 +780,10 @@ $(document).ready(function() {
         var fqueries = [];
         var fqtext = $("span.activeFq").each(function() { fqueries.push($(this).text()); });
         if (fqtext) {
-            query += " (" + fqueries.join("; ") + ")"; // append the fq queries to queryString
+            var fqueryString = fqueries.join("; ");
+            if(fqueryString.length > 0){
+                query += " (" + fqueryString + ")"; // append the fq queries to queryString
+            }
         }
         //console.log("fqueries",fqueries, query);
         var methodName = $(this).data("method");

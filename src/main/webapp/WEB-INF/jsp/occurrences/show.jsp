@@ -622,6 +622,7 @@
                     <table class="occurrenceTable" id="datasetTable">
                         <c:if test="${useAla == 'true'}">
                             <!-- Data Provider -->
+                            <c:if test="${skin != 'avh'}">
                             <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data Provider">
                                 <c:choose>
                                     <c:when test="${record.processed.attribution.dataProviderUid != null && not empty record.processed.attribution.dataProviderUid}">
@@ -653,6 +654,7 @@
                                     </c:otherwise>
                                 </c:choose>
                             </alatag:occurrenceTableRow>
+                            </c:if>
                         </c:if>
                         <!-- Institution -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="institutionCode" fieldName="Institution">
@@ -1397,11 +1399,6 @@
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locationRemarks" fieldName="Location Remarks">
                             <c:set target="${fieldsMap}" property="locationRemarks" value="true" />
                             ${record.raw.location.locationRemarks}
-                        </alatag:occurrenceTableRow>
-                        <!-- Occurrence remarks -->
-                        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="occurrenceRemarks" fieldName="Occurrence Remarks">
-                            <c:set target="${fieldsMap}" property="occurrenceRemarks" value="true" />
-                            ${record.raw.occurrence.occurrenceRemarks}
                         </alatag:occurrenceTableRow>
                         <!-- Field notes -->
                         <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field Notes">

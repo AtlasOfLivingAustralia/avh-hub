@@ -411,7 +411,7 @@
                                                     <input type="text" name="loan_identifier" id="loan_identifier" class="dataset" placeholder=""  value=""/>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <tr style="display:none">
                                                 <td class="label">Exchange Number</td>
                                                 <td>
                                                     <input type="text" name="exchange_number" id="exchange_number" class="dataset" placeholder="not currently searchable" readonly="readonly" value=""/>
