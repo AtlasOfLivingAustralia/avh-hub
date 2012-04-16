@@ -974,6 +974,10 @@ public class OccurrenceController {
             logger.warn("BindingResult errors: " + result.toString());
         }
 
+        // work-around for decade facet
+        Map<String, String> facetSynonyms = new HashMap<String, String>();
+        facetSynonyms.put("occurrence_year","decade");
+
         List<FacetValueDTO> facetValues = new ArrayList<FacetValueDTO>();
         String facet = requestParams.getFacets()[0]; // assumes only single facet requested
         // TODO: add ability to page through facets
@@ -981,7 +985,10 @@ public class OccurrenceController {
 
         for (FacetResultDTO facetResults : results.getFacetResults()) {
             // check the facet is the one we're after
-            if (StringUtils.contains(facetResults.getFieldName(), facet)) {
+            String thisFacet = facetResults.getFieldName();
+            String thisFacetSynonym = (facetSynonyms.containsKey(thisFacet)) ? facetSynonyms.get(thisFacet) : null;
+
+            if (StringUtils.contains(thisFacet, facet) || StringUtils.equals(facet, thisFacetSynonym)) {
                 // iterate over facet values (fieldResultsDTO)
                 for (FieldResultDTO field : facetResults.getFieldResult()) {
                     FacetValueDTO fv = new FacetValueDTO(field.getFieldValue(), field.getCount());
@@ -1065,7 +1072,7 @@ public class OccurrenceController {
                         }
                     }
                     break;
-                case occurrence_year:
+                case decade:
                     facetValues = formatYearFacets(facetValues);
                     break;
             }
@@ -1128,7 +1135,7 @@ public class OccurrenceController {
      * Enum for facets indexed with a "code" value vs String value (e.g. collection_uid)
      */
     protected enum FacetsWithCodes {
-        institution_uid, collection_uid, data_resource_uid, species_guid, genus_guid, month, year, occurrence_year;
+        institution_uid, collection_uid, data_resource_uid, species_guid, genus_guid, month, year, decade;
     }
 
     /**

@@ -680,9 +680,9 @@ $(document).ready(function() {
         onComplete: function(links) {
             var link = links[0];
             // substitute some facet names so sorting works
-            var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name","data_resource");
+            var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name","data_resource").replace("occurrence_year","decade");
             var displayName = $(link).data("displayname");
-            loadMultiFacets(facetName, displayName, "count")
+            loadMultiFacets(facetName, displayName, "count");
         }
     });
 
