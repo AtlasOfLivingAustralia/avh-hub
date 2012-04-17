@@ -84,7 +84,7 @@
         <c:otherwise>datasets</c:otherwise>
     </c:choose>
 </c:set>
-<body class="${bodyClass} fluid">
+<body class="${bodyClass}">
 <div id="wrapper">
     <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${fn:escapeXml(pageContext.request.queryString)}"/>
     <ala:header returnUrlPath="${returnUrlPath}" populateSearchBox="true" />
