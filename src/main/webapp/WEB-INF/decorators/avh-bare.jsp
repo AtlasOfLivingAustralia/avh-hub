@@ -29,7 +29,7 @@ include file="/common/taglibs.jsp" %>
 	<meta name="DC.Rights" content="(c) Council of Heads of Australasian Herbaria, 2010" />
 	<meta name="DC.Rights" content="Unless other stated, Intellectual Property associated with this resource resides with the Council of Heads of Australasian Herbaria and individual herbaria. Applications, source code and data are freely available for research, non-commercial and public good purposes" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-    <<%@ include file="commonJS.jspf" %>
+    <%@ include file="commonJS.jspf" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
     <decorator:head />
