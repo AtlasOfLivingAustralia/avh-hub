@@ -153,7 +153,7 @@ function loadImagesInTab() {
 function loadImages(start) {
     start = (start) ? start : 0;
     var imagesJsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json" + BC_CONF.searchString + 
-        "&fq=multimedia:Multimedia&facet=false&pageSize=20&start=" + start + "&sort=last_load_date&dir=desc&callback=?";
+        "&fq=multimedia:Image&facet=false&pageSize=20&start=" + start + "&sort=last_load_date&dir=desc&callback=?";
     $.getJSON(imagesJsonUri, function(data) {
         //console.log("data",data);
         if (data.occurrences) {
