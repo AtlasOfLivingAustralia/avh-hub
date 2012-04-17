@@ -19,7 +19,7 @@
         <c:when test="${not empty searchResults.queryTitle}">${searchResults.queryTitle}</c:when>
         <c:otherwise>${searchRequestParams.displayString}</c:otherwise></c:choose>
 </c:set>
-<c:set var="showImages" value="${hasMultimedia && skin != ''}"/>
+<c:set var="showImages" value="${hasImages}"/>
 <!DOCTYPE html>
 <html>
     <head>
@@ -50,7 +50,7 @@
                 resourceName: "${hubDisplayName}",
                 facetLimit: "${(not empty facetLimit) ? facetLimit : '50'}",
                 queryContext: "${queryContext}",
-                hasMultimedia: ${(not empty hasMultimedia) ? hasMultimedia : 'false'} // will be either true or false
+                hasMultimedia: ${(not empty hasImages) ? hasImages : 'false'} // will be either true or false
             };
         </script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>

@@ -12,7 +12,7 @@
 */
 
 #mapcanvas {
-    width: 740px;
+    width: 700px;
     height: 580px;
 }
 
@@ -21,7 +21,7 @@
     /*top: 180px;*/
     left: auto;
     right: auto;
-    width: 720px;
+    width: 700px;
     background-color: #1775BA;
     color: white;
     padding: 5px;

@@ -292,7 +292,7 @@ public class OccurrenceController {
     public String search(
             @RequestParam(value="taxa", required=false) String[] taxaQuery,
             @PathVariable String dataResourceUid,
-            SearchRequestParams requestParams,
+            SpatialSearchRequestParams requestParams,
             BindingResult result,
             Model model,
             HttpServletRequest request) throws Exception {
@@ -377,8 +377,8 @@ public class OccurrenceController {
         
         logger.debug("raw_taxon_guid list: " + StringUtils.join(rawNames, "|"));
         String queryString = "raw_taxon_name:\"" + StringUtils.join(rawNames, "\" OR raw_taxon_name:\"") + "\"";
-        
-        SearchRequestParams requestParams = new SearchRequestParams();
+
+        SpatialSearchRequestParams requestParams = new SpatialSearchRequestParams();
         requestParams.setQ(queryString);
         
         if (request.getParameter("pageSize") == null) {
@@ -458,7 +458,7 @@ public class OccurrenceController {
     @RequestMapping(value = "/taxa/{guid:.+}*", method = RequestMethod.GET)
 	public String occurrenceSearchByTaxon(
 			@RequestParam(value="taxa", required=false) String[] taxaQuery,
-            SearchRequestParams requestParams,
+            SpatialSearchRequestParams requestParams,
             @PathVariable("guid") String guid,
             HttpServletRequest request,
             Model model) throws Exception {
@@ -485,7 +485,7 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/searchByTaxon*", method = RequestMethod.GET)
     public String searchByTaxon(
-            SearchRequestParams requestParams, 
+            SpatialSearchRequestParams requestParams,
             BindingResult result, 
             Model model,
             HttpServletRequest request) throws Exception {
@@ -592,7 +592,7 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/searchForUID*", method = RequestMethod.GET)
     public String searchForUid(
-            SearchRequestParams requestParams, 
+            SpatialSearchRequestParams requestParams,
             BindingResult result, 
             Model model,
             HttpServletRequest request) throws Exception {
@@ -1234,7 +1234,7 @@ public class OccurrenceController {
      * @param requestParams
      * @param request 
      */
-    protected void doFullTextSearch(String taxaQuery, Model model, SearchRequestParams requestParams, HttpServletRequest request) {
+    protected void doFullTextSearch(String taxaQuery, Model model, SpatialSearchRequestParams requestParams, HttpServletRequest request) {
         String[] taxaQueryList = null;
 
         if (taxaQuery != null && !taxaQuery.isEmpty()) {
@@ -1242,43 +1242,6 @@ public class OccurrenceController {
         }
 
         doFullTextSearch(taxaQueryList,  model, requestParams, request);
-    }
-
-    /**
-     * Common search code for full text searches
-     * 
-     * @param taxaQuery
-     * @param model
-     * @param requestParams
-     * @param request 
-     */
-    protected void doFullTextSearch(String[] taxaQuery, Model model, SearchRequestParams requestParams, HttpServletRequest request) {
-        // Prepare request obj
-        prepareSearchRequest(taxaQuery, request, requestParams);
-        // Perform search via webservice
-        try {
-            SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
-            logger.debug("searchResult: " + searchResult.getTotalRecords());
-            addToModel(model, requestParams, searchResult, request);
-            String displayQuery = searchResult.getQueryTitle();
-            
-            if (taxaQuery != null) {
-                for (String tq : taxaQuery) {
-                    if (!tq.isEmpty() && displayQuery != null) {
-                        // attempt to add the mathced name/common name to displayQuery
-                        Pattern exp = Pattern.compile("<span>(.*)</span>");
-                        Matcher matcher = exp.matcher(displayQuery);
-                        if (matcher.find()) {
-                            logger.debug("Generator: "+matcher.group(1));
-                            requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-        	logger.error(ex.getMessage(),ex);
-            model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
-        }
     }
     
     /**
@@ -1299,6 +1262,22 @@ public class OccurrenceController {
             model.addAttribute("radius", requestParams.getRadius());
             logger.debug("searchResult: " + searchResult.getTotalRecords());
             addToModel(model, requestParams, searchResult, request);
+
+            String displayQuery = searchResult.getQueryTitle();
+
+            if (taxaQuery != null) {
+                for (String tq : taxaQuery) {
+                    if (!tq.isEmpty() && displayQuery != null) {
+                        // attempt to add the mathced name/common name to displayQuery
+                        Pattern exp = Pattern.compile("<span>(.*)</span>");
+                        Matcher matcher = exp.matcher(displayQuery);
+                        if (matcher.find()) {
+                            logger.debug("Generator: "+matcher.group(1));
+                            requestParams.setDisplayString(requestParams.getDisplayString() + " <span id='matchedTaxon'>" + matcher.group(1) + "</span>");
+                        }
+                    }
+                }
+            }
         } catch (Exception ex) {
         	logger.error(ex.getMessage(),ex);
             model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
@@ -1560,7 +1539,7 @@ public class OccurrenceController {
      * @param searchResult
      * @param request
      */
-    protected void addToModel(Model model, SearchRequestParams requestParams, SearchResultDTO searchResult, HttpServletRequest request) {
+    protected void addToModel(Model model, SpatialSearchRequestParams requestParams, SearchResultDTO searchResult, HttpServletRequest request) {
         if ("*:*".equals(searchResult.getQueryTitle())) {
             searchResult.setQueryTitle("[all records]");
         }
@@ -1578,7 +1557,7 @@ public class OccurrenceController {
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
-        model.addAttribute("hasMultimedia", resultsHaveMultimedia(searchResult));
+        model.addAttribute("hasImages", resultsHaveImages(requestParams));
         model.addAttribute("clubView", isUserInClub(request));
         addCommonDataToModel(model);
     }
@@ -1681,12 +1660,17 @@ public class OccurrenceController {
     /**
      * Check search results for multimedia facets values
      * 
-     * @param searchResult
+     * @param requestParams
      * @return 
      */
-    private Boolean resultsHaveMultimedia(SearchResultDTO searchResult) {
+    private Boolean resultsHaveImages(SpatialSearchRequestParams requestParams) {
+        String[] requestedFacets = {"multimedia"};
+        requestParams.setFacets(requestedFacets);
+        SearchResultDTO searchResult = biocacheService.getFacetValues(requestParams);
+
         Boolean hasMultimedia = false;
         String facetName = "multimedia"; // fieldResult label is Multimedia
+        String facetValue = "Image";
         Collection facets = searchResult.getFacetResults();
         
         if (facets != null) {
@@ -1697,8 +1681,10 @@ public class OccurrenceController {
                     List<FieldResultDTO> fieldResults = facetResult.getFieldResult();
 
                     for (FieldResultDTO fieldResult : fieldResults) {
-                        if (facetName.equalsIgnoreCase(fieldResult.getLabel())) {
-                             hasMultimedia = true;
+                        if (facetValue.equalsIgnoreCase(fieldResult.getLabel())) {
+                            logger.info("mulitmedia = " + fieldResult.getFieldValue());
+                            hasMultimedia = true;
+                            break;
                         }
                     }
 

@@ -1217,3 +1217,20 @@ div#mainmenu a div#loginId {
     display: inline-block;
     padding-right: 5px;
 }
+
+#clubView {
+    color: red;
+}
+
+/* Custom width for AVH results */
+#content2 .css-panes div.paneDiv {
+    width: 740px;
+}
+
+#mapwrapper #mapcanvas {
+    width: 740px;
+}
+
+#mapwrapper #maploading {
+    width: 740px;
+}
