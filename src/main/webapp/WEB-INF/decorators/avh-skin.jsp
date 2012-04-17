@@ -45,7 +45,7 @@ include file="/common/taglibs.jsp" %>
 <div id="container">
 	<div id="banner">
 		<div id="logo">
-			<a title="Australia's Virtual Herbarium (Home)" href="index.jsp">
+			<a title="Australia's Virtual Herbarium (Home)" href="${pageContext.request.contextPath}/">
 				<img src="${pageContext.request.contextPath}/static/css/avh/images/AVHlogo_web.gif" alt="Australia&rsquo;s Virtual Herbarium logo" height="100" width="249" style="border:0px" />
 			</a>
 		</div>

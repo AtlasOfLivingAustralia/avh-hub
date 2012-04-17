@@ -57,12 +57,15 @@
         </div>
 
         <div id="mainmenu">
-            <div class="float_right">
-                <span style="padding:0px 2px 0px 2px; color:#060">
-                    <ala:loggedInUserId/>
-                    <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
-                    <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
-                </span>
+            <div class="rightMenu">
+                <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
+            </div>
+            <c:if test="${not empty clubView}">
+                <div class="rightMenu" id="clubView"><span>Club View</span></div>
+            </c:if>
+            <div class="rightMenu">
+                <a href="http://www.ala.org.au/my-profile/"><ala:loggedInUserId/></a>
             </div>
         </div>
     </div>
