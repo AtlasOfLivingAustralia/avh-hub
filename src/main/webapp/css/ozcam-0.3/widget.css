@@ -46,6 +46,10 @@
 	line-height: 18px;
 	color: #545454;
 }
+
+body table td {
+    font-size: 13px;
+}
 /*---------------News Widget---------------*/
 #NewsSidebarBox{
 	float: left;
