@@ -67,7 +67,7 @@
     display: inline-block;
     margin-top: 2px;
     font-size: 13px;
-    width: 450px;
+    width: 440px;
 }
 #solrSearchForm > input#solrSubmit {
     display: inline-block;
@@ -352,6 +352,7 @@ span#queryDisplay a:hover {
     font-weight: bold;
     padding: 2px 5px;
     margin-top: -1px;
+    margin-bottom: 3px;
     margin-right: 5px;
     background-color: #FFFFFF;
     border: 1px solid #BBBBBB;
