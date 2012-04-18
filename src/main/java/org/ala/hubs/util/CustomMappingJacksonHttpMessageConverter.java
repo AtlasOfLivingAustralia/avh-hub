@@ -21,7 +21,7 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import javax.annotation.PostConstruct;
 
 /**
- * Custom version of {@link org.springframework.http.converter.json.MappingJacksonHttpMessageConverter}
+ * Custom version of {@link org.springframework.http.converter.json.MappingJacksonHttpMessageConverter MappingJacksonHttpMessageConverter}
  * with option to not fail on unknown properties (requires wiring via Spring).
  *
  * @see org.springframework.http.converter.json.MappingJacksonHttpMessageConverter
