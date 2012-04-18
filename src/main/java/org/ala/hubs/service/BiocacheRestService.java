@@ -15,16 +15,9 @@
 
 package org.ala.hubs.service;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import au.org.ala.biocache.ErrorCode;
+import au.org.ala.biocache.QualityAssertion;
+import com.googlecode.ehcache.annotations.Cacheable;
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SpatialSearchRequestParams;
@@ -33,19 +26,16 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestOperations;
 
-import au.org.ala.biocache.ErrorCode;
-import au.org.ala.biocache.QualityAssertion;
-import com.googlecode.ehcache.annotations.Cacheable;
-import org.springframework.web.client.RestTemplate;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of BiocacheService.java that calls the biocache-service application
@@ -58,7 +48,7 @@ public class BiocacheRestService implements BiocacheService {
 	
     /** Spring injected RestTemplate object */
     @Inject
-    private RestTemplate restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
+    private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     /** URI prefix for biocache-service - should be overridden in properties file */
     protected String biocacheUriPrefix = "http://localhost:9999/biocache-service";
     /** A comma separated list of context to apply to the query - may be overridden in the properties file */
@@ -69,25 +59,6 @@ public class BiocacheRestService implements BiocacheService {
     private final static Logger logger = Logger.getLogger(BiocacheRestService.class);
     //The pattern to handle the case where a jsinURI contaisn {}
     protected Pattern restVariableSubPattern= Pattern.compile("\\{.*?\\}");
-
-    @PostConstruct
-    public void init() {
-        logger.debug("@PostConstruct");
-        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-        for (HttpMessageConverter<?> converter : converters) {
-            if (converter instanceof FormHttpMessageConverter) {
-                ((FormHttpMessageConverter) converter).setCharset(Charset.forName("UTF8"));
-            }
-            if(converter instanceof MappingJacksonHttpMessageConverter) {
-                logger.debug("Setting MappingJacksonHttpMessageConverter with DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false");
-                MappingJacksonHttpMessageConverter jsonConverter = (MappingJacksonHttpMessageConverter) converter;
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                //objectMapper.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-                jsonConverter.setObjectMapper(objectMapper);
-            }
-        }
-    }
     
     /**
      * @see org.ala.hubs.service.BiocacheService#findByFulltextQuery(SearchRequestParams)
