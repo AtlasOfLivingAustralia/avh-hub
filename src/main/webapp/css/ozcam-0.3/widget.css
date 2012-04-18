@@ -2,15 +2,19 @@
 /*---------------SIDEBAR---------------*/
 /*------------------------------------------------*/
 
-#SidebarBox{
+#SidebarBox {
 	float: left;
 }
-.sidebar {
-	float: left;
-	clear: left;
-	width: 250px;
+#SidebarBox .sidebar {
+	width: 240px;
 	margin: 0;
 	padding-left: 30px;
+}
+
+#contentBox #content2 {
+    float: left;
+    margin-left: 0px;
+    width: 720px;
 }
 
 .sidebar li {

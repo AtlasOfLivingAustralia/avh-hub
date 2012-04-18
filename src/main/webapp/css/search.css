@@ -280,7 +280,7 @@ div#advancedSearch {
     margin-left: 30px;
     margin-bottom: 20px;
 }
-#customiseFacets {
+.sidebar #customiseFacets {
     display: inline-block;
     float: left;
     text-align: left;
@@ -290,6 +290,11 @@ div#advancedSearch {
     background-color: #EEEEEE;
     font-weight: bold;
 }
+
+.sidebar #customiseFacets a {
+    font-size: 12px;
+}
+
 #facetOptions {
     position: absolute;
     left: -9999px;
