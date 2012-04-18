@@ -262,8 +262,18 @@
                                         </c:when>
                                         <c:otherwise><%-- All other hubs --%>
                                             <p class="rowA">
-                                                <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${rawScientificName}"/></span>
-                                                <c:if test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:if>
+                                                <c:choose>
+                                                    <c:when test="${not empty occurrence.taxonRank && not empty occurrence.scientificName}">
+                                                        <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${occurrence.scientificName}"/></span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="occurrenceNames">${occurrence.raw_scientificName}</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <c:choose>
+                                                    <c:when test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:when>
+                                                    <c:when test="${not empty occurrence.raw_vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.raw_vernacularName}</span></c:when>
+                                                </c:choose>
                                                 <span style="margin-left: 8px;">
                                                 <c:if test="${not empty occurrence.eventDate}">
                                                     <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
