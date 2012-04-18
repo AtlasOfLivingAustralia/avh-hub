@@ -46,9 +46,10 @@ biocacheRestService.apiKey=api-key-to-use
 # localhost = ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRYnbqkszd6zrcg1s-Fm7JsBxVj5xQqiGGg3eS8Xwep7kHT7lbU5pN8kw
 googleKey=ABQIAAAA-3PPe-HBV33KJbGlAmg4xhRfpAwcVWjzY5tkC1SRUnn6Wn7WfBTe0Hh2qnCTELZCOBc6XCT0whvECw
 
-# map of sensitive dataset URIs - NOTE sensitiveDataset.list must contain each key in sensitiveDatasets.XXX 
-sensitiveDataset.list=NSW_DECCW,NT_DNRETA,QLD_DERM,TAS_DPIPWE,VIC_DSE,WA_DEC,BIRDS_AUSTRALIA
+# map of sensitive dataset URIs - NOTE sensitiveDataset.list must contain each key in sensitiveDatasets.XXX
+sensitiveDataset.list=NSW_DECCW,NSW_OEH,NT_DNRETA,QLD_DERM,TAS_DPIPWE,VIC_DSE,WA_DEC,BIRDS_AUSTRALIA
 sensitiveDatasets.NSW_DECCW=http://collections.ala.org.au/public/show/dr487
+sensitiveDatasets.NSW_OEH=http://collections.ala.org.au/public/show/dr487
 sensitiveDatasets.NT_DNRETA=http://collections.ala.org.au/public/show/dr492
 sensitiveDatasets.QLD_DERM=http://collections.ala.org.au/public/show/dr493
 sensitiveDatasets.TAS_DPIPWE=http://collections.ala.org.au/public/show/dr491
