@@ -201,7 +201,7 @@
                                             <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia (meso-scale)">IMCRA (meso-scale)</abbr> Region</td>
                                             <td>
                                                 <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                                                <select class="biogeographic_region" name="imcra" id="imcra">
+                                                <select class="biogeographic_region" name="imcra_meso" id="imcra">
                                                     <option value="">-- select an IMCRA (meso) region --</option>
                                                     <c:forEach var="region" items="${imcraMeso}">
                                                         <option value="${region}">${region}</option>

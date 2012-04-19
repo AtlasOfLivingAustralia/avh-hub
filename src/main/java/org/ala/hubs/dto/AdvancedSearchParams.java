@@ -40,6 +40,7 @@ public class AdvancedSearchParams {
     protected String country = "";    
     protected String ibra = "";
     protected String imcra = "";
+    protected String imcra_meso = "";
     protected String places = "";
     protected String type_status = "";
     protected Boolean type_material = false;
@@ -78,6 +79,7 @@ public class AdvancedSearchParams {
         if (!country.isEmpty()) q.append(" +country:").append(quoteText(country));
         if (!ibra.isEmpty()) q.append(" +ibra:").append(quoteText(ibra));
         if (!imcra.isEmpty()) q.append(" +imcra:").append(quoteText(imcra));
+        if (!imcra_meso.isEmpty()) q.append(" +cl966:").append(quoteText(imcra_meso));
         if (!places.isEmpty()) q.append(" +places:").append(quoteText(places.trim()));
         if (!type_status.isEmpty()) q.append(" +type_status:").append(type_status);
         if (type_material) q.append(" +type_status:").append("*");
@@ -597,5 +599,13 @@ public class AdvancedSearchParams {
 
     public void setIdentified_date_end(String identified_date_end) {
         this.identified_date_end = identified_date_end;
+    }
+
+    public String getImcra_meso() {
+        return imcra_meso;
+    }
+
+    public void setImcra_meso(String imcra_meso) {
+        this.imcra_meso = imcra_meso;
     }
 }
