@@ -44,7 +44,7 @@
         <!-- Skin selected: ${skin} -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
-        <title>Record ${recordId} | ${hubDisplayName} </title>
+        <title><fmt:message key="show.occurrenceRecord"/> ${recordId} | ${hubDisplayName} </title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
@@ -339,7 +339,7 @@
         <spring:url var="json" value="/occurrences/${record.raw.uuid}.json" />
         <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
-                <h1>Occurrence Record: <span id="recordId">${recordId}</span></h1>
+                <h1><fmt:message key="show.occurrenceRecord"/>: <span id="recordId">${recordId}</span></h1>
                 <c:if test="${skin != 'avh'}">
                     <div id="jsonLink">
                         <c:if test="${isCollectionAdmin}">

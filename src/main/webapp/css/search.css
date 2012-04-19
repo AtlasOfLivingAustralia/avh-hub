@@ -281,18 +281,18 @@ div#advancedSearch {
     margin-bottom: 20px;
 }
 .sidebar #customiseFacets {
-    display: inline-block;
+    display: block;
     float: left;
     text-align: left;
-    padding: 0px 5px;
-    margin: 4px 10px;
+    padding: 2px 7px 1px 5px;
+    margin: 4px 0px;
     border: 1px solid #BBBBBB;
     background-color: #EEEEEE;
     font-weight: bold;
 }
 
 .sidebar #customiseFacets a {
-    font-size: 12px;
+    font-size: 13px;
 }
 
 #facetOptions {
@@ -386,7 +386,7 @@ div.centered {
     text-indent: -99999px;
     vertical-align: top;
     margin-top: 8px;
-    margin-left: 4px;
+    margin-left: 5px;
 }
 
 .plain {
@@ -492,10 +492,12 @@ table.avhRowB  td.viewRecord {
 }
 span.FieldName {
     font-weight: bold;
+    float:left;
 }
 img.optionsIcon {
     vertical-align: middle;
-    padding:0 0 2px 8px;
+    float: left;
+    padding:0 0 2px 5px;
 }
 
 #multipleFacets #dynamic {

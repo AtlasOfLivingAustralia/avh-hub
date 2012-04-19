@@ -8,8 +8,8 @@
 <%@ include file="/common/taglibs.jsp" %>
 <div id="SidebarBox" class="facets">
     <div class="sidebar">
-        <h3 style="display: inline-block;float:left;">Refine Results </h3>
-        <div id="customiseFacets"><a href="#" title="customise which categories are displayed below">customise</a></div>
+        <%--<h3 style="display: inline-block;float:left;">Refine Results</h3>--%>
+        <div id="customiseFacets"><a href="#" title="customise which categories are displayed below">Refine Results</a></div>
         <div id="facetOptions">
             <h4 style="padding-top: 8px;">Select the filter categories that are to appear in the &quot;Refine Results&quot; column</h4>
             <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
@@ -56,14 +56,14 @@
         </c:if>
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
             <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
-                <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/>
+                <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/></span>
                     <c:if test="${fn:length(facetResult.fieldResult) > 1}">
                         <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="<fmt:message key="facet.${facetResult.fieldName}"/>"
                            title="Refine with multiple values"><img src="${pageContext.request.contextPath}/static/images/options_icon.jpg" class="optionsIcon"/></a>
                     </c:if>
-                    </span>
+
                 </h4>
-                <div class="subnavlist">
+                <div class="subnavlist" style="clear:left">
                     <ul class="facets">
                         <c:set var="lastElement" value="${facetResult.fieldResult[fn:length(facetResult.fieldResult)-1]}"/>
                         <c:if test="${lastElement.label eq 'before' && lastElement.count > 0}">

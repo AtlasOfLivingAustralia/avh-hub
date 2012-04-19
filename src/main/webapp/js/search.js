@@ -722,10 +722,13 @@ $(document).ready(function() {
 
     // QTip generated tooltips
     if($.fn.qtip.plugins.iOS) { return false; }
-    
+
     $("a.multipleFacetsLink, a#downloadLink, a#alertsLink, a.tooltip, span.dropDown a, div#customiseFacets > a, a.removeLink").qtip({
         style: {
             classes: 'ui-tooltip-rounded ui-tooltip-shadow'
+        },
+        position: {
+            target: 'event'
         }
     });
 
