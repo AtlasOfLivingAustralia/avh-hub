@@ -31,7 +31,8 @@ public class CustomMappingJacksonHttpMessageConverter extends MappingJacksonHttp
     @PostConstruct
     public void init() {
         logger.info("@PostConstruct");
-        ObjectMapper objectMapper = super.getObjectMapper();
+        //ObjectMapper objectMapper = super.getObjectMapper(); // TODO: revert when biocache-service is using Spring 3.1.0
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         setObjectMapper(objectMapper);
     }
