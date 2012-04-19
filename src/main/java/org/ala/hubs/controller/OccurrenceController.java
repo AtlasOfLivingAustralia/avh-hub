@@ -910,7 +910,7 @@ public class OccurrenceController {
 	public String uploadShapeSearch(
             HttpServletResponse response,
             HttpServletRequest request,
-            @RequestParam("file") MultipartFile multipartFile,
+            @RequestParam(value="file", required=true) MultipartFile multipartFile,
             Model model) throws Exception {
 
         logger.debug("path = /occurrences/shapeUpload");
@@ -951,6 +951,8 @@ public class OccurrenceController {
                     //response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Extracting geometry from file failed: " + originalName);
                 }
             }
+        } else  {
+            logger.warn("File uploaded was empty");
         }
 
         return RECORD_LIST;
