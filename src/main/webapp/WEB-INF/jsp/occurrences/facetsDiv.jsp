@@ -157,6 +157,7 @@
     <div id="multipleFacets">
         <h3>Refine your search</h3>
         <div id="dynamic" class="tableContainer"></div>
+        <div id='submitFacets'><input type='submit' class='submit'/></div>
     </div>
 </div>
 <!--

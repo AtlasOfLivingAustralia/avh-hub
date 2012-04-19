@@ -2,15 +2,16 @@
 div.tableContainer {
     clear: both;
     /*border: 1px solid #963;*/
-    height: 530px;
-    overflow: auto;
-    width: 494px;
+    height: 500px;
+    overflow: auto !important;
+    width: 484px;
 }
 
 /* Reset overflow value to hidden for all non-IE browsers. */
 html>body div.tableContainer {
     overflow: hidden;
     width: 496px;
+    overflow: inherit !important;
 }
 
 /* define width of table. IE browsers only                 */
@@ -79,7 +80,8 @@ thead.fixedHeader a:hover {
 html>body tbody.scrollContent {
     display: block;
     height: 460px;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
     width: 100%;
 }
 

@@ -92,6 +92,7 @@
 }
 .subnavlist > ul {
     margin-left: 7px;
+    clear: left;
     /*padding-left: 24px;*/
 }
 .subnavlist > ul> li {

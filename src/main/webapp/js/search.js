@@ -687,10 +687,10 @@ $(document).ready(function() {
     });
 
     // form validation for form#facetRefineForm
-    $("form#facetRefineForm :input.submit").live("click", function(e) {
+    $("#submitFacets :input.submit").live("click", function(e) {
         e.preventDefault();
         var fq = ""; // build up OR'ed fq query
-        var facetName = $(this).siblings("table#fullFacets").data("facet");
+        var facetName = $("table#fullFacets").data("facet");
         var checkedFound = false;
         var selectedCount = 0;
         var maxSelected = 15;
@@ -766,7 +766,7 @@ $(document).ready(function() {
     // Inview trigger to load more values when tr comes into view
     $("tr#loadMore").live("inview", function() {
         var link = $(this).find("a.loadMoreValues");
-        console.log("inview", link);
+        //console.log("inview", link);
         var fsort = link.data('sort');
         var foffset = link.data('foffset');
         var table = $("table#fullFacets");
@@ -833,7 +833,7 @@ function loadMultiFacets(facetName, displayName, fsort, foffset) {
     html += "<th><a href='#count' class='fsort' data-sort='count' title='Sort by record count'>Count</a></th></tr></thead>";
     html += "<tbody class='scrollContent'><tr id='loadingRow'><td colspan='3'>Loading... <img src='" + BC_CONF.contextPath + "/static/images/loading.gif' alt='loading'/></td></tr></tbody>";
     //html += "<tfoot><tr id='submitFacets'><td colspan='3'><input type='submit' class='submit'/></form></td></tr></tfoot>"; // empty row that gets loaded via AJAX
-    html += "</table><div id='submitFacets'><input type='submit' class='submit'/></div></form>";
+    html += "</table></form>";
     //html += "<input type='submit' class='submit'/></form>";
     $("div#dynamic").append(html);
     $("a.fsort").qtip({
@@ -909,7 +909,7 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                 tbodyHeight += $(el).height();
             });
             //console.log("table heights", tableHeight, tbodyHeight);
-            if (tbodyHeight < tableHeight) {
+            if (false && tbodyHeight < tableHeight) {
                 // no scroll bar so adjust column widths
                 var thWidth = $(".scrollContent td + td + td").width() + 18; //$("th#indexCol").width() + 36;
                 $(".scrollContent td + td + td").width(thWidth);

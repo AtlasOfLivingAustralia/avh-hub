@@ -34,6 +34,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/redmond/jquery.ui.redmond.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.qtip.min.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/scrollableTable.css" type="text/css" media="screen" />
+        <!--[if gt IE 7]> <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/scrollableTable-IE.css" type="text/css" media="screen" /> <![endif]-->
 
         <script type="text/javascript">
             // single global var for app conf settings

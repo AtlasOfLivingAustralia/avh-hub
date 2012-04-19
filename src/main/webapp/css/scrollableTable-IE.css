@@ -1,0 +1,10 @@
+html>body div.tableContainer {
+    height: 500px;
+    overflow: auto !important;
+    width: 496px;
+}
+
+html>body div.tableContainer table {
+    width: 478px;
+    border-left: 1px solid #CCCCCC;
+}
