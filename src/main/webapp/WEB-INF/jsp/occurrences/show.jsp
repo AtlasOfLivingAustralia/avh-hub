@@ -657,6 +657,7 @@
                             </c:if>
                         </c:if>
                         <!-- Institution -->
+                        <c:if test="${skin != 'avh'}">
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="institutionCode" fieldName="Institution">
                             <c:choose>
                                 <c:when test="${record.processed.attribution.institutionUid != null && not empty record.processed.attribution.institutionUid}">
@@ -681,9 +682,11 @@
                             </c:choose>
                             <c:if test="${not empty record.raw.occurrence.institutionCode}">
                                 <c:set target="${fieldsMap}" property="institutionCode" value="true" />
-                                <br/><span class="originalValue">Supplied as "${record.raw.occurrence.institutionCode}"</span>
+                                <c:if test="${not empty record.processed.attribution.institutionName}"><br/></c:if>
+                                <span class="originalValue">Supplied as "${record.raw.occurrence.institutionCode}"</span>
                             </c:if>
                         </alatag:occurrenceTableRow>
+                        </c:if>
                         <!-- Collection -->
                         <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="collectionCode" fieldName="Collection">
                             <c:if test="${not empty record.processed.attribution.collectionUid}">
@@ -712,7 +715,8 @@
                             </c:if>
                             <c:if test="${not empty record.raw.occurrence.collectionCode}">
                                 <c:set target="${fieldsMap}" property="collectionCode" value="true" />
-                                <br/><span class="originalValue">Supplied as "${record.raw.occurrence.collectionCode}"</span>
+                                <c:if test="${not empty collectionName || not empty record.processed.attribution.collectionName}"><br/></c:if>
+                                <span class="originalValue">Supplied as "${record.raw.occurrence.collectionCode}"</span>
                             </c:if>
                         </alatag:occurrenceTableRow>
                         <!-- Catalog Number -->

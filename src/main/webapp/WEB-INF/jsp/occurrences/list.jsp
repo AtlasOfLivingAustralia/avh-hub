@@ -176,7 +176,7 @@
                                     <!--                            <option value="rank">rank</option>-->
                                     <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>record date</option>
                                     <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>record type</option>
-                                    <option value="last_load_date" <c:if test="${useDefault || param.sort eq 'last_load_date'}">selected</c:if>>date added</option>
+                                    <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>date added</option>
                                     <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>last annotated</option>
                                 </select>
                                 Sort order:

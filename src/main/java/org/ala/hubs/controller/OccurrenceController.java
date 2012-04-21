@@ -350,9 +350,9 @@ public class OccurrenceController {
         }
 
         if (request.getParameter("sort") == null && request.getParameter("dir") == null ) {
-            requestParams.setSort("last_load_date");
+            requestParams.setSort("first_loaded_date");
             requestParams.setDir("desc");
-            model.addAttribute("sort","last_load_date");
+            model.addAttribute("sort","first_loaded_date");
             model.addAttribute("dir","desc");
         }
         
@@ -386,9 +386,9 @@ public class OccurrenceController {
         }
 
         if (request.getParameter("sort") == null && request.getParameter("dir") == null ) {
-            requestParams.setSort("last_load_date");
+            requestParams.setSort("first_loaded_date");
             requestParams.setDir("desc");
-            model.addAttribute("sort","last_load_date");
+            model.addAttribute("sort","first_loaded_date");
             model.addAttribute("dir","desc");
         }
 
@@ -425,9 +425,9 @@ public class OccurrenceController {
         }
 
         if (request.getParameter("sort") == null && request.getParameter("dir") == null ) {
-            requestParams.setSort("last_load_date");
+            requestParams.setSort("first_loaded_date");
             requestParams.setDir("desc");
-            model.addAttribute("sort","last_load_date");
+            model.addAttribute("sort","first_loaded_date");
             model.addAttribute("dir","desc");
         }
         
