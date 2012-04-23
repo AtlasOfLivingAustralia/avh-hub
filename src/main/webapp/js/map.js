@@ -404,9 +404,9 @@ var Maps = (function() {
 
                 if (BC_CONF.skin == 'avh') {
                     if(data.record.raw.occurrence.recordedBy != null){
-                        displayHtml += "Collector: : " + data.record.raw.occurrence.recordedBy;
+                        displayHtml += "<br/>Collector: : " + data.record.raw.occurrence.recordedBy;
                     } else if(data.record.processed.occurrence.recordedBy != null){
-                        displayHtml += "Collector: : " + data.record.processed.occurrence.recordedBy;
+                        displayHtml += "<br/>Collector: : " + data.record.processed.occurrence.recordedBy;
                     }
                 }
 

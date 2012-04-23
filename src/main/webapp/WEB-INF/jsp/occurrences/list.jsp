@@ -207,7 +207,7 @@
                                                 <span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${rawScientificName}"/></span>
                                                 <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
                                                     <span style="display:inline-block;float:right;">
-                                                        <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
+                                                        <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_catalogNumber}
                                                     </span>
                                                 </c:if>
                                             </p>

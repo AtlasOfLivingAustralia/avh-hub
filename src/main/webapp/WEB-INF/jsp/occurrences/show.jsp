@@ -9,6 +9,9 @@
 <%@ page import="java.util.HashMap" %>
 <!DOCTYPE html>
 <c:choose>
+<c:when test="${skin == 'avh'}">
+    <c:set var="recordId" value="${record.raw.occurrence.catalogNumber}"/>
+</c:when>
 <c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
 	<c:set var="recordId" value="${record.raw.occurrence.collectionCode}:${record.raw.occurrence.catalogNumber}"/>
 </c:when>
