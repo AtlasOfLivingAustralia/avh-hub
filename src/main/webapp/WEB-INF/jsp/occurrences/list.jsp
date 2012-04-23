@@ -85,7 +85,7 @@
             <h1><fmt:message key="heading.list"/><a name="resultsTop">&nbsp;</a><!--<fmt:message key="test.value"/>--></h1>
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>
+                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advanced">Advanced Search</a></span>
                     <span id="#searchLabel">Search:</span>
                     <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
                     <input type="submit" id="solrSubmit" value="Search"/>
