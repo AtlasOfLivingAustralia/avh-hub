@@ -212,7 +212,12 @@
                                         <tr>
                                             <td class="label">Local Govt. Area</td>
                                             <td>
-                                                <input type="text" name="places" id="lga" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
+                                                <select class="biogeographic_region" name="cl959" id="cl959">
+                                                    <option value="">-- select Local Government Area--</option>
+                                                    <c:forEach var="region" items="${lgas}">
+                                                        <option value="${region}">${region}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </td>
                                         </tr>
                                     </tbody>

@@ -42,6 +42,7 @@ public class AdvancedSearchParams {
     protected String imcra = "";
     protected String imcra_meso = "";
     protected String places = "";
+    protected String cl959 = "";
     protected String type_status = "";
     protected Boolean type_material = false;
     protected String basis_of_record = "";
@@ -80,6 +81,7 @@ public class AdvancedSearchParams {
         if (!ibra.isEmpty()) q.append(" +ibra:").append(quoteText(ibra));
         if (!imcra.isEmpty()) q.append(" +imcra:").append(quoteText(imcra));
         if (!imcra_meso.isEmpty()) q.append(" +cl966:").append(quoteText(imcra_meso));
+        if (!cl959.isEmpty()) q.append(" +cl959:").append(quoteText(cl959));
         if (!places.isEmpty()) q.append(" +places:").append(quoteText(places.trim()));
         if (!type_status.isEmpty()) q.append(" +type_status:").append(type_status);
         if (type_material) q.append(" +type_status:").append("*");
@@ -122,7 +124,6 @@ public class AdvancedSearchParams {
             q.append(" lsid:").append(StringUtils.join(lsids, " OR lsid:"));
         }
 
-        
         if (!institution_collection.isEmpty()) {
             String label = (StringUtils.startsWith(institution_collection, "in")) ? " +institution_uid" : " +collection_uid";
             q.append(label).append(":").append(institution_collection);
@@ -607,5 +608,13 @@ public class AdvancedSearchParams {
 
     public void setImcra_meso(String imcra_meso) {
         this.imcra_meso = imcra_meso;
+    }
+
+    public String getCl959() {
+        return cl959;
+    }
+
+    public void setCl959(String cl959) {
+        this.cl959 = cl959;
     }
 }

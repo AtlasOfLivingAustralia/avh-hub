@@ -106,6 +106,7 @@ public class HomePageController {
         model.addAttribute("imcra", serviceCache.getIMCRA());
         model.addAttribute("imcraMeso", serviceCache.getIMCRA_MESO());
         model.addAttribute("countries", serviceCache.getCountries());
+        model.addAttribute("lgas", serviceCache.getLGAs());
         //String[] cultivationStatus = {"is cultivated", "is not cultivated"};
         //model.addAttribute("cultivationStatus", cultivationStatus); // TODO get proper list of cultivationStatus
     }

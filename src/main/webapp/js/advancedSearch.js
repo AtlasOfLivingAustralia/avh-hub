@@ -184,59 +184,60 @@ $(document).ready(function() {
         }
     });
 
+    //NOT IN USE
     // Autocomplete on IBRA, IMCRA and LGA inputs
-    $("input.region_autocomplete").each(function(i, el) {
-        el = $(el);
-        el.autocomplete(contextPath + '/proxy/gazetteer/search', {
-            //width: 350,
-            extraParams: {"layer": el.attr('id')}, // $(this).attr("id")
-            dataType: 'xml',
-            parse: function(data) {
-                var parsed = [];
-                $(data).find("result").each(function() {
-                    var region = $(this).find("name").text();
-                    region = region.replace(/\(.*\)/, "");
-                    parsed[parsed.length] = {
-                        data: [region],
-                        value: region,
-                        result: [region]
-                    };
-                });
-                return parsed;
-            },
-            matchSubset: true,
-            highlight: false,
-            delay: 600,
-            cacheLength: 10,
-            minChars: 1,
-            scroll: false,
-            max: 10,
-            selectFirst: false
-        }).result(function(event, item) {
-            // user selected an item -> process it and add to query
-            var fieldName = $(this).attr("name");
-            var fieldValue = $(this).val().trim();
-            removeFieldFromQuery(fieldName); // clear previous click
-            if (fieldValue && fieldValue.match(/\s+/)) {
-                // add quotes to search terms with spaces in them
-                addFieldToQuery(fieldName,  "\"" + fieldValue + "\"")
-            } else if (fieldValue) {
-                addFieldToQuery(fieldName, fieldValue)
-            } else {
-                // desected a select drop down
-                removeFieldFromQuery(fieldName);
-            }
-        }).blur(function(e) {
-            // check to see if user has cleared the field
-            var el = $(this);
-            if (!el.val()) {
-                var fieldName = $(this).attr("name");
-                //console.log("input blur", fieldName);
-                removeFieldFromQuery(fieldName);
-            }
-            return true;
-        });
-    });
+//    $("input.region_autocomplete").each(function(i, el) {
+//        el = $(el);
+//        el.autocomplete(contextPath + '/proxy/gazetteer/search', {
+//            //width: 350,
+//            extraParams: {"layer": el.attr('id')}, // $(this).attr("id")
+//            dataType: 'xml',
+//            parse: function(data) {
+//                var parsed = [];
+//                $(data).find("result").each(function() {
+//                    var region = $(this).find("name").text();
+//                    region = region.replace(/\(.*\)/, "");
+//                    parsed[parsed.length] = {
+//                        data: [region],
+//                        value: region,
+//                        result: [region]
+//                    };
+//                });
+//                return parsed;
+//            },
+//            matchSubset: true,
+//            highlight: false,
+//            delay: 600,
+//            cacheLength: 10,
+//            minChars: 1,
+//            scroll: false,
+//            max: 10,
+//            selectFirst: false
+//        }).result(function(event, item) {
+//            // user selected an item -> process it and add to query
+//            var fieldName = $(this).attr("name");
+//            var fieldValue = $(this).val().trim();
+//            removeFieldFromQuery(fieldName); // clear previous click
+//            if (fieldValue && fieldValue.match(/\s+/)) {
+//                // add quotes to search terms with spaces in them
+//                addFieldToQuery(fieldName,  "\"" + fieldValue + "\"")
+//            } else if (fieldValue) {
+//                addFieldToQuery(fieldName, fieldValue)
+//            } else {
+//                // desected a select drop down
+//                removeFieldFromQuery(fieldName);
+//            }
+//        }).blur(function(e) {
+//            // check to see if user has cleared the field
+//            var el = $(this);
+//            if (!el.val()) {
+//                var fieldName = $(this).attr("name");
+//                //console.log("input blur", fieldName);
+//                removeFieldFromQuery(fieldName);
+//            }
+//            return true;
+//        });
+//    });
 
     // dataset fields: catalogue_number & record number
     $("input.dataset").blur(function() {
