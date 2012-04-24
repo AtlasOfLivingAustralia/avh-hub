@@ -586,7 +586,7 @@ var Maps = (function() {
         loadEnvironmentalLayer: function(selLayer) {
             map.overlayMapTypes.setAt(0, null);
             if (selLayer > -1) {
-                var overlayWMS = new WMSTileLayer(envLayers[selLayer][1], "http://spatial.ala.org.au/geoserver/wms/reflect?", ["format=image/png","layers="+envLayers[selLayer][2]], wmsTileLoaded);
+                var overlayWMS = new WMSTileLayer(envLayers[selLayer][1], "http://spatial.ala.org.au/geoserver/gwc/service/wms/reflect?", ["format=image/png","layers="+envLayers[selLayer][2]], wmsTileLoaded);
                 map.overlayMapTypes.setAt(0, overlayWMS);
                 // add legend
                 var imgHtml = "Environmental Layer Legend<br/><img src='http://spatial.ala.org.au/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=9&LAYER=" +
