@@ -23,8 +23,9 @@ attribute name="groupedAssertions" required="false" type="java.util.Collection" 
             (added by ${fn:length(assertion.userIds)} ${fn:length(assertion.userIds)>1 ? 'users' : 'user'})
         </c:otherwise>
     </c:choose>
-    <c:if test="${isCollectionAdmin}">
-        <div style="border: 1px solid #ccc; padding: 5px;">You are able to modify this comment: <input type="button" value="confirm"/>&nbsp;<input type="button" value="refute"/></div>
+    <c:if test="${false && isCollectionAdmin && assertion.name != 'userVerified'}">
+        <div style="border: 1px solid #ccc; padding: 5px;">You are able to modify this comment:
+            <input class="confirmVerify" type="button" value="confirm"/>&nbsp;<input class="cancelVerify" type="button" value="refute"/></div>
     </c:if>
 </li>
 </c:forEach>

@@ -257,19 +257,22 @@
                 </c:if>
                 
                 <c:if test="${isCollectionAdmin}">
-                    $("#confirmVerifyCheck").click(function(e) {
+                    $(".confirmVerifyCheck").click(function(e) {
                         $("#verifyAsk").hide();
                         $("#verifyDone").show();
                     });
                     $(".cancelVerify").click(function(e) {
                         $.fancybox.close();
                     });
-                    $("#confirmVerify").click(function(e) {
+                    $(".closeVerify").click(function(e) {
+                        $.fancybox.close();
+                    });
+                    $(".confirmVerify").click(function(e) {
                         var code = "50000";
                         var userId = '${userId}';
                         var userDisplayName = '${userDisplayName}';
                         var recordUuid = '${record.raw.rowKey}';
-                        // send assertion via AJAX... TODO catach errors
+                        // send assertion via AJAX... TODO catch errors
                         $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
                             { recordUuid: recordUuid, code: code, userId: userId, userDisplayName: userDisplayName},
                             function(data) {
@@ -397,6 +400,10 @@
                         <div id="systemAssertionsContainer" <c:if test="${empty record.systemAssertions}">style="display:none"</c:if>>
                         <h2>Data validation issues</h2>
                         <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
+                        <c:set var="recordIsVerified" value="false"/>
+                        <c:forEach items="${record.userAssertions}" var="userAssertion">
+                            <c:if test="${userAssertion.name == 'userVerified'}"><c:set var="recordIsVerified" value="true"/></c:if>
+                        </c:forEach>
                         <ul id="systemAssertions">
                             <c:forEach var="systemAssertion" items="${record.systemAssertions}">
                                 <li>
@@ -421,8 +428,8 @@
                         </div>
                     </div>
                 </div>
-
-                <c:if test="${isCollectionAdmin}">
+                <!-- recordIsVerified = ${recordIsVerified} -->
+                <c:if test="${isCollectionAdmin && not recordIsVerified}">
                     <div class="sidebar">
                         <button class="rounded" id="verifyButton" href="#verifyRecord">
                             <span id="verifyRecordSpan" title="">Verify Record</span>
@@ -432,13 +439,13 @@
                                 <h3>Confirmation</h3>
                                 <div id="verifyAsk">
                                     <p style="margin-bottom:10px;">Are you sure you want to verify this record as being correct?</p>
-                                    <button id="confirmVerify">Confirm</button>
-                                    <button class="cancelVerify">Cancel</button>
+                                    <button class="confirmVerify">Confirm</button>
+                                    <button class="cancelVerify">Refute</button>
                                 </div>
                                 <div id="verifyDone" style="display:none;">
                                     Record successfully verified
                                     <br/>
-                                    <button class="cancelVerify">Close</button>
+                                    <button class="closeVerify">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -1573,11 +1580,13 @@
                 <h2>User flagged issues</h2>
                 <c:forEach items="${record.userAssertions}" var="userAssertion">
                     <p>
-                       <strong><spring:message code="${userAssertion.name}" text="$userAssertion.name}"/></strong><br/>
+                       <strong><fmt:message key="${userAssertion.name}"/></strong><br/>
                        Comment: <span class="userAssertionComment">${userAssertion.comment}</span><br/>
                        Flagged by: ${userAssertion.userDisplayName} <br/>
                        <c:if test="${not empty userAssertion.created}">
-                       Created: ${userAssertion.created} <br/>
+                           <fmt:parseDate var="assertionCreated" value="${userAssertion.created}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
+                           <fmt:formatDate var="assertionCreatedString" value="${assertionCreated}" pattern="yyyy-MM-dd"/>
+                           Created: ${assertionCreatedString} <br/>
                        </c:if>
                     </p>
                 </c:forEach>

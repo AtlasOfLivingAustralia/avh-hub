@@ -35,9 +35,10 @@ public class AssertionController {
     public void addAssertionWithParams(
             @RequestParam(value="recordUuid", required=true) String recordUuid,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception{
-            
+            HttpServletResponse response) throws Exception {
+
         addAssertion(recordUuid, request,response);
+
     }
     
     /**
@@ -51,10 +52,15 @@ public class AssertionController {
 
         String code = (String) request.getParameter("code");
         String comment = (String) request.getParameter("comment");
+
+        if (comment == null) {
+            comment = ""; // avoid NPE when verifying record
+        }
+
         String userId = (String) request.getParameter("userId");
         String userDisplayName = (String) request.getParameter("userDisplayName");
 
-        logger.info("Adding assertion to UUID: "+recordUuid+", code: "+code+", userId: "+ userId );
+        logger.info("Adding assertion to UUID: "+recordUuid+", code: "+code+", userId: "+ userId+", comment: "+ comment );
 
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
@@ -70,9 +76,15 @@ public class AssertionController {
 
            logger.info("******Calling REST service to add assertion" );
 
-           biocacheService.addAssertion(recordUuid, code, comment, ap.getName(), userDisplayName);
+            try {
+                biocacheService.addAssertion(recordUuid, code, comment, ap.getName(), userDisplayName);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write(e.getMessage());
+            }
 
-           logger.info("******Called REST service. Assertion should be added" );
+            logger.info("******Called REST service. Assertion should be added" );
 
            response.setStatus(HttpServletResponse.SC_OK);
         } else {
