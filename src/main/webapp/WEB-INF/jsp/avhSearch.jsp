@@ -461,7 +461,7 @@
                     </form>
                 </div><!-- end #uploadDiv div -->
                 <div id="shapeDiv" class="paneDiv homePane">
-                    <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrence/shapeUpload" method="POST" enctype="multipart/form-data">
+                    <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
                         <p>Upload a shape file (.shp):</p>
                         <p><input type="file" name="file"/></p>
                         <p><input type="submit" value="Search" /></p>

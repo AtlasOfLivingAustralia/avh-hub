@@ -55,7 +55,7 @@
 
     <context-param>
         <param-name>uriExclusionFilterPattern</param-name>
-        <param-value>/occurrence/shapeUpload,/images.*,/css.*,/js.*,.*json</param-value>
+        <param-value>/occurrences/shapeUpload,/images.*,/css.*,/js.*,.*json</param-value>
     </context-param>
 
     <context-param>
