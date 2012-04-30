@@ -934,6 +934,11 @@ public class OccurrenceController {
                 if (wkt != null) {
                     String serverName = request.getSession().getServletContext().getInitParameter("serverName");
                     String contextPath = request.getSession().getServletContext().getInitParameter("contextPath");
+
+                    if (contextPath == null) {
+                        contextPath = ""; // avoid null string
+                    }
+
                     String url = biocacheUriPrefix + "/webportal/params";
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("wkt", changeSeparator(wkt));
