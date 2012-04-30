@@ -44,10 +44,11 @@
         <div id="content3">
             <!-- the tabs -->
             <ul class="css-tabs">
-                <li><a id="t1" href="#search">Search</a></li>
-                <li><a id="t2" href="#taxaUpload">Batch Taxon Search</a></li>
-                <li><a id="t3" href="#catalogUpload">Batch Catalogue Number Search</a></li>
-                <li><a id="t4" href="#shapeFileUpload">Shape File Upload</a></li>
+                <li><a id="t1" href="#quickSearch">Quick search</a></li>
+                <li><a id="t2" href="#advancedSearch">Advanced search</a></li>
+                <li><a id="t3" href="#taxaUpload">Batch taxon search</a></li>
+                <li><a id="t4" href="#catalogUpload">Catalogue number search</a></li>
+                <li><a id="t5" href="#shapeFileUpload">Shape file search</a></li>
             </ul>
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
@@ -56,7 +57,6 @@
                             <thead/>
                             <tbody>
                                 <tr>
-<!--                                    <td>Species Search</td>-->
                                     <td>
                                         <input type="text" name="taxa" id="taxa" class="name_autocomplete freetext" placeholder="" size="70" style="width:500px;" value=""/>
                                         &nbsp;
@@ -72,10 +72,12 @@
                             </tbody>
                         </table>
                     </form>
+                </div>
+                <div id="advancedSearchDiv" class="paneDiv homePane">
                     <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/advancedSearch" method="POST">
                         <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;">${param.q}</input>
-                        <a href="#searchOptions" id="extendedOptionsLink" class="toggleTitle">Search Options</a>
-                        <div class="toggleSection" id="extendedOptions">
+                        <!--<a href="#searchOptions" id="extendedOptionsLink" class="toggleTitle">Search options</a>-->
+                        <div class="toggleSectionXXX" id="extendedOptionsXXXX">
 
                             <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Taxonomy</a>
                             <div class="toggleSection" id="taxonomySection">
@@ -86,7 +88,7 @@
                                             <c:forEach begin="1" end="4" step="1" var="i">
                                                 <c:set var="lsidParam" value="lsid_${i}"/>
                                                 <tr style="" id="taxon_row_${i}">
-                                                    <td class="label">Taxon Name</td>
+                                                    <td class="label">Taxon name</td>
                                                     <td>
                                                         <input type="text" name="taxonText" id="taxa_${i}" class="name_autocomplete" size="50" value="">
                                                         <input type="hidden" name="lsid" class="lsidInput" id="lsid_${i}" value=""/>
@@ -123,14 +125,14 @@
                                     <tbody>
                                         <c:if test="${skin != 'avh'}">
                                             <tr>
-                                                <td class="label">Verbatim Scientific Name</td>
+                                                <td class="label">Verbatim scientific name</td>
                                                 <td>
                                                      <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
                                                 </td>
                                             </tr>
                                         </c:if>
                                         <tr>
-                                            <td class="label">Botanical Group</td>
+                                            <td class="label">Botanical group</td>
                                             <td>
                                                 <select class="taxaGroup" name="species_group" id="species_group">
                                                     <option value="">-- select a botanical group --</option>
@@ -174,10 +176,10 @@
                                             </tr>
                                         </c:if>
                                         <tr>
-                                            <td class="label">State/Territory</td>
+                                            <td class="label">State or territory</td>
                                             <td>
                                                 <select class="state" name="state" id="state">
-                                                    <option value="">-- select a state/territory --</option>
+                                                    <option value="">-- select a state or territory --</option>
                                                     <c:forEach var="state" items="${states}">
                                                         <option value="${state}">${state}</option>
                                                     </c:forEach>
@@ -186,7 +188,7 @@
                                         </tr>
                                         <c:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
                                         <tr>
-                                            <td class="label"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> Region</td>
+                                            <td class="label"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
                                             <td>
                                                 <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                                 <select class="biogeographic_region" name="ibra" id="ibra">
@@ -198,11 +200,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia (meso-scale)">IMCRA (meso-scale)</abbr> Region</td>
+                                            <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia (meso-scale)">IMCRA</abbr> region</td>
                                             <td>
                                                 <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                                 <select class="biogeographic_region" name="imcra_meso" id="imcra">
-                                                    <option value="">-- select an IMCRA (meso) region --</option>
+                                                    <option value="">-- select an IMCRA region --</option>
                                                     <c:forEach var="region" items="${imcraMeso}">
                                                         <option value="${region}">${region}</option>
                                                     </c:forEach>
@@ -210,10 +212,10 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Local Govt. Area</td>
+                                            <td class="label">Local government area</td>
                                             <td>
                                                 <select class="biogeographic_region" name="cl959" id="cl959">
-                                                    <option value="">-- select Local Government Area--</option>
+                                                    <option value="">-- select Local government area--</option>
                                                     <c:forEach var="region" items="${lgas}">
                                                         <option value="${region}">${region}</option>
                                                     </c:forEach>
@@ -223,13 +225,13 @@
                                     </tbody>
                                 </table>
                             </div><!-- end div.toggleSection geography-->
-                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Collecting Event</a>
+                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Collecting event</a>
                             <div class="toggleSection">
                                 <table border="0" width="100" cellspacing="2" class="compact">
                                     <thead/>
                                     <tbody>
                                         <tr>
-                                            <td class="label">Collector Name</td>
+                                            <td class="label">Collector</td>
                                             <td>
                                                  <input type="text" name="collector" id="collector" class="dataset" placeholder=""  value=""/>
                                             </td>
@@ -241,7 +243,7 @@
                                             </td>
                                         </tr>--%>
                                         <tr>
-                                            <td class="label">Collection Date</td>
+                                            <td class="label">Collecting date</td>
                                             <td>
                                                 <input type="text" name="start_date" id="startDate" class="occurrence_date" placeholder="" value=""/>
                                                 to
@@ -251,7 +253,7 @@
                                         </tr>
                                         <c:if test="${skin == 'avh'}">
                                             <tr>
-                                                <td class="label">Cultivation Status</td>
+                                                <td class="label">Cultivation status</td>
                                                 <td>
                                                      <select class="" name="cultivation_status" id="cultivation_status">
                                                         <option value="">-- select a cultivation status --</option>
@@ -271,7 +273,7 @@
                                     <thead/>
                                     <tbody>
                                         <tr>
-                                            <td class="label">Full Text</td>
+                                            <td class="label">Full text</td>
                                             <td>
                                                 <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
                                             </td>
@@ -290,53 +292,41 @@
                                             </tr>
                                         </c:if>
                                         <tr>
-                                            <td class="label">Institution or Collection</td>
+                                            <td class="label">Collection</td>
                                             <td>
                                                 <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
-                                                    <option value="">-- select an institution or collection --</option>
+                                                    <option value="">-- select an collection --</option>
                                                     <c:forEach var="inst" items="${institutions}">
-                                                        <optgroup label="${inst.value}">
-                                                            <option value="${inst.key}">All records from ${inst.value}</option>
-                                                            <c:forEach var="coll" items="${collections}">
-                                                                <c:choose>
-                                                                    <c:when test="${inst.key == 'in13' && fn:startsWith(coll.value, inst.value)}">
-                                                                        <option value="${coll.key}">${fn:replace(fn:replace(coll.value, inst.value, ""), " - " ,"")} Collection</option>
-                                                                    </c:when>
-                                                                    <c:when test="${inst.key == 'in6' && fn:startsWith(coll.value, 'Australian National')}">
-                                                                        <%-- <option value="${coll.key}">${fn:replace(coll.value,"Australian National ", "")}</option> --%>
-                                                                        <option value="${coll.key}">${coll.value}</option>
-                                                                    </c:when>
-                                                                    <c:when test="${fn:startsWith(coll.value, inst.value)}">
-                                                                        <option value="${coll.key}">${fn:replace(coll.value, inst.value, "")}</option>
-                                                                    </c:when>
-                                                                </c:choose>
-                                                            </c:forEach>
-                                                        </optgroup>
+                                                        <!--<optgroup label="${inst.value}"> -->
+                                                            <c:if test="${not empty inst.value}">
+                                                            <option value="${inst.key}">${inst.value}</option>
+                                                            </c:if>
+                                                        <!--</optgroup> -->
                                                     </c:forEach>
                                                 </select>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Catalogue Number</td>
+                                            <td class="label">Catalogue number</td>
                                             <td>
                                                  <input type="text" name="catalogue_number" id="catalogue_number" class="dataset" placeholder="" value=""/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Record Number</td>
+                                            <td class="label">Collecting number</td>
                                             <td>
                                                  <input type="text" name="record_number" id="record_number" class="dataset" placeholder=""  value=""/>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td class="label">Type Material</td>
+                                        <tr style="display:none;">
+                                            <td class="label">Type material</td>
                                             <td>
                                                  <input type="checkbox" name="type_material" id="type_material" class="dataset"/>
                                             </td>
                                         </tr>
                                         <c:if test="${skin == 'avh'}">
                                             <tr>
-                                                <td class="label">Duplicates Held At</td>
+                                                <td class="label">Duplicates held at</td>
                                                 <td>
                                                      <%--<select class="institution_uid collection_uid" name="duplicates_institution_collection" id="duplicates_institution_collection"
                                                              onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
@@ -371,7 +361,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Determination Date</td>
+                                            <td class="label">Determination date</td>
                                             <td>
                                                 <input type="text" name="identified_date_start" id="identified_date_start" class="occurrence_date" placeholder="" value=""/>
                                                 to
@@ -380,7 +370,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Record Last Modified</td>
+                                            <td class="label">Record last modified</td>
                                             <td>
                                                 <input type="text" name="last_load_start" id="last_load_start" class="occurrence_date" placeholder="" value=""/>
                                                 to
@@ -393,13 +383,13 @@
 
                             </div><!-- end div.toggleSection Speciemen-->
                             <c:if test="${skin == 'avh'}">
-                                <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Herbarium Transactions</a>
+                                <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Herbarium transactions</a>
                                 <div class="toggleSection">
                                     <table border="0" width="100" cellspacing="2" class="compact">
                                         <thead/>
                                         <tbody>
                                             <tr>
-                                                <td class="label">Borrowing Institution</td>
+                                                <td class="label">Borrowing institution</td>
                                                 <td>
                                                     <%--<input type="text" name="loan_destination" id="loan_destination" class="dataset" placeholder=""  value=""/>--%>
                                                     <select class="dataset" name="loan_destination" id="loan_destination">
@@ -411,13 +401,13 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="label">Loan Number</td>
+                                                <td class="label">Loan number</td>
                                                 <td>
                                                     <input type="text" name="loan_identifier" id="loan_identifier" class="dataset" placeholder=""  value=""/>
                                                 </td>
                                             </tr>
                                             <tr style="display:none">
-                                                <td class="label">Exchange Number</td>
+                                                <td class="label">Exchange number</td>
                                                 <td>
                                                     <input type="text" name="exchange_number" id="exchange_number" class="dataset" placeholder="not currently searchable" readonly="readonly" value=""/>
                                                 </td>

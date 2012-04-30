@@ -799,7 +799,7 @@
                         </alatag:occurrenceTableRow>
                         -->
                         <!-- Basis of Record -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="basisOfRecord" fieldName="Basis of Record">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="basisOfRecord" fieldName="Basis of record">
                             <c:set target="${fieldsMap}" property="basisOfRecord" value="true" />
                             <c:choose>
                                 <c:when test="${not empty record.processed.occurrence.basisOfRecord && not empty record.raw.occurrence.basisOfRecord}">
@@ -813,7 +813,7 @@
                         </alatag:occurrenceTableRow>
 
                         <!-- Record Date -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceDate" fieldName="Record Date">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceDate" fieldName="Record date">
                             <c:set target="${fieldsMap}" property="eventDate" value="true" />
                             <c:if test="${empty record.processed.event.eventDate && record.raw.event.eventDate && empty record.raw.event.year && empty record.raw.event.month && empty record.raw.event.day}">
                                 [date not supplied]
@@ -888,7 +888,7 @@
                             ${record.raw.identification.typeStatus}
                         </alatag:occurrenceTableRow>
                         <!-- Identification Qualifier -->
-                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationQualifier" fieldName="Identification Qualifier">
+                        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationQualifier" fieldName="Identification qualifier">
                             <c:set target="${fieldsMap}" property="identificationQualifier" value="true" />
                             ${record.raw.identification.identificationQualifier}
                         </alatag:occurrenceTableRow>

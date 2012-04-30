@@ -83,7 +83,7 @@ facetLimit=100
 site.displayName=Australia's Virtual Herbarium
 
 # skin-specific facets to exclude/include from search results (comma separated list)
-facets.exclude=basis_of_record,data_provider_uid,cl918,imcra,institution_uid,provenance
+facets.exclude=basis_of_record,data_provider_uid,cl918,imcra,institution_uid,provenance,biogeographic_region
 facets.include=establishment_means,cl966
 facets.hide=data_resource_uid,institution_uid,raw_state_conservation,biogeographic_region
 downloads.extra=collectorFieldNumber,cultivated,duplicates,duplicatesOriginalInstitutionID,duplicatesOriginalUnitID,loanIdentifier,loanSequenceNumber,loanDestination,loanForBotanist,loanDate,loanReturnDate,phenology,preferredFlag,scientificNameWithoutAuthor,identifierRole,typeStatusQualifier,typifiedName,verbatimDateIdentified,verifier,verificationDate,verificationNotes
