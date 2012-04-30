@@ -331,7 +331,7 @@ td.dwc {
 }
 
 span.dwc {
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
 }
 
 div#userAssertionsDetailsLink {

@@ -83,7 +83,15 @@
             * Convert camel case text to pretty version (all lower case)
             */
             function fileCase(str) {
-                return str.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
+                return str.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase().capitalize();
+            }
+
+            /**
+            * Capitalise first letter of string only
+            * @return {String}
+             */
+            String.prototype.capitalize = function() {
+                return this.charAt(0).toUpperCase() + this.slice(1);
             }
 
             /**
