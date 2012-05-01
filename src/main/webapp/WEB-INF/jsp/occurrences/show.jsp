@@ -440,7 +440,7 @@
                 <c:if test="${isCollectionAdmin && not recordIsVerified}">
                     <div class="sidebar">
                         <button class="rounded" id="verifyButton" href="#verifyRecord">
-                            <span id="verifyRecordSpan" title="">Verify Record</span>
+                            <span id="verifyRecordSpan" title="">Verify record</span>
                         </button>
                         <div style="display:none;">
                             <div id="verifyRecord">
@@ -462,7 +462,7 @@
                 <c:if test="${!isReadOnly}">
                 <div class="sidebar">
                     <button class="rounded" id="assertionButton" href="#loginOrFlag">
-                        <span id="loginOrFlagSpan" title="">Flag an Issue</span>
+                        <span id="loginOrFlagSpan" title="">Flag an issue</span>
                     </button>
                     <div style="display:none">
                         <c:choose>

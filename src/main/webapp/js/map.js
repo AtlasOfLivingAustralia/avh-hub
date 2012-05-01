@@ -371,9 +371,9 @@ var Maps = (function() {
 
                 // catalogNumber 
                 if(data.record.raw.occurrence.catalogNumber != null){
-                    displayHtml += "Catalog Number: " + data.record.raw.occurrence.catalogNumber + '<br />';
+                    displayHtml += "Catalog number: " + data.record.raw.occurrence.catalogNumber + '<br />';
                 } else if(data.record.processed.occurrence.catalogNumber != null){
-                    displayHtml += "Catalog Number: " + data.record.processed.occurrence.catalogNumber + '<br />';
+                    displayHtml += "Catalog number: " + data.record.processed.occurrence.catalogNumber + '<br />';
                 }
 
                 if(data.record.raw.classification.vernacularName!=null && BC_CONF.skin != 'avh'){
@@ -412,7 +412,7 @@ var Maps = (function() {
 
                 if(data.record.processed.event.eventDate != null){
                     displayHtml += "<br/>";
-                    var label = (BC_CONF.skin == 'avh') ? "Collection Date: " : "Record Date: ";
+                    var label = (BC_CONF.skin == 'avh') ? "Collection date: " : "Record date: ";
                     displayHtml += label + data.record.processed.event.eventDate;
                 }
 
