@@ -830,7 +830,7 @@ function loadMultiFacets(facetName, displayName, fsort, foffset) {
     html += inputsHtml ;// add existing params
     html += "<table class='compact scrollTable' id='fullFacets' data-facet='" + facet + "' data-label='" + displayName + "'>";
     html += "<thead class='fixedHeader'><tr class='tableHead'><th>&nbsp;</th><th id='indexCol'><a href='#index' class='fsort' data-sort='index' data-foffset='0' title='Sort by " + displayName + "'>" + displayName + "</a></th>";
-    html += "<th><a href='#count' class='fsort' data-sort='count' title='Sort by record count'>Count</a></th></tr></thead>";
+    html += "<th><a href='#count' class='fsort' data-sort='count' data-foffset='0' title='Sort by record count'>Count</a></th></tr></thead>";
     html += "<tbody class='scrollContent'><tr id='loadingRow'><td colspan='3'>Loading... <img src='" + BC_CONF.contextPath + "/static/images/loading.gif' alt='loading'/></td></tr></tbody>";
     //html += "<tfoot><tr id='submitFacets'><td colspan='3'><input type='submit' class='submit'/></form></td></tr></tfoot>"; // empty row that gets loaded via AJAX
     html += "</table></form>";
