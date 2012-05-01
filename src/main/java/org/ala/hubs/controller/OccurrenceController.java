@@ -131,6 +131,7 @@ public class OccurrenceController {
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
     private final String RECORD_SHOW = "occurrences/show";
+    private final String RECORD_SHOW_CORE = "occurrences/showCore";
     private final String RECORD_OUTLIERINFO = "occurrences/outlierInfo";
     private final String FIELDGUIDE_ERROR = "error/fieldguideGeneration";
     private final String RECORD_MAP = "occurrences/map";
@@ -710,7 +711,7 @@ public class OccurrenceController {
             HttpServletRequest request, Model model) throws Exception {
         try {
         logger.debug("User principal: " + request.getUserPrincipal());
-
+        logger.debug("Request servletPath = " + request.getServletPath());
         logger.debug("User principal: " + request.getUserPrincipal());
         logger.debug("Club role = " + clubRoleForHub);
 
@@ -858,7 +859,14 @@ public class OccurrenceController {
             e.printStackTrace();
         }
 
-		return RECORD_SHOW;
+        String viewName = RECORD_SHOW;
+
+        if (StringUtils.containsIgnoreCase(request.getServletPath(), "/fragment")) {
+            // fragment view (maps popups)
+            viewName = RECORD_SHOW_CORE;
+        }
+
+		return viewName;
 	}
 
     /**
