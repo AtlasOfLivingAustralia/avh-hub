@@ -291,6 +291,20 @@
                         );
                     });
                 </c:if>
+
+                $("#backButton a").click(function(e) {
+                    e.preventDefault();
+                    var url = $(this).attr("href");
+                    if (url) {
+                        // referer value from request object
+                        window.location.href = url;
+                    } else if (history.length) {
+                        //There is history to go back to
+                        history.go(-1);
+                    } else {
+                        alert("Sorry it appears the history has been lost, please use the browser&apso;s back button");
+                    }
+                });
             }); // end JQuery document ready
             
             /*
@@ -353,6 +367,9 @@
         <spring:url var="json" value="/occurrences/${record.raw.uuid}.json" />
         <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
+                <div id="backButton">
+                    <a href="${header['Referer']}" title="Return to search results">Back to search results</a>
+                </div>
                 <h1><fmt:message key="show.occurrenceRecord"/>: <span id="recordId">${recordId}</span></h1>
                 <c:if test="${skin != 'avh'}">
                     <div id="jsonLink">
@@ -394,6 +411,7 @@
                         </c:choose>
                     </h2>
                 </c:if>
+                <%--Referer header: ${header['Referer']}--%>
             </div>
 
             <div id="SidebarBox">
