@@ -411,7 +411,6 @@
                         </c:choose>
                     </h2>
                 </c:if>
-                <%--Referer header: ${header['Referer']}--%>
             </div>
 
             <div id="SidebarBox">
@@ -454,8 +453,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- recordIsVerified = ${recordIsVerified} -->
-                <c:if test="${isCollectionAdmin && not recordIsVerified}">
+                <!-- recordIsVerified = ${recordIsVerified} || isCollectionAdmin = ${isCollectionAdmin}-->
+                <c:if test="${isCollectionAdmin && (not empty record.systemAssertions || not empty record.userAssertions) && not recordIsVerified}">
                     <div class="sidebar">
                         <button class="rounded" id="verifyButton" href="#verifyRecord">
                             <span id="verifyRecordSpan" title="">Verify record</span>
@@ -464,9 +463,12 @@
                             <div id="verifyRecord">
                                 <h3>Confirmation</h3>
                                 <div id="verifyAsk">
-                                    <p style="margin-bottom:10px;">Are you sure you want to verify this record as being correct?</p>
+                                    <p style="margin-bottom:10px;">
+                                        Click the &quot;Confirm&quot; button to verify that this record is correct and that
+                                        the listed &quot;validation issues&quot; are incorrect/invalid.
+                                    </p>
                                     <button class="confirmVerify">Confirm</button>
-                                    <button class="cancelVerify">Refute</button>
+                                    <button class="cancelVerify">Cancel</button>
                                 </div>
                                 <div id="verifyDone" style="display:none;">
                                     Record successfully verified
