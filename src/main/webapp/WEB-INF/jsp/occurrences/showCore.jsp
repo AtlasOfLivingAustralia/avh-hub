@@ -7,18 +7,18 @@
 <%@ include file="/common/taglibs.jsp" %>
 <!DOCTYPE html>
 <c:choose>
-<c:when test="${skin == 'avh'}">
-    <c:set var="recordId" value="${record.raw.occurrence.catalogNumber}"/>
-</c:when>
-<c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
-	<c:set var="recordId" value="${record.raw.occurrence.collectionCode}:${record.raw.occurrence.catalogNumber}"/>
-</c:when>
-<c:when test="${not empty record.raw.occurrence.occurrenceID}">
-	<c:set var="recordId" value="${record.raw.occurrence.occurrenceID}"/>
-</c:when>
-<c:otherwise>
-	<c:set var="recordId" value="${record.raw.uuid}"/>
-</c:otherwise>
+    <c:when test="${fn:contains(skin, 'avh')}">
+        <c:set var="recordId" value="${record.raw.occurrence.catalogNumber}"/>
+    </c:when>
+    <c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
+        <c:set var="recordId" value="${record.raw.occurrence.collectionCode}:${record.raw.occurrence.catalogNumber}"/>
+    </c:when>
+    <c:when test="${not empty record.raw.occurrence.occurrenceID}">
+        <c:set var="recordId" value="${record.raw.occurrence.occurrenceID}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="recordId" value="${record.raw.uuid}"/>
+    </c:otherwise>
 </c:choose>
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
 <c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
@@ -43,6 +43,7 @@
 <html>
     <head>
         <!-- Skin selected: ${skin} -->
+        <meta name="DC.Title" content="Partners" lang="en">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
         <title><fmt:message key="show.occurrenceRecord"/> ${recordId} | ${hubDisplayName} </title>

@@ -15,7 +15,7 @@
     <table class="occurrenceTable" id="datasetTable">
         <c:if test="${useAla == 'true'}">
             <!-- Data Provider -->
-            <c:if test="${skin != 'avh'}">
+            <c:if test="${not fn:contains(skin, 'avh')}">
                 <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataProvider" fieldName="Data provider">
                     <c:choose>
                         <c:when test="${record.processed.attribution.dataProviderUid != null && not empty record.processed.attribution.dataProviderUid}">
@@ -50,7 +50,7 @@
             </c:if>
         </c:if>
         <!-- Institution -->
-        <c:if test="${skin != 'avh'}">
+        <c:if test="${not fn:contains(skin, 'avh')}">
             <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="institutionCode" fieldName="Institution">
                 <c:choose>
                     <c:when test="${record.processed.attribution.institutionUid != null && not empty record.processed.attribution.institutionUid}">

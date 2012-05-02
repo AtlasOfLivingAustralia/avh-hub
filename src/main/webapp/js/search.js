@@ -138,8 +138,8 @@ function loadAllCharts() {
         biocacheServicesUrl: biocacheServiceUrl,
         displayRecordsUrl: BC_CONF.serverName
     };
-    
-    loadTaxonomyChart(taxonomyChartOptions);
+
+    taxonomyChart.load(taxonomyChartOptions);
     loadFacetCharts(facetChartOptions);
 }
 

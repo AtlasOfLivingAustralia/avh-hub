@@ -11,7 +11,7 @@
         <%--<h3 style="display: inline-block;float:left;">Refine Results</h3>--%>
         <div id="customiseFacets"><a href="#" title="customise which categories are displayed below">Refine results</a></div>
         <div id="facetOptions">
-            <h4 style="padding-top: 8px;">Select the filter categories that are to appear in the &quot;Refine results&quot; column</h4>
+            <h4 style="padding-top: 8px;">Select the filter categories that you want to appear in the &quot;Refine results&quot; column</h4>
             <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
             <div id="facetCheckboxes">
                 Select: <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a><br/>
