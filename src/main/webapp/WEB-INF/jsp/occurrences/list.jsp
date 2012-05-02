@@ -85,8 +85,8 @@
             <h1><fmt:message key="heading.list"/><a name="resultsTop">&nbsp;</a><!--<fmt:message key="test.value"/>--></h1>
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advanced">Advanced Search</a></span>
-                    <span id="#searchLabel">Search:</span>
+                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advanced">Advanced search</a></span>
+                    <%--<span id="#searchLabel">Search:</span>--%>
                     <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
                     <input type="submit" id="solrSubmit" value="Search"/>
                 </form>
@@ -114,7 +114,7 @@
                     </div>
                     <div style="display:none">
                         <div id="alert">
-                            <h2>Email Alerts</h2>
+                            <h2>Email alerts</h2>
                             <br/>
                             <div class="buttonDiv centered">
                                 <a href="#alertNewRecords" id="alertNewRecords" class="tooltip" data-method="createBiocacheNewRecordsAlert" title="Notify me when new records come online for this search">Get
@@ -204,10 +204,10 @@
                                     <c:choose>
                                         <c:when test="${skin == 'avh'}"><%-- AVH hubs --%>
                                             <p class="rowA">
-                                                <span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${rawScientificName}"/></span>
+                                                <span class="occurrenceNames">${rawScientificName}</span>
                                                 <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
                                                     <span style="display:inline-block;float:right;">
-                                                        <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_catalogNumber}
+                                                        <strong class="resultsLabel">Catalogue&nbsp;number:</strong>&nbsp;${occurrence.raw_catalogNumber}
                                                     </span>
                                                 </c:if>
                                             </p>
@@ -355,7 +355,7 @@
                                         <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
                                     </div>
                                     <div id="downloadMaps" class="buttonDiv">
-                                        <a href="#downloadMap" id="downloadMapLink" title="Download a publication map">Download publication map</a>
+                                        <a href="#downloadMap" id="downloadMapLink" title="Download a publication quality map">Download map</a>
                                     </div>
                                 </td>
                             </tr>
@@ -365,7 +365,7 @@
                         <div id="legend" title="Toggle layers/legend display">                            
                             <div class="title">Legend<span>&nabla;</span></div>
                             <div id="layerlist">
-                                <div id="toggleAll">Toggle All</div>
+                                <div id="toggleAll">Toggle all</div>
                                 <div id="legendContent"></div>
                             </div>
                         </div>

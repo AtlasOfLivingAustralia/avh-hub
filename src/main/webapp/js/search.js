@@ -126,13 +126,13 @@ function loadAllCharts() {
     
     var facetChartOptions = {
         query: queryString, 
-        charts: ['institution_uid','state','species_group','assertions','type_status','biogeographic_region','state_conservation','occurrence_year'],
-        institution_uid: {backgroundColor: "#eeeeee"},
-        state: {backgroundColor: "#eeeeee"},
+        charts: ['collection_uid','state','species_group','assertions','type_status','ibra','state_conservation','occurrence_year'],
+        collection_uid: {title: 'By collection', backgroundColor: "#eeeeee"},
+        state: {title: 'By state or territory', backgroundColor: "#eeeeee"},
         species_group: {backgroundColor: "#eeeeee", title: 'By higher-level group', ignore: ['Animals','Insects','Crustaceans']},
         assertions: {backgroundColor: "#eeeeee"},
         type_status: {backgroundColor: "#eeeeee"},
-        biogeographic_region: {backgroundColor: "#eeeeee"},
+        ibra: {title: 'By IBRA region', backgroundColor: "#eeeeee"},
         state_conservation: {backgroundColor: "#eeeeee"},
         occurrence_year:{backgroundColor: "#eeeeee"},
         biocacheServicesUrl: biocacheServiceUrl,
@@ -517,10 +517,10 @@ $(document).ready(function() {
             var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" +
                 //"<form name='raw_taxon_search' class='rawTaxonSearch' id='rawTaxonSearch_"+i+"' action='" +
                 // BC_CONF.contextPath + "/occurrences/search' method='POST'>" +
-                "This taxon search includes records with synonyms and child taxa of <b>" + nameString + 
+                "These results include records for synonyms and names of child taxa of <b>" + nameString +
                 "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
-                "view species page</a>).<br/><br/>Verbatim scientific names " +
-                "which appear on records in this result set: <input type='submit' class='rawTaxonSumbit' id='rawTaxonSumbit_"+i+
+                "view species page</a>).<br/><br/>The result set containsrecords " +
+                "provided under the following names: <input type='submit' class='rawTaxonSumbit' id='rawTaxonSumbit_"+i+
                 "' value='Search with selected verbatim names' style='display:inline-block;float:right;'/>" +
                 "<div class='rawTaxaList'>";
             var synListSize = 0;

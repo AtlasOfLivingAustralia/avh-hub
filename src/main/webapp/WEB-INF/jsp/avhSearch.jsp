@@ -48,7 +48,7 @@
                 <li><a id="t2" href="#advancedSearch">Advanced search</a></li>
                 <li><a id="t3" href="#taxaUpload">Batch taxon search</a></li>
                 <li><a id="t4" href="#catalogUpload">Catalogue number search</a></li>
-                <li><a id="t5" href="#shapeFileUpload">Shape file search</a></li>
+                <li><a id="t5" href="#shapeFileUpload">Shapefile search</a></li>
             </ul>
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
@@ -452,7 +452,7 @@
                 </div><!-- end #uploadDiv div -->
                 <div id="shapeDiv" class="paneDiv homePane">
                     <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
-                        <p>Upload a shape file (.shp):</p>
+                        <p>Upload a shapefile (.shp):</p>
                         <p><input type="file" name="file"/></p>
                         <p><input type="submit" value="Search" /></p>
                     </form>

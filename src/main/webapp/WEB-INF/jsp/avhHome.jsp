@@ -49,8 +49,8 @@
         </div>
         <div id="searchBox" style="float:right;margin-top:65px;width:400px;text-align:right;">
             <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                <%--<span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>--%>
-                <span id="#searchLabel">Search:</span>
+                <%--<span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>
+                <span id="#searchLabel">Search:</span>--%>
                 <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>" style="width:250px;">
                 <input type="submit" id="solrSubmit" value="Search"/>
             </form>

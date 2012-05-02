@@ -364,16 +364,16 @@ var Maps = (function() {
 
                 displayHtml = '<div id="occinfo" style="min-height:' + minHeight + ';">';
                 if(occids.length>1){
-                    displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'.</strong></span>';
+                    displayHtml += '<span class="occinfohead"><strong>Viewing ' + (curr+1) + ' of ' + occids.length + ' occurrence'+((occids.length>1)?'s':'')+'</strong></span>';
                 }
 
                 displayHtml += '<div id="textfields">';
 
                 // catalogNumber 
                 if(data.record.raw.occurrence.catalogNumber != null){
-                    displayHtml += "Catalog number: " + data.record.raw.occurrence.catalogNumber + '<br />';
+                    displayHtml += "Catalogue number: " + data.record.raw.occurrence.catalogNumber + '<br />';
                 } else if(data.record.processed.occurrence.catalogNumber != null){
-                    displayHtml += "Catalog number: " + data.record.processed.occurrence.catalogNumber + '<br />';
+                    displayHtml += "Catalogue number: " + data.record.processed.occurrence.catalogNumber + '<br />';
                 }
 
                 if(data.record.raw.classification.vernacularName!=null && BC_CONF.skin != 'avh'){
@@ -383,7 +383,7 @@ var Maps = (function() {
                 }
 
                 if(data.record.raw.classification.scientificName != null){
-                    displayHtml += formatSciName(data.record.raw.classification.scientificName, data.record.processed.classification.taxonRankID)  + '<br />';
+                    displayHtml += data.record.raw.classification.scientificName  + '<br />';
                 } else {
                     displayHtml += formatSciName(data.record.processed.classification.scientificName, data.record.processed.classification.taxonRankID)  + '<br />';
                 }
