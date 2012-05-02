@@ -426,7 +426,7 @@
                 </div><!-- end simpleSearch div -->
                 <div id="uploadDiv" class="paneDiv homePane">
                     <form name="taxaUploadForm" id="taxaUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
-                        <p>Enter a list of taxa (one taxon per line) and either <strong>download</strong> a <abbr title="comma separated values">CSV</abbr>
+                        <p>Enter a list of taxon names (one name per line)
                             file containing records OR perform a <strong>search</strong>.</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
                         <p><textarea name="queries" id="raw_names" rows="15" cols="60"></textarea></p>
@@ -439,8 +439,7 @@
                 </div><!-- end #uploadDiv div -->
                 <div id="catalogUploadDiv" class="paneDiv homePane">
                     <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
-                        <p>Enter a list of catalog numbers (one per line) and either <strong>download</strong> a <abbr title="comma separated values">CSV</abbr>
-                            file containing records OR perform a <strong>search</strong>.</p>
+                        <p>Enter a list of catalogue numbers (one number per line).</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
                         <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
                         <p> <input type="submit" name="action" value="Download" />
@@ -452,7 +451,7 @@
                 </div><!-- end #uploadDiv div -->
                 <div id="shapeDiv" class="paneDiv homePane">
                     <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
-                        <p>Upload a shapefile (.shp):</p>
+                        <p>Upload a shapefile (.shp).</p>
                         <p><input type="file" name="file"/></p>
                         <p><input type="submit" value="Search" /></p>
                     </form>
