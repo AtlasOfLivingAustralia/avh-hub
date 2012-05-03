@@ -95,28 +95,7 @@
                                                     </td>
                                                 </tr>
                                             </c:forEach>
-                                            <c:choose>
-                                                <c:when test="${skin != 'avh'}">
-                                                    <tr>
-                                                        <td>
-                                                             <a href="#nameMatchingOptions" id="#nameMatchingOptions" class="toggleOptions" style="font-size: 11px;">Name matching options</a>
-                                                        </td>
-                                                        <td style="font-size: 12px;line-height: 1.5em;">
-                                                            <div id="nameMatchingOptions">
-                                                                <input type="radio" name="nameType" value="matched_name_children" checked="checked"/> Match
-                                                                all known names (including synonyms) and include records for child taxa<br/>
-                                                                <input type="radio" name="nameType" value="matched_name"/> Match
-                                                                all known names (including synonyms) but do NOT include records for child taxa<br/>
-                                                                <input type="radio" name="nameType" value="raw_name"/> Match the verbatim scientific name on records (will NOT include
-                                                                records with synonyms or child taxa)
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <input type="hidden" name="nameType" value="matched_name_children"/>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <input type="hidden" name="nameType" value="matched_name_children"/>
                                         </tbody>
                                     </table>
                                 </div>
@@ -142,21 +121,117 @@
                                                 </select>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td class="label">Determiner</td>
+                                            <td>
+                                                <input type="text" name="identified_by" id="identified_by" class="dataset" placeholder=""  value=""/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Determination date</td>
+                                            <td>
+                                                <input type="text" name="identified_date_start" id="identified_date_start" class="occurrence_date" placeholder="" value=""/>
+                                                to
+                                                <input type="text" name="identified_date_end" id="identified_date_end" class="occurrence_date" placeholder="" value=""/>
+                                                (YYYY-MM-DD)
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div><!-- end div.toggleSection -->
-                                    <%--                        <b>Find records that specify the following scientific name (verbatim/unprocessed name)</b>
-                            <table border="0" width="100" cellspacing="2" class="compact">
-                                <thead/>
-                                <tbody>
+                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Specimen</a>
+                            <div class="toggleSection">
+                                <table border="0" width="100" cellspacing="2" class="compact">
+                                    <thead/>
+                                    <tbody>
+                                        <tr>
+                                            <td class="label">Collection</td>
+                                            <td>
+                                                <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
+                                                    <option value="">-- select an collection --</option>
+                                                    <c:forEach var="inst" items="${institutions}">
+                                                        <!--<optgroup label="${inst.value}"> -->
+                                                        <c:if test="${not empty inst.value}">
+                                                            <option value="${inst.key}">${inst.value}</option>
+                                                        </c:if>
+                                                        <!--</optgroup> -->
+                                                    </c:forEach>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Catalogue number</td>
+                                            <td>
+                                                <input type="text" name="catalogue_number" id="catalogue_number" class="dataset" placeholder="" value=""/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                        <tr style="display:none;">
+                                            <td class="label">Type material</td>
+                                            <td>
+                                                <input type="checkbox" name="type_material" id="type_material" class="dataset"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Full text search</td>
+                                            <td>
+                                                <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Record updated</td>
+                                            <td>
+                                                <input type="text" name="last_load_start" id="last_load_start" class="occurrence_date" placeholder="" value=""/>
+                                                to
+                                                <input type="text" name="last_load_end" id="last_load_end" class="occurrence_date" placeholder="" value=""/>
+                                                (YYYY-MM-DD)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- end div.toggleSection Speciemen-->
+                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Collecting event</a>
+                            <div class="toggleSection">
+                                <table border="0" width="100" cellspacing="2" class="compact">
+                                    <thead/>
+                                    <tbody>
                                     <tr>
-                                        <td class="label">Raw Scientific Name</td>
+                                        <td class="label">Collector</td>
                                         <td>
-                                             <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
+                                            <input type="text" name="collector" id="collector" class="dataset" placeholder=""  value=""/>
                                         </td>
                                     </tr>
-                                </tbody>
-                            </table>--%>
+                                    <td class="label">Collecting number</td>
+                                    <td>
+                                        <input type="text" name="record_number" id="record_number" class="dataset" placeholder=""  value=""/>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Collecting date</td>
+                                        <td>
+                                            <input type="text" name="start_date" id="startDate" class="occurrence_date" placeholder="" value=""/>
+                                            to
+                                            <input type="text" name="end_date" id="endDate" class="occurrence_date" placeholder="" value=""/>
+                                            (YYYY-MM-DD)
+                                        </td>
+                                    </tr>
+                                    <c:if test="${skin == 'avh'}">
+                                        <tr>
+                                            <td class="label">Cultivation status</td>
+                                            <td>
+                                                <select class="" name="cultivation_status" id="cultivation_status">
+                                                    <option value="">-- select a cultivation status --</option>
+                                                    <c:forEach var="cs" items="${cultivationStatus}">
+                                                        <option value="${cs}">${cs}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </c:if>
+                                    </tbody>
+                                </table>
+                            </div><!-- end div.toggleSection Collecting Event -->
                             <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Geography</a>
                             <div class="toggleSection">
                                 <table border="0" width="100" cellspacing="2" class="compact">
@@ -225,163 +300,6 @@
                                     </tbody>
                                 </table>
                             </div><!-- end div.toggleSection geography-->
-                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Collecting event</a>
-                            <div class="toggleSection">
-                                <table border="0" width="100" cellspacing="2" class="compact">
-                                    <thead/>
-                                    <tbody>
-                                        <tr>
-                                            <td class="label">Collector</td>
-                                            <td>
-                                                 <input type="text" name="collector" id="collector" class="dataset" placeholder=""  value=""/>
-                                            </td>
-                                        </tr>
-                                        <%--<tr>
-                                            <td class="label">Collectors Number</td>
-                                            <td>
-                                                 <input type="text" name="collectors_number" id="collectors_number" class="dataset" placeholder=""  value=""/>
-                                            </td>
-                                        </tr>--%>
-                                        <tr>
-                                            <td class="label">Collecting date</td>
-                                            <td>
-                                                <input type="text" name="start_date" id="startDate" class="occurrence_date" placeholder="" value=""/>
-                                                to
-                                                <input type="text" name="end_date" id="endDate" class="occurrence_date" placeholder="" value=""/>
-                                                 (YYYY-MM-DD)
-                                            </td>
-                                        </tr>
-                                        <c:if test="${skin == 'avh'}">
-                                            <tr>
-                                                <td class="label">Cultivation status</td>
-                                                <td>
-                                                     <select class="" name="cultivation_status" id="cultivation_status">
-                                                        <option value="">-- select a cultivation status --</option>
-                                                        <c:forEach var="cs" items="${cultivationStatus}">
-                                                            <option value="${cs}">${cs}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </c:if>
-                                    </tbody>
-                                </table>
-                            </div><!-- end div.toggleSection Collecting Event -->
-                            <a href="#extendedOptions" class="toggleTitle toggleTitleActive">${(skin == 'avh') ? 'Specimen' : 'Record'}</a>
-                            <div class="toggleSection">
-                                <table border="0" width="100" cellspacing="2" class="compact">
-                                    <thead/>
-                                    <tbody>
-                                        <tr>
-                                            <td class="label">Full text</td>
-                                            <td>
-                                                <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
-                                            </td>
-                                        </tr>
-                                        <c:if test="${skin != 'avh'}">
-                                            <tr>
-                                                <td class="label">Basis of Record</td>
-                                                <td>
-                                                     <select class="basis_of_record" name="basis_of_record" id="basis_of_record">
-                                                        <option value="">-- select a basis of record --</option>
-                                                        <c:forEach var="bor" items="${basisOfRecord}">
-                                                            <option value="${bor}">${bor}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </c:if>
-                                        <tr>
-                                            <td class="label">Collection</td>
-                                            <td>
-                                                <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
-                                                    <option value="">-- select an collection --</option>
-                                                    <c:forEach var="inst" items="${institutions}">
-                                                        <!--<optgroup label="${inst.value}"> -->
-                                                            <c:if test="${not empty inst.value}">
-                                                            <option value="${inst.key}">${inst.value}</option>
-                                                            </c:if>
-                                                        <!--</optgroup> -->
-                                                    </c:forEach>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Catalogue number</td>
-                                            <td>
-                                                 <input type="text" name="catalogue_number" id="catalogue_number" class="dataset" placeholder="" value=""/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Collecting number</td>
-                                            <td>
-                                                 <input type="text" name="record_number" id="record_number" class="dataset" placeholder=""  value=""/>
-                                            </td>
-                                        </tr>
-                                        <tr style="display:none;">
-                                            <td class="label">Type material</td>
-                                            <td>
-                                                 <input type="checkbox" name="type_material" id="type_material" class="dataset"/>
-                                            </td>
-                                        </tr>
-                                        <c:if test="${skin == 'avh'}">
-                                            <tr>
-                                                <td class="label">Duplicates held at</td>
-                                                <td>
-                                                     <%--<select class="institution_uid collection_uid" name="duplicates_institution_collection" id="duplicates_institution_collection"
-                                                             onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
-                                                        <option value="">-- select an institution or collection --</option>
-                                                        <c:forEach var="inst" items="${institutions}">
-                                                            <optgroup label="${inst.value}">
-                                                                <option value="${inst.key}">All records from ${inst.value}</option>
-                                                                <c:forEach var="coll" items="${collections}">
-                                                                    <c:choose>
-                                                                        <c:when test="${inst.key == 'in13' && fn:startsWith(coll.value, inst.value)}">
-                                                                            <option value="${coll.key}">${fn:replace(fn:replace(coll.value, inst.value, ""), " - " ,"")} Collection</option>
-                                                                        </c:when>
-                                                                        <c:when test="${inst.key == 'in6' && fn:startsWith(coll.value, 'Australian National')}">
-                                                                            <option value="${coll.key}">${coll.value}</option>
-                                                                        </c:when>
-                                                                        <c:when test="${fn:startsWith(coll.value, inst.value)}">
-                                                                            <option value="${coll.key}">${fn:replace(coll.value, inst.value, "")}</option>
-                                                                        </c:when>
-                                                                    </c:choose>
-                                                                </c:forEach>
-                                                            </optgroup>
-                                                        </c:forEach>
-                                                    </select>--%>
-                                                     <input type="text" name="duplicate_inst" id="duplicate_inst" class="dataset" placeholder=""  value=""/>
-                                                </td>
-                                            </tr>
-                                        </c:if>
-                                        <tr>
-                                            <td class="label">Determiner</td>
-                                            <td>
-                                                <input type="text" name="identified_by" id="identified_by" class="dataset" placeholder=""  value=""/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Determination date</td>
-                                            <td>
-                                                <input type="text" name="identified_date_start" id="identified_date_start" class="occurrence_date" placeholder="" value=""/>
-                                                to
-                                                <input type="text" name="identified_date_end" id="identified_date_end" class="occurrence_date" placeholder="" value=""/>
-                                                (YYYY-MM-DD)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Record last modified</td>
-                                            <td>
-                                                <input type="text" name="last_load_start" id="last_load_start" class="occurrence_date" placeholder="" value=""/>
-                                                to
-                                                <input type="text" name="last_load_end" id="last_load_end" class="occurrence_date" placeholder="" value=""/>
-                                                (YYYY-MM-DD)
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            </div><!-- end div.toggleSection Speciemen-->
                             <c:if test="${skin == 'avh'}">
                                 <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Herbarium transactions</a>
                                 <div class="toggleSection">
@@ -389,15 +307,31 @@
                                         <thead/>
                                         <tbody>
                                             <tr>
-                                                <td class="label">Borrowing institution</td>
+                                                <td class="label">Duplicates sent to</td>
                                                 <td>
-                                                    <%--<input type="text" name="loan_destination" id="loan_destination" class="dataset" placeholder=""  value=""/>--%>
-                                                    <select class="dataset" name="loan_destination" id="loan_destination">
-                                                        <option value="">-- select a borrowing institution --</option>
-                                                        <c:forEach var="ld" items="${loanDestinations}">
-                                                            <option value="${ld}">${ld}</option>
-                                                        </c:forEach>
-                                                    </select>
+                                                        <%--<select class="institution_uid collection_uid" name="duplicates_institution_collection" id="duplicates_institution_collection"
+                                                                 onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
+                                                            <option value="">-- select an institution or collection --</option>
+                                                            <c:forEach var="inst" items="${institutions}">
+                                                                <optgroup label="${inst.value}">
+                                                                    <option value="${inst.key}">All records from ${inst.value}</option>
+                                                                    <c:forEach var="coll" items="${collections}">
+                                                                        <c:choose>
+                                                                            <c:when test="${inst.key == 'in13' && fn:startsWith(coll.value, inst.value)}">
+                                                                                <option value="${coll.key}">${fn:replace(fn:replace(coll.value, inst.value, ""), " - " ,"")} Collection</option>
+                                                                            </c:when>
+                                                                            <c:when test="${inst.key == 'in6' && fn:startsWith(coll.value, 'Australian National')}">
+                                                                                <option value="${coll.key}">${coll.value}</option>
+                                                                            </c:when>
+                                                                            <c:when test="${fn:startsWith(coll.value, inst.value)}">
+                                                                                <option value="${coll.key}">${fn:replace(coll.value, inst.value, "")}</option>
+                                                                            </c:when>
+                                                                        </c:choose>
+                                                                    </c:forEach>
+                                                                </optgroup>
+                                                            </c:forEach>
+                                                        </select>--%>
+                                                    <input type="text" name="duplicate_inst" id="duplicate_inst" class="dataset" placeholder=""  value=""/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -410,6 +344,18 @@
                                                 <td class="label">Exchange number</td>
                                                 <td>
                                                     <input type="text" name="exchange_number" id="exchange_number" class="dataset" placeholder="not currently searchable" readonly="readonly" value=""/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">Borrowing institution</td>
+                                                <td>
+                                                    <%--<input type="text" name="loan_destination" id="loan_destination" class="dataset" placeholder=""  value=""/>--%>
+                                                    <select class="dataset" name="loan_destination" id="loan_destination">
+                                                        <option value="">-- select a borrowing institution --</option>
+                                                        <c:forEach var="ld" items="${loanDestinations}">
+                                                            <option value="${ld}">${ld}</option>
+                                                        </c:forEach>
+                                                    </select>
                                                 </td>
                                             </tr>
                                         </tbody>
