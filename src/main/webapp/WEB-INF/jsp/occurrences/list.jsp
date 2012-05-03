@@ -88,7 +88,7 @@
                     <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advanced">Advanced search</a></span>
                     <%--<span id="#searchLabel">Search:</span>--%>
                     <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
-                    <input type="submit" id="solrSubmit" value="Search"/>
+                    <input type="submit" id="solrSubmit" value="Quick search"/>
                 </form>
             </div>
            <input type="hidden" id="lsid" value="${param.lsid}"/>

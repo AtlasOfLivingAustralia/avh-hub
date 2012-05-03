@@ -430,8 +430,9 @@
                             file containing records OR perform a <strong>search</strong>.</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
                         <p><textarea name="queries" id="raw_names" rows="15" cols="60"></textarea></p>
-                        <p> <input type="submit" name="action" value="Download" />
-                            &nbsp;OR&nbsp;
+                        <p>
+                            <%--<input type="submit" name="action" value="Download" />--%>
+                            <%--&nbsp;OR&nbsp;--%>
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
                             <input type="hidden" name="field" value="raw_name"/>
                             <input type="submit" name="action" value="Search" /></p>
@@ -442,8 +443,9 @@
                         <p>Enter a list of catalogue numbers (one number per line).</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
                         <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
-                        <p> <input type="submit" name="action" value="Download" />
-                            &nbsp;OR&nbsp;
+                        <p>
+                            <%--<input type="submit" name="action" value="Download" />--%>
+                            <%--&nbsp;OR&nbsp;--%>
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
                             <input type="hidden" name="field" value="catalogue_number"/>
                             <input type="submit" name="action" value="Search" /></p>

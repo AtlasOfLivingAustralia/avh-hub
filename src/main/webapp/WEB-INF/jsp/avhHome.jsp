@@ -47,7 +47,7 @@
                      width="249" style="border:0px">
             </a>
         </div>
-        <div id="searchBox" style="float:right;margin-top:65px;width:400px;text-align:right;">
+        <div id="searchBox" style="float:right;margin-top:65px;width:400px;text-align:right;display:none;">
             <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
                 <%--<span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/home#advanced">Advanced Search</a></span>
                 <span id="#searchLabel">Search:</span>--%>
