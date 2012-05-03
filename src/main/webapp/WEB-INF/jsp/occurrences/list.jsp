@@ -12,7 +12,7 @@
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="facetLimit" scope="request"><ala:propertyLoader bundle="hubs" property="facetLimit"/></c:set>
-
+<c:set var="defaultFacetMapColourBy" scope="request"><ala:propertyLoader bundle="hubs" property="facets.defaultColourBy"/></c:set>
 <c:set var="queryDisplay">
     <c:choose>
         <c:when test="${fn:contains(searchRequestParams.displayString,'matchedTaxon')}">${searchRequestParams.displayString}</c:when>
@@ -85,7 +85,7 @@
             <h1><fmt:message key="heading.list"/><a name="resultsTop">&nbsp;</a><!--<fmt:message key="test.value"/>--></h1>
             <div id="searchBox">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advanced">Advanced search</a></span>
+                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advancedSearch">Advanced search</a></span>
                     <%--<span id="#searchLabel">Search:</span>--%>
                     <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
                     <input type="submit" id="solrSubmit" value="Quick search"/>
@@ -321,8 +321,11 @@
                                         <select name="colourFacets" id="colourFacets">
                                             <option value=""> None </option>
                                             <c:forEach var="facetResult" items="${searchResults.facetResults}">
+                                                <c:set var="Defaultselected">
+                                                    <c:if test="${not empty defaultFacetMapColourBy && facetResult.fieldName == defaultFacetMapColourBy}">selected="selected"</c:if>
+                                                </c:set>
                                                 <c:if test="${fn:length(facetResult.fieldResult) > 1}">
-                                                    <option value="${facetResult.fieldName}"><fmt:message key="facet.${facetResult.fieldName}"/></option>
+                                                    <option value="${facetResult.fieldName}" ${Defaultselected}><fmt:message key="facet.${facetResult.fieldName}"/></option>
                                                 </c:if>
                                             </c:forEach>
                                         </select>

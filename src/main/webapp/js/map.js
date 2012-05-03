@@ -620,7 +620,7 @@ function initialiseMap() {
 
     //Maps.loadMap();
     Maps.initialise();
-    Maps.loadOccurrencesByType("");
+    Maps.loadOccurrencesByType($('#colourFacets').val());
 
     // live event for toggling layer views
     $('input.layer').live("click", function(){
