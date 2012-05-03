@@ -66,7 +66,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <br/>
-                                        <span style="font-size: 12px; color: #444;"><b>Note:</b> the simple search attempts to match a known <b>species/taxon</b> - by its scientific name or common name.
+                                        <span style="font-size: 12px; color: #444;"><b>Note:</b> the quick search attempts to match a known <b>species/taxon</b> - by its scientific name or common name.
                                             If there are no name matches, a <b>full text</b> search will be performed on your query</span></td>
                                 </tr>
                             </tbody>
