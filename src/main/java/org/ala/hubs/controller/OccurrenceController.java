@@ -127,6 +127,8 @@ public class OccurrenceController {
     String apiKey = null;
     @Value("${clubRoleForHub}")
     String clubRoleForHub = null;
+    @Value("${facets.customOrder}")
+    String facetsCustomOrder = null;
     
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
@@ -1637,6 +1639,29 @@ public class OccurrenceController {
             allFacets.addAll(Arrays.asList(StringUtils.split(facetsInclude, ",")));
         }
 
+        //List<String> fqs = Arrays.asList(filterQuery); // convert array to List
+        List<String> orderedFacets = new ArrayList<String>(); // store merged list in a separate var
+
+        if (StringUtils.isNotBlank(facetsCustomOrder)) {
+            List<String> customOrder = Arrays.asList(StringUtils.split(facetsCustomOrder, ","));
+
+            for (String facet : customOrder) {
+                if (allFacets.contains(facet)) {
+                    orderedFacets.add(facet); // add to intermediate list
+                    allFacets.remove(facet); // remove it from first list (so we can add remainders at the end)
+                }
+            }
+            // add any remaining values not defined in facetsCustomOrder
+            for (String remainder : allFacets) {
+                orderedFacets.add(remainder); // add to intermediate list
+            }
+        } else {
+            //Collections.copy(orderedFacets, fqs); // copied over
+            orderedFacets.addAll(allFacets);
+        }
+
+        logger.debug("orderedFacets: " + StringUtils.join(orderedFacets,"|"));
+
         if (StringUtils.isNotEmpty(facetsExclude)) {
             excludeArray = StringUtils.split(facetsExclude, ",");
         }
@@ -1645,7 +1670,7 @@ public class OccurrenceController {
             hideArray = StringUtils.split(facetsHide, ",");
         }
 
-        for (String facet : allFacets) {
+        for (String facet : orderedFacets) {
             if (StringUtils.indexOfAny(facet, excludeArray) < 0) {
                 // add facet if its not in exclude list (match >= 0 && null or no match = -1)
                 //facetsList.add(facet);
