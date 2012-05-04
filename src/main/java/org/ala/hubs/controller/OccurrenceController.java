@@ -471,6 +471,7 @@ public class OccurrenceController {
         String[] userFacets = getFacetsFromCookie(request);
         if (userFacets != null && userFacets.length > 0) requestParams.setFacets(userFacets);
         SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
+        requestParams.setQ("lsid:" + guid); // so down-line service requests work as expected
         addToModel(model, requestParams, searchResult, request);
         
         return RECORD_LIST;
