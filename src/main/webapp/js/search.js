@@ -519,7 +519,7 @@ $(document).ready(function() {
                 // BC_CONF.contextPath + "/occurrences/search' method='POST'>" +
                 "These results include records for synonyms and names of child taxa of <b>" + nameString +
                 "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
-                "view species page</a>).<br/><br/>The result set containsrecords " +
+                "view species page</a>).<br/><br/>The result set contains records " +
                 "provided under the following names: <input type='submit' class='rawTaxonSumbit' id='rawTaxonSumbit_"+i+
                 "' value='Search with selected verbatim names' style='display:inline-block;float:right;'/>" +
                 "<div class='rawTaxaList'>";
