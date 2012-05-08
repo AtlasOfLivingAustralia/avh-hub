@@ -57,7 +57,7 @@
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
             <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
                 <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/></span>
-                    <c:if test="${fn:length(facetResult.fieldResult) > 1}">
+                    <c:if test="${false && fn:length(facetResult.fieldResult) > 1}">
                         <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="<fmt:message key="facet.${facetResult.fieldName}"/>"
                            title="Refine with multiple values"><img src="${pageContext.request.contextPath}/static/images/options_icon.jpg" class="optionsIcon"/></a>
                     </c:if>
@@ -73,7 +73,7 @@
                             </li>
                         </c:if>
                         <c:forEach var="fieldResult" items="${facetResult.fieldResult}" varStatus="vs"> <!-- ${facetResult.fieldName}:${fieldResult.label} -->
-                            <c:if test="${fieldResult.count >= 0}">
+                            <c:if test="${fieldResult.count >= 0 && vs.count < 4}">
                                 <c:choose>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'occurrence_') && fn:endsWith(fieldResult.label, 'Z')}">
                                         <li><c:set var="startYear" value="${fn:substring(fieldResult.label, 0, 4)}"/>
@@ -152,6 +152,12 @@
                         </c:forEach>
                     </ul>
                 </div>
+                <c:if test="${fn:length(facetResult.fieldResult) > 1}">
+                    <div class="showHide">
+                        <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="<fmt:message key="facet.${facetResult.fieldName}"/>"
+                           title="See more options or refine with multiple values">choose more...</a>
+                    </div>
+                </c:if>
             </c:if>
         </c:forEach>
     </div>

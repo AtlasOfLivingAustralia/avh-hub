@@ -129,6 +129,8 @@ div#currentFilter {
 }
 #results {
     border-bottom: none;
+    width: 100%;
+    padding: 0 10px 0 0;
 }
 #results .rowA {
     color: #555;
@@ -268,13 +270,14 @@ div#download {
     width: 730px;
     /*display:none;*/
 }
-li.showHide {
-    list-style: none;
-    margin-left: 0px;
+.sidebar .showHide {
+    margin: -2px 0 0 10px;
+    padding: 0;
 }
-li.showHide a:link, li.showHide a:visited  {
+.showHide a:link, .showHide a:visited  {
     /*color: #005A8E;*/
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: bold;
     text-decoration: none;
 }
 div#advancedSearch {
