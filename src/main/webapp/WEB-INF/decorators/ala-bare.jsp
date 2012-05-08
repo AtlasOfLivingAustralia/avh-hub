@@ -32,7 +32,6 @@ include file="/common/taglibs.jsp" %>
         
         <script language="JavaScript" type="text/javascript" src="http://www.ala.org.au/wp-content/themes/ala/scripts/hoverintent-min.js"></script>
         <script language="JavaScript" type="text/javascript" src="http://www.ala.org.au/wp-content/themes/ala/scripts/superfish/superfish.js"></script>
-        <script language="JavaScript" type="text/javascript" src="http://www.ala.org.au/wp-content/themes/ala/scripts/uservoice.js"></script>
         <script type="text/javascript">
 
             //add the indexOf method for IE7
@@ -86,6 +85,9 @@ include file="/common/taglibs.jsp" %>
             ul.ui-autocomplete {
                 text-align: left;
                 z-index: 11 !important;
+            }
+            body {
+                text-align: left;
             }
         </style>
         <meta name='robots' content='index,follow' />
