@@ -31,6 +31,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestOperations;
 
 import javax.inject.Inject;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,9 +71,9 @@ public class BiocacheRestService implements BiocacheService {
         SearchResultDTO searchResults = new SearchResultDTO();
  
         try {
-            final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();            
+            final String jsonUri = biocacheUriPrefix + "/occurrences/search?" + requestParams.toString();
             logger.info("Requesting: " + jsonUri);
-            Matcher matcher = restVariableSubPattern.matcher(jsonUri);            
+            Matcher matcher = restVariableSubPattern.matcher(jsonUri);
             //Get a list of all the items that are surrounded by {} so that they can be added as parameters when getting the object
             List<String> variables = new ArrayList<String>();
             while(matcher.find()){
@@ -121,7 +122,7 @@ public class BiocacheRestService implements BiocacheService {
         addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
         try {
-            final String jsonUri = biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.toString();
+            final URI jsonUri = new URI(biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.toString());
             logger.debug("Entity Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
@@ -276,7 +277,7 @@ public class BiocacheRestService implements BiocacheService {
         SearchResultDTO searchResults = new SearchResultDTO();
  
         try {
-            final String jsonUri = biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.toString();            
+            final URI jsonUri = new URI(biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.toString());
             logger.info("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
