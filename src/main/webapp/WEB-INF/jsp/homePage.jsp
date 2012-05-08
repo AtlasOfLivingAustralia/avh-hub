@@ -44,7 +44,7 @@
             <!-- the tabs -->
             <ul class="css-tabs">
                 <li><a id="t1" href="#simple">Simple Search</a></li>
-                <li><a id="t2" href="#advanced">Advanced Search</a></li>
+                <li><a id="t2" href="#advancedSearch">Advanced Search</a></li>
             </ul>
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
