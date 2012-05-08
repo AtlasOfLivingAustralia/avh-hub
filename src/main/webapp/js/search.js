@@ -682,7 +682,7 @@ $(document).ready(function() {
             // substitute some facet names so sorting works
             var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name","data_resource").replace("occurrence_year","decade");
             var displayName = $(link).data("displayname");
-            loadMultiFacets(facetName, displayName, "count");
+            loadMultiFacets(facetName, displayName, null);
         }
     });
 
@@ -808,7 +808,6 @@ $(document).ready(function() {
  * draws the div for selecting multiple facets (popup div)
  */
 function loadMultiFacets(facetName, displayName, fsort, foffset) {
-    fsort = (fsort) ? fsort : "count";
     foffset = (foffset) ? foffset : "0";
     var facetLimit = BC_CONF.facetLimit;
     //$("#dynamic").html("Loading...");
@@ -853,7 +852,13 @@ function loadMultiFacets(facetName, displayName, fsort, foffset) {
 
 function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets) {
     var jsonUri = BC_CONF.contextPath + "/occurrences/facet/values.json" + BC_CONF.searchString +
-        "&facets=" + facetName + "&flimit=" + facetLimit + "&fsort=" + fsort + "&foffset=" + foffset;
+        "&facets=" + facetName + "&flimit=" + facetLimit + "&foffset=" + foffset; // + "&fsort=" + fsort
+
+    if (fsort) {
+        // so default facet sorting is used in initial loading
+        jsonUri += "&fsort=" + fsort;
+    }
+
     $.getJSON(jsonUri, function(data) {
         //console.log("data",data);
 
@@ -876,7 +881,7 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                     if (label.indexOf("@") != -1) {
                         label = label.substring(0,label.indexOf("@"));
                     }
-                    var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + fqEsc;
+                    var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + encodeURIComponent(fqEsc);
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
                     html += "<tr class='" + rowType + "'><td>" +
                         "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
