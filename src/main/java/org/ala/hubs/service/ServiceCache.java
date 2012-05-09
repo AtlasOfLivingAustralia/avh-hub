@@ -1,9 +1,6 @@
 package org.ala.hubs.service;
 
-import org.ala.biocache.dto.FacetResultDTO;
-import org.ala.biocache.dto.FieldResultDTO;
-import org.ala.biocache.dto.SearchRequestParams;
-import org.ala.biocache.dto.SearchResultDTO;
+import org.ala.biocache.dto.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
@@ -120,12 +117,12 @@ public class ServiceCache {
     public void updateCache() {
 
         logger.info("Updating collection uid cache...");
-        SearchRequestParams srp = new SearchRequestParams();
+        SpatialSearchRequestParams srp = new SpatialSearchRequestParams();
         srp.setFacets(new String[]{"basis_of_record","type_status","country", "kingdom","species_group", "state", "ibra", "imcra", "cl966", "loan_destination","establishment_means", "cl959"});
         srp.setFlimit(-1);
         srp.setQ("*:*");
         srp.setPageSize(0);
-        SearchResultDTO result = biocacheService.findByFulltextQuery(srp);
+        SearchResultDTO result = biocacheService.findBySpatialFulltextQuery(srp);
 
         if(result != null && result.getFacetResults() !=null){
             //now update the cache with the facet names

@@ -526,13 +526,13 @@ public class OccurrenceController {
     @RequestMapping(value = "/fieldguide/download", method = RequestMethod.GET)
     public String downloadFieldGuide(
             @RequestParam(value="maxSpecies", required=false, defaultValue = "150") Integer maxSpecies,
-            SearchRequestParams requestParams,
+            SpatialSearchRequestParams requestParams,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
         logger.debug("Field guide download starting");
         requestParams.setFlimit(maxSpecies);
-        SearchResultDTO dto = biocacheService.findByFulltextQuery(requestParams);
+        SearchResultDTO dto = biocacheService.findBySpatialFulltextQuery(requestParams);
         Collection<FacetResultDTO> facets = dto.getFacetResults();
 
         if(facets == null || facets.isEmpty()) {
@@ -883,7 +883,7 @@ public class OccurrenceController {
      * @throws Exception
      */
 	@RequestMapping(value = "/map", method = RequestMethod.GET)
-	public String map(SearchRequestParams requestParams, BindingResult result, Model model,
+	public String map(SpatialSearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
 
 		if (StringUtils.isEmpty(requestParams.getQ())) {
@@ -900,7 +900,7 @@ public class OccurrenceController {
         //sortDirection = getSortDirection(sortField, sortDirection);
 
 		requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
-        SearchResultDTO searchResult = biocacheService.findByFulltextQuery(requestParams);
+        SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
         model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));

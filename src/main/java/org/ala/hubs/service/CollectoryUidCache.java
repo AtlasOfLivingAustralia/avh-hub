@@ -22,10 +22,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import org.ala.biocache.dto.FacetResultDTO;
-import org.ala.biocache.dto.FieldResultDTO;
-import org.ala.biocache.dto.SearchRequestParams;
-import org.ala.biocache.dto.SearchResultDTO;
+
+import org.ala.biocache.dto.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
@@ -97,12 +95,12 @@ public class CollectoryUidCache {
     public void updateCache() {
     
         logger.info("Updating collection uid cache...");
-        SearchRequestParams srp = new SearchRequestParams();
+        SpatialSearchRequestParams srp = new SpatialSearchRequestParams();
         srp.setFacets(new String[]{"institution_uid","collection_uid","data_resource_uid", "data_provider_uid"});
         srp.setFlimit(-1);
         srp.setQ("*:*");
         srp.setPageSize(0);
-        SearchResultDTO result = biocacheService.findByFulltextQuery(srp);
+        SearchResultDTO result = biocacheService.findBySpatialFulltextQuery(srp);
 
         if(result != null && result.getFacetResults() !=null){
             //now update the cache with the facet names
