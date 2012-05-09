@@ -66,6 +66,7 @@ public class BiocacheRestService implements BiocacheService {
      * @see org.ala.hubs.service.BiocacheService#findByFulltextQuery(SearchRequestParams)
      */
     @Override
+    @Deprecated
     public SearchResultDTO findByFulltextQuery(SearchRequestParams requestParams) {
         Assert.notNull(requestParams.getQ(), "query must not be null");
         addQueryContext(requestParams);
@@ -123,7 +124,7 @@ public class BiocacheRestService implements BiocacheService {
         addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
         try {
-            final URI jsonUri = new URI(biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.toString());
+            final URI jsonUri = new URI(biocacheUriPrefix + occurrencesPath + uid + "?" + requestParams.getEncodedParams());
             logger.debug("Entity Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
@@ -276,12 +277,12 @@ public class BiocacheRestService implements BiocacheService {
         Assert.notNull(requestParams.getQ(), "query must not be null");
         addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
-        String uriString = biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.toString();
+        String uriString = biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.getEncodedParams();
         logger.debug("uriString = " + uriString);
  
         try {
             final URI jsonUri = new URI(uriString);
-            logger.info("Requesting: " + jsonUri);
+            logger.info("Requesting: " + jsonUri + " (" + uriString + ")");
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (URISyntaxException e) {
             logger.error("URI error: " + e.getMessage(), e);
@@ -311,7 +312,7 @@ public class BiocacheRestService implements BiocacheService {
         SearchResultDTO searchResults = new SearchResultDTO();
 
         try {
-            final URI jsonUri = new URI(biocacheUriPrefix + "/occurrences/search?" + requestParams.toString());
+            final URI jsonUri = new URI(biocacheUriPrefix + "/occurrences/search?" + requestParams.getEncodedParams());
             logger.debug("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {

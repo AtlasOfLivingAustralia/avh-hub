@@ -36,9 +36,12 @@ public interface BiocacheService {
     /**
      * Full text search for records
      *
+     * @deprecated for findBySpatialFulltextQuery
+     *
      * @param requestParams
      * @return
      */
+    @Deprecated
     public SearchResultDTO findByFulltextQuery(SearchRequestParams requestParams);
 
     /**
