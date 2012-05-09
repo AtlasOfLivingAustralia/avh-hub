@@ -32,6 +32,7 @@ import org.springframework.web.client.RestOperations;
 
 import javax.inject.Inject;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -275,11 +276,16 @@ public class BiocacheRestService implements BiocacheService {
         Assert.notNull(requestParams.getQ(), "query must not be null");
         addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
+        String uriString = biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.toString();
+        logger.debug("uriString = " + uriString);
  
         try {
-            final URI jsonUri = new URI(biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.toString());
+            final URI jsonUri = new URI(uriString);
             logger.info("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
+        } catch (URISyntaxException e) {
+            logger.error("URI error: " + e.getMessage(), e);
+            searchResults = restTemplate.getForObject(uriString, SearchResultDTO.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
             searchResults.setStatus("Error: " + ex.getMessage());

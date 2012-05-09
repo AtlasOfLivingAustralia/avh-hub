@@ -17,6 +17,8 @@ package org.ala.hubs.dto;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -150,7 +152,12 @@ public class AdvancedSearchParams {
             String query = URLEncoder.encode(q.toString().replace("?", ""));
             finalQuery = "taxa=" + taxa + "&q=" + query;
         } else {
-            finalQuery = "q=" + URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
+            try {
+                finalQuery = "q=" + URIUtil.encodeWithinQuery(q.toString().trim()); //URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
+            } catch (URIException ex) {
+                logger.error("URIUtil error: " + ex.getMessage(), ex);
+                finalQuery = "q=" + q.toString().trim(); // fall back
+            }
         }
         logger.debug("query: " + finalQuery);
         return finalQuery;
