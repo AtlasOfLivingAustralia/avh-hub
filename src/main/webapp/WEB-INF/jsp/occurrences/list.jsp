@@ -59,6 +59,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ui.position.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.inview.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.i18n.properties-1.0.9.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>

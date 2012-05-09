@@ -689,6 +689,7 @@ $(document).ready(function() {
     // form validation for form#facetRefineForm
     $("#submitFacets :input.submit").live("click", function(e) {
         e.preventDefault();
+        var inverseModifier = ($(this).attr('id') == 'exclude') ? "-" : "";
         var fq = ""; // build up OR'ed fq query
         var facetName = $("table#fullFacets").data("facet");
         var checkedFound = false;
@@ -705,6 +706,10 @@ $(document).ready(function() {
         });
         fq = fq.replace(/ OR $/, ""); // remove trailing OR
 
+        if (fq.indexOf(' OR ') != -1) {
+            fq = "(" + fq + ")"; // so that exclude (inverse) searches work
+        }
+
         if (facetName == "species_guid" && false) {
             // TODO: remove once service is fixed for this
             alert("Searching with multiple species is temporarily unavailable due to a technical issue. This should be fixed soon.");
@@ -714,7 +719,8 @@ $(document).ready(function() {
         } else if (checkedFound) {
             //$("form#facetRefineForm").submit();
             var hash = window.location.hash;
-            window.location.href = window.location.pathname + BC_CONF.searchString + "&fq=" + fq + hash;
+            var fqString = "&fq=" + inverseModifier + fq;
+            window.location.href = window.location.pathname + BC_CONF.searchString + fqString + hash;
         } else {
             alert("Please select at least one checkbox.");
         }
@@ -802,6 +808,19 @@ $(document).ready(function() {
         //console.log("url", query, methodName, url);
         window.location.href = url;
     });
+
+    /**
+     * Load Spring i18n messages into JS
+     */
+    jQuery.i18n.properties({
+        name:'Messages',
+        path: BC_CONF.contextPath + '/proxy/i18n/',
+        mode:'map',
+        //language:'en',
+        callback: function(){} //alert( "facet.conservationStatus = " + jQuery.i18n.prop('facet.conservationStatus')); }
+    });
+
+
 }); // end JQuery document ready
 
 /**
@@ -880,6 +899,11 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                     var label = el.displayLabel;
                     if (label.indexOf("@") != -1) {
                         label = label.substring(0,label.indexOf("@"));
+                    } else if (jQuery.i18n.prop(label).indexOf("[") == -1) {
+                        // i18n substitution
+                        label = jQuery.i18n.prop(label);
+                    } else if (/^[0-9]$/.test(label) || /^el\d+/.test(label)) {
+                        label = jQuery.i18n.prop("layer." + label);
                     }
                     var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + encodeURIComponent(fqEsc);
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";

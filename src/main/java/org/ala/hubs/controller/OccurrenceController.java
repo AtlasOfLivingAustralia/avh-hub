@@ -1397,6 +1397,18 @@ public class OccurrenceController {
             // iterate over the fq params
             for (String fq : filterQuery) {
                 if (fq != null && !fq.isEmpty()) {
+                    Boolean isExcludeFilter = false;
+                    // remove Boolean braces if present
+                    if (fq.startsWith("(") && fq.endsWith(")")){
+                        fq = StringUtils.remove(fq, "(");
+                        fq = StringUtils.removeEnd(fq, ")");
+                    } else if (fq.startsWith("-(") && fq.endsWith(")")) {
+                        fq = StringUtils.remove(fq, "-(");
+                        fq = StringUtils.removeEnd(fq, ")");
+                        //fq = "-" + fq;
+                        isExcludeFilter = true;
+                    }
+
                     String[] fqBits = StringUtils.split(fq, ":", 2);
                     // extract key for map
                     if (fqBits.length  == 2) {
@@ -1440,6 +1452,9 @@ public class OccurrenceController {
                         }
 
                         String label = StringUtils.join(labels, " OR "); // join sub-queies back together
+                        if (isExcludeFilter) {
+                            label = "-" + label;
+                        }
                         logger.debug("label = " + label);
                         af.setLabel(label);
 

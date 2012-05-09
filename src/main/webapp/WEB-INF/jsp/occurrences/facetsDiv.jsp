@@ -47,7 +47,13 @@
                             <li>
                                 <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<c:out escapeXml="true" value="${item.value.value}"/>'); return false;" class="removeLink" title="remove filter">X</a></b>]</c:set>
                                 <!-- ${item.key}:${item.value.value} || ${item.value.label} -->
-                                <span class="activeFq"><fmt:message key="${item.value.label}"/></span>${closeLink}
+                                <c:set var="fqLabel">
+                                    <c:choose>
+                                        <c:when test="${fn:startsWith(item.value.label,'-')}"><span class="red">[exclude]</span> ${fn:substring(item.value.label, 1, -1)}</c:when>
+                                        <c:otherwise>${item.value.label}</c:otherwise>
+                                    </c:choose>
+                                </c:set>
+                                <span class="activeFq"><fmt:message key="${fqLabel}"/></span>${closeLink}
                             </li>
                         </c:forEach>
                     </ul>
@@ -166,7 +172,11 @@
     <div id="multipleFacets">
         <h3>Refine your search</h3>
         <div id="dynamic" class="tableContainer"></div>
-        <div id='submitFacets'><input type='submit' class='submit'/></div>
+        <div id='submitFacets'>
+            <input type='submit' class='submit' id="include" value="INCLUDE selected items in search"/>
+            &nbsp;
+            <input type='submit' class='submit' id="exclude" value="EXCLUDE selected items from search"/>
+        </div>
     </div>
 </div>
 <!--

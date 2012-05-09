@@ -73,28 +73,28 @@ public class AdvancedSearchParams {
     public String toString() {
         StringBuilder q = new StringBuilder();
         // build up q from the simple fields first...
-        if (!text.isEmpty()) q.append("+text:").append(text);
-        if (!raw_taxon_name.isEmpty()) q.append(" +raw_name:").append(quoteText(raw_taxon_name));
-        if (!species_group.isEmpty()) q.append(" +species_group:").append(species_group);
-        if (!state.isEmpty()) q.append(" +state:").append(quoteText(state));
-        if (!country.isEmpty()) q.append(" +country:").append(quoteText(country));
-        if (!ibra.isEmpty()) q.append(" +ibra:").append(quoteText(ibra));
-        if (!imcra.isEmpty()) q.append(" +imcra:").append(quoteText(imcra));
-        if (!imcra_meso.isEmpty()) q.append(" +cl966:").append(quoteText(imcra_meso));
-        if (!cl959.isEmpty()) q.append(" +cl959:").append(quoteText(cl959));
-        if (!places.isEmpty()) q.append(" +places:").append(quoteText(places.trim()));
-        if (!type_status.isEmpty()) q.append(" +type_status:").append(type_status);
-        if (type_material) q.append(" +type_status:").append("*");
-        if (!basis_of_record.isEmpty()) q.append(" +basis_of_record:").append(basis_of_record);
-        if (!catalogue_number.isEmpty()) q.append(" +catalogue_number:").append(catalogue_number);
-        if (!record_number.isEmpty()) q.append(" +record_number:").append(record_number);
-        if (!cultivation_status.isEmpty()) q.append(" +establishment_means:").append(cultivation_status);
-        if (!collector.isEmpty()) q.append(" +collector_text:").append(quoteText(collector));
-        if (!identified_by.isEmpty()) q.append(" +identified_by_text:").append(quoteText(identified_by));
-        if (!loan_destination.isEmpty()) q.append(" +loan_destination:").append(loan_destination);
-        if (!loan_identifier.isEmpty()) q.append(" +loan_identifier:").append(loan_identifier);
-        if (!duplicate_inst.isEmpty()) q.append(" +duplicate_inst:").append(duplicate_inst);
-        //if (!collectors_number.isEmpty()) q.append(" +collector:").append(collectors_number); // TODO field in SOLR not active
+        if (!text.isEmpty()) q.append("text:").append(text);
+        if (!raw_taxon_name.isEmpty()) q.append(" raw_name:").append(quoteText(raw_taxon_name));
+        if (!species_group.isEmpty()) q.append(" species_group:").append(species_group);
+        if (!state.isEmpty()) q.append(" state:").append(quoteText(state));
+        if (!country.isEmpty()) q.append(" country:").append(quoteText(country));
+        if (!ibra.isEmpty()) q.append(" ibra:").append(quoteText(ibra));
+        if (!imcra.isEmpty()) q.append(" imcra:").append(quoteText(imcra));
+        if (!imcra_meso.isEmpty()) q.append(" cl966:").append(quoteText(imcra_meso));
+        if (!cl959.isEmpty()) q.append(" cl959:").append(quoteText(cl959));
+        if (!places.isEmpty()) q.append(" places:").append(quoteText(places.trim()));
+        if (!type_status.isEmpty()) q.append(" type_status:").append(type_status);
+        if (type_material) q.append(" type_status:").append("*");
+        if (!basis_of_record.isEmpty()) q.append(" basis_of_record:").append(basis_of_record);
+        if (!catalogue_number.isEmpty()) q.append(" catalogue_number:").append(quoteText(catalogue_number));
+        if (!record_number.isEmpty()) q.append(" record_number:").append(record_number);
+        if (!cultivation_status.isEmpty()) q.append(" establishment_means:").append(cultivation_status);
+        if (!collector.isEmpty()) q.append(" collector_text:").append(quoteText(collector));
+        if (!identified_by.isEmpty()) q.append(" identified_by_text:").append(quoteText(identified_by));
+        if (!loan_destination.isEmpty()) q.append(" loan_destination:").append(loan_destination);
+        if (!loan_identifier.isEmpty()) q.append(" loan_identifier:").append(loan_identifier);
+        if (!duplicate_inst.isEmpty()) q.append(" duplicate_inst:").append(duplicate_inst);
+        //if (!collectors_number.isEmpty()) q.append(" collector:").append(collectors_number); // TODO field in SOLR not active
         
         ArrayList<String> lsids = new ArrayList<String>();
         ArrayList<String> taxas = new ArrayList<String>();
@@ -115,7 +115,7 @@ public class AdvancedSearchParams {
         
         if (!taxas.isEmpty()) {
             // build up OR'ed taxa query with braces if more than one taxon
-            q.append(" +").append(braces[0]).append(nameType).append(":");
+            q.append(" ").append(braces[0]).append(nameType).append(":");
             q.append(StringUtils.join(taxas, " OR " + nameType + ":")).append(braces[1]);
         }
 
@@ -125,23 +125,23 @@ public class AdvancedSearchParams {
         }
 
         if (!institution_collection.isEmpty()) {
-            String label = (StringUtils.startsWith(institution_collection, "in")) ? " +institution_uid" : " +collection_uid";
+            String label = (StringUtils.startsWith(institution_collection, "in")) ? " institution_uid" : " collection_uid";
             q.append(label).append(":").append(institution_collection);
         }
         
         if (!start_date.isEmpty() || !end_date.isEmpty()) {
             String value = combineDates(start_date, end_date);
-            q.append(" +occurrence_date:").append(value);
+            q.append(" occurrence_date:").append(value);
         }
 
         if (!last_load_start.isEmpty() || !last_load_end.isEmpty()) {
             String value = combineDates(last_load_start, last_load_end);
-            q.append(" +modified_date:").append(value);
+            q.append(" modified_date:").append(value);
         }
 
         if (!identified_date_start.isEmpty() || !identified_date_end.isEmpty()) {
             String value = combineDates(identified_date_start, identified_date_end);
-            q.append(" +identified_date:").append(value);
+            q.append(" identified_date:").append(value);
         }
 
         String finalQuery = "";

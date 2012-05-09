@@ -242,13 +242,42 @@ public class ProxyController {
         }
     }
 
-    /**
-	 * Retrieve content as String.
-	 *
-	 * @param url
-	 * @return
-	 * @throws Exception
-	 */
+    @RequestMapping(value = "/i18n/{messageSource:.+}*", method = RequestMethod.GET)
+    public void proxyBiocacheMessages(@PathVariable("messageSource") String messageSource,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        StringBuilder urlString = new StringBuilder("http://biocache.ala.org.au/ws/facets/i18n");
+
+        logger.info("proxy URI: "+urlString);
+
+        try {
+            String contentAsString = getUrlContentAsString(urlString.toString(), 10000);
+            String[] lines = contentAsString.split(System.getProperty("line.separator"));
+            StringBuilder trimmedContent = new StringBuilder();
+
+            for (String line : lines) {
+                if (!line.isEmpty()) {
+                    trimmedContent.append(line).append(System.getProperty("line.separator"));
+                }
+            }
+
+            response.setContentType("text/plain;charset=UTF-8");
+            response.getWriter().write(trimmedContent.toString());
+        } catch (Exception ex) {
+            // send a 500 so ajax client does not display WP not found page
+            response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write(ex.getMessage());
+            logger.error("Proxy error: "+ex.getMessage(), ex);
+        }
+    }
+
+        /**
+       * Retrieve content as String.
+       *
+       * @param url
+       * @return
+       * @throws Exception
+       */
 	public static String getUrlContentAsString(String url, int timeoutInMillisec) throws Exception {
 		GetMethod gm = null;
         String content = null;
