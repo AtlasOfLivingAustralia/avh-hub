@@ -83,7 +83,7 @@ public class ProxyController {
             @RequestParam(value="layer", required=false) String layerName,
             HttpServletResponse response) throws Exception {
 
-        StringBuilder urlString = new StringBuilder(SPATIAL_PORTAL_URL+"/gazetteer/search?q="+query);
+        StringBuilder urlString = new StringBuilder(SPATIAL_PORTAL_URL+"/ws/search?q="+query);
 
         if (layerName != null && !layerName.isEmpty()) {
             urlString.append("&layer=").append(layerName);

@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
 <c:set var="isALA" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -43,8 +44,11 @@
         <div id="content3">
             <!-- the tabs -->
             <ul class="css-tabs">
-                <li><a id="t1" href="#simple">Simple Search</a></li>
-                <li><a id="t2" href="#advancedSearch">Advanced Search</a></li>
+                <li><a id="t1" href="#simple">Simple search</a></li>
+                <li><a id="t2" href="#advancedSearch">Advanced search</a></li>
+                <li><a id="t3" href="#taxaUpload">Batch taxon search</a></li>
+                <li><a id="t4" href="#catalogUpload">Catalogue number search</a></li>
+                <li><a id="t5" href="#shapeFileUpload">Shapefile search</a></li>
             </ul>
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
@@ -222,7 +226,12 @@
                                 <tr>
                                     <td class="label">Local Govt. Area</td>
                                     <td>
-                                        <input type="text" name="places" id="lga" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/>
+                                        <select class="biogeographic_region" name="cl959" id="cl959">
+                                            <option value="">-- select Local government area--</option>
+                                            <c:forEach var="region" items="${lgas}">
+                                                <option value="${region}">${region}</option>
+                                            </c:forEach>
+                                        </select>
                                     </td>
                                 </tr>
                             </tbody>
@@ -313,7 +322,41 @@
                         &nbsp;&nbsp;
                         <input type="reset" value="Clear all" id="clearAll" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
                     </form>
-                </div><!-- end advancedSearch div -->
+                </div><!-- end #advancedSearch div -->
+                <div id="uploadDiv" class="paneDiv homePane">
+                    <form name="taxaUploadForm" id="taxaUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
+                        <p>Enter a list of taxon names (one name per line)
+                            file containing records OR perform a <strong>search</strong>.</p>
+                        <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
+                        <p><textarea name="queries" id="raw_names" rows="15" cols="60"></textarea></p>
+                        <p>
+                            <%--<input type="submit" name="action" value="Download" />--%>
+                            <%--&nbsp;OR&nbsp;--%>
+                            <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                            <input type="hidden" name="field" value="raw_name"/>
+                            <input type="submit" name="action" value="Search" /></p>
+                    </form>
+                </div><!-- end #uploadDiv div -->
+                <div id="catalogUploadDiv" class="paneDiv homePane">
+                    <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
+                        <p>Enter a list of catalogue numbers (one number per line).</p>
+                        <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
+                        <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
+                        <p>
+                            <%--<input type="submit" name="action" value="Download" />--%>
+                            <%--&nbsp;OR&nbsp;--%>
+                            <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                            <input type="hidden" name="field" value="catalogue_number"/>
+                            <input type="submit" name="action" value="Search" /></p>
+                    </form>
+                </div><!-- end #catalogUploadDiv div -->
+                <div id="shapeDiv" class="paneDiv homePane">
+                    <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
+                        <p>Upload a shapefile (.shp).</p>
+                        <p><input type="file" name="file"/></p>
+                        <p><input type="submit" value="Search" /></p>
+                    </form>
+                </div><!-- end #shapeDiv div -->
             </div><!-- end panes div -->
         </div>
     </body>
