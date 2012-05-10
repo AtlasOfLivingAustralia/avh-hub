@@ -257,7 +257,7 @@
                                          <select class="basis_of_record" name="basis_of_record" id="basis_of_record">
                                             <option value="">-- select a basis of record --</option>
                                             <c:forEach var="bor" items="${basisOfRecord}">
-                                                <option value="${bor}">${bor}</option>
+                                                <option value="${bor}"><fmt:message key="${bor}"/></option>
                                             </c:forEach>
                                         </select>
                                     </td>
