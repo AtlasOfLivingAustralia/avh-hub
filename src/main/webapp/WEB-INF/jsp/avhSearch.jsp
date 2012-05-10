@@ -290,7 +290,7 @@
                                             <td class="label">Local government area</td>
                                             <td>
                                                 <select class="biogeographic_region" name="cl959" id="cl959">
-                                                    <option value="">-- select Local government area--</option>
+                                                    <option value="">-- select local government area--</option>
                                                     <c:forEach var="region" items="${lgas}">
                                                         <option value="${region}">${region}</option>
                                                     </c:forEach>
