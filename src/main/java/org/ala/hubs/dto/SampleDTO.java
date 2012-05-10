@@ -5,7 +5,8 @@ public class SampleDTO {
     protected String layerID;
     protected String layerName;
     protected String layerDisplayName;
-    protected String value;    
+    protected String value;
+    protected String classification1;
 
     public SampleDTO(){}
 
@@ -46,5 +47,13 @@ public class SampleDTO {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getClassification1() {
+        return classification1;
+    }
+
+    public void setClassification1(String classification1) {
+        this.classification1 = classification1;
     }
 }

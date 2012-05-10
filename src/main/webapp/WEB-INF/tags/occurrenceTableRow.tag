@@ -23,12 +23,12 @@
 </c:choose>
 <c:if test="${not empty bodyText}">
     <tr id="${fieldCode}">
-        <th>
+        <td class="dwcLabel">
             <c:choose>
                 <c:when test="${fieldNameIsMsgCode}"><fmt:message key="${fieldName}"/></c:when>
                 <c:otherwise>${fieldName}</c:otherwise>
             </c:choose>
-        </th>
+        </td>
         <td class="annoText" name="${fieldCode}"></td>
         <td class="value">
             <c:if test="${not empty link}"><a href="${link}"></c:if>${bodyText}<c:if test="${not empty link}"></a></c:if>

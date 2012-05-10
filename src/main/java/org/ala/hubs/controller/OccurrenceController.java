@@ -819,11 +819,13 @@ public class OccurrenceController {
             //load up the environmental properties
             if(record.getProcessed().getEl() != null){
                 for (Map.Entry<String, String> entry :record.getProcessed().getEl().entrySet()){
-                    logger.debug(entry.getKey() + "/" + entry.getValue());
+                    logger.debug("El: " + entry.getKey() + "/" + entry.getValue());
                     Map<String,Object> metdata = layersMetadata.get(entry.getKey());
                     if(metdata!=null){
-                        environmentalSampleInfo.add(new SampleDTO((String) metdata.get("uid"),
-                            (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString()));
+                        SampleDTO sampleDTO = new SampleDTO((String) metdata.get("uid"),
+                                (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString());
+                        sampleDTO.setClassification1((String)metdata.get("classification1"));
+                        environmentalSampleInfo.add(sampleDTO);
                     }
                 }
             }
@@ -849,6 +851,12 @@ public class OccurrenceController {
             }
 
             model.addAttribute("contextualSampleInfo", contextualSampleInfo);
+            // Sort the env list by the classification1 field
+            Collections.sort(environmentalSampleInfo, new Comparator<SampleDTO>(){
+                public int compare(SampleDTO s1, SampleDTO s2) {
+                    return s1.getClassification1().compareToIgnoreCase(s2.getClassification1());
+                }
+            });
             model.addAttribute("environmentalSampleInfo", environmentalSampleInfo);
             model.addAttribute("record", record);
             model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));

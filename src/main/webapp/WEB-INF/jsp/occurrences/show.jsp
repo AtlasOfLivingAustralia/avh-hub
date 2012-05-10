@@ -218,7 +218,7 @@
                 
                 // give every second row a class="grey-bg"
                 $('table.occurrenceTable, table.inner, table.layerIntersections').each(function(i, el) {
-                    $(this).find('tr').each(function(j, tr) {
+                    $(this).find('tr').not('.sectionName').each(function(j, tr) {
                         if (j % 2 == 0) {
                             $(this).addClass("grey-bg");
                         }
@@ -719,11 +719,19 @@
                     <h3>Environmental sampling for this location</h3>
                     <table class="layerIntersections" style="border-bottom:none;">
                         <tbody>
-                        <c:forEach items="${environmentalSampleInfo}" var="sample"><alatag:occurrenceTableRow
+                        <c:forEach items="${environmentalSampleInfo}" var="sample" varStatus="vs">
+                            <!-- ${sample.classification1} || ${environmentalSampleInfo[vs.index-1].classification1}  -->
+                            <c:if test="${not empty sample.classification1 && (vs.first || (sample.classification1 != environmentalSampleInfo[vs.index-1].classification1 && !vs.end))}">
+                                <tr class="sectionName"><td colspan="4">${sample.classification1}</td></tr>
+                            </c:if>
+                            <alatag:occurrenceTableRow
                                 annotate="false"
                                 section="contextual"
                                 fieldCode="${sample.layerName}"
-                                fieldName="${sample.layerDisplayName}">${sample.value}</alatag:occurrenceTableRow></c:forEach>
+                                fieldName="${sample.layerDisplayName}">
+                                ${sample.value}
+                            </alatag:occurrenceTableRow>
+                        </c:forEach>
                         </tbody>
                     </table>
                     </c:if>
