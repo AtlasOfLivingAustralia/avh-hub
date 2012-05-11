@@ -1288,6 +1288,10 @@ public class OccurrenceController {
             model.addAttribute("radius", requestParams.getRadius());
             logger.debug("searchResult: " + searchResult.getTotalRecords());
             addToModel(model, requestParams, searchResult, request);
+            // save search URI is session so record page can go back to it
+            HttpSession session = request.getSession();
+            session.setAttribute("lastSearchUri", request.getRequestURL().append("?").append(request.getQueryString()).toString());
+            logger.debug("Session check: " + session.getAttribute("lastSearchUri"));
 
             String displayQuery = searchResult.getQueryTitle();
 

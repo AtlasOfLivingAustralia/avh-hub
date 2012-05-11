@@ -372,9 +372,11 @@
         <spring:url var="json" value="/occurrences/${record.raw.uuid}.json" />
         <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
-                <div id="backButton" style="display:none;">
-                    <a href="${header['Referer']}" title="Return to search results">Back to search results</a>
-                </div>
+                <c:if test="${not empty lastSearchUri}">
+                    <div id="backButton" style="display:block;">
+                        <a href="${lastSearchUri}" title="Return to search results">Back to search results</a>
+                    </div>
+                </c:if>
                 <h1><fmt:message key="show.occurrenceRecord"/>: <span id="recordId">${recordId}</span></h1>
                 <c:if test="${skin != 'avh'}">
                     <div id="jsonLink">
