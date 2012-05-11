@@ -38,7 +38,7 @@
 
         <script type="text/javascript">
             // single global var for app conf settings
-            <c:set var="fqParams"><c:out escapeXml="false" value="${fn:join(paramValues.fq, '&fq=')}"/></c:set>
+            <c:set var="fqParams"><c:if test="${not empty paramValues.fq}">&fq=<c:out escapeXml="false" value="${fn:join(paramValues.fq, '&fq=')}"/></c:if></c:set>
             var BC_CONF = {
                 contextPath: "${pageContext.request.contextPath}",
                 serverName: "${initParam.serverName}${pageContext.request.contextPath}",
