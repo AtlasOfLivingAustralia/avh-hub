@@ -504,20 +504,21 @@ img.optionsIcon {
     padding:0 0 2px 5px;
 }
 
+#multipleFacets  {
+    text-align: center;
+}
+
+#multipleFacets H3 {
+    font-size: 16px;
+}
+
 #multipleFacets #dynamic {
     text-align: center;
     margin: 0 auto;
 }
 
-table#fullFacets {
-    /*width: inherit;
-    border-bottom: none;
-    padding-right: 10px;
-    margin:10px auto;*/
-}
-
-table#fullFacets td, table#fullFacets th {
-    /*border: 1px solid silver;*/
+table#fullFacets thead th {
+    border-bottom: 1px solid #D9D9D9;
 }
 
 ul#refinedFacets b {
