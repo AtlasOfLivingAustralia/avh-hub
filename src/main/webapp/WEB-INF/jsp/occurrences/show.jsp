@@ -27,7 +27,7 @@
 <c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="biocacheService" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
-
+<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader bundle="hubs" property="spatialPortalUrl"/></c:set>
 <%--<c:set var="sensitiveDatasets" scope="request"><ala:propertyLoader bundle="hubs" property="sensitiveDatasets.NSW_DECCW"/></c:set>--%>
 <c:set var="scientificName">
     <c:choose>
@@ -667,7 +667,7 @@
 
             <style type="text/css">
                 #outlierFeedback { float:left; clear:both; padding-left:10px;margin-top:30px; width:100%; }
-                #outlierFeedback h3 {color: #718804; }
+                /*#outlierFeedback h3 {color: #718804; }*/
                 #outlierFeedback #outlierInformation { margin-bottom:20px; }
             </style>
 
@@ -706,11 +706,16 @@
                     <h3>Addtional political boundaries information</h3>
                     <table class="layerIntersections" style="border-bottom:none;">
                         <tbody>
-                        <c:forEach items="${contextualSampleInfo}" var="sample"><alatag:occurrenceTableRow
+                        <c:forEach items="${contextualSampleInfo}" var="sample" varStatus="vs">
+                            <c:if test="${not empty sample.classification1 && (vs.first || (sample.classification1 != contextualSampleInfo[vs.index-1].classification1 && !vs.end))}">
+                                <tr class="sectionName"><td colspan="4">${sample.classification1}</td></tr>
+                            </c:if>
+                            <alatag:occurrenceTableRow
                                     annotate="false"
                                     section="contextual"
                                     fieldCode="${sample.layerName}"
-                                    fieldName="${sample.layerDisplayName}">${sample.value}</alatag:occurrenceTableRow></c:forEach>
+                                    fieldName="<a href=\"${spatialPortalUrl}layers/more/${sample.layerName}\" title=\"More information about this layer\">${sample.layerDisplayName}</a>">
+                            ${sample.value}</alatag:occurrenceTableRow></c:forEach>
                         </tbody>
                     </table>
                     </c:if>
@@ -720,15 +725,14 @@
                     <table class="layerIntersections" style="border-bottom:none;">
                         <tbody>
                         <c:forEach items="${environmentalSampleInfo}" var="sample" varStatus="vs">
-                            <!-- ${sample.classification1} || ${environmentalSampleInfo[vs.index-1].classification1}  -->
                             <c:if test="${not empty sample.classification1 && (vs.first || (sample.classification1 != environmentalSampleInfo[vs.index-1].classification1 && !vs.end))}">
                                 <tr class="sectionName"><td colspan="4">${sample.classification1}</td></tr>
                             </c:if>
                             <alatag:occurrenceTableRow
-                                annotate="false"
-                                section="contextual"
-                                fieldCode="${sample.layerName}"
-                                fieldName="${sample.layerDisplayName}">
+                                    annotate="false"
+                                    section="contextual"
+                                    fieldCode="${sample.layerName}"
+                                    fieldName="<a href=\"${spatialPortalUrl}layers/more/${sample.layerName}\" title=\"More information about this layer\">${sample.layerDisplayName}</a>">
                                 ${sample.value}
                             </alatag:occurrenceTableRow>
                         </c:forEach>

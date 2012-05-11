@@ -376,8 +376,16 @@ div#backButton a:hover {
     text-decoration: underline;
 }
 
+.dwcLabel a:link {
+    text-decoration: none;
+}
+
+.dwcLabel a:hover {
+    text-decoration: underline;
+}
+
 .sectionName {
-    background-color:#555;
-    color:#fff;
+    background-color:#D0D0D0;
+    color:#222;
     font-weight:bold;
 }

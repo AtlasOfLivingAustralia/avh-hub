@@ -139,7 +139,7 @@ div#advancedSearch {
 }
 
 .sidebar #currentFilter h4 {
-    color: #718804;
+    /*color: #718804;*/
 }
 
 input::-webkit-input-placeholder {
@@ -161,7 +161,7 @@ input::-webkit-input-placeholder {
 }
 
 #content2 > div > h3 {
-    color: #718804;
+    /*color: #718804;*/
 }
 
 span#assertionMaker {

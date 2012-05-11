@@ -833,11 +833,13 @@ public class OccurrenceController {
             List<SampleDTO> contextualSampleInfo = new ArrayList<SampleDTO>();
             if(record.getProcessed().getCl() != null){
                 for (Map.Entry<String, String> entry : record.getProcessed().getCl().entrySet()){
-                    logger.debug(entry.getKey() + "/" + entry.getValue());
+                    logger.debug("Cl: " + entry.getKey() + "/" + entry.getValue());
                     Map<String,Object> metdata = layersMetadata.get(entry.getKey());
                     if(metdata!=null){
-                        contextualSampleInfo.add(new SampleDTO((String)metdata.get("uid"),
-                                (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString()));
+                        SampleDTO sampleDTO = new SampleDTO((String) metdata.get("uid"),
+                                (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString());
+                        sampleDTO.setClassification1((String)metdata.get("classification1"));
+                        contextualSampleInfo.add(sampleDTO);
                     }
                 }
             }
@@ -850,13 +852,11 @@ public class OccurrenceController {
                 model.addAttribute("metadataForOutlierLayers", metdataForOutlierLayers);
             }
 
+            // sort the list of SampleDTO objects
+            Collections.sort(contextualSampleInfo, new SampleDTOComparator());
+            Collections.sort(environmentalSampleInfo, new SampleDTOComparator());
+
             model.addAttribute("contextualSampleInfo", contextualSampleInfo);
-            // Sort the env list by the classification1 field
-            Collections.sort(environmentalSampleInfo, new Comparator<SampleDTO>(){
-                public int compare(SampleDTO s1, SampleDTO s2) {
-                    return s1.getClassification1().compareToIgnoreCase(s2.getClassification1());
-                }
-            });
             model.addAttribute("environmentalSampleInfo", environmentalSampleInfo);
             model.addAttribute("record", record);
             model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
@@ -1811,5 +1811,22 @@ public class OccurrenceController {
 
     public void setLayerMetadataCache(LayerMetadataCache layerMetadataCache) {
         this.layerMetadataCache = layerMetadataCache;
+    }
+
+    /**
+     * Comparator class for sorting a collection of {@link org.ala.hubs.dto.SampleDTO SampleDTO} objects.
+     * Sorts on classification1 and then by layer display name.
+     *
+     * @see org.ala.hubs.dto.SampleDTO
+     */
+    private static class SampleDTOComparator implements Comparator<SampleDTO> {
+        public int compare(SampleDTO s1, SampleDTO s2) {
+            int i = s1.getClassification1().compareToIgnoreCase(s2.getClassification1());
+            if (i != 0) {
+                return i;
+            } else {
+                return s1.getLayerDisplayName().compareToIgnoreCase(s2.getLayerDisplayName());
+            }
+        }
     }
 }
