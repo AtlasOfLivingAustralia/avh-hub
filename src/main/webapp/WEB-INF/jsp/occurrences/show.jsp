@@ -705,7 +705,7 @@
 
                 <div id="outlierInformation">
                     <c:if test="${not empty contextualSampleInfo}">
-                    <h3>Addtional political boundaries information</h3>
+                    <h3>Additional political boundaries information</h3>
                     <table class="layerIntersections" style="border-bottom:none;">
                         <tbody>
                         <c:forEach items="${contextualSampleInfo}" var="sample" varStatus="vs">
