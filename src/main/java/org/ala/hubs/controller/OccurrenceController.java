@@ -825,6 +825,7 @@ public class OccurrenceController {
                         SampleDTO sampleDTO = new SampleDTO((String) metdata.get("uid"),
                                 (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString());
                         sampleDTO.setClassification1((String)metdata.get("classification1"));
+                        sampleDTO.setUnits((String)metdata.get("environmentalvalueunits"));
                         environmentalSampleInfo.add(sampleDTO);
                     }
                 }
@@ -839,6 +840,7 @@ public class OccurrenceController {
                         SampleDTO sampleDTO = new SampleDTO((String) metdata.get("uid"),
                                 (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString());
                         sampleDTO.setClassification1((String)metdata.get("classification1"));
+                        //sampleDTO.setUnits((String)metdata.get("environmentalvalueunits"));  // not relevant
                         contextualSampleInfo.add(sampleDTO);
                     }
                 }

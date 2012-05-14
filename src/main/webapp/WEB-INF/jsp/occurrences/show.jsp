@@ -735,7 +735,7 @@
                                     section="contextual"
                                     fieldCode="${sample.layerName}"
                                     fieldName="<a href=\"${spatialPortalUrl}layers/more/${sample.layerName}\" title=\"More information about this layer\">${sample.layerDisplayName}</a>">
-                                ${sample.value}
+                                ${sample.value} <c:if test="${not empty sample.units && !fn:containsIgnoreCase(sample.units,'dimensionless')}">${sample.units}</c:if>
                             </alatag:occurrenceTableRow>
                         </c:forEach>
                         </tbody>

@@ -7,6 +7,7 @@ public class SampleDTO {
     protected String layerDisplayName;
     protected String value;
     protected String classification1;
+    protected String units;
 
     public SampleDTO(){}
 
@@ -55,5 +56,13 @@ public class SampleDTO {
 
     public void setClassification1(String classification1) {
         this.classification1 = classification1;
+    }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
     }
 }
