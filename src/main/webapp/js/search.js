@@ -90,8 +90,8 @@ function removeFacet(facet) {
         //alert("fqList is an array");
         for (var i in fqList) {
             var thisFq = decodeURI(fqList[i]); //.replace(':[',':'); // for dates to work
-            //alert("fq = "+thisFq + " || facet = "+facet);
-            if (thisFq.indexOf(facet) != -1) {  // if(str1.indexOf(str2) != -1){
+            //alert("fq = "+thisFq + " || facet = "+decodeURI(facet));
+            if (thisFq.indexOf(decodeURI(facet)) != -1) {  // if(str1.indexOf(str2) != -1){
                 //alert("removing fq: "+fqList[i]);
                 fqList.splice($.inArray(fqList[i], fqList), 1);
             }
