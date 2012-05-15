@@ -192,14 +192,17 @@
             <c:set target="${fieldsMap}" property="basisOfRecord" value="true" />
             <c:choose>
                 <c:when test="${not empty record.processed.occurrence.basisOfRecord && not empty record.raw.occurrence.basisOfRecord && record.processed.occurrence.basisOfRecord == record.raw.occurrence.basisOfRecord}">
-                    ${record.processed.occurrence.basisOfRecord}
+                    <fmt:message key="${record.processed.occurrence.basisOfRecord}"/>
                 </c:when>
                 <c:when test="${not empty record.processed.occurrence.basisOfRecord && not empty record.raw.occurrence.basisOfRecord}">
-                    ${record.processed.occurrence.basisOfRecord}
-                <br/><span class="originalValue">Supplied as "${record.raw.occurrence.basisOfRecord}"</span>
+                    <fmt:message key="${record.processed.occurrence.basisOfRecord}"/>
+                    <br/><span class="originalValue">Supplied as "${record.raw.occurrence.basisOfRecord}"</span>
+                </c:when>
+                <c:when test="${not empty record.processed.occurrence.basisOfRecord}">
+                    <fmt:message key="${record.processed.occurrence.basisOfRecord}"/>
                 </c:when>
                 <c:otherwise>
-                    ${record.raw.occurrence.basisOfRecord}
+                    <fmt:message key="${record.raw.occurrence.basisOfRecord}"/>
                 </c:otherwise>
             </c:choose>
         </alatag:occurrenceTableRow>
@@ -224,12 +227,15 @@
                 Day: ${record.processed.event.day}
             </c:if>
             <c:choose>
-                <c:when test="${not empty record.raw.event.eventDate && record.raw.event.eventDate != record.processed.event.eventDate}">
+                <c:when test="${not empty record.processed.event.eventDate && not empty record.raw.event.eventDate && record.raw.event.eventDate != record.processed.event.eventDate}">
                     <br/><span class="originalValue">Supplied as "${record.raw.event.eventDate}"</span>
                 </c:when>
                 <c:when test="${not empty record.raw.event.year || not empty record.raw.event.month || not empty record.raw.event.day}">
                     <br/><span class="originalValue">Supplied as  "year: ${record.raw.event.year}, month: ${record.raw.event.month}, day: ${record.raw.event.day}"</span>
                 </c:when>
+                <c:otherwise>
+                    ${record.raw.event.eventDate}
+                </c:otherwise>
             </c:choose>
         </alatag:occurrenceTableRow>
         <!-- Identifier Name -->
@@ -374,6 +380,9 @@
             </c:if>
             <c:if test="${not empty record.processed.classification.scientificName && not empty record.raw.classification.scientificName && (fn:toLowerCase(record.processed.classification.scientificName) != fn:toLowerCase(record.raw.classification.scientificName))}">
                 <br/><span class="originalValue">Supplied as "${record.raw.classification.scientificName}"</span>
+            </c:if>
+            <c:if test="${empty record.processed.classification.scientificName && not empty record.raw.classification.scientificName}">
+                ${record.raw.classification.scientificName}
             </c:if>
         </alatag:occurrenceTableRow>
         <!-- original name usage -->
@@ -650,236 +659,238 @@
         <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Classification" exclude="${dwcExcludeFields}"/>
     </table>
 </div>
-<div id="geospatialTaxonomy">
-    <h3>Geospatial</h3>
-    <table class="occurrenceTable" id="geospatialTable">
-        <!-- Higher Geography -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="higherGeography" fieldName="Higher geography">
-            <c:set target="${fieldsMap}" property="higherGeography" value="true" />
-            ${record.raw.location.higherGeography}
-        </alatag:occurrenceTableRow>
-        <!-- Country -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="country" fieldName="Country">
-            <c:set target="${fieldsMap}" property="country" value="true" />
-            <c:choose>
-                <c:when test="${not empty record.processed.location.country}">
-                    ${record.processed.location.country}
-                </c:when>
-                <c:when test="${not empty record.processed.location.countryCode}">
-                    <fmt:message key="country.${record.processed.location.countryCode}"/>
-                </c:when>
-                <c:otherwise>
-                    ${record.raw.location.country}
-                </c:otherwise>
-            </c:choose>
-            <c:if test="${not empty record.processed.location.country && not empty record.raw.location.country && (fn:toLowerCase(record.processed.location.country) != fn:toLowerCase(record.raw.location.country))}">
-                <br/><span class="originalValue">Supplied as "${record.raw.location.country}"</span>
-            </c:if>
-        </alatag:occurrenceTableRow>
-        <!-- State/Province -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="state" fieldName="State or territory">
-            <c:set target="${fieldsMap}" property="stateProvince" value="true" />
-            <c:set var="stateValue" value="${not empty record.processed.location.stateProvince ? record.processed.location.stateProvince : record.raw.location.stateProvince}" />
-            <c:if test="${not empty stateValue}">
-                <%--<a href="${bieWebappContext}/regions/aus_states/${stateValue}">--%>
-                    ${stateValue}
-                <%--</a>--%>
-            </c:if>
-            <c:if test="${not empty record.processed.location.stateProvince && not empty record.raw.location.stateProvince && (fn:toLowerCase(record.processed.location.stateProvince) != fn:toLowerCase(record.raw.location.stateProvince))}">
-                <br/><span class="originalValue">Supplied as: "${record.raw.location.stateProvince}"</span>
-            </c:if>
-        </alatag:occurrenceTableRow>
-        <!-- Locality -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Locality">
-            <c:set target="${fieldsMap}" property="locality" value="true" />
-            <c:if test="${not empty record.processed.location.locality}">
-                ${record.processed.location.locality}
-            </c:if>
-            <c:if test="${empty record.processed.location.locality && not empty record.raw.location.locality}">
-                ${record.raw.location.locality}
-            </c:if>
-            <c:if test="${not empty record.processed.location.locality && not empty record.raw.location.locality && (fn:toLowerCase(record.processed.location.locality) != fn:toLowerCase(record.raw.location.locality))}">
-                <br/><span class="originalValue">Supplied as: "${record.raw.location.locality}"</span>
-            </c:if>
-        </alatag:occurrenceTableRow>
-        <!-- Biogeographic Region -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="biogeographicRegion" fieldName="Biogeographic region">
-            <c:set target="${fieldsMap}" property="ibra" value="true" />
-            <c:if test="${not empty record.processed.location.ibra}">
-                ${record.processed.location.ibra}
-            </c:if>
-            <c:if test="${empty record.processed.location.ibra && not empty record.raw.location.ibra}">
-                ${record.raw.location.ibra}
-            </c:if>
-        </alatag:occurrenceTableRow>
-        <!-- Local Govt Area -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Local government area">
-            <c:set target="${fieldsMap}" property="lga" value="true" />
-            <c:if test="${not empty record.processed.location.lga}">
-                ${record.processed.location.lga}
-            </c:if>
-            <c:if test="${empty record.processed.location.lga && not empty record.raw.location.lga}">
-                ${record.raw.location.lga}
-            </c:if>
-        </alatag:occurrenceTableRow>
-        <!-- Habitat -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Terrestrial/Marine">
-            <c:set target="${fieldsMap}" property="habitat" value="true" />
-            ${record.processed.location.habitat}
-        </alatag:occurrenceTableRow>
-        <!-- Latitude -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="latitude" fieldName="Latitude">
-            <c:set target="${fieldsMap}" property="decimalLatitude" value="true" />
-            <c:choose>
-                <c:when test="${not empty clubView && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
-                    ${record.raw.location.decimalLatitude}
-                </c:when>
-                <c:when test="${not empty record.raw.location.decimalLatitude && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
-                    ${record.processed.location.decimalLatitude}<br/><span class="originalValue">Supplied as: "${record.raw.location.decimalLatitude}"</span>
-                </c:when>
-                <c:when test="${not empty record.processed.location.decimalLatitude}">
-                    ${record.processed.location.decimalLatitude}
-                </c:when>
-                <c:when test="${not empty record.raw.location.decimalLatitude}">
-                    ${record.raw.location.decimalLatitude}
-                </c:when>
-            </c:choose>
-        </alatag:occurrenceTableRow>
-        <!-- Longitude -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="longitude" fieldName="Longitude">
-            <c:set target="${fieldsMap}" property="decimalLongitude" value="true" />
-            <c:choose>
-                <c:when test="${not empty clubView && record.raw.location.decimalLongitude != record.processed.location.decimalLongitude}">
-                    ${record.raw.location.decimalLongitude}
-                </c:when>
-                <c:when test="${not empty record.raw.location.decimalLongitude && record.raw.location.decimalLongitude != record.processed.location.decimalLongitude}">
-                    ${record.processed.location.decimalLongitude}<br/><span class="originalValue">Supplied as: "${record.raw.location.decimalLongitude}"</span>
-                </c:when>
-                <c:when test="${not empty record.processed.location.decimalLongitude}">
-                    ${record.processed.location.decimalLongitude}
-                </c:when>
-                <c:when test="${not empty record.raw.location.decimalLongitude}">
-                    ${record.raw.location.decimalLongitude}
-                </c:when>
-            </c:choose>
-        </alatag:occurrenceTableRow>
-        <!-- Geodetic datum -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic datum">
-            <c:set target="${fieldsMap}" property="geodeticDatum" value="true" />
-            ${record.raw.location.geodeticDatum}
-        </alatag:occurrenceTableRow>
-        <!-- verbatimCoordinateSystem -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Verbatim coordinate system">
-            <c:set target="${fieldsMap}" property="verbatimCoordinateSystem" value="true" />
-            ${record.raw.location.verbatimCoordinateSystem}
-        </alatag:occurrenceTableRow>
-        <!-- Verbatim locality -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimLocality" fieldName="Verbatim locality">
-            <c:set target="${fieldsMap}" property="verbatimLocality" value="true" />
-            ${record.raw.location.verbatimLocality}
-        </alatag:occurrenceTableRow>
-        <!-- Water Body -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="waterBody" fieldName="Water body">
-            <c:set target="${fieldsMap}" property="waterBody" value="true" />
-            ${record.raw.location.waterBody}
-        </alatag:occurrenceTableRow>
-        <!-- Min depth -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumDepthInMeters" fieldName="Minimum depth in metres">
-            <c:set target="${fieldsMap}" property="minimumDepthInMeters" value="true" />
-            ${record.raw.location.minimumDepthInMeters}
-        </alatag:occurrenceTableRow>
-        <!-- Max depth -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumDepthInMeters" fieldName="Maximum depth in metres">
-            <c:set target="${fieldsMap}" property="maximumDepthInMeters" value="true" />
-            ${record.raw.location.maximumDepthInMeters}
-        </alatag:occurrenceTableRow>
-        <!-- Min elevation -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumElevationInMeters" fieldName="Minimum elevation in metres">
-            <c:set target="${fieldsMap}" property="minimumElevationInMeters" value="true" />
-            ${record.raw.location.minimumElevationInMeters}
-        </alatag:occurrenceTableRow>
-        <!-- Max elevation -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumElevationInMeters" fieldName="Maximum elevation in metres">
-            <c:set target="${fieldsMap}" property="maximumElevationInMeters" value="true" />
-            ${record.raw.location.maximumElevationInMeters}
-        </alatag:occurrenceTableRow>
-        <!-- Island -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="island" fieldName="Island">
-            <c:set target="${fieldsMap}" property="island" value="true" />
-            ${record.raw.location.island}
-        </alatag:occurrenceTableRow>
-        <!-- Island Group-->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="islandGroup" fieldName="Island group">
-            <c:set target="${fieldsMap}" property="islandGroup" value="true" />
-            ${record.raw.location.islandGroup}
-        </alatag:occurrenceTableRow>
-        <!-- Location remarks -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locationRemarks" fieldName="Location remarks">
-            <c:set target="${fieldsMap}" property="locationRemarks" value="true" />
-            ${record.raw.location.locationRemarks}
-        </alatag:occurrenceTableRow>
-        <!-- Field notes -->
-        <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field notes">
-            <c:set target="${fieldsMap}" property="fieldNotes" value="true" />
-            ${record.raw.occurrence.fieldNotes}
-        </alatag:occurrenceTableRow>
-        <!-- Coordinate Precision -->
-        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate precision">
-            <c:set target="${fieldsMap}" property="coordinatePrecision" value="true" />
-            <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
-                ${not empty record.processed.location.coordinatePrecision ? record.processed.location.coordinatePrecision : 'Unknown'}
-            </c:if>
-        </alatag:occurrenceTableRow>
-        <!-- Coordinate Uncertainty -->
-        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres">
-            <c:set target="${fieldsMap}" property="coordinateUncertaintyInMeters" value="true" />
-            <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
-                ${not empty record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
-            </c:if>
-        </alatag:occurrenceTableRow>
-        <!-- Data Generalizations -->
-        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="generalisedInMetres" fieldName="Coordinates generalised">
-            <c:set target="${fieldsMap}" property="generalisedInMetres" value="true" />
-            <c:choose>
-                <c:when test="${not empty record.processed.occurrence.dataGeneralizations && fn:contains(record.processed.occurrence.dataGeneralizations, 'is already generalised')}">
-                    ${record.processed.occurrence.dataGeneralizations}
-                </c:when>
-                <c:when test="${not empty record.processed.occurrence.dataGeneralizations}">
-                    Due to sensitivity concerns, the coordinates of this record have been generalised: &quot;<span class="dataGeneralizations">${record.processed.occurrence.dataGeneralizations}</span>&quot;.
-                </c:when>
-            </c:choose>
-        </alatag:occurrenceTableRow>
-        <!-- Information Withheld -->
-        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="informationWithheld" fieldName="Information withheld">
-            <c:set target="${fieldsMap}" property="informationWithheld" value="true" />
-            <c:if test="${not empty record.processed.occurrence.informationWithheld}">
-                <span class="dataGeneralizations">${record.processed.occurrence.informationWithheld}</span>
-            </c:if>
-        </alatag:occurrenceTableRow>
-        <!-- GeoreferenceVerificationStatus -->
-        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceVerificationStatus" fieldName="Georeference verification status">
-            <c:set target="${fieldsMap}" property="georeferenceVerificationStatus" value="true" />
-            ${record.raw.location.georeferenceVerificationStatus}
-        </alatag:occurrenceTableRow>
-        <!-- georeferenceSources -->
-        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceSources" fieldName="Georeference sources">
-            <c:set target="${fieldsMap}" property="georeferenceSources" value="true" />
-            ${record.raw.location.georeferenceSources}
-        </alatag:occurrenceTableRow>
-        <!-- georeferenceProtocol -->
-        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceProtocol" fieldName="Georeference protocol">
-            <c:set target="${fieldsMap}" property="georeferenceProtocol" value="true" />
-            ${record.raw.location.georeferenceProtocol}
-        </alatag:occurrenceTableRow>
-        <!-- georeferenceProtocol -->
-        <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferencedBy" fieldName="Georeferenced by">
-            <c:set target="${fieldsMap}" property="georeferencedBy" value="true" />
-            ${record.raw.location.georeferencedBy}
-        </alatag:occurrenceTableRow>
-        <!-- output any tags not covered already (excluding those in dwcExcludeFields) -->
-        <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Location" exclude="${dwcExcludeFields}"/>
-    </table>
-</div>
+<c:if test="${not empty compareRecord.Location}">
+    <div id="geospatialTaxonomy">
+        <h3>Geospatial</h3>
+        <table class="occurrenceTable" id="geospatialTable">
+            <!-- Higher Geography -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="higherGeography" fieldName="Higher geography">
+                <c:set target="${fieldsMap}" property="higherGeography" value="true" />
+                ${record.raw.location.higherGeography}
+            </alatag:occurrenceTableRow>
+            <!-- Country -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="country" fieldName="Country">
+                <c:set target="${fieldsMap}" property="country" value="true" />
+                <c:choose>
+                    <c:when test="${not empty record.processed.location.country}">
+                        ${record.processed.location.country}
+                    </c:when>
+                    <c:when test="${not empty record.processed.location.countryCode}">
+                        <fmt:message key="country.${record.processed.location.countryCode}"/>
+                    </c:when>
+                    <c:otherwise>
+                        ${record.raw.location.country}
+                    </c:otherwise>
+                </c:choose>
+                <c:if test="${not empty record.processed.location.country && not empty record.raw.location.country && (fn:toLowerCase(record.processed.location.country) != fn:toLowerCase(record.raw.location.country))}">
+                    <br/><span class="originalValue">Supplied as "${record.raw.location.country}"</span>
+                </c:if>
+            </alatag:occurrenceTableRow>
+            <!-- State/Province -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="state" fieldName="State or territory">
+                <c:set target="${fieldsMap}" property="stateProvince" value="true" />
+                <c:set var="stateValue" value="${not empty record.processed.location.stateProvince ? record.processed.location.stateProvince : record.raw.location.stateProvince}" />
+                <c:if test="${not empty stateValue}">
+                    <%--<a href="${bieWebappContext}/regions/aus_states/${stateValue}">--%>
+                        ${stateValue}
+                    <%--</a>--%>
+                </c:if>
+                <c:if test="${not empty record.processed.location.stateProvince && not empty record.raw.location.stateProvince && (fn:toLowerCase(record.processed.location.stateProvince) != fn:toLowerCase(record.raw.location.stateProvince))}">
+                    <br/><span class="originalValue">Supplied as: "${record.raw.location.stateProvince}"</span>
+                </c:if>
+            </alatag:occurrenceTableRow>
+            <!-- Locality -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Locality">
+                <c:set target="${fieldsMap}" property="locality" value="true" />
+                <c:if test="${not empty record.processed.location.locality}">
+                    ${record.processed.location.locality}
+                </c:if>
+                <c:if test="${empty record.processed.location.locality && not empty record.raw.location.locality}">
+                    ${record.raw.location.locality}
+                </c:if>
+                <c:if test="${not empty record.processed.location.locality && not empty record.raw.location.locality && (fn:toLowerCase(record.processed.location.locality) != fn:toLowerCase(record.raw.location.locality))}">
+                    <br/><span class="originalValue">Supplied as: "${record.raw.location.locality}"</span>
+                </c:if>
+            </alatag:occurrenceTableRow>
+            <!-- Biogeographic Region -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="biogeographicRegion" fieldName="Biogeographic region">
+                <c:set target="${fieldsMap}" property="ibra" value="true" />
+                <c:if test="${not empty record.processed.location.ibra}">
+                    ${record.processed.location.ibra}
+                </c:if>
+                <c:if test="${empty record.processed.location.ibra && not empty record.raw.location.ibra}">
+                    ${record.raw.location.ibra}
+                </c:if>
+            </alatag:occurrenceTableRow>
+            <!-- Local Govt Area -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Local government area">
+                <c:set target="${fieldsMap}" property="lga" value="true" />
+                <c:if test="${not empty record.processed.location.lga}">
+                    ${record.processed.location.lga}
+                </c:if>
+                <c:if test="${empty record.processed.location.lga && not empty record.raw.location.lga}">
+                    ${record.raw.location.lga}
+                </c:if>
+            </alatag:occurrenceTableRow>
+            <!-- Habitat -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="habitat" fieldName="Terrestrial/Marine">
+                <c:set target="${fieldsMap}" property="habitat" value="true" />
+                ${record.processed.location.habitat}
+            </alatag:occurrenceTableRow>
+            <!-- Latitude -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="latitude" fieldName="Latitude">
+                <c:set target="${fieldsMap}" property="decimalLatitude" value="true" />
+                <c:choose>
+                    <c:when test="${not empty clubView && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
+                        ${record.raw.location.decimalLatitude}
+                    </c:when>
+                    <c:when test="${not empty record.raw.location.decimalLatitude && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
+                        ${record.processed.location.decimalLatitude}<br/><span class="originalValue">Supplied as: "${record.raw.location.decimalLatitude}"</span>
+                    </c:when>
+                    <c:when test="${not empty record.processed.location.decimalLatitude}">
+                        ${record.processed.location.decimalLatitude}
+                    </c:when>
+                    <c:when test="${not empty record.raw.location.decimalLatitude}">
+                        ${record.raw.location.decimalLatitude}
+                    </c:when>
+                </c:choose>
+            </alatag:occurrenceTableRow>
+            <!-- Longitude -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="longitude" fieldName="Longitude">
+                <c:set target="${fieldsMap}" property="decimalLongitude" value="true" />
+                <c:choose>
+                    <c:when test="${not empty clubView && record.raw.location.decimalLongitude != record.processed.location.decimalLongitude}">
+                        ${record.raw.location.decimalLongitude}
+                    </c:when>
+                    <c:when test="${not empty record.raw.location.decimalLongitude && record.raw.location.decimalLongitude != record.processed.location.decimalLongitude}">
+                        ${record.processed.location.decimalLongitude}<br/><span class="originalValue">Supplied as: "${record.raw.location.decimalLongitude}"</span>
+                    </c:when>
+                    <c:when test="${not empty record.processed.location.decimalLongitude}">
+                        ${record.processed.location.decimalLongitude}
+                    </c:when>
+                    <c:when test="${not empty record.raw.location.decimalLongitude}">
+                        ${record.raw.location.decimalLongitude}
+                    </c:when>
+                </c:choose>
+            </alatag:occurrenceTableRow>
+            <!-- Geodetic datum -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic datum">
+                <c:set target="${fieldsMap}" property="geodeticDatum" value="true" />
+                ${record.raw.location.geodeticDatum}
+            </alatag:occurrenceTableRow>
+            <!-- verbatimCoordinateSystem -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Verbatim coordinate system">
+                <c:set target="${fieldsMap}" property="verbatimCoordinateSystem" value="true" />
+                ${record.raw.location.verbatimCoordinateSystem}
+            </alatag:occurrenceTableRow>
+            <!-- Verbatim locality -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimLocality" fieldName="Verbatim locality">
+                <c:set target="${fieldsMap}" property="verbatimLocality" value="true" />
+                ${record.raw.location.verbatimLocality}
+            </alatag:occurrenceTableRow>
+            <!-- Water Body -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="waterBody" fieldName="Water body">
+                <c:set target="${fieldsMap}" property="waterBody" value="true" />
+                ${record.raw.location.waterBody}
+            </alatag:occurrenceTableRow>
+            <!-- Min depth -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumDepthInMeters" fieldName="Minimum depth in metres">
+                <c:set target="${fieldsMap}" property="minimumDepthInMeters" value="true" />
+                ${record.raw.location.minimumDepthInMeters}
+            </alatag:occurrenceTableRow>
+            <!-- Max depth -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumDepthInMeters" fieldName="Maximum depth in metres">
+                <c:set target="${fieldsMap}" property="maximumDepthInMeters" value="true" />
+                ${record.raw.location.maximumDepthInMeters}
+            </alatag:occurrenceTableRow>
+            <!-- Min elevation -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="minimumElevationInMeters" fieldName="Minimum elevation in metres">
+                <c:set target="${fieldsMap}" property="minimumElevationInMeters" value="true" />
+                ${record.raw.location.minimumElevationInMeters}
+            </alatag:occurrenceTableRow>
+            <!-- Max elevation -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="maximumElevationInMeters" fieldName="Maximum elevation in metres">
+                <c:set target="${fieldsMap}" property="maximumElevationInMeters" value="true" />
+                ${record.raw.location.maximumElevationInMeters}
+            </alatag:occurrenceTableRow>
+            <!-- Island -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="island" fieldName="Island">
+                <c:set target="${fieldsMap}" property="island" value="true" />
+                ${record.raw.location.island}
+            </alatag:occurrenceTableRow>
+            <!-- Island Group-->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="islandGroup" fieldName="Island group">
+                <c:set target="${fieldsMap}" property="islandGroup" value="true" />
+                ${record.raw.location.islandGroup}
+            </alatag:occurrenceTableRow>
+            <!-- Location remarks -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locationRemarks" fieldName="Location remarks">
+                <c:set target="${fieldsMap}" property="locationRemarks" value="true" />
+                ${record.raw.location.locationRemarks}
+            </alatag:occurrenceTableRow>
+            <!-- Field notes -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="fieldNotes" fieldName="Field notes">
+                <c:set target="${fieldsMap}" property="fieldNotes" value="true" />
+                ${record.raw.occurrence.fieldNotes}
+            </alatag:occurrenceTableRow>
+            <!-- Coordinate Precision -->
+            <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate precision">
+                <c:set target="${fieldsMap}" property="coordinatePrecision" value="true" />
+                <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
+                    ${not empty record.processed.location.coordinatePrecision ? record.processed.location.coordinatePrecision : 'Unknown'}
+                </c:if>
+            </alatag:occurrenceTableRow>
+            <!-- Coordinate Uncertainty -->
+            <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinateUncertaintyInMeters" fieldName="Coordinate uncertainty in metres">
+                <c:set target="${fieldsMap}" property="coordinateUncertaintyInMeters" value="true" />
+                <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
+                    ${not empty record.processed.location.coordinateUncertaintyInMeters ? record.processed.location.coordinateUncertaintyInMeters : 'Unknown'}
+                </c:if>
+            </alatag:occurrenceTableRow>
+            <!-- Data Generalizations -->
+            <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="generalisedInMetres" fieldName="Coordinates generalised">
+                <c:set target="${fieldsMap}" property="generalisedInMetres" value="true" />
+                <c:choose>
+                    <c:when test="${not empty record.processed.occurrence.dataGeneralizations && fn:contains(record.processed.occurrence.dataGeneralizations, 'is already generalised')}">
+                        ${record.processed.occurrence.dataGeneralizations}
+                    </c:when>
+                    <c:when test="${not empty record.processed.occurrence.dataGeneralizations}">
+                        Due to sensitivity concerns, the coordinates of this record have been generalised: &quot;<span class="dataGeneralizations">${record.processed.occurrence.dataGeneralizations}</span>&quot;.
+                    </c:when>
+                </c:choose>
+            </alatag:occurrenceTableRow>
+            <!-- Information Withheld -->
+            <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="informationWithheld" fieldName="Information withheld">
+                <c:set target="${fieldsMap}" property="informationWithheld" value="true" />
+                <c:if test="${not empty record.processed.occurrence.informationWithheld}">
+                    <span class="dataGeneralizations">${record.processed.occurrence.informationWithheld}</span>
+                </c:if>
+            </alatag:occurrenceTableRow>
+            <!-- GeoreferenceVerificationStatus -->
+            <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceVerificationStatus" fieldName="Georeference verification status">
+                <c:set target="${fieldsMap}" property="georeferenceVerificationStatus" value="true" />
+                ${record.raw.location.georeferenceVerificationStatus}
+            </alatag:occurrenceTableRow>
+            <!-- georeferenceSources -->
+            <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceSources" fieldName="Georeference sources">
+                <c:set target="${fieldsMap}" property="georeferenceSources" value="true" />
+                ${record.raw.location.georeferenceSources}
+            </alatag:occurrenceTableRow>
+            <!-- georeferenceProtocol -->
+            <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferenceProtocol" fieldName="Georeference protocol">
+                <c:set target="${fieldsMap}" property="georeferenceProtocol" value="true" />
+                ${record.raw.location.georeferenceProtocol}
+            </alatag:occurrenceTableRow>
+            <!-- georeferenceProtocol -->
+            <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="georeferencedBy" fieldName="Georeferenced by">
+                <c:set target="${fieldsMap}" property="georeferencedBy" value="true" />
+                ${record.raw.location.georeferencedBy}
+            </alatag:occurrenceTableRow>
+            <!-- output any tags not covered already (excluding those in dwcExcludeFields) -->
+            <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Location" exclude="${dwcExcludeFields}"/>
+        </table>
+    </div>
+</c:if>
 <c:if test="${not empty record.raw.miscProperties}">
     <div id="additionalProperties">
         <h3>Additional properties</h3>
