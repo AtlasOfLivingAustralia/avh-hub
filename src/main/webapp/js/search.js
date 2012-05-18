@@ -164,10 +164,7 @@ function loadImages(start) {
             var count = 0;
             $.each(data.occurrences, function(i, el) {
                 //console.log("el", el.image);
-                var imgSrc = el.image;
-                if (imgSrc.match("biocache-media")) {
-                    imgSrc = imgSrc.replace(/^\/data/,'http://biocache.ala.org.au').replace(/\.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG)$/, "__small.$1");
-                }
+                var imgSrc = el.smallImageUrl;
                 count++;
                 var imgEl = $("<img src='" + imgSrc +
                     "' style='height: 100px; cursor: pointer;'/>");
