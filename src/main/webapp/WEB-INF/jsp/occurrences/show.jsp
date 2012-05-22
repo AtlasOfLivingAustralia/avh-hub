@@ -310,6 +310,13 @@
                         alert("Sorry it appears the history has been lost, please use the browser&apso;s back button");
                     }
                 });
+
+                var sequenceTd = $("tr#nucleotides").find("td.value");
+                var sequenceStr = sequenceTd.text().trim();
+                if (sequenceStr.length > 10) {
+                    // split long DNA sequences into blocks of 10 chars
+                    $(sequenceTd).html("<code>"+sequenceStr.replace(/(.{10})/g,"$1 ")+"</code>");
+                }
             }); // end JQuery document ready
             
             /*
