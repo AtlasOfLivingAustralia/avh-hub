@@ -924,7 +924,7 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                 var flimitInt = Number(facetLimit);
                 var loadMore =  "<tr id='loadMore' class=''><td colspan='3'><a href='#index' class='loadMoreValues' data-sort='" +
                     fsort + "' data-foffset='" + (offsetInt + flimitInt) +
-                    "'>Loading " + facetLimit + " more values...</a></td></rt>";
+                    "'>Loading " + facetLimit + " more values...</a></td></tr>";
                 $("table#fullFacets tbody").append(loadMore);
                 //$("tr#loadMore").fadeIn('slow');
             }
