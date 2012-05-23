@@ -46,8 +46,8 @@
             <ul class="css-tabs">
                 <li><a id="t1" href="#quickSearch">Quick search</a></li>
                 <li><a id="t2" href="#advancedSearch">Advanced search</a></li>
-                <li><a id="t3" href="#taxaUpload">Batch taxon search</a></li>
-                <li><a id="t4" href="#catalogUpload">Catalogue number search</a></li>
+                <li><a id="t3" href="#taxaUpload">Batch name search</a></li>
+                <li><a id="t4" href="#catalogUpload">Batch catalogue no. search</a></li>
                 <li><a id="t5" href="#shapeFileUpload">Shapefile search</a></li>
             </ul>
             <div class="css-panes">
