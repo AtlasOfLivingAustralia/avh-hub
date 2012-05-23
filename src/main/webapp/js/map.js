@@ -220,6 +220,7 @@ var Maps = (function() {
             var myLatlng = new google.maps.LatLng(-27, 133);
             var myOptions = {
                 zoom: 4,
+                maxZoom: 20,
                 scrollwheel: false, // Dave says: leave as false
                 center: myLatlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -260,16 +261,17 @@ var Maps = (function() {
             google.maps.event.addListener(map, 'tilesloaded', function() {
                 $('#legend').show();
             });
-            
+
             // listener - so that map.getBounds() is not undef
-            var zoomed = false; 
+            var zoomed = false;
+            var zoomParam = $.urlParam('zoom');
             google.maps.event.addListener(map, 'bounds_changed', function() {
-                if (!zoomed) {
+                if (!zoomed && zoomParam != 'off') {
                     fitMapToBounds();
                 }
                 zoomed = true;
-            }); 
-            
+            });
+
             // populate the env.layer dropdown
             var opts='<option value="-1">None</option>';
             $.each(envLayers, function(key, value) {
@@ -757,8 +759,7 @@ function isInteger(value) {
  */
 $.urlParam = function(name){
     var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (!results)
-    { 
+    if (!results) {
         return 0; 
     }
     return results[1] || 0;
@@ -785,6 +786,10 @@ function fitMapToBounds() {
                 // data bounds is smaller than all of Aust
                 //console.log("smaller bounds",dataBounds,mapBounds)
                 map.fitBounds(dataBounds);
+
+                if (map.getZoom() > 15) {
+                    map.setZoom(15);
+                }
             }
         }
     });
