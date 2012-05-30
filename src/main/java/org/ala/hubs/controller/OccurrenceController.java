@@ -113,6 +113,8 @@ public class OccurrenceController {
     String sensitiveDatasets = null;
     @Value("${facets.exclude}")
     String facetsExclude = null;
+    @Value("${suppressIssues}")
+    String suppressIssues = null;
     @Value("${facets.include}")
     String facetsInclude = null;
     @Value("${facets.hide}")
@@ -853,6 +855,14 @@ public class OccurrenceController {
                 }
                 model.addAttribute("metadataForOutlierLayers", metdataForOutlierLayers);
             }
+
+            //suppress particular issues from being reported
+            List<String> issuesToSuppress = Arrays.asList(StringUtils.split(suppressIssues, ','));
+            List<QualityAssertion> sanitisedAssertions = new ArrayList<QualityAssertion>();
+            for(QualityAssertion qassertion : record.getSystemAssertions()){
+                if(!issuesToSuppress.contains(qassertion.name())) sanitisedAssertions.add(qassertion);
+            }
+            record.setSystemAssertions(sanitisedAssertions);
 
             // sort the list of SampleDTO objects
             Collections.sort(contextualSampleInfo, new SampleDTOComparator());

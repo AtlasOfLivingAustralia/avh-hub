@@ -81,7 +81,7 @@
             </alatag:occurrenceTableRow>
         </c:if>
         <!-- Collection -->
-        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="collectionCode" fieldName="Collection">
+        <alatag:occurrenceTableRow annotate="false" section="dataset" fieldNameIsMsgCode="true" fieldCode="collectionCode" fieldName="Collection">
             <c:if test="${not empty record.processed.attribution.collectionUid}">
                 <c:set target="${fieldsMap}" property="collectionUid" value="true" />
                 <c:choose>
@@ -109,7 +109,7 @@
             <c:if test="${not empty record.raw.occurrence.collectionCode}">
                 <c:set target="${fieldsMap}" property="collectionCode" value="true" />
                 <c:if test="${not empty collectionName || not empty record.processed.attribution.collectionName}"><br/></c:if>
-                <span class="originalValue">Supplied as "${record.raw.occurrence.collectionCode}"</span>
+                <span class="originalValue" style="display:none">Supplied as "${record.raw.occurrence.collectionCode}"</span>
             </c:if>
         </alatag:occurrenceTableRow>
         <!-- Catalog Number -->
@@ -129,25 +129,6 @@
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="otherCatalogNumbers" fieldName="Other catalogue numbers">
             <c:set target="${fieldsMap}" property="otherCatalogNumbers" value="true" />
             ${record.raw.occurrence.otherCatalogNumbers}
-        </alatag:occurrenceTableRow>
-        <!-- Record Number -->
-        <c:set var="recordNumberLabel">
-            <c:choose>
-                <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}">Collecting number</c:when>
-                <c:otherwise>Record number</c:otherwise>
-            </c:choose>
-        </c:set>
-        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordNumber" fieldName="${recordNumberLabel}">
-            <c:set target="${fieldsMap}" property="recordNumber" value="true" />
-            <c:choose>
-                <c:when test="${not empty record.processed.occurrence.recordNumber && not empty record.raw.occurrence.recordNumber}">
-                    ${record.processed.occurrence.recordNumber}
-                    <br/><span class="originalValue">Supplied as "${record.raw.occurrence.recordNumber}"</span>
-                </c:when>
-                <c:otherwise>
-                    ${record.raw.occurrence.recordNumber}
-                </c:otherwise>
-            </c:choose>
         </alatag:occurrenceTableRow>
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="citation" fieldName="Record citation">
             <c:set target="${fieldsMap}" property="citation" value="true" />
@@ -206,47 +187,25 @@
                 </c:otherwise>
             </c:choose>
         </alatag:occurrenceTableRow>
-        <!-- Record Date -->
-        <c:set var="occurrenceDateLabel">
-            <c:choose>
-                <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}">Collecting date</c:when>
-                <c:otherwise>Record date</c:otherwise>
-            </c:choose>
-        </c:set>
-        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceDate" fieldName="${occurrenceDateLabel}">
-            <c:set target="${fieldsMap}" property="eventDate" value="true" />
-            <c:if test="${empty record.processed.event.eventDate && record.raw.event.eventDate && empty record.raw.event.year && empty record.raw.event.month && empty record.raw.event.day}">
-                [date not supplied]
-            </c:if>
-            <c:if test="${not empty record.processed.event.eventDate}">
-                ${record.processed.event.eventDate}
-            </c:if>
-            <c:if test="${empty record.processed.event.eventDate && (not empty record.processed.event.year || not empty record.processed.event.month || not empty record.processed.event.day)}">
-                Year: ${record.processed.event.year},
-                Month: ${record.processed.event.month},
-                Day: ${record.processed.event.day}
-            </c:if>
-            <c:choose>
-                <c:when test="${not empty record.processed.event.eventDate && not empty record.raw.event.eventDate && record.raw.event.eventDate != record.processed.event.eventDate}">
-                    <br/><span class="originalValue">Supplied as "${record.raw.event.eventDate}"</span>
-                </c:when>
-                <c:when test="${not empty record.raw.event.year || not empty record.raw.event.month || not empty record.raw.event.day}">
-                    <br/><span class="originalValue">Supplied as  "year: ${record.raw.event.year}, month: ${record.raw.event.month}, day: ${record.raw.event.day}"</span>
-                </c:when>
-                <c:otherwise>
-                    ${record.raw.event.eventDate}
-                </c:otherwise>
-            </c:choose>
+        <!-- Preparations -->
+        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="preparations" fieldName="Preparations">
+            <c:set target="${fieldsMap}" property="preparations" value="true" />
+            ${record.raw.occurrence.preparations}
         </alatag:occurrenceTableRow>
         <!-- Identifier Name -->
-        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierName" fieldName="Identified by">
+        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierName" fieldNameIsMsgCode="true" fieldName="Identified by">
             <c:set target="${fieldsMap}" property="identifiedBy" value="true" />
             ${record.raw.identification.identifiedBy}
         </alatag:occurrenceTableRow>
         <!-- Identified Date -->
-        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierDate" fieldName="Identified date">
+        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierDate"  fieldNameIsMsgCode="true" fieldName="Identified date">
             <c:set target="${fieldsMap}" property="identifierDate" value="true" />
             ${record.raw.identification.dateIdentified}
+        </alatag:occurrenceTableRow>
+        <!-- Identified Date -->
+        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identifierRole"  fieldNameIsMsgCode="true" fieldName="Identifier role">
+            <c:set target="${fieldsMap}" property="identifierRole" value="true" />
+            ${record.raw.identification.identifierRole}
         </alatag:occurrenceTableRow>
         <!-- Field Number -->
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="fieldNumber" fieldName="Field number">
@@ -254,38 +213,89 @@
             ${record.raw.occurrence.fieldNumber}
         </alatag:occurrenceTableRow>
         <!-- Field Number -->
-        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationRemarks" fieldName="Identification remarks">
+        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="identificationRemarks" fieldNameIsMsgCode="true" fieldName="Identification remarks">
             <c:set target="${fieldsMap}" property="identificationRemarks" value="true" />
             ${record.raw.identification.identificationRemarks}
         </alatag:occurrenceTableRow>
         <!-- Collector/Observer -->
         <c:set var="collectorNameLabel">
-            <c:choose>
-                <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}">Collector</c:when>
-                <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'observation')}">Observer</c:when>
-                <c:otherwise>Collector/Observer</c:otherwise>
-            </c:choose>
+        <c:choose>
+        <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}">Collector</c:when>
+        <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'observation')}">Observer</c:when>
+        <c:otherwise>Collector/Observer</c:otherwise>
+        </c:choose>
         </c:set>
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="${collectorNameLabel}">
             <c:set target="${fieldsMap}" property="recordedBy" value="true" />
             <c:set var="rawRecordedBy" value="${(fn:contains(record.raw.occurrence.recordedBy, '@'))
-                                                                        ? fn:substringBefore(record.raw.occurrence.recordedBy,'@')
-                                                                        : record.raw.occurrence.recordedBy}"/>
+                                                            ? fn:substringBefore(record.raw.occurrence.recordedBy,'@')
+                                                            : record.raw.occurrence.recordedBy}"/>
             <c:set var="proRecordedBy" value="${(fn:contains(record.processed.occurrence.recordedBy, '@'))
-                                                                        ? fn:substringBefore(record.processed.occurrence.recordedBy,'@')
-                                                                        : record.processed.occurrence.recordedBy}"/>
-            <c:choose>
-                <c:when test="${not empty record.processed.occurrence.recordedBy && not empty record.raw.occurrence.recordedBy}">
-                    ${proRecordedBy}
-                    <br/><span class="originalValue">Supplied as "${rawRecordedBy}"</span>
-                </c:when>
-                <c:when test="${not empty record.processed.occurrence.recordedBy}">
-                    ${proRecordedBy}
-                </c:when>
-                <c:when test="${not empty record.raw.occurrence.recordedBy}">
-                    ${rawRecordedBy}
-                </c:when>
-            </c:choose>
+                                                            ? fn:substringBefore(record.processed.occurrence.recordedBy,'@')
+                                                            : record.processed.occurrence.recordedBy}"/>
+        <c:choose>
+        <c:when test="${not empty record.processed.occurrence.recordedBy && not empty record.raw.occurrence.recordedBy}">
+            ${proRecordedBy}
+        <br/><span class="originalValue">Supplied as "${rawRecordedBy}"</span>
+        </c:when>
+        <c:when test="${not empty record.processed.occurrence.recordedBy}">
+            ${proRecordedBy}
+        </c:when>
+        <c:when test="${not empty record.raw.occurrence.recordedBy}">
+            ${rawRecordedBy}
+        </c:when>
+        </c:choose>
+        </alatag:occurrenceTableRow>
+        <!-- Record Number -->
+        <c:set var="recordNumberLabel">
+        <c:choose>
+        <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}">Collecting number</c:when>
+        <c:otherwise>Record number</c:otherwise>
+        </c:choose>
+        </c:set>
+        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="recordNumber" fieldName="${recordNumberLabel}">
+            <c:set target="${fieldsMap}" property="recordNumber" value="true" />
+        <c:choose>
+        <c:when test="${not empty record.processed.occurrence.recordNumber && not empty record.raw.occurrence.recordNumber}">
+            ${record.processed.occurrence.recordNumber}
+        <br/><span class="originalValue">Supplied as "${record.raw.occurrence.recordNumber}"</span>
+        </c:when>
+        <c:otherwise>
+            ${record.raw.occurrence.recordNumber}
+        </c:otherwise>
+        </c:choose>
+        </alatag:occurrenceTableRow>
+        <!-- Record Date -->
+        <c:set var="occurrenceDateLabel">
+        <c:choose>
+        <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}">Collecting date</c:when>
+        <c:otherwise>Record date</c:otherwise>
+        </c:choose>
+        </c:set>
+        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceDate" fieldName="${occurrenceDateLabel}">
+            <c:set target="${fieldsMap}" property="eventDate" value="true" />
+        <c:if test="${empty record.processed.event.eventDate && record.raw.event.eventDate && empty record.raw.event.year && empty record.raw.event.month && empty record.raw.event.day}">
+        [date not supplied]
+        </c:if>
+        <c:if test="${not empty record.processed.event.eventDate}">
+            ${record.processed.event.eventDate}
+        </c:if>
+        <c:if test="${empty record.processed.event.eventDate && (not empty record.processed.event.year || not empty record.processed.event.month || not empty record.processed.event.day)}">
+        Year: ${record.processed.event.year},
+        Month: ${record.processed.event.month},
+        Day: ${record.processed.event.day}
+        </c:if>
+        <c:choose>
+        <c:when test="${not empty record.processed.event.eventDate && not empty record.raw.event.eventDate && record.raw.event.eventDate != record.processed.event.eventDate}">
+        <br/><span class="originalValue">Supplied as "${record.raw.event.eventDate}"</span>
+        </c:when>
+        <c:when test="${not empty record.raw.event.year || not empty record.raw.event.month || not empty record.raw.event.day}">
+        <br/><span class="originalValue">Supplied as  "year: ${record.raw.event.year}, month: ${record.raw.event.month}, day: ${record.raw.event.day}"</span>
+        </c:when>
+        <c:otherwise>
+            ${record.raw.event.eventDate}
+        </c:otherwise>
+        </c:choose>
         </alatag:occurrenceTableRow>
         <!-- Sampling Protocol -->
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="samplingProtocol" fieldName="Sampling protocol">
@@ -326,11 +336,6 @@
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="lifeStage" fieldName="Life stage">
             <c:set target="${fieldsMap}" property="lifeStage" value="true" />
             ${record.raw.occurrence.lifeStage}
-        </alatag:occurrenceTableRow>
-        <!-- Preparations -->
-        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="preparations" fieldName="Preparations">
-            <c:set target="${fieldsMap}" property="preparations" value="true" />
-            ${record.raw.occurrence.preparations}
         </alatag:occurrenceTableRow>
         <!-- Rights -->
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="rights" fieldName="Rights">
@@ -699,6 +704,16 @@
                     <br/><span class="originalValue">Supplied as: "${record.raw.location.stateProvince}"</span>
                 </c:if>
             </alatag:occurrenceTableRow>
+            <!-- Local Govt Area -->
+            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Local government area">
+                <c:set target="${fieldsMap}" property="lga" value="true" />
+                <c:if test="${not empty record.processed.location.lga}">
+                    ${record.processed.location.lga}
+                </c:if>
+                <c:if test="${empty record.processed.location.lga && not empty record.raw.location.lga}">
+                    ${record.raw.location.lga}
+                </c:if>
+            </alatag:occurrenceTableRow>
             <!-- Locality -->
             <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Locality">
                 <c:set target="${fieldsMap}" property="locality" value="true" />
@@ -720,16 +735,6 @@
                 </c:if>
                 <c:if test="${empty record.processed.location.ibra && not empty record.raw.location.ibra}">
                     ${record.raw.location.ibra}
-                </c:if>
-            </alatag:occurrenceTableRow>
-            <!-- Local Govt Area -->
-            <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="locality" fieldName="Local government area">
-                <c:set target="${fieldsMap}" property="lga" value="true" />
-                <c:if test="${not empty record.processed.location.lga}">
-                    ${record.processed.location.lga}
-                </c:if>
-                <c:if test="${empty record.processed.location.lga && not empty record.raw.location.lga}">
-                    ${record.raw.location.lga}
                 </c:if>
             </alatag:occurrenceTableRow>
             <!-- Habitat -->

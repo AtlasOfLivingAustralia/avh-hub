@@ -125,7 +125,8 @@
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'subspecies_name')}">
-                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><i><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></i></a>
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">
+                                                <fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'geospatial_kosher')}">

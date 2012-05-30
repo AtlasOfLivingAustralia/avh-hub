@@ -170,19 +170,20 @@
                                 <c:set var="useDefault" value="${empty param.sort && empty param.dir ? true : false }"/>
                                 Sort by:
                                 <select id="sort" name="sort">
-                                    <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>best match</option>
-                                    <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>scientific name</option>
-                                    <option value="common_name" <c:if test="${param.sort eq 'common_name'}">selected</c:if>>common name</option>
-                                    <!--                            <option value="rank">rank</option>-->
-                                    <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>record date</option>
-                                    <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>record type</option>
-                                    <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>date added</option>
-                                    <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>last annotated</option>
+                                    <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>Best match</option>
+                                    <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>Taxon name</option>
+                                    <option value="common_name" <c:if test="${param.sort eq 'common_name'}">selected</c:if>>Common name</option>
+                                    <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>${skin == 'avh' ? 'Collecting date' : 'Record date'}</option>
+                                    <c:if test="${skin != 'avh'}">
+                                    <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>Record type</option>
+                                    </c:if>
+                                    <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>Date added</option>
+                                    <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>Last annotated</option>
                                 </select>
                                 Sort order:
                                 <select id="dir" name="dir">
-                                    <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>normal</option>
-                                    <option value="desc" <c:if test="${useDefault || param.dir eq 'desc'}">selected</c:if>>reverse</option>
+                                    <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>Ascending</option>
+                                    <option value="desc" <c:if test="${useDefault || param.dir eq 'desc'}">selected</c:if>>Descending</option>
                                 </select>
                             </div><!-- sortWidget -->
                         </div><!-- searchControls -->

@@ -129,7 +129,7 @@ function loadAllCharts() {
         charts: ['collection_uid','state','species_group','assertions','type_status','ibra','state_conservation','occurrence_year'],
         collection_uid: {title: 'By collection', backgroundColor: "#eeeeee"},
         state: {title: 'By state or territory', backgroundColor: "#eeeeee"},
-        species_group: {backgroundColor: "#eeeeee", title: 'By higher-level group', ignore: ['Animals','Insects','Crustaceans']},
+        species_group: {backgroundColor: "#eeeeee", title: 'By higher-level group', ignore: ['Animals','Insects','Crustaceans','Angiosperms','Plants']},
         assertions: {backgroundColor: "#eeeeee"},
         type_status: {backgroundColor: "#eeeeee"},
         ibra: {title: 'By IBRA region', backgroundColor: "#eeeeee"},

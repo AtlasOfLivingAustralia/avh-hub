@@ -75,23 +75,28 @@
 
         <div id="index_bground">
             <div id="index_text">
-                <div>Australia's Commonwealth, state and territory herbaria house over six million plant, algae and
-                    fungi specimens.
-                    The collecting information stored with these specimens provides the most complete picture of the
-                    distribution of Australia's flora to date.
-                </div>
-                <br>
+                <div style="font-size: 16px; color: #ff0000; font-weight: bold;
+                         padding-bottom: 0px;"> Please note </div>
 
-                <div>Australia's Virtual Herbarium (AVH) is an online resource that provides immediate access to
-                    this invaluable information.
+                <div>This is a <strong>new version of AVH</strong>, which has been developed by, and is part of,
+                    the <a href="http://www.ala.org.au/" target="_blank">Atlas of Living Australia</a> (ALA).
+                    This new site will be formally launched later in the year. In the meantime, we are still
+                    adding more content and working on a few bug fixes, but we hope that you will find it a
+                    great improvement on the previous version. We welcome your feedback on the new site via
+                    the 'AVH feedback' link at the bottom of the page, or at
+                    <strong><a href="mailto:avh@ala.org.au" target="_blank">avh@ala.org.au</a></strong>. Please read the
+                    <strong><a href="/sp/help.html">Help</a></strong> and
+                    <strong><a href="/sp/avh_data.html">AVH data</a></strong> pages for more
+                    information.
                 </div>
+
             </div>
             <div id="index_menu">
                 <div><a href="search">Search</a></div>
-                <div><a href="http://avh-demo.ala.org.au/sp/about.html">About AVH</a></div>
-                <div><a href="http://avh-demo.ala.org.au/sp/partners.html">Partners</a></div>
-                <div><a href="http://avh-demo.ala.org.au/sp/sponsors.html">Sponsors</a></div>
-                <div><a href="http://avh-demo.ala.org.au/sp/credits.html">Credits</a></div>
+                <div><a href="/sp/about.html">About AVH</a></div>
+                <div><a href="/sp/partners.html">Partners</a></div>
+                <div><a href="/sp/sponsors.html">Sponsors</a></div>
+                <div><a href="/sp/credits.html">Credits</a></div>
             </div>
         </div>
 
@@ -177,8 +182,8 @@
             <a href="http://avh-demo.ala.org.au/sp/privacy.html">Privacy statement</a>
         </div>
 
-        <div id="footer_right">Updated 13 October 2011 |
-            <a href="mailto:webmaster@chah.gov.au">webmaster@chah.gov.au</a>
+        <div id="footer_right">
+            <a href="mailto:avh@ala.org.au">avh@ala.org.au</a>
         </div>
     </div>
 

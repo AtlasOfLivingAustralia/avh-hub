@@ -145,10 +145,10 @@
                                     <thead/>
                                     <tbody>
                                         <tr>
-                                            <td class="label">Collection</td>
+                                            <td class="label">Herbarium</td>
                                             <td>
                                                 <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
-                                                    <option value="">-- select an collection --</option>
+                                                    <option value="">-- select an herbarium --</option>
                                                     <c:forEach var="inst" items="${institutions}">
                                                         <!--<optgroup label="${inst.value}"> -->
                                                         <c:if test="${not empty inst.value}">
@@ -190,7 +190,7 @@
                                         <tr>
                                     </tbody>
                                 </table>
-                            </div><!-- end div.toggleSection Speciemen-->
+                            </div><!-- end div.toggleSection Specimen-->
                             <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Collecting event</a>
                             <div class="toggleSection">
                                 <table border="0" width="100" cellspacing="2" class="compact">
@@ -218,10 +218,10 @@
                                     </tr>
                                     <c:if test="${skin == 'avh'}">
                                         <tr>
-                                            <td class="label">Cultivation status</td>
+                                            <td class="label">Establishment means</td>
                                             <td>
                                                 <select class="" name="cultivation_status" id="cultivation_status">
-                                                    <option value="">-- select a cultivation status --</option>
+                                                    <option value="">-- select an establishment means --</option>
                                                     <c:forEach var="cs" items="${cultivationStatus}">
                                                         <option value="${cs}">${cs}</option>
                                                     </c:forEach>
@@ -372,8 +372,7 @@
                 </div><!-- end simpleSearch div -->
                 <div id="uploadDiv" class="paneDiv homePane">
                     <form name="taxaUploadForm" id="taxaUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
-                        <p>Enter a list of taxon names (one name per line)
-                            file containing records OR perform a <strong>search</strong>.</p>
+                        <p>Enter a list of taxon names (one name per line).</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
                         <p><textarea name="queries" id="raw_names" rows="15" cols="60"></textarea></p>
                         <p>
@@ -400,7 +399,7 @@
                 <div id="shapeDiv" class="paneDiv homePane">
                     <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
                         <p>Upload a shapefile (.shp).</p>
-                        <p><input type="file" name="file"/></p>
+                        <p><input type="file" name="file" value="Choose file"/></p>
                         <p><input type="submit" value="Search" /></p>
                     </form>
                 </div>

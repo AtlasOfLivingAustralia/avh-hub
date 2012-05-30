@@ -6,7 +6,7 @@
 taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %><%@
 taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 include file="/common/taglibs.jsp" %>
-<c:set var="avhUrl" value="http://avh-demo.ala.org.au/sp/"/>
+<c:set var="avhUrl" value="http://avh.ala.org.au/sp/"/>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">    
 <head>
@@ -58,8 +58,9 @@ include file="/common/taglibs.jsp" %>
             <div><a href="${pageContext.request.contextPath}/">Home</a></div>
             <div><a href="${pageContext.request.contextPath}/query">Search</a></div>
             <div><a href="${avhUrl}about.html">About AVH</a></div>
-            <div><a href="${avhUrl}partners.html">Partners</a></div>
             <div><a href="${avhUrl}help.html">Help</a></div>
+            <div><a href="${avhUrl}avh_data.html">AVH Data</a></div>            
+            <div><a href="${avhUrl}partners.html">Partners</a></div>            
             <div><a href="${avhUrl}links.html">Links</a></div>
             <div class="rightMenu">
                 <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
@@ -142,8 +143,8 @@ include file="/common/taglibs.jsp" %>
             <a href="${avhUrl}disclaimer.jsp">Disclaimer</a> |
             <a href="${avhUrl}privacy.jsp">Privacy statement</a>
         </div>
-        <div id="footer_right">Updated 13 October 2011 |
-           <a href="mailto:webmaster@chah.gov.au">webmaster@chah.gov.au</a>
+        <div id="footer_right">
+           <a href="mailto:avh@ala.org.au">avh@ala.org.au</a>
         </div>
         <div style="margin:-6px auto 0 auto;width:200px"><a href="http://www.ala.org.au/" target="_black"><img src="${pageContext.request.contextPath}/static/images/atlas-poweredby_rgb-lightbg.png" alt=""/></a></div>
     </div>

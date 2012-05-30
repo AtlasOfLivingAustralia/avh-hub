@@ -6,7 +6,7 @@
 taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %><%@
 taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 include file="/common/taglibs.jsp" %>
-<c:set var="avhUrl" value="http://chah.gov.au/avh/"/>
+<c:set var="avhUrl" value="http://avh-demo.ala.org.au/sp/"/>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
     <head><title><decorator:title default="AVH" /></title>

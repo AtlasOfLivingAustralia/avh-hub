@@ -89,3 +89,5 @@ facets.customOrder=
 downloads.extra=
 dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups,associatedMedia,images,userQualityAssertion,speciesHabitats,dataProviderUid,dataResourceUid,dataProviderName,dataResourceName
 clubRoleForHub=ROLE_OZCAM_CLUB
+
+suppressIssues=missingCoordinatePrecision
