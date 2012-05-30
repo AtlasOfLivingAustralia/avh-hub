@@ -89,8 +89,8 @@ public class AdvancedSearchParams {
         if (type_material) q.append(" type_status:").append("*");
         if (!basis_of_record.isEmpty()) q.append(" basis_of_record:").append(basis_of_record);
         if (!catalogue_number.isEmpty()) q.append(" catalogue_number:").append(quoteText(catalogue_number));
-        if (!record_number.isEmpty()) q.append(" record_number:").append(record_number);
-        if (!cultivation_status.isEmpty()) q.append(" establishment_means:").append(cultivation_status);
+        if (!record_number.isEmpty()) q.append(" record_number:").append(quoteText(record_number));
+        if (!cultivation_status.isEmpty()) q.append(" establishment_means:").append(quoteText(cultivation_status));
         if (!collector.isEmpty()) q.append(" collector_text:").append(quoteText(collector));
         if (!identified_by.isEmpty()) q.append(" identified_by_text:").append(quoteText(identified_by));
         if (!loan_destination.isEmpty()) q.append(" loan_destination:").append(loan_destination);
