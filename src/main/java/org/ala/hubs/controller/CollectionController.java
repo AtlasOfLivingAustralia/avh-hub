@@ -72,7 +72,7 @@ public class CollectionController {
         model.addAttribute("uid", uid);
         model.addAttribute("type", "Collection");
         // get the HTML fragment from the collection WS
-        Document doc = Jsoup.connect(collectory + collectionsFragContext + COLLECTION + uid).get();
+        Document doc = Jsoup.connect(collectory + SHOW_PATH_PREFIX + uid).get();
         model.addAttribute("entityName", GetNameFromTitle(doc));
 
         // Modify (internal) links to institutions
@@ -102,7 +102,8 @@ public class CollectionController {
         model.addAttribute("uid", uid);
         model.addAttribute("type", "Institution");
         // get the HTML fragment from the collection WS
-        Document doc = Jsoup.connect(collectory + collectionsFragContext + INSTITUTION + uid).get();
+        logger.debug("URL: " + collectory + SHOW_PATH_PREFIX + uid);
+        Document doc = Jsoup.connect(collectory + SHOW_PATH_PREFIX + uid).get();
         model.addAttribute("entityName", GetNameFromTitle(doc));
         // Modify (internal) links to institutions
         manipulateLinks(doc.getElementsByTag("a"), request);
@@ -112,6 +113,7 @@ public class CollectionController {
         manipulateScripts(doc.getElementsByTag("script"), request);
         // get body and add to Model
         model.addAttribute("content", doc.select("body").first().html());
+        model.addAttribute("scripts", doc.select("head > script").toString());
         return SHOW_COLLECTION;
     }
 

@@ -39,7 +39,17 @@
                     'width' : 300
             });
           });
-        </script> 
+        </script>
+        <style type="text/css">
+            #site-header, #nav-site, #breadcrumb, footer, #nav-tabs {
+                display:none;
+            }
+
+            #contentBox #header {
+                background: none;
+            }
+        </style>
+        ${scripts}
     </head>
     <body>
         <c:choose>
