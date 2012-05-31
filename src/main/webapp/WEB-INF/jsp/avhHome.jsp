@@ -92,11 +92,10 @@
 
             </div>
             <div id="index_menu">
-                <div><a href="search">Search</a></div>
+                <div><a href="/search">Search</a></div>
                 <div><a href="/sp/about.html">About AVH</a></div>
-                <div><a href="/sp/partners.html">Partners</a></div>
-                <div><a href="/sp/sponsors.html">Sponsors</a></div>
-                <div><a href="/sp/credits.html">Credits</a></div>
+                <div><a href="/sp/help.html">Help</a></div>
+                <div><a href="/sp/avh_data.html">AVH data</a></div>
             </div>
         </div>
 

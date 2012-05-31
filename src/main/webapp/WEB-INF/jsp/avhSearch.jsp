@@ -149,7 +149,7 @@
                                             <td>
                                                 <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
                                                     <option value="">-- select an herbarium --</option>
-                                                    <c:forEach var="inst" items="${institutions}">
+                                                    <c:forEach var="inst" items="${collections}">
                                                         <!--<optgroup label="${inst.value}"> -->
                                                         <c:if test="${not empty inst.value}">
                                                             <option value="${inst.key}">${inst.value}</option>
