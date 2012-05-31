@@ -57,14 +57,14 @@
         </div>
 
         <div id="mainmenu">
-            <div class="rightMenu">
+            <div class="rightMenu" style="display:none">
                 <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
                 <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
             </div>
             <c:if test="${not empty clubView}">
-                <div class="rightMenu" id="clubView"><span>Club View</span></div>
+                <div class="rightMenu" id="clubView" style="display:none"><span>Club View</span></div>
             </c:if>
-            <div class="rightMenu">
+            <div class="rightMenu" style="display:none">
                 <a href="http://www.ala.org.au/my-profile/"><ala:loggedInUserId/></a>
             </div>
         </div>
@@ -176,9 +176,9 @@
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="footer_left">
-            <a href="http://avh-demo.ala.org.au/sp/copyright.html">Copyright</a> |
-            <a href="http://avh-demo.ala.org.au/sp/disclaimer.html">Disclaimer</a> |
-            <a href="http://avh-demo.ala.org.au/sp/privacy.html">Privacy statement</a>
+            <a href="/sp/credits.html">Credits</a> |
+            <a href="/sp/sponsors.html">Sponsors</a> |
+            <a href="/sp/termsofuse.html">Terms of Use</a>
         </div>
 
         <div id="footer_right">

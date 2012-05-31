@@ -139,9 +139,7 @@ include file="/common/taglibs.jsp" %>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="footer_left">
-            <a href="${avhUrl}copyright.jsp">Copyright</a> |
-            <a href="${avhUrl}disclaimer.jsp">Disclaimer</a> |
-            <a href="${avhUrl}privacy.jsp">Privacy statement</a>
+            <a href="/sp/termsofuse.html">Terms of Use</a>
         </div>
         <div id="footer_right">
            <a href="mailto:avh@ala.org.au">avh@ala.org.au</a>
