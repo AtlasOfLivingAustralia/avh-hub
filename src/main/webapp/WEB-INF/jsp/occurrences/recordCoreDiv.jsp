@@ -267,34 +267,34 @@
         </alatag:occurrenceTableRow>
         <!-- Record Date -->
         <c:set var="occurrenceDateLabel">
-        <c:choose>
-        <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}">Collecting date</c:when>
-        <c:otherwise>Record date</c:otherwise>
-        </c:choose>
+          <c:choose>
+	        <c:when test="${fn:containsIgnoreCase(record.processed.occurrence.basisOfRecord, 'specimen')}">Collecting date</c:when>
+    	    <c:otherwise>Record date</c:otherwise>
+          </c:choose>
         </c:set>
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceDate" fieldName="${occurrenceDateLabel}">
             <c:set target="${fieldsMap}" property="eventDate" value="true" />
-        <c:if test="${empty record.processed.event.eventDate && record.raw.event.eventDate && empty record.raw.event.year && empty record.raw.event.month && empty record.raw.event.day}">
-        [date not supplied]
-        </c:if>
+            <c:if test="${empty record.processed.event.eventDate && record.raw.event.eventDate && empty record.raw.event.year && empty record.raw.event.month && empty record.raw.event.day}">
+              [date not supplied]
+           </c:if>
         <c:if test="${not empty record.processed.event.eventDate}">
-            ${record.processed.event.eventDate}
+            <span class=="isoDate">${record.processed.event.eventDate}</span>
         </c:if>
         <c:if test="${empty record.processed.event.eventDate && (not empty record.processed.event.year || not empty record.processed.event.month || not empty record.processed.event.day)}">
-        Year: ${record.processed.event.year},
-        Month: ${record.processed.event.month},
-        Day: ${record.processed.event.day}
+          Year: ${record.processed.event.year},
+          Month: ${record.processed.event.month},
+          Day: ${record.processed.event.day}
         </c:if>
         <c:choose>
-        <c:when test="${not empty record.processed.event.eventDate && not empty record.raw.event.eventDate && record.raw.event.eventDate != record.processed.event.eventDate}">
-        <br/><span class="originalValue">Supplied as "${record.raw.event.eventDate}"</span>
-        </c:when>
-        <c:when test="${not empty record.raw.event.year || not empty record.raw.event.month || not empty record.raw.event.day}">
-        <br/><span class="originalValue">Supplied as  "year: ${record.raw.event.year}, month: ${record.raw.event.month}, day: ${record.raw.event.day}"</span>
-        </c:when>
-        <c:otherwise>
-            ${record.raw.event.eventDate}
-        </c:otherwise>
+          <c:when test="${not empty record.processed.event.eventDate && not empty record.raw.event.eventDate && record.raw.event.eventDate != record.processed.event.eventDate}">
+            <br/><span class="originalValue">Supplied as "${record.raw.event.eventDate}"</span>
+          </c:when>
+          <c:when test="${not empty record.raw.event.year || not empty record.raw.event.month || not empty record.raw.event.day}">
+            <br/><span class="originalValue">Supplied as  "year: ${record.raw.event.year}, month: ${record.raw.event.month}, day: ${record.raw.event.day}"</span>
+          </c:when>
+          <c:when test="${record.raw.event.eventDate != record.processed.event.eventDate}">
+            <br/><span class="originalValue">Supplied as "${record.raw.event.eventDate}"</span>
+          </c:when>
         </c:choose>
         </alatag:occurrenceTableRow>
         <!-- Sampling Protocol -->
