@@ -16,8 +16,12 @@
 package org.ala.hubs.controller;
 
 import org.ala.biocache.util.CollectionsCache;
+
+import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.ala.hubs.dto.AdvancedSearchParams;
 import org.ala.hubs.service.CollectoryUidCache;
@@ -29,6 +33,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller for the site's home page/s
@@ -130,6 +135,23 @@ public class HomePageController {
 
     public void setHomePage(String homePage) {
         this.homePage = homePage;
+    }
+
+    /**
+     * Logout URL to invalidate session (CAS credentials, etc)
+     *
+     * @param session
+     * @param response
+     * @param casUrl
+     * @param appUrl
+     * @throws IOException
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public void logout(HttpSession session, HttpServletResponse response, @RequestParam("casUrl") String casUrl,
+                       @RequestParam("appUrl") String appUrl) throws IOException {
+        logger.debug("Servicing /logout Get request - casUrl=" + casUrl + " appUrl=" + appUrl);
+        session.invalidate();
+        response.sendRedirect(casUrl + "?url=" + appUrl);
     }
 
     public void setCollectionsCache(CollectionsCache collectionsCache) {

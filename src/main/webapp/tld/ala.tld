@@ -28,6 +28,12 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <description>A logout controller url path for the logout anchor</description>
+            <name>logoutControllerUrlPath</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <description>The search path to use</description>
             <name>searchPath</name>
             <required>false</required>
@@ -116,20 +122,26 @@
     </attribute>
   </tag>
 
-  <tag>
-    <description>Login Logout Tag</description>
-    <name>loginLogoutLink</name>
-    <tag-class>au.org.ala.commonui.tag.LoginLogoutTag</tag-class>
-    <body-content>JSP</body-content>
-    <attribute>
-     <description>The anchor element to login or logout</description>
-     <name>returnUrlPath</name>
-     <required>true</required>
-     <rtexprvalue>true</rtexprvalue>
-    </attribute>              
-  </tag>    
+    <tag>
+        <description>Login Logout Tag</description>
+        <name>loginLogoutLink</name>
+        <tag-class>org.ala.hubs.util.LoginLogoutTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The anchor element to login or logout</description>
+            <name>returnUrlPath</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>The path to the logout controller method (session invalidation)</description>
+            <name>logoutControllerPath</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 
- <tag>
+    <tag>
     <description>Logged In User Id</description>
     <name>loggedInUserId</name>
     <tag-class>au.org.ala.commonui.tag.LoggedInUserIdTag</tag-class>

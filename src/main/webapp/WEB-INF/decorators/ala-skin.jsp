@@ -97,7 +97,7 @@ include file="/common/taglibs.jsp" %>
     </head>
     <body class="two-column-right">
         <div id="wrapper">
-            <ala:bannerMenu populateSearchBox="false"/>
+            <ala:header logoutControllerUrlPath="/logout" populateSearchBox="false"/>
             <div id="wrapper_border"><!--main content area-->
                 <div id="border">
                     <div id="content">
