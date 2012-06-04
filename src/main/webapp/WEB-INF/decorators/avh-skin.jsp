@@ -66,7 +66,7 @@ include file="/common/taglibs.jsp" %>
                 <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
                 <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
             </div>
-            <c:if test="${not empty clubView}">
+            <c:if test="${clubView}">
                 <div class="rightMenu" id="clubView"><span>Club View</span></div>
             </c:if>
             <div class="rightMenu">
