@@ -222,14 +222,22 @@
                                                     </c:if>
                                                 </tr>
                                                 <tr>
-                                                    <c:if test="${not empty occurrence.collectionName}">
-                                                        <td><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</td>
-                                                    </c:if>
+                                                    <td><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}&nbsp;&nbsp;${occurrence.recordNumber}</td>
                                                     <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
                                                         <td><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</td>
                                                     </c:if>
-                                                    <c:if test="${not empty occurrence.eventDate}">
-                                                        <td><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></td>
+                                                    <c:choose>
+                                                        <c:when test="${not empty occurrence.eventDate}">
+                                                            <td><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></td>
+                                                        </c:when>
+                                                        <c:when test="${empty occurrence.eventDate && not empty occurrence.year}">
+                                                            <td><strong class="resultsLabel">Date:</strong>&nbsp;${occurrence.year}</td>
+                                                        </c:when>
+                                                    </c:choose>
+                                                </tr>
+                                                <tr>
+                                                    <c:if test="${not empty occurrence.collectionName}">
+                                                        <td><strong class="resultsLabel">Herbarium:</strong>&nbsp;${occurrence.collectionName}</td>
                                                     </c:if>
                                                     <td class="viewRecord"><a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a></td>
                                                 </tr>
@@ -254,9 +262,15 @@
                                                 <%--<c:if test="${occurrence.collector != null && not empty occurrence.collector}">
                                                     <span class="resultListItem"><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}</span>
                                                 </c:if>--%>
-                                                <c:if test="${not empty occurrence.eventDate}">
-                                                    <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
-                                                </c:if>
+                                                <c:choose>
+                                                    <c:when test="${not empty occurrence.eventDate}">
+                                                        <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
+                                                    </c:when>
+                                                    <c:when test="${not empty occurrence.year}">
+                                                        <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;${occurrence.year}</span>
+                                                    </c:when>
+                                                </c:choose>
+
                                                 <span style="display:inline-block;float:right;">
                                                     <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
                                                 </span>
