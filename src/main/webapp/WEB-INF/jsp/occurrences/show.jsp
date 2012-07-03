@@ -754,7 +754,7 @@
 	                				annotate="false"
 	                				section="duplicate"                                    
 	                				fieldName="Raw Scientific Name">
-	        					${duplicationRecordDetails.rawScientificName}</alatag:occurrenceTableRow>
+	        					${duplicateRecordDetails.rawScientificName}</alatag:occurrenceTableRow>
 		        			</c:if>
                             <alatag:occurrenceTableRow
                                     annotate="false"
@@ -797,7 +797,6 @@
                                     section="duplicate"                                    
                                     fieldName="Record UUID">
                             <a href="${pageContext.request.contextPath}/occurrences/${dup.uuid}">${dup.uuid}</a></alatag:occurrenceTableRow>
-                            <c:if test="${not empty dup.rawScientificName}">
                             <alatag:occurrenceTableRow
         							annotate="false"
         							section="duplicate"                                    
@@ -805,6 +804,7 @@
         					<c:set var="dr">${fn:substring(dup.rowKey,0,fn:indexOf(dup.rowKey,"|"))}</c:set>
         					<a href="${collectionsWebappContext}/public/show/${dr}">${dataResourceCodes[dr]}</a>        							
 				 			</alatag:occurrenceTableRow>
+                            <c:if test="${not empty dup.rawScientificName}">                            
 			        		<alatag:occurrenceTableRow
 	                				annotate="false"
 	                				section="duplicate"                                    
