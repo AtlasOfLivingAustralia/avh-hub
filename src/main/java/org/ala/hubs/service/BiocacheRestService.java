@@ -17,6 +17,8 @@ package org.ala.hubs.service;
 
 import au.org.ala.biocache.ErrorCode;
 import au.org.ala.biocache.QualityAssertion;
+import au.org.ala.util.DuplicateRecordDetails;
+
 import com.googlecode.ehcache.annotations.Cacheable;
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
@@ -383,6 +385,20 @@ public class BiocacheRestService implements BiocacheService {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }
         return false;
+    }
+    @Override
+    public DuplicateRecordDetails getDuplicateRecordDetails(String uuid){
+        DuplicateRecordDetails details=null;
+        try{
+            final String jsonUri = biocacheUriPrefix + "/duplicates/"+uuid;
+            logger.debug("Attempting to get the duplicates from : " + jsonUri);
+            details = restTemplate.getForObject(jsonUri, DuplicateRecordDetails.class); 
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+        return details;
     }
 
     /**

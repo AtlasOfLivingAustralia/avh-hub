@@ -17,6 +17,8 @@ package org.ala.hubs.service;
 
 import au.org.ala.biocache.ErrorCode;
 import au.org.ala.biocache.QualityAssertion;
+import au.org.ala.util.DuplicateRecordDetails;
+
 import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SpatialSearchRequestParams;
@@ -114,6 +116,7 @@ public interface BiocacheService {
     public List<Map<String, Object>> getDefaultFacetsWithCategories();
 
     public boolean isReadOnly();
-
+    
+    public DuplicateRecordDetails getDuplicateRecordDetails(String uuid);
 
 }

@@ -349,6 +349,34 @@
                 <a href="${record.raw.occurrence.occurrenceDetails}" target="_blank">${record.raw.occurrence.occurrenceDetails}</a>
             </c:if>
         </alatag:occurrenceTableRow>
+        <!-- associatedOccurrences - handles the duplicates that are added via ALA Duplication Detection -->
+        <c:if test="${not empty record.processed.occurrence.duplicationStatus}">
+        	<c:set target="${fieldsMap}" property="duplicationStatus" value="true" />
+        	<c:set target="${fieldsMap}" property="associatedOccurrences" value="true" />
+        	<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="duplicationStatus" fieldName="Associated Occurrence Status">
+        		<fmt:message key="duplication.${record.processed.occurrence.duplicationStatus}"/>
+        	</alatag:occurrenceTableRow>
+        	<!-- Now handle the associatedOccurrences -->
+        	<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedOccurrences" fieldName="Inferred Associated Occurrences">
+        		<c:choose>
+        			<c:when test="${record.processed.occurrence.duplicationStatus == 'R'}">        			 
+        			This record has ${fn:length(fn:split(record.processed.occurrence.associatedOccurrences, '|')) } inferred associated occurrences
+        			</c:when>
+        			<c:otherwise>The occurrence is associated with a representative record.  </c:otherwise>
+        		</c:choose>
+        		<br>
+        		For more information see <a href="#inferredOccurrenceDetails">Inferred associated occurrence details</a>
+<%-- 	        	<c:forEach var="docc" items="${fn:split(record.processed.occurrence.associatedOccurrences, '|')}">
+	                <a href="${pageContext.request.contextPath}/occurrences/${docc}">${docc}</a>
+	                <br> 
+	            </c:forEach> --%>
+             </alatag:occurrenceTableRow>
+             <c:if test="${not empty record.raw.occurrence.associatedOccurrences }">
+             	<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedOccurrences" fieldName="Associated Occurrences">
+             		${record.raw.occurrence.associatedOccurrences }
+             	</alatag:occurrenceTableRow>
+             </c:if>
+        </c:if>
         <!-- output any tags not covered already (excluding those in dwcExcludeFields) -->
         <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Attribution" exclude="${dwcExcludeFields}"/>
         <alatag:formatExtraDwC compareRecord="${compareRecord}" fieldsMap="${fieldsMap}" group="Occurrence" exclude="${dwcExcludeFields}"/>

@@ -217,7 +217,7 @@
                 });
                 
                 // give every second row a class="grey-bg"
-                $('table.occurrenceTable, table.inner, table.layerIntersections').each(function(i, el) {
+                $('table.occurrenceTable, table.inner, table.layerIntersections, table.duplicationTable').each(function(i, el) {
                     $(this).find('tr').not('.sectionName').each(function(j, tr) {
                         if (j % 2 == 0) {
                             $(this).addClass("grey-bg");
@@ -354,7 +354,7 @@
                    })
                }
             }
-
+            
             function drawChart(facetName, biocacheQuery, chartName, outlierValues, valueForThisRecord, cumulative){
 
                 var facetChartOptions = { error: "badQuery", legend: 'right'}
@@ -675,13 +675,19 @@
             </div><!-- end of div#content2 -->
 
             <style type="text/css">
-                #outlierFeedback { float:left; clear:both; padding-left:10px;margin-top:30px; width:100%; }
+                #outlierFeedback #inferredOccurrenceDetails { float:left; clear:both; padding-left:10px;margin-top:30px; width:100%; }
                 /*#outlierFeedback h3 {color: #718804; }*/
-                #outlierFeedback #outlierInformation { margin-bottom:20px; }
+                #outlierFeedback #outlierInformation #inferredOccurrenceDetails { margin-bottom:20px; }
             </style>
+
+			
+
+
+
 
             <script type="text/javascript" src="${biocacheService}/outlier/record/${uuid}.json?callback=renderOutlierCharts"></script>
 
+			
             <div id="outlierFeedback">
                 <c:if test="${not empty record.processed.occurrence.outlierForLayers}">
                     <div id="outlierInformation">
@@ -709,6 +715,153 @@
                     </div>
                     <div id="charts"></div>
                 </c:if>
+                
+              <div id="inferredOccurrenceDetails">
+              <a href="#inferredOccurrenceDetails" name="inferredOccurrenceDetails" id="inferredOccurrenceDetails" hidden="true"></a>
+              <h2>Inferred Associated Occurrence Details</h2>
+				<c:if test="${not empty record.processed.occurrence.duplicationStatus }">
+					<p>
+					<c:choose>
+						<c:when test="${record.processed.occurrence.duplicationStatus == 'R' }">This record has been identified as the <em>representative</em> occurrence in a group of associated occurrences.						
+						</c:when>
+						<c:otherwise>This record is associated with the <em>representative</em> record.						
+						</c:otherwise>
+					</c:choose>
+					<p style="margin-top:20px;">More information about the Duplication Detection is available here:
+						<ul>
+							<li>
+							<a href="http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD">http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD</a>							
+							</li>
+						</ul>
+					</p>
+					<c:if test="${not empty duplicateRecordDetails}">
+						<table class="duplicationTable" style="border-bottom:none;">
+							<tr class="sectionName"><td colspan="4">Representative Record</td></tr>
+							<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Record UUID">
+                            <a href="${pageContext.request.contextPath}/occurrences/${duplicateRecordDetails.uuid}">${duplicateRecordDetails.uuid}</a></alatag:occurrenceTableRow>
+                            <alatag:occurrenceTableRow
+        							annotate="false"
+        							section="duplicate"                                    
+        							fieldName="Data Resource">
+        					<c:set var="dr">${fn:substring(duplicateRecordDetails.rowKey,0,fn:indexOf(duplicateRecordDetails.rowKey,"|"))}</c:set>
+        					<a href="${collectionsWebappContext}/public/show/${dr}">${dataResourceCodes[dr]}</a>        							
+				 			</alatag:occurrenceTableRow>
+                            <c:if test="${not empty duplicateRecordDetails.rawScientificName}">
+			        		<alatag:occurrenceTableRow
+	                				annotate="false"
+	                				section="duplicate"                                    
+	                				fieldName="Raw Scientific Name">
+	        					${duplicationRecordDetails.rawScientificName}</alatag:occurrenceTableRow>
+		        			</c:if>
+                            <alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Coordinates">
+                            ${duplicateRecordDetails.latLong}</alatag:occurrenceTableRow>
+                            <c:if test="${not empty duplicateRecordDetails.collector }">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Collector">
+                            ${duplicateRecordDetails.collector}</alatag:occurrenceTableRow>
+                            </c:if>
+                            <c:if test="${not empty duplicateRecordDetails.year }">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Year">
+                            ${duplicateRecordDetails.year}</alatag:occurrenceTableRow>
+                            </c:if>
+                            <c:if test="${not empty duplicateRecordDetails.month }">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Month">
+                            ${duplicateRecordDetails.month}</alatag:occurrenceTableRow>
+                            </c:if>
+                            <c:if test="${not empty duplicateRecordDetails.day }">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Day">
+                            ${duplicateRecordDetails.day}</alatag:occurrenceTableRow>
+                            </c:if>
+                            <!-- Loop through all the duplicate records -->
+                            <tr class="sectionName"><td colspan="4">Duplicates</td></tr>
+                            <c:forEach items="${duplicateRecordDetails.duplicates }" var="dup">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Record UUID">
+                            <a href="${pageContext.request.contextPath}/occurrences/${dup.uuid}">${dup.uuid}</a></alatag:occurrenceTableRow>
+                            <c:if test="${not empty dup.rawScientificName}">
+                            <alatag:occurrenceTableRow
+        							annotate="false"
+        							section="duplicate"                                    
+        							fieldName="Data Resource">
+        					<c:set var="dr">${fn:substring(dup.rowKey,0,fn:indexOf(dup.rowKey,"|"))}</c:set>
+        					<a href="${collectionsWebappContext}/public/show/${dr}">${dataResourceCodes[dr]}</a>        							
+				 			</alatag:occurrenceTableRow>
+			        		<alatag:occurrenceTableRow
+	                				annotate="false"
+	                				section="duplicate"                                    
+	                				fieldName="Raw Scientific Name">
+	        					${dup.rawScientificName}</alatag:occurrenceTableRow>
+		        			</c:if>
+                            <alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Coordinates">
+                            ${dup.latLong}</alatag:occurrenceTableRow>
+                             <c:if test="${not empty dup.collector }">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Collector">
+                            ${dup.collector}</alatag:occurrenceTableRow>
+                            </c:if>
+                            <c:if test="${not empty dup.year }">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Year">
+                            ${dup.year}</alatag:occurrenceTableRow>
+                            </c:if>
+                            <c:if test="${not empty dup.month }">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Month">
+                            ${dup.month}</alatag:occurrenceTableRow>
+                            </c:if>
+                            <c:if test="${not empty dup.day }">
+                            	<alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Day">
+                            ${dup.day}</alatag:occurrenceTableRow>
+                            </c:if>
+                            <c:if test="${not empty dup.dupTypes }">
+                            <alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="duplicate"                                    
+                                    fieldName="Comments">
+                            	<c:forEach items="${dup.dupTypes }" var="dupType">
+                            		<fmt:message key="duplication.${dupType.id}"/>
+                            		<br>
+                            	</c:forEach>
+                            	</alatag:occurrenceTableRow>
+                            	<tr class="sectionName"><td colspan="4"></td></tr>
+                            </c:if>
+                            </c:forEach>
+						</table>
+					</c:if>
+					</p>					
+				</c:if>
+			</div>
 
                 <div id="outlierInformation">
                     <c:if test="${not empty contextualSampleInfo}">

@@ -855,6 +855,17 @@ public class OccurrenceController {
                 }
                 model.addAttribute("metadataForOutlierLayers", metdataForOutlierLayers);
             }
+            
+            if(record.getProcessed().getOccurrence().getDuplicationStatus() != null){
+                //retrieve the duplication information
+                String duuid = record.getProcessed().getOccurrence().getDuplicationStatus().equals("R")?uuid:record.getProcessed().getOccurrence().getAssociatedOccurrences();
+                au.org.ala.util.DuplicateRecordDetails drd = biocacheService.getDuplicateRecordDetails(duuid);
+                if(drd!=null){
+                    model.addAttribute("duplicateRecordDetails",drd);
+                }
+                //add the data resource cache to the map to allow lookup for names
+                model.addAttribute("dataResourceCodes", dataResourceMap);
+            }
 
             //suppress particular issues from being reported
             List<String> issuesToSuppress = Arrays.asList(StringUtils.split(suppressIssues, ','));
