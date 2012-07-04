@@ -716,10 +716,11 @@
                     <div id="charts"></div>
                 </c:if>
                 
-              <div id="inferredOccurrenceDetails">
-              <a href="#inferredOccurrenceDetails" name="inferredOccurrenceDetails" id="inferredOccurrenceDetails" hidden="true"></a>
-              <h2>Inferred Associated Occurrence Details</h2>
+              
 				<c:if test="${not empty record.processed.occurrence.duplicationStatus }">
+					<div id="inferredOccurrenceDetails">
+              		<a href="#inferredOccurrenceDetails" name="inferredOccurrenceDetails" id="inferredOccurrenceDetails" hidden="true"></a>
+              		<h2>Inferred Associated Occurrence Details</h2>
 					<p>
 					<c:choose>
 						<c:when test="${record.processed.occurrence.duplicationStatus == 'R' }">This record has been identified as the <em>representative</em> occurrence in a group of associated occurrences.						
