@@ -118,5 +118,7 @@ public interface BiocacheService {
     public boolean isReadOnly();
     
     public DuplicateRecordDetails getDuplicateRecordDetails(String uuid);
+    
+    public String getQueryContext();
 
 }

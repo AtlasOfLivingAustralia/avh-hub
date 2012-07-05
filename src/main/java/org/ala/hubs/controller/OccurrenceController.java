@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.*;
 import au.org.ala.biocache.FullRecord;
+import au.org.ala.util.DuplicateRecordDetails;
 
 import java.net.URLDecoder;
 import java.util.regex.Matcher;
@@ -855,20 +856,29 @@ public class OccurrenceController {
                 }
                 model.addAttribute("metadataForOutlierLayers", metdataForOutlierLayers);
             }
-            
+            boolean suppressDuplicateWarning = false;
             if(record.getProcessed().getOccurrence().getDuplicationStatus() != null){
                 //retrieve the duplication information
                 String duuid = record.getProcessed().getOccurrence().getDuplicationStatus().equals("R")?uuid:record.getProcessed().getOccurrence().getAssociatedOccurrences();
                 au.org.ala.util.DuplicateRecordDetails drd = biocacheService.getDuplicateRecordDetails(duuid);
+                if(StringUtils.isNotEmpty(biocacheService.getQueryContext()))
+                    drd = getSantisedDuplicateRecords(drd);
                 if(drd!=null){
                     model.addAttribute("duplicateRecordDetails",drd);
+                }
+                else{
+                    //need to suppress the issue
+                    suppressDuplicateWarning =true;
+                    record.getProcessed().getOccurrence().setDuplicationStatus(null);
+                    record.getProcessed().getOccurrence().setAssociatedOccurrences(null);
                 }
                 //add the data resource cache to the map to allow lookup for names
                 model.addAttribute("dataResourceCodes", dataResourceMap);
             }
 
             //suppress particular issues from being reported
-            List<String> issuesToSuppress = Arrays.asList(StringUtils.split(suppressIssues, ','));
+            String localSuppressIssues = suppressDuplicateWarning?suppressIssues + ",inferredDuplicateRecord":suppressIssues;
+            List<String> issuesToSuppress = Arrays.asList(StringUtils.split(localSuppressIssues, ','));            
             List<QualityAssertion> sanitisedAssertions = new ArrayList<QualityAssertion>();
             for(QualityAssertion qassertion : record.getSystemAssertions()){
                 if(!issuesToSuppress.contains(qassertion.name())) sanitisedAssertions.add(qassertion);
@@ -885,6 +895,29 @@ public class OccurrenceController {
             model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
             // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
             Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
+            if(suppressDuplicateWarning){
+                //need to remove the duplicate information for the compare records
+                List originalList = (List)compareRecord.get("Occurrence");
+                List newList = new ArrayList();
+                for(Object item: originalList){
+                    //should be a map
+                    if(item instanceof Map){
+                        Map map = (Map)item;
+                        String name = map.get("name").toString();
+                        boolean add = true;
+                        if(name.equals("duplicationStatus") || name.equals("associatedOccurrences")){
+                            map.put("processed","");
+                        if(StringUtils.isEmpty((String)map.get("raw")))
+                          add = false;
+                        }
+                        if(add)
+                            newList.add(map);
+                    
+                    }
+                }
+                compareRecord.put("Occurrence", newList);
+                //System.out.println("Occurrence: " + test.getClass() + " : " + test.get(0).toString());
+            }
             model.addAttribute("compareRecord", compareRecord);
             model.addAttribute("dwcExcludeFields", dwcExclude);
 		}
@@ -902,6 +935,27 @@ public class OccurrenceController {
 
 		return viewName;
 	}
+  /*
+   * Reduces the duplicate record list to record belonging to data resources supported by this hub  
+   */
+  private DuplicateRecordDetails getSantisedDuplicateRecords(DuplicateRecordDetails drd){
+      String repdr = drd.getRowKey().split("|")[0];
+      ArrayList<DuplicateRecordDetails> sanitisedDuplicates = new ArrayList<DuplicateRecordDetails>();
+      if(collectoryUidCache.getDataResources().contains(repdr)){
+          //only include the "duplicates" that belong a dr
+         for(DuplicateRecordDetails dup:drd.getDuplicates()){
+             String dr = dup.getRowKey().split("|")[0];
+             if(collectoryUidCache.getDataResources().contains(dr)){
+                 sanitisedDuplicates.add(dup);
+             }
+         }
+         if(sanitisedDuplicates.size()>0){
+             drd.setDuplicates(sanitisedDuplicates);
+             return drd;
+         }
+      }
+      return null;
+  }
 
     /**
      * Requests for mapping functions
