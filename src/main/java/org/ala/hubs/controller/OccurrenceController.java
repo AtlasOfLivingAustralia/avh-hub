@@ -939,12 +939,12 @@ public class OccurrenceController {
    * Reduces the duplicate record list to record belonging to data resources supported by this hub  
    */
   private DuplicateRecordDetails getSantisedDuplicateRecords(DuplicateRecordDetails drd){
-      String repdr = drd.getRowKey().split("|")[0];
+      String repdr = drd.getRowKey().split("\\|")[0];
       ArrayList<DuplicateRecordDetails> sanitisedDuplicates = new ArrayList<DuplicateRecordDetails>();
       if(collectoryUidCache.getDataResources().contains(repdr)){
           //only include the "duplicates" that belong a dr
          for(DuplicateRecordDetails dup:drd.getDuplicates()){
-             String dr = dup.getRowKey().split("|")[0];
+             String dr = dup.getRowKey().split("\\|")[0];
              if(collectoryUidCache.getDataResources().contains(dr)){
                  sanitisedDuplicates.add(dup);
              }
