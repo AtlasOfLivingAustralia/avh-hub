@@ -83,7 +83,7 @@ facetLimit=100
 site.displayName=Australia's Virtual Herbarium
 
 # skin-specific facets to exclude/include from search results (comma separated list)
-facets.exclude=basis_of_record,data_provider_uid,cl918,imcra,institution_uid,interaction,raw_state_conservation,provenance,multimedia
+facets.exclude=basis_of_record,data_provider_uid,cl918,imcra,institution_uid,interaction,raw_state_conservation,provenance,multimedia,duplicate_status
 facets.include=establishment_means
 facets.hide=data_resource_uid,raw_state_conservation,biogeographic_region,cl959,provenance,multimedia
 facets.defaultColourBy=

@@ -144,6 +144,12 @@
                                             <fmt:message key="layer.${fieldResult.label}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'duplicate_status')}">
+                                        <c:set var="fqValue" value="${fn:replace(fieldResult.label, '\"','%22')}"/><!-- fqValue = ${fqValue} -->
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:<c:out escapeXml='true' value='${fqValue}'/>">
+                                            <fmt:message key="duplicate.${fieldResult.label}"/></a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'raw_taxon_name')}">
                                         <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
