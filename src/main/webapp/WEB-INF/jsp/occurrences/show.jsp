@@ -728,7 +728,7 @@
 						<c:otherwise>This record is associated with the <em>representative</em> record.						
 						</c:otherwise>
 					</c:choose>
-					<p style="margin-top:20px;">More information about the Duplication Detection is available here:
+					<p>More information about the Duplication Detection is available here:
 						<ul>
 							<li>
 							<a href="http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD">http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD</a>							
@@ -791,7 +791,7 @@
                             ${duplicateRecordDetails.day}</alatag:occurrenceTableRow>
                             </c:if>
                             <!-- Loop through all the duplicate records -->
-                            <tr class="sectionName"><td colspan="4">Duplicates</td></tr>
+                            <tr class="sectionName"><td colspan="4">Related records</td></tr>
                             <c:forEach items="${duplicateRecordDetails.duplicates }" var="dup">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
