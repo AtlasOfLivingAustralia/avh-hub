@@ -1797,7 +1797,15 @@ public class OccurrenceController {
         logger.debug("defaultFacets = " + StringUtils.join(defaultFacets, "|"));
         LinkedHashMap<String, Boolean> finalFacetsMap = filterFacets(Arrays.asList(defaultFacets));
         logger.debug("finalFacetsMap = " + StringUtils.join(finalFacetsMap.keySet(), "|"));
-        List<String> finalFacets = new ArrayList<String>(finalFacetsMap.keySet());
+        List<String> finalFacets = new ArrayList<String>();
+
+        for (String key : finalFacetsMap.keySet()) {
+            // only include facets that are not "hidden" - Boolean "value" is false
+            if (finalFacetsMap.get(key)) {
+                finalFacets.add(key);
+            }
+        }
+
         String[] filteredFacets = finalFacets.toArray(new String[finalFacets.size()]);
         return filteredFacets;
     }

@@ -481,16 +481,8 @@ $(document).ready(function() {
                 $(":input.facetOpts[value='"+thisFacet+"']").attr("checked","checked");
             }
         }
-    } else {
-        // trigger reload if any default facets are un-checked (AVH)
-        $(":input.facetOpts").each(function(i, el) {
-            if (!this.checked) {
-                //alert($(el).val() + " is " + $(el).attr('checked'));
-                $(":input#updateFacetOptions").click();
-                return false;
-            }
-        });
-    }
+    } //  note removed else that did page refresh by triggering cookie update code.
+
     // select all and none buttons
     $("a#selectNone").click(function(e) {
         e.preventDefault();
