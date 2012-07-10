@@ -46,7 +46,6 @@ $(document).ready(function() {
     
     //  for taxon concepts
     $(".name_autocomplete").autocomplete('http://bie.ala.org.au/search/auto.json', {
-        //width: 350,
         extraParams: {limit:100},
         dataType: 'jsonp',
         parse: function(data) {
@@ -56,17 +55,15 @@ $(document).ready(function() {
                 rows[i] = {
                     data:data[i],
                     value: data[i].guid,
-                    //result: data[i].matchedNames[0]
-                    result: data[i].name
+                    result: data[i].matchedNames[0]
                 };
             }
             return rows;
         },
         matchSubset: false,
-        highlight: false,
-        delay: 600,
         formatItem: function(row, i, n) {
-            var result = (row.scientificNameMatches) ? row.scientificNameMatches[0] : row.commonNameMatches ;
+            console.log("row", row);
+            var result = (row.scientificNameMatches.length > 0) ? row.scientificNameMatches[0] : row.commonNameMatches[0] ;
             if (row.name != result && row.rankString) {
                 result = result + "<div class='autoLine2'>" + row.rankString + ": " + row.name + "</div>";
             } else if (row.rankString) {
@@ -82,6 +79,8 @@ $(document).ready(function() {
         selectFirst: false
     }).result(function(event, item) {
         // user has selected an autocomplete item
+        //console.log("item", item);
+        $('input#lsid').val(item.guid);
         //addTaxonConcept(item);
         //console.log("result",  item, this);
         var id = $(this).attr("id");

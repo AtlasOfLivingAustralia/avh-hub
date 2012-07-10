@@ -352,7 +352,9 @@
                 </div><!-- end #catalogUploadDiv div -->
                 <div id="shapeDiv" class="paneDiv homePane">
                     <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
-                        <p>Upload a shapefile (.shp).</p>
+                        <p>Note: this feature is still experimental. If there are multiple polygons present in the shapefile,
+                        only the first polygon will be used for searching.</p>
+                        <p>Upload a shapefile (*.shp).</p>
                         <p><input type="file" name="file"/></p>
                         <p><input type="submit" value="Search" /></p>
                     </form>
