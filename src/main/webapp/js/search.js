@@ -126,7 +126,7 @@ function loadAllCharts() {
     
     var facetChartOptions = {
         query: queryString, 
-        charts: ['collection_uid','state','species_group','assertions','type_status','ibra','state_conservation','occurrence_year'],
+        charts: ['collection_uid','state','species_group','assertions','type_status','ibra','state_conservation','month','occurrence_year'],
         collection_uid: {title: 'By collection', backgroundColor: "#eeeeee"},
         state: {title: 'By state or territory', backgroundColor: "#eeeeee"},
         species_group: {backgroundColor: "#eeeeee", title: 'By higher-level group', ignore: ['Animals','Insects','Crustaceans','Angiosperms','Plants']},
@@ -135,6 +135,7 @@ function loadAllCharts() {
         ibra: {title: 'By IBRA region', backgroundColor: "#eeeeee"},
         state_conservation: {backgroundColor: "#eeeeee"},
         occurrence_year:{backgroundColor: "#eeeeee"},
+        month:{backgroundColor: "#eeeeee"},
         biocacheServicesUrl: biocacheServiceUrl,
         displayRecordsUrl: BC_CONF.serverName
     };
