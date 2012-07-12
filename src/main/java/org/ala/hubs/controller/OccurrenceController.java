@@ -1425,7 +1425,7 @@ public class OccurrenceController {
         if (taxaQuery != null) {
             for (String tq : taxaQuery) {
                 if (!tq.isEmpty()) {
-                    String guid = bieService.getGuidForName(tq.replaceAll("\"", ""));
+                    String guid = bieService.getGuidForName(cleansedName(tq));
                     logger.debug("GUID for " + tq + " = " + guid);
 
                     if (guid != null && !guid.isEmpty()) {
@@ -1477,7 +1477,19 @@ public class OccurrenceController {
             // unescape URI encoded query
             requestParams.setQ(URLDecoder.decode(requestParams.getQ()));
         }
-    } 
+    }
+
+    /**
+     * Clean up name string for use in http://bie.ala.org.au/ws/guid/{name}
+     *
+     * @param inputName
+     * @return
+     */
+    protected String cleansedName(String inputName) {
+        String outputName = inputName.replaceAll("\"", "");
+        outputName = StringUtils.remove(outputName, ".");
+        return outputName;
+    }
 
     /**
      * Create a HashMap for the filter queries, using the first SOLR field as the key and subsequent
