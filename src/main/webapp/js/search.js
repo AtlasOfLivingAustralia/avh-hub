@@ -670,7 +670,7 @@ $(document).ready(function() {
         onComplete: function(links) {
             var link = links[0];
             // substitute some facet names so sorting works
-            var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name","data_resource").replace("occurrence_year","decade");
+            var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name","data_resource").replace("data_provider_name","data_provider").replace("occurrence_year","decade");
             var displayName = $(link).data("displayname");
             loadMultiFacets(facetName, displayName, null);
         }
@@ -892,9 +892,10 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                     } else if (jQuery.i18n.prop(label).indexOf("[") == -1) {
                         // i18n substitution
                         label = jQuery.i18n.prop(label);
-                    } else if (/^[0-9]$/.test(label) || /^el\d+/.test(label)) {
+                    } else if (facetName.indexOf("outlier_layer") != -1 || /^el\d+/.test(label)) {
                         label = jQuery.i18n.prop("layer." + label);
                     }
+                    //console.log("label", label, facetName, el);
                     var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + encodeURIComponent(fqEsc);
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
                     html += "<tr class='" + rowType + "'><td>" +
@@ -935,6 +936,10 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
 
             }
             //$.fancybox.resize();
+        } else {
+            $("tr#loadingRow").remove(); // remove the loading message
+            $("tr#loadMore").remove(); // remove the load more records link
+            $("table#fullFacets tbody").append("<tr><td></td><td>[Error: no values returned]</td></tr>");
         }
     });
 }

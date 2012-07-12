@@ -91,6 +91,10 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${dataResourceCodes[fieldResult.label]}</a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_provider_uid')}">
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${dataProviderCodes[fieldResult.label]}</a>
+                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>

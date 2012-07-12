@@ -148,6 +148,7 @@ public class OccurrenceController {
     protected static LinkedHashMap<String, String> collectionMap = null;
     protected static LinkedHashMap<String, String> institutionMap = null;
     protected static LinkedHashMap<String, String> dataResourceMap = null;
+    protected static LinkedHashMap<String, String> dataProviderMap = null;
 
     /**
      * Initialisation method to load some field values
@@ -159,6 +160,7 @@ public class OccurrenceController {
         collectionMap = collectionsCache.getCollections(inguids, coguids);
         institutionMap = collectionsCache.getInstitutions(inguids, coguids);
         dataResourceMap = collectionsCache.getDataResources(inguids, coguids);
+        dataProviderMap = collectionsCache.getDataProviders(inguids, coguids);
         //logger.info("institutionMap: " + StringUtils.join(institutionMap.keySet(), "|") + " => " + StringUtils.join(institutionMap.values(), "|"));
     }
 
@@ -1143,6 +1145,14 @@ public class OccurrenceController {
                         }
                     }
                     break;
+                case data_provider_uid:
+                    //Map<String, String> drMap = collectionsCache.getDataResources(inGuids, coGuids);
+                    for (FacetValueDTO fv : facetValues) {
+                        if (dataProviderMap.containsKey(fv.getLabel())) {
+                            fv.setDisplayLabel(dataProviderMap.get(fv.getLabel()));
+                        }
+                    }
+                    break;
                 case genus_guid:
                     logger.debug("case check: genus_guid");
                 case species_guid:
@@ -1238,7 +1248,7 @@ public class OccurrenceController {
      * Enum for facets indexed with a "code" value vs String value (e.g. collection_uid)
      */
     protected enum FacetsWithCodes {
-        institution_uid, collection_uid, data_resource_uid, species_guid, genus_guid, month, year, decade;
+        institution_uid, collection_uid, data_resource_uid, data_provider_uid, species_guid, genus_guid, month, year, decade;
     }
 
     /**
@@ -1630,6 +1640,8 @@ public class OccurrenceController {
             fieldValue = institutionMap.get(fieldValue);
         } else if (dataResourceMap.containsKey(fieldValue)) {
             fieldValue = dataResourceMap.get(fieldValue);
+        } else if (dataProviderMap.containsKey(fieldValue)) {
+            fieldValue = dataProviderMap.get(fieldValue);
         }
         logger.debug("=> " + fieldValue);
         return fieldValue;
@@ -1721,6 +1733,7 @@ public class OccurrenceController {
         model.addAttribute("collectionCodes", collectionMap);
         model.addAttribute("institutionCodes", institutionMap);
         model.addAttribute("dataResourceCodes", dataResourceMap);
+        model.addAttribute("dataProviderCodes", dataProviderMap);
         model.addAttribute("defaultFacets", filterFacets(biocacheService.getDefaultFacets()));
         model.addAttribute("downloadExtraFields", downloadExtraFields); // String[]
         model.addAttribute("LoggerSources", loggerService.getSources());
