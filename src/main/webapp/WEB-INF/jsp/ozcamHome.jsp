@@ -90,7 +90,7 @@
                 'hideOnContentClick': false,
                 'frameWidth':  560,
                 'frameHeight':  340,
-                                                    'centerOnScroll': true
+                'centerOnScroll': true
             });
 
     })
