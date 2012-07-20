@@ -149,6 +149,7 @@
             <p>
                 <label for="baselayer">Base layer</label>
                 <select name="baselayer" id="baselayer">
+                    <option value="world">World outline</option>
                     <option value="aus1">States & Territories</option>
                     <option value="aus2">Local government areas</option>
                     <option value="ibra_merged">IBRA</option>
