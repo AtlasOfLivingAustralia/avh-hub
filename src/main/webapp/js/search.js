@@ -119,7 +119,7 @@ function loadAllCharts() {
     
     var taxonomyChartOptions = {
         query: queryString,
-        backgroundColor: "#eeeeee",
+        backgroundColor: "#F0F0E8",
         biocacheServicesUrl: biocacheServiceUrl,
         displayRecordsUrl: BC_CONF.serverName
     };
@@ -127,15 +127,15 @@ function loadAllCharts() {
     var facetChartOptions = {
         query: queryString, 
         charts: ['collection_uid','state','species_group','assertions','type_status','ibra','state_conservation','month','occurrence_year'],
-        collection_uid: {title: 'By collection', backgroundColor: "#eeeeee"},
-        state: {title: 'By state or territory', backgroundColor: "#eeeeee"},
-        species_group: {backgroundColor: "#eeeeee", title: 'By higher-level group', ignore: ['Animals','Insects','Crustaceans','Angiosperms','Plants']},
-        assertions: {backgroundColor: "#eeeeee"},
-        type_status: {backgroundColor: "#eeeeee"},
-        ibra: {title: 'By IBRA region', backgroundColor: "#eeeeee"},
-        state_conservation: {backgroundColor: "#eeeeee"},
-        occurrence_year:{backgroundColor: "#eeeeee"},
-        month:{backgroundColor: "#eeeeee"},
+        collection_uid: {title: 'By collection', backgroundColor: "#F0F0E8"},
+        state: {title: 'By state or territory', backgroundColor: "#F0F0E8"},
+        species_group: {backgroundColor: "#F0F0E8", title: 'By higher-level group', ignore: ['Animals','Insects','Crustaceans','Angiosperms','Plants']},
+        assertions: {backgroundColor: "#F0F0E8"},
+        type_status: {backgroundColor: "#F0F0E8"},
+        ibra: {title: 'By IBRA region', backgroundColor: "#F0F0E8"},
+        state_conservation: {backgroundColor: "#F0F0E8"},
+        occurrence_year:{backgroundColor: "#F0F0E8"},
+        month:{backgroundColor: "#F0F0E8"},
         biocacheServicesUrl: biocacheServiceUrl,
         displayRecordsUrl: BC_CONF.serverName
     };
@@ -301,7 +301,7 @@ $(document).ready(function() {
         'titleShow' : false,
         'autoDimensions' : false,
         'width': '500',
-        'height': '300',
+        'height': '370',
         'padding': 10,
         'margin': 10,
         onCleanup: function() {

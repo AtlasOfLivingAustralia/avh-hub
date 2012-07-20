@@ -291,7 +291,7 @@ div#advancedSearch {
     padding: 2px 7px 1px 5px;
     margin: 4px 0px;
     border: 1px solid #BBBBBB;
-    background-color: #EEEEEE;
+    background-color: #F0F0E8;
     font-weight: bold;
 }
 
@@ -350,7 +350,7 @@ span#queryDisplay a:hover {
     text-align: left;
     padding: 2px 5px;
     margin: 4px 0px;
-    background-color: #EEEEEE;
+    background-color: #F0F0E8;
     border: 1px solid #BBBBBB;
 }
 
@@ -363,7 +363,7 @@ span#queryDisplay a:hover {
     margin-top: -1px;
     margin-bottom: 3px;
     margin-right: 5px;
-    background-color: #FFFFFF;
+    background-color: #FFF;
     border: 1px solid #BBBBBB;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -455,7 +455,7 @@ div.centered {
 #ibox {
     position:absolute;
     overflow-y: hidden;
-    background:#fff;
+    background:#F0F0E8;
     border:1px solid #ccc;
     z-index:1001;
     display:none;

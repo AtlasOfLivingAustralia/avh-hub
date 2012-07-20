@@ -166,7 +166,8 @@ var Maps = (function() {
     */
     function insertWMSOverlay(name, params) {
         var customParams = [
-        "FORMAT=image/png8"
+        "FORMAT=image/png8",
+        "outline=true"
         ];
 
         if (arguments.length > 1) {

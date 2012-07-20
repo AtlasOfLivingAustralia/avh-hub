@@ -27,7 +27,7 @@ ul.css-tabs a {
 	border:1px solid #666;	
 	border-bottom:0px;
 	height:20px;
-	background-color:#ffffff;
+	background-color:#FFF;
 	color:#444;
 	margin-right:2px;
 	position:relative;
@@ -49,13 +49,12 @@ ul.css-tabs a:hover {
 	
 /* selected tab */
 ul.css-tabs a.current {
-	background-color:#eee;
+	background-color:#F0F0E8;
 	border-bottom:1px solid #eee;	
 	color:#000;	
 	cursor:default;
 }
 
-	
 /* tab pane */
 .css-panes div.paneDiv {
 	display:none;
@@ -68,7 +67,7 @@ ul.css-tabs a.current {
     border-radius: 0 5px 5px 5px;	
 	min-height:100px;
 	padding:15px 10px;
-	background-color:#eee;	
+	background-color:#F0F0E8;
 }
 
 .css-panes div.homePane {

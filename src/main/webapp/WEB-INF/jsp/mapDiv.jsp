@@ -5,6 +5,11 @@
 --%>
 <%@ include file="/common/taglibs.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<style type="text/css">
+ #downloadMapForm { text-align:left; padding:10px; }
+ fieldset p { padding-top:9px; }
+ fieldset p input, fieldset p select { margin-left:15px; }
+</style>
 <div id="downloadMap">
     <h2>Download publication map</h2>
     <form id="downloadMapForm">
@@ -166,19 +171,7 @@
             </p>
         </fieldset>
     </form>
-    <!--
-    $('#mapDownloadUrl').val()
-    extents=142,-45,151,-38
-    &q=macropus
-    &format=jpg
-    &dpi=100
-    &pradiusmm=1
-    &popacity=0.8
-    &pcolour=0000FF
-    &widthmm=150
-    &scale=on
-    &baselayer=aus2
-    -->
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.colourPicker.css" type="text/css" media="screen" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.colourPicker.js"></script>
     <script type="text/javascript">

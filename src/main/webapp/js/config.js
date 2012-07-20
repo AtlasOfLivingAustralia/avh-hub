@@ -28,7 +28,5 @@ var Config = (function() {
             this.OCC_SEARCH_URL = baseurl + '/occurrences/info';
             this.QUERY_CONTEX= qc;
         }
-
     } // return: public variables and methods
-
 })();
