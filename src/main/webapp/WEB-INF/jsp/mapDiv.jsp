@@ -133,6 +133,11 @@
                 <input type="radio" name="scale" value="off" /> No
             </p>
             <p>
+                <label for="outline">Outline points</label>
+                <input type="radio" name="outline" value="true" id="outline" checked="checked"/> Yes &nbsp;
+                <input type="radio" name="outline" value="false" /> No
+            </p>
+            <p>
                 <label for="baselayer">Base layer</label>
                 <select name="baselayer" id="baselayer">
                     <option value="aus1">States & Territories</option>
@@ -192,9 +197,9 @@
                    '&pcolour=' + $(':input[name=pcolour]').val().toUpperCase() +
                    '&widthmm=' + $('#widthmm').val() +
                    '&scale=' + $(':input[name=scale]:checked').val() +
+                   '&outline=' + $(':input[name=outline]:checked').val() +
                    '&baselayer=' + $('#baselayer').val()+
                    '&fileName=' + $('#fileName').val()+'.'+$('#format').val().toLowerCase()
-
            document.location.href = downloadUrl;
        }
     </script>
