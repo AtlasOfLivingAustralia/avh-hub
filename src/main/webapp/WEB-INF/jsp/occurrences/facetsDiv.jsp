@@ -17,7 +17,7 @@
                 Select: <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a><br/>
                 <div class="facetsColumn">
                     <c:forEach var="facet" items="${defaultFacets}" varStatus="status">
-                        <c:if test="${status.index > 0 && status.index % 15 == 0}">
+                        <c:if test="${status.index > 0 && status.index % 18 == 0}">
                             </div><div class="facetsColumn">
                         </c:if>
                         <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
@@ -91,10 +91,6 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${dataResourceCodes[fieldResult.label]}</a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_provider_uid')}">
-                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}">${dataProviderCodes[fieldResult.label]}</a>
-                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'data_resource')}">
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="${fn:replace(fieldResult.label, ' provider for OZCAM', '')}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
@@ -157,6 +153,21 @@
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'raw_taxon_name')}">
                                         <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'user_assertions')}">
+                                        <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22"><fmt:message key="user_assertions.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'duplicate_type')}">
+                                        <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22"><fmt:message key="duplication.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'assertion_user_id')}">
+                                        <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22">${fn:substringBefore(fieldResult.label, '@')}</a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:otherwise>
