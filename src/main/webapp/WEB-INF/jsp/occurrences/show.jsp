@@ -99,6 +99,12 @@
              */
             $(document).ready(function() {
 
+                <c:if test="${record.processed.attribution.provenance == 'Draft'}">
+                $('#viewDraftButton').click(function(){
+                    document.location.href = '${record.raw.occurrence.occurrenceID}';
+                })
+                </c:if>
+
                 // add assertion form display
                 $("#assertionButton, #verifyButton").fancybox({
                     //'href': '#loginOrFlag',
@@ -433,6 +439,8 @@
                         <img src="${collectionLogo}" alt="institution logo" id="institutionLogo"/>
                     </div>
                 </c:if>
+
+                <c:if test="${record.processed.attribution.provenance != 'Draft'}">
                 <div class="sidebar">
                     <div id="warnings">
 
@@ -467,6 +475,7 @@
                         </div>
                     </div>
                 </div>
+                </c:if>
                 <!-- recordIsVerified = ${recordIsVerified} || isCollectionAdmin = ${isCollectionAdmin}-->
                 <c:if test="${isCollectionAdmin && (not empty record.systemAssertions || not empty record.userAssertions) && not recordIsVerified}">
                     <div class="sidebar">
@@ -493,10 +502,22 @@
                         </div>
                     </div>
                 </c:if>
-                <c:if test="${!isReadOnly}">
+                <c:if test="${not empty record.processed.attribution.provenance && record.processed.attribution.provenance == 'Draft'}">
+                <div class="sidebar">
+                    <p class="grey-bg" style="padding:5px; margin-top:15px; margin-bottom:10px;">
+                        This record is available for transcription in the
+                        <a href="http://volunteer.ala.org.au/">Biodiversity Volunteer Portal</a>.
+                    </p>
+
+                    <button class="rounded" id="viewDraftButton" >
+                        <span id="viewDraftSpan" title="View Draft">View draft in volunteer portal</span>
+                    </button>
+                </div>
+                </c:if>
+                <c:if test="${!isReadOnly && record.processed.attribution.provenance != 'Draft'}">
                 <div class="sidebar">
                     <button class="rounded" id="assertionButton" href="#loginOrFlag">
-                        <span id="loginOrFlagSpan" title="">Flag an issue</span>
+                        <span id="loginOrFlagSpan" title="Flag an issue">Flag an issue</span>
                     </button>
                     <div style="display:none">
                         <c:choose>
