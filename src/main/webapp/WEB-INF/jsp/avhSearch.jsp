@@ -17,7 +17,7 @@
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script> --%>
-        <script src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/js/jquery.tools.min-1.2.6.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>

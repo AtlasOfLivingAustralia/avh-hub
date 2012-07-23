@@ -76,7 +76,7 @@
             google.load('maps','3.3',{ other_params: "sensor=false" });
             google.load("visualization", "1", {packages:["corechart"]});
         </script>
-        <script src="http://cdn.jquerytools.org/1.2.6/all/jquery.tools.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/js/jquery.tools.min-1.2.6.js"></script>
         <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
     </head>
     <body>
