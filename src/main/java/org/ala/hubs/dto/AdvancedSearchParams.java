@@ -104,7 +104,7 @@ public class AdvancedSearchParams {
         // iterate over the taxa search inputs and if lsid is set use it otherwise use taxa input
         for (int i = 0; i < taxonText.length; i++) {
             if (!taxonText[i].isEmpty()) {
-                taxas.add(quoteText(taxonText[i])); // taxonText[i].replaceAll(" ", "+")
+                taxas.add(stripChars(quoteText(taxonText[i]))); // taxonText[i].replaceAll(" ", "+")
             }
         }
 
@@ -161,6 +161,13 @@ public class AdvancedSearchParams {
         }
         logger.debug("query: " + finalQuery);
         return finalQuery;
+    }
+
+    private String stripChars(String withCharsToStrip){
+        if(withCharsToStrip!=null){
+            return withCharsToStrip.replaceAll("\\.","");
+        }
+        return null;
     }
 
     /**
