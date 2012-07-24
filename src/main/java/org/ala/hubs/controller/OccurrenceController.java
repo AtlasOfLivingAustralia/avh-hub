@@ -153,7 +153,7 @@ public class OccurrenceController {
     /**
      * Initialisation method to load some field values
      */
-    @PostConstruct
+    //@PostConstruct // removed due to race condition on server with BiocacheService running. Lazy loaded now.
     public void init() {
         List<String> inguids = collectoryUidCache.getInstitutions();
         List<String> coguids = collectoryUidCache.getCollections();
@@ -875,6 +875,9 @@ public class OccurrenceController {
                     record.getProcessed().getOccurrence().setAssociatedOccurrences(null);
                 }
                 //add the data resource cache to the map to allow lookup for names
+                if (dataResourceMap == null) {
+                    init();
+                }
                 model.addAttribute("dataResourceCodes", dataResourceMap);
             }
 
@@ -1119,6 +1122,9 @@ public class OccurrenceController {
             FacetsWithCodes fwc = FacetsWithCodes.valueOf(facet);
             //List<String> inGuids = collectoryUidCache.getInstitutions();
             //List<String> coGuids = collectoryUidCache.getCollections();
+            if (dataResourceMap == null || institutionMap == null || collectionMap == null || dataProviderMap == null) {
+                init();
+            }
 
             switch(fwc) {
                 case institution_uid:
@@ -1645,6 +1651,9 @@ public class OccurrenceController {
      */
     private String substituteCollectoryNames(String fieldValue) {
         // substitute collectory names
+        if (dataResourceMap == null || institutionMap == null || collectionMap == null || dataProviderMap == null) {
+            init();
+        }
         logger.debug("collectory maps: " + fieldValue);
         if (collectionMap.containsKey(fieldValue)) {
             fieldValue = collectionMap.get(fieldValue);
@@ -1740,8 +1749,9 @@ public class OccurrenceController {
      * @param model
      */
     private void addCommonDataToModel(Model model) {
-        List<String> inguids = collectoryUidCache.getInstitutions();
-        List<String> coguids = collectoryUidCache.getCollections();
+        if (dataResourceMap == null || institutionMap == null || collectionMap == null || dataProviderMap == null) {
+            init();
+        }
         model.addAttribute("collectionCodes", collectionMap);
         model.addAttribute("institutionCodes", institutionMap);
         model.addAttribute("dataResourceCodes", dataResourceMap);
