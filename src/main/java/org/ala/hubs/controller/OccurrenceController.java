@@ -38,11 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.ala.biocache.dto.store.OccurrenceDTO;
 import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
-import org.ala.hubs.dto.ActiveFacet;
-import org.ala.hubs.dto.AssertionDTO;
-import org.ala.hubs.dto.FacetValueDTO;
-import org.ala.hubs.dto.FieldGuideDTO;
-import org.ala.hubs.dto.SampleDTO;
+import org.ala.hubs.dto.*;
 import org.ala.hubs.service.*;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -104,6 +100,8 @@ public class OccurrenceController {
     private AbstractMessageSource messageSource;
     @Inject
     protected LoggerService loggerService;
+    @Inject
+    protected CollectionsContainer collectionsContainer;
 
     /** Spring injected RestTemplate object */
     @Inject
@@ -145,25 +143,6 @@ public class OccurrenceController {
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
     protected String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
 
-    protected static LinkedHashMap<String, String> collectionMap = null;
-    protected static LinkedHashMap<String, String> institutionMap = null;
-    protected static LinkedHashMap<String, String> dataResourceMap = null;
-    protected static LinkedHashMap<String, String> dataProviderMap = null;
-
-    /**
-     * Initialisation method to load some field values
-     */
-    //@PostConstruct // removed due to race condition on server with BiocacheService running. Lazy loaded now.
-    public void init() {
-        List<String> inguids = collectoryUidCache.getInstitutions();
-        List<String> coguids = collectoryUidCache.getCollections();
-        collectionMap = collectionsCache.getCollections(inguids, coguids);
-        institutionMap = collectionsCache.getInstitutions(inguids, coguids);
-        dataResourceMap = collectionsCache.getDataResources(inguids, coguids);
-        dataProviderMap = collectionsCache.getDataProviders(inguids, coguids);
-        //logger.info("institutionMap: " + StringUtils.join(institutionMap.keySet(), "|") + " => " + StringUtils.join(institutionMap.values(), "|"));
-    }
-
     /**
      * Expects a request body in JSON
      *
@@ -184,7 +163,7 @@ public class OccurrenceController {
         collectoryUidCache.updateCache();
         collectionsCache.updateCache();
         layerMetadataCache.updateCache();
-        init(); // update LinkedHashMap cached versions
+        collectionsContainer.init(); // update LinkedHashMap cached versions
         return null;
     }
 
@@ -875,10 +854,7 @@ public class OccurrenceController {
                     record.getProcessed().getOccurrence().setAssociatedOccurrences(null);
                 }
                 //add the data resource cache to the map to allow lookup for names
-                if (dataResourceMap == null) {
-                    init();
-                }
-                model.addAttribute("dataResourceCodes", dataResourceMap);
+                model.addAttribute("dataResourceCodes", collectionsContainer.getDataResourceMap());
             }
 
             //suppress particular issues from being reported
@@ -1120,15 +1096,10 @@ public class OccurrenceController {
     private List<FacetValueDTO> LookupDisplayValuesForFacet(String facet, List<FacetValueDTO> facetValues) {
         try {
             FacetsWithCodes fwc = FacetsWithCodes.valueOf(facet);
-            //List<String> inGuids = collectoryUidCache.getInstitutions();
-            //List<String> coGuids = collectoryUidCache.getCollections();
-            if (dataResourceMap == null || institutionMap == null || collectionMap == null || dataProviderMap == null) {
-                init();
-            }
 
             switch(fwc) {
                 case institution_uid:
-                    //Map<String, String> instMap = collectionsCache.getInstitutions(inGuids, coGuids);
+                    LinkedHashMap<String, String> institutionMap = collectionsContainer.getInstitutionMap();
                     for (FacetValueDTO fv : facetValues) {
                         if (institutionMap.containsKey(fv.getLabel())) {
                             fv.setDisplayLabel(institutionMap.get(fv.getLabel()));
@@ -1136,7 +1107,7 @@ public class OccurrenceController {
                     }
                     break;
                 case collection_uid:
-                    //Map<String, String> collMap = collectionsCache.getCollections(inGuids, coGuids);
+                    LinkedHashMap<String, String> collectionMap = collectionsContainer.getCollectionMap();
                     for (FacetValueDTO fv : facetValues) {
                         if (collectionMap.containsKey(fv.getLabel())) {
                             fv.setDisplayLabel(collectionMap.get(fv.getLabel()));
@@ -1144,7 +1115,7 @@ public class OccurrenceController {
                     }
                     break;
                 case data_resource_uid:
-                    //Map<String, String> drMap = collectionsCache.getDataResources(inGuids, coGuids);
+                    LinkedHashMap<String, String> dataResourceMap = collectionsContainer.getDataResourceMap();
                     for (FacetValueDTO fv : facetValues) {
                         if (dataResourceMap.containsKey(fv.getLabel())) {
                             fv.setDisplayLabel(dataResourceMap.get(fv.getLabel()));
@@ -1152,7 +1123,7 @@ public class OccurrenceController {
                     }
                     break;
                 case data_provider_uid:
-                    //Map<String, String> drMap = collectionsCache.getDataResources(inGuids, coGuids);
+                    LinkedHashMap<String, String> dataProviderMap = collectionsContainer.getDataProviderMap();
                     for (FacetValueDTO fv : facetValues) {
                         if (dataProviderMap.containsKey(fv.getLabel())) {
                             fv.setDisplayLabel(dataProviderMap.get(fv.getLabel()));
@@ -1651,18 +1622,15 @@ public class OccurrenceController {
      */
     private String substituteCollectoryNames(String fieldValue) {
         // substitute collectory names
-        if (dataResourceMap == null || institutionMap == null || collectionMap == null || dataProviderMap == null) {
-            init();
-        }
         logger.debug("collectory maps: " + fieldValue);
-        if (collectionMap.containsKey(fieldValue)) {
-            fieldValue = collectionMap.get(fieldValue);
-        } else if (institutionMap.containsKey(fieldValue)) {
-            fieldValue = institutionMap.get(fieldValue);
-        } else if (dataResourceMap.containsKey(fieldValue)) {
-            fieldValue = dataResourceMap.get(fieldValue);
-        } else if (dataProviderMap.containsKey(fieldValue)) {
-            fieldValue = dataProviderMap.get(fieldValue);
+        if (collectionsContainer.getCollectionMap().containsKey(fieldValue)) {
+            fieldValue = collectionsContainer.getCollectionMap().get(fieldValue);
+        } else if (collectionsContainer.getInstitutionMap().containsKey(fieldValue)) {
+            fieldValue = collectionsContainer.getInstitutionMap().get(fieldValue);
+        } else if (collectionsContainer.getDataResourceMap().containsKey(fieldValue)) {
+            fieldValue = collectionsContainer.getDataResourceMap().get(fieldValue);
+        } else if (collectionsContainer.getDataProviderMap().containsKey(fieldValue)) {
+            fieldValue = collectionsContainer.getDataProviderMap().get(fieldValue);
         }
         logger.debug("=> " + fieldValue);
         return fieldValue;
@@ -1749,13 +1717,10 @@ public class OccurrenceController {
      * @param model
      */
     private void addCommonDataToModel(Model model) {
-        if (dataResourceMap == null || institutionMap == null || collectionMap == null || dataProviderMap == null) {
-            init();
-        }
-        model.addAttribute("collectionCodes", collectionMap);
-        model.addAttribute("institutionCodes", institutionMap);
-        model.addAttribute("dataResourceCodes", dataResourceMap);
-        model.addAttribute("dataProviderCodes", dataProviderMap);
+        model.addAttribute("collectionCodes", collectionsContainer.getCollectionMap());
+        model.addAttribute("institutionCodes", collectionsContainer.getInstitutionMap());
+        model.addAttribute("dataResourceCodes", collectionsContainer.getDataResourceMap());
+        model.addAttribute("dataProviderCodes", collectionsContainer.getDataProviderMap());
         model.addAttribute("defaultFacets", filterFacets(biocacheService.getDefaultFacets()));
         model.addAttribute("downloadExtraFields", downloadExtraFields); // String[]
         model.addAttribute("LoggerSources", loggerService.getSources());

@@ -31,7 +31,7 @@ public class ServiceCache {
     @Inject
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     /** Log4J logger */
-    private final static Logger logger = Logger.getLogger(CollectoryUidCache.class);
+    private final static Logger logger = Logger.getLogger(ServiceCache.class);
 
     protected Date lastUpdated = new Date();
     protected Long timeout = 3600000L; // in millseconds (1 hour)
@@ -116,7 +116,7 @@ public class ServiceCache {
      */
     public void updateCache() {
 
-        logger.info("Updating collection uid cache...");
+        logger.info("Updating service cache...");
         SpatialSearchRequestParams srp = new SpatialSearchRequestParams();
         srp.setFacets(new String[]{"basis_of_record","type_status","country", "kingdom","species_group", "state", "ibra", "imcra", "cl966", "loan_destination","establishment_means", "cl959"});
         srp.setFlimit(-1);
