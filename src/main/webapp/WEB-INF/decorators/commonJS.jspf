@@ -9,18 +9,17 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.min-1.7.1.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.jsonp-2.1.4.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
+<%--<jwr:script src="/js/common/jquery.jsonp-2.3.1.js"/>--%>
+<%--<jwr:script src="/js/common/jquery.autocomplete.js"/>--%>
+<%--<jwr:script src="/js/common/jquery.transform.js"/>--%>
+<%--<jwr:script src="/js/common/jquery.grab.js"/>--%>
+<%--<jwr:script src="/js/common/jquery.jplayer.js"/>--%>
+<%--<jwr:script src="/js/common/mod.csstransforms.min.js"/>--%>
+<%--<jwr:script src="/js/common/circle.player.js"/>--%>
+<jwr:script src="/bundles/common.js"/>
 <script type="text/javascript" src="http://collections.ala.org.au/js/charts2.js"></script>
 <script type="text/javascript" src="http://collections.ala.org.au/js/datadumper.js"></script>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.autocomplete.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.transform.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.grab.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.jplayer.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mod.csstransforms.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/circle.player.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bieAutocomplete.js"></script>
+<jwr:script src="/js/fancybox/jquery.fancybox-1.3.4.js"/>
+<jwr:script src="/js/bieAutocomplete.js"/>
 

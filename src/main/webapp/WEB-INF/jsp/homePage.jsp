@@ -20,7 +20,8 @@
         <script src="${pageContext.request.contextPath}/static/js/jquery.tools.min-1.2.6.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>
+        <%--<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>--%>
+        <jwr:script src="/js/advancedSearch.js"/>
         <script type="text/javascript">
 
             /************************************************************\

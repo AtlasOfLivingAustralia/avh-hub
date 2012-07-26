@@ -10,6 +10,12 @@
     <description>
         This is a Spring 3.0 MVC web application for the ALA Hubs project
     </description>
+    <scm>
+        <connection>scm:svn:http://ala-hubs.googlecode.com/svn/trunk/hubs-webapp</connection>
+        <developerConnection>scm:svn:http://ala-hubs.googlecode.com/svn/trunk/hubs-webapp</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://ala-hubs.googlecode.com/svn/trunk/hubs-webapp</url>
+    </scm>
     <properties>
         <!-- This project uses UTF8 for Regular Expressions -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -226,6 +232,16 @@
             <artifactId>gt-epsg-hsql</artifactId>
             <version>${geotools.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.jawr</groupId>
+            <artifactId>jawr</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.platform.yui</groupId>
+            <artifactId>yuicompressor</artifactId>
+            <version>2.2.5</version>
+        </dependency>
     </dependencies>
     <repositories>
         <!-- ALA repository  -->
@@ -237,7 +253,7 @@
         <repository>
             <id>java.net2</id>
             <name>Repository hosting the jee6 artifacts</name>
-            <url>http://download.java.net/maven/2</url>
+            <url>http://download.java.net/maven/2/</url>
         </repository>
         <repository>
             <id>osgeo</id>

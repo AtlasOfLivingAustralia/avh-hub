@@ -54,22 +54,18 @@
                 hasMultimedia: ${(not empty hasImages) ? hasImages : 'false'} // will be either true or false
             };
         </script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/getQueryParam.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-ui-1.8.10.core.slider.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ui.position.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.inview.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.i18n.properties-1.0.9.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/search.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/envlayers.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/config.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.qtip.min.js"></script>
-<!--        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.3&sensor=false"></script>-->
-        <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.jsonp-2.1.4.min.js"></script>
-        <%--<script type="text/javascript" src="http://collections.ala.org.au/js/charts.js"></script>--%>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/map.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms.js"></script>
+        <jwr:script src="/js/getQueryParam.js"/>
+        <jwr:script src="/js/search.js"/>
+        <jwr:script src="/js/envlayers.js"/>
+        <jwr:script src="/js/config.js"/>
+        <jwr:script src="/js/map.js"/>
+        <jwr:script src="/js/wms.js"/>
         <script type="text/javascript">
             // Conf for map JS (Ajay)
             Config.setupUrls("${biocacheServiceUrl}", "${queryContext}");
