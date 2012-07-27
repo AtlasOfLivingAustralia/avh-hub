@@ -169,6 +169,9 @@ $(document).ready(function() {
         e.preventDefault();
         //var params = "q=taxon_name:*|"+$('#latitude').val()+"|"+$('#longitude').val()+"|"+$('#radius').val();
         var params = "q=*:*&lat="+$('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val();
+        if (speciesGroup != "ALL_SPECIES") {
+            params += "&fq=species_group:" + speciesGroup;
+        }
         document.location.href = contextPath +'/occurrences/search?' + params;
     });
 
@@ -570,7 +573,9 @@ function groupClicked(el) {
     $(el).addClass("activeRow");
     $('#taxa-level-1 tbody tr').addClass("activeRow");
     // load records layer on map
-    //console.log('about to run: loadRecordsLayer()');
+    console.log('about to run: loadRecordsLayer()');
+    // update links to downloads and records list
+
     if (map) loadRecordsLayer();
     // AJAX...
     var uri = biocacheServiceUrl + "/explore/group/"+speciesGroup+".json?callback=?";
