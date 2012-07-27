@@ -14,11 +14,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
         <title>Explore Your Area | Atlas of Living Australia</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/ala/biocache.css" />
+        <jwr:style src="/css/ala/biocache.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.qtip.min.css" type="text/css" media="screen" />
+        <link type="text/css" rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala/css/biocache-theme/jquery-ui-1.8.custom.css" charset="utf-8">
         <script type="text/javascript" src="https://www.google.com/jsapi?key=${googleKey}"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-ui-1.8.4.custom.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="${initParam.centralServer}/wp-content/themes/ala/css/biocache-theme/jquery-ui-1.8.custom.css" charset="utf-8">
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.qtip.min.js"></script>
         <script type="text/javascript">
             // Global variables for yourAreaMap.js
@@ -33,7 +33,7 @@
             taxa[0] ="*";
             var rank ="*";
         </script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/explore/yourAreaMap.js"></script>
+        <jwr:script src="/js/explore/yourAreaMap.js"/>
     </head>
     <body class="regions">
         <div id="header">

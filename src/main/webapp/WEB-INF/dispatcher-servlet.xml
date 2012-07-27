@@ -194,7 +194,7 @@
         <property name="configLocation" value="/jawr.properties" />
         <property name="configuration">
             <props>
-                <prop key="jawr.debug.on">true</prop>
+                <prop key="jawr.debug.on">false</prop>
             </props>
         </property>
     </bean>

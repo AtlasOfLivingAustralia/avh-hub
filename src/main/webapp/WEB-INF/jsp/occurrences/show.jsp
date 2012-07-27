@@ -51,10 +51,10 @@
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/record.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
+        <jwr:style src="/css/record.css"/>
+        <jwr:style src="/css/button.css"/>
         <script type="text/javascript" language="javascript" src="${pageContext.request.contextPath}/static/js/charts2.js"></script>
-        <script type="text/javascript" language="javascript" src="http://collections.ala.org.au/js/datadumper.js"></script>
+        <%--<script type="text/javascript" language="javascript" src="http://collections.ala.org.au/js/datadumper.js"></script>--%>
         <script type="text/javascript">
             /**
              * Delete a user assertion

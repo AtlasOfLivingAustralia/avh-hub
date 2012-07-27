@@ -573,7 +573,7 @@ function groupClicked(el) {
     $(el).addClass("activeRow");
     $('#taxa-level-1 tbody tr').addClass("activeRow");
     // load records layer on map
-    console.log('about to run: loadRecordsLayer()');
+    //console.log('about to run: loadRecordsLayer()');
     // update links to downloads and records list
 
     if (map) loadRecordsLayer();
