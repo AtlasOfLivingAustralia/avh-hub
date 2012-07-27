@@ -52,7 +52,7 @@
             contextPath = "${pageContext.request.contextPath}";
         </script>
         <jwr:style src="/css/record.css"/>
-        <jwr:style src="/css/button.css"/>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/button.css"/>
         <script type="text/javascript" language="javascript" src="${pageContext.request.contextPath}/static/js/charts2.js"></script>
         <%--<script type="text/javascript" language="javascript" src="http://collections.ala.org.au/js/datadumper.js"></script>--%>
         <script type="text/javascript">
