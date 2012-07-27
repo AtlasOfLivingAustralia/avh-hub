@@ -7,12 +7,15 @@
        xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
        xmlns:beans="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-3.0.xsd
            http://www.springframework.org/schema/mvc
            http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-           http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+           http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
+           http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
     <context:component-scan base-package="org.ala.hubs"/>
@@ -179,5 +182,40 @@
  
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+
+    <!-- Base Jawr config -->
+    <bean abstract="true" id="jawrBase"  class="net.jawr.web.servlet.JawrSpringController" >
+        <!-- This must match the servlet-mapping to which the spring servlet is bound -->
+        <!--<property name="mapping" value="/"/>-->
+        <property name="controllerMapping" value="/jawr/"/>
+        <property name="configLocation" value="/jawr.properties" />
+        <property name="configuration">
+            <props>
+                <prop key="jawr.debug.on">true</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- CSS controller -->
+    <bean id="jawrCSSController"  parent="jawrBase">
+        <property name="type" value="css" />
+    </bean>
+
+    <!-- JS controller -->
+    <bean id="jawrJsController" parent="jawrBase">
+    </bean>
+
+    <bean id="urlMapping"
+          class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/jawr/**/*.js">jawrJsController</prop>
+                <prop key="/jawr/**/*.css">jawrCSSController</prop>
+                <!--<prop key="/**/*.jpg">jawrCSSController</prop>-->
+                <!--<prop key="/**/*.png">jawrCSSController</prop>-->
+            </props>
+        </property>
     </bean>
 </beans>

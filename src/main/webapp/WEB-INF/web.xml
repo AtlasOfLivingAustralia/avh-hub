@@ -20,22 +20,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!-- JAWR -->
-    <servlet>
-        <servlet-name>JavascriptServlet</servlet-name>
-        <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
-        <!-- Location in classpath of the config file -->
-        <init-param>
-            <param-name>configLocation</param-name>
-            <param-value>/jawr.properties</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JavascriptServlet</servlet-name>
-        <url-pattern>*.js</url-pattern>
-    </servlet-mapping>
-
     <!-- CAS -->
     <context-param>
         <param-name>casServerName</param-name>
