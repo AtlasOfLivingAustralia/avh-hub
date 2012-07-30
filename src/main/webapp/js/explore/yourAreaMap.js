@@ -224,6 +224,14 @@ $(document).ready(function() {
         }
     });
 
+    // Catch enter key press on form
+    $("#searchForm").bind("keypress", function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            geocodeAddress();
+        }
+    });
+
 }); // end onLoad event
 
 //var proj900913 = new OpenLayers.Projection("EPSG:900913");
