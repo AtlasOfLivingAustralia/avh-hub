@@ -580,6 +580,12 @@ function groupClicked(el) {
     $('#taxa-level-0 tr').removeClass("activeRow");
     $(el).addClass("activeRow");
     $('#taxa-level-1 tbody tr').addClass("activeRow");
+    // update records page link text
+    if (speciesGroup == "ALL_SPECIES") {
+        $("#recordsGroupText").text("all");
+    } else {
+        $("#recordsGroupText").text("selected");
+    }
     // load records layer on map
     //console.log('about to run: loadRecordsLayer()');
     // update links to downloads and records list

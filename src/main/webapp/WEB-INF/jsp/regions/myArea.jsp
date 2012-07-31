@@ -92,7 +92,7 @@
                                                     <option value="5" <c:if test="${radius eq '5.0'}">selected</c:if>>5</option>
                                                     <option value="10" <c:if test="${radius eq '10.0'}">selected</c:if>>10</option>
                                                 </select> km radius <!--<input type="submit" value="Reload"/>--></td>
-                                            <td><img src="${pageContext.request.contextPath}/static/images/database_go.png" alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"><a href="#" id="viewAllRecords">View all occurrence records</a></td>
+                                            <td><img src="${pageContext.request.contextPath}/static/images/database_go.png" alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"><a href="#" id="viewAllRecords">View <span id="recordsGroupText">all</span> occurrence records</a></td>
                                             <td><button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)">Download</button></td>
                                         </tr>
                                     </tbody>
