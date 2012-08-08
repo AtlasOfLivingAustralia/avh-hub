@@ -121,4 +121,6 @@ public interface BiocacheService {
     
     public String getQueryContext();
 
+    public List<String> getCustomFacets(String dataResourceUid);
+
 }

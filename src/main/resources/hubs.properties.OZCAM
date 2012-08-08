@@ -85,6 +85,7 @@ facets.exclude=data_provider_uid,cl918,duplicate_status
 facets.include=
 facets.hide=
 facets.defaultColourBy=basis_of_record
+facets.supportDynamicFacets=false
 facets.customOrder=
 downloads.extra=
 dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups,associatedMedia,images,userQualityAssertion,speciesHabitats,dataProviderUid,dataResourceUid,dataProviderName,dataResourceName,duplicationType

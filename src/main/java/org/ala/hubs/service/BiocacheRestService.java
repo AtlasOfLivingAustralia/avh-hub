@@ -360,6 +360,20 @@ public class BiocacheRestService implements BiocacheService {
 
     @Override
     @Cacheable(cacheName = "facetsCache")
+    public List<String> getCustomFacets(String dataResourceUid){
+        List<String> customFacets = new ArrayList<String>();
+        try{
+            final String jsonUri = biocacheUriPrefix + "/upload/customIndexes/" +dataResourceUid + ".json";
+            logger.debug("Requesting facets via: " + jsonUri);
+            customFacets = restTemplate.getForObject(jsonUri, List.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+        return customFacets;
+    }
+
+    @Override
+    @Cacheable(cacheName = "facetsCache")
     public List<Map<String, Object>> getDefaultFacetsWithCategories() {
         List<Map<String, Object>> facets = null;
 

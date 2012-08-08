@@ -30,6 +30,7 @@ import au.org.ala.biocache.FullRecord;
 import au.org.ala.util.DuplicateRecordDetails;
 
 import java.net.URLDecoder;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
@@ -40,6 +41,7 @@ import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.*;
 import org.ala.hubs.service.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -130,6 +132,8 @@ public class OccurrenceController {
     String clubRoleForHub = null;
     @Value("${facets.customOrder}")
     String facetsCustomOrder = null;
+    @Value("${facets.supportDynamicFacets}")
+    boolean supportDynamicFacets = false;
     
     /* View names */
     private final String RECORD_LIST = "occurrences/list";
@@ -1378,6 +1382,8 @@ public class OccurrenceController {
         }
     }
 
+    private Pattern dataResourceUidP = Pattern.compile("data_resource_uid:([a-z]{2,3}[0-9]{1,})");
+
     /**
      * Common code to check for facets cookie and manipulate query, etc
      * 
@@ -1387,14 +1393,28 @@ public class OccurrenceController {
     protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
         // check for user facets via cookie
         String[] userFacets = getFacetsFromCookie(request);
-        logger.debug("userFacets = " + StringUtils.join(userFacets, "|"));
+        System.out.println("userFacets = " + StringUtils.join(userFacets, "|"));
+
+        String[] facetsToUse = null;
 
         if (userFacets != null && userFacets.length > 0) {
-            requestParams.setFacets(userFacets);
+            facetsToUse = userFacets;
         } else {
-            String[] defaultFacets = biocacheService.getDefaultFacets().toArray(new String[]{});
-            requestParams.setFacets(filterFacets(defaultFacets));
+            facetsToUse = biocacheService.getDefaultFacets().toArray(new String[]{});
         }
+
+        List<String> customFacets = new ArrayList<String>();
+
+        if(supportDynamicFacets){//if check for custom indexes....
+            //retrieve details of data resources from query
+            customFacets.addAll(retrieveCustomFacets(request));
+        }
+
+        if(userFacets != null){
+            CollectionUtils.addAll(customFacets, facetsToUse);
+        }
+
+        requestParams.setFacets(customFacets.toArray(new String[0]));
 
         List<String> displayString = new ArrayList<String>();
         List<String> query = new ArrayList<String>();
@@ -1418,9 +1438,7 @@ public class OccurrenceController {
                         //requestParams.setDisplayString(tq);
                         displayString.add(tq);
                     }
-
-
-                } 
+                }
             }
             
             StringBuilder queryString = new StringBuilder();
@@ -1446,7 +1464,7 @@ public class OccurrenceController {
             }
 
             requestParams.setQ(URLDecoder.decode(queryString.toString().trim()));
-            requestParams.setDisplayString(StringUtils.join(displayString, " OR ")); // join up mulitple taxa queries
+            requestParams.setDisplayString(StringUtils.join(displayString, " OR ")); // join up multiple taxa queries
             
         } else if (requestParams.getQ().isEmpty())  {
             requestParams.setQ("*:*"); // assume search for everything
@@ -1454,6 +1472,49 @@ public class OccurrenceController {
             // unescape URI encoded query
             requestParams.setQ(URLDecoder.decode(requestParams.getQ()));
         }
+    }
+
+    /**
+     * TODO This functionality might be better placed in the service layer.
+     *
+     * @param request
+     * @return
+     */
+    private List<String> retrieveCustomFacets(HttpServletRequest request) {
+        List<String> customFacets = new ArrayList<String>();
+
+        String[] qValues = request.getParameterValues("q");
+        String[] fqValues = request.getParameterValues("fq");
+
+        List<String> drs = new ArrayList<String>();
+        if(qValues !=null){
+            for(String q: qValues){
+                Matcher m = dataResourceUidP.matcher(q);
+                while(m.find()){
+                    for(int x =0; x<m.groupCount(); x++){
+                        drs.add(m.group(x).replaceAll("data_resource_uid:", ""));
+                    }
+                }
+            }
+        }
+
+        if(fqValues !=null){
+            for(String q: fqValues){
+                Matcher m = dataResourceUidP.matcher(q);
+                while(m.find()){
+                    for(int x =0; x<m.groupCount(); x++){
+                        drs.add(m.group(x).replaceAll("data_resource_uid:", ""));
+                    }
+                }
+            }
+        }
+
+        //look up facets
+        for(String dr: drs){
+            customFacets.addAll(biocacheService.getCustomFacets(dr));
+        }
+
+        return customFacets;
     }
 
     /**
@@ -1521,7 +1582,13 @@ public class OccurrenceController {
                             if (tokenBits.length == 2) {
                                 String fn = tokenBits[0];
                                 String fv = tokenBits[1];
-                                String i18n = messageSource.getMessage("facet."+fn, null, fn, null);
+                                String i18n = null;
+                                if(fn.endsWith("_s")){
+                                    //hack for dynamic facets
+                                    i18n = fn.replaceAll("_s", "");
+                                } else {
+                                    i18n = messageSource.getMessage("facet."+fn, null, fn, null);
+                                }
 
                                 if (StringUtils.equals(fn, "species_guid") || StringUtils.equals(fn, "genus_guid")) {
                                     fv = substituteLsidsForNames(fv.replaceAll("\"",""));
@@ -1539,7 +1606,7 @@ public class OccurrenceController {
                             }
                         }
 
-                        String label = StringUtils.join(labels, " OR "); // join sub-queies back together
+                        String label = StringUtils.join(labels, " OR "); // join sub-queries back together
                         if (isExcludeFilter) {
                             label = "-" + label;
                         }
@@ -1743,6 +1810,11 @@ public class OccurrenceController {
             // possible to get duplicates if added to default facets but hashmap should combine them back to one
             allFacets.addAll(Arrays.asList(StringUtils.split(facetsInclude, ",")));
         }
+
+
+
+
+
 
         //List<String> fqs = Arrays.asList(filterQuery); // convert array to List
         List<String> orderedFacets = new ArrayList<String>(); // store merged list in a separate var

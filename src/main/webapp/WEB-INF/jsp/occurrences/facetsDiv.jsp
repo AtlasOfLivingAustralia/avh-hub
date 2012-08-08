@@ -40,17 +40,22 @@
         </c:if>
         <c:if test="${not empty facetMap}">
             <div id="currentFilter">
-                <h4><span class="FieldName">Current Filters</span></h4>
+                <h4><span class="FieldName">Current filters</span></h4>
                 <div class="subnavlist">
                     <ul id="refinedFacets">
                         <c:forEach var="item" items="${facetMap}">
                             <li>
                                 <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<alatag:uriEscapeParamValue input="${item.value.value}"/><%--<c:out escapeXml="true" value="${item.value.value}"/>--%>'); return false;" class="removeLink" title="remove filter">X</a></b>]</c:set>
-                                <!-- ${item.key}:${item.value.value} || ${item.value.label} -->
+
+                                <c:set var="filterLabel"><c:choose>
+                                    <c:when test="${fn:endsWith(item.value.label, '_s')}">${fn:replace(item.value.label, '_s','')}</c:when>
+                                    <c:otherwise><fmt:message key="${item.value.label}"/></c:otherwise>
+                                    </c:choose></c:set>
+
                                 <c:set var="fqLabel">
                                     <c:choose>
-                                        <c:when test="${fn:startsWith(item.value.label,'-')}"><span class="red">[exclude]</span> ${fn:substring(item.value.label, 1, -1)}</c:when>
-                                        <c:otherwise>${item.value.label}</c:otherwise>
+                                        <c:when test="${fn:startsWith(filterLabel,'-')}"><span class="red">[exclude]</span> ${fn:substring(filterLabel, 1, -1)}</c:when>
+                                        <c:otherwise>${filterLabel}</c:otherwise>
                                     </c:choose>
                                 </c:set>
                                 <span class="activeFq"><fmt:message key="${fqLabel}"/></span>${closeLink}
@@ -62,12 +67,19 @@
         </c:if>
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
             <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
-                <h4><span class="FieldName"><fmt:message key="facet.${facetResult.fieldName}"/></span>
+                <c:set var="fieldDisplayName"><c:choose>
+                    <c:when test="${fn:endsWith(facetResult.fieldName, '_s')}">
+                        ${fn:replace(facetResult.fieldName, "_s", "")}
+                    </c:when>
+                    <c:otherwise>
+                        <fmt:message key="facet.${facetResult.fieldName}"/>
+                    </c:otherwise>
+                </c:choose></c:set>
+                <h4><span class="FieldName">${fieldDisplayName}</span>
                     <c:if test="${false && fn:length(facetResult.fieldResult) > 1}">
-                        <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="<fmt:message key="facet.${facetResult.fieldName}"/>"
+                        <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="${fieldDisplayName}"
                            title="Refine with multiple values"><img src="${pageContext.request.contextPath}/static/images/options_icon.jpg" class="optionsIcon"/></a>
                     </c:if>
-
                 </h4>
                 <div class="subnavlist" style="clear:left">
                     <ul class="facets">
@@ -186,7 +198,7 @@
                 </div>
                 <c:if test="${fn:length(facetResult.fieldResult) > 1}">
                     <div class="showHide">
-                        <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="<fmt:message key="facet.${facetResult.fieldName}"/>"
+                        <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="${fieldDisplayName}"
                            title="See more options or refine with multiple values">choose more...</a>
                     </div>
                 </c:if>
@@ -279,12 +291,15 @@ ${false && collectionCodes}
                     <c:set var="cffv" value="${fieldResult.label}" />
                     <c:set var="cffl"><fmt:message key="month.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></c:set>
                 </c:when>
+                <c:when test="${fn:endsWith(facetResult.fieldName, '_s')}">
+                    <c:set var="cffv" value="${fn:replace(facetResult.fieldName, '_s','')}" />
+                    <c:set var="cffl">${fieldResult.label}</c:set>
+                </c:when>
                 <c:otherwise>
                     <c:set var="cffv" value="${fieldResult.label}" />
                     <c:set var="cffl"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></c:set>
                 </c:otherwise>
             </c:choose>
-
             <c:set var="ffl" value="${ffl}${cffl}" />
             <c:set var="ffv" value="${ffv}${cffv}" />
             <c:set var="ffc" value="${ffc}${fieldResult.count}" />

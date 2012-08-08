@@ -13,7 +13,7 @@
 <div id="downloadMap">
     <h2>Download publication map</h2>
     <form id="downloadMapForm">
-        <input id="mapDownloadUrl" type="hidden" value="http://biocache.ala.org.au/ws/webportal/wms/image"/>
+        <input id="mapDownloadUrl" type="hidden" value="http://diasbprod1-cdc.vm.csiro.au:8080/biocache-service/webportal/wms/image"/>
         <fieldset>
             <p><label for="format">Format</label>
                 <select name="format" id="format">
@@ -201,8 +201,10 @@
                    '&widthmm=' + $('#widthmm').val() +
                    '&scale=' + $(':input[name=scale]:checked').val() +
                    '&outline=' + $(':input[name=outline]:checked').val() +
+                   '&outlineColour=0xFFFFFF' +
                    '&baselayer=' + $('#baselayer').val()+
-                   '&fileName=' + $('#fileName').val()+'.'+$('#format').val().toLowerCase()
+                   '&fileName=' + $('#fileName').val()+'.'+$('#format').val().toLowerCase();
+           alert(downloadUrl);
            document.location.href = downloadUrl;
        }
     </script>

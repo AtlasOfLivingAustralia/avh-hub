@@ -336,7 +336,12 @@
                                                     <c:if test="${not empty defaultFacetMapColourBy && facetResult.fieldName == defaultFacetMapColourBy}">selected="selected"</c:if>
                                                 </c:set>
                                                 <c:if test="${fn:length(facetResult.fieldResult) > 1}">
-                                                    <option value="${facetResult.fieldName}" ${Defaultselected}><fmt:message key="facet.${facetResult.fieldName}"/></option>
+                                                    <option value="${facetResult.fieldName}" ${Defaultselected}>
+                                                        <c:choose>
+                                                            <c:when test="${fn:endsWith(facetResult.fieldName, '_s')}"><fmt:message key="${fn:replace(facetResult.fieldName, '_s','')}"/></c:when>
+                                                            <c:otherwise><fmt:message key="facet.${facetResult.fieldName}"/></c:otherwise>
+                                                        </c:choose>
+                                                    </option>
                                                 </c:if>
                                             </c:forEach>
                                         </select>
