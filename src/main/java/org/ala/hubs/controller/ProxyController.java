@@ -246,7 +246,7 @@ public class ProxyController {
     public void proxyBiocacheMessages(@PathVariable("messageSource") String messageSource,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        StringBuilder urlString = new StringBuilder("http://biocache.ala.org.au/ws/facets/i18n");
+        StringBuilder urlString = new StringBuilder(biocacheUriPrefix + "/facets/i18n");
 
         logger.info("proxy URI: "+urlString);
 
