@@ -87,7 +87,7 @@ facets.hide=
 facets.defaultColourBy=basis_of_record
 facets.supportDynamicFacets=false
 facets.customOrder=
-downloads.extra=
+downloads.extra=recordedBy
 dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups,associatedMedia,images,userQualityAssertion,speciesHabitats,dataProviderUid,dataResourceUid,dataProviderName,dataResourceName,duplicationType
 clubRoleForHub=ROLE_OZCAM_CLUB
 
