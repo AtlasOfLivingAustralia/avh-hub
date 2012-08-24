@@ -201,7 +201,7 @@
                    '&widthmm=' + $('#widthmm').val() +
                    '&scale=' + $(':input[name=scale]:checked').val() +
                    '&outline=' + $(':input[name=outline]:checked').val() +
-                   '&outlineColour=0xFFFFFF' +
+                   '&outlineColour=0x000000' +
                    '&baselayer=' + $('#baselayer').val()+
                    '&fileName=' + $('#fileName').val()+'.'+$('#format').val().toLowerCase();
            document.location.href = downloadUrl;
