@@ -105,11 +105,21 @@ $(document).ready(function() {
         'titleShow' : false,
         'autoDimensions' : false,
         'width': '500',
-        'height': '300',
+        'height': '400',
         'padding': 15,
         'margin': 10
     });
 
+    // QTip tooltips
+    $(".tooltip").qtip({
+        style: {
+            classes: 'ui-tooltip-rounded ui-tooltip-shadow'
+        },
+        position: {
+            target: 'mouse',
+            adjust: { x: 6, y: 14 }
+        }
+    });
 
     // Configure Dialog box for Download button (JQuery UI)
     $("#dialog-confirm").dialog({
