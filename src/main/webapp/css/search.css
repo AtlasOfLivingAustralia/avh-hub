@@ -247,8 +247,8 @@ div#download {
 #termsOfUseDownload { 
     text-align:left; padding-bottom:15px;
 }
-#downloadForm p { 
-    margin-bottom:10px;
+#downloadForm fieldset > div {
+    padding: 6px 0;
 }
 
 #resultsOuter {

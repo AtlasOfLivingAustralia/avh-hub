@@ -7,8 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <style type="text/css">
  #downloadMapForm { text-align:left; padding:10px; }
- fieldset p { padding-top:9px; }
- fieldset p input, fieldset p select { margin-left:15px; }
+ #downloadMapForm fieldset p { padding-top:9px; }
+ #downloadMapForm fieldset p input, #downloadMapForm fieldset p select { margin-left:15px; }
 </style>
 <div id="downloadMap">
     <h2>Download publication map</h2>

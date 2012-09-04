@@ -301,7 +301,7 @@ $(document).ready(function() {
         'titleShow' : false,
         'autoDimensions' : false,
         'width': '500',
-        'height': '370',
+        'height': '400',
         'padding': 10,
         'margin': 10,
         onCleanup: function() {
@@ -719,12 +719,13 @@ $(document).ready(function() {
     // QTip generated tooltips
     if($.fn.qtip.plugins.iOS) { return false; }
 
-    $("a.multipleFacetsLink, a#downloadLink, a#alertsLink, a.tooltip, span.dropDown a, div#customiseFacets > a, a.removeLink").qtip({
+    $("a.multipleFacetsLink, a#downloadLink, a#alertsLink, .tooltip, span.dropDown a, div#customiseFacets > a, a.removeLink").qtip({
         style: {
             classes: 'ui-tooltip-rounded ui-tooltip-shadow'
         },
         position: {
-            target: 'event'
+            target: 'mouse',
+            adjust: { x: 6, y: 14 }
         }
     });
 

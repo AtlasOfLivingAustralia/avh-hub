@@ -18,49 +18,57 @@
         <c:choose>
             <c:when test="${clubView}">
                 <input type="hidden" name="url" id="downloadUrl" value="${pageContext.request.contextPath}/proxy/download/download"/>
+                <input type="hidden" name="url" id="fastDownloadUrl" value="${pageContext.request.contextPath}/proxy/download/index/download"/>
             </c:when>
             <c:otherwise>
                 <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download"/>
+                <input type="hidden" name="url" id="fastDownloadUrl" value="${biocacheServiceUrl}/occurrences/index/download"/>
             </c:otherwise>
         </c:choose>
         <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download"/>
         <input type="hidden" name="url" id="downloadFieldGuideUrl" value="${pageContext.request.contextPath}/occurrences/fieldguide/download"/>
-
-            <input type="hidden" name="extra" id="extraFields" value="${downloadExtraFields}"/>
+        <input type="hidden" name="extra" id="extraFields" value="${downloadExtraFields}"/>
+        <input type="hidden" name="sourceTypeId" id="sourceTypeId" value="${sourceId}"/>
 
         <fieldset>
-            <p><label for="email">Email</label>
+            <div><label for="email">Email</label>
                 <input type="text" name="email" id="email" value="${pageContext.request.remoteUser}" size="30"  />
-            </p>
-            <p><label for="filename">File Name</label>
+            </div>
+            <div><label for="filename">Filename</label>
                 <input type="text" name="filename" id="filename" value="data" size="30"  />
-            </p>
-            <p><label for="reasonTypeId" style="vertical-align: top">Download Reason *</label>
+            </div>
+            <div><label for="reasonTypeId" style="vertical-align: top">Download reason *</label>
                 <select name="reasonTypeId" id="reasonTypeId">
                     <option value="">-- select a reason --</option>
                     <c:forEach var="it" items="${LoggerReason}">
                         <option value="${it.id}">${it.name}</option>
                     </c:forEach>
                 </select>
-            </p>
+            </div>
             <c:set var="sourceId">
                 <c:forEach var="it" items="${LoggerSources}">
                     <c:if test="${fn:toUpperCase(skin) == it.name}">${it.id}</c:if>
                 </c:forEach>
             </c:set>
-            <br/>
-            <input type="hidden" name="sourceTypeId" id="sourceTypeId" value="${sourceId}"/>
-            <input type="submit" value="Download All Records" id="downloadSubmitButton"/>&nbsp;
-            <input type="submit" value="Download Species Checklist" id="downloadCheckListSubmitButton"/>&nbsp;
-            <c:if test="${skin != 'avh'}">
-                <input type="submit" value="Download Species Field Guide" id="downloadFieldGuideSubmitButton"/>&nbsp;
-            </c:if>
-            <!--
-            <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
-            -->
-            <p style="margin-top:10px;">
+            <div>
+                <label for="filename"div style="float: left;">Download type</label>
+                <div style="display: inline-block; width: 55%; float: left; padding-left: 5px;">
+                    <input type="radio" name="downloadType" value="fast" class="tooltip" title="Faster download but fewer fields are included" checked="checked"/>&nbsp;All Records (fast)<br/>
+                    <input type="radio" name="downloadType" value="detailed" class="tooltip" title="Slower download but all fields are included"/>&nbsp;All Records (detailed)<br/>
+                    <input type="radio" name="downloadType" value="checklist"  class="tooltip" title="Lists all taxa from the current search results"/>&nbsp;Species Checklist<br/>
+                    <c:if test="${skin != 'avh'}">
+                        <input type="radio" name="downloadType" value="fieldGuide" class="tooltip" title="PDF file listing species with images and distribution maps"/>&nbsp;Species Field Guide
+                    </c:if>
+                </div>
+            </div>
+
+            <div style="clear: both; text-align: center;">
+                <br/><input type="submit" value="Start Download" id="downloadStart" class="tooltip"/>
+            </div>
+
+            <div style="margin-top:10px;">
                 <strong>Note</strong>: The field guide may take several minutes to prepare and download.
-            </p>
+            </div>
             <div id="statusMsg" style="text-align: center; font-weight: bold; "></div>
         </fieldset>
     </form>
@@ -70,41 +78,42 @@
             // catch download submit button
             // Note the unbind().bind() syntax - due to Jquery ready being inside <body> tag.
 
-            $(":input#downloadSubmitButton").unbind("click").bind("click",function(e) {
+            // start download button
+            $(":input#downloadStart").unbind("click").bind("click",function(e) {
                 e.preventDefault();
+                var downloadType = $('input:radio[name=downloadType]:checked').val();
 
                 if (validateForm()) {
-                    var downloadUrl = generateDownloadPrefix($(":input#downloadUrl").val())+"&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
-                            $("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
-                    //alert("downloadUrl = " + downloadUrl);
-                    window.location.href = downloadUrl;
-                    notifyDownloadStarted();
+                    if (downloadType == "fast") {
+                        var downloadUrl = generateDownloadPrefix($(":input#fastDownloadUrl").val())+"&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
+                                $("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
+                        //alert("downloadUrl = " + downloadUrl);
+                        window.location.href = downloadUrl;
+                        notifyDownloadStarted();
+                    } else if (downloadType == "detailed") {
+                        var downloadUrl = generateDownloadPrefix($(":input#downloadUrl").val())+"&email="+$("#email").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+
+                                $("#reasonTypeId").val()+"&file="+$("#filename").val()+"&extra="+$(":input#extraFields").val();
+                        //alert("downloadUrl = " + downloadUrl);
+                        window.location.href = downloadUrl;
+                        notifyDownloadStarted();
+                    } else if (downloadType == "checklist") {
+                        var downloadUrl = generateDownloadPrefix($("input#downloadChecklistUrl").val())+"&facets=species_guid&lookup=true&file="+
+                                $("#filename").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
+                        //alert("downloadUrl = " + downloadUrl);
+                        window.location.href = downloadUrl;
+                        notifyDownloadStarted();
+                    } else if (downloadType == "fieldGuide") {
+                        var downloadUrl = generateDownloadPrefix($("input#downloadFieldGuideUrl").val())+"&facets=species_guid"+"&sourceTypeId="+
+                                $("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
+                        window.open(downloadUrl);
+                        notifyDownloadStarted();
+                    } else {
+                        alert("download type not recognised");
+                    }
                 }
             });
-            // catch checklist download submit button
-            $("#downloadCheckListSubmitButton").unbind("click").bind("click",function(e) {
-                e.preventDefault();
 
-                if (validateForm()) {
-                    downloadUrl = generateDownloadPrefix($("input#downloadChecklistUrl").val())+"&facets=species_guid&lookup=true&file="+
-                            $("#filename").val()+"&sourceTypeId="+$("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
-                    //alert("downloadUrl = " + downloadUrl);
-                    window.location.href = downloadUrl;
-                    notifyDownloadStarted();
-                }
-            });
 
-            // catch checklist download submit button
-            $("#downloadFieldGuideSubmitButton").unbind("click").bind("click",function(e) {
-                e.preventDefault();
-
-                if (validateForm()) {
-                    var downloadUrl = generateDownloadPrefix($("input#downloadFieldGuideUrl").val())+"&facets=species_guid"+"&sourceTypeId="+
-                            $("#sourceTypeId").val()+"&reasonTypeId="+$("#reasonTypeId").val();
-                    window.open(downloadUrl);
-                    notifyDownloadStarted();
-                }
-            });
         });
 
         function generateDownloadPrefix(downloadUrlPrefix) {
