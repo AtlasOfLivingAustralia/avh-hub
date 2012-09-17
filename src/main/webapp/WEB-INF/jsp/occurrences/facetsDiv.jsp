@@ -237,6 +237,11 @@ ${false && collectionCodes}
     var facetLabels = new Array();
     var facetValues = new Array();
     var facetValueCounts = new Array();
+    var dynamicFacets = new Array();
+    <c:forEach items="${dynamicFacets}" var="dynamicFacet">
+        dynamicFacets.push('${dynamicFacet}');
+    </c:forEach>
+
     <c:forEach var="facetResult" items="${searchResults.facetResults}">
         <c:set var="frlabels" value="0"/>
         <c:set var="frlabelcount" value="0"/>

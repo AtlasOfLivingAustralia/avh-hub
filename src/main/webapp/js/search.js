@@ -114,6 +114,9 @@ function removeFacet(facet) {
  * Load all the charts 
  */
 function loadAllCharts() {
+
+    console.log("Loading charts.....");
+
     var queryString = BC_CONF.searchString.replace("?q=","");
     var biocacheServiceUrl = BC_CONF.biocacheServiceUrl; //BC_CONF.biocacheServiceUrl, // "http://ala-macropus.it.csiro.au/biocache-service";
     
@@ -125,20 +128,36 @@ function loadAllCharts() {
     };
     
     var facetChartOptions = {
-        query: queryString, 
+        query: queryString,
         charts: ['collection_uid','state','species_group','assertions','type_status','ibra','state_conservation','month','occurrence_year'],
         collection_uid: {title: 'By collection', backgroundColor: "#F0F0E8"},
         state: {title: 'By state or territory', backgroundColor: "#F0F0E8"},
-        species_group: {backgroundColor: "#F0F0E8", title: 'By higher-level group', ignore: ['Animals','Insects','Crustaceans','Angiosperms','Plants']},
+        species_group: {backgroundColor: "#F0F0E8", title: 'By higher-level groups', ignore: ['Animals','Insects','Crustaceans','Angiosperms','Plants']},
         assertions: {backgroundColor: "#F0F0E8"},
         type_status: {backgroundColor: "#F0F0E8"},
         ibra: {title: 'By IBRA region', backgroundColor: "#F0F0E8"},
         state_conservation: {backgroundColor: "#F0F0E8"},
         occurrence_year:{backgroundColor: "#F0F0E8"},
+        Unknown_s:{backgroundColor: "#F0F0E8"},
         month:{backgroundColor: "#F0F0E8"},
         biocacheServicesUrl: biocacheServiceUrl,
         displayRecordsUrl: BC_CONF.serverName
     };
+
+    if(dynamicFacets !== undefined){
+        //add the dynamic charts.....
+        for(var i = 0; i < dynamicFacets.length; i++){
+           facetChartOptions.query = facetChartOptions.query + "&facets=" + dynamicFacets[i];
+           facetChartOptions.charts.push(dynamicFacets[i]);
+           defaultChartTypes[dynamicFacets[i]] = 'bar';
+           chartLabels[dynamicFacets[i]] = dynamicFacets[i].replace("_s","");
+           baseFacetChart.individualChartOptions[dynamicFacets[i]] = { title: dynamicFacets[i].replace("_s",""), facets: [dynamicFacets[i]]}
+        }
+    }
+
+   // baseFacetChart.individualChartOptions.Unknown_s = { title: 'Unknown_s', facets: ['Unknown_s']};
+   // defaultChartTypes.Unknown_s = 'bar';
+   // chartLabels.Unknown_s = 'Unknown';
 
     taxonomyChart.load(taxonomyChartOptions);
     loadFacetCharts(facetChartOptions);

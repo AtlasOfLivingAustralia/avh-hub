@@ -1347,7 +1347,7 @@ public class OccurrenceController {
      */
     protected void doFullTextSearch(String[] taxaQuery, Model model, SpatialSearchRequestParams requestParams, HttpServletRequest request) {
         // Prepare request obj
-        prepareSearchRequest(taxaQuery, request, requestParams);
+        prepareSearchRequest(taxaQuery, request, requestParams, model);
         // Perform search via webservice
         try {
             SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
@@ -1390,7 +1390,7 @@ public class OccurrenceController {
      * @param request
      * @param requestParams 
      */
-    protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
+    protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams, Model model) {
         // check for user facets via cookie
         String[] userFacets = getFacetsFromCookie(request);
         //System.out.println("userFacets = " + StringUtils.join(userFacets, "|"));
@@ -1407,7 +1407,10 @@ public class OccurrenceController {
 
         if(supportDynamicFacets){//if check for custom indexes....
             //retrieve details of data resources from query
-            customFacets.addAll(retrieveCustomFacets(request));
+            List<String> dynamicFacets = retrieveCustomFacets(request);
+            model.addAttribute("dynamicFacets", dynamicFacets);
+            //FIXME add these to the request.....
+            customFacets.addAll(dynamicFacets);
         }
 
         if(facetsToUse != null){
