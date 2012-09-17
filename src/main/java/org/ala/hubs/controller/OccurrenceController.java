@@ -1393,7 +1393,7 @@ public class OccurrenceController {
     protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams) {
         // check for user facets via cookie
         String[] userFacets = getFacetsFromCookie(request);
-        System.out.println("userFacets = " + StringUtils.join(userFacets, "|"));
+        //System.out.println("userFacets = " + StringUtils.join(userFacets, "|"));
 
         String[] facetsToUse = null;
 

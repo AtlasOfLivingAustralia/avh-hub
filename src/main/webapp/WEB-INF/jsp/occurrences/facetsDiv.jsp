@@ -292,7 +292,7 @@ ${false && collectionCodes}
                     <c:set var="cffl"><fmt:message key="month.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></c:set>
                 </c:when>
                 <c:when test="${fn:endsWith(facetResult.fieldName, '_s')}">
-                    <c:set var="cffv" value="${fn:replace(facetResult.fieldName, '_s','')}" />
+                    <c:set var="cffv">${fieldResult.label}</c:set>
                     <c:set var="cffl">${fieldResult.label}</c:set>
                 </c:when>
                 <c:otherwise>
