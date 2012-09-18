@@ -149,6 +149,7 @@ function loadAllCharts() {
         for(var i = 0; i < dynamicFacets.length; i++){
            facetChartOptions.query = facetChartOptions.query + "&facets=" + dynamicFacets[i];
            facetChartOptions.charts.push(dynamicFacets[i]);
+           facetChartOptions[dynamicFacets[i]] = {backgroundColor: "#F0F0E8"};
            defaultChartTypes[dynamicFacets[i]] = 'bar';
            chartLabels[dynamicFacets[i]] = dynamicFacets[i].replace("_s","");
            baseFacetChart.individualChartOptions[dynamicFacets[i]] = { title: dynamicFacets[i].replace("_s",""), facets: [dynamicFacets[i]]}
