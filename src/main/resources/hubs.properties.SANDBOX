@@ -32,7 +32,7 @@ homePageController.searchPage=homePage
 spatialPortalUrl=http://spatial.ala.org.au/
 
 # For sandbox environment
-spatialPortalUrlParams=&ws=http%3A%2F%2Fsandbox.ala.org.au%2Fhubs-webapp&bs=http%3A%2F%2Fsandbox.ala.org.au%2Fbiocache-service
+spatialPortalUrlParams=&dynamic=true&ws=http%3A%2F%2Fsandbox.ala.org.au%2Fhubs-webapp&bs=http%3A%2F%2Fsandbox.ala.org.au%2Fbiocache-service
 #spatialPortalUrlParams=
 
 # URI prefix for requests to biocache-service
