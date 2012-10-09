@@ -151,8 +151,9 @@ function loadAllCharts() {
            facetChartOptions.charts.push(dynamicFacets[i]);
            facetChartOptions[dynamicFacets[i]] = {backgroundColor: "#F0F0E8"};
            //defaultChartTypes[dynamicFacets[i]] = 'bar';
-           chartLabels[dynamicFacets[i]] = dynamicFacets[i].replace("_s","");
-           baseFacetChart.individualChartOptions[dynamicFacets[i]] = { title: dynamicFacets[i].replace("_s",""), facets: [dynamicFacets[i]]}
+           var chartTitle = dynamicFacets[i].substring(0,dynamicFacets[i].length - 2).replace('_', ' ');
+           chartLabels[dynamicFacets[i]] = chartTitle;
+           baseFacetChart.individualChartOptions[dynamicFacets[i]] = { title: chartTitle, facets: [dynamicFacets[i]]}
         }
     }
 
