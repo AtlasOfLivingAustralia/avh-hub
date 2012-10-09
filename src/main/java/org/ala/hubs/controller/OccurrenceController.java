@@ -1407,10 +1407,11 @@ public class OccurrenceController {
 
         if(supportDynamicFacets){//if check for custom indexes....
             //retrieve details of data resources from query
-            List<String> dynamicFacets = retrieveCustomFacets(request);
+            List<FacetDTO> dynamicFacets = retrieveCustomFacets(request);
             model.addAttribute("dynamicFacets", dynamicFacets);
+            for(FacetDTO f: dynamicFacets) customFacets.add(f.getName());
             //FIXME add these to the request.....
-            customFacets.addAll(dynamicFacets);
+            //customFacets.addAll(dynamicFacets);
         }
 
         if(facetsToUse != null){
@@ -1483,39 +1484,40 @@ public class OccurrenceController {
      * @param request
      * @return
      */
-    private List<String> retrieveCustomFacets(HttpServletRequest request) {
-        List<String> customFacets = new ArrayList<String>();
+    private List<FacetDTO> retrieveCustomFacets(HttpServletRequest request) {
+        List<FacetDTO> customFacets = new ArrayList<FacetDTO>();
 
-        String[] qValues = request.getParameterValues("q");
-        String[] fqValues = request.getParameterValues("fq");
+        String q = request.getParameter("q");
+        String[] fq = request.getParameterValues("fq");
 
-        List<String> drs = new ArrayList<String>();
-        if(qValues !=null){
-            for(String q: qValues){
-                Matcher m = dataResourceUidP.matcher(q);
-                while(m.find()){
-                    for(int x =0; x<m.groupCount(); x++){
-                        drs.add(m.group(x).replaceAll("data_resource_uid:", ""));
-                    }
-                }
-            }
-        }
-
-        if(fqValues !=null){
-            for(String q: fqValues){
-                Matcher m = dataResourceUidP.matcher(q);
-                while(m.find()){
-                    for(int x =0; x<m.groupCount(); x++){
-                        drs.add(m.group(x).replaceAll("data_resource_uid:", ""));
-                    }
-                }
-            }
-        }
+//        List<String> drs = new ArrayList<String>();
+//        if(qValues !=null){
+//            for(String q: qValues){
+//                Matcher m = dataResourceUidP.matcher(q);
+//                while(m.find()){
+//                    for(int x =0; x<m.groupCount(); x++){
+//                        drs.add(m.group(x).replaceAll("data_resource_uid:", ""));
+//                    }
+//                }
+//            }
+//        }
+//
+//        if(fqValues !=null){
+//            for(String q: fqValues){
+//                Matcher m = dataResourceUidP.matcher(q);
+//                while(m.find()){
+//                    for(int x =0; x<m.groupCount(); x++){
+//                        drs.add(m.group(x).replaceAll("data_resource_uid:", ""));
+//                    }
+//                }
+//            }
+//        }
 
         //look up facets
-        for(String dr: drs){
-            customFacets.addAll(biocacheService.getCustomFacets(dr));
-        }
+        //for(String dr: drs){
+        customFacets.addAll(biocacheService.getDynamicFacets(request.getQueryString()));
+
+    //}
 
         return customFacets;
     }

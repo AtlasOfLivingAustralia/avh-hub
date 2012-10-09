@@ -24,6 +24,7 @@ import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
+import org.ala.hubs.dto.FacetDTO;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang3.StringUtils;
@@ -360,12 +361,14 @@ public class BiocacheRestService implements BiocacheService {
 
     @Override
     @Cacheable(cacheName = "facetsCache")
-    public List<String> getCustomFacets(String dataResourceUid){
-        List<String> customFacets = new ArrayList<String>();
+    public List<FacetDTO> getDynamicFacets(String queryString){
+        List<FacetDTO> customFacets = new ArrayList<FacetDTO>();
         try{
-            final String jsonUri = biocacheUriPrefix + "/upload/customIndexes/" +dataResourceUid + ".json";
+            final String jsonUri = biocacheUriPrefix + "/upload/dynamicFacets?" + queryString;
             logger.debug("Requesting facets via: " + jsonUri);
-            customFacets = restTemplate.getForObject(jsonUri, List.class);
+            List<Map<String,String>> facets = restTemplate.getForObject(jsonUri, (new ArrayList<Map<String,String>>()).getClass());
+            for(Map<String,String> f: facets) customFacets.add(new FacetDTO(f.get("name"), f.get("displayName")));
+
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }

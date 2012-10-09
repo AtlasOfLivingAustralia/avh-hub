@@ -182,6 +182,9 @@
                 <c:when test="${not empty record.processed.occurrence.basisOfRecord}">
                     <fmt:message key="${record.processed.occurrence.basisOfRecord}"/>
                 </c:when>
+                <c:when test="${empty record.raw.occurrence.basisOfRecord}">
+                   Not supplied
+                </c:when>
                 <c:otherwise>
                     <fmt:message key="${record.raw.occurrence.basisOfRecord}"/>
                 </c:otherwise>

@@ -68,8 +68,8 @@
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
             <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
                 <c:set var="fieldDisplayName"><c:choose>
-                    <c:when test="${fn:endsWith(facetResult.fieldName, '_s')}">
-                        ${fn:replace(facetResult.fieldName, "_s", "")}
+                    <c:when test="${fn:substring(facetResult.fieldName, fn:length(facetResult.fieldName)-2, fn:length(facetResult.fieldName)) eq '_s'}">
+                        ${fn:replace(fn:substring(facetResult.fieldName, 0, fn:length(facetResult.fieldName)-2), '_', ' ')}
                     </c:when>
                     <c:otherwise>
                         <fmt:message key="facet.${facetResult.fieldName}"/>
@@ -239,7 +239,7 @@ ${false && collectionCodes}
     var facetValueCounts = new Array();
     var dynamicFacets = new Array();
     <c:forEach items="${dynamicFacets}" var="dynamicFacet">
-        dynamicFacets.push('${dynamicFacet}');
+        dynamicFacets.push('${dynamicFacet.name}');
     </c:forEach>
 
     <c:forEach var="facetResult" items="${searchResults.facetResults}">
@@ -298,7 +298,7 @@ ${false && collectionCodes}
                 </c:when>
                 <c:when test="${fn:endsWith(facetResult.fieldName, '_s')}">
                     <c:set var="cffv">${fieldResult.label}</c:set>
-                    <c:set var="cffl">${fieldResult.label}</c:set>
+                    <c:set var="cffl">${fn:replace(fieldResult.label, '_', ' ')}</c:set>
                 </c:when>
                 <c:otherwise>
                     <c:set var="cffv" value="${fieldResult.label}" />

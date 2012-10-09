@@ -338,7 +338,7 @@
                                                 <c:if test="${fn:length(facetResult.fieldResult) > 1}">
                                                     <option value="${facetResult.fieldName}" ${Defaultselected}>
                                                         <c:choose>
-                                                            <c:when test="${fn:endsWith(facetResult.fieldName, '_s')}"><fmt:message key="${fn:replace(facetResult.fieldName, '_s','')}"/></c:when>
+                                                            <c:when test="${fn:substring(facetResult.fieldName, fn:length(facetResult.fieldName)-2, fn:length(facetResult.fieldName)) eq '_s'}">${fn:replace(fn:substring(facetResult.fieldName, 0, fn:length(facetResult.fieldName)-2), '_', ' ')}</c:when>
                                                             <c:otherwise><fmt:message key="facet.${facetResult.fieldName}"/></c:otherwise>
                                                         </c:choose>
                                                     </option>

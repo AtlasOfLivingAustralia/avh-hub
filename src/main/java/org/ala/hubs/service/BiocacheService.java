@@ -23,6 +23,7 @@ import org.ala.biocache.dto.SearchRequestParams;
 import org.ala.biocache.dto.SearchResultDTO;
 import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.ala.biocache.dto.store.OccurrenceDTO;
+import org.ala.hubs.dto.FacetDTO;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletResponse;
@@ -84,8 +85,6 @@ public interface BiocacheService {
     /**
      * Get a list of facet values for a given query & facet
      *
-     * @param facets
-     * @param flimit
      * @param requestParams
      * @return
      */
@@ -121,6 +120,6 @@ public interface BiocacheService {
     
     public String getQueryContext();
 
-    public List<String> getCustomFacets(String dataResourceUid);
+    public List<FacetDTO> getDynamicFacets(String queryString);
 
 }
