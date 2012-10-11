@@ -15,8 +15,10 @@
     <decorator name="ala"   page="ala2-skin.jsp" />
     <decorator name="ozcam" page="ozcam-skin.jsp" />
     <decorator name="avh"   page="avh-skin.jsp" />
+    <decorator name="amrin"   page="amrin-skin.jsp" />
 
     <decorator name="ala-bare"  page="ala-bare.jsp"/>
     <decorator name="ozcam-bare"  page="ozcam-bare.jsp"/>
     <decorator name="avh-bare"  page="avh-bare.jsp"/>
+    <decorator name="amrin-bare"  page="amrin-bare.jsp"/>
 </decorators>

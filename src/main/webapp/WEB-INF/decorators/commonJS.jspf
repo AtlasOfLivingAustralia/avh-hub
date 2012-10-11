@@ -6,7 +6,7 @@
 <script type="text/javascript">
     contextPath = "${pageContext.request.contextPath}";
 </script>
-
+<script type="text/javascript" src="http://www.ala.org.au/wp-content/themes/ala2011/scripts/html5.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.min-1.7.1.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.ba-hashchange.min.js"></script>
