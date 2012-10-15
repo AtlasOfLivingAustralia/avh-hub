@@ -43,7 +43,6 @@
 <html>
     <head>
         <!-- Skin selected: ${skin} -->
-        <meta name="DC.Title" content="Partners" lang="en">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
         <title><fmt:message key="show.occurrenceRecord"/> ${recordId} | ${hubDisplayName} </title>

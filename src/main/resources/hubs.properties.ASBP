@@ -25,7 +25,7 @@ collectionController.collectory=http://collections.ala.org.au
 collectionController.collectionsFragContext=/ws/fragment/
 
 # Inject the start page to load on root context - homePage || ozcamHome || avhHome
-homePageController.homePage=amrinHome
+homePageController.homePage=asbpHome
 homePageController.searchPage=homePage
 
 spatialPortalUrl=http://spatial.ala.org.au/
@@ -37,7 +37,7 @@ spatialPortalUrlParams=
 # URI prefix for requests to biocache-service
 biocacheRestService.biocacheUriPrefix=http://biocache.ala.org.au/ws
 # data hub UID ozcam = data_hub_uid:dh1 || avh = data_hub_uid:dh2
-biocacheRestService.queryContext=data_hub_uid:dh5
+biocacheRestService.queryContext=data_hub_uid:dh4
 # apiKey necessary to add and delete assertions
 biocacheRestService.apiKey=api-key-to-use
 # Google Map Key
@@ -79,7 +79,7 @@ facetLimit=100
 #sitemesh.skin=ala  - THIS IS NO LONGER IN USE
 
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
-site.displayName=Australian Microbial Resources information Network
+site.displayName=The Australian Seed Bank
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=data_provider_uid,cl918,duplicate_status
@@ -90,6 +90,6 @@ facets.supportDynamicFacets=false
 facets.customOrder=
 downloads.extra=recordedBy
 dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups,associatedMedia,images,userQualityAssertion,speciesHabitats,dataProviderUid,dataResourceUid,dataProviderName,dataResourceName,duplicationType
-clubRoleForHub=ROLE_OZCAM_CLUB
+clubRoleForHub=ROLE_ADMIN
 
 suppressIssues=missingCoordinatePrecision

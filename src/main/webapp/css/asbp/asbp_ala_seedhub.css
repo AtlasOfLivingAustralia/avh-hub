@@ -1,0 +1,173 @@
+/* The Australian Seed Bank styles for ALA 120928*/
+
+/*text styles*/
+
+body {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 0.9em;
+    line-height: 1.5em;
+    height: 100%;
+    margin: 0 auto;
+    padding-top: 1em;
+    width: 965px;
+}
+a:link {
+    color: #F57A00;
+}
+a:visited {
+    color: #5C5CAD;
+}
+a:hover, a:active {
+    color: #333333;
+    text-decoration: underline;
+}
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3em;
+}
+h1 {
+    border-bottom: 2px dotted #ACA095;
+    color: #5C5CAD;
+    font-family: "Lucida Sans";
+    font-size: 2.3em;
+    font-weight: 500;
+    line-height: 1.4em;
+    margin: 0 0 0.85em;
+}
+h2 {
+    color: #5C5CAD;
+    font-family: "Lucida Sans";
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0.5em 0 0;
+}
+h2 a:link, h2 a, h2 a:active, h2 a:hover, h2 a:visited {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+h3 {
+    color: #F57A00;
+    font-size: 1.2em;
+    margin-bottom: 0;
+    margin-top: 0.5em;
+}
+h4 {
+    font-size: 1.2em;
+    margin-bottom: 0;
+    margin-top: 1.5em;
+}
+h5 {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+h6 {
+    color: Gray;
+    font: 0.65em "Arial";
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+p {
+    margin: 0.5em 0 1em;
+}
+ul, ol {
+    margin-bottom: 1.3em;
+    margin-left: 0;
+    padding-left: 2em;
+}
+ul {
+    list-style-type: disc;
+}
+ol {
+    list-style-type: decimal;
+}
+
+.breadcrumb {
+    font-size: 0.75em;
+    margin-bottom: 0.2em;
+    margin-top: 0;
+    padding-bottom: 0;
+    text-align: right;
+}
+.footer {
+    color: #666666;
+    height: 40px;
+}
+.footer a:link, .footer a:active, .footer a:visited, .footer a:hover {
+    color: #666666;
+    text-decoration: none;
+}
+#block-nice_menus-1 {
+    background: none repeat scroll 0 0 #F57A00;
+    color: #FFFFFF;
+    font: 14px Lucida Sans;
+    float: left;
+    margin-left: 0;
+    margin-right: -100%;
+    padding: 0;
+    width: 100%;
+}
+#nice_menus-1 {
+    height: 40px;
+    background: none repeat scroll 0 0 #F93;
+    color: #FFFFFF;
+    font: 14px Lucida Sans;
+    margin-bottom: 0.2em;
+}
+ul.nice-menu, ul.nice-menu ul {
+    border-top: medium none;
+    list-style: none outside none;
+    margin: 0;
+    padding: 10px 13px 8px 0px;
+}
+ul.nice-menu li {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #F93;
+    border-color: -moz-use-text-color -moz-use-text-color -moz-use-text-color #FFFFFF;
+    border-image: none;
+    border-style: none;
+    border-width: 0;
+    float: left;
+}
+ul.nice-menu a {
+    color: #FFFFFF;
+    margin: 0;
+    padding: 10px 13px 8px;
+    text-decoration: none;
+}
+ul.nice-menu a.hover, ul.nice-menu a:hover {
+    color: #000000;
+}
+ul.nice-menu a.active {
+    border-bottom: 5px solid #99C;
+}
+ul.nice-menu ul {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #F57A00 -moz-use-text-color -moz-use-text-color;
+    border-image: none;
+    border-style: solid none none;
+    border-width: 0;
+    left: -1px;
+    margin-right: 0;
+}
+ul.nice-menu li {
+    background-image: none;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 3px;
+}
+
+.home-menu-block {
+    float: right;
+    width: 200px;
+    padding: 0 1em 1em 1em;
+    background: #5C5CAD;
+    margin: 0 0 1em 4em;
+    border-radius: 8px;
+    text-align: center;
+}
