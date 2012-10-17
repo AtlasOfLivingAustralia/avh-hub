@@ -11,6 +11,7 @@ include file="/common/taglibs.jsp" %>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><decorator:title default="Australian Seed Bank"/></title>
+    <link rel="shortcut icon" href="http://seedpartnership.org.au/sites/default/files/favicon_32px_0.ico" type="image/vnd.microsoft.icon" />
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     <!--css from ala - to replace with full url-->

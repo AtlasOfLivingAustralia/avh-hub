@@ -106,6 +106,7 @@ public class HomePageController {
         model.addAttribute("speciesGroups", serviceCache.getSpeciesGroups());
         model.addAttribute("loanDestinations", serviceCache.getLoanDestination());
         model.addAttribute("cultivationStatus", serviceCache.getEstablishment_means());
+        model.addAttribute("stateConservations", serviceCache.getStateConservations());
         model.addAttribute("states", serviceCache.getStates()); // extractTermsList(States.all())
         model.addAttribute("ibra", serviceCache.getIBRA());
         model.addAttribute("imcra", serviceCache.getIMCRA());

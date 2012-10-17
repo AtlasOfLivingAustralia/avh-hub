@@ -26,6 +26,7 @@ public class ServiceCache {
     protected List<String> cl959 = new ArrayList<String>();
     protected List<String> loan_destination = new ArrayList<String>();
     protected List<String> establishment_means = new ArrayList<String>();
+    protected List<String> state_conservation = new ArrayList<String>();
 
     /** Spring injected RestTemplate object */
     @Inject
@@ -97,6 +98,11 @@ public class ServiceCache {
         return establishment_means;
     }
 
+    public List<String> getStateConservations() {
+        checkCacheAge();
+        return state_conservation;
+    }
+
       /**
      * Check age of cache and retrieve new values from biocache webservices if needed.
      */
@@ -118,7 +124,7 @@ public class ServiceCache {
 
         logger.info("Updating service cache...");
         SpatialSearchRequestParams srp = new SpatialSearchRequestParams();
-        srp.setFacets(new String[]{"basis_of_record","type_status","country", "kingdom","species_group", "state", "ibra", "imcra", "cl966", "loan_destination","establishment_means", "cl959"});
+        srp.setFacets(new String[]{"basis_of_record","type_status","country", "kingdom","species_group", "state", "ibra", "imcra", "cl966", "loan_destination","establishment_means", "cl959", "state_conservation"});
         srp.setFlimit(-1);
         srp.setQ("*:*");
         srp.setPageSize(0);
@@ -156,4 +162,6 @@ public class ServiceCache {
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
+
+
 }
