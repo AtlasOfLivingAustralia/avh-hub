@@ -12,7 +12,7 @@ body {
     width: 965px;
 }
 a:link {
-    color: #F57A00;
+    color: #5C5CAD;
 }
 a:visited {
     color: #5C5CAD;
@@ -45,7 +45,7 @@ h2 a:link, h2 a, h2 a:active, h2 a:hover, h2 a:visited {
     text-decoration: none;
 }
 h3 {
-    color: #F57A00;
+    color: #5C5CAD;
     font-size: 1.2em;
     margin-bottom: 0;
     margin-top: 0.5em;

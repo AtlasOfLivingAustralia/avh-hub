@@ -64,7 +64,11 @@ public class AdvancedSearchParams {
     protected String end_date = "";
     protected String last_load_start = "";
     protected String last_load_end = "";
-    
+    protected String seed_viability_start = "";
+    protected String seed_viability_end = "";
+    protected String seed_quantity_start = "";
+    protected String seed_quantity_end = "";
+
     private final String QUOTE = "\"";
 
     /**
@@ -146,6 +150,20 @@ public class AdvancedSearchParams {
         if (!identified_date_start.isEmpty() || !identified_date_end.isEmpty()) {
             String value = combineDates(identified_date_start, identified_date_end);
             q.append(" identified_date:").append(value);
+        }
+
+        if (!seed_viability_start.isEmpty() || !seed_viability_end.isEmpty()) {
+            String start = (seed_viability_start.isEmpty()) ? "*" : seed_viability_start;
+            String end = (seed_viability_end.isEmpty()) ? "*" : seed_viability_end;
+            String value = "[" + start + " TO " + end + "]";
+            q.append(" ViabilitySummary_d:").append(value);
+        }
+
+        if (!seed_quantity_start.isEmpty() || !seed_quantity_end.isEmpty()) {
+            String start = (seed_quantity_start.isEmpty()) ? "*" : seed_quantity_start;
+            String end = (seed_quantity_end.isEmpty()) ? "*" : seed_quantity_end;
+            String value = "[" + start + " TO " + end + "]";
+            q.append(" AdjustedSeedQuantity_i:").append(value);
         }
 
         String finalQuery = "";
@@ -640,5 +658,37 @@ public class AdvancedSearchParams {
 
     public void setState_conservation(String state_conservation) {
         this.state_conservation = state_conservation;
+    }
+
+    public String getSeed_viability_start() {
+        return seed_viability_start;
+    }
+
+    public void setSeed_viability_start(String seed_viability_start) {
+        this.seed_viability_start = seed_viability_start;
+    }
+
+    public String getSeed_viability_end() {
+        return seed_viability_end;
+    }
+
+    public void setSeed_viability_end(String seed_viability_end) {
+        this.seed_viability_end = seed_viability_end;
+    }
+
+    public String getSeed_quantity_start() {
+        return seed_quantity_start;
+    }
+
+    public void setSeed_quantity_start(String seed_quantity_start) {
+        this.seed_quantity_start = seed_quantity_start;
+    }
+
+    public String getSeed_quantity_end() {
+        return seed_quantity_end;
+    }
+
+    public void setSeed_quantity_end(String seed_quantity_end) {
+        this.seed_quantity_end = seed_quantity_end;
     }
 }

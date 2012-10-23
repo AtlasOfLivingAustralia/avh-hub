@@ -17,8 +17,11 @@
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script> --%>
+        <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/redmond/jquery.ui.redmond.css" type="text/css" media="screen" />--%>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.10/themes/ui-lightness/jquery-ui.css" />
         <script src="${pageContext.request.contextPath}/static/js/jquery.tools.min-1.2.6.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-ui-1.8.10.core.slider.min.js"></script>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>
         <script type="text/javascript">
@@ -33,6 +36,22 @@
                 //$("#advancedSearch").show();
                 //$("ul.tabs").tabs("div.panes > div");
                 $(".css-tabs:first").tabs(".css-panes:first > div", { history: true });
+
+                $( "#viability-range" ).slider({
+                    range: true,
+                    min: 0,
+                    max: 100,
+                    values: [ 80, 95 ],
+                    step: 5,
+                    slide: function( event, ui ) {
+                        $( "#seed_viability_start" ).val( ui.values[ 0 ]);
+                        $( "#seed_viability_end" ).val( ui.values[ 1 ]);
+                    }
+                });
+                //$( "#seed_viability_start" ).val( $( "#viability-range" ).slider( "values", 0 ) );
+                //$( "#seed_viability_end" ).val( $( "#viability-range" ).slider( "values", 1 ) );
+//                $( "#ViabilitySummary_d" ).val( $( "#viability-range" ).slider( "values", 0 ) +
+//                        " - " + $( "#viability-range" ).slider( "values", 1 ) );
             });
 
         </script>
@@ -196,6 +215,34 @@
                                                         </c:if>
                                                     </c:forEach>
                                                 </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Seed quantity (adjusted)</td>
+                                            <td>
+                                                <input type="text" id="seed_quantity_start" class="seed_quantity" name="seed_quantity_start" />
+                                                to
+                                                <input type="text" id="seed_quantity_end" class="seed_quantity" name="seed_quantity_end" /> (leave either box blank to assume lower/upper limit)
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label">Seed viability (percent)</td>
+                                            <td>
+                                                <input type="text" id="seed_viability_start" class="seed_viability" name="seed_viability_start" />
+                                                to
+                                                <input type="text" id="seed_viability_end" class="seed_viability" name="seed_viability_end" /> (% - use slide below)
+                                                <br/>
+                                                <div id="viability-range" style="width:200px;height:10px;margin-top:10px;float:left;"></div>
+                                                <button style="display:inline-block;float:left;margin-top:7px;margin-left:15px;" onclick="$('.seed_viability').val('');return false;">clear values</button>
+                                                <%--<select class="" name="ViabilitySummary_d" id="ViabilitySummary_d">--%>
+                                                    <%--<option value="">-- select a seed viability range --</option>--%>
+                                                    <%--<c:forEach var="viability" begin="10" end="100" step="10">--%>
+                                                        <%--<c:if test="${not empty viability}">--%>
+                                                            <%--<option value="${viability}">${viability-10} - ${viability-0.1}</option>--%>
+                                                        <%--</c:if>--%>
+                                                    <%--</c:forEach>--%>
+                                                <%--</select>--%>
                                             </td>
                                         </tr>
                                     </tbody>
