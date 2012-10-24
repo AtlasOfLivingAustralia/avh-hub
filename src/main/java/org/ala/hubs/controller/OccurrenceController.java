@@ -1418,7 +1418,10 @@ public class OccurrenceController {
             CollectionUtils.addAll(customFacets, facetsToUse);
         }
 
-        requestParams.setFacets(customFacets.toArray(new String[0]));
+        // modify list of facets via hubs.properties (facets.inlcudes and facets.excludes)
+        String[] filteredFacets = filterFacets(customFacets.toArray(new String[0]));
+
+        requestParams.setFacets(filteredFacets);
 
         List<String> displayString = new ArrayList<String>();
         List<String> query = new ArrayList<String>();
@@ -1816,11 +1819,6 @@ public class OccurrenceController {
             allFacets.addAll(Arrays.asList(StringUtils.split(facetsInclude, ",")));
         }
 
-
-
-
-
-
         //List<String> fqs = Arrays.asList(filterQuery); // convert array to List
         List<String> orderedFacets = new ArrayList<String>(); // store merged list in a separate var
 
@@ -1860,7 +1858,9 @@ public class OccurrenceController {
                 logger.debug("facetsMap = "+facet+" - " + (StringUtils.indexOfAny(facet, hideArray) < 0));
             }
         }
+
         logger.debug("facetsMap = " + StringUtils.join(facetsMap.keySet(), "|"));
+
         return facetsMap;
     }
 
