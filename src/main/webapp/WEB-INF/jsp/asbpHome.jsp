@@ -4,10 +4,9 @@
 <!DOCTYPE HTML>
 <html dir="ltr" lang="en-US">
 <head>
-    <title>AMRiN</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><decorator:title default="Australian Seed Bank"/></title>
-
+    <title>Australian Seed Bank Partnership</title>
+    <link rel="shortcut icon" href="http://seedpartnership.org.au/sites/default/files/favicon_32px_0.ico" type="image/vnd.microsoft.icon" />
     <!--css from ala - to replace with full url-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/asbp/tabs-no-images.css" type="text/css" media="screen" />
     <!--css for asbp-->
