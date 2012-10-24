@@ -171,3 +171,13 @@ ul.nice-menu li {
     border-radius: 8px;
     text-align: center;
 }
+
+#multipleFacets h3 {
+    margin: 0;
+}
+
+.tableContainer table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-color: gray;
+}
