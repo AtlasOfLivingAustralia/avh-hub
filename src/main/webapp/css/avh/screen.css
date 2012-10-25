@@ -37,8 +37,9 @@ html>body #container {
 	padding-left: 5px;
 	padding-right: 5px;
 	margin-right: 10px;
-	margin-top: 20px;
+	margin-top: 10px;
 	padding-top: 5px;
+    padding-bottom: 10px;
 	background-color: #F5F5F5;
 	-webkit-border-radius: 7px;
 	-moz-border-radius: 7px;
@@ -49,31 +50,37 @@ html>body #container {
 	width: 998px;
 	margin-top: 20px;
 	margin-bottom: 20px;
-/*	padding-left: 5px;
-	padding-right: 5px;*/
 }
 
 .notoc {
 	margin-left: 135px;
 }
 
+#toc ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+#toc ul ul  {
+    list-style-type: circle;
+}
 
 #toc li {
 	color: #006600;
 }
 
 #toc ul li {
-	position: relative;
+	/*position: relative;*/
 	left: -15px;
 }
 
 #toc ul li ul li{
-	position: relative;
+	/*position: relative;*/
 	left: -25px;
 }
 
 #toc ul>ul>li {
-	position: relative;
+	/*position: relative;*/
 	left: -40px;
 }
 

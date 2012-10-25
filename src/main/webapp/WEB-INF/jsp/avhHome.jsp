@@ -94,8 +94,8 @@
             <div id="index_menu">
                 <div><a href="/search">Search</a></div>
                 <div><a href="/sp/about.html">About AVH</a></div>
-                <div><a href="/sp/help.html">Help</a></div>
-                <div><a href="/sp/avh_data.html">AVH data</a></div>
+                <div><a href="${pageContext.request.contextPath}/help/help.html">Help</a></div>
+                <div><a href="${pageContext.request.contextPath}/help/data.html">AVH Data</a></div>
             </div>
         </div>
 
