@@ -190,7 +190,7 @@
            var extents = sw.lng() + ',' + sw.lat() + ',' + ne.lng() + ','+ ne.lat();
 
            var downloadUrl =  $('#mapDownloadUrl').val() +
-                   '${searchRequestParams.urlParams}' +
+                   '${fn:escapeXml(searchRequestParams.urlParams)}' +
                    //'&extents=' + '142,-45,151,-38' +  //need to retrieve the
                    '&extents=' + extents +  //need to retrieve the
                    '&format=' + $('#format').val() +

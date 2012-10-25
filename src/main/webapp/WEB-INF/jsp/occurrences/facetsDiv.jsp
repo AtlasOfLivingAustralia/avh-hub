@@ -45,7 +45,7 @@
                     <ul id="refinedFacets">
                         <c:forEach var="item" items="${facetMap}">
                             <li>
-                                <c:set var="closeLink">&nbsp;[<b><a href="#" onClick="removeFacet('${item.key}:<alatag:uriEscapeParamValue input="${item.value.value}"/><%--<c:out escapeXml="true" value="${item.value.value}"/>--%>'); return false;" class="removeLink" title="remove filter">X</a></b>]</c:set>
+                                <c:set var="closeLink">&nbsp;[<b><a href="#" data-facet="${item.key}:${fn:escapeXml(item.value.value)}" onClick="removeFacet(this); return false;" class="removeLink" title="remove filter">X</a></b>]</c:set>
 
                                 <c:set var="filterLabel"><c:choose>
                                     <c:when test="${fn:endsWith(item.value.label, '_s')}">${fn:replace(item.value.label, '_s','')}</c:when>

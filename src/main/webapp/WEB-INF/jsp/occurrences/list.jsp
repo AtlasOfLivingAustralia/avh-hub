@@ -42,9 +42,9 @@
             var BC_CONF = {
                 contextPath: "${pageContext.request.contextPath}",
                 serverName: "${initParam.serverName}${pageContext.request.contextPath}",
-                searchString: "${fn:replace(searchResults.urlParameters, "\"", "\\\"")}", //  JSTL var can contain double quotes
-                facetQueries: '${fqParams}',
-                queryString: "${fn:replace(queryDisplay, "\"", "\\\"")}",
+                searchString: "${ala:escapeJS(searchResults.urlParameters)}", //  JSTL var can contain double quotes
+                facetQueries: "${ala:escapeJS(fqParams)}",//"encodeURIComponent('${fn:escapeXml(fqParams)}')", //'${fqParams}',
+                queryString: "${ala:escapeJS(queryDisplay)}",
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
                 skin: "${skin}",

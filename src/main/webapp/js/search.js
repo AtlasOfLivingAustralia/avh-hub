@@ -62,7 +62,8 @@ function reloadWithParam(paramName, paramValue) {
  * triggered when user removes an active facet - re-calculates the request params for
  * page minus the requested fq param
  */
-function removeFacet(facet) {
+function removeFacet(el) {
+    var facet = $(el).data("facet");
     var q = $.getQueryParam('q'); //$.query.get('q')[0];
     var fqList = $.getQueryParam('fq'); //$.query.get('fq');
     var lat = $.getQueryParam('lat');
@@ -691,7 +692,8 @@ $(document).ready(function() {
         onComplete: function(links) {
             var link = links[0];
             // substitute some facet names so sorting works
-            var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name","data_resource").replace("data_provider_name","data_provider").replace("occurrence_year","decade");
+            var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name",
+                "data_resource").replace("data_provider_name","data_provider").replace("occurrence_year","decade").replace(/(_[id])$/,"$1_RNG");
             var displayName = $(link).data("displayname");
             loadMultiFacets(facetName, displayName, null);
         }
@@ -925,12 +927,13 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                     } else if (facetName.indexOf("taxonomic_issue") != -1 || /^el\d+/.test(label)) {
                         label = jQuery.i18n.prop(label);
                     }
+                    facetName = facetName.replace(/_RNG$/,""); // remove range version if present
                     //console.log("label", label, facetName, el);
                     var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + encodeURIComponent(fqEsc);
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
                     html += "<tr class='" + rowType + "'><td>" +
                         "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
-                        "'/></td><td><a href='" + link + "'> " + label + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
+                        "'/></td><td><a href=\"" + link + "\"> " + label + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
                 }
                 if (i == facetLimit - 1) {
                     //console.log("got to end of page of facets: " + i);
