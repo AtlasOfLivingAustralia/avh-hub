@@ -27,7 +27,7 @@
         <div id="nice_menus-1">
             <ul class="nice-menu">
                 <li><a href="${pageContext.request.contextPath}/search">Search</a></li>
-                <li><a href="http://seedpartnership.org.au/help">Help</a></li>
+                <li><a href="${pageContext.request.contextPath}/help/help.html">Help</a></li>
                 <li><a href="http://seedpartnership.org.au/about/aboutus" title="About Us">About Us</a></li>
                 <li><a href="http://seedpartnership.org.au/initiatives">Initiatives</a></li>
                 <li><a href="http://seedpartnership.org.au/partners" title="Partners and Associates">Partners and Associates</a></li>

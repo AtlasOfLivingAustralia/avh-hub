@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.3em;
 }
 h1 {
-    border-bottom: 2px dotted #ACA095;
+    /*border-bottom: 2px dotted #ACA095;*/
     color: #5C5CAD;
     font-family: "Lucida Sans";
     font-size: 2.3em;

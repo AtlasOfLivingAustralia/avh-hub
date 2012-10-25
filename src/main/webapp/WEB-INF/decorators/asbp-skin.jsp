@@ -6,6 +6,7 @@
 taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %><%@
 taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 include file="/common/taglibs.jsp" %>
+<c:set var="section"><decorator:getProperty property="meta.section"/></c:set>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">    
 <head>
@@ -37,8 +38,8 @@ include file="/common/taglibs.jsp" %>
         <!--Menu-->
         <div id="nice_menus-1">
             <ul class="nice-menu">
-                <li class="active-trail"><a class="active" href="${pageContext.request.contextPath}/query">Search</a></li>
-                <li><a href="http://seedpartnership.org.au/help">Help</a></li>
+                <li class="active-trail"><a class="${(empty section || section!='help')?'active':''}" href="${pageContext.request.contextPath}/query">Search</a></li>
+                <li><a class="${(section=='help')?'active':''}" href="${pageContext.request.contextPath}/help/help.html">Help</a></li>
                 <li><a href="http://seedpartnership.org.au/about/aboutus" title="About Us">About Us</a></li>
                 <li><a href="http://seedpartnership.org.au/initiatives">Initiatives</a></li>
                 <li><a href="http://seedpartnership.org.au/partners" title="Partners and Associates">Partners and Associates</a></li>

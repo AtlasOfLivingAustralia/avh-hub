@@ -66,10 +66,8 @@
                 <li><a id="t1" href="#quickSearch">Quick search</a></li>
                 <li><a id="t2" href="#advancedSearch">Advanced search</a></li>
                 <li><a id="t3" href="#taxaUpload">Batch name search</a></li>
-                <c:if test="${false}">
-                    <li><a id="t4" href="#catalogUpload">Batch catalogue no. search</a></li>
-                    <li><a id="t5" href="#shapeFileUpload">Shapefile search</a></li>
-                </c:if>
+                <li><a id="t4" href="#catalogUpload">Batch accession no. search</a></li>
+                <c:if test="${false}"><li><a id="t5" href="#shapeFileUpload">Shapefile search</a></li></c:if>
             </ul>
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
@@ -368,20 +366,20 @@
                             <input type="submit" name="action" value="Search" /></p>
                     </form>
                 </div><!-- end #uploadDiv div -->
+                <div id="catalogUploadDiv" class="paneDiv homePane">
+                    <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
+                        <p>Enter a list of accession/catalogue numbers (one number per line).</p>
+                        <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
+                        <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
+                        <p>
+                            <%--<input type="submit" name="action" value="Download" />--%>
+                            <%--&nbsp;OR&nbsp;--%>
+                            <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                            <input type="hidden" name="field" value="catalogue_number"/>
+                            <input type="submit" name="action" value="Search" /></p>
+                    </form>
+                </div><!-- end #uploadDiv div -->
                 <c:if test="${false}">
-                    <div id="catalogUploadDiv" class="paneDiv homePane">
-                        <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
-                            <p>Enter a list of catalogue numbers (one number per line).</p>
-                                <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
-                            <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
-                            <p>
-                                    <%--<input type="submit" name="action" value="Download" />--%>
-                                    <%--&nbsp;OR&nbsp;--%>
-                                <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
-                                <input type="hidden" name="field" value="catalogue_number"/>
-                                <input type="submit" name="action" value="Search" /></p>
-                        </form>
-                    </div><!-- end #uploadDiv div -->
                     <div id="shapeDiv" class="paneDiv homePane">
                         <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
                             <p>Note: this feature is still experimental. If there are multiple polygons present in the shapefile,

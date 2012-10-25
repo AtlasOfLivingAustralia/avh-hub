@@ -83,6 +83,7 @@ googleAnalyticsKey=N/A
 
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
 site.displayName=Sandbox (LOCAL) | Atlas of Living Australia
+site.displayNameShort=Sandbox
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=cl918
