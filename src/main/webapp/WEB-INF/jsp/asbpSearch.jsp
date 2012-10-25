@@ -40,7 +40,7 @@
                 $( "#viability-range" ).slider({
                     range: true,
                     min: 0,
-                    max: 100,
+                    max: 140,
                     values: [ 80, 95 ],
                     step: 5,
                     slide: function( event, ui ) {
@@ -66,8 +66,10 @@
                 <li><a id="t1" href="#quickSearch">Quick search</a></li>
                 <li><a id="t2" href="#advancedSearch">Advanced search</a></li>
                 <li><a id="t3" href="#taxaUpload">Batch name search</a></li>
-                <li><a id="t4" href="#catalogUpload">Batch catalogue no. search</a></li>
-                <li><a id="t5" href="#shapeFileUpload">Shapefile search</a></li>
+                <c:if test="${false}">
+                    <li><a id="t4" href="#catalogUpload">Batch catalogue no. search</a></li>
+                    <li><a id="t5" href="#shapeFileUpload">Shapefile search</a></li>
+                </c:if>
             </ul>
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
@@ -227,11 +229,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Seed viability (percent)</td>
+                                            <td class="label">Seed viability (summary)</td>
                                             <td>
                                                 <input type="text" id="seed_viability_start" class="seed_viability" name="seed_viability_start" />
                                                 to
-                                                <input type="text" id="seed_viability_end" class="seed_viability" name="seed_viability_end" /> (% - use slide below)
+                                                <input type="text" id="seed_viability_end" class="seed_viability" name="seed_viability_end" /> (use slider below)
                                                 <br/>
                                                 <div id="viability-range" style="width:200px;height:10px;margin-top:10px;float:left;"></div>
                                                 <button style="display:inline-block;float:left;margin-top:7px;margin-left:15px;" onclick="$('.seed_viability').val('');return false;">clear values</button>
@@ -366,28 +368,30 @@
                             <input type="submit" name="action" value="Search" /></p>
                     </form>
                 </div><!-- end #uploadDiv div -->
-                <div id="catalogUploadDiv" class="paneDiv homePane">
-                    <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
-                        <p>Enter a list of catalogue numbers (one number per line).</p>
-                        <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
-                        <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
-                        <p>
-                            <%--<input type="submit" name="action" value="Download" />--%>
-                            <%--&nbsp;OR&nbsp;--%>
-                            <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
-                            <input type="hidden" name="field" value="catalogue_number"/>
-                            <input type="submit" name="action" value="Search" /></p>
-                    </form>
-                </div><!-- end #uploadDiv div -->
-                <div id="shapeDiv" class="paneDiv homePane">
-                    <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
-                        <p>Note: this feature is still experimental. If there are multiple polygons present in the shapefile,
-                            only the first polygon will be used for searching.</p>
-                        <p>Upload a shapefile (.shp).</p>
-                        <p><input type="file" name="file" value="Choose file"/></p>
-                        <p><input type="submit" value="Search" /></p>
-                    </form>
-                </div>
+                <c:if test="${false}">
+                    <div id="catalogUploadDiv" class="paneDiv homePane">
+                        <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
+                            <p>Enter a list of catalogue numbers (one number per line).</p>
+                                <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
+                            <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
+                            <p>
+                                    <%--<input type="submit" name="action" value="Download" />--%>
+                                    <%--&nbsp;OR&nbsp;--%>
+                                <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                                <input type="hidden" name="field" value="catalogue_number"/>
+                                <input type="submit" name="action" value="Search" /></p>
+                        </form>
+                    </div><!-- end #uploadDiv div -->
+                    <div id="shapeDiv" class="paneDiv homePane">
+                        <form name="shapeUploadForm" id="shapeUploadForm" action="${pageContext.request.contextPath}/occurrences/shapeUpload" method="POST" enctype="multipart/form-data">
+                            <p>Note: this feature is still experimental. If there are multiple polygons present in the shapefile,
+                                only the first polygon will be used for searching.</p>
+                            <p>Upload a shapefile (.shp).</p>
+                            <p><input type="file" name="file" value="Choose file"/></p>
+                            <p><input type="submit" value="Search" /></p>
+                        </form>
+                    </div>
+                </c:if>
             </div><!-- end panes div -->
 
         </div>

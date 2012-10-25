@@ -9,7 +9,7 @@ body {
     height: 100%;
     margin: 0 auto;
     padding-top: 1em;
-    width: 965px;
+    width: 995px; /* was 965px */
 }
 a:link {
     color: #5C5CAD;
