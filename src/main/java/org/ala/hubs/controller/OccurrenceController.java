@@ -1075,8 +1075,9 @@ public class OccurrenceController {
             // check the facet is the one we're after
             String thisFacet = facetResults.getFieldName();
             String thisFacetSynonym = (facetSynonyms.containsKey(thisFacet)) ? facetSynonyms.get(thisFacet) : null;
+            logger.debug("thisFacet = " + thisFacet + " VS facet = " + facet);
 
-            if (StringUtils.contains(thisFacet, facet) || StringUtils.equals(facet, thisFacetSynonym)) {
+            if (StringUtils.contains(thisFacet, facet) || StringUtils.contains(facet, thisFacet) || StringUtils.equals(facet, thisFacetSynonym)) {
                 // iterate over facet values (fieldResultsDTO)
                 for (FieldResultDTO field : facetResults.getFieldResult()) {
                     FacetValueDTO fv = new FacetValueDTO(field.getFieldValue(), field.getCount());

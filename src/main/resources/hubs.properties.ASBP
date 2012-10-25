@@ -83,7 +83,7 @@ site.displayName=The Australian Seed Bank
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=data_provider_uid,cl918,duplicate_status
-facets.include=ViabilitySummary_d,AdjustedSeedQuantity_i
+facets.include=ViabilitySummary_d_RNG,AdjustedSeedQuantity_i_RNG
 facets.hide=
 facets.defaultColourBy=basis_of_record
 facets.supportDynamicFacets=false
