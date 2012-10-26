@@ -15,6 +15,7 @@
 
 package org.ala.hubs.service;
 
+import au.org.ala.biocache.AssertionQuery;
 import au.org.ala.biocache.ErrorCode;
 import au.org.ala.biocache.QualityAssertion;
 import au.org.ala.util.DuplicateRecordDetails;
@@ -267,6 +268,13 @@ public class BiocacheRestService implements BiocacheService {
         final String jsonUri = biocacheUriPrefix + "/occurrences/assertions?recordUuid="+recordUuid;
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, QualityAssertion[].class);
+    }
+    
+    @Override
+    public AssertionQuery[] getQueryAssertions(String[] uuids) {
+        final String jsonUri = biocacheUriPrefix + "/assertions/queries/" + StringUtils.join(uuids,",");
+        logger.debug("Requesting: " + jsonUri);
+        return restTemplate.getForObject(jsonUri, AssertionQuery[].class);
     }
 
     /**

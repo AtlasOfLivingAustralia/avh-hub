@@ -11,30 +11,50 @@ import java.util.Map;
 import org.ala.hubs.dto.AssertionDTO;
 
 import au.org.ala.biocache.QualityAssertion;
+import au.org.ala.biocache.AssertionQuery;
 
 public class AssertionUtils {
 
-    public static Collection<AssertionDTO> groupAssertions(QualityAssertion[] assertions, String userId){
+    public static Collection<AssertionDTO> groupAssertions(QualityAssertion[] assertions, AssertionQuery[] queryAssertions, String userId){
 
         //create AssertionDTOs
-        Map<Integer, AssertionDTO> grouped = new HashMap<Integer, AssertionDTO>();
-        for(QualityAssertion qa : assertions){
-
-            AssertionDTO a = grouped.get(qa.getCode());
-            if(a==null){
-                a = new AssertionDTO();
-                a.setCode(qa.getCode());
-                a.setName(qa.getName());
-                grouped.put(qa.getCode(), a);
+        Map<Object, AssertionDTO> grouped = new HashMap<Object, AssertionDTO>();
+        if(assertions != null){
+            for(QualityAssertion qa : assertions){
+    
+                AssertionDTO a = grouped.get(qa.getCode());
+                if(a==null){
+                    a = new AssertionDTO();
+                    a.setCode(qa.getCode());
+                    a.setName(qa.getName());
+                    grouped.put(qa.getCode(), a);
+                }
+                //add the extra users who have made the same assertion
+                a.getUserIds().add(qa.getUserId());
+                a.getUserDisplayNames().add(qa.getUserDisplayName());
+    
+                if(userId!=null &&  userId.equalsIgnoreCase(qa.getUserId())){
+                    //this user set this assertion -
+                    a.setAssertionByUser(true);
+                    a.setUsersAssertionUuid(qa.getUuid());
+                }
             }
-            //add the extra users who have made the same assertion
-            a.getUserIds().add(qa.getUserId());
-            a.getUserDisplayNames().add(qa.getUserDisplayName());
-
-            if(userId!=null &&  userId.equalsIgnoreCase(qa.getUserId())){
-                //this user set this assertion -
-                a.setAssertionByUser(true);
-                a.setUsersAssertionUuid(qa.getUuid());
+        }
+        
+        if(queryAssertions != null){
+            for(AssertionQuery aq:queryAssertions){
+                AssertionDTO a = grouped.get(aq.assertionType());
+                if(a == null){
+                    a = new AssertionDTO();                    
+                    a.setName(aq.assertionType());
+                    grouped.put(a.getName(),a);
+                }
+                a.getUserIds().add(aq.getUserName());
+                if(userId!=null &&  userId.equalsIgnoreCase(aq.getUserName())){
+                  //this user set this assertion -
+                  a.setAssertionByUser(true);
+                  a.setUsersAssertionUuid(aq.getUuid());
+              }
             }
         }
 
@@ -47,5 +67,6 @@ public class AssertionUtils {
             }
         });
         return groupedValues;
-    }
+    }    
+    
 }

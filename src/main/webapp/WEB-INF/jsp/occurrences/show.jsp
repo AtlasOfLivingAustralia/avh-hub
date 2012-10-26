@@ -463,7 +463,7 @@
                         </ul>
                         </div>
 
-                        <div id="userAssertionsContainer" <c:if test="${empty record.userAssertions}">style="display:none"</c:if>>
+                        <div id="userAssertionsContainer" <c:if test="${empty record.userAssertions && empty queryAssertions}">style="display:none"</c:if>>
                         <h2>User flagged issues</h2>
                         <ul id="userAssertions">
                         <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
@@ -473,6 +473,19 @@
                             View issue list & comments
                         </a></div>
                         </div>
+                        <%-- <div id="queryAssertionsContainer" <c:if test="${empty queryAssertions}">style="display:none"</c:if>>
+                        	<h2>Query Based Issues</h2>
+                        	<ul id="queryAssertions">
+                        	<c:forEach var="type" items="${queryAssertionTypes}">
+                                <li>
+                                    <spring:message code="${type}" text="${type}"/>                                    
+                                </li>
+                           </c:forEach>
+                           </ul>
+                        	<div id="queryAssertionDetailsLink"><a id="showQueryAssertionIssues" href="#queryAssertionIssuesDetails">
+                        		View Query Assertion Details.
+                        	</a></div>
+                        </div>  --%>
                     </div>
                 </div>
                 </c:if>
@@ -961,8 +974,21 @@
                        </c:if>
                     </p>
                 </c:forEach>
+                <c:forEach items="${queryAssertions}" var="queryAssertion">
+				<p>
+					<strong><fmt:message key="${queryAssertion.assertionType}"/></strong><br/>
+                       Comment: <span class="userAssertionComment">${queryAssertion.comment}</span><br/>
+                       Flagged by: ${fn:substring(queryAssertion.userName,0,fn:indexOf(queryAssertion.userName,"@"))}<br/>
+                       <c:if test="${not empty queryAssertion.createdDate}">                           
+                           <fmt:formatDate var="assertionCreatedString" value="${queryAssertion.createdDate}" pattern="yyyy-MM-dd"/>
+                           Created: ${assertionCreatedString} <br/>
+                       </c:if>
+                       <a href="${pageContext.request.contextPath}/occurrences/search?q=query_assertion_uuid:${queryAssertion.uuid}">View more records with this assertion.</a>
+				</p>
+			</c:forEach>
             </div>
         </div>
+
 
         <c:if test="${empty record.raw}">
             <div id="headingBar">

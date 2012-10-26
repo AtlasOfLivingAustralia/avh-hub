@@ -212,8 +212,8 @@ public class AssertionController {
 
         model.addAttribute("recordUuid",recordUuid);
         QualityAssertion[] assertions = biocacheService.getUserAssertions(recordUuid);
-
-        Collection<AssertionDTO> groupedAssertions = AssertionUtils.groupAssertions(assertions, userId);
+        //TODO something about the fact that the query assertions are not coming thorugh here...
+        Collection<AssertionDTO> groupedAssertions = AssertionUtils.groupAssertions(assertions,null, userId);
         logger.debug("Number of assertions: " + groupedAssertions.size());
         model.addAttribute("assertions", groupedAssertions);
         return GROUPED_ASSERTIONS;

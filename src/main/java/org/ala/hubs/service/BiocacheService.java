@@ -17,6 +17,7 @@ package org.ala.hubs.service;
 
 import au.org.ala.biocache.ErrorCode;
 import au.org.ala.biocache.QualityAssertion;
+import au.org.ala.biocache.AssertionQuery;
 import au.org.ala.util.DuplicateRecordDetails;
 
 import org.ala.biocache.dto.SearchRequestParams;
@@ -107,6 +108,8 @@ public interface BiocacheService {
     public boolean deleteAssertion(String uuid, String assertionUuid);
 
     public QualityAssertion[] getUserAssertions(String recordUuid);
+    
+    public AssertionQuery[] getQueryAssertions(String[] uuids);
 
     public Map<String, Object> getCompareRecord(String uuid);
 

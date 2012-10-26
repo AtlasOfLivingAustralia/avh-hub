@@ -28,6 +28,7 @@ import au.org.ala.biocache.QualityAssertion;
 import org.ala.biocache.dto.*;
 import au.org.ala.biocache.FullRecord;
 import au.org.ala.util.DuplicateRecordDetails;
+import au.org.ala.biocache.AssertionQuery;
 
 import java.net.URLDecoder;
 import java.util.regex.MatchResult;
@@ -795,10 +796,21 @@ public class OccurrenceController {
                     }
                 }
 
-                if (record.getUserAssertions() != null) {
-                    Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(record.getUserAssertions().toArray(new QualityAssertion[0]), userId);
-                    model.addAttribute("groupedAssertions", grouped);
-                }
+                        
+            //handle the query assertions
+            AssertionQuery[] assertionQueries= null;
+            if(record.getProcessed().getQueryAssertions().size()>0){
+                assertionQueries = biocacheService.getQueryAssertions(record.getProcessed().getQueryAssertions().keySet().toArray(new String[]{}));
+                model.addAttribute("queryAssertions", assertionQueries);                
+                model.addAttribute("queryAssertionTypes" , new HashSet<String>(record.getProcessed().getQueryAssertions().values()));
+            }
+            
+            
+            if (record.getUserAssertions() != null || assertionQueries!=null) {
+              QualityAssertion[] array = record.getUserAssertions() != null?record.getUserAssertions().toArray(new QualityAssertion[0]) : null; 
+            	Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(array,assertionQueries, userId);
+                model.addAttribute("groupedAssertions", grouped);
+            }
 
 
                 List<SampleDTO> environmentalSampleInfo = new ArrayList<SampleDTO>();
