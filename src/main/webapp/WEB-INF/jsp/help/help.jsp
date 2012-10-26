@@ -18,7 +18,7 @@
     <div id="toc">&nbsp;</div>
 
     <div id="help_content" >
-    <h1>${fullName} Help</h1>
+    <h1>${shortName} Help</h1>
     <h2>
         Registration and login
     </h2>
