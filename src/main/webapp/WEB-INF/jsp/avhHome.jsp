@@ -78,22 +78,22 @@
                 <div style="font-size: 16px; color: #ff0000; font-weight: bold;
                          padding-bottom: 0px;"> Please note </div>
 
-                <div>This is a <strong>new version of AVH</strong>, which has been developed by, and is part of,
+                <div>This is a <strong>new version</strong> of Australia&apos;s Virtual Herbarium (AVH), which has been developed by, and is part of,
                     the <a href="http://www.ala.org.au/" target="_blank">Atlas of Living Australia</a> (ALA).
                     This new site will be formally launched later in the year. In the meantime, we are still
                     adding more content and working on a few bug fixes, but we hope that you will find it a
                     great improvement on the previous version. We welcome your feedback on the new site via
                     the 'AVH feedback' link at the bottom of the page, or at
                     <strong><a href="mailto:avh@ala.org.au" target="_blank">avh@ala.org.au</a></strong>. Please read the
-                    <strong><a href="/sp/help.html">Help</a></strong> and
-                    <strong><a href="/sp/avh_data.html">AVH data</a></strong> pages for more
+                    <strong><a href="${pageContext.request.contextPath}/help/help.html">Help</a></strong> and
+                    <strong><a href="${pageContext.request.contextPath}/help/data.html">AVH data</a></strong> pages for more
                     information.
                 </div>
 
             </div>
             <div id="index_menu">
-                <div><a href="/search">Search</a></div>
-                <div><a href="/sp/about.html">About AVH</a></div>
+                <div><a href="${pageContext.request.contextPath}/search">Search</a></div>
+                <div><a href="${pageContext.request.contextPath}/help/about.html">About AVH</a></div>
                 <div><a href="${pageContext.request.contextPath}/help/help.html">Help</a></div>
                 <div><a href="${pageContext.request.contextPath}/help/data.html">AVH Data</a></div>
             </div>
@@ -176,9 +176,9 @@
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="footer_left">
-            <a href="/sp/credits.html">Credits</a> |
-            <a href="/sp/sponsors.html">Sponsors</a> |
-            <a href="/sp/termsofuse.html">Terms of Use</a>
+            <a href="${pageContext.request.contextPath}/help/credits.html">Credits</a> |
+            <a href="${pageContext.request.contextPath}/help/sponsors.html">Sponsors</a> |
+            <a href="${pageContext.request.contextPath}/help/termsofuse.html">Terms of Use</a>
         </div>
 
         <div id="footer_right">

@@ -58,11 +58,12 @@ html>body #container {
 
 #toc ul {
     list-style-type: disc;
-    padding-left: 20px;
+    padding-left: 30px;
 }
 
-#toc ul ul  {
+#toc ul ul, #toc ul ul ul {
     list-style-type: circle;
+    padding-left: 20px;
 }
 
 #toc li {

@@ -21,3 +21,22 @@
     padding-left: 5px;
     padding-right: 5px;
 }
+
+#indentContent {
+    margin-left: 40px;
+}
+
+#indentContent h2, #indentContent h3, #indentContent ul  {
+    margin-top: 10px
+}
+
+#indentContent ul {
+    list-style-type: disc;
+    padding-left: 30px;
+}
+
+#indentContent ul ul, #indentContent ul ul ul {
+    list-style-type: circle;
+    padding-left: 20px;
+}
+

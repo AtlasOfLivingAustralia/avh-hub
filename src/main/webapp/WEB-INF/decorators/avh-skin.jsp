@@ -139,7 +139,9 @@ include file="/common/taglibs.jsp" %>
             <div class="spacer">&nbsp;</div>
         </div>
         <div id="footer_left">
-            <a href="/sp/termsofuse.html">Terms of Use</a>
+            <a href="${pageContext.request.contextPath}/help/credits.html">Credits</a> |
+            <a href="${pageContext.request.contextPath}/help/sponsors.html">Sponsors</a> |
+            <a href="${pageContext.request.contextPath}/help/termsofuse.html">Terms of Use</a>
         </div>
         <div id="footer_right">
            <a href="mailto:avh@ala.org.au">avh@ala.org.au</a>
