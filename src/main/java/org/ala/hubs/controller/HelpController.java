@@ -17,19 +17,14 @@ package org.ala.hubs.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
 
 /**
  * Controller for the site's help pages
@@ -46,17 +41,18 @@ public class HelpController {
      * Enum to reference page paths to their view, with optional skin permission check
      */
     public enum PageType {
-        HELP ("help/help", null),
-        DATA ("help/data", null),
-        PARTNERS ("help/partners", "avh"),
-        LINKS ("help/links", "avh"),
-        ABOUT ("help/aboutAvh", "avh"),
-        CREDITS ("help/credits", "avh"),
-        SPONSORS ("help/sponsors", "avh"),
-        TERMSOFUSE ("help/termsOfUse", "avh");
+        HELP ("help", null),
+        DATA ("data", null),
+        PARTNERS ("partners", "avh"),
+        LINKS ("links", "avh"),
+        ABOUT ("aboutAvh", "avh"),
+        CREDITS ("credits", "avh"),
+        SPONSORS ("sponsors", "avh"),
+        TERMSOFUSE ("termsOfUse", "avh");
 
         protected String viewName;
         protected String skin;
+        protected final String viewDirectory = "help";
 
         PageType(String view, String skin) {
             this.viewName = view;
@@ -64,7 +60,7 @@ public class HelpController {
         }
 
         public String getViewName() {
-            return viewName;
+            return viewDirectory + File.pathSeparator + viewName;
         }
 
         public String getSkin() {
