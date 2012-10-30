@@ -458,8 +458,11 @@
                                     <c:if test="${empty systemAssertion.comment}">
                                         <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
                                     </c:if>
-                                    <c:if test="${systemAssertion.code == 26}"><c:set var="hasExpertDistribution" value="true"/></c:if>
                                     ${systemAssertion.comment}
+                                    <c:if test="${systemAssertion.code == 26}">
+                                        <c:set var="hasExpertDistribution" value="true"/>
+                                        (see <a href="#hasExpertDistribution">larger map</a>)
+                                    </c:if>
                                 </li>
                             </c:forEach>
                         </ul>
@@ -711,7 +714,7 @@
             </div><!-- end of div#content2 -->
 
             <c:if test="${hasExpertDistribution}">
-                <div class="additionalData" style="clear:both;padding-top: 20px;">
+                <div id="hasExpertDistribution"  class="additionalData" style="clear:both;padding-top: 20px;">
                     <h2>Record outside of expert distribution area (shown in red)</h2>
                     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms2.js"></script>
                     <script type="text/javascript">
