@@ -448,6 +448,7 @@
                         <h2>Data validation issues</h2>
                         <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
                         <c:set var="recordIsVerified" value="false"/>
+                        <c:set var="hasExpertDistribution" value="false"/>
                         <c:forEach items="${record.userAssertions}" var="userAssertion">
                             <c:if test="${userAssertion.name == 'userVerified'}"><c:set var="recordIsVerified" value="true"/></c:if>
                         </c:forEach>
@@ -457,6 +458,7 @@
                                     <c:if test="${empty systemAssertion.comment}">
                                         <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
                                     </c:if>
+                                    <c:if test="${systemAssertion.code == 26}"><c:set var="hasExpertDistribution" value="true"/></c:if>
                                     ${systemAssertion.comment}
                                 </li>
                             </c:forEach>
@@ -708,14 +710,85 @@
                 <jsp:include page="recordCoreDiv.jsp"/>
             </div><!-- end of div#content2 -->
 
+            <c:if test="${hasExpertDistribution}">
+                <div class="additionalData" style="clear:both;padding-top: 20px;">
+                    <h2>Record outside of expert distribution area (shown in red)</h2>
+                    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms2.js"></script>
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            var latlng1 = new google.maps.LatLng(${latLngStr});
+                            var mapOptions = {
+                                zoom: 4,
+                                center: latlng1,
+                                scrollwheel: false,
+                                scaleControl: true,
+                                streetViewControl: false,
+                                mapTypeControl: true,
+                                mapTypeControlOptions: {
+                                    style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                                    mapTypeIds: [google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.HYBRID, google.maps.MapTypeId.TERRAIN ]
+                                },
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            };
+
+                            var distroMap = new google.maps.Map(document.getElementById("expertDistroMap"), mapOptions);
+
+                            var marker1 = new google.maps.Marker({
+                                position: latlng1,
+                                map: distroMap,
+                                title:"Occurrence Location"
+                            });
+
+                            // Attempt to display expert distribution layer on map
+                            var SpatialUrl = "${spatialPortalUrl}ws/distribution/lsid/${record.processed.classification.taxonConceptID}?callback=?";
+                            $.getJSON(SpatialUrl, function(data) {
+                                console.log("spatial data", data);
+                                if (data.wmsurl) {
+                                    var urlParts = data.wmsurl.split("?");
+
+                                    if (urlParts.length == 2) {
+                                        var baseUrl = urlParts[0] + "?";
+                                        var paramParts = urlParts[1].split("&");
+                                        console.log("loadWMS args", baseUrl, paramParts);
+                                        loadWMS(distroMap, baseUrl, paramParts);
+                                        // adjust bounds for both Aust (centre) and marker
+                                        var AusCentre = new google.maps.LatLng(-27, 133);
+                                        var dataBounds = new google.maps.LatLngBounds(latlng1, AusCentre);
+                                        distroMap.fitBounds(dataBounds);
+                                    }
+
+                                }
+                            });
+
+                            <c:if test="${not empty record.processed.location.coordinateUncertaintyInMeters}">
+                                var radius1 = parseInt('${record.processed.location.coordinateUncertaintyInMeters}');
+
+                                if (!isNaN(radius)) {
+                                    // Add a Circle overlay to the map.
+                                    circle1 = new google.maps.Circle({
+                                        map: distroMap,
+                                        radius: radius1, // 3000 km
+                                        strokeWeight: 1,
+                                        strokeColor: 'white',
+                                        strokeOpacity: 0.5,
+                                        fillColor: '#2C48A6',
+                                        fillOpacity: 0.2
+                                    });
+                                    // bind circle to marker
+                                    circle1.bindTo('center', marker1, 'position');
+                                }
+                            </c:if>
+                        });
+                    </script>
+                    <div id="expertDistroMap" style="width:80%;height:400px;margin:20px 20px 10px 0;"></div>
+                </div>
+            </c:if>
+
             <style type="text/css">
                 #outlierFeedback #inferredOccurrenceDetails { float:left; clear:both; padding-left:10px;margin-top:30px; width:100%; }
                 /*#outlierFeedback h3 {color: #718804; }*/
                 #outlierFeedback #outlierInformation #inferredOccurrenceDetails { margin-bottom:20px; }
             </style>
-
-			
-
 
 
 

@@ -389,3 +389,8 @@ div#backButton a:hover {
     color:#222;
     font-weight:bold;
 }
+
+div.additionalData {
+    margin-left: 20px;
+    margin-top: 20px;
+}
