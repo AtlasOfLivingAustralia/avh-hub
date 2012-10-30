@@ -756,7 +756,9 @@
                                         loadWMS(distroMap, baseUrl, paramParts);
                                         // adjust bounds for both Aust (centre) and marker
                                         var AusCentre = new google.maps.LatLng(-27, 133);
-                                        var dataBounds = new google.maps.LatLngBounds(latlng1, AusCentre);
+                                        var dataBounds = new google.maps.LatLngBounds();
+                                        dataBounds.extend(AusCentre);
+                                        dataBounds.extend(latlng1);
                                         distroMap.fitBounds(dataBounds);
                                     }
 
