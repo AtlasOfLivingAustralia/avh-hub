@@ -590,7 +590,10 @@
                            <a href="${not empty record.raw.occurrence.occurrenceDetails ?  record.raw.occurrence.occurrenceDetails : imageUrl}" target="_blank"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
                         </c:forEach>
                         <c:if test="${not empty record.raw.occurrence.rights}">
-                        <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                           <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                        </c:if>
+                        <c:if test="${not empty record.raw.occurrence.rightsholder}">
+                            <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
                         </c:if>
                     </div>
                 </c:if>
