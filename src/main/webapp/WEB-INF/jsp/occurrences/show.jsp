@@ -805,7 +805,7 @@
 			
             <div id="outlierFeedback">
                 <c:if test="${not empty record.processed.occurrence.outlierForLayers}">
-                    <div id="outlierInformation">
+                    <div id="outlierInformation" class="additionalData">
                         <h2>Outlier information</h2>
                         <p>
                             This record has been detected as an outlier using the 
@@ -979,7 +979,7 @@
 				</c:if>
 			</div>
 
-                <div id="outlierInformation">
+                <div id="outlierInformation" class="additionalData">
                     <c:if test="${not empty contextualSampleInfo}">
                     <h3>Additional political boundaries information</h3>
                     <table class="layerIntersections" style="border-bottom:none;">
