@@ -523,12 +523,13 @@
                 <c:if test="${not empty record.processed.attribution.provenance && record.processed.attribution.provenance == 'Draft'}">
                 <div class="sidebar">
                     <p class="grey-bg" style="padding:5px; margin-top:15px; margin-bottom:10px;">
-                        This record is available for transcription in the
+                        This record was transcribed from the label by an online volunteer.
+                        It has not yet been validated by the owner institution
                         <a href="http://volunteer.ala.org.au/">Biodiversity Volunteer Portal</a>.
                     </p>
 
                     <button class="rounded" id="viewDraftButton" >
-                        <span id="viewDraftSpan" title="View Draft">View draft in volunteer portal</span>
+                        <span id="viewDraftSpan" title="View Draft">See draft in Biodiversity Volunteer Portal</span>
                     </button>
                 </div>
                 </c:if>
