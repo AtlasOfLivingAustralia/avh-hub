@@ -771,7 +771,6 @@ $.urlParam = function(name){
  * Zooms map to either spatial search or from WMS data bounds 
  */
 function fitMapToBounds() {
-    
     // all other searches (non-spatial)
     // do webservice call to get max extent of WMS data
     var jsonUrl = BC_CONF.biocacheServiceUrl + "/webportal/bounds.json" + BC_CONF.searchString + "&callback=?";
@@ -791,6 +790,8 @@ function fitMapToBounds() {
                 if (map.getZoom() > 15) {
                     map.setZoom(15);
                 }
+            } else if (BC_CONF.zoomOutsideAustralia) {
+                map.fitBounds(dataBounds);
             }
         }
     });

@@ -93,6 +93,7 @@ facets.customOrder=taxon_name,raw_taxon_name,taxonomic_issue,rank,kingdom,phylum
 downloads.extra=recordNumber,cultivated,duplicates,duplicatesOriginalInstitutionID,duplicatesOriginalUnitID,loanIdentifier,loanDestination,phenology,scientificNameWithoutAuthor,identifierRole,identifiedBy,dateIdentified, identificationRemarks,verbatimDateIdentified,geodeticDatum,nameMatchMetric,recordedBy,verbatimEventDate,locality,habitat,occurrenceRemarks,stateConservation,georeferenceProtocol,georeferencedBy
 dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups,associatedMedia,images,userQualityAssertion,speciesHabitats,dataProviderUid,dataResourceUid,dataProviderName,dataResourceName,basisOfRecord,establishmentMeans,institutionName,institutionUid,institutionCode,identifiedBy,dateIdentified,identificationID,identificationRole,typifiedName,duplicationType
 clubRoleForHub=ROLE_AVH_CLUB
-
+# whether search page map should zoom beyond Australia - leave empty for false OR "true"
+zoomOutsideAustralia=
 #dont report the following issues on the record page
 suppressIssues=missingCoordinatePrecision

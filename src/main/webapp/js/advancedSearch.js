@@ -62,7 +62,7 @@ $(document).ready(function() {
         },
         matchSubset: false,
         formatItem: function(row, i, n) {
-            console.log("row", row);
+            //console.log("row", row);
             var result = (row.scientificNameMatches.length > 0) ? row.scientificNameMatches[0] : row.commonNameMatches[0] ;
             if (row.name != result && row.rankString) {
                 result = result + "<div class='autoLine2'>" + row.rankString + ": " + row.name + "</div>";

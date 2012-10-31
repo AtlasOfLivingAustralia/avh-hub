@@ -116,7 +116,7 @@ function removeFacet(el) {
  */
 function loadAllCharts() {
 
-    console.log("Loading charts.....");
+    //console.log("Loading charts.....");
 
     var queryString = BC_CONF.searchString.replace("?q=","");
     var biocacheServiceUrl = BC_CONF.biocacheServiceUrl; //BC_CONF.biocacheServiceUrl, // "http://ala-macropus.it.csiro.au/biocache-service";

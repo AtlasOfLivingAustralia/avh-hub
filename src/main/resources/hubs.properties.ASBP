@@ -92,5 +92,6 @@ facets.customOrder=
 downloads.extra=recordedBy,AdjustedSeedQuantity,CurrentSeedQuantity,ViabilitySummary
 dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups,associatedMedia,images,userQualityAssertion,speciesHabitats,dataProviderUid,dataResourceUid,dataProviderName,dataResourceName,duplicationType
 clubRoleForHub=ROLE_ADMIN
-
+# whether search page map should zoom beyond Australia - leave empty for false OR "true"
+zoomOutsideAustralia=
 suppressIssues=missingCoordinatePrecision

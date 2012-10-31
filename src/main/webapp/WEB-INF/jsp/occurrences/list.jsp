@@ -51,6 +51,7 @@
                 resourceName: "${hubDisplayName}",
                 facetLimit: "${(not empty facetLimit) ? facetLimit : '50'}",
                 queryContext: "${queryContext}",
+                zoomOutsideAustralia: Boolean("<ala:propertyLoader bundle="hubs" property="zoomOutsideAustralia"/>"),
                 hasMultimedia: ${(not empty hasImages) ? hasImages : 'false'} // will be either true or false
             };
         </script>

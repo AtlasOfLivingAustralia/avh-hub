@@ -748,14 +748,13 @@
                             // Attempt to display expert distribution layer on map
                             var SpatialUrl = "${spatialPortalUrl}ws/distribution/lsid/${record.processed.classification.taxonConceptID}?callback=?";
                             $.getJSON(SpatialUrl, function(data) {
-                                console.log("spatial data", data);
+
                                 if (data.wmsurl) {
                                     var urlParts = data.wmsurl.split("?");
 
                                     if (urlParts.length == 2) {
                                         var baseUrl = urlParts[0] + "?";
                                         var paramParts = urlParts[1].split("&");
-                                        console.log("loadWMS args", baseUrl, paramParts);
                                         loadWMS(distroMap, baseUrl, paramParts);
                                         // adjust bounds for both Aust (centre) and marker
                                         var AusCentre = new google.maps.LatLng(-27, 133);
