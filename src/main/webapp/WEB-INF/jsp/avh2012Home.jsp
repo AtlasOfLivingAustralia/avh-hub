@@ -123,7 +123,7 @@
             <div id="hp-LogoBox">
                 <div id="hp-Logo">
                     <div id="searchBox">
-                        <form action="${pageContext.request.contextPath}/search" id="solrSearchForm">
+                        <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
                             <input type="text" id="taxaQuery" name="taxa" value="Dicranoloma"/>
                             <input type="submit" id="solrSubmit" value="Search"/>
                         </form>

@@ -66,6 +66,7 @@ h2 {
     -moz-box-shadow:inset -2px 0 5px #727272;
     -webkit-box-shadow: inset -2px 0 5px #727272;
     /*background-image: url(images/n-ro.png); *//* fallback image */
+    background-color: #666666;
     background-repeat: repeat-x;
     background-image: -moz-linear-gradient(100% 100% 90deg, #696969, #a2a2a2);
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a2a2a2), to(#696969));
