@@ -30,12 +30,13 @@
     margin-top: 10px
 }
 
-#indentContent ul {
+/* Fixes for skins with reset.css */
+#indentContent ul, #contentBox ul {
     list-style-type: disc;
     padding-left: 30px;
 }
 
-#indentContent ul ul, #indentContent ul ul ul {
+#indentContent ul ul, #indentContent ul ul ul, #contentBox ul ul, #contentBox ul ul ul {
     list-style-type: circle;
     padding-left: 20px;
 }

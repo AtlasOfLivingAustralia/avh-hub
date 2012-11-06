@@ -14,7 +14,7 @@
     </excludes>
     <decorator name="ala"   page="ala2-skin.jsp" />
     <decorator name="ozcam" page="ozcam-skin.jsp" />
-    <decorator name="avh"   page="avh-skin.jsp" />
+    <decorator name="avh"   page="avh2012-skin.jsp" />
     <decorator name="amrin"   page="amrin-skin.jsp" />
     <decorator name="asbp"   page="asbp-skin.jsp" />
 
