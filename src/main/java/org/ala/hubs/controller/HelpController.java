@@ -60,7 +60,7 @@ public class HelpController {
         }
 
         public String getViewName() {
-            return viewDirectory + File.pathSeparator + viewName;
+            return viewDirectory + File.separator + viewName;
         }
 
         public String getSkin() {
@@ -83,7 +83,7 @@ public class HelpController {
 
         try {
             pageType = PageType.valueOf(page.toUpperCase()); // lookup view name via enum
-            logger.debug("requested /" + page + " - skin = " + skin + " - pageType = " + pageType);
+            logger.debug("requested /" + page + " - skin = " + skin + " - view = " + pageType.getViewName());
 
             if (pageType.getSkin() == null || StringUtils.equalsIgnoreCase(skin, pageType.getSkin())) {
                 view = pageType.getViewName();
