@@ -124,7 +124,7 @@
                 <div id="hp-Logo">
                     <div id="searchBox">
                         <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                            <input type="text" id="taxaQuery" name="taxa" value="Dicranoloma"/>
+                            <input type="text" id="taxaQuery" name="taxa" value=""/>
                             <input type="submit" id="solrSubmit" value="Search"/>
                         </form>
                     </div>
