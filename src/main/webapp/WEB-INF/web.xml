@@ -164,6 +164,6 @@
     <!-- Mimetype needed for tomcat to serve favicon images -->
     <mime-mapping>
         <extension>ico</extension>
-        <mime-type>image/vnd.microsoft.icon</mime-type>
+        <mime-type>image/x-icon</mime-type>
     </mime-mapping>
 </web-app>
