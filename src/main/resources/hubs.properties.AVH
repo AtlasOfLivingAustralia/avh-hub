@@ -26,7 +26,7 @@ collectionController.collectionsFragContext=/ws/fragment/
 
 # Inject the start page to load on root context - homePage || ozcamHome || avhHome
 #homePageController.homePage=ozcamHome
-homePageController.homePage=avhHome
+homePageController.homePage=avh2012Home
 homePageController.searchPage=avhSearch
 
 spatialPortalUrl=http://spatial.ala.org.au/
