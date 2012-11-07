@@ -198,7 +198,6 @@
             <p>Australia’s major state and territory herbaria house over six million plant, algae and fungi specimens.
                 The collecting data stored with these specimens provides the most complete picture of the distribution
                 of Australia’s flora to date.</p>
-            <p><b>AVH</b> provides access to this fucking awesome data.</p>
         </div>
         <div class="push"></div>
     </div>
