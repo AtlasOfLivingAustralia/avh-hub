@@ -7,10 +7,10 @@
 <head>
     <meta charset="utf-8"/>
     <title>Australia's Virtual Herbarium</title>
-    <link rel="shortcut icon" href="http://chah.gov.au/avh/images/favicon.ico"/>
+    <link rel="shortcut icon" type="image/ico" href="${pageContext.request.contextPath}/static/images/avh2012/favicon.ico"/>
 
-    <link rel="stylesheet" type="text/css" media="all" href="http://www.rbg.vic.gov.au/avh/wp-content/themes/AVH2012/style.css" />
-    <link rel="stylesheet" href="http://www.rbg.vic.gov.au/avh/wp-content/themes/AVH2012/fancybox.css" type="text/css" media="screen" />
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/static/css/avh2012/homepage/style.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 
     <style type="text/css">
         div#fancy_inner {border-color:#BBBBBB}
