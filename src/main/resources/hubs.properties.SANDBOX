@@ -99,3 +99,5 @@ clubRoleForHub=ROLE_ADMIN
 zoomOutsideAustralia=
 #these hides certain system assertions
 suppressIssues=missingCoordinatePrecision
+# Default list view adds hash to search page. Leave blank for normal records view or "mapView" for map.
+defaultListView=

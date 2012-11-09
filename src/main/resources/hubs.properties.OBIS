@@ -26,7 +26,7 @@ collectionController.collectionsFragContext=/ws/fragment/
 
 # Inject the start page to load on root context - homePage || ozcamHome || avhHome
 homePageController.homePage=obisHome
-homePageController.searchPage=obisSearch
+homePageController.searchPage=homePage
 
 spatialPortalUrl=http://spatial.ala.org.au/
 
@@ -79,8 +79,8 @@ facetLimit=100
 #sitemesh.skin=ala  - THIS IS NO LONGER IN USE
 
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
-site.displayName=The Ocean Biogeographic Information System (OBIS)
-site.displayNameShort=OBIS
+site.displayName=The Ocean Biogeographic Information System
+site.displayNameShort=OBIS Australia
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=data_provider_uid,cl918,duplicate_status
@@ -95,3 +95,5 @@ clubRoleForHub=ROLE_ADMIN
 # whether search page map should zoom beyond Australia - leave empty for false OR "true"
 zoomOutsideAustralia=
 suppressIssues=missingCoordinatePrecision
+# Default list view adds hash to search page. Leave blank for normal records view or "mapView" for map.
+defaultListView=mapView

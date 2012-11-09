@@ -97,3 +97,5 @@ clubRoleForHub=ROLE_AVH_CLUB
 zoomOutsideAustralia=
 #dont report the following issues on the record page
 suppressIssues=missingCoordinatePrecision
+# Default list view adds hash to search page. Leave blank for normal records view or "mapView" for map.
+defaultListView=

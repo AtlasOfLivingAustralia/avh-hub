@@ -94,3 +94,5 @@ clubRoleForHub=ROLE_OZCAM_CLUB
 # whether search page map should zoom beyond Australia - leave empty for false OR "true"
 zoomOutsideAustralia=
 suppressIssues=missingCoordinatePrecision
+# Default list view adds hash to search page. Leave blank for normal records view or "mapView" for map.
+defaultListView=
