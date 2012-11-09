@@ -81,6 +81,7 @@ facetLimit=100
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
 site.displayName=The Ocean Biogeographic Information System
 site.displayNameShort=OBIS Australia
+site.attribution=The Ocean Biogeographic Information System, Australia (&lt;current year&gt;). <a href="http://obis.org.au">http://obis.org.au</a>. [Accessed &lt;date of access&gt;].
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=data_provider_uid,cl918,duplicate_status

@@ -82,6 +82,7 @@ facetLimit=100
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
 site.displayName=Australia's Virtual Herbarium
 site.displayNameShort=AVH
+site.attribution=The Council of Heads of Australasian Herbaria (&lt;current year&gt;) Australia's Virtual Herbarium.<a href="http://avh.chah.org.au">http://avh.chah.org.au</a>. [Accessed &lt;date of access&gt;].
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=basis_of_record,data_provider_uid,cl918,imcra,institution_uid,interaction,raw_state_conservation,provenance,multimedia,duplicate_status
