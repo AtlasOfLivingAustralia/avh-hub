@@ -13,6 +13,7 @@
 <c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <c:set var="facetLimit" scope="request"><ala:propertyLoader bundle="hubs" property="facetLimit"/></c:set>
 <c:set var="defaultFacetMapColourBy" scope="request"><ala:propertyLoader bundle="hubs" property="facets.defaultColourBy"/></c:set>
+<c:set var="defaultListView" scope="request"><ala:propertyLoader bundle="hubs" property="defaultListView"/></c:set>
 <c:set var="queryDisplay">
     <c:choose>
         <c:when test="${fn:contains(searchRequestParams.displayString,'matchedTaxon')}">${searchRequestParams.displayString}</c:when>
@@ -48,6 +49,7 @@
                 bieWebappUrl: "${bieWebappContext}",
                 biocacheServiceUrl: "${biocacheServiceUrl}",
                 skin: "${skin}",
+                defaultListView: "${defaultListView}",
                 resourceName: "${hubDisplayName}",
                 facetLimit: "${(not empty facetLimit) ? facetLimit : '50'}",
                 queryContext: "${queryContext}",

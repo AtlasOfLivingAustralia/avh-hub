@@ -16,9 +16,9 @@
 /**
  * JQuery on document ready callback
  */
-$(document).ready(function() {
+jQuery(document).ready(function() {
     // Autocomplete
-    $(":input#taxaQuery, :input#solrQuery").autocomplete('http://bie.ala.org.au/search/auto.json', {
+    jQuery(":input#taxaQuery, :input#solrQuery").autocomplete('http://bie.ala.org.au/search/auto.json', {
         extraParams: {limit:100},
         dataType: 'jsonp',
         parse: function(data) {
@@ -49,7 +49,7 @@ $(document).ready(function() {
     });
 
     // search submit
-    $("#solrSearchFormOFF").submit(function(e) {
+    jQuery("#solrSearchFormOFF").submit(function(e) {
         e.preventDefault();
         var lsid = $("input#lsid").val();
         var query = $("input#solrQuery").val();

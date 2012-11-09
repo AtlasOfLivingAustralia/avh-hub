@@ -628,9 +628,15 @@ $(document).ready(function() {
         images: false
     };
 
+    // work-around for intitialIndex & history being mutually exclusive
+    if (!window.location.hash) {
+        window.location.hash = BC_CONF.defaultListView;
+    }
+
     $(".css-tabs").tabs(".css-panes > div", { 
         history: true,
         effect: 'fade',
+        //initialIndex: (BC_CONF.defaultListView == "mapView") ? 1 : 0, // not compatible with history plugin
         onClick: function(event, tabIndex) {
             if (tabIndex == 1 && !tabsInit.map) {
                 // trigger map load

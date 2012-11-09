@@ -16,11 +16,13 @@
     <decorator name="ozcam" page="ozcam-skin.jsp" />
     <decorator name="avh"   page="avh2012-skin.jsp" />
     <decorator name="amrin"   page="amrin-skin.jsp" />
+    <decorator name="obis"   page="obis-skin.jsp" />
     <decorator name="asbp"   page="asbp-skin.jsp" />
 
     <decorator name="ala-bare"  page="ala-bare.jsp"/>
     <decorator name="ozcam-bare"  page="ozcam-bare.jsp"/>
     <decorator name="avh-bare"  page="avh-bare.jsp"/>
     <decorator name="amrin-bare"  page="ala-bare.jsp"/>
+    <decorator name="obis-bare"  page="obis-bare.jsp"/>
     <decorator name="asbp-bare"  page="asbp-bare.jsp"/>
 </decorators>
