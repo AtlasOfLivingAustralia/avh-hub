@@ -1,0 +1,123 @@
+ul#nav-site a:link, ul#nav-site a:visited {
+    font-size: 17px;
+}
+
+header#site-header {
+    padding: 12px 0 12px 0;
+    margin:0 0 18px 0;
+    border-top:1px solid #0a3362;
+    color:#e3e3e3;
+    background-color: #0a3362;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#4d719b), to(#0a3362));
+    background-image: -webkit-linear-gradient(top, #4d719b, #0a3362);
+    background-image:    -moz-linear-gradient(top, #4d719b, #0a3362);
+    background-image:     -ms-linear-gradient(top, #4d719b, #0a3362);
+    background-image:      -o-linear-gradient(top, #4d719b, #0a3362);
+    background-image:         linear-gradient(top, #4d719b, #0a3362);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#4d719b', EndColorStr='#0a3362');
+}
+
+.home > header#site-header {
+    padding: 34px 0;
+}
+
+header#site-header section {
+    float: left;
+    position: absolute;
+    bottom: 2px;
+    right: 0;
+}
+
+.home header#site-header section {
+    bottom: 33%;
+    left: 22%;
+}
+
+.two-col section {
+    margin-top: 12px;
+}
+
+#headingBar {
+    margin-left: 0 !important;
+}
+
+#searchBox {
+    display:none;
+}
+
+#SidebarBox {
+    float: left;
+}
+
+#content2 {
+    float: left;
+    margin-left: 20px;
+    /*    width: 640px;*/
+}
+
+#main_content > #headingBar {
+    min-height: 55px;
+    margin: 0 0 10px 0;
+    /*border-bottom: none; */
+}
+
+#main_content > #headingBar > h1 {
+    padding-top: 15px;
+}
+
+#SidebarBox, #resultsReturned {
+    margin-top: 5px;
+}
+
+h1, h2, h3, h4, h5 {
+    line-height: 1.2em;
+}
+
+#mapLayerControls label {
+    margin: 0;
+}
+
+#searchHeader { padding-left: 20px;}
+
+div#mainmenu > div.rightMenu {
+    float:right;
+    border-right: none;
+    border-left: 1px solid #FFF;
+}
+
+div#mainmenu > div#clubView {
+    font-weight: bold;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+div#mainmenu a div#loginId {
+    display: inline-block;
+    padding-right: 5px;
+}
+
+#clubView {
+    color: red;
+}
+
+/* Custom width for AVH results */
+#content2 .css-panes div.paneDiv {
+    width: 740px;
+}
+
+#mapwrapper #mapcanvas {
+    width: 740px;
+}
+
+#mapwrapper #maploading {
+    width: 740px;
+}
+
+ul.facets {
+    padding-bottom: 0;
+    list-style: none;
+}
+
+div.subnavlist {
+     padding-top: 1px;
+ }
