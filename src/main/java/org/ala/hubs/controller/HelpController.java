@@ -38,7 +38,8 @@ public class HelpController {
     private final static Logger logger = Logger.getLogger(HelpController.class);
 
     /**
-     * Enum to reference page paths to their view, with optional skin permission check
+     * Enum to reference page paths to their view, with optional skin permission check.
+     * Enum value must match the requested filename (case insensitive).
      */
     public enum PageType {
         HELP ("help", null),
@@ -48,7 +49,10 @@ public class HelpController {
         ABOUT ("aboutAvh", "avh"),
         CREDITS ("credits", "avh"),
         SPONSORS ("sponsors", "avh"),
-        TERMSOFUSE ("termsOfUse", "avh");
+        TERMSOFUSE ("termsOfUse", null),
+        CONTACTOBIS ("contactObis", "obis"),
+        CONTRIBUTING("contributingToObis", "obis"),
+        FAQ("obisFaq", "obis");
 
         protected String viewName;
         protected String skin;

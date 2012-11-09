@@ -62,7 +62,19 @@ include file="/common/taglibs.jsp" %>
     <footer>
         <div class="inner">
             <section class="copyright">
-                <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/au/" title="External link to Creative Commons"><img src="http://www.ala.org.au/wp-content/themes/ala2011/images/creativecommons.png" width="88" height="31" alt="" /></a></div><p><a href="" title="Terms of Use">Terms of Use</a> | <a href="">Contact</a><br />This site is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/au/" title="External link to Creative Commons" class="external">Creative Commons Attribution 3.0 Australia License</a>.</p><div class="img-right"><a href="http://www.ala.org.au" title="Atlas of Living Australia"><img src="http://www.ala.org.au/wp-content/themes/ala2011/images/poweredby-ala.png" width="178" height="62" alt="" /></a></div>
+                <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/au/"
+                                         title="External link to Creative Commons"><img
+                        src="http://www.ala.org.au/wp-content/themes/ala2011/images/creativecommons.png" width="88"
+                        height="31" alt=""/></a></div>
+                <p><a href="${pageContext.request.contextPath}/help/termsOfUse" title="Terms of Use">Terms of Use</a> |
+                    <a href="${pageContext.request.contextPath}/help/contactObis">Contact</a><br/>This site is licensed
+                    under a <a href="http://creativecommons.org/licenses/by/3.0/au/"
+                               title="External link to Creative Commons" class="external">Creative Commons Attribution
+                        3.0 Australia License</a>.</p>
+
+                <div class="img-right"><a href="http://www.ala.org.au" title="Atlas of Living Australia"><img
+                        src="http://www.ala.org.au/wp-content/themes/ala2011/images/poweredby-ala.png" width="178"
+                        height="62" alt=""/></a></div>
             </section>
         </div>
     </footer>

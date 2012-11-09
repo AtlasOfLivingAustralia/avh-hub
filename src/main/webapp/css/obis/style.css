@@ -121,3 +121,7 @@ ul.facets {
 div.subnavlist {
      padding-top: 1px;
  }
+
+#downloadMap #downloadMapForm fieldset p {
+    padding: 4px 0;
+}

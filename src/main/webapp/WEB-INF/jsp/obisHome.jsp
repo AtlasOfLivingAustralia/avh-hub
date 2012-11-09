@@ -76,6 +76,15 @@
             and provides a variety of tools for visualising relationships&nbsp;between marine species and their environment. OBIS is also the information
             component of the <span class="link-external"><span class="link-external"><a href="http://www.coml.org/">Census of Marine Life
             Program</a></span>.</span></p>
+        <p><span class="link-external"></span><a href="http://www.obis.org.au/aboutUs/index.html">OBIS Australia</a> seeks to advance the
+            goals of OBIS in the <a href="http://www.obis.org.au/faq/index.html#4">Australian region</a>, as one of a growing network of
+            Regional OBIS Nodes. Specifically, the aims of OBIS Australia are:</p>
+        <ul>
+            <li>to encourage the <a href="${pageContext.request.contextPath}/help/contributing"><strong>sharing</strong></a> of marine species data from the Australian region into the OBIS international data network</li>
+            <li>to enable users to <a href="${pageContext.request.contextPath}/search"><strong>search</strong></a> for marine data from the international OBIS network users. </li>
+        </ul>
+        <p>From <a href="${pageContext.request.contextPath}/help/faq">here</a> you can&nbsp;find out more information about OBIS Australia and the OBIS program in
+            general. Please use the links in the navigation panel to the left to access these functions and the other parts of the OBIS Australia site. </p>
     </section>
     <section class="last gallery">
         <ul id="sliderbody">
@@ -93,7 +102,18 @@
 <footer>
     <div class="inner">
         <section class="copyright">
-            <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/au/" title="External link to Creative Commons"><img src="http://www.ala.org.au/wp-content/themes/ala2011/images/creativecommons.png" width="88" height="31" alt="" /></a></div><p><a href="" title="Terms of Use">Terms of Use</a> | <a href="">Contact</a><br />This site is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/au/" title="External link to Creative Commons" class="external">Creative Commons Attribution 3.0 Australia License</a>.</p><div class="img-right"><a href="http://www.ala.org.au" title="Atlas of Living Australia"><img src="http://www.ala.org.au/wp-content/themes/ala2011/images/poweredby-ala.png" width="178" height="62" alt="" /></a></div>
+            <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/au/"
+                                     title="External link to Creative Commons"><img
+                    src="http://www.ala.org.au/wp-content/themes/ala2011/images/creativecommons.png" width="88"
+                    height="31" alt=""/></a></div>
+            <p><a href="${pageContext.request.contextPath}/help/termsOfUse" title="Terms of Use">Terms of Use</a> |
+                <a href="${pageContext.request.contextPath}/help/contactObis">Contact</a><br/>This site is licensed under
+                a <a href="http://creativecommons.org/licenses/by/3.0/au/" title="External link to Creative Commons"
+                     class="external">Creative Commons Attribution 3.0 Australia License</a>.</p>
+
+            <div class="img-right"><a href="http://www.ala.org.au" title="Atlas of Living Australia"><img
+                    src="http://www.ala.org.au/wp-content/themes/ala2011/images/poweredby-ala.png" width="178"
+                    height="62" alt=""/></a></div>
         </section>
     </div>
 </footer>

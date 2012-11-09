@@ -3,6 +3,7 @@
 <c:set var="hostName" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}"/>
 <c:set var="fullName"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="shortName"><ala:propertyLoader bundle="hubs" property="site.displayNameShort"/></c:set>
+<c:set var="attribution"><ala:propertyLoader bundle="hubs" property="site.attribution"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,13 +20,13 @@
     <h1>Terms of Use</h1>
 
     <br/>
-    <p>The use of Australia's Virtual Herbarium is subject to the terms of use outlined below. Australia's Virtual Herbarium
+    <p>The use of ${fullName} is subject to the terms of use outlined below. ${fullName}
         forms part of the <a href="http://www.ala.org.au/">Atlas of Living Australia</a> (ALA); see the
         <a href="http://www.ala.org.au/about-the-atlas/terms-of-use/#cy">ALA Terms of Use</a> for additional information.
     </p>
     <h2>Copyright
     </h2>
-    <p>With the exception of the AVH logo, the images on the Home page, and where otherwise noted, all material presented
+    <p>With the exception of the ${shortName} logo, the images on the Home page, and where otherwise noted, all material presented
         on this website is provided under a    <a href="http://creativecommons.org/licenses/by/3.0/au/">Creative
             Commons Attribution 3.0 Australia</a> licence. This allows for re-distribution of the
         data and any derivative works based on the data, provided that the source of the data is acknowledged.
@@ -37,16 +38,15 @@
     <p>
         Content from this website should be attributed as:
         <br/>
-    <blockquote>The Council of Heads of Australasian Herbaria (&lt;current year&gt;) Australia's Virtual Herbarium.
-        <a href="http://avh.chah.org.au">http://avh.chah.org.au</a>. [Accessed &lt;date of access&gt;].</blockquote>
+    <blockquote>${attribution}</blockquote>
     </p>
     <h2>
         Disclaimer
     </h2>
     <p>
-        Australia's Virtual Herbarium (AVH) data is supplied as is. No warranty, express or implied, is made concerning
+        ${fullName} (${shortName}) data is supplied as is. No warranty, express or implied, is made concerning
         the accuracy or fitness for a particular
-        purpose of the data. The user shall use AVH at their own risk. The Council of Heads of Australasian Herbaria Inc.
+        purpose of the data. The user shall use ${shortName} at their own risk. The Council of Heads of Australasian Herbaria Inc.
         (CHAH) will not be liable for any loss or
         damage arising from the use of or reliance upon the data, or reliance on its availability at any time.
     </p>
@@ -68,8 +68,7 @@
         Privacy
     </h2>
     <p>
-        Information from this service resides on a computer system funded by the Commonwealth, state and territory governments of Australia. Australia's Virtual
-        Herbarium uses
+        Information from this service resides on a computer system funded by the Commonwealth, state and territory governments of Australia. ${fullName} uses
 
         <a href="http://www.google.com/intl/en_uk/analytics/index.html">Google Analytics</a>
 
@@ -78,7 +77,7 @@
         unauthorised access to this system is prohibited and is subject to various Australian criminal and civil laws.
     </p>
     <p>
-        In order to use certain features available on the AVH website, you must register as a user with the Atlas of Living Australia (ALA). When registering, a
+        In order to use certain features available on the ${shortName} website, you must register as a user with the Atlas of Living Australia (ALA). When registering, a
         genuine e-mail address must be provided.
     </p>
     <p>
