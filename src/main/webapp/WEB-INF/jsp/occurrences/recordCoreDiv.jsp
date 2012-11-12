@@ -106,7 +106,7 @@
             <c:if test="${not empty record.processed.attribution.collectionUid}">
                 </a>
             </c:if>
-            <c:if test="${not empty record.raw.occurrence.collectionCode}">
+            <c:if test="${false && not empty record.raw.occurrence.collectionCode}">
                 <c:set target="${fieldsMap}" property="collectionCode" value="true" />
                 <c:if test="${not empty collectionName || not empty record.processed.attribution.collectionName}"><br/></c:if>
                 <span class="originalValue" style="display:none">Supplied as "${record.raw.occurrence.collectionCode}"</span>

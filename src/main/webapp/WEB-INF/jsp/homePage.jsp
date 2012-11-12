@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
+        <meta name="section" content="search"/>
         <title>Search for records | <ala:propertyLoader bundle="hubs" property="site.displayName"/></title>
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
@@ -326,8 +327,7 @@
                 </div><!-- end #advancedSearch div -->
                 <div id="uploadDiv" class="paneDiv homePane">
                     <form name="taxaUploadForm" id="taxaUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
-                        <p>Enter a list of taxon names (one name per line)
-                            file containing records OR perform a <strong>search</strong>.</p>
+                        <p>Enter a list of taxon names/scientific names, one name per line (common names not currently supported).</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
                         <p><textarea name="queries" id="raw_names" rows="15" cols="60"></textarea></p>
                         <p>

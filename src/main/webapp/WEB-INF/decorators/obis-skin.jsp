@@ -8,6 +8,7 @@ taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 include file="/common/taglibs.jsp" %>
 <c:set var="fullName"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="shortName"><ala:propertyLoader bundle="hubs" property="site.displayNameShort"/></c:set>
+<c:set var="section"><decorator:getProperty property="meta.section"/></c:set>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">    
 <head>
@@ -30,8 +31,8 @@ include file="/common/taglibs.jsp" %>
         <div class="inner">
             <ul id="nav-site">
                 <li><a href="${pageContext.request.contextPath}/">Home</a></li>
-                <li class="selected"><a href="${pageContext.request.contextPath}/search">Search</a></li>
-                <li><a href="${pageContext.request.contextPath}/occurrences/search">Records</a></li>
+                <li class="${(section=='search')?'selected':''}"><a href="${pageContext.request.contextPath}/search">Search</a></li>
+                <li class="${(section!='search')?'selected':''}"><a href="${pageContext.request.contextPath}/occurrences/search">Records</a></li>
             </ul>
             <ul id="nav-user">
                 <li><a href="http://www.ala.org.au/my-profile/" title="My profile">My profile</a></li>
@@ -50,7 +51,10 @@ include file="/common/taglibs.jsp" %>
                         <input id="taxaQuery" title="Search" type="text" name="taxa" placeholder="Quick search" class="ac_input freetext" value="<c:out value='${param.taxa}'/>" /><button value="Search" type="submit">Search</button>
                     </form>
                 </div>
-                <p><strong>More options</strong>: <a href="${pageContext.request.contextPath}/search#advancedSearch">Advanced search</a>, <a href="${pageContext.request.contextPath}/search#taxaUpload">Batch name search</a>, <a href="${pageContext.request.contextPath}/search#catalogUpload">Batch catalogue no. search</a>, <a href="${pageContext.request.contextPath}/search#shapeFileUpload">Shapefile search</a></p>
+                <p><strong>More options</strong>: <a href="${pageContext.request.contextPath}/search#advancedSearch">Advanced search</a>,
+                    <a href="${pageContext.request.contextPath}/search#taxaUpload">Batch taxon search</a>,
+                    <a href="${pageContext.request.contextPath}/search#catalogUpload">Batch catalogue no. search</a>,
+                    <a href="${pageContext.request.contextPath}/search#shapeFileUpload">Shapefile search</a></p>
             </section>
         </div>
     </header>
