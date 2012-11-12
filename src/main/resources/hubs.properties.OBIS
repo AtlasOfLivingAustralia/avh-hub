@@ -60,7 +60,6 @@ sensitiveDatasets.BIRDS_AUSTRALIA=http://collections.ala.org.au/public/show/dr49
 bieRestService.bieUriPrefix=http://bie.ala.org.au
 bieWebappContext=http://bie.ala.org.au
 collectionsWebappContext=http://collections.ala.org.au
-spatialPortalUrl=http://spatial.ala.org.au
 
 # Whether or not to use the ALA base urls used to query/display information about the collection/institution or species.
 useAla=true
