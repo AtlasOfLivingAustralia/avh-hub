@@ -20,24 +20,34 @@
     padding-left: 0px;
 }
 
+#indentContent {
+	padding: 0px 10px;
+}
+
 #header {
     width: 100%;
     height: 144px;
-    background-color: #3C8339;
-    /*background-repeat: repeat-x;
-     background-image: url(images/header-background.png);*/
+    background-repeat: repeat-x;
+    background-image: url(/static/images/AVH2012/header-background.png);
 }
 #featureBox, #LogoBox {
     float: left;
 }
+
+#loginId {
+	width: 974px;
+	margin: 0px 10px;
+}
+
 #Logo {
-    background-image: url(images/logo_AVH-white-transparent-small.png);
+    background-image: url(/static/images/AVH2012/logo_AVH-white-transparent-small.png);
     background-repeat: no-repeat;
     width: 450px;
     float: left;
     height: 100px;
     background-position: 13px;
     margin-top: 20px;
+	margin-left: -20px;
 }
 
 #content2 {

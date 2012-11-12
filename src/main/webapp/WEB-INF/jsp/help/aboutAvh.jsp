@@ -55,7 +55,7 @@
     <p>AVH is a dynamic resource. New specimen records are added as herbaria continue to database their ever-growing
         collections, and existing records are updated to reflect name changes and data validation work.</p>
 
-    <div class="gototop"><a href="#top">[Go to top]</a></div></div>
+
 
 </div>
 

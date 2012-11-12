@@ -1,9 +1,8 @@
 /*
     Document   : hp-contentbox
     Created on : 30/10/2012, 8:26:28 PM
-    Author     : nklaze
+    Author     : Niels Klazenga, Council of Heads of Australasian Herbaria
     Description:
-        Purpose of the stylesheet follows.
 */
 
 /*------------------------------------------------*/
@@ -38,7 +37,7 @@
 }
 
 #hp-content p {
-    font-size: 12px;
+    font-size: 90%;
     line-height: 18px;
     margin-bottom: 10px;
 }

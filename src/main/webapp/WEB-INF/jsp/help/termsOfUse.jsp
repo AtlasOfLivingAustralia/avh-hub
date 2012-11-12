@@ -88,8 +88,7 @@
 
         .
     </p>
-
-    <div class="gototop"><a href="#top">[Go to top]</a></div></div>
+	<p>&nbsp;</p>
 
 </div>
 

@@ -18,10 +18,6 @@
 }
 
 .sidebar li {
-    list-style: none;
-}
-
-.sidebar li {
     font-size: 12px;
     list-style-image: url(images/arrow_r.jpg);
     border-bottom-width: 1px;
@@ -38,7 +34,7 @@
 }
 
 .sidebar li a {
-    /*color:#005A8E;*/
+    color:#005A8E;
     text-decoration:none;
 }
 .sidebar li a:hover  {

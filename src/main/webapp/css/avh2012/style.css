@@ -1,98 +1,101 @@
 /*
-Theme Name: OZCAM Heavy 0.3
+Theme Name: AVH2012
+Template: twentyeleven
 Description:
-Author: Diego DeNicola/Musuem Victoria
+Author: Niels Klazenga, Royal Botanic Gardens Melbourne
 Author URI:
-Version: 0.3
+Version: 0.1
+
 .
 .
 */
 
+/*@import url("twentyeleven.css");*/
 @import url("widget.css");
 @import url("reset.css");
 @import url("style-common.css");
 
+@import url("navigation.css");
+@import url("featurebox.css");
+@import url("contentbox.css");
+@import url("hp-contentbox.css");
+@import url("logofarm.css");
 
-/*------------------------------------------------*/
-/*---------------[NAVIGATION]---------------*/
-/*------------------------------------------------*/
+
 html, body {
     height: 100%;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-#navigation {
-    clear: both;
-    width: 100%;
-    margin-top: 0;
-    margin-right: auto;
-    margin-bottom: 0;
-    margin-left: auto;
-    background-image: url(images/n-bg.jpg);
-    background-repeat: repeat-x;
-    height: 53px;
-}
+/*-------------------------------------------------------------
+-------------------- page wireframe ---------------------------
+-------------------------------------------------------------*/
+
 body {
+    padding: 0; /* overrides style.css in Twenty Eleven theme */
 }
-h2 {
-    color: #666;
+
+body.page #primary {
+    float: right;
+    margin: 0;
+    width: 75%;
 }
-#nav-inside {
-    overflow: visible;
-    width: 1024px;
+
+body.page #content {
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+body.page #content article.page {
     margin-top: 0px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-}
-#nav {
-    margin: 0;
-    list-style: none;
-    line-height: 100%;
+    padding: 0;
 }
 
-#nav a {
-    display: block;
-    color: #666666; /*#0c6fb5;*/
-    text-decoration: none;
-    height: 23px;
-    padding: 20px 10px 10px 10px;
-    text-align: center;
-    /*line-height: 175%;*/
-}
-#nav a:hover {
-    color: #FFF;
-    text-shadow: 0px -1px 0px #000;
-    -moz-box-shadow:inset -2px 0 5px #727272;
-    -webkit-box-shadow: inset -2px 0 5px #727272;
-    /*background-image: url(images/n-ro.png); *//* fallback image */
-    background-color: #666666;
-    background-repeat: repeat-x;
-    background-image: -moz-linear-gradient(100% 100% 90deg, #696969, #a2a2a2);
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a2a2a2), to(#696969));
+body.page .entry-meta .edit-link a {
+    bottom: auto;
+    left: auto;
+    position: absolute;
+    right: 2.5%;
+    top: 20px;
 }
 
-#nav li { /* all list items */
-    float: left;
-    width: 170px; /* width needed or else Opera goes nuts */
-    height: 53px;
-    background-image: url(images/n-sep.jpg);
-    background-repeat: no-repeat;
-    background-position: right;
+body.page .entry-content,
+body.page header.entry-header,
+body.page footer.entry-footer {
+    margin: 0 auto;
+    width: 95%;
 }
-#nav_start {
-    margin: 0;
-    list-style: none;
-    line-height: 100%;
+
+body.page .entry-content {
+    padding-top: 0px;
 }
-#nav_start li { /* all list items */
-    float: left;
-    height: 53px;
-    background-repeat: no-repeat;
-    background-position: right;
-    background-image: url(images/n-sep.jpg);
-    width: 2px;
+
+article#post-93 {
+    margin-left: -260px;
 }
+
+/*------------------------------------------------
+---------------------   TOC   --------------------
+------------------------------------------------*/
+#toc ul li {
+    list-style-type: disc;
+    color: #006600;
+    line-height: 1.5em;
+	margin-left: -5px;
+}
+
+#toc ul li a {
+    color: #006600;
+}
+
+#toc ul li.toclevel-2 {
+    list-style-type: circle;
+}
+
+#toc ul li.toclevel-3 {
+    list-style-type: none;
+}
+
 
 /*------------------------------------------------
 ----------------- Login --------------------------
@@ -109,289 +112,8 @@ div.rightMenu a {
 }
 
 
-/*------------------------------------------------*/
-/*---------------FEATURE BOX---------------*/
-/*------------------------------------------------*/
-#feature {
-    width: 1100px;
-    margin-top: 0px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-    padding-left: 120px;
-}
-#slider{
-    width: 444px;
-    height: 270px;
-    box-shadow: 7px 7px 8px #818181;
-    -webkit-box-shadow: 1px 1px 8px #000000;
-    -moz-box-shadow: 1px 1px 8px #000000;
-    filter: progid:DXImageTransform.Microsoft.dropShadow(color=#818181, offX=7, offY=7, positive=true);
-    border: 10px solid #FFF;
-}
 
-#hp-header {
-    width: 100%;
-    /*background-color: #479428;*/
-    height: 358px;
-    background-color: #3C8339;
-    /*	background-image: url(images/hp-header-background.png);
-     background-repeat: repeat-x;*/
-    padding-top: 52px;
-}
-#featureBox, #hp-LogoBox {
-    float: left;
-}
-#hp-Logo {
-    background-image: url(images/logo_AVH-white-transparent-hp.png);
-    background-repeat: no-repeat;
-    width: 520px;
-    float: left;
-    height: 292px;
-    background-position: 110px 30px;
-    margin-left: 40px;
-}
-#search  {
-    height: 54px;
-    margin-top: 240px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-    width: 200px;
-}
-#search li  {
-    font-size: 12px;
-    line-height: 50px;
-    list-style-type: none;
-    background-image: url(images/Start-Search.png);
-    background-repeat: no-repeat;
-    padding-left: 30px;
-}
-#search a {
-    color: #787878;
-}
-#search a:hover {
-    color: #000;
-}
 
-#searchBox {
-    margin-top: 200px;
-}
-
-/*#solrSearchForm > input#taxaQuery {*/
-    /*display: inline-block;*/
-    /*margin-left: 100px;*/
-    /*margin-top: 2px;*/
-    /*font-size: 13px;*/
-    /*width: 200px;*/
-/*}*/
-
-#solrSearchForm > input#solrSubmit {
-    display: inline-block;
-    font-size: 13px;
-    margin: 3px 6px;
-}
-
-/*------------------------------------------------*/
-/*---------------CONTENT---------------*/
-/*------------------------------------------------*/
-
-/*---------------HOME PAGE---------------*/
-#hp-contentBox {
-    background-color: #FFF;
-    width: 1024px;
-    margin-top: 30px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-    padding: 0px;
-}
-#hp-content {
-    float: left;
-    width: 450px;
-    padding-left: 40px;
-}
-#hp-content h1 {
-    color: #999;
-    text-transform: uppercase;
-    font-size: 34px;
-    line-height: 44px;
-    text-shadow: 1px 1px 1px #bbbaba;
-    margin-bottom: 10px;
-    font-weight: lighter;
-}
-#hp-content p {
-    font-size: 12px;
-    line-height: 18px;
-    margin-bottom: 10px;
-}
-.hp-contentbutton  {
-    background-image: url(images/hp-button.png);
-    height: 50px;
-    width: 194px;
-    background-repeat: no-repeat;
-    font-size: 14px;
-    display: list-item;
-    list-style-type: none;
-    margin-top: 220px;
-    margin-right: auto;
-    margin-left: 140px;
-    margin-bottom: 0px;
-    padding: 0px;
-    text-indent: 30px;
-    line-height: 260%;
-}
-.hp-contentbutton a  {
-    display: inline-block;
-    width: 200px;
-    text-indent: 0;
-    color: #333;
-    padding-left: 0px;
-    /*padding-top: 10px; */
-    /*	text-align: center;*/
-}
-.hp-contentbutton a:hover  {
-    color: #729D00;
-    padding-left: 0px;
-}
-
-/*---------------PAGE---------------*/
-#contentBox {
-    background-color: #FFF;
-    width: 960px;
-    margin-top: 40px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-    padding-left: 0px;
-}
-
-#header {
-    width: 100%;
-    height: 144px;
-    background-color: #3C8339;
-    /*background-repeat: repeat-x;
-     background-image: url(images/header-background.png);*/
-}
-#featureBox, #LogoBox {
-    float: left;
-}
-#Logo {
-    background-image: url(images/logo_AVH-white-transparent-small.png);
-    background-repeat: no-repeat;
-    width: 450px;
-    float: left;
-    height: 100px;
-    background-position: 13px;
-    margin-top: 20px;
-}
-#content2 {
-    float: left;
-    margin-left: 40px;
-    width: 640px;
-}
-#content2 ul {
-    list-style-type: none;
-    list-style-position: inside;
-    list-style-image: url(images/bg-list-item.png);
-    margin-top: 10px;
-    line-height: 24px;
-}
-#content2 h1 {
-    color: #1775BA;
-    font-size: 40px;
-    /*text-shadow: 1px 1px 1px #bbbaba;*/
-    margin-bottom: 10px;
-    font-weight: lighter;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #CCC;
-    padding-top: 0px;
-    padding-right: 0px;
-    padding-bottom: 5px;
-    padding-left: 0px;
-    margin-top: 0px;
-}
-#content2 h4 {
-    color: #3C88C3;
-    font-size: 20px;
-    font-weight: lighter;
-    line-height: normal;
-    padding: 0px;
-    margin-top: 10px;
-    margin-right: 0px;
-    margin-bottom: 5px;
-    margin-left: 0px;
-}
-#content2 p {
-    padding-right: 20px;
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 4px;
-    margin-left: 0px;
-}
-#content2 a {
-    font-size: 12px;
-}
-/* News*/
-#contentBoxA {
-    background-color: #FFF;
-    width: 980px;
-    margin-top: 40px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-    padding-left: 0px;
-}
-.news_content {
-    float: left;
-    margin-left: 20px;
-    width: 640px;
-}
-.news_content ul {
-    list-style-type: none;
-    list-style-position: inside;
-    list-style-image: url(images/bg-list-item.png);
-    margin-top: 10px;
-    line-height: 24px;
-}
-.news_content h1 {
-    color: #1775BA;
-    font-weight: lighter;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #CCC;
-    padding-top: 0px;
-    padding-right: 0px;
-    padding-bottom: 10px;
-    padding-left: 0px;
-    margin-top: 0px;
-    font-size: 32px;
-}
-.news_content h2 {
-    color: #1775BA;
-    /*text-shadow: 1px 1px 1px #bbbaba;*/
-    margin-bottom: 10px;
-    font-weight: lighter;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #CCC;
-    padding-top: 0px;
-    padding-right: 0px;
-    padding-bottom: 5px;
-    padding-left: 0px;
-    margin-top: 0px;
-}
-
-#sponsors div.simpleimage {
-    display: inline-block;
-    min-width: 90px;
-    text-align: center;
-    padding-top: 5px;
-    padding-bottom: 15px;
-    padding-left: 5px;
-    padding-right: 5px;
-}
 .news_content h3 {
     color: #666;
     font-size: 22px;
@@ -533,11 +255,11 @@ h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, 
 }
 
 /*---- ALA changes ----*/
-#contentBox > #headingBar {
+> #headingBar {
     min-height: 55px;
 }
 
-#contentBox > #headingBar > h1 {
+> #headingBar > h1 {
     padding-top: 10px;
 }
 
@@ -546,3 +268,43 @@ h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, 
 }
 
 #searchHeader { padding-left:30px; }
+
+.by-author {
+    display: inline !important; /* should override 'display: none' in Twenty Eleven*/
+}
+
+/*----------------------------------------------------------
+--------------------- AVH styles ---------------------------
+----------------------------------------------------------*/
+
+span.feature {
+    font-weight: bold;
+}
+
+.screenshot img {
+    border: solid 1px #CCC;
+    padding: 4px;
+}
+
+/*-----------------------------------------------------------
+---------------------- Partners page ------------------------
+-----------------------------------------------------------*/
+
+div#partners {
+	padding-top: 10px;
+}
+
+div.column {
+    height: 80px;
+}
+
+div.col1 {
+    float: left;
+    clear: left;
+    width: 12%;
+	text-align: center;
+}
+
+div.col2 {
+	padding-top: 5px;
+}
