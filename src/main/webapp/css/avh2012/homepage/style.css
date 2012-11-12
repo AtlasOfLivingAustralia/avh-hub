@@ -21,6 +21,7 @@ Version: 0.1
 @import url("hp-contentbox.css");
 @import url("logofarm.css");
 
+@import url("datatables.css");
 
 html, body {
     height: 100%;
