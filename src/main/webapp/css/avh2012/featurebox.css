@@ -44,7 +44,7 @@
     width: 520px;
     float: left;
     height: 292px;
-    background-position: 90px 20px;
+    background-position: 90px 65px;
     margin-left: 40px;
 }
 div#search  {
@@ -76,7 +76,7 @@ div#search a:hover {
 
 #solrSearchForm > input#taxaQuery {
     display: inline-block;
-    margin-left: 80px;
+    margin-left: 90px;
     margin-top: 2px;
     padding: 0 2px;
     font-size: 13px;
