@@ -51,7 +51,7 @@
                 </c:forEach>
             </c:set>
             <div>
-                <label for="filename"div style="float: left;">Download type</label>
+                <label for="filename" style="float: left;">Download type</label>
                 <div style="display: inline-block; width: 55%; float: left; padding-left: 5px;">
                     <input type="radio" name="downloadType" value="fast" class="tooltip" title="Faster download but fewer fields are included" checked="checked"/>&nbsp;All Records (fast)<br/>
                     <input type="radio" name="downloadType" value="detailed" class="tooltip" title="Slower download but all fields are included"/>&nbsp;All Records (detailed)<br/>
