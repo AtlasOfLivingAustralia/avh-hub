@@ -84,7 +84,7 @@ include file="/common/taglibs.jsp" %>
                     AVH is an initiative of the Council of Heads of Australasian Herbaria (CHAH)
                 </span>
                 <span class="footer_item_3">
-                    <a href="mailto:avh@ala.org.au">avh@ala.org.au</a>
+                    <a href="mailto:avh@chah.org.au">avh@chah.org.au</a>
                 </span>
             </div>
         </div>

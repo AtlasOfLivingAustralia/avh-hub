@@ -37,6 +37,16 @@
         standardisation and data processing applied in the BioCache is described below. The unprocessed data provided by the herbaria is always available; an
         overview of the provided versus processed data is available for each record via the <a href="help.html#record_detail"><span class="feature">Record detail</span></a> page.
     </p>
+    <p>
+        Australia’s Virtual Herbarium contains records of the holdings of Australian herbaria, both of Australian and foreign 
+        collections. It also contains records of cultivated plants and introduced occurrences and while there is the 
+        <i>establishment means</i> field to indicate whether a plant is cultivated or not native, this has not always been 
+        used. AVH records may also just be wrong. A record in AVH of a species from a certain location only means that 
+        there is a specimen with this species name from the given location, not necessarily that the species naturally 
+        occurs at that location. The major asset of AVH is that all records are based on preserved specimens, so they can, 
+        to a large extent, be verified. It is up to the user to decide whether or not verification is necessary. By itself 
+        AVH data is not more authoritative than data you get from anywhere else.        
+    </p>
     <h2>
         Specimen
     </h2>

@@ -137,7 +137,7 @@
         <div id="sponsors">
             <h1>Participating organisations</h1>
             <div class="simpleimage">
-                <a href="http://www.dec.wa.gov.au/content/category/41/831/1821/">
+                <a href="http://www.dec.wa.gov.au/our-environment/science-and-research/wa-herbarium.html">
                     <img src="${pageContext.request.contextPath}/static/images/avh2012/logo_PERTH.jpg" alt="Western Australian Herbarium" />
                 </a>
             </div>
@@ -195,10 +195,12 @@
 
         <div id="hp-content">
             <p>Welcome to <b>Australia's Virtual Herbarium (AVH)</b></p>
+            <p>AVH provides access to information obtained from the collections held in Australian herbaria.</p>
             <p>Australia’s major state and territory herbaria house over six million plant, algae and fungi specimens.
                 The collecting data stored with these specimens provides the most complete picture of the distribution
                 of Australia’s flora to date.</p>
-        </div>
+            <p>From this site you can search, map, download and analyse records from the databases of the major herbaria in Australia.</p>
+         </div>
         <div class="push"></div>
     </div>
 
@@ -211,7 +213,7 @@
                         AVH is an initiative of the Council of Heads of Australasian Herbaria (CHAH)
                     </span>
                     <span class="footer_item_3">
-                        <a href="mailto:avh@ala.org.au">avh@ala.org.au</a>
+                        <a href="mailto:avh@chah.org.au">avh@chah.org.au</a>
                     </span>
         </div>
     </div>
