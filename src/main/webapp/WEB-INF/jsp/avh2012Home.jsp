@@ -9,7 +9,7 @@
     <title>Australia's Virtual Herbarium</title>
     <link rel="shortcut icon" type="image/ico" href="${pageContext.request.contextPath}/static/images/avh2012/favicon.ico"/>
 
-    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/static/css/avh2012/homepage/style.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/static/css/avh2012/style.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 
     <style type="text/css">

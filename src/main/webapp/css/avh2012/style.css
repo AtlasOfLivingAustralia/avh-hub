@@ -102,9 +102,10 @@ article#post-93 {
 ------------------------------------------------*/
 
 div.rightMenu {
-    padding-top: 125px;
-    padding-right: 93px;
+    padding-top: 120px;
+    /*padding-right: 93px;*/
     text-align: right;
+    width: 990px;
 }
 
 div.rightMenu a {
@@ -307,4 +308,34 @@ div.col1 {
 
 div.col2 {
 	padding-top: 5px;
+}
+
+/*--------- ALA changes --------*/
+div#loginId {
+    display: inline;
+    margin: 0;
+}
+
+div#SidebarBox ul.facets {
+    list-style: none;
+}
+
+div#SidebarBox ul.facets li {
+    margin-left: 10px;
+}
+
+#contentBox > #headingBar {
+    min-height: 55px;
+}
+#contentBox > #headingBar > h1 {
+    padding-top: 15px;
+}
+#SidebarBox, #resultsReturned {
+    margin-top: 5px;
+}
+#searchHeader {
+    padding-left: 30px;
+}
+#solrSearchForm > input#taxaQuery {
+    margin: 0;
 }

@@ -2,7 +2,7 @@
 /* root element for tabs  */
 ul.css-tabs {  
 	margin:0 !important; 
-	padding:0;
+	padding:0 !important;
 	height:30px;
     list-style:none !important;
 /*	border-bottom:1px solid #666;	*/
@@ -11,8 +11,8 @@ ul.css-tabs {
 /* single tab */
 ul.css-tabs li {  
 	float:left;	 
-	padding:0; 
-	margin:0;  
+	padding:0 !important;
+	margin:0 !important;
 	list-style-type:none;	
 }
 
