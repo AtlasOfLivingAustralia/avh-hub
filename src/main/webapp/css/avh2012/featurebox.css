@@ -74,7 +74,7 @@ div#search a:hover {
     margin-top: 200px;
 }
 
-#solrSearchForm > input#taxaQuery {
+#feature #solrSearchForm > input#taxaQuery {
     display: inline-block;
     margin-left: 90px;
     margin-top: 2px;
@@ -83,7 +83,7 @@ div#search a:hover {
     width: 200px;
 }
 
-#solrSearchForm > input#solrSubmit {
+#feature  #solrSearchForm > input#solrSubmit {
     display: inline-block;
     background-color: white;
     border: 1px solid #DDD;
