@@ -12,7 +12,7 @@
 */
 
 p {
-    font-size: 100%;
+    /*font-size: 100%;*/
 }
 
 #contentBox p {
@@ -21,18 +21,23 @@ p {
     padding-top: 5px;
 }
 
-#contentBox a {
+#contentBox a, #footer a {
     color: #006600;
 }
 
-#contentBox h1 {
+#contentBox #help_content, #contentBox #indentContent {
+    font-size: 14px;
+}
+
+#help_content h1, #indentContent h1 {
     font-size: 200%;
     color: #006600;
     padding-bottom: 0px;
+    padding-top: 10px;
     letter-spacing: normal;
 }
 
-#contentBox h2 {
+#help_content h2, #indentContent h2 {
     font-size: 150%;
     color: #006600;
     margin-bottom: 0px;
@@ -40,7 +45,7 @@ p {
     padding-bottom: 0px;
 }
 
-#contentBox h3 {
+#help_content h3, #indentContent h3 {
     font-size: 110%;
     color: #006600;
     margin-bottom: 0px;
@@ -52,7 +57,7 @@ p {
     padding-bottom: 0px;
 }
 
-#contentBox h4 {
+#help_content h4, #indentContent h4 {
     font-size: 100%;
     color: #006600;
     margin-bottom: 0px;
@@ -64,17 +69,17 @@ p {
     padding-bottom: 0px;
 }
 
-#contentBox ul {
+#help_content ul, #indentContent ul {
     list-style-type: disc;
     padding-bottom: 5px;
 }
 
-#contentBox ul li {
+#help_content ul li, #indentContent ul li {
     margin-left: 2em;
     line-height: 1.5em;
 }
 
-#contentBox blockquote {
+#help_content blockquote, #indentContent blockquote {
 	margin: 10px 30px;
 	padding: 10px;
 }

@@ -67,7 +67,11 @@ include file="/common/taglibs.jsp" %>
                 </div>
                 <div class="rightMenu">
                     <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
-                        <a href="http://www.ala.org.au/my-profile/"><ala:loggedInUserId/></a>
+                        <c:set var="loginId"><ala:loggedInUserId/></c:set>
+                        <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
+                        <c:if test="${not empty loginId}">|</c:if>
+                        <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                        <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
             </div>
             </div>
         </div>
