@@ -21,6 +21,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import au.org.ala.cas.util.AuthenticationCookieUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -56,7 +57,13 @@ public class LoginLogoutTag extends TagSupport {
         if (principal != null) {
             html = "<a href='" + logoutUrl + "'>Log out</a>\n";
         } else {
-            html = "<a href='" + casServer + "/cas/login?service=" + returnUrlPath + "'>Log in</a>\n";
+            String userId = AuthenticationCookieUtils.getUserName(request);
+
+            if (userId != null) {
+                html = "<a href='" + logoutUrl + "'>Log out</a>\n";
+            } else {
+                html = "<a href='" + casServer + "/cas/login?service=" + returnUrlPath + "'>Log in</a>\n";
+            }
         }
 
         try {
