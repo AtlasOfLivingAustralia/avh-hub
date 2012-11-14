@@ -1620,7 +1620,7 @@ public class OccurrenceController {
                                 } else if (StringUtils.equals(fn, "collector") && StringUtils.contains(fv, "@")) {
                                     fv = StringUtils.substringBefore(fv, "@"); // hide email addresses
                                 } else {
-                                    fv = substituteCollectoryNames(fv);
+                                    fv = substituteCollectoryNames(fv, fn);
                                 }
 
                                 labels.add(i18n + ":" + fv);
@@ -1708,7 +1708,7 @@ public class OccurrenceController {
      * @param fieldValue
      * @return
      */
-    private String substituteCollectoryNames(String fieldValue) {
+    private String substituteCollectoryNames(String fieldValue, String fieldName) {
         // substitute collectory names
         logger.debug("collectory maps: " + fieldValue);
         if (collectionsContainer.getCollectionMap().containsKey(fieldValue)) {
@@ -1719,6 +1719,10 @@ public class OccurrenceController {
             fieldValue = collectionsContainer.getDataResourceMap().get(fieldValue);
         } else if (collectionsContainer.getDataProviderMap().containsKey(fieldValue)) {
             fieldValue = collectionsContainer.getDataProviderMap().get(fieldValue);
+        } else {
+            // attempt to substitute i18n values
+            fieldValue = messageSource.getMessage(fieldName+"."+StringUtils.remove(fieldValue, "\""), null, fieldValue, null);
+            logger.debug("i18n subst: " + fieldName + "|" + fieldValue + " = " + fieldValue);
         }
         logger.debug("=> " + fieldValue);
         return fieldValue;
