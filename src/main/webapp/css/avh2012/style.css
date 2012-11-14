@@ -343,3 +343,7 @@ div#SidebarBox ul.facets li {
 div.sidebar h4 span {
     padding: 5px 0;
 }
+div#clubView {
+    display: inline;
+    font-size: 13px;
+}

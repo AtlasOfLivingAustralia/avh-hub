@@ -21,13 +21,17 @@ p {
     padding-top: 5px;
 }
 
-#contentBox a, #footer a {
+#contentBox a, #footer a, #fancybox-wrap a {
     color: #006600;
 }
 
 #contentBox #help_content, #contentBox #indentContent {
     font-size: 14px;
 }
+
+#content2 h2 {font-size: 150%;}
+#content2 h3 {font-size: 120%;}
+#content2 h4 {font-size: 110%;}
 
 #help_content h1, #indentContent h1 {
     font-size: 200%;
