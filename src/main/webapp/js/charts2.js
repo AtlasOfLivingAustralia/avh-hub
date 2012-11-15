@@ -628,6 +628,7 @@ var chartLabels = {
 // asynchronous transforms are applied after the chart is drawn, ie the chart is drawn with the original values
 // then redrawn when the ajax call for transform data returns
 var asyncTransforms = {
+    collection_uid: {method: 'lookupEntityName', param: 'collection'},
     institution_uid: {method: 'lookupEntityName', param: 'institution'},
     data_resource_uid: {method: 'lookupEntityName', param: 'dataResource'}
 }
