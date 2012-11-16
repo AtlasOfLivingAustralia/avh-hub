@@ -16,17 +16,17 @@
 // Note there are some global variables that are set by the calling page (which has access to
 // the ${pageContet} object, which are required by this file.:
 //
-//    var contextPath = "${pageContext.request.contextPath}";
-//    var biocacheServiceUrl = "${biocacheServiceUrl}";
-//    var zoom = ${zoom};
-//    var radius = ${radius};
-//    var speciesPageUrl = "${speciesPageUrl}";
+//var EYA_CONF = {
+//    contextPath: "${pageContext.request.contextPath}",
+//    biocacheServiceUrl: "${biocacheServiceUrl}",
+//    zoom: ${zoom},
+//    radius: ${radius},
+//    speciesPageUrl: "${speciesPageUrl}",
+//    queryContext: ""
+//}
 
-var geocoder, map, selectControl, selectFeature, marker, circle, markerInfowindow, lastInfoWindow;
-var points = [];
-var infoWindows = [];
-var speciesGroup = "ALL_SPECIES";
-var taxon, taxonGuid;
+var geocoder, map, marker, circle, markerInfowindow, lastInfoWindow, taxon, taxonGuid;
+var points = [], infoWindows = [], speciesGroup = "ALL_SPECIES";
 var zoomForRadius = {
     1000: 14,
     5000: 12,
@@ -78,11 +78,11 @@ $(document).ready(function() {
     // Register onChange event on radius drop-down - will re-submit form
     $('select#radius').change(
         function(e) {
-            radius = parseInt($(this).val());
-            var radiusInMetres = radius * 1000;
+            EYA_CONF.radius = parseInt($(this).val());
+            var radiusInMetres = EYA_CONF.radius * 1000;
             circle.setRadius(radiusInMetres);
-            zoom = zoomForRadius[radiusInMetres];
-            map.setZoom((zoom)?zoom:12);
+            EYA_CONF.zoom = zoomForRadius[radiusInMetres];
+            map.setZoom((EYA_CONF.zoom)?EYA_CONF.zoom:12);
             updateMarkerPosition(marker.getPosition()); // so bookmarks is updated
             //loadRecordsLayer();
             loadGroups();
@@ -128,8 +128,8 @@ $(document).ready(function() {
         autoOpen: false,
         buttons: {
             'Download File': function() {
-                var downloadUrl = biocacheServiceUrl + "/explore/group/"+speciesGroup+"/download?lat="+
-                    $('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val()+
+                var downloadUrl = EYA_CONF.biocacheServiceUrl + "/explore/group/"+speciesGroup+"/download?lat="+
+                    $('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val()+"qc="+EYA_CONF.queryContext+
                     "&file=data.xls";
                 window.location.replace(downloadUrl);
                 $(this).dialog('close');
@@ -182,7 +182,7 @@ $(document).ready(function() {
         if (speciesGroup != "ALL_SPECIES") {
             params += "&fq=species_group:" + speciesGroup;
         }
-        document.location.href = contextPath +'/occurrences/search?' + params;
+        document.location.href = EYA_CONF.contextPath +'/occurrences/search?' + params;
     });
 
     // Tooltip for matched location
@@ -192,9 +192,9 @@ $(document).ready(function() {
                 text: "About the matched address",
                 button: "Close"
             },
-            text: "<img src=\"" + contextPath + "/static/images/loading.gif\" alt=\"\" class=\"no-rounding\"/>",
+            text: "<img src=\"" + EYA_CONF.contextPath + "/static/images/loading.gif\" alt=\"\" class=\"no-rounding\"/>",
             ajax: {
-                url: contextPath + "/proxy/wordpress",
+                url: EYA_CONF.contextPath + "/proxy/wordpress",
                 data: {
                     page_id: 27726,
                     "content-only": 1
@@ -258,7 +258,7 @@ function initialize() {
 function loadMap() {
     var latLng = new google.maps.LatLng($('#latitude').val(), $('#longitude').val());
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
-        zoom: zoom,
+        zoom: EYA_CONF.zoom,
         center: latLng,
         scrollwheel: false,
         streetViewControl: true,
@@ -374,8 +374,8 @@ function updateMarkerPosition(latLng) {
     $('#latitude').val(latLng.lat());
     $('#longitude').val(latLng.lng());
     // Update URL hash for back button, etc
-    location.hash = latLng.lat() + "|" + latLng.lng() + "|" + zoom + "|" + speciesGroup;
-    $('#dialog-confirm #rad').html(radius);
+    location.hash = latLng.lat() + "|" + latLng.lng() + "|" + EYA_CONF.zoom + "|" + speciesGroup;
+    $('#dialog-confirm #rad').html(EYA_CONF.radius);
 }
 
 /**
@@ -393,7 +393,7 @@ function loadRecordsLayer(retry) {
     }
 
     // URL for GeoJSON web service
-    var geoJsonUrl = biocacheServiceUrl + "/geojson/radius-points.jsonp?callback=?";
+    var geoJsonUrl = EYA_CONF.biocacheServiceUrl + "/geojson/radius-points.jsonp?callback=?";
     var zoom = (map && map.getZoom()) ? map.getZoom() : 12;
     // request params for ajax geojson call
     var params = {
@@ -401,6 +401,7 @@ function loadRecordsLayer(retry) {
         lon: $('#longitude').val(),
         radius: $('#radius').val(),
         fq: "geospatial_kosher:true",
+        qc: EYA_CONF.queryContext,
         zoom: zoom
     };
     if (taxon) {
@@ -438,7 +439,7 @@ function loadNewGeoJsonData(data) {
     
     $.each(data.features, function (i, n) {
         var latLng1 = new google.maps.LatLng(n.geometry.coordinates[1], n.geometry.coordinates[0]);
-        var iconUrl = contextPath+"/static/images/circle-"+n.properties.color.replace('#','')+".png";
+        var iconUrl = EYA_CONF.contextPath+"/static/images/circle-"+n.properties.color.replace('#','')+".png";
         var markerImage = new google.maps.MarkerImage(iconUrl,
             new google.maps.Size(9, 9),
             new google.maps.Point(0,0),
@@ -470,7 +471,7 @@ function loadNewGeoJsonData(data) {
         }
         
         var content = '<div class="infoWindow">Number of records: '+n.properties.count+'<br/>'+
-                '<a href="'+ contextPath +'/occurrences/searchByArea?q='+solrQuery+fqParam+
+                '<a href="'+ EYA_CONF.contextPath +'/occurrences/searchByArea?q='+solrQuery+fqParam+
                 '&lat='+n.geometry.coordinates[1]+'&lon='+n.geometry.coordinates[0]+'&radius=0.05">View list of records</a></div>';
         infoWindows[i] = new google.maps.InfoWindow({
             content: content,
@@ -529,7 +530,7 @@ function attemptGeolocation() {
     } else {
         //alert("Client geolocation failed");
         //geocodeAddress();
-        zoom = 12;
+        EYA_CONF.zoom = 12;
         initialize();
     }
 }
@@ -602,12 +603,13 @@ function groupClicked(el) {
 
     if (map) loadRecordsLayer();
     // AJAX...
-    var uri = biocacheServiceUrl + "/explore/group/"+speciesGroup+".json?callback=?";
+    var uri = EYA_CONF.biocacheServiceUrl + "/explore/group/"+speciesGroup+".json?callback=?";
     var params = {
         lat: $('#latitude').val(),
         lon: $('#longitude').val(),
         radius: $('#radius').val(),
         fq: "geospatial_kosher:true",
+        qc: EYA_CONF.queryContext,
         pageSize: 50
     };
     //var params = "?latitude=${latitude}&longitude=${longitude}&radius=${radius}&taxa="+taxa+"&rank="+rank;
@@ -649,13 +651,13 @@ function processSpeciesJsonData(data, appendResults) {
             // add links to species page and ocurrence search (inside hidden div)
             var speciesInfo = '<div class="speciesInfo">';
             if (data[i].guid) {
-                speciesInfo = speciesInfo + '<a title="'+infoTitle+'" href="'+speciesPageUrl + data[i].guid+
-                    '"><img src="'+ contextPath +'/static/images/page_white_go.png" alt="species page icon" style="margin-bottom:-3px;" class="no-rounding"/>'+
+                speciesInfo = speciesInfo + '<a title="'+infoTitle+'" href="'+EYA_CONF.speciesPageUrl + data[i].guid+
+                    '"><img src="'+ EYA_CONF.contextPath +'/static/images/page_white_go.png" alt="species page icon" style="margin-bottom:-3px;" class="no-rounding"/>'+
                     ' species profile</a> | ';
             }
-            speciesInfo = speciesInfo + '<a href="'+ contextPath +'/occurrences/searchByArea?q=taxon_name:%22'+data[i].name+
+            speciesInfo = speciesInfo + '<a href="'+ EYA_CONF.contextPath +'/occurrences/searchByArea?q=taxon_name:%22'+data[i].name+
                     '%22&lat='+$('input#latitude').val()+'&lon='+$('input#longitude').val()+'&radius='+$('select#radius').val()+'" title="'+
-                    recsTitle+'"><img src="'+ contextPath +'/static/images/database_go.png" '+
+                    recsTitle+'"><img src="'+ EYA_CONF.contextPath +'/static/images/database_go.png" '+
                     'alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"/> list of records</a></div>';
             tr = tr + speciesInfo;
             // add number of records
@@ -734,7 +736,7 @@ function processSpeciesJsonData(data, appendResults) {
             }
             $("div#rightList").data("sort", sortOrder); // save it to the DOM
             // AJAX...
-            var uri = biocacheServiceUrl + "/explore/group/"+speciesGroup+".json?callback=?";
+            var uri = EYA_CONF.biocacheServiceUrl + "/explore/group/"+speciesGroup+".json?callback=?";
             //var params = "&lat="+$('#latitude').val()+"&lon="+$('#longitude').val()+"&radius="+$('#radius').val()+"&group="+speciesGroup;
             var params = {
                 lat: $('#latitude').val(),
@@ -744,7 +746,8 @@ function processSpeciesJsonData(data, appendResults) {
                 start: start,
                 common: commonName,
                 sort: sortParam,
-                pageSize: 50
+                pageSize: 50,
+                qc: EYA_CONF.queryContext
             };
             //console.log("explore params", params, append);
             //$('#taxaDiv').html('[loading...]');
@@ -771,14 +774,15 @@ function processSpeciesJsonData(data, appendResults) {
  * Perform normal spatial searcj for spceies groups and species counts
  */
 function loadGroups() {
-    var url = biocacheServiceUrl +"/explore/groups.json?callback=?";
+    var url = EYA_CONF.biocacheServiceUrl +"/explore/groups.json?callback=?";
     var params = {
         //"group": $(this).attr('title'),
         lat: $('#latitude').val(),
         lon: $('#longitude').val(),
         radius: $('#radius').val(),
         fq: "geospatial_kosher:true",
-        facets: "species_group"
+        facets: "species_group",
+        qc: EYA_CONF.queryContext
     }
     
     $.getJSON(url, params, function(data) {
@@ -816,9 +820,9 @@ function populateSpeciesGroups(data) {
 }
 
 function bookmarkedSearch(lat, lng, zoom1, group) {
-    radius = radiusForZoom[zoom1];  // set global var
-    zoom = parseInt(zoom1);
-    $('select#radius').val(radius); // update drop-down widget
+    EYA_CONF.radius = radiusForZoom[zoom1];  // set global var
+    EYA_CONF.zoom = parseInt(zoom1);
+    $('select#radius').val(EYA_CONF.radius); // update drop-down widget
     if (group) speciesGroup = group;
     updateMarkerPosition(new google.maps.LatLng(lat, lng));
     // load map and groups

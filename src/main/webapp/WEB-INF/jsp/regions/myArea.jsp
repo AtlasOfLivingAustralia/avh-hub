@@ -9,6 +9,7 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="googleKey" scope="request"><ala:propertyLoader bundle="hubs" property="googleKey"/></c:set>
 <c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -22,26 +23,29 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.qtip.min.js"></script>
         <script type="text/javascript">
             // Global variables for yourAreaMap.js
-            var contextPath = "${pageContext.request.contextPath}";
-            var biocacheServiceUrl = "${biocacheServiceUrl}";
-            var zoom = ${zoom};
-            var radius = ${radius};
-            var speciesPageUrl = "${speciesPageUrl}";
+            var EYA_CONF = {
+                contextPath: "${pageContext.request.contextPath}",
+                biocacheServiceUrl: "${biocacheServiceUrl}",
+                zoom: ${zoom},
+                radius: ${radius},
+                speciesPageUrl: "${speciesPageUrl}",
+                queryContext: "${queryContext}"
+            }
 
             //make the taxa and rank global variable so that they can be used in the download
-            var taxa = [];
-            taxa[0] ="*";
-            var rank ="*";
+            var taxa = ["*"], rank = "*";
         </script>
         <jwr:script src="/js/explore/yourAreaMap.js"/>
     </head>
     <body class="regions">
         <div id="header">
-            <div id="breadcrumb">
-                <a href="${initParam.centralServer}">Home</a>
-                <a href="${initParam.centralServer}/species-by-location/">Locations</a>
-                Your Area
-            </div>
+            <c:if test="${skin == 'ala'}">
+                <div id="breadcrumb">
+                    <a href="${initParam.centralServer}">Home</a>
+                    <a href="${initParam.centralServer}/species-by-location/">Locations</a>
+                    Your Area
+                </div>
+            </c:if>
             <h1>Explore Your Area</h1>
         </div>
         <div id="column-one" class="full-width">
