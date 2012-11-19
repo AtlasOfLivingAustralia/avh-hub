@@ -14,6 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
+        <meta name="section" content="yourArea"/>
         <title>Explore Your Area | Atlas of Living Australia</title>
         <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/ala/biocache.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.qtip.min.css" type="text/css" media="screen" />
@@ -50,8 +51,8 @@
         </div>
         <div id="column-one" class="full-width">
             <div class="section">
-                <div>
-                    <div id="mapOuter" style="width: 400px; height: 440px; float:right;margin-top:67px">
+                <div style="position: relative;min-height: 500px;">
+                    <div id="mapOuter" style="width: 400px; height: 440px; padding-bottom: 30px; position: absolute; bottom: 0; right: 0;">
                         <div id="mapCanvas" style="width: 400px; height: 420px;"></div>
                         <div style="font-size:11px;width:400px;color:black;height:20px;" class="show-80">
                             <table id="cellCountsLegend">

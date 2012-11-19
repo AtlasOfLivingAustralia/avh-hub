@@ -16,6 +16,7 @@ include file="/common/taglibs.jsp" %>
     <!--css from ala - to replace with full url-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/asbp/tabs-no-images.css" type="text/css" media="screen" />
     <!--css for amrin-->
+    <link rel="stylesheet" href="http://www.ala.org.au/wp-content/themes/ala2011/css/amrin.css" type="text/css" media="screen,projection" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/obis/style.css" type="text/css" media="screen" />
 
     <%@ include file="commonJS.jspf" %>

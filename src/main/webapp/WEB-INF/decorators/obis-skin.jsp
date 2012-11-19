@@ -32,7 +32,8 @@ include file="/common/taglibs.jsp" %>
             <ul id="nav-site">
                 <li><a href="${pageContext.request.contextPath}/">Home</a></li>
                 <li class="${(section=='search')?'selected':''}"><a href="${pageContext.request.contextPath}/search">Search</a></li>
-                <li class="${(section!='search')?'selected':''}"><a href="${pageContext.request.contextPath}/occurrences/search">Records</a></li>
+                <li class="${(section!='search' && section!='yourArea')?'selected':''}"><a href="${pageContext.request.contextPath}/occurrences/search">Records</a></li>
+                <li class="${(section=='yourArea')?'selected':''}"><a href="${pageContext.request.contextPath}/explore/your-area">Your Area</a></li>
             </ul>
             <ul id="nav-user">
                 <li><a href="http://www.ala.org.au/my-profile/" title="My profile">My profile</a></li>
