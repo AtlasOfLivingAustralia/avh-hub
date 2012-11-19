@@ -52,6 +52,10 @@
     color: #545454;
 }
 
+.sidebar h4 {
+    margin-top: 0;
+}
+
 body table td {
     font-size: 13px;
 }
