@@ -105,6 +105,8 @@ public class OccurrenceController {
     protected LoggerService loggerService;
     @Inject
     protected CollectionsContainer collectionsContainer;
+    @Inject
+    protected AuthService authService;
 
     /** Spring injected RestTemplate object */
     @Inject
@@ -917,6 +919,7 @@ public class OccurrenceController {
                 }
                 model.addAttribute("compareRecord", compareRecord);
                 model.addAttribute("dwcExcludeFields", dwcExclude);
+                model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
             }
 
         } catch (Exception e){
@@ -1562,6 +1565,7 @@ public class OccurrenceController {
      */
     protected Map<String, ActiveFacet> addFacetMap(String[] filterQuery) {
         Map<String, ActiveFacet> afs = new HashMap<String, ActiveFacet>();
+        Map<String, String> userNamesByIds = authService.getMapOfAllUserNamesById(); // cached by Eh Cache
 
         if (filterQuery != null && filterQuery.length > 0) {
             // iterate over the fq params
@@ -1617,8 +1621,14 @@ public class OccurrenceController {
                                     fv = substituteYearsForDates(fv);
                                 } else if (StringUtils.equals(fn, "month")) {
                                     fv = substituteMonthNamesForNums(fv);
-                                } else if (StringUtils.equals(fn, "collector") && StringUtils.contains(fv, "@")) {
-                                    fv = StringUtils.substringBefore(fv, "@"); // hide email addresses
+                                } else if (StringUtils.contains(fv, "@")) {
+                                    //fv = StringUtils.substringBefore(fv, "@"); // hide email addresses
+                                    if (userNamesByIds.containsKey(StringUtils.remove(fv, "\""))) {
+                                        fv = userNamesByIds.get(StringUtils.remove(fv, "\""));
+                                    } else {
+                                        fv = fv.replaceAll("\\@\\w+", "@.."); // hide email addresses
+                                    }
+
                                 } else {
                                     fv = substituteCollectoryNames(fv, fn);
                                 }
@@ -1817,6 +1827,7 @@ public class OccurrenceController {
         model.addAttribute("downloadExtraFields", downloadExtraFields); // String[]
         model.addAttribute("LoggerSources", loggerService.getSources());
         model.addAttribute("LoggerReason", loggerService.getReasons());
+        model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
     }
 
     /**

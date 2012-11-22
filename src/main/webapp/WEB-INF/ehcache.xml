@@ -2,5 +2,6 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
     <defaultCache eternal="true" maxElementsInMemory="1000" overflowToDisk="false" />
     <cache name="facetsCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false" />
+    <cache name="authCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false" />
     <cache name="loggerCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false" />
 </ehcache>

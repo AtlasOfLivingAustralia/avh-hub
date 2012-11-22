@@ -149,9 +149,10 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="geospatial_kosher.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collector')}">
+                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collector') || fn:containsIgnoreCase(facetResult.fieldName, 'assertion_user_id')}">
                                         <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
-                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22<c:out escapeXml='true' value='${fqValue}'/>%22"><fmt:message key="${(fn:contains(fieldResult.label,'@')) ? fn:substringBefore(fieldResult.label,'@') : fieldResult.label}"/></a>
+                                        <c:set var="fullName"><alatag:authUserLookup userId="${fieldResult.label}" allUserNamesByIdMap="${userNamesByIdMap}"/></c:set>
+                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22<c:out escapeXml='true' value='${fqValue}'/>%22"><fmt:message key="${fullName}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'outlier_layer')}">

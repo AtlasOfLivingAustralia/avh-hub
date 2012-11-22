@@ -17,12 +17,34 @@ package org.ala.hubs.util;
 import org.apache.commons.lang.StringEscapeUtils;
 
 /**
- * Custom tag to JS escape String values
+ * Custom tag functions for JSP pages
  *
  * @author Nick dos Remedios (Nick.dosRemedios@csiro.au)
  */
-public class StringEscapeTag {
+public final class Functions {
+    private Functions() {
+        // don't want this class instantiated!
+    }
+
+    /**
+     * Custom tag to JS escape String values
+     *
+     * @param value
+     * @return
+     */
     public static String escapeJS(String value) {
         return StringEscapeUtils.escapeJavaScript(value);
+    }
+
+    /**
+     * Emulate the java.lang.String.replaceAll in JSTL
+     *
+     * @param string
+     * @param pattern
+     * @param replacement
+     * @return
+     */
+    public static String replaceAll(String string, String pattern, String replacement) {
+        return string.replaceAll(pattern, replacement);
     }
 }

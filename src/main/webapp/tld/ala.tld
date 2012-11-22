@@ -174,11 +174,30 @@
     <body-content>JSP</body-content>
   </tag>
 
+    <tag>
+        <description>User Name Lookup Tag</description>
+        <name>authUserLookupTag</name>
+        <tag-class>org.ala.hubs.util.AuthUserLookupTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The user ID</description>
+            <name>userId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
     <function>
         <description>JavaScript Escape function</description>
         <name>escapeJS</name>
-        <function-class>org.ala.hubs.util.StringEscapeTag</function-class>
+        <function-class>org.ala.hubs.util.Functions</function-class>
         <function-signature>java.lang.String escapeJS(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>replaceAll</name>
+        <function-class>org.ala.hubs.util.Functions</function-class>
+        <function-signature>java.lang.String replaceAll(java.lang.String, java.lang.String, java.lang.String)</function-signature>
     </function>
 
 </taglib>
