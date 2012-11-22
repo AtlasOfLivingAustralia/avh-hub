@@ -932,7 +932,7 @@
         <table class="occurrenceTable" id="miscellaneousPropertiesTable">
             <!-- Higher Geography -->
             <c:forEach items="${record.raw.miscProperties}" var="entry">
-                <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="<span class='dwc'>${entry.key}</span>">${entry.value}</alatag:occurrenceTableRow>
+                <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="<span class='dwc'>${entry.key}</span>"><alatag:authUserLookup userId="${entry.value}" allUserNamesByIdMap="${userNamesByIdMap}"/></alatag:occurrenceTableRow>
             </c:forEach>
         </table>
     </div>
