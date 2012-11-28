@@ -97,19 +97,17 @@
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
         <div id="content2">
-            <c:if test="${not empty errors}">
+        <c:choose>
+            <c:when test="${not empty errors}">
                 <h2 style="padding-left: 15px;">Error</h2>
                 <p>${errors}</p>
-            </c:if>
-            <c:if test="${searchResults.totalRecords == 0 && empty errors}">
-                <p>No records found for <span id="queryDisplay">${queryDisplay}</span></p>
-            </c:if>
-            <c:if test="${searchResults.totalRecords > 0 && empty errors}">
+            </c:when>
+            <c:when test="${searchResults.totalRecords > 0 && empty errors}">
                 <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
                 <div>
                     <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
                         for <span id="queryDisplay">${queryDisplay}</span>
-<!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
+                        <!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
                     </div>
                     <div style="display:none">
                         <div id="alert">
@@ -139,8 +137,9 @@
                     <li><a id="t1" href="#recordsView">Records</a></li>
                     <li><a id="t2" href="#mapView">Map</a></li>
                     <li><a id="t3" href="#chartsView">Charts</a></li>
+                    <li><a id="t4" href="#species">Species images</a></li>
                     <c:if test="${showImages}">
-                        <li><a id="t4" href="#imagesView">Images</a></li>
+                        <li><a id="t5" href="#imagesView">Record images</a></li>
                     </c:if>
                 </ul>
                 <div class="css-panes">
@@ -174,7 +173,7 @@
                                     <option value="common_name" <c:if test="${param.sort eq 'common_name'}">selected</c:if>>Common name</option>
                                     <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>${skin == 'avh' ? 'Collecting date' : 'Record date'}</option>
                                     <c:if test="${skin != 'avh'}">
-                                    <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>Record type</option>
+                                        <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>Record type</option>
                                     </c:if>
                                     <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>Date added</option>
                                     <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>Last annotated</option>
@@ -206,9 +205,9 @@
                                             <p class="rowA">
                                                 <span class="occurrenceNames">${rawScientificName}</span>
                                                 <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
-                                                    <span style="display:inline-block;float:right;">
-                                                        <strong class="resultsLabel">Catalogue&nbsp;number:</strong>&nbsp;${occurrence.raw_catalogNumber}
-                                                    </span>
+                                                            <span style="display:inline-block;float:right;">
+                                                                <strong class="resultsLabel">Catalogue&nbsp;number:</strong>&nbsp;${occurrence.raw_catalogNumber}
+                                                            </span>
                                                 </c:if>
                                             </p>
                                             <table class="avhRowB">
@@ -249,18 +248,18 @@
                                                     <span class="resultListItem"><strong class="resultsLabel">Locality:</strong>&nbsp;<fmt:message key="${occurrence.lga}"/></span>
                                                 </c:if>
                                                 <br/>
-                                                <%--<c:if test="${not empty occurrence.institutionName}">
-                                                    <span class="resultListItem" style="text-transform: capitalize;white-space: nowrap;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
-                                                </c:if>--%>
+                                                    <%--<c:if test="${not empty occurrence.institutionName}">
+                                                        <span class="resultListItem" style="text-transform: capitalize;white-space: nowrap;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
+                                                    </c:if>--%>
                                                 <c:if test="${not empty occurrence.collectionName}">
                                                     <span class="resultListItem"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
                                                 </c:if>
                                                 <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
                                                     <span class="resultListItem"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
                                                 </c:if>
-                                                <%--<c:if test="${occurrence.collector != null && not empty occurrence.collector}">
-                                                    <span class="resultListItem"><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}</span>
-                                                </c:if>--%>
+                                                    <%--<c:if test="${occurrence.collector != null && not empty occurrence.collector}">
+                                                        <span class="resultListItem"><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}</span>
+                                                    </c:if>--%>
                                                 <c:choose>
                                                     <c:when test="${not empty occurrence.eventDate}">
                                                         <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
@@ -270,9 +269,9 @@
                                                     </c:when>
                                                 </c:choose>
 
-                                                <span style="display:inline-block;float:right;">
-                                                    <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
-                                                </span>
+                                                        <span style="display:inline-block;float:right;">
+                                                            <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
+                                                        </span>
                                             </p>
                                         </c:when>
                                         <c:otherwise><%-- All other hubs --%>
@@ -289,14 +288,14 @@
                                                     <c:when test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:when>
                                                     <c:when test="${not empty occurrence.raw_vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.raw_vernacularName}</span></c:when>
                                                 </c:choose>
-                                                <span style="margin-left: 8px;">
-                                                <c:if test="${not empty occurrence.eventDate}">
-                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
-                                                </c:if>
-                                                <c:if test="${not empty occurrence.stateProvince}">
-                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span>
-                                                </c:if>
-                                                </span>
+                                                        <span style="margin-left: 8px;">
+                                                        <c:if test="${not empty occurrence.eventDate}">
+                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
+                                                        </c:if>
+                                                        <c:if test="${not empty occurrence.stateProvince}">
+                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span>
+                                                        </c:if>
+                                                        </span>
                                             </p>
                                             <p class="rowB">
                                                 <c:if test="${not empty occurrence.institutionName}">
@@ -323,7 +322,7 @@
                         </div><!--close results-->
                         <div id="searchNavBar">
                             <alatag:searchNavigationLinks totalRecords="${searchResults.totalRecords}" startIndex="${searchResults.startIndex}"
-                                       queryString="${searchRequestParams.q}" lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
+                                                          queryString="${searchRequestParams.q}" lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
                         </div>
                     </div><!--end solrResults-->
                     <div id="mapwrapper" class="paneDiv">
@@ -372,7 +371,7 @@
                                 <td>
                                     <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
                                     <c:set var='spatialPortalUrlParams'><ala:propertyLoader bundle="hubs" property="spatialPortalUrlParams"/></c:set>
-                                  <!--  <a class="buttonDiv" id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>-->
+                                    <!--  <a class="buttonDiv" id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>-->
                                     <div id="downloadMaps" class="buttonDiv">
                                         <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
                                     </div>
@@ -384,7 +383,7 @@
                         </table>
                         <div id="maploading">Loading...</div>
                         <div id="mapcanvas"></div>
-                        <div id="legend" title="Toggle layers/legend display">                            
+                        <div id="legend" title="Toggle layers/legend display">
                             <div class="title">Legend<span>&nabla;</span></div>
                             <div id="layerlist">
                                 <div id="toggleAll">Toggle all</div>
@@ -396,9 +395,30 @@
                     <div id="chartsWrapper" class="paneDiv">
                         <div id="charts"></div>
                     </div><!-- end #chartsWrapper -->
+                    <div id="speciesWrapper" class="paneDiv">
+                        <h3>Representative images of species</h3>
+                        <div id="speciesGalleryControls">
+                            Filter by group
+                            <select id="speciesGroup">
+                                <option>no species groups loaded</option>
+                            </select>
+                            &nbsp;
+                            Sort by
+                            <select id="speciesGallerySort">
+                                <option value="common">Common name</option>
+                                <option value="taxa">Scientific name</option>
+                                <option value="count">Record count</option>
+                            </select>
+                        </div>
+                        <div id="speciesGallery">[image gallery should appear here]</div>
+                        <div id="loadMoreSpecies" style="display:none;">
+                            <button>Show more images</button><img style="display:none;" src="${pageContext.request.contextPath}/static/images/indicator.gif"/>
+                        </div>
+                    </div><!-- end #speciesWrapper -->
                     <c:if test="${showImages}">
                         <div id="imagesWrapper" class="paneDiv">
-<!--                            <h3>Associated Multimedia</h3>-->
+                            <h3>Images from occurrence records</h3>
+                            <p>(see also <a href="#species">representative species images</a>)</p>
                             <div id="imagesGrid">
                                 loading images...
                             </div>
@@ -407,13 +427,17 @@
                             </div>
                         </div><!-- end #imagesWrapper -->
                     </c:if>
-                </div>
+                </div><!-- end .css-panes -->
                 <form name="raw_taxon_search" class="rawTaxonSearch" id="rawTaxonSearchForm" action="${pageContext.request.contextPath}/occurrences/search/taxa" method="POST">
-                    <%-- taxon concept search drop-down div are put in here via Jquery --%>
+                        <%-- taxon concept search drop-down div are put in here via Jquery --%>
                     <div style="display:none;">
                     </div>
                 </form>
-            </c:if>
+            </c:when>
+            <c:otherwise>
+                <p>No Records found for <span id="queryDisplay">${not empty queryDisplay ? queryDisplay : param.q}</span></p>
+            </c:otherwise>
+        </c:choose>
         </div>
   </body>
 </html>

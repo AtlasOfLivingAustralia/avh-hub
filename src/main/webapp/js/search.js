@@ -192,6 +192,7 @@ function loadImages(start) {
                 var imgEl = $("<img src='" + imgSrc +
                     "' style='height: 100px; cursor: pointer;'/>");
                 var metaData = {
+                    type: 'record',
                     uuid: el.uuid,
                     rank: el.taxonRank,
                     rankId: el.taxonRankID,
@@ -220,6 +221,117 @@ function loadImages(start) {
 }
 
 /**
+ * Load the species tab with list of species from the current query.
+ * Uses automatic scrolling to load new bunch of rows when user scrolls.
+ *
+ * @param start
+ */
+function loadSpeciesInTab(start, sortField, group) {
+    var pageSize = 20;
+    var init = $('#speciesGallery').data('init');
+    start = (start) ? start : 0;
+    group = (group) ? group : "ALL_SPECIES";
+    // sortField should be one of: taxa, common, count
+    var sortExtras;
+    switch (sortField) {
+        case 'taxa': sortExtras = "&common=false&sort=index";
+            break;
+        default:
+        case 'common': sortExtras = "&common=true&sort=index";
+            break;
+        case 'count': sortExtras = "&common=false&sort=count";
+            break;
+    }
+
+    if (!init) {
+        // populate the groups dropdown
+        var groupsUrl = BC_CONF.biocacheServiceUrl + "/explore/groups.json" + BC_CONF.searchString + "&facets=species_group&callback=?";
+        $.getJSON(groupsUrl, function(data) {
+            if (data.length > 0) {
+                $("#speciesGroup").empty();
+                $.each(data, function(i, el) {
+                    if (el.count > 0) {
+                        var indent = Array(el.level + 1).join("-") + " ";
+                        var dispayName = el.name.replace("_", " ");
+                        if (el.level == 0) {
+                            dispayName = dispayName.toLowerCase(); // lowercase
+                            dispayName = dispayName.charAt(0).toUpperCase() + dispayName.slice(1); // capitalise first letter
+                        }
+                        var opt = $("<option value='" + el.name + "'>" + indent + dispayName + " (" + el.speciesCount + ")</option>");
+                        $("#speciesGroup").append(opt);
+                    }
+                });
+            }
+        }).error(function(){ $("#speciesGroup option").val("Error: species groups were not loaded");});
+        //
+        $('#speciesGallery').data('init', true);
+    } else {
+        //$("#loadMoreSpecies").hide();
+    }
+
+    if (start == 0) {
+        $("#speciesGallery").empty().before("<div id='loadingSpecies'>Loading... <img src='" + BC_CONF.contextPath + "/static/images/indicator.gif'/></div>");
+        $("#loadMoreSpecies").hide();
+    } else {
+        $("#loadMoreSpecies img").show();
+    }
+
+    var speciesJsonUrl = BC_CONF.contextPath + "/proxy/exploreGroupWithGallery" + BC_CONF.searchString +
+            "&group=" + group + "&pageSize=" + pageSize + "&start=" + start + sortExtras;
+
+    $.getJSON(speciesJsonUrl, function(data) {
+        //console.log("data", data);
+        if (data.length > 0) {
+            //var html = "<table><thead><tr><th>Image</th><th>Scientific name</th><th>Common name</th><th>Record count</th></tr></thead><tbody>";
+            var count = 0;
+            $.each(data, function(i, el) {
+                // don't show higher taxa
+                count++;
+                if (el.rankId > 6000) {
+                    var imgSrc = BC_CONF.contextPath + "/static/images/noimage.gif";
+                    if (el.thumbnailUrl) {
+                        imgSrc = el.thumbnailUrl;
+                    }
+
+                    var imgEl = $("<img src='" + imgSrc +
+                        "' style='height: 100px; cursor: pointer;'/>");
+                    var metaData = {
+                        type: 'species',
+                        guid: el.guid,
+                        rank: el.rank,
+                        rankId: el.rankId,
+                        sciName: el.scientificName,
+                        commonName: el.commonName,
+                        count: el.count
+                    };
+                    imgEl.data(metaData);
+                    $("#speciesGallery").append(imgEl);
+                }
+            });
+
+            if (count == pageSize) {
+                //console.log("load more", count, start, count + start, data.totalRecords);
+                $('#speciesGallery').data('count', count + start);
+                $("#loadMoreSpecies").show();
+            } else {
+                $("#loadMoreSpecies").hide();
+            }
+
+            $('#speciesGallery img').ibox(); // enable hover effect
+
+            //html += "</tbody></table>";
+//            $("#speciesGallery").append(html);
+
+        }
+    }).error(function (request, status, error) {
+            alert(request.responseText);
+    }).complete(function() {
+            $("#loadingSpecies").remove();
+            $("#loadMoreSpecies img").hide();
+    });
+}
+
+/**
  * iBox Jquery plugin for Google Images hover effect.
  * Origina by roxon http://stackoverflow.com/users/383904/roxon
  * Posted to stack overflow: 
@@ -231,7 +343,8 @@ function loadImages(start) {
         resize = 50; // pixels to add to img height
         ////////////////////
         var img = this;
-        img.parent().append('<div id="ibox" />');
+        img.parent().parent().parent().append('<div id="ibox" />');
+        $('body').append('<div id="ibox" />');
         var ibox = $('#ibox');
         var elX = 0;
         var elY = 0;
@@ -256,12 +369,25 @@ function loadImages(start) {
                 checkwh = (h < w) ? (wh = (w / h * resize) / 2) : (wh = (w * resize / h) / 2);
 
                 $(this).clone().prependTo(ibox);
+
+                var link, rank, linkTitle, count;
                 var md = $(el).data();
-                var link = BC_CONF.contextPath + "/occurrences/"  + md.uuid;
+
+                if (md.type == 'species') {
+                    link = BC_CONF.bieWebappUrl + "/species/"  + md.guid;
+                    linkTitle = "Go to ALA species page";
+                    rank = " ";
+                    count = " <br/>Record count: " + md.count;
+                } else {
+                    link = BC_CONF.contextPath + "/occurrences/"  + md.uuid;
+                    linkTitle = "Go to occurrence record";
+                    rank = "<span style='text-transform: capitalize'>" + md.rank + "</span>: ";
+                    count = "";
+                }
+
                 var itals = (md.rankId >= 6000) ? "<span style='font-style: italic;'>" : "<span>";
-                var infoDiv = "<div style=''><a href='" + link + "'><span style='text-transform: capitalize'>" + 
-                    md.rank + "</span>: " +  itals + md.sciName + "</span> " + 
-                    md.commonName + "</a></div>";
+                var infoDiv = "<div style=''><a href='" + link + "' title='" + linkTitle + "'>" + rank + itals +
+                    md.sciName + "</span><br/>" + md.commonName.replace("| ", "") + "</a> " + count + "</div>";
                 $(ibox).append(infoDiv);
                 $(ibox).click(function(e) {
                     e.preventDefault();
@@ -625,7 +751,8 @@ $(document).ready(function() {
     var tabsInit = { 
         map: false,
         charts: false,
-        images: false
+        images: false,
+        species: false
     };
 
     // work-around for intitialIndex & history being mutually exclusive
@@ -646,19 +773,48 @@ $(document).ready(function() {
                 // trigger charts load
                 loadAllCharts();
                 tabsInit.charts = true; // only initialise once!
-            } else if (tabIndex == 3 && !tabsInit.images && BC_CONF.hasMultimedia) {
+            } else if (tabIndex == 3 && !tabsInit.species) {
+                loadSpeciesInTab(0, "common");
+                tabsInit.species = true;
+            } else if (tabIndex == 4 && !tabsInit.images && BC_CONF.hasMultimedia) {
                 loadImagesInTab();
                 tabsInit.images = true;
             }
         }
     });
 
+    // load more images button
     $("#loadMoreImages").live("click", function(e) {
         e.preventDefault();
         var start = $("#imagesGrid").data('count');
         //console.log("start", start);
         loadImages(start);
     });
+
+    // load more species images button
+    $("#loadMoreSpecies").live("click", function(e) {
+        e.preventDefault();
+        var start = $("#speciesGallery").data('count');
+        var group = $("#speciesGroup :selected").val();
+        var sort = $("#speciesGallery").data('sort');
+        //console.log("start", start);
+        loadSpeciesInTab(start, sort, group);
+    });
+
+    // species tab -> species group drop down
+    $("#speciesGroup, #speciesGallerySort").live("change", function(e) {
+        var group = $("#speciesGroup :selected").val();
+        var sort = $("#speciesGallerySort :selected").val();
+        loadSpeciesInTab(0, sort, group);
+    });
+
+//    // species tab -> sort drop down
+//    $("#speciesGroup").live("click", function(e) {
+//        var group = $("#speciesGroup :selected").val();
+//        var sort = $("#speciesGallerySort :selected").val();
+//        loadSpeciesInTab(0, sort, group);
+//    });
+
             
     // add click even on each record row in results list
     $(".recordRow").click(function(e) {

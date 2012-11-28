@@ -52,6 +52,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -1038,7 +1039,7 @@ public class OccurrenceController {
                     String url = biocacheUriPrefix + "/webportal/params";
                     HashMap<String, String> params = new HashMap<String, String>();
                     params.put("wkt", changeSeparator(wkt));
-                    String qid = ProxyController.getPostUrlContentAsString(url, params);
+                    String qid = ProxyController.getPostUrlContentAsString(url, params, null);
 
                     if (qid != null) {
                         response.sendRedirect(serverName + contextPath + "/occurrence/search?q=qid:" +

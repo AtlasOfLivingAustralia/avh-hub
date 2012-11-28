@@ -441,11 +441,13 @@ div.centered {
     display: inline-block;
     padding: 0 3px;
 }*/
-
-#imagesGrid {
+#imagesWrapper h3, #imagesWrapper p, #speciesWrapper h3, #loadingSpecies, #speciesGalleryControls {
+    margin-left: 14px;
+}
+#imagesGrid, #speciesGallery {
     padding:10px;
 }
-#imagesGrid img {
+#imagesGrid img, #speciesGallery img {
 /*    float:left;*/
     display: inline-block;
     height:100px;

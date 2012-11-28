@@ -15,36 +15,35 @@
 
 package org.ala.hubs.controller;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.ala.biocache.dto.SearchResultDTO;
+import org.ala.biocache.dto.SpatialSearchRequestParams;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.servlet.HandlerMapping;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Simple proxy controller to proxy requests to other ALA domains and thus overcome the
@@ -61,6 +60,9 @@ public class ProxyController {
     private final String SPATIAL_PORTAL_URL = "http://spatial.ala.org.au";
     /** WordPress URL */
     private final String WORDPRESS_URL = "http://www.ala.org.au/";
+
+    @Inject
+    private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
 
     @Value("${biocacheRestService.biocacheUriPrefix}")
     String biocacheUriPrefix = null;
@@ -271,13 +273,123 @@ public class ProxyController {
         }
     }
 
-        /**
-       * Retrieve content as String.
-       *
-       * @param url
-       * @return
-       * @throws Exception
-       */
+    @RequestMapping(value = "/exploreGroupWithGallery", method = RequestMethod.GET)
+    public @ResponseBody List<CustomTaxonDTO> exploreGroupWithGallery(
+            @RequestParam(value="taxa", required=false, defaultValue = "") String taxa,
+            @RequestParam(value="group", required=false, defaultValue = "ALL_SPECIES") String group,
+            @RequestParam(value="common", required=false, defaultValue = "true") String common,
+            SpatialSearchRequestParams requestParams,
+            BindingResult result,
+            HttpServletRequest request,
+            Model model) {
+
+        // First, grab a list of species for a given BC search
+        List<CustomTaxonDTO> ctList = new ArrayList<CustomTaxonDTO>();
+        String searchDTOListJson = "";
+        List<Map<String, Object>> groupList = new ArrayList<Map<String, Object>>();
+        String jsonUri = "http://biocache.ala.org.au/ws/explore/group/" + group + ".json?" +
+                "q=" + requestParams.getQ() + "&fq=" + StringUtils.join(requestParams.getFq() , "&fq=")+ "&taxa=" + taxa +
+                "&qc=" + requestParams.getQc() + "&pageSize=" + requestParams.getPageSize() + "&start=" + requestParams.getStart() +
+                "&sort=" + requestParams.getSort() + "&common=" + common;
+
+        try {
+            logger.debug("Requesting groups via: " + jsonUri);
+            groupList = restTemplate.getForObject(jsonUri, List.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+
+        // Grab the guids and add them to a List
+        List<String> guids = new ArrayList<String>();
+        Map<String, CustomTaxonDTO> taxaMap = new HashMap<String, CustomTaxonDTO>();
+
+        for (Map<String, Object> taxon : groupList) {
+            if (taxon.containsKey("guid")) {
+                logger.debug("taxon = " + taxon);
+                String guid = (String) taxon.get("guid");
+                guids.add(guid);
+                // populate the Map as well
+                CustomTaxonDTO ct = new CustomTaxonDTO(guid);
+                ct.setScientificName((String) taxon.get("name"));
+                ct.setCommonName((String) taxon.get("commonName"));
+                try {
+                    ct.setCount((Integer) taxon.get("count"));
+                } catch (NumberFormatException e) {
+                    logger.warn("Error converting count to Long: " + e.getMessage());
+                }
+                taxaMap.put(guid, ct);
+            }
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> searchListOfGuids = new ArrayList<String>(); // so we can keep original order of 1st WS call
+        String guidsJsonString = "";
+        try {
+            guidsJsonString = objectMapper.writeValueAsString(guids);
+        } catch(Exception ex) {
+            logger.error("ObjectMapper error: " + ex.getMessage(), ex);
+        }
+
+        try {
+            final String bieJsonUri = "http://bie.ala.org.au/ws/species/bulklookup.json"; // TODO get it from properties file
+            searchDTOListJson = getPostUrlContentAsString(bieJsonUri, null, guidsJsonString);
+            // unmarshall json
+            Map<String, Object> sr = objectMapper.readValue(searchDTOListJson, Map.class);
+            List<Object> searchDTOList = (List) sr.get("searchDTOList");
+            logger.debug("searchDTOList = " + StringUtils.join(searchDTOList, "|"));
+
+            for (Object taxaObj : searchDTOList) {
+                Map<String, Object> taxon = (Map) taxaObj;
+                String guid = (String) taxon.get("guid");
+                searchListOfGuids.add(guid);
+
+                if (taxaMap.containsKey(guid)) {
+                    // populate the existing taxaMap with image info, etc.
+                    CustomTaxonDTO ct = taxaMap.get(guid);
+
+                    if (taxon.containsKey("smallImageUrl")) {
+                        ct.setThumbnailUrl((String) taxon.get("smallImageUrl"));
+                    }
+                    if (taxon.containsKey("largeImageUrl")) {
+                        ct.setLargeImageUrl((String) taxon.get("largeImageUrl"));
+                    }
+                    if (taxon.containsKey("rank")) {
+                        ct.setRank((String) taxon.get("rank"));
+                    }
+                    if (taxon.containsKey("rankId")) {
+                        ct.setRankId((Integer) taxon.get("rankId"));
+                    }
+
+                    taxaMap.put(guid, ct); // save it back
+
+                } else {
+                    logger.warn("Expected guid not found in taxaMap: " + guid);
+                }
+            }
+
+        } catch (Exception ex) {
+            logger.error("HttpClient error: " + ex.getMessage(), ex);
+        }
+
+        // convert Map to List (using order from first WS call)
+        for (String guid : searchListOfGuids) {
+            if (taxaMap.containsKey(guid)) {
+                ctList.add(taxaMap.get(guid));
+            } else {
+                logger.warn("Expected guid not found in taxaMap: " + guid);
+            }
+        }
+
+        return ctList;
+    }
+
+    /**
+   * Retrieve content as String.
+   *
+   * @param url
+   * @return
+   * @throws Exception
+   */
 	public static String getUrlContentAsString(String url, int timeoutInMillisec) throws Exception {
 		GetMethod gm = null;
         String content = null;
@@ -321,23 +433,29 @@ public class ProxyController {
      * @return
      * @throws Exception
      */
-    public static String getPostUrlContentAsString(String url, Map<String, String> params) throws Exception {
+    public static String getPostUrlContentAsString(String url, Map<String, String> params, String jsonPostBody) throws Exception {
         String content = null;
 
         HttpClient httpClient = new HttpClient();
         PostMethod postMethod = new PostMethod(url);
 
-        for (String key : params.keySet()) {
-            // set POST params
-            postMethod.addParameter(key, params.get(key));
-            //postMethod.addParameter("wkt", "POLYGON((140:-37,151:-37,151:-26,140.1310:-26,140:-37))");
+        if (params != null) {
+            for (String key : params.keySet()) {
+                // set POST params
+                postMethod.addParameter(key, params.get(key));
+                //postMethod.addParameter("wkt", "POLYGON((140:-37,151:-37,151:-26,140.1310:-26,140:-37))");
+            }
+
+            postMethod.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=UTF-8");
+            postMethod.setRequestHeader("Accept", "application/json;charset=UTF-8");
+            logger.debug("Attempting POST to " + url + " with params: " + StringUtils.abbreviate(postMethod.getParameter("wkt").getValue(), 2048));
         }
 
-        postMethod.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=UTF-8");
-        postMethod.setRequestHeader("Accept", "application/json;charset=UTF-8");
-        //postMethod.setFollowRedirects(true);
-
-        logger.debug("Attempting POST to " + url + " with params: " + StringUtils.abbreviate(postMethod.getParameter("wkt").getValue(), 2048));
+        if (jsonPostBody != null) {
+            // post.setEntity(new StringEntity(jsonBody))
+            postMethod.setRequestEntity(new StringRequestEntity(jsonPostBody, "application/json", "UTF-8"));
+            logger.debug("Attempting POST to " + url + " with body: " + StringUtils.abbreviate(jsonPostBody, 1024));
+        }
 
         try {
             httpClient.executeMethod(postMethod);
@@ -361,5 +479,105 @@ public class ProxyController {
         }
 
         return content;
+    }
+
+    /**
+     * Inner DTO class for holding search-specific data on the taxa from that search
+     */
+    private class CustomTaxonDTO {
+        protected String guid;
+        protected String scientificName;
+        protected String commonName;
+        protected String rank;
+        protected Integer rankId;
+        protected Integer count;
+        protected String thumbnailUrl;
+        protected String largeImageUrl;
+
+        public CustomTaxonDTO() {
+            //
+        }
+
+        public CustomTaxonDTO(String guid) {
+            this.guid = guid;
+        }
+
+        @Override
+        public String toString() {
+            return "CustomTaxonDTO{" +
+                    "guid='" + guid + '\'' +
+                    ", scientificName='" + scientificName + '\'' +
+                    ", commonName='" + commonName + '\'' +
+                    ", rank='" + rank + '\'' +
+                    ", rankId=" + rankId +
+                    ", count=" + count +
+                    ", thumbnailUrl='" + thumbnailUrl + '\'' +
+                    ", largeImageUrl='" + largeImageUrl + '\'' +
+                    '}';
+        }
+
+        public String getGuid() {
+            return guid;
+        }
+
+        public void setGuid(String guid) {
+            this.guid = guid;
+        }
+
+        public String getScientificName() {
+            return scientificName;
+        }
+
+        public void setScientificName(String scientificName) {
+            this.scientificName = scientificName;
+        }
+
+        public String getCommonName() {
+            return commonName;
+        }
+
+        public void setCommonName(String commonName) {
+            this.commonName = commonName;
+        }
+
+        public String getRank() {
+            return rank;
+        }
+
+        public void setRank(String rank) {
+            this.rank = rank;
+        }
+
+        public Integer getRankId() {
+            return rankId;
+        }
+
+        public void setRankId(Integer rankId) {
+            this.rankId = rankId;
+        }
+
+        public Integer getCount() {
+            return count;
+        }
+
+        public void setCount(Integer count) {
+            this.count = count;
+        }
+
+        public String getThumbnailUrl() {
+            return thumbnailUrl;
+        }
+
+        public void setThumbnailUrl(String thumbnailUrl) {
+            this.thumbnailUrl = thumbnailUrl;
+        }
+
+        public String getLargeImageUrl() {
+            return largeImageUrl;
+        }
+
+        public void setLargeImageUrl(String largeImageUrl) {
+            this.largeImageUrl = largeImageUrl;
+        }
     }
 }
