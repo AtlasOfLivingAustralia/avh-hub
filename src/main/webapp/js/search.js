@@ -287,14 +287,9 @@ function loadSpeciesInTab(start, sortField, group) {
             $.each(data, function(i, el) {
                 // don't show higher taxa
                 count++;
-                if (el.rankId > 6000) {
-                    var imgSrc = BC_CONF.contextPath + "/static/images/noimage.gif";
-                    if (el.thumbnailUrl) {
-                        imgSrc = el.thumbnailUrl;
-                    }
-
-                    var imgEl = $("<img src='" + imgSrc +
-                        "' style='height: 100px; cursor: pointer;'/>");
+                if (el.rankId > 6000 && el.thumbnailUrl) {
+                    var imgEl = $("<img src='" + el.thumbnailUrl +
+                        "' style='height:100px; cursor:pointer;'/>");
                     var metaData = {
                         type: 'species',
                         guid: el.guid,
