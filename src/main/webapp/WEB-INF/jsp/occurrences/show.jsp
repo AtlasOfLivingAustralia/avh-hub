@@ -590,6 +590,9 @@
                         <c:forEach items="${record.processed.occurrence.images}" var="imageUrl">
                            <a href="${not empty record.raw.occurrence.occurrenceDetails ?  record.raw.occurrence.occurrenceDetails : imageUrl}" target="_blank"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
                         </c:forEach>
+                        <c:if test="${not empty record.raw.occurrence.photographer}">
+                            <cite>Photographer: ${record.raw.occurrence.photographer}</cite>
+                        </c:if>
                         <c:if test="${not empty record.raw.occurrence.rights}">
                            <cite>Rights: ${record.raw.occurrence.rights}</cite>
                         </c:if>

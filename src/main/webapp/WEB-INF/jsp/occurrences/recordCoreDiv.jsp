@@ -811,7 +811,20 @@
             <!-- Geodetic datum -->
             <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="geodeticDatum" fieldName="Geodetic datum">
                 <c:set target="${fieldsMap}" property="geodeticDatum" value="true" />
-                ${record.raw.location.geodeticDatum}
+                <c:choose>
+                    <c:when test="${not empty clubView && record.raw.location.geodeticDatum != record.processed.location.geodeticDatum}">
+                        ${record.raw.location.geodeticDatum}
+                    </c:when>
+                    <c:when test="${not empty record.raw.location.geodeticDatum && record.raw.location.geodeticDatum != record.processed.location.geodeticDatum}">
+                        ${record.processed.location.geodeticDatum}<br/><span class="originalValue">Supplied as: "${record.raw.location.geodeticDatum}"</span>
+                    </c:when>
+                    <c:when test="${not empty record.processed.location.geodeticDatum}">
+                        ${record.processed.location.geodeticDatum}
+                    </c:when>
+                    <c:when test="${not empty record.raw.location.geodeticDatum}">
+                        ${record.raw.location.geodeticDatum}
+                    </c:when>
+                </c:choose>
             </alatag:occurrenceTableRow>
             <!-- verbatimCoordinateSystem -->
             <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="verbatimCoordinateSystem" fieldName="Verbatim coordinate system">
