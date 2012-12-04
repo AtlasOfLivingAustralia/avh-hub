@@ -1408,17 +1408,8 @@ public class OccurrenceController {
      * @param requestParams 
      */
     protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams, Model model) {
-        // check for user facets via cookie
-        String[] userFacets = getFacetsFromCookie(request);
-        //System.out.println("userFacets = " + StringUtils.join(userFacets, "|"));
 
-        String[] facetsToUse = null;
-
-        if (userFacets != null && userFacets.length > 0) {
-            facetsToUse = userFacets;
-        } else {
-            facetsToUse = biocacheService.getDefaultFacets().toArray(new String[]{});
-        }
+        String[] defaultFacets = biocacheService.getDefaultFacets().toArray(new String[]{});
 
         List<String> customFacets = new ArrayList<String>();
 
@@ -1426,19 +1417,31 @@ public class OccurrenceController {
             //retrieve details of data resources from query
             List<FacetDTO> dynamicFacets = retrieveCustomFacets(request);
             model.addAttribute("dynamicFacets", dynamicFacets);
-            for(FacetDTO f: dynamicFacets) customFacets.add(f.getName());
+            for (FacetDTO f: dynamicFacets) customFacets.add(f.getName());
             //FIXME add these to the request.....
             //customFacets.addAll(dynamicFacets);
         }
 
-        if(facetsToUse != null){
-            CollectionUtils.addAll(customFacets, facetsToUse);
+        if(defaultFacets != null){
+            // add dynamic facets to the default set
+            CollectionUtils.addAll(customFacets, defaultFacets);
         }
 
         // modify list of facets via hubs.properties (facets.inlcudes and facets.excludes)
         String[] filteredFacets = filterFacets(customFacets.toArray(new String[0]));
 
-        requestParams.setFacets(filteredFacets);
+        // check for cookie (will have preprocessed list already)
+        String[] userFacets = getFacetsFromCookie(request);
+        String[] facetsToUse;
+
+        if (userFacets != null && userFacets.length > 0) {
+            facetsToUse = userFacets;
+        } else {
+            facetsToUse = filteredFacets;
+        }
+
+        logger.debug("facetsToUse = " + StringUtils.join(facetsToUse, "|"));
+        requestParams.setFacets(facetsToUse);
 
         List<String> displayString = new ArrayList<String>();
         List<String> query = new ArrayList<String>();
@@ -1912,6 +1915,7 @@ public class OccurrenceController {
             }
         }
 
+        logger.debug("FinalFacets = " + StringUtils.join(finalFacets, "|"));
         String[] filteredFacets = finalFacets.toArray(new String[finalFacets.size()]);
         return filteredFacets;
     }
