@@ -39,6 +39,11 @@
                 <!--</exclusion>-->
           </exclusions>
         </dependency>
+        <dependency>
+            <groupId>au.org.ala</groupId>
+            <artifactId>biocache-store</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- ALA logging -->
         <dependency>
             <groupId>au.org.ala</groupId>
@@ -232,15 +237,23 @@
             <artifactId>gt-epsg-hsql</artifactId>
             <version>${geotools.version}</version>
         </dependency>
+        <!-- JAWR -->
         <dependency>
             <groupId>net.jawr</groupId>
             <artifactId>jawr</artifactId>
             <version>3.3</version>
         </dependency>
+        <!-- YUI Compressor -->
         <dependency>
             <groupId>com.yahoo.platform.yui</groupId>
             <artifactId>yuicompressor</artifactId>
             <version>2.2.5</version>
+        </dependency>
+        <!-- GEOIP - geocoding from IP address -->
+        <dependency>
+            <groupId>org.dspace.dependencies</groupId>
+            <artifactId>dspace-geoip</artifactId>
+            <version>1.2.3</version>
         </dependency>
     </dependencies>
     <repositories>
