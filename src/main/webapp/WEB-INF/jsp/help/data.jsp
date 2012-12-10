@@ -187,7 +187,7 @@
                     AD 00000000
                 </td>
                 <td>
-                    a number of up to eight digits
+                    a number of up to nine digits, sometimes followed by a single letter
                 </td>
             </tr>
             <tr>
