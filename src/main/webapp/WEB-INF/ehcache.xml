@@ -3,5 +3,6 @@
     <defaultCache eternal="true" maxElementsInMemory="10000" overflowToDisk="false" timeToLiveSeconds="3600"/>
     <cache name="facetsCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" />
     <cache name="authCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" timeToLiveSeconds="600" />
+    <cache name="webServiceCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" />
     <cache name="loggerCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" />
 </ehcache>

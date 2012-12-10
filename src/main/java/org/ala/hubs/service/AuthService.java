@@ -41,8 +41,11 @@ public class AuthService {
     protected String userDetailsUrl = null;
     @Value("${auth.userNamesForIdPath}")
     protected String userNamesForIdPath = null;
+    @Value("${auth.userNamesForNumericIdPath}")
+    protected String userNamesForNumericIdPath = null;
     // Keep a reference to the output Map in case subsequent web service lookups fail
     protected Map<String, String> userNamesById = new HashMap<String, String>();
+    protected Map<String, String> userNamesByNumericIds = new HashMap<String, String>();
 
     @Cacheable(cacheName = "authCache")
     public Map<String, String> getMapOfAllUserNamesById() {
@@ -55,5 +58,18 @@ public class AuthService {
         }
         logger.info("userNamesById = " + StringUtils.join(userNamesById.keySet(), "|"));
         return userNamesById;
+    }
+
+    @Cacheable(cacheName = "authCache")
+    public Map<String, String> getMapOfAllUserNamesByNumericId() {
+        try {
+            final String jsonUri = userDetailsUrl + userNamesForNumericIdPath;
+            logger.debug("authCache requesting: " + jsonUri);
+            userNamesByNumericIds = restTemplate.postForObject(jsonUri, null, Map.class);
+        } catch (Exception ex) {
+            logger.error("RestTemplate error: " + ex.getMessage(), ex);
+        }
+        logger.info("userNamesByIds = " + StringUtils.join(userNamesByNumericIds.keySet(), "|"));
+        return userNamesByNumericIds;
     }
 }

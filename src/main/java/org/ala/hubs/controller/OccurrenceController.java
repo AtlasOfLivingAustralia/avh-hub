@@ -52,7 +52,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -375,7 +374,7 @@ public class OccurrenceController {
 
         SpatialSearchRequestParams requestParams = new SpatialSearchRequestParams();
         requestParams.setQ(queryString);
-        
+
         if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
@@ -442,31 +441,34 @@ public class OccurrenceController {
 
 
     /**
-     * Display records for a given taxon concept id
+     * Redirect JSON version of search to biocache-service
      *
-     * @param requestParams
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = {"/search.json", "/searchByArea.json"}, method = RequestMethod.GET)
+    public void searchRedirectJson(@RequestParam(value="taxa", required=false) String[] taxaQuery,
+                                   SpatialSearchRequestParams requestParams,
+                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
+        logger.debug("Redirecting the JSON version of a search with params: " + request.getQueryString());
+        // do lookup for taxa query via BIE
+        createQueryWithTaxaParam(taxaQuery, requestParams);
+        response.sendRedirect(biocacheUriPrefix + "/occurrences/search.json?" + requestParams.toString());
+    }
+
+
+    /**
+     * Taxa URL from Species pages - redirect to regular search page.
+     *
      * @param guid
-     * @param model
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/taxa/{guid:.+}*", method = RequestMethod.GET)
-	public String occurrenceSearchByTaxon(
-			@RequestParam(value="taxa", required=false) String[] taxaQuery,
-            SpatialSearchRequestParams requestParams,
-            @PathVariable("guid") String guid,
-            HttpServletRequest request,
-            Model model) throws Exception {
+	public String occurrenceSearchByTaxon(@PathVariable("guid") String guid) throws Exception {
 
-        //requestParams.setQ("taxonConceptID:" + guid);
-        requestParams.setDisplayString("taxonConcept: "+guid); // replace with sci name if a match is found
-        String[] userFacets = getFacetsFromCookie(request);
-        if (userFacets != null && userFacets.length > 0) requestParams.setFacets(userFacets);
-        SearchResultDTO searchResult = biocacheService.findByTaxonConcept(guid, requestParams);
-        requestParams.setQ("lsid:" + guid); // so down-line service requests work as expected
-        addToModel(model, requestParams, searchResult, request);
-        
-        return RECORD_LIST;
+        return "redirect:/occurrences/search?q=lsid:" + guid;
     }
 
     /**
@@ -921,6 +923,7 @@ public class OccurrenceController {
                 model.addAttribute("compareRecord", compareRecord);
                 model.addAttribute("dwcExcludeFields", dwcExclude);
                 model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
+                model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
             }
 
         } catch (Exception e){
@@ -1059,6 +1062,22 @@ public class OccurrenceController {
 
         return RECORD_LIST;
     }
+
+    /**
+     * Redirect JSON record view to biocache-service
+     *
+     * @param uuid
+     * @param response
+     * @param model
+     * @throws Exception
+     */
+    @RequestMapping(value = {"/{uuid:.+}.json", "/fragment/{uuid:.+}.json"}, method = RequestMethod.GET)
+    public void getOccurrenceRecordJson(@PathVariable("uuid") String uuid,
+                                          HttpServletResponse response, Model model) throws Exception {
+        logger.debug("Redirecting the JSON version of a record - uuid = " + uuid);
+        response.sendRedirect(biocacheUriPrefix + "/occurrence/" + uuid + ".json");
+    }
+
 
     /**
      * JSON service to return a list of facet values for a given search query & facet.
@@ -1443,9 +1462,21 @@ public class OccurrenceController {
         logger.debug("facetsToUse = " + StringUtils.join(facetsToUse, "|"));
         requestParams.setFacets(facetsToUse);
 
+        // method goes here
+        createQueryWithTaxaParam(taxaQuery, requestParams);
+    }
+
+    /**
+     * Merge a taxa query with (regular) query with lookup to BIE for taxa expansion
+     *
+     * @param taxaQuery
+     * @param requestParams
+     */
+    private void createQueryWithTaxaParam(String[] taxaQuery, SearchRequestParams requestParams) {
+        StringBuilder queryString = new StringBuilder();
         List<String> displayString = new ArrayList<String>();
         List<String> query = new ArrayList<String>();
-        
+
         if (taxaQuery != null) {
             for (String tq : taxaQuery) {
                 if (!tq.isEmpty()) {
@@ -1461,27 +1492,26 @@ public class OccurrenceController {
                         displayString.add(tq);
                     } else {
                         // no GUID atch so do full-text search
-                        query.add(tq); 
+                        query.add(tq);
                         //requestParams.setDisplayString(tq);
                         displayString.add(tq);
                     }
                 }
             }
-            
-            StringBuilder queryString = new StringBuilder();
-            
+
+
             if (requestParams.getQ() != null && !requestParams.getQ().isEmpty()) {
                 //combine any other search inputs from advanced form
                 queryString.append(requestParams.getQ()).append(" AND ");
             }
-            
+
             // if more than one taxa query, add braces so we get correct Boolean precedence
             String[] braces = {"",""};
             if (query.size() > 1) {
                 braces[0] = "(";
                 braces[1] = ")";
             }
-            
+
             queryString.append(braces[0]).append(StringUtils.join(query, " OR ")).append(braces[1]); // taxa terms should be OR'ed
             logger.debug("query = " + queryString);
 
@@ -1492,7 +1522,7 @@ public class OccurrenceController {
 
             requestParams.setQ(URLDecoder.decode(queryString.toString().trim()));
             requestParams.setDisplayString(StringUtils.join(displayString, " OR ")); // join up multiple taxa queries
-            
+
         } else if (requestParams.getQ().isEmpty())  {
             requestParams.setQ("*:*"); // assume search for everything
         } else {
@@ -1832,6 +1862,7 @@ public class OccurrenceController {
         model.addAttribute("LoggerSources", loggerService.getSources());
         model.addAttribute("LoggerReason", loggerService.getReasons());
         model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
+        model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
     }
 
     /**

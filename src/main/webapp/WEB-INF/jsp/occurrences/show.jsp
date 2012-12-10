@@ -1062,7 +1062,7 @@
 				<p>
 					<strong><fmt:message key="${queryAssertion.assertionType}"/></strong><br/>
                        Comment: <span class="userAssertionComment">${queryAssertion.comment}</span><br/>
-                       Flagged by: <alatag:authUserLookup userId="${queryAssertion.userName}" allUserNamesByIdMap="${userNamesByIdMap}"/><br/>
+                       Flagged by: <alatag:authUserLookup userId="${queryAssertion.userName}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/><br/>
                        <c:if test="${not empty queryAssertion.createdDate}">                           
                            <fmt:formatDate var="assertionCreatedString" value="${queryAssertion.createdDate}" pattern="yyyy-MM-dd"/>
                            Created: ${assertionCreatedString} <br/>

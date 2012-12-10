@@ -229,21 +229,27 @@
             </c:choose>
         </c:set>
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="collectorName" fieldName="${collectorNameLabel}">
-            <c:set target="${fieldsMap}" property="recordedBy" value="true" />
-            <c:set var="rawRecordedBy"><alatag:authUserLookup userId="${record.raw.occurrence.recordedBy}" allUserNamesByIdMap="${userNamesByIdMap}"/></c:set>
-            <c:set var="proRecordedBy"><alatag:authUserLookup userId="${record.processed.occurrence.recordedBy}" allUserNamesByIdMap="${userNamesByIdMap}"/></c:set>
+            <c:set var="recordedByField">
+                <c:choose>
+                    <c:when test="${not empty record.raw.occurrence.recordedBy}">recordedBy</c:when>
+                    <c:when test="${not empty record.raw.occurrence.userId}">userId</c:when>
+                </c:choose>
+            </c:set>
+            <c:set target="${fieldsMap}" property="${recordedByField}" value="true" />
+            <c:set var="rawRecordedBy"><alatag:authUserLookup userId="${record.raw.occurrence[recordedByField]}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
+            <c:set var="proRecordedBy"><alatag:authUserLookup userId="${record.raw.occurrence[recordedByField]}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
             <c:choose>
-                <c:when test="${not empty record.processed.occurrence.recordedBy && not empty record.raw.occurrence.recordedBy && record.processed.occurrence.recordedBy == record.raw.occurrence.recordedBy}">
+                <c:when test="${not empty record.processed.occurrence[recordedByField] && not empty record.raw.occurrence[recordedByField] && record.processed.occurrence[recordedByField] == record.raw.occurrence[recordedByField]}">
                     ${proRecordedBy}
                 </c:when>
-                <c:when test="${not empty record.processed.occurrence.recordedBy && not empty record.raw.occurrence.recordedBy}">
+                <c:when test="${not empty record.processed.occurrence[recordedByField] && not empty record.raw.occurrence[recordedByField]}">
                     ${proRecordedBy}
                     <br/><span class="originalValue">Supplied as "${rawRecordedBy}"</span>
                 </c:when>
-                <c:when test="${not empty record.processed.occurrence.recordedBy}">
+                <c:when test="${not empty record.processed.occurrence[recordedByField]}">
                     ${proRecordedBy}
                 </c:when>
-                <c:when test="${not empty record.raw.occurrence.recordedBy}">
+                <c:when test="${not empty record.raw.occurrence[recordedByField]}">
                     ${rawRecordedBy}
                 </c:when>
             </c:choose>
@@ -945,7 +951,7 @@
         <table class="occurrenceTable" id="miscellaneousPropertiesTable">
             <!-- Higher Geography -->
             <c:forEach items="${record.raw.miscProperties}" var="entry">
-                <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="<span class='dwc'>${entry.key}</span>"><alatag:authUserLookup userId="${entry.value}" allUserNamesByIdMap="${userNamesByIdMap}"/></alatag:occurrenceTableRow>
+                <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="<span class='dwc'>${entry.key}</span>"><alatag:authUserLookup userId="${entry.value}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></alatag:occurrenceTableRow>
             </c:forEach>
         </table>
     </div>
