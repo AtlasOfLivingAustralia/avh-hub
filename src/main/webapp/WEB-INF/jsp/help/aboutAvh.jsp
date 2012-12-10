@@ -71,7 +71,7 @@
                 <div class="column col1">
                         <img alt="State Herbarium of South Australia Plant Biodiversity Centre" src="${pageContext.request.contextPath}/static/images/avh2012/logo_AD.jpg"/>
                 </div>
-                <div class="column col2">The <a href="http://www.environment.sa.gov.au/Knowledge_Bank/Science_research/State_Herbarium"><b>State Herbarium of South Australia</b></a> (AD), <a href="http://www.environment.sa.gov.au/">Department for Environment and Heritage</a></div>
+                <div class="column col2">The <a href="http://www.environment.sa.gov.au/Knowledge_Bank/Science_research/State_Herbarium"><b>State Herbarium of South Australia</b></a> (AD), <a href="http://www.environment.sa.gov.au/">Department of Environment, Water and Natural Resources</a></div>
         </div>
         <div class="row">
         <div class="column col1">
