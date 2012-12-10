@@ -233,6 +233,7 @@
                 <c:choose>
                     <c:when test="${not empty record.raw.occurrence.recordedBy}">recordedBy</c:when>
                     <c:when test="${not empty record.raw.occurrence.userId}">userId</c:when>
+                    <c:otherwise>recordedBy</c:otherwise>
                 </c:choose>
             </c:set>
             <c:set target="${fieldsMap}" property="${recordedByField}" value="true" />
