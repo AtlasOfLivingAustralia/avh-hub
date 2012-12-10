@@ -49,11 +49,23 @@ var baseFacetChart = {
         state: {ignore: ['Unknown1']},
         type_status: {title: 'By type status (as % of all type specimens)', ignore: ['notatype']},
         el895: {hAxis: {title:'Moisture Index'}},
-        el882: {hAxis: {title:'mm'}},
+        el882: {hAxis: {title:'mm'}, chartArea: {width: "65%"}},
         el889: {hAxis: {title:'mm'}},
         el887: {hAxis: {title:'MJ/m2/day'}},
         el865: {hAxis: {title:'Moisture Index'}},
         el894: {hAxis: {title:'MJ/m2/day'}},
+        el895Outliers: {hAxis: {title:'Moisture Index'}, chartArea: {width: "65%"}, facets: ['el895'], facetLabels: ['Precipitation'], singleFacetName : 'el895', avoidTitlePrefix:true},
+        el882Outliers: {hAxis: {title:'mm'}, chartType: "scatter", chartArea: {width: "65%"}, facets: ['el882'], facetLabels: ['Precipitation'], singleFacetName : 'el882', avoidTitlePrefix:true},
+        el889Outliers: {hAxis: {title:'mm'}, chartArea: {width: "65%"}, facets: ['el889'], facetLabels: ['Precipitation'], singleFacetName : 'el889', avoidTitlePrefix:true},
+        el887Outliers: {hAxis: {title:'MJ/m2/day'}, chartArea: {width: "65%"}, facets: ['el887'], facetLabels: ['Precipitation'], singleFacetName : 'el887', avoidTitlePrefix:true},
+        el865Outliers: {hAxis: {title:'Moisture Index'}, chartArea: {width: "65%"}, facets: ['el865'], facetLabels: ['Precipitation'], singleFacetName : 'el865', avoidTitlePrefix:true},
+        el894Outliers: {hAxis: {title:'MJ/m2/day'}, chartArea: {width: "65%"}, facets: ['el894'], facetLabels: ['Precipitation'], singleFacetName : 'el894', avoidTitlePrefix:true},
+        el895OutliersCumm: {hAxis: {title:'Moisture Index'}, chartArea: {width: "65%"}, facets: ['el895'], facetLabels: ['Precipitation'], singleFacetName : 'el895', avoidTitlePrefix:true},
+        el882OutliersCumm: {hAxis: {title:'mm'}, chartArea: {width: "65%"}, facets: ['el882'], facetLabels: ['Precipitation'], singleFacetName : 'el882', avoidTitlePrefix:true},
+        el889OutliersCumm: {hAxis: {title:'mm'}, chartArea: {width: "65%"}, facets: ['el889'], facetLabels: ['Precipitation'], singleFacetName : 'el889', avoidTitlePrefix:true},
+        el887OutliersCumm: {hAxis: {title:'MJ/m2/day'}, chartArea: {width: "65%"}, facets: ['el887'], facetLabels: ['Precipitation'], singleFacetName : 'el887', avoidTitlePrefix:true},
+        el865OutliersCumm: {hAxis: {title:'Moisture Index'}, chartArea: {width: "65%"}, facets: ['el865'], facetLabels: ['Precipitation'], singleFacetName : 'el865', avoidTitlePrefix:true},
+        el894OutliersCumm: {hAxis: {title:'MJ/m2/day'}, chartArea: {width: "65%"}, facets: ['el894'], facetLabels: ['Precipitation'], singleFacetName : 'el894', avoidTitlePrefix:true},
         radiation: {hAxis: {title:'MJ/m2/day'}, chartArea: {width: "65%"}, facets: ['el887','el894'],
             facetLabels: ['seasonality (Bio23)','warmest quarter (Bio26)']},
         precipitation: {hAxis: {title:'mm'}, chartArea: {width: "65%"}, facets: ['el882','el889'],
@@ -76,11 +88,23 @@ var baseFacetChart = {
         biogeographic_region: 'biogeographic region',
         occurrence_year: 'decade',
         el895: 'Moisture Index - lowest period (Bio30)',
+        el895Outliers: 'Moisture Index - lowest period (Bio30)',
+        el895OutliersCumm: 'Moisture Index - lowest period (Bio30)',
         el882: 'Precipitation - seasonality (Bio15)',
+       	el882Outliers: 'Precipitation - seasonality (Bio15) - Outliers',
+       	el882OutliersCumm: 'Precipitation - seasonality (Bio15) - Outliers (Cumulative)',
         el889: 'Precipitation - driest quarter (Bio17)',
+        el889Outliers: 'Precipitation - driest quarter (Bio17) - Outliers',
+        el889OutliersCumm: 'Precipitation - driest quarter (Bio17) - Outliers (Cumulative)',
         el887: 'Radiation - seasonality (Bio23)',
+        el887Outliers: 'Radiation - seasonality (Bio23) - Outliers',
+        el887OutliersCumm: 'Radiation - seasonality (Bio23) - Outliers (Cumulative)',
         el865: 'Moisture Index - highest quarter mean (Bio32)',
+        el865Outliers: 'Moisture Index - highest quarter mean (Bio32) - Outliers',
+        el865OutliersCumm: 'Moisture Index - highest quarter mean (Bio32) - Outliers (Cumulative)',
         el894: 'Radiation - warmest quarter (Bio26)',
+        el894Outliers: 'Radiation - warmest quarter (Bio26) - Outliers',
+        el894OutliersCumm: 'Radiation - warmest quarter (Bio26) - Outliers (Cumulative)',
         radiation: 'Radiation',
         precipitation: 'Precipitation',
         moisture: 'Moisture'
@@ -192,7 +216,11 @@ var baseFacetChart = {
             specificOptions = options[name];
 
         // add the default title
-        this.title = "By " + this.chartLabel();
+        if(options.avoidTitlePrefix !== "undefined" && options.avoidTitlePrefix){
+            this.title =  this.chartLabel();
+        } else {
+            this.title = "By " + this.chartLabel();
+        }
 
         // apply chart-specific and user-defined options and user-defined individual chart options
         var opts = $.extend(true, {}, this.getChartTypeOptions(name), options, options[name] || {});
@@ -221,7 +249,7 @@ var baseFacetChart = {
         var that = this;
 
         // build the table
-        var dataTable = this.buildDataTable(name, data);
+        var dataTable = this.buildDataTable(name, data, options);
 
         // reject the chart if there is only one facet value (after filtering)
         if (dataTable.getNumberOfRows() < 2) {
@@ -282,34 +310,48 @@ var baseFacetChart = {
             });
         }
     },
-    buildDataTable: function (name, data) {
+    buildDataTable: function (name, data, options) {
         this.column1DataType = this.column1 || 'string';
 
         // preserve context for callback
         var that = this;
 
         // deduce the fieldName used in the data
-        var fieldName = this.getChartTypeOptions(name).responseFacetName || name;
+        //var fieldName = this.getChartTypeOptions(name).responseFacetName || name;
 
         // optionally transform the data
-        var xformedData = this.transformData(data[fieldName]);
+        var facetData = data[name];
+		if(that.singleFacetName !== "undefined" && that.singleFacetName != null){
+			//console.log('########Transform data using singleFacetName : ' + that.singleFacetName );			
+			facetData = data[that.singleFacetName];
+		}
+		
+        var xformedData = this.transformData(facetData);
 
         // optionally format the labels
         xformedData = this.formatLabel(xformedData);
 
         // create the data table
         var dataTable = new google.visualization.DataTable(), dataOptions = this.getChartTypeOptions(name);
-        if (dataOptions && dataOptions.facets) {
+        if (dataOptions && dataOptions.facets && options.outlierValues == "undefined") {
             // add a y-value column for each facet
             dataTable.addColumn(this.column1DataType, this.chartLabel());
             for (var i = 0; i < dataOptions.facets.length; i++) {
                 dataTable.addColumn('number', dataOptions.facetLabels ? dataOptions.facetLabels[i] : this.chartLabel());
             }
-        }
-        else if (this.column1DataType == 'number') {
+        } else if (options.outlierValues !== undefined) {
             dataTable.addColumn('number', this.chartLabel());
             dataTable.addColumn('number','records');
+            dataTable.addColumn('number','outliers');    
+            dataTable.addColumn('number','this record (outlier)');
+          
+    	} else if (this.column1DataType == 'number') {
+            //console.log('building datatable "number" ');
+            dataTable.addColumn('number', this.chartLabel());
+            dataTable.addColumn('number','records');           
+            
         } else {
+            //console.log('building datatable else ');
             dataTable.addColumn('string', this.chartLabel());
             dataTable.addColumn('number','records');
         }
@@ -336,7 +378,38 @@ var baseFacetChart = {
                     dataTable.addRow([parseFloat(obj.label), null, obj.count]);
                 }
             });
+            
+        } else if(options.outlierValues !== undefined) {
+        
+        	//console.log('building datatable -  handle each data item');        
+            // handle each data item
+           // //console.log('xformedData : ' + xformedData);
+            
+            $.each(xformedData, function(i,obj) {
+                // filter any crap
+                //console.log('building datatable -  obj.label: ' + obj.label);   
+                if (that.ignore !== "undefined" || $.inArray(obj.label, that.ignore) == -1) {
+                	//console.log('building datatable -  crap filtered');   
+                
+                    if (detectCamelCase(obj.label)) {
+                        dataTable.addRow([{v: obj.label, f: capitalise(expandCamelCase(obj.label))}, obj.count, null,null]);
+                    } else if (that.column1DataType === 'number') {
+                        
+                        ////console.log('inArray: ' + $.inArray(obj.label, options.outlierValues));
 
+                        if (options.highlightedValue !== undefined && obj.label == options.highlightedValue){
+                            dataTable.addRow([parseFloat(obj.label), null, null, obj.count]);
+                        } else if($.inArray(parseFloat(obj.label), options.outlierValues) >= 0){
+                            dataTable.addRow([parseFloat(obj.label), null, obj.count, null]);
+                        } else {
+                            dataTable.addRow([parseFloat(obj.label), obj.count, null,null])
+                        }
+                    } else {
+                        dataTable.addRow([parseFloat(obj.label), obj.count, null,null]);
+                    }                    
+                }               
+            });
+            
         } else {
             // handle each data item
             $.each(xformedData, function(i,obj) {
@@ -431,10 +504,20 @@ var defaultChartTypes = {
     state_conservation: 'column',
     el895: 'scatter',
     el882: 'scatter',
+    el882OutliersCumm: 'scatter',    
+    el882Outliers: 'scatter',        
     el887: 'scatter',
+    el887Outliers: 'scatter',
+    el887OutliersCumm: 'scatter',
     el889: 'scatter',
+    el889Outliers: 'scatter',
+    el889OutliersCumm: 'scatter',
     el865: 'scatter',
+    el865Outliers: 'scatter',
+    el865OutliersCumm: 'scatter',
     el894: 'scatter',
+    el894Outliers: 'scatter',
+    el894OutliersCumm: 'scatter',
     radiation: 'scatter',
     precipitation: 'scatter',
     moisture: 'scatter'
@@ -522,7 +605,19 @@ var facetChartGroup = {
             $(options.totalRecordsSelector).html(addCommas(data.totalRecords));
         }
 
-        // transform facet results list into map keyed on field name (the facet name in the data)
+		//if the chart is Cumulative, keep a running total
+		if(options.cumulative !== undefined && options.cumulative){
+			var runningTotal = 0;
+		    for(var i = 0; i < data.facetResults[0].fieldResult.length; i++){
+
+		     	runningTotal += data.facetResults[0].fieldResult[i].count; 
+		     	data.facetResults[0].fieldResult[i].count = runningTotal;
+		     	
+		     	//console.log(data.facetResults[0].fieldResult[i].label +": total, " + runningTotal);  		     	
+		    }		    
+		}
+
+        // transform facet results list into map keyed on facet name
         var facetMap = {};
         $.each(data.facetResults, function(idx, obj) {
             facetMap[obj.fieldName] = obj.fieldResult;
