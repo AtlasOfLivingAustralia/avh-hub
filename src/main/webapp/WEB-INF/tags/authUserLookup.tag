@@ -6,7 +6,4 @@
         test="${not empty allUserNamesByIdMap[userId]}">${allUserNamesByIdMap[userId]}</c:when
         ><c:when test="${not empty allUserNamesByNumericIdMap[userId]}"><a href="http://sightings.ala.org.au/spotter/${userId}"
         >${allUserNamesByNumericIdMap[userId]}</a></when></c:when><c:otherwise
-        >${ala:replaceAll(userId, "\\@\\w+", "@..")}</c:otherwise></c:choose><!-- userId = ${userId}
-        lookup result = ${allUserNamesByNumericIdMap[userId]}
--->
-
+        >${ala:replaceAll(userId, "\\@\\w+", "@..")}</c:otherwise></c:choose>
