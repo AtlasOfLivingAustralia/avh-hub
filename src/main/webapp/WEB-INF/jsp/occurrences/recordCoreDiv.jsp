@@ -238,7 +238,7 @@
             </c:set>
             <c:set target="${fieldsMap}" property="${recordedByField}" value="true" />
             <c:set var="rawRecordedBy"><alatag:authUserLookup userId="${record.raw.occurrence[recordedByField]}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
-            <c:set var="proRecordedBy"><alatag:authUserLookup userId="${record.raw.occurrence[recordedByField]}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
+            <c:set var="proRecordedBy"><alatag:authUserLookup userId="${record.processed.occurrence[recordedByField]}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
             <c:choose>
                 <c:when test="${not empty record.processed.occurrence[recordedByField] && not empty record.raw.occurrence[recordedByField] && record.processed.occurrence[recordedByField] == record.raw.occurrence[recordedByField]}">
                     ${proRecordedBy}
@@ -254,6 +254,11 @@
                     ${rawRecordedBy}
                 </c:when>
             </c:choose>
+        </alatag:occurrenceTableRow>
+        <!-- ALA user id -->
+        <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="userId" fieldNameIsMsgCode="true" fieldName="ALA User">
+            <c:set target="${fieldsMap}" property="userId" value="true" />
+            <alatag:authUserLookup userId="${record.raw.occurrence.userId}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/>
         </alatag:occurrenceTableRow>
         <!-- Record Number -->
         <c:set var="recordNumberLabel">
