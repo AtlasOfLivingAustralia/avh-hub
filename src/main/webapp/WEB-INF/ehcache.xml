@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
-    <defaultCache eternal="true" maxElementsInMemory="10000" overflowToDisk="false" timeToLiveSeconds="3600"/>
-    <cache name="facetsCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" />
-    <cache name="authCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" timeToLiveSeconds="600" />
-    <cache name="webServiceCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" />
-    <cache name="loggerCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" />
+    <defaultCache eternal="true" maxElementsInMemory="10000" overflowToDisk="true" timeToLiveSeconds="7200"/>
+    <cache name="facetsCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="true" timeToLiveSeconds="3600"/>
+    <cache name="authCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="true" timeToLiveSeconds="600" />
+    <cache name="webServiceCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="true" timeToLiveSeconds="3600"/>
+    <cache name="loggerCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="true" timeToLiveSeconds="7200"/>
 </ehcache>
