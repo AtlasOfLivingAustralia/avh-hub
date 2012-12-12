@@ -187,6 +187,11 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22">${fn:substringBefore(fieldResult.label, '@')}</a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
+                                    <c:when test="${not empty fieldResult.fq}">
+                                        <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
+                                        <li><a href="?${queryParam}&fq=${fieldResult.fq}"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>
                                     <c:otherwise>
                                         <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:<c:out escapeXml='true' value='${fn:replace(fqValue," ","%20")}'/>"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>

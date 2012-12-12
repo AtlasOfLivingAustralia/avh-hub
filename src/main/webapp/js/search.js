@@ -1086,10 +1086,11 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                     }
                     facetName = facetName.replace(/_RNG$/,""); // remove range version if present
                     //console.log("label", label, facetName, el);
-                    var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + facetName + ":" + encodeURIComponent(fqEsc);
+                    var fqParam = (el.fq) ? el.fq : facetName.replace("decade","occurrence_year") + ":" + encodeURIComponent(fqEsc);
+                    var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + fqParam;
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
                     html += "<tr class='" + rowType + "'><td>" +
-                        "<input type='checkbox' name='fqs' class='fqs' value='"  + facetName + ":" + fqEsc +
+                        "<input type='checkbox' name='fqs' class='fqs' value='"  + fqParam +
                         "'/></td><td><a href=\"" + link + "\"> " + label + "</a></td><td style='text-align: right'>" + el.count + "</td></tr>";
                 }
                 if (i == facetLimit - 1) {
