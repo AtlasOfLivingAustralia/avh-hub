@@ -34,17 +34,17 @@
 
     <context-param>
         <param-name>serverName</param-name>
-        <param-value>http://localhost:8080</param-value>
+        <param-value>http://nickdos.ala.org.au:8888</param-value>
     </context-param>
 
     <!-- for local development -->
     <!-- the context param should be empty if a virtual host is in use -->
-    <!--
+
     <context-param>
         <param-name>contextPath</param-name>
         <param-value>/hubs-webapp</param-value>
     </context-param>
-    -->
+
 
     <context-param>
         <param-name>uriFilterPattern</param-name>

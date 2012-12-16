@@ -1,7 +1,7 @@
 <!DOCTYPE log4j:configuration  SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
-    <param name="Threshold" value="ERROR"/>
+    <param name="Threshold" value="DEBUG"/>
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern" value="%-5p: [%c{1}] - %m%n"/>
     </layout>
@@ -22,9 +22,12 @@
   <category name="au.org.ala">
     <priority value="INFO"/>
   </category> 
-  <category name="org.ala">
-    <priority value="INFO"/>
+  <category name="org.ala.hubs.controller">
+    <priority value="DEBUG"/>
   </category> 
+  <category name="org.ala.hubs.service">
+    <priority value="DEBUG"/>
+  </category>
   <category name="org.apache">
     <priority value="ERROR"/>
   </category>
@@ -35,10 +38,10 @@
     <priority value="INFO"/>
   </category>
    <category name="org.springframework.web.client">
-    <priority value="INFO"/>
+    <priority value="DEBUG"/>
   </category>
   <category name="org.apache.commons.httpclient">
-    <priority value="INFO"/>
+    <priority value="DEBUG"/>
   </category>
   <category name="net.sf">
     <priority value="ERROR"/>
@@ -54,8 +57,8 @@
   </category>
   <root>
     <priority value ="INFO" />
-    <!--<appender-ref ref="CONSOLE"/> -->
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="CONSOLE"/>
+    <!--<appender-ref ref="FILE"/>-->
     <appender-ref ref="ASYNC" />
   </root>
  </log4j:configuration>

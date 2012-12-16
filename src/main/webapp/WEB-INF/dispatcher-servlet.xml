@@ -185,7 +185,7 @@
         <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
     </bean>
 
-    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
 
     <!-- Base Jawr config -->
     <bean abstract="true" id="jawrBase"  class="net.jawr.web.servlet.JawrSpringController" >
@@ -195,7 +195,7 @@
         <property name="configLocation" value="/jawr.properties" />
         <property name="configuration">
             <props>
-                <prop key="jawr.debug.on">false</prop>
+                <prop key="jawr.debug.on">true</prop>
             </props>
         </property>
     </bean>

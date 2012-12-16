@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
-    <defaultCache eternal="true" maxElementsInMemory="1000" overflowToDisk="false" />
-    <cache name="facetsCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false" timeToLiveSeconds="14400"/>
-    <cache name="authCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" timeToLiveSeconds="600" />
-    <cache name="webServiceCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false" timeToLiveSeconds="14400"/>
-    <cache name="loggerCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false"/>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">
+    <!-- Location of persistent caches on disk -->
+    <diskStore path="java.io.tmpdir/EhCacheHubsWebapp" />
+    <defaultCache eternal="false" maxElementsInMemory="1000" overflowToDisk="false"
+           diskPersistent="false" timeToIdleSeconds="0" timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU"/>
+    <cache name="facetsCache" maxElementsInMemory="1000" memoryStoreEvictionPolicy="LRU"
+           eternal="false" overflowToDisk="false" diskPersistent="false" timeToLiveSeconds="14400" timeToIdleSeconds="0"/>
+    <cache name="authCache" maxElementsInMemory="20000" maxEntriesLocalHeap="200000" memoryStoreEvictionPolicy="LRU"
+           eternal="false" overflowToDisk="true" diskPersistent="false" timeToLiveSeconds="600" timeToIdleSeconds="0"/>
+    <cache name="webServiceCache" maxElementsInMemory="1000" memoryStoreEvictionPolicy="LRU"
+           eternal="false" overflowToDisk="false" diskPersistent="false" timeToLiveSeconds="14400" timeToIdleSeconds="0"/>
+    <cache name="loggerCache" maxElementsInMemory="1000" memoryStoreEvictionPolicy="LRU"
+           eternal="false" overflowToDisk="false" diskPersistent="false" timeToLiveSeconds="14400" timeToIdleSeconds="0"/>
 </ehcache>
