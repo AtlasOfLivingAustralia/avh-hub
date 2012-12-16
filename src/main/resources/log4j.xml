@@ -1,64 +1,61 @@
 <!DOCTYPE log4j:configuration  SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
-  <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
-    <param name="Threshold" value="DEBUG"/>
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%-5p: [%c{1}] - %m%n"/>
-    </layout>
-  </appender>
-  <appender name="FILE" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="${catalina.base}/logs/hubs-webapp.log"/>
-    <param name="Append" value="true"/>
-    <param name="Threshold" value="ERROR"/>
-    <param name="MaxFileSize" value="200MB"/>
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%d [%c{5}] %m%n"/>
-    </layout>
-  </appender>
-  <!-- Alter the logging of known libs -->
-  <category name="org.ala">
-    <priority value="INFO"/>
-  </category>
-  <category name="au.org.ala">
-    <priority value="INFO"/>
-  </category> 
-  <category name="org.ala.hubs.controller">
-    <priority value="DEBUG"/>
-  </category> 
-  <category name="org.ala.hubs.service">
-    <priority value="DEBUG"/>
-  </category>
-  <category name="org.apache">
-    <priority value="ERROR"/>
-  </category>
-  <category name="httpclient">
-    <priority value="INFO"/>
-  </category>
-  <category name="org.springframework">
-    <priority value="INFO"/>
-  </category>
-   <category name="org.springframework.web.client">
-    <priority value="DEBUG"/>
-  </category>
-  <category name="org.apache.commons.httpclient">
-    <priority value="DEBUG"/>
-  </category>
-  <category name="net.sf">
-    <priority value="ERROR"/>
-  </category>
-  <category name="org.springframework.aop.interceptor.cache">
-    <priority value="ERROR"/>
-  </category>
-  <category name="org.springframework.jdbc.core">
-    <priority value="ERROR"/>
-  </category>
-  <category name="org.quartz">
-    <priority value="ERROR"/>
-  </category>
-  <root>
-    <priority value ="INFO" />
-    <appender-ref ref="CONSOLE"/>
-    <!--<appender-ref ref="FILE"/>-->
-    <appender-ref ref="ASYNC" />
-  </root>
- </log4j:configuration>
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Threshold" value="ERROR"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p: [%c{1}] - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/hubs-webapp.log"/>
+        <param name="Append" value="true"/>
+        <param name="Threshold" value="ERROR"/>
+        <param name="MaxFileSize" value="200MB"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%c{5}] %m%n"/>
+        </layout>
+    </appender>
+    <!-- Alter the logging of known libs -->
+    <category name="org.ala">
+        <priority value="INFO"/>
+    </category>
+    <category name="au.org.ala">
+        <priority value="INFO"/>
+    </category>
+    <category name="org.ala">
+        <priority value="INFO"/>
+    </category>
+    <category name="org.apache">
+        <priority value="ERROR"/>
+    </category>
+    <category name="httpclient">
+        <priority value="INFO"/>
+    </category>
+    <category name="org.springframework">
+        <priority value="INFO"/>
+    </category>
+    <category name="org.springframework.web.client">
+        <priority value="INFO"/>
+    </category>
+    <category name="org.apache.commons.httpclient">
+        <priority value="INFO"/>
+    </category>
+    <category name="net.sf">
+        <priority value="ERROR"/>
+    </category>
+    <category name="org.springframework.aop.interceptor.cache">
+        <priority value="ERROR"/>
+    </category>
+    <category name="org.springframework.jdbc.core">
+        <priority value="ERROR"/>
+    </category>
+    <category name="org.quartz">
+        <priority value="ERROR"/>
+    </category>
+    <root>
+        <priority value ="INFO" />
+        <!--<appender-ref ref="CONSOLE"/> -->
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ASYNC" />
+    </root>
+</log4j:configuration>

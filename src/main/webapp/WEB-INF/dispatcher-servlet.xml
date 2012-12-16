@@ -51,7 +51,7 @@
         <!-- one of the properties available; the maximum file size in bytes -->
         <property name="maxUploadSize" value="10000000"/>
     </bean>
-    
+
     <!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="10">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -156,7 +156,7 @@
     <!-- Force Jackson to omit properties that are null (smaller json files) -->
     <bean id="jacksonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
     <bean id="jacksonSerializationConfig" class="org.codehaus.jackson.map.SerializationConfig"
-        factory-bean="jacksonObjectMapper" factory-method="getSerializationConfig" />
+          factory-bean="jacksonObjectMapper" factory-method="getSerializationConfig" />
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetObject" ref="jacksonSerializationConfig" />
         <property name="targetMethod" value="setSerializationInclusion" />
@@ -172,20 +172,20 @@
 
     <!-- CollectionCache from biocache-service -->
     <bean id="collectionCache" class="org.ala.biocache.util.CollectionsCache"/>
-    
+
     <!-- Ecache settings @see http://blog.goyello.com/2010/07/29/quick-start-with-ehcache-annotations-for-spring/ -->
     <ehcache:annotation-driven />
- 
+
     <ehcache:config cache-manager="cacheManager">
         <!-- interval is in minutes -->
         <ehcache:evict-expired-elements interval="60" />
     </ehcache:config>
- 
+
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
     </bean>
 
-    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
 
     <!-- Base Jawr config -->
     <bean abstract="true" id="jawrBase"  class="net.jawr.web.servlet.JawrSpringController" >
@@ -195,7 +195,7 @@
         <property name="configLocation" value="/jawr.properties" />
         <property name="configuration">
             <props>
-                <prop key="jawr.debug.on">true</prop>
+                <prop key="jawr.debug.on">false</prop>
             </props>
         </property>
     </bean>
