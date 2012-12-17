@@ -63,7 +63,7 @@ public class AuthService {
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }
-        logger.debug("userNamesById = " + StringUtils.join(userNamesById.keySet(), "|"));
+        //logger.debug("userNamesById = " + StringUtils.join(userNamesById.keySet(), "|"));
     }
 
     //@Cacheable(cacheName = "authCache")
@@ -79,7 +79,7 @@ public class AuthService {
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }
-        logger.debug("userNamesByIds = " + StringUtils.join(userNamesByNumericIds.keySet(), "|"));
+        //logger.debug("userNamesByIds = " + StringUtils.join(userNamesByNumericIds.keySet(), "|"));
     }
 
     //@PostConstruct
@@ -87,10 +87,15 @@ public class AuthService {
     @Async
     public void reloadCaches() {
         logger.info("Triggering reload of auth user names.");
+        loadMapOfAllUserNamesById();
+        loadMapOfAllUserNamesByNumericId();
+    }
+
+    @Scheduled(fixedRate = 60000) // schedule to run every 1 min
+    public void checkMemoryUsage() {
         int mb = 1024*1024;
         Runtime runtime = Runtime.getRuntime();
         logger.info("Memory usage: " + (runtime.totalMemory() - runtime.freeMemory()) / mb + " MB");
-        loadMapOfAllUserNamesById();
-        loadMapOfAllUserNamesByNumericId();
+
     }
 }

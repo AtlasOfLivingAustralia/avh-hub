@@ -52,9 +52,9 @@ public class RegionController {
     /** Name of view for site home page */
     private String MY_AREA = "regions/myArea";
     private String speciesPageUrl = "http://bie.ala.org.au/species/";
-    private static final String GEOIP_DATABASE = "/data/geoip/GeoLiteCity.dat"; // get from http://www.maxmind.com/app/geolitecity
+    //private static final String GEOIP_DATABASE = "/data/geoip/GeoLiteCity.dat"; // get from http://www.maxmind.com/app/geolitecity
     private final String DEFAULT_LOCATION = "Parliament House, ACT";
-    private static LookupService lookupService = null;  // loaded in static bock below
+    //private static LookupService lookupService = null;  // loaded in static bock below
     /** Mapping of radius in km to OpenLayers zoom level */
     public final static HashMap<Float, Integer> radiusToZoomLevelMap = new HashMap<Float, Integer>();
     static {
@@ -62,11 +62,11 @@ public class RegionController {
         radiusToZoomLevelMap.put(5f, 12);
         radiusToZoomLevelMap.put(10f, 11);
         radiusToZoomLevelMap.put(50f, 9);
-        try {
-            lookupService = new LookupService(GEOIP_DATABASE, LookupService.GEOIP_INDEX_CACHE);
-        } catch (IOException ex) {
-            logger.error("Failed to load GeoIP database: " + ex.getMessage(), ex);
-        }
+//        try {
+//            lookupService = new LookupService(GEOIP_DATABASE, LookupService.GEOIP_INDEX_CACHE);
+//        } catch (IOException ex) {
+//            logger.error("Failed to load GeoIP database: " + ex.getMessage(), ex);
+//        }
     }
 
     @RequestMapping(value = {"/region/my-area*","explore/your-area*"}, method = RequestMethod.GET)
@@ -81,23 +81,23 @@ public class RegionController {
         
         //logger.info("CALL: "+ reconstructURL(request));
         // Determine lat/long for client's IP address
-        String clientIP = request.getRemoteAddr(); // request.getRemoteAddr() || request.getLocalAddr()
-        logger.debug("client (remote) IP address = "+ clientIP);
-        logger.debug("client (local) IP address = "+ request.getLocalAddr());
+//        String clientIP = request.getRemoteAddr(); // request.getRemoteAddr() || request.getLocalAddr()
+//        logger.debug("client (remote) IP address = "+ clientIP);
+//        logger.debug("client (local) IP address = "+ request.getLocalAddr());
 
-        if (lookupService != null && location == null) {
-            Location loc = lookupService.getLocation(clientIP);
-            if (loc != null) {
-                logger.info(clientIP + " has location: " + loc.postalCode + ", " + loc.city + ", " + loc.region + ". Coords: " + loc.latitude + ", " + loc.longitude);
-                latitude = loc.latitude;
-                longitude = loc.longitude;
-                address = ""; // blank out address so Google Maps API can reverse geocode it
-            }
-        }
+//        if (lookupService != null && location == null) {
+//            Location loc = lookupService.getLocation(clientIP);
+//            if (loc != null) {
+//                logger.info(clientIP + " has location: " + loc.postalCode + ", " + loc.city + ", " + loc.region + ". Coords: " + loc.latitude + ", " + loc.longitude);
+//                latitude = loc.latitude;
+//                longitude = loc.longitude;
+//                address = ""; // blank out address so Google Maps API can reverse geocode it
+//            }
+//        }
 
         model.addAttribute("latitude", latitude);
         model.addAttribute("longitude", longitude);
-        model.addAttribute("location", location); // TDOD delete if not used in JSP
+        model.addAttribute("location", location); // TODO delete if not used in JSP
         //model.addAttribute("address", address); // TDOD delete if not used in JSP
         model.addAttribute("radius", radius);
         model.addAttribute("zoom", radiusToZoomLevelMap.get(radius));

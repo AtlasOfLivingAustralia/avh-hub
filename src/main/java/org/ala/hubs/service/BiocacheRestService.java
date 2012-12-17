@@ -169,7 +169,7 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     @Override
-    @Cacheable(cacheName = "webServiceCache")
+    //@Cacheable(cacheName = "webServiceCache")
     public List<ErrorCode> getErrorCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/codes";
         logger.debug("Requesting: " + jsonUri);
@@ -177,7 +177,7 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     @Override
-    @Cacheable(cacheName = "webServiceCache")
+    //@Cacheable(cacheName = "webServiceCache")
     public List<ErrorCode> getGeospatialCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/geospatial/codes";
         logger.debug("Requesting: " + jsonUri);
@@ -185,7 +185,7 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     @Override
-    @Cacheable(cacheName = "webServiceCache")
+    //@Cacheable(cacheName = "webServiceCache")
     public List<ErrorCode> getTaxonomicCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/taxonomic/codes";
         logger.debug("Requesting: " + jsonUri);
@@ -193,7 +193,7 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     @Override
-    @Cacheable(cacheName = "webServiceCache")
+    //@Cacheable(cacheName = "webServiceCache")
     public List<ErrorCode> getTemporalCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/temporal/codes";
         logger.debug("Requesting: " + jsonUri);
@@ -201,7 +201,7 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     @Override
-    @Cacheable(cacheName = "webServiceCache")
+    //@Cacheable(cacheName = "webServiceCache")
     public List<ErrorCode> getMiscellaneousCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/miscellaneous/codes";
         logger.debug("Requesting: " + jsonUri);
@@ -209,7 +209,7 @@ public class BiocacheRestService implements BiocacheService {
     }
 
     @Override
-    @Cacheable(cacheName = "webServiceCache")
+    //@Cacheable(cacheName = "webServiceCache")
     public List<ErrorCode> getUserCodes() {
         final String jsonUri = biocacheUriPrefix + "/assertions/user/codes";
         logger.debug("Requesting: " + jsonUri);
