@@ -87,6 +87,9 @@ public class AuthService {
     @Async
     public void reloadCaches() {
         logger.info("Triggering reload of auth user names.");
+        int mb = 1024*1024;
+        Runtime runtime = Runtime.getRuntime();
+        logger.info("Memory usage: " + (runtime.totalMemory() - runtime.freeMemory()) / mb + " MB");
         loadMapOfAllUserNamesById();
         loadMapOfAllUserNamesByNumericId();
     }
