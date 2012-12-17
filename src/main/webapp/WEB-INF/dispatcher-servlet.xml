@@ -5,6 +5,7 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:beans="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
@@ -14,14 +15,17 @@
            http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
            http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
            http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd
            http://www.springframework.org/schema/util
            http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <!-- Scans the classpath of this application for @Components to deploy as beans -->
-    <context:component-scan base-package="org.ala.hubs"/>
-
     <!-- Configures the @Controller programming model -->
     <mvc:annotation-driven conversion-service="conversionService" />
+    <task:annotation-driven />
+
+    <!-- Scans the classpath of this application for @Components to deploy as beans -->
+    <context:component-scan base-package="org.ala.hubs"/>
 
     <!-- Custom conversionService -->
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">

@@ -18,9 +18,12 @@ import com.googlecode.ehcache.annotations.Cacheable;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,8 +50,12 @@ public class AuthService {
     protected Map<String, String> userNamesById = new HashMap<String, String>();
     protected Map<String, String> userNamesByNumericIds = new HashMap<String, String>();
 
-    @Cacheable(cacheName = "authCache")
+    //@Cacheable(cacheName = "authCache")
     public Map<String, String> getMapOfAllUserNamesById() {
+        return userNamesById;
+    }
+
+    protected void loadMapOfAllUserNamesById() {
         try {
             final String jsonUri = userDetailsUrl + userNamesForIdPath;
             logger.debug("authCache requesting: " + jsonUri);
@@ -56,12 +63,15 @@ public class AuthService {
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }
-        logger.info("userNamesById = " + StringUtils.join(userNamesById.keySet(), "|"));
-        return userNamesById;
+        logger.debug("userNamesById = " + StringUtils.join(userNamesById.keySet(), "|"));
     }
 
-    @Cacheable(cacheName = "authCache")
+    //@Cacheable(cacheName = "authCache")
     public Map<String, String> getMapOfAllUserNamesByNumericId() {
+        return userNamesByNumericIds;
+    }
+
+    public void loadMapOfAllUserNamesByNumericId() {
         try {
             final String jsonUri = userDetailsUrl + userNamesForNumericIdPath;
             logger.debug("authCache requesting: " + jsonUri);
@@ -69,7 +79,15 @@ public class AuthService {
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }
-        logger.info("userNamesByIds = " + StringUtils.join(userNamesByNumericIds.keySet(), "|"));
-        return userNamesByNumericIds;
+        logger.debug("userNamesByIds = " + StringUtils.join(userNamesByNumericIds.keySet(), "|"));
+    }
+
+    //@PostConstruct
+    @Scheduled(fixedRate = 600000) // schedule to run every 10 min
+    @Async
+    public void reloadCaches() {
+        logger.info("Triggering reload of auth user names.");
+        loadMapOfAllUserNamesById();
+        loadMapOfAllUserNamesByNumericId();
     }
 }
