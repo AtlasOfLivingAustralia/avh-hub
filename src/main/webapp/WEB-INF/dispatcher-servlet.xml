@@ -61,6 +61,7 @@
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
+        <property name="cache" value="false" />
     </bean>
 
     <!-- Application Message Bundle -->
