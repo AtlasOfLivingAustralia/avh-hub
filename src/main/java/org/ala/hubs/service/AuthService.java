@@ -50,6 +50,11 @@ public class AuthService {
     protected Map<String, String> userNamesById = new HashMap<String, String>();
     protected Map<String, String> userNamesByNumericIds = new HashMap<String, String>();
 
+    
+    public AuthService() {
+        logger.info("Instantiating AuthService: " + this);
+    }
+    
     //@Cacheable(cacheName = "authCache")
     public Map<String, String> getMapOfAllUserNamesById() {
         return userNamesById;
@@ -86,7 +91,7 @@ public class AuthService {
     @Scheduled(fixedRate = 600000) // schedule to run every 10 min
     @Async
     public void reloadCaches() {
-        logger.info("Triggering reload of auth user names.");
+        logger.info("Triggering reload of auth user names for " + this);
         loadMapOfAllUserNamesById();
         loadMapOfAllUserNamesByNumericId();
     }
