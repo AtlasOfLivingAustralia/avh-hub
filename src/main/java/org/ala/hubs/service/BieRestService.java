@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestOperations;
+import scala.collection.immutable.Nil;
 
 /**
  * Implementation of BieService.java that calls the bie-webapp application
@@ -88,17 +89,11 @@ public class BieRestService implements BieService {
 
         try {
             final String jsonUri = bieUriPrefix + "/species/namesFromGuids.json";
-            MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-
-            for (String guid : guids) {
-                map.add("guid", guid);
-            }
-
-            logger.debug("Requesting: " + jsonUri + " guid params = " + StringUtils.join(map.values(), "|"));
-            HttpHeaders requestHeaders = new HttpHeaders();
-            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(map, requestHeaders);
-            names = restTemplate.postForObject(jsonUri, requestEntity, List.class);
+            String params = "?guid=" + StringUtils.join(guids, "&guid=");
+            names = restTemplate.postForObject(jsonUri + params, null, List.class);
         } catch (Exception ex) {
+            logger.error("Requested URI: " + bieUriPrefix + "/species/namesFromGuids.json");
+            logger.error("With POST body: guid=" + StringUtils.join(guids, "&guid="));
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
         }
         
