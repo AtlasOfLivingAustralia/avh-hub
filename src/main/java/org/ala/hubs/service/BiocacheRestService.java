@@ -305,6 +305,7 @@ public class BiocacheRestService implements BiocacheService {
             logger.error("URI error: " + e.getMessage(), e);
             searchResults = restTemplate.getForObject(uriString, SearchResultDTO.class);
         } catch (Exception ex) {
+            logger.error("Requested URI: " + uriString);
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
             searchResults.setStatus("Error: " + ex.getMessage());
         }
@@ -330,9 +331,10 @@ public class BiocacheRestService implements BiocacheService {
 
         try {
             final URI jsonUri = new URI(biocacheUriPrefix + "/occurrences/search?" + requestParams.getEncodedParams());
-            logger.debug("Requesting: " + jsonUri);
+            logger.info("Requesting: " + jsonUri);
             searchResults = restTemplate.getForObject(jsonUri, SearchResultDTO.class);
         } catch (Exception ex) {
+            logger.error("Requested URI: " + biocacheUriPrefix + "/occurrences/search?" + requestParams.getEncodedParams());
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
             searchResults.setStatus("Error: " + ex.getMessage());
         }
