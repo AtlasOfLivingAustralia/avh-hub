@@ -444,7 +444,7 @@ $(document).ready(function() {
         'titleShow' : false,
         'autoDimensions' : false,
         'width': '500',
-        'height': '400',
+        'height': '500',
         'padding': 10,
         'margin': 10,
         onCleanup: function() {
