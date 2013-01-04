@@ -582,11 +582,14 @@
                         <span id="processedVsRawViewSpan" href="#processedVsRawView" title="">Original vs Processed</span>
                     </button>
                 </div>
-                <c:if test="${not empty record.processed.occurrence.images}">
+                <c:if test="${not empty record.images}">
                     <div class="sidebar">
                         <h2>Images</h2>
-                        <c:forEach items="${record.processed.occurrence.images}" var="imageUrl">
-                           <a href="${not empty record.raw.occurrence.occurrenceDetails ?  record.raw.occurrence.occurrenceDetails : imageUrl}" target="_blank"><img src="${imageUrl}" style="max-width: 250px;"/></a><br/>
+                        <c:forEach items="${record.images}" var="image">
+                           <a href="${image.alternativeFormats['smallImageUrl']}" target="_blank">
+                               <img src="${image.alternativeFormats['largeImageUrl']}" style="max-width: 250px;"/>
+                           </a>
+                          <br/>
                         </c:forEach>
                         <c:if test="${not empty record.raw.occurrence.photographer}">
                             <cite>Photographer: ${record.raw.occurrence.photographer}</cite>
