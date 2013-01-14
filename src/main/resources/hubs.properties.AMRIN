@@ -61,7 +61,7 @@ sensitiveDatasets.WA_DEC=http://collections.ala.org.au/public/show/dr467
 sensitiveDatasets.BIRDS_AUSTRALIA=http://collections.ala.org.au/public/show/dr494
 
 # context for bie-webapp
-bieRestService.bieUriPrefix=http://bie.ala.org.au
+bieRestService.bieUriPrefix=http://bie.ala.org.au/ws
 bieWebappContext=http://bie.ala.org.au
 collectionsWebappContext=http://collections.ala.org.au
 spatialPortalUrl=http://spatial.ala.org.au
