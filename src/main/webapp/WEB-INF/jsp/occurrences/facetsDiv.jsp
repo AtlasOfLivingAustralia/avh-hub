@@ -182,15 +182,15 @@
                                         <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22"><fmt:message key="duplication.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
+                                    </c:when>                                    
+                                    <c:when test="${not empty fieldResult.fq}">
+                                        <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
+                                        <li><a href="?${queryParam}&fq=<c:out escapeXml='true' value='${fieldResult.fq}'/>"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'assertion_user_id')}">
                                         <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22">${fn:substringBefore(fieldResult.label, '@')}</a>
-                                            (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:when>
-                                    <c:when test="${not empty fieldResult.fq}">
-                                        <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
-                                        <li><a href="?${queryParam}&fq=<c:out escapeXml='true' value='${fieldResult.fq}'/>"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:otherwise>
