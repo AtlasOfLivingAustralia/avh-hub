@@ -641,7 +641,7 @@ public class OccurrenceController {
 		logger.debug("solr query: " + requestParams);
 		SearchResultDTO searchResult = biocacheService.findByCollection(uid, requestParams);
 		model.addAttribute("searchResults", searchResult);
-        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        //model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
         addCommonDataToModel(model);
 		return RECORD_LIST;
@@ -922,8 +922,8 @@ public class OccurrenceController {
                 }
                 model.addAttribute("compareRecord", compareRecord);
                 model.addAttribute("dwcExcludeFields", dwcExclude);
-                model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
-                model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
+                //model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
+                //model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
             }
 
         } catch (Exception e){
@@ -992,7 +992,7 @@ public class OccurrenceController {
         SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
-        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        //model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
 
         return RECORD_MAP;
@@ -1116,6 +1116,8 @@ public class OccurrenceController {
                 // iterate over facet values (fieldResultsDTO)
                 for (FieldResultDTO field : facetResults.getFieldResult()) {
                     FacetValueDTO fv = new FacetValueDTO(field.getFieldValue(), field.getCount());
+                    //NC: Need to set the value of the fq so that it can be used if it exists.
+                    fv.setFq(field.getFq());
                     facetValues.add(fv);
                 }
             }
@@ -1597,180 +1599,183 @@ public class OccurrenceController {
      * @param filterQuery
      * @return
      */
-    protected Map<String, ActiveFacet> addFacetMap(String[] filterQuery) {
-        Map<String, ActiveFacet> afs = new HashMap<String, ActiveFacet>();
-        Map<String, String> userNamesByIds = authService.getMapOfAllUserNamesById(); // cached by Eh Cache
+    //TODO Delete all the methods below as they have been moved to biocache-service.
+//    protected Map<String, ActiveFacet> addFacetMap(String[] filterQuery) {
+//        Map<String, ActiveFacet> afs = new HashMap<String, ActiveFacet>();
+//        //Map<String, String> userNamesByIds = authService.getMapOfAllUserNamesById(); // cached by Eh Cache
+//
+//        if (filterQuery != null && filterQuery.length > 0) {
+//            // iterate over the fq params
+//            for (String fq : filterQuery) {
+//                if (fq != null && !fq.isEmpty()) {
+//                    Boolean isExcludeFilter = false;
+//                    // remove Boolean braces if present
+//                    if (fq.startsWith("(") && fq.endsWith(")")){
+//                        fq = StringUtils.remove(fq, "(");
+//                        fq = StringUtils.removeEnd(fq, ")");
+//                    } else if (fq.startsWith("-(") && fq.endsWith(")")) {
+//                        fq = StringUtils.remove(fq, "-(");
+//                        fq = StringUtils.removeEnd(fq, ")");
+//                        //fq = "-" + fq;
+//                        isExcludeFilter = true;
+//                    }
+//
+//                    String[] fqBits = StringUtils.split(fq, ":", 2);
+//                    // extract key for map
+//                    if (fqBits.length  == 2) {
+//                        String key = fqBits[0];
+//                        String value = fqBits[1];
+//                        
+//                        if ("data_hub_uid".equals(key)) {
+//                            // exclude these...
+//                            continue;
+//                        }
+//                        
+//                        ActiveFacet af = new ActiveFacet(key, value);
+//                        logger.debug("1. fq = " + key + " => " + value);
+//                        // if there are internal Boolean operators, iterate over sub queries
+//                        String patternStr = "[ ]+(OR)[ ]+";
+//                        String[] tokens = fq.split(patternStr, -1);
+//                        List<String> labels = new ArrayList<String>(); // store sub-queries in this list
+//
+//                        for (String token : tokens) {
+//                            logger.debug("token: " + token);
+//                            String[] tokenBits = StringUtils.split(token, ":", 2);
+//                            if (tokenBits.length == 2) {
+//                                String fn = tokenBits[0];
+//                                String fv = tokenBits[1];
+//                                String i18n = null;
+//                                if(fn.endsWith("_s")){
+//                                    //hack for dynamic facets
+//                                    i18n = fn.replaceAll("_s", "");
+//                                } else {
+//                                    i18n = messageSource.getMessage("facet."+fn, null, fn, null);
+//                                }
+//
+//                                if (StringUtils.equals(fn, "species_guid") || StringUtils.equals(fn, "genus_guid")) {
+//                                    fv = substituteLsidsForNames(fv.replaceAll("\"",""));
+//                                } else if (StringUtils.equals(fn, "occurrence_year")) {
+//                                    fv = substituteYearsForDates(fv);
+//                                } else if (StringUtils.equals(fn, "month")) {
+//                                    fv = substituteMonthNamesForNums(fv);
+//                                } 
+////                                else if (StringUtils.contains(fv, "@")) {
+////                                    //fv = StringUtils.substringBefore(fv, "@"); // hide email addresses
+////                                    if (userNamesByIds.containsKey(StringUtils.remove(fv, "\""))) {
+////                                        fv = userNamesByIds.get(StringUtils.remove(fv, "\""));
+////                                    } else {
+////                                        fv = fv.replaceAll("\\@\\w+", "@.."); // hide email addresses
+////                                    }
+////
+////                                } 
+//                                else {
+//                                    fv = substituteCollectoryNames(fv, fn);
+//                                }
+//
+//                                labels.add(i18n + ":" + fv);
+//                            }
+//                        }
+//
+//                        String label = StringUtils.join(labels, " OR "); // join sub-queries back together
+//                        if (isExcludeFilter) {
+//                            label = "-" + label;
+//                        }
+//                        logger.debug("label = " + label);
+//                        af.setLabel(label);
+//
+//                        afs.put(key, af); // add to map
+//                    }
+//                }
+//            }
+//        }
+//
+//        return afs;
+//    }
 
-        if (filterQuery != null && filterQuery.length > 0) {
-            // iterate over the fq params
-            for (String fq : filterQuery) {
-                if (fq != null && !fq.isEmpty()) {
-                    Boolean isExcludeFilter = false;
-                    // remove Boolean braces if present
-                    if (fq.startsWith("(") && fq.endsWith(")")){
-                        fq = StringUtils.remove(fq, "(");
-                        fq = StringUtils.removeEnd(fq, ")");
-                    } else if (fq.startsWith("-(") && fq.endsWith(")")) {
-                        fq = StringUtils.remove(fq, "-(");
-                        fq = StringUtils.removeEnd(fq, ")");
-                        //fq = "-" + fq;
-                        isExcludeFilter = true;
-                    }
-
-                    String[] fqBits = StringUtils.split(fq, ":", 2);
-                    // extract key for map
-                    if (fqBits.length  == 2) {
-                        String key = fqBits[0];
-                        String value = fqBits[1];
-                        
-                        if ("data_hub_uid".equals(key)) {
-                            // exclude these...
-                            continue;
-                        }
-                        
-                        ActiveFacet af = new ActiveFacet(key, value);
-                        logger.debug("1. fq = " + key + " => " + value);
-                        // if there are internal Boolean operators, iterate over sub queries
-                        String patternStr = "[ ]+(OR)[ ]+";
-                        String[] tokens = fq.split(patternStr, -1);
-                        List<String> labels = new ArrayList<String>(); // store sub-queries in this list
-
-                        for (String token : tokens) {
-                            logger.debug("token: " + token);
-                            String[] tokenBits = StringUtils.split(token, ":", 2);
-                            if (tokenBits.length == 2) {
-                                String fn = tokenBits[0];
-                                String fv = tokenBits[1];
-                                String i18n = null;
-                                if(fn.endsWith("_s")){
-                                    //hack for dynamic facets
-                                    i18n = fn.replaceAll("_s", "");
-                                } else {
-                                    i18n = messageSource.getMessage("facet."+fn, null, fn, null);
-                                }
-
-                                if (StringUtils.equals(fn, "species_guid") || StringUtils.equals(fn, "genus_guid")) {
-                                    fv = substituteLsidsForNames(fv.replaceAll("\"",""));
-                                } else if (StringUtils.equals(fn, "occurrence_year")) {
-                                    fv = substituteYearsForDates(fv);
-                                } else if (StringUtils.equals(fn, "month")) {
-                                    fv = substituteMonthNamesForNums(fv);
-                                } else if (StringUtils.contains(fv, "@")) {
-                                    //fv = StringUtils.substringBefore(fv, "@"); // hide email addresses
-                                    if (userNamesByIds.containsKey(StringUtils.remove(fv, "\""))) {
-                                        fv = userNamesByIds.get(StringUtils.remove(fv, "\""));
-                                    } else {
-                                        fv = fv.replaceAll("\\@\\w+", "@.."); // hide email addresses
-                                    }
-
-                                } else {
-                                    fv = substituteCollectoryNames(fv, fn);
-                                }
-
-                                labels.add(i18n + ":" + fv);
-                            }
-                        }
-
-                        String label = StringUtils.join(labels, " OR "); // join sub-queries back together
-                        if (isExcludeFilter) {
-                            label = "-" + label;
-                        }
-                        logger.debug("label = " + label);
-                        af.setLabel(label);
-
-                        afs.put(key, af); // add to map
-                    }
-                }
-            }
-        }
-
-        return afs;
-    }
-
-    /**
-     * Convert month number to its name. E.g. 12 -> December
-     *
-     * @param fv
-     * @return monthStr
-     */
-    private String substituteMonthNamesForNums(String fv) {
-        String monthStr = new String(fv);
-        try {
-            int m = Integer.parseInt(monthStr);
-            Month month = Month.get(m - 1); // 1 index months
-            monthStr = month.name();
-        } catch (Exception e) {
-            // ignore
-        }
-        return monthStr;
-    }
-
-    /**
-     * Turn SOLR date range into year range.
-     * E.g. [1940-01-01T00:00:00Z TO 1949-12-31T00:00:00Z]
-     * to
-     * 1940-1949
-     * 
-     * @param fieldValue
-     * @return
-     */
-    private String substituteYearsForDates(String fieldValue) {
-        String dateRange = URLDecoder.decode(fieldValue);
-        String formattedDate = StringUtils.replaceChars(dateRange, "[]", "");
-        String[] dates =  formattedDate.split(" TO ");
-        
-        if (dates != null && dates.length > 1) {
-            // grab just the year portions
-            dateRange = StringUtils.substring(dates[0], 0, 4) + "-" + StringUtils.substring(dates[1], 0, 4);
-        }
-
-        return dateRange;
-    }
-
-    /**
-     * Lookup a taxon name for a GUID
-     *
-     * @param fieldValue
-     * @return
-     */
-    private String substituteLsidsForNames(String fieldValue) {
-        String name = fieldValue;
-        List<String> guids = new ArrayList<String>();
-        guids.add(fieldValue);
-        List<String> names = bieService.getNamesForGuids(guids);
-        
-        if (names != null && names.size() >= 1) {
-            name = names.get(0);
-        }
-
-        return name;
-    }
-
-    /**
-     * Lookup an institution/collection/data resource name via its collectory ID
-     *
-     * @param fieldValue
-     * @return
-     */
-    private String substituteCollectoryNames(String fieldValue, String fieldName) {
-        // substitute collectory names
-        logger.debug("collectory maps: " + fieldValue);
-        if (collectionsContainer.getCollectionMap().containsKey(fieldValue)) {
-            fieldValue = collectionsContainer.getCollectionMap().get(fieldValue);
-        } else if (collectionsContainer.getInstitutionMap().containsKey(fieldValue)) {
-            fieldValue = collectionsContainer.getInstitutionMap().get(fieldValue);
-        } else if (collectionsContainer.getDataResourceMap().containsKey(fieldValue)) {
-            fieldValue = collectionsContainer.getDataResourceMap().get(fieldValue);
-        } else if (collectionsContainer.getDataProviderMap().containsKey(fieldValue)) {
-            fieldValue = collectionsContainer.getDataProviderMap().get(fieldValue);
-        } else {
-            // attempt to substitute i18n values
-            fieldValue = messageSource.getMessage(fieldName+"."+StringUtils.remove(fieldValue, "\""), null, fieldValue, null);
-            logger.debug("i18n subst: " + fieldName + "|" + fieldValue + " = " + fieldValue);
-        }
-        logger.debug("=> " + fieldValue);
-        return fieldValue;
-    }
+//    /**
+//     * Convert month number to its name. E.g. 12 -> December
+//     *
+//     * @param fv
+//     * @return monthStr
+//     */
+//    private String substituteMonthNamesForNums(String fv) {
+//        String monthStr = new String(fv);
+//        try {
+//            int m = Integer.parseInt(monthStr);
+//            Month month = Month.get(m - 1); // 1 index months
+//            monthStr = month.name();
+//        } catch (Exception e) {
+//            // ignore
+//        }
+//        return monthStr;
+//    }
+//
+//    /**
+//     * Turn SOLR date range into year range.
+//     * E.g. [1940-01-01T00:00:00Z TO 1949-12-31T00:00:00Z]
+//     * to
+//     * 1940-1949
+//     * 
+//     * @param fieldValue
+//     * @return
+//     */
+//    private String substituteYearsForDates(String fieldValue) {
+//        String dateRange = URLDecoder.decode(fieldValue);
+//        String formattedDate = StringUtils.replaceChars(dateRange, "[]", "");
+//        String[] dates =  formattedDate.split(" TO ");
+//        
+//        if (dates != null && dates.length > 1) {
+//            // grab just the year portions
+//            dateRange = StringUtils.substring(dates[0], 0, 4) + "-" + StringUtils.substring(dates[1], 0, 4);
+//        }
+//
+//        return dateRange;
+//    }
+//
+//    /**
+//     * Lookup a taxon name for a GUID
+//     *
+//     * @param fieldValue
+//     * @return
+//     */
+//    private String substituteLsidsForNames(String fieldValue) {
+//        String name = fieldValue;
+//        List<String> guids = new ArrayList<String>();
+//        guids.add(fieldValue);
+//        List<String> names = bieService.getNamesForGuids(guids);
+//        
+//        if (names != null && names.size() >= 1) {
+//            name = names.get(0);
+//        }
+//
+//        return name;
+//    }
+//
+//    /**
+//     * Lookup an institution/collection/data resource name via its collectory ID
+//     *
+//     * @param fieldValue
+//     * @return
+//     */
+//    private String substituteCollectoryNames(String fieldValue, String fieldName) {
+//        // substitute collectory names
+//        logger.debug("collectory maps: " + fieldValue);
+//        if (collectionsContainer.getCollectionMap().containsKey(fieldValue)) {
+//            fieldValue = collectionsContainer.getCollectionMap().get(fieldValue);
+//        } else if (collectionsContainer.getInstitutionMap().containsKey(fieldValue)) {
+//            fieldValue = collectionsContainer.getInstitutionMap().get(fieldValue);
+//        } else if (collectionsContainer.getDataResourceMap().containsKey(fieldValue)) {
+//            fieldValue = collectionsContainer.getDataResourceMap().get(fieldValue);
+//        } else if (collectionsContainer.getDataProviderMap().containsKey(fieldValue)) {
+//            fieldValue = collectionsContainer.getDataProviderMap().get(fieldValue);
+//        } else {
+//            // attempt to substitute i18n values
+//            fieldValue = messageSource.getMessage(fieldName+"."+StringUtils.remove(fieldValue, "\""), null, fieldValue, null);
+//            logger.debug("i18n subst: " + fieldName + "|" + fieldValue + " = " + fieldValue);
+//        }
+//        logger.debug("=> " + fieldValue);
+//        return fieldValue;
+//    }
 
     /**
      * Calculate the last page number for pagination
@@ -1814,7 +1819,7 @@ public class OccurrenceController {
 
         model.addAttribute("searchRequestParams", requestParams);
         model.addAttribute("searchResults", searchResult);
-        model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
+        //model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
         model.addAttribute("hasImages", resultsHaveImages(requestParams));
         model.addAttribute("clubView", isUserInClub(request));
@@ -1861,8 +1866,8 @@ public class OccurrenceController {
         model.addAttribute("downloadExtraFields", downloadExtraFields); // String[]
         model.addAttribute("LoggerSources", loggerService.getSources());
         model.addAttribute("LoggerReason", loggerService.getReasons());
-        model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
-        model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
+        //model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
+        //model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
     }
 
     /**

@@ -31,6 +31,8 @@ import java.util.Map;
 /**
  * Service to lookup and cache user details from auth.ala.org.au (CAS)
  *
+	TODO: NC 2012-01-14: Remove this class.  It has been relocated to biocache-service
+
  * User: dos009
  * Date: 21/11/12
  * Time: 10:38 AM
@@ -88,7 +90,7 @@ public class AuthService {
     }
 
     //@PostConstruct
-    @Scheduled(fixedRate = 600000) // schedule to run every 10 min
+//    @Scheduled(fixedRate = 600000) // schedule to run every 10 min
     @Async
     public void reloadCaches() {
         logger.info("Triggering reload of auth user names for " + this);
@@ -96,7 +98,7 @@ public class AuthService {
         loadMapOfAllUserNamesByNumericId();
     }
 
-    @Scheduled(fixedRate = 60000) // schedule to run every 1 min
+//    @Scheduled(fixedRate = 60000) // schedule to run every 1 min
     public void checkMemoryUsage() {
         int mb = 1024*1024;
         Runtime runtime = Runtime.getRuntime();

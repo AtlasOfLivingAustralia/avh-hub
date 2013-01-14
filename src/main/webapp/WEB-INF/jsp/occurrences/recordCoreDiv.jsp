@@ -237,8 +237,8 @@
                 </c:choose>
             </c:set>
             <c:set target="${fieldsMap}" property="${recordedByField}" value="true" />
-            <c:set var="rawRecordedBy"><alatag:authUserLookup userId="${record.raw.occurrence[recordedByField]}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
-            <c:set var="proRecordedBy"><alatag:authUserLookup userId="${record.processed.occurrence[recordedByField]}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
+            <c:set var="rawRecordedBy">"${record.raw.occurrence[recordedByField]}"</c:set>
+            <c:set var="proRecordedBy">"${record.processed.occurrence[recordedByField]}"</c:set>
             <c:choose>
                 <c:when test="${not empty record.processed.occurrence[recordedByField] && not empty record.raw.occurrence[recordedByField] && record.processed.occurrence[recordedByField] == record.raw.occurrence[recordedByField]}">
                     ${proRecordedBy}
@@ -258,7 +258,7 @@
         <!-- ALA user id -->
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="userId" fieldNameIsMsgCode="true" fieldName="ALA User">
             <c:set target="${fieldsMap}" property="userId" value="true" />
-            <alatag:authUserLookup userId="${record.raw.occurrence.userId}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/>
+           <a href="http://sightings.ala.org.au/spotter/${record.raw.occurrence.userId}">${record.alaUserName}</a>
         </alatag:occurrenceTableRow>
         <!-- Record Number -->
         <c:set var="recordNumberLabel">
@@ -957,7 +957,7 @@
         <table class="occurrenceTable" id="miscellaneousPropertiesTable">
             <!-- Higher Geography -->
             <c:forEach items="${record.raw.miscProperties}" var="entry">
-                <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="<span class='dwc'>${entry.key}</span>"><alatag:authUserLookup userId="${entry.value}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></alatag:occurrenceTableRow>
+                <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="<span class='dwc'>${entry.key}</span>">${entry.value}</alatag:occurrenceTableRow>
             </c:forEach>
         </table>
     </div>

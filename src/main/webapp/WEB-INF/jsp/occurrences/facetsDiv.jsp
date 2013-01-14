@@ -38,18 +38,18 @@
                     test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if 
                     test="${not empty param.radius}">&radius=${param.radius}</c:if></c:set>
         </c:if>
-        <c:if test="${not empty facetMap}">
+        <c:if test="${not empty searchResults.activeFacetMap}">
             <div id="currentFilter">
                 <h4><span class="FieldName">Current filters</span></h4>
                 <div class="subnavlist">
                     <ul id="refinedFacets">
-                        <c:forEach var="item" items="${facetMap}">
+                        <c:forEach var="item" items="${searchResults.activeFacetMap}">
                             <li>
                                 <c:set var="closeLink">&nbsp;[<b><a href="#" data-facet="${item.key}:${fn:escapeXml(item.value.value)}" onClick="removeFacet(this); return false;" class="removeLink" title="remove filter">X</a></b>]</c:set>
 
                                 <c:set var="filterLabel"><c:choose>
-                                    <c:when test="${fn:endsWith(item.value.label, '_s')}">${fn:replace(item.value.label, '_s','')}</c:when>
-                                    <c:otherwise><fmt:message key="${item.value.label}"/></c:otherwise>
+                                    <c:when test="${fn:endsWith(item.value.displayName, '_s')}">${fn:replace(item.value.displayName, '_s','')}</c:when>
+                                    <c:otherwise><fmt:message key="${item.value.displayName}"/></c:otherwise>
                                     </c:choose></c:set>
 
                                 <c:set var="fqLabel">
@@ -66,7 +66,7 @@
             </div>
         </c:if>
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
-            <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty facetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
+            <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty searchResults.activeFacetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
                 <c:set var="fieldDisplayName"><c:choose>
                     <c:when test="${fn:substring(facetResult.fieldName, fn:length(facetResult.fieldName)-2, fn:length(facetResult.fieldName)) eq '_s'}">
                         ${fn:replace(fn:substring(facetResult.fieldName, 0, fn:length(facetResult.fieldName)-2), '_', ' ')}
@@ -149,12 +149,13 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="geospatial_kosher.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
-                                    <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collector') || fn:containsIgnoreCase(facetResult.fieldName, 'assertion_user_id')}">
+<%--                                    NC 2013-01-14: This is now handled by the fq param in the facetResult. 
+										<c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collector') || fn:containsIgnoreCase(facetResult.fieldName, 'assertion_user_id')}">
                                         <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
                                         <c:set var="fullName"><alatag:authUserLookup userId="${fieldResult.label}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22<c:out escapeXml='true' value='${fqValue}'/>%22"><fmt:message key="${fullName}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:when>
+                                    </c:when> --%>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'outlier_layer')}">
                                         <c:set var="fqValue" value="${fn:replace(fieldResult.label, '\"','%22')}"/><!-- fqValue = ${fqValue} -->
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:<c:out escapeXml='true' value='${fqValue}'/>">
@@ -189,7 +190,7 @@
                                     </c:when>
                                     <c:when test="${not empty fieldResult.fq}">
                                         <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
-                                        <li><a href="?${queryParam}&fq=${fieldResult.fq}"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
+                                        <li><a href="?${queryParam}&fq=<c:out escapeXml='true' value='${fieldResult.fq}'/>"><fmt:message key="${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                             (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
                                     <c:otherwise>
