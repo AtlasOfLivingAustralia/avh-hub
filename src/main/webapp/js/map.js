@@ -21,8 +21,6 @@ var Maps = (function() {
      */
     function loadOccurrencePopup(location) {
 
-        console.log("loadOccurrencePopup");
-
         clickLocation = location;
 
         infowindow.close();
@@ -105,7 +103,6 @@ var Maps = (function() {
 
         var baseurl = Config.OCC_SEARCH_URL;
         var wmsinfo = baseurl + ((BC_CONF.searchString) ? encodeURI(BC_CONF.searchString) : "?"); // window.location.search;
-        console.log("WMS URL: " + wmsinfo);
         // remove spatial params from searchString param
         wmsinfo = wmsinfo.replace(/&lat\=.*/, '');
         wmsinfo += "&zoom=" + map.getZoom();
@@ -358,8 +355,6 @@ var Maps = (function() {
 
             //infowindow.setContent('<div style="height:200px">Loading occurrence info. Please wait...</div>');
             var occUrl = Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]);
-
-            console.log("Loading occurrence info with: " + occUrl);
 
             $.get(occUrl, function(record){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
