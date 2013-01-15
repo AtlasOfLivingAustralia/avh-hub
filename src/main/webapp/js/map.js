@@ -3,7 +3,6 @@
     Created on : Feb 16, 2011, 3:25:27 PM
     Author     : "Ajay Ranipeta <Ajay.Ranipeta@csiro.au>"
  */
-
 var map;
 var Maps = (function() {
 
@@ -21,6 +20,9 @@ var Maps = (function() {
      *
      */
     function loadOccurrencePopup(location) {
+
+        console.log("loadOccurrencePopup");
+
         clickLocation = location;
 
         infowindow.close();
@@ -90,7 +92,6 @@ var Maps = (function() {
             case 20:
                 radius = 0.001;
                 break;
-                
         }
 
         //modifiers if we have a larger point size
@@ -104,6 +105,7 @@ var Maps = (function() {
 
         var baseurl = Config.OCC_SEARCH_URL;
         var wmsinfo = baseurl + ((BC_CONF.searchString) ? encodeURI(BC_CONF.searchString) : "?"); // window.location.search;
+        console.log("WMS URL: " + wmsinfo);
         // remove spatial params from searchString param
         wmsinfo = wmsinfo.replace(/&lat\=.*/, '');
         wmsinfo += "&zoom=" + map.getZoom();
@@ -137,7 +139,6 @@ var Maps = (function() {
             displayHtml = data.count + ' occurrences found';
             $('#maploading').fadeOut('slow');
         }
-
     }
 
     function initialiseOverlays(lyrCount) {
@@ -356,12 +357,15 @@ var Maps = (function() {
             }
 
             //infowindow.setContent('<div style="height:200px">Loading occurrence info. Please wait...</div>');
+            var occUrl = Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]);
 
-            $.get(Config.OCC_INFO_URL_JSON.replace(/_uuid_/g,occids[curr]), function(data){
+            console.log("Loading occurrence info with: " + occUrl);
+
+            $.get(occUrl, function(record){
                 var displayHtml = occids.length + ((occids.length>1)?' occurrences founds.':' occurrence found.');
                 //console.log("data.record", data.record);
                 var minHeight = "150px";
-                if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
+                if(record.processed.occurrence.images!=null && record.processed.occurrence.images.length >0){
                     minHeight = "250px";
                 }
 
@@ -373,57 +377,57 @@ var Maps = (function() {
                 displayHtml += '<div id="textfields">';
 
                 // catalogNumber 
-                if(data.record.raw.occurrence.catalogNumber != null){
-                    displayHtml += "Catalogue number: " + data.record.raw.occurrence.catalogNumber + '<br />';
-                } else if(data.record.processed.occurrence.catalogNumber != null){
-                    displayHtml += "Catalogue number: " + data.record.processed.occurrence.catalogNumber + '<br />';
+                if(record.raw.occurrence.catalogNumber != null){
+                    displayHtml += "Catalogue number: " + record.raw.occurrence.catalogNumber + '<br />';
+                } else if(record.processed.occurrence.catalogNumber != null){
+                    displayHtml += "Catalogue number: " + record.processed.occurrence.catalogNumber + '<br />';
                 }
 
-                if(data.record.raw.classification.vernacularName!=null && BC_CONF.skin != 'avh'){
-                    displayHtml += data.record.raw.classification.vernacularName + '<br />';
-                } else if(data.record.processed.classification.vernacularName!=null && BC_CONF.skin != 'avh'){
-                    displayHtml += data.record.processed.classification.vernacularName + '<br />';
+                if(record.raw.classification.vernacularName!=null && BC_CONF.skin != 'avh'){
+                    displayHtml += record.raw.classification.vernacularName + '<br />';
+                } else if(record.processed.classification.vernacularName!=null && BC_CONF.skin != 'avh'){
+                    displayHtml += record.processed.classification.vernacularName + '<br />';
                 }
 
-                if(data.record.raw.classification.scientificName != null){
-                    displayHtml += data.record.raw.classification.scientificName  + '<br />';
+                if(record.raw.classification.scientificName != null){
+                    displayHtml += record.raw.classification.scientificName  + '<br />';
                 } else {
-                    displayHtml += formatSciName(data.record.processed.classification.scientificName, data.record.processed.classification.taxonRankID)  + '<br />';
+                    displayHtml += formatSciName(record.processed.classification.scientificName, record.processed.classification.taxonRankID)  + '<br />';
                 }
 
                 if (BC_CONF.skin == 'avh') {
-                    if(data.record.processed.attribution.collectionName != null){
-                        displayHtml += "Collection: " + data.record.processed.attribution.collectionName;
-                    } else  if(data.record.processed.attribution.institutionName != null){
-                        displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
+                    if(record.processed.attribution.collectionName != null){
+                        displayHtml += "Collection: " + record.processed.attribution.collectionName;
+                    } else  if(record.processed.attribution.institutionName != null){
+                        displayHtml += "Institution: " + record.processed.attribution.institutionName;
                     }
                 } else {
-                    if(data.record.processed.attribution.institutionName != null){
-                        displayHtml += "Institution: " + data.record.processed.attribution.institutionName;
-                    } else  if(data.record.processed.attribution.dataResourceName != null){
-                        displayHtml += data.record.processed.attribution.dataResourceName;
+                    if(record.processed.attribution.institutionName != null){
+                        displayHtml += "Institution: " + record.processed.attribution.institutionName;
+                    } else  if(record.processed.attribution.dataResourceName != null){
+                        displayHtml += record.processed.attribution.dataResourceName;
                     }
                 }
 
                 if (BC_CONF.skin == 'avh') {
-                    if(data.record.raw.occurrence.recordedBy != null){
-                        displayHtml += "<br/>Collector: " + data.record.raw.occurrence.recordedBy;
-                    } else if(data.record.processed.occurrence.recordedBy != null){
-                        displayHtml += "<br/>Collector: " + data.record.processed.occurrence.recordedBy;
+                    if(record.raw.occurrence.recordedBy != null){
+                        displayHtml += "<br/>Collector: " + record.raw.occurrence.recordedBy;
+                    } else if(record.processed.occurrence.recordedBy != null){
+                        displayHtml += "<br/>Collector: " + record.processed.occurrence.recordedBy;
                     }
                 }
 
-                if(data.record.processed.event.eventDate != null){
+                if(record.processed.event.eventDate != null){
                     displayHtml += "<br/>";
                     var label = (BC_CONF.skin == 'avh') ? "Collection date: " : "Record date: ";
-                    displayHtml += label + data.record.processed.event.eventDate;
+                    displayHtml += label + record.processed.event.eventDate;
                 }
 
                 displayHtml += '</div>';
 
                 //http://biocache.ala.org.au/biocache-media/dr360/19673/0a0e05bb-f68b-443c-9670-355622cdaed8/5286199529_c6ae5672b4.jpg
-                if(data.record.processed.occurrence.images!=null && data.record.processed.occurrence.images.length >0){
-                    displayHtml += "<img style='margin-top:8px; max-width:150px; max-height:120px;' src ='"+data.record.processed.occurrence.images[0]+"'/>";
+                if(record.processed.occurrence.images!=null && record.processed.occurrence.images.length >0){
+                    displayHtml += "<img style='margin-top:8px; max-width:150px; max-height:120px;' src ='"+record.images[0].alternativeFormats.thumbnailUrl+"'/>";
                 }
 
                 displayHtml += '<div id="occactions"">';

@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import au.org.ala.biocache.QualityAssertion;
+import au.org.ala.commonui.util.WebUtils;
 import org.ala.biocache.dto.*;
 import au.org.ala.biocache.FullRecord;
 import au.org.ala.util.DuplicateRecordDetails;
@@ -467,7 +468,6 @@ public class OccurrenceController {
      */
     @RequestMapping(value = "/taxa/{guid:.+}*", method = RequestMethod.GET)
 	public String occurrenceSearchByTaxon(@PathVariable("guid") String guid) throws Exception {
-
         return "redirect:/occurrences/search?q=lsid:" + guid;
     }
 
@@ -1045,8 +1045,7 @@ public class OccurrenceController {
                     String qid = ProxyController.getPostUrlContentAsString(url, params, null);
 
                     if (qid != null) {
-                        response.sendRedirect(serverName + contextPath + "/occurrence/search?q=qid:" +
-                                ""+qid);
+                        response.sendRedirect(serverName + contextPath + "/occurrence/search?q=qid:" + qid);
                     } else {
                         model.addAttribute("errors", "Shape file upload failed.");
                     }
@@ -1064,7 +1063,10 @@ public class OccurrenceController {
     }
 
     /**
-     * Redirect JSON record view to biocache-service
+     * JSON record view to biocache-service
+     *
+     * NOTE!! This service is in use via JS. Hence redirects will not work
+     * due to cross domain issues.
      *
      * @param uuid
      * @param response
@@ -1075,9 +1077,10 @@ public class OccurrenceController {
     public void getOccurrenceRecordJson(@PathVariable("uuid") String uuid,
                                           HttpServletResponse response, Model model) throws Exception {
         logger.debug("Redirecting the JSON version of a record - uuid = " + uuid);
-        response.sendRedirect(biocacheUriPrefix + "/occurrence/" + uuid + ".json");
+        response.setContentType("application/json");
+        response.getWriter().write(WebUtils.getUrlContentAsString(biocacheUriPrefix + "/occurrence/" + uuid));
+        response.flushBuffer();
     }
-
 
     /**
      * JSON service to return a list of facet values for a given search query & facet.
