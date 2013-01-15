@@ -1085,9 +1085,10 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                         label = jQuery.i18n.prop(label);
                     }
                     facetName = facetName.replace(/_RNG$/,""); // remove range version if present
-                    //console.log("label", label, facetName, el);
-                    var fqParam = (el.fq) ? el.fq : facetName.replace("decade","occurrence_year") + ":" + encodeURIComponent(fqEsc);
+//                    console.log("label", label, facetName, el);
+                    var fqParam = (el.fq) ? encodeURIComponent(el.fq) : facetName.replace("decade","occurrence_year") + ":" + encodeURIComponent(fqEsc);
                     var link = BC_CONF.searchString.replace("'", "&apos;") + "&fq=" + fqParam;
+//                    console.log(link)
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
                     html += "<tr class='" + rowType + "'><td>" +
                         "<input type='checkbox' name='fqs' class='fqs' value='"  + fqParam +
