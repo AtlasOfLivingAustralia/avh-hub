@@ -256,10 +256,12 @@
             </c:choose>
         </alatag:occurrenceTableRow>
         <!-- ALA user id -->
+        <c:if test="${not empty record.raw.occurrence.userId}">
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="userId" fieldNameIsMsgCode="true" fieldName="ALA User">
             <c:set target="${fieldsMap}" property="userId" value="true" />
            <a href="http://sightings.ala.org.au/spotter/${record.raw.occurrence.userId}">${record.alaUserName}</a>
         </alatag:occurrenceTableRow>
+        </c:if>
         <!-- Record Number -->
         <c:set var="recordNumberLabel">
             <c:choose>

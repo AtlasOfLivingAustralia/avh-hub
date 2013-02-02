@@ -149,6 +149,31 @@
   </tag>
 
   <tag>
+    <description>UUID converter</description>
+    <name>uuidToLink</name>
+    <tag-class>org.ala.hubs.util.UUIDToLinkTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The text</description>
+      <name>text</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description>the base of the link to construct</description>
+      <name>baseLink</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description>the link text to use</description>
+      <name>linkText</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
     <description>Property Loader Tag</description>
     <name>propertyLoader</name>
     <tag-class>au.org.ala.commonui.tag.PropertyLoaderTag</tag-class>

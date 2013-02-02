@@ -456,7 +456,7 @@
                                     <c:if test="${empty systemAssertion.comment}">
                                         <spring:message code="${systemAssertion.name}" text="${systemAssertion.name}"/>
                                     </c:if>
-                                    ${systemAssertion.comment}
+                                    <ala:uuidToLink text="${systemAssertion.comment}" baseLink=""/>
                                     <c:if test="${systemAssertion.code == 26}">
                                         <c:set var="hasExpertDistribution" value="true"/>
                                         (see <a href="#hasExpertDistribution">larger map</a>)
@@ -712,8 +712,10 @@
                              <c:set var="rawLastModifiedString" value="${record.raw.lastModifiedTime}"/>
                              <c:set var="processedLastModifiedString" value="${record.processed.lastModifiedTime}"/>
                          </c:if>
+                         <p style="margin-bottom:20px;">
                          Date loaded: ${rawLastModifiedString}<br/>
                          Date last processed: ${processedLastModifiedString}<br/>
+                         </p>
                      </div>
                  </c:if>
             </div><!-- end div#SidebarBox -->
@@ -797,16 +799,13 @@
             </c:if>
 
             <style type="text/css">
-                #outlierFeedback #inferredOccurrenceDetails { float:left; clear:both; padding-left:10px;margin-top:30px; width:100%; }
+                #outlierFeedback #inferredOccurrenceDetails { clear:both; margin-left:20px;margin-top:30px; width:100%; }
                 /*#outlierFeedback h3 {color: #718804; }*/
                 #outlierFeedback #outlierInformation #inferredOccurrenceDetails { margin-bottom:20px; }
             </style>
 
-
-
             <script type="text/javascript" src="${biocacheService}/outlier/record/${uuid}.json?callback=renderOutlierCharts"></script>
 
-			
             <div id="outlierFeedback">
                 <c:if test="${not empty record.processed.occurrence.outlierForLayers}">
                     <div id="outlierInformation" class="additionalData">
@@ -834,12 +833,11 @@
                     </div>
                     <div id="charts"></div>
                 </c:if>
-                
-              
-				<c:if test="${not empty record.processed.occurrence.duplicationStatus }">
+
+				<c:if test="${not empty record.processed.occurrence.duplicationStatus}">
 					<div id="inferredOccurrenceDetails">
               		<a href="#inferredOccurrenceDetails" name="inferredOccurrenceDetails" id="inferredOccurrenceDetails" hidden="true"></a>
-              		<h2>Inferred Associated Occurrence Details</h2>
+              		<h2>Inferred associated occurrence details</h2>
 					<p>
 					<c:choose>
 						<c:when test="${record.processed.occurrence.duplicationStatus == 'R' }">This record has been identified as the <em>representative</em> occurrence in a group of associated occurrences.						
