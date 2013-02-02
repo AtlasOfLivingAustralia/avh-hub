@@ -585,6 +585,7 @@
                 <c:if test="${not empty record.images}">
                     <div class="sidebar">
                         <h2>Images</h2>
+                        <div id="occurrenceImages" style="margin-top:5px;">
                         <c:forEach items="${record.images}" var="image">
                            <a href="${image.alternativeFormats['smallImageUrl']}" target="_blank">
                                <img src="${image.alternativeFormats['largeImageUrl']}" style="max-width: 250px;"/>
@@ -600,6 +601,7 @@
                         <c:if test="${not empty record.raw.occurrence.rightsholder}">
                             <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
                         </c:if>
+                        </div>
                     </div>
                 </c:if>
                 <c:if test="${not empty record.processed.location.decimalLatitude && not empty record.processed.location.decimalLongitude}">
@@ -838,14 +840,19 @@
 					<div id="inferredOccurrenceDetails">
               		<a href="#inferredOccurrenceDetails" name="inferredOccurrenceDetails" id="inferredOccurrenceDetails" hidden="true"></a>
               		<h2>Inferred associated occurrence details</h2>
-					<p>
+					<p style="margin-top:5px;">
 					<c:choose>
-						<c:when test="${record.processed.occurrence.duplicationStatus == 'R' }">This record has been identified as the <em>representative</em> occurrence in a group of associated occurrences.						
+						<c:when test="${record.processed.occurrence.duplicationStatus == 'R' }">
+                            This record has been identified as the <em>representative</em> occurrence in a group of associated occurrences.
+                            This mean other records have been detected that seem to relate to this record and this particular record has the most detailed
+                            information on the occurrence.
 						</c:when>
-						<c:otherwise>This record is associated with the <em>representative</em> record.						
+						<c:otherwise>This record is associated with the <em>representative</em> record.
+                            This mean another record has been detected to be similar to this record, and that the other
+                            record (the representative record) has the most detailed information for the occurrence.
 						</c:otherwise>
 					</c:choose>
-					<p>More information about the Duplication Detection is available here:
+					    More information about the duplication detection methods and terminology in use is available here:
 						<ul>
 							<li>
 							<a href="http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD">http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD</a>							
