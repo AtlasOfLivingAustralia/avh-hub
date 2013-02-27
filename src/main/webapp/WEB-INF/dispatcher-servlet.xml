@@ -85,6 +85,12 @@
         </property>
     </bean>
 
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang" />
+        </bean>
+    </mvc:interceptors>
+
     <!-- This will override the default DefaultAnnotationHandlerMapping that is created,
       -  and not map file extensions automagically -->
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" p:order="2">
@@ -215,6 +221,11 @@
 
     <bean id="urlMapping"
           class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="localeChangeInterceptor"/>
+            </list>
+        </property>
         <property name="mappings">
             <props>
                 <prop key="/jawr/**/*.js">jawrJsController</prop>
