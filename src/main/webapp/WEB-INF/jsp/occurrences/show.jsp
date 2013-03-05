@@ -607,7 +607,7 @@
                 <c:if test="${not empty record.processed.location.decimalLatitude && not empty record.processed.location.decimalLongitude}">
                     <c:set var="latLngStr">
                         <c:choose>
-                            <c:when test="${not empty clubView && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
+                            <c:when test="${not empty clubView && not empty record.raw.location.decimalLatitude && record.raw.location.decimalLatitude != record.processed.location.decimalLatitude}">
                                 ${record.raw.location.decimalLatitude},${record.raw.location.decimalLongitude}
                             </c:when>
                             <c:otherwise>
