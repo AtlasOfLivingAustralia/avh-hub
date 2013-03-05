@@ -587,8 +587,8 @@
                         <h2>Images</h2>
                         <div id="occurrenceImages" style="margin-top:5px;">
                         <c:forEach items="${record.images}" var="image">
-                           <a href="${image.alternativeFormats['smallImageUrl']}" target="_blank">
-                               <img src="${image.alternativeFormats['largeImageUrl']}" style="max-width: 250px;"/>
+                           <a href="${image.alternativeFormats['largeImageUrl']}" target="_blank">
+                               <img src="${image.alternativeFormats['smallImageUrl']}" style="max-width: 250px;"/>
                            </a>
                           <br/>
                         </c:forEach>
