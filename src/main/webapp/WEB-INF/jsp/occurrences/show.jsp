@@ -76,7 +76,7 @@
                     }
                 );
             }
-            
+
             /**
             * Convert camel case text to pretty version (all lower case)
             */
@@ -116,7 +116,7 @@
                     'padding': 15,
                     'margin': 10
                 });
-                
+
                 // raw vs processed popup
                 $("#showRawProcessed").fancybox({
                     //'href': '#loginOrFlag',
@@ -219,7 +219,7 @@
                     }
                     //isConfirmed = false; // don't remember the confirm
                 });
-                
+
                 // give every second row a class="grey-bg"
                 $('table.occurrenceTable, table.inner, table.layerIntersections, table.duplicationTable').each(function(i, el) {
                     $(this).find('tr').not('.sectionName').each(function(j, tr) {
@@ -228,32 +228,32 @@
                         }
                     });
                 });
-                
+
                 // convert camel case field names to "normal"
                 $("td.dwc, span.dwc").each(function(i, el) {
                     var html = $(el).html();
                     $(el).html(fileCase(html)); // conver it
                 });
-                
+
                 // load a JS map with sensitiveDatasets values from hubs.properties file
                 var sensitiveDatasets = {
                     <c:forEach var="sds" items="${sensitiveDatasets}" varStatus="s">
                         ${sds}: '<ala:propertyLoader bundle="hubs" property="sensitiveDatasets.${sds}"/>'<c:if test="${not s.last}">,</c:if>
                     </c:forEach>
                 }
-                
+
                 // add links for dataGeneralizations pages in collectory
                 $("span.dataGeneralizations").each(function(i, el) {
                     var field = $(this);
                     var text = $(this).text().match(/\[.*?\]/g);
-                    
+
                     if (text) {
                         $.each(text, function(j, el) {
                             var list = el.replace(/\[.*,(.*)\]/, "$1").trim();
                             var code = list.replace(/\s/g, "_").toUpperCase();
-                            
+
                             if (sensitiveDatasets[code]) {
-                                var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list 
+                                var linked = "<a href='" + sensitiveDatasets[code] + "' title='" + list
                                     + " sensitive species list information page' target='collectory'>" + list + "</a>";
                                 var regex = new RegExp(list, "g");
                                 var html = $(field).html().replace(regex, linked);
@@ -272,7 +272,7 @@
                         cssSelectorAncestor: "#cp_container_1"
                     });
                 </c:if>
-                
+
                 <c:if test="${isCollectionAdmin}">
                     $(".confirmVerifyCheck").click(function(e) {
                         $("#verifyAsk").hide();
@@ -322,13 +322,13 @@
                     $(sequenceTd).html("<code>"+sequenceStr.replace(/(.{10})/g,"$1 ")+"</code>");
                 }
             }); // end JQuery document ready
-            
+
             /*
              * IE doesn't support String.trim(), so add it in manually
              */
             if(typeof String.prototype.trim !== 'function') {
                 String.prototype.trim = function() {
-                    return this.replace(/^\s+|\s+$/g, ''); 
+                    return this.replace(/^\s+|\s+$/g, '');
                 }
             }
 
@@ -358,7 +358,7 @@
                    })
                }
             }
-            
+
             function drawChart(facetName, biocacheQuery, chartName, outlierValues, valueForThisRecord, cumulative){
 
                 var facetChartOptions = { error: "badQuery", legend: 'right'}
@@ -481,7 +481,7 @@
                         	<ul id="queryAssertions">
                         	<c:forEach var="type" items="${queryAssertionTypes}">
                                 <li>
-                                    <spring:message code="${type}" text="${type}"/>                                    
+                                    <spring:message code="${type}" text="${type}"/>
                                 </li>
                            </c:forEach>
                            </ul>
@@ -601,6 +601,7 @@
                         <c:if test="${not empty record.raw.occurrence.rightsholder}">
                             <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
                         </c:if>
+                        <a href="${image.alternativeFormats['imageUrl']}" target="_blank">Full size image</a> - Warning: image may be very large. Downloading (right click/Save Image As...) is recommended.
                         </div>
                     </div>
                 </c:if>
@@ -813,7 +814,7 @@
                     <div id="outlierInformation" class="additionalData">
                         <h2>Outlier information</h2>
                         <p>
-                            This record has been detected as an outlier using the 
+                            This record has been detected as an outlier using the
                             <a href="http://code.google.com/p/ala-dataquality/wiki/DETECTED_OUTLIER_JACKKNIFE">Reverse Jackknife algorithm</a>
                             for the following layers:</p>
                         <ul>
@@ -855,7 +856,7 @@
 					    More information about the duplication detection methods and terminology in use is available here:
 						<ul>
 							<li>
-							<a href="http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD">http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD</a>							
+							<a href="http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD">http://code.google.com/p/ala-dataquality/wiki/INFERRED_DUPLICATE_RECORD</a>
 							</li>
 						</ul>
 					</p>
@@ -864,53 +865,53 @@
 							<tr class="sectionName"><td colspan="4">Representative Record</td></tr>
 							<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Record UUID">
                             <a href="${pageContext.request.contextPath}/occurrences/${duplicateRecordDetails.uuid}">${duplicateRecordDetails.uuid}</a></alatag:occurrenceTableRow>
                             <alatag:occurrenceTableRow
         							annotate="false"
-        							section="duplicate"                                    
+        							section="duplicate"
         							fieldName="Data Resource">
         					<c:set var="dr">${fn:substring(duplicateRecordDetails.rowKey,0,fn:indexOf(duplicateRecordDetails.rowKey,"|"))}</c:set>
-        					<a href="${collectionsWebappContext}/public/show/${dr}">${dataResourceCodes[dr]}</a>        							
+        					<a href="${collectionsWebappContext}/public/show/${dr}">${dataResourceCodes[dr]}</a>
 				 			</alatag:occurrenceTableRow>
                             <c:if test="${not empty duplicateRecordDetails.rawScientificName}">
 			        		<alatag:occurrenceTableRow
 	                				annotate="false"
-	                				section="duplicate"                                    
+	                				section="duplicate"
 	                				fieldName="Raw Scientific Name">
 	        					${duplicateRecordDetails.rawScientificName}</alatag:occurrenceTableRow>
 		        			</c:if>
                             <alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Coordinates">
                             ${duplicateRecordDetails.latLong}</alatag:occurrenceTableRow>
                             <c:if test="${not empty duplicateRecordDetails.collector }">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Collector">
                             ${duplicateRecordDetails.collector}</alatag:occurrenceTableRow>
                             </c:if>
                             <c:if test="${not empty duplicateRecordDetails.year }">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Year">
                             ${duplicateRecordDetails.year}</alatag:occurrenceTableRow>
                             </c:if>
                             <c:if test="${not empty duplicateRecordDetails.month }">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Month">
                             ${duplicateRecordDetails.month}</alatag:occurrenceTableRow>
                             </c:if>
                             <c:if test="${not empty duplicateRecordDetails.day }">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Day">
                             ${duplicateRecordDetails.day}</alatag:occurrenceTableRow>
                             </c:if>
@@ -919,60 +920,60 @@
                             <c:forEach items="${duplicateRecordDetails.duplicates }" var="dup">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Record UUID">
                             <a href="${pageContext.request.contextPath}/occurrences/${dup.uuid}">${dup.uuid}</a></alatag:occurrenceTableRow>
                             <alatag:occurrenceTableRow
         							annotate="false"
-        							section="duplicate"                                    
+        							section="duplicate"
         							fieldName="Data Resource">
         					<c:set var="dr">${fn:substring(dup.rowKey,0,fn:indexOf(dup.rowKey,"|"))}</c:set>
-        					<a href="${collectionsWebappContext}/public/show/${dr}">${dataResourceCodes[dr]}</a>        							
+        					<a href="${collectionsWebappContext}/public/show/${dr}">${dataResourceCodes[dr]}</a>
 				 			</alatag:occurrenceTableRow>
-                            <c:if test="${not empty dup.rawScientificName}">                            
+                            <c:if test="${not empty dup.rawScientificName}">
 			        		<alatag:occurrenceTableRow
 	                				annotate="false"
-	                				section="duplicate"                                    
+	                				section="duplicate"
 	                				fieldName="Raw Scientific Name">
 	        					${dup.rawScientificName}</alatag:occurrenceTableRow>
 		        			</c:if>
                             <alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Coordinates">
                             ${dup.latLong}</alatag:occurrenceTableRow>
                              <c:if test="${not empty dup.collector }">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Collector">
                             ${dup.collector}</alatag:occurrenceTableRow>
                             </c:if>
                             <c:if test="${not empty dup.year }">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Year">
                             ${dup.year}</alatag:occurrenceTableRow>
                             </c:if>
                             <c:if test="${not empty dup.month }">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Month">
                             ${dup.month}</alatag:occurrenceTableRow>
                             </c:if>
                             <c:if test="${not empty dup.day }">
                             	<alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Day">
                             ${dup.day}</alatag:occurrenceTableRow>
                             </c:if>
                             <c:if test="${not empty dup.dupTypes }">
                             <alatag:occurrenceTableRow
                                     annotate="false"
-                                    section="duplicate"                                    
+                                    section="duplicate"
                                     fieldName="Comments">
                             	<c:forEach items="${dup.dupTypes }" var="dupType">
                             		<fmt:message key="duplication.${dupType.id}"/>
@@ -984,7 +985,7 @@
                             </c:forEach>
 						</table>
 					</c:if>
-					</p>					
+					</p>
 				</c:if>
 			</div>
 
@@ -1028,7 +1029,7 @@
                     </c:if>
                 </div>
             </div>
-            
+
             <div style="display:none;clear:both;">
                 <div id="processedVsRawView">
                     <h2>&quot;Original versus Processed&quot; Comparison Table</h2>
@@ -1069,10 +1070,10 @@
 					<strong><fmt:message key="${queryAssertion.assertionType}"/></strong><br/>
                        Comment: <span class="userAssertionComment">${queryAssertion.comment}</span><br/>
                        Flagged by: ${queryAssertion.userName}<br/>
-                       <c:if test="${not empty queryAssertion.createdDate}">                           
+                       <c:if test="${not empty queryAssertion.createdDate}">
                            <fmt:formatDate var="assertionCreatedString" value="${queryAssertion.createdDate}" pattern="yyyy-MM-dd"/>
                            Created: ${assertionCreatedString} <br/>
-                       </c:if>                       
+                       </c:if>
                        <c:if test="${queryAssertion.recordCount > 1}">
                        		<a href="${pageContext.request.contextPath}/occurrences/search?q=query_assertion_uuid:${queryAssertion.uuid}">View more records with this assertion.</a>
                        </c:if>
