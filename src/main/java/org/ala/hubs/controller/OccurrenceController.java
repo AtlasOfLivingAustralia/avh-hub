@@ -48,7 +48,9 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 
+import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -924,6 +926,16 @@ public class OccurrenceController {
                 model.addAttribute("dwcExcludeFields", dwcExclude);
                 //model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
                 //model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
+
+                Map<String, String> formattedImageSizes = new HashMap<String, String>();
+                for (MediaDTO image : record.getImages()) {
+                    String originalImageUrl = image.getAlternativeFormats().get("imageUrl");
+                    int imageSizeInBytes = getImageSizeInBytes(originalImageUrl);
+                    String formattedImageSize = FileUtils.byteCountToDisplaySize(imageSizeInBytes);
+                    formattedImageSizes.put(originalImageUrl, formattedImageSize);
+                }
+
+                model.addAttribute("formattedImageSizes", formattedImageSizes);
             }
 
         } catch (Exception e){
@@ -959,6 +971,14 @@ public class OccurrenceController {
          }
       }
       return null;
+  }
+
+  private int getImageSizeInBytes(String imageURL) throws Exception {
+      HttpClient httpClient = new HttpClient();
+      HeadMethod headMethod = new HeadMethod(imageURL);
+      httpClient.executeMethod(headMethod);
+      String lengthString = headMethod.getResponseHeader("Content-Length").getValue();
+      return Integer.parseInt(lengthString);
   }
 
     /**

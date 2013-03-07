@@ -591,17 +591,18 @@
                                <img src="${image.alternativeFormats['smallImageUrl']}" style="max-width: 250px;"/>
                            </a>
                           <br/>
+
+                            <c:if test="${not empty record.raw.occurrence.photographer}">
+                                <cite>Photographer: ${record.raw.occurrence.photographer}</cite>
+                            </c:if>
+                            <c:if test="${not empty record.raw.occurrence.rights}">
+                               <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                            </c:if>
+                            <c:if test="${not empty record.raw.occurrence.rightsholder}">
+                                <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
+                            </c:if>
+                            <a href="${image.alternativeFormats['imageUrl']}" target="_blank">Original image (${formattedImageSizes[image.alternativeFormats['imageUrl']]})</a>
                         </c:forEach>
-                        <c:if test="${not empty record.raw.occurrence.photographer}">
-                            <cite>Photographer: ${record.raw.occurrence.photographer}</cite>
-                        </c:if>
-                        <c:if test="${not empty record.raw.occurrence.rights}">
-                           <cite>Rights: ${record.raw.occurrence.rights}</cite>
-                        </c:if>
-                        <c:if test="${not empty record.raw.occurrence.rightsholder}">
-                            <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
-                        </c:if>
-                        <a href="${image.alternativeFormats['imageUrl']}" target="_blank">Full size image</a> - Warning: image may be very large. Downloading (right click/Save Image As...) is recommended.
                         </div>
                     </div>
                 </c:if>
