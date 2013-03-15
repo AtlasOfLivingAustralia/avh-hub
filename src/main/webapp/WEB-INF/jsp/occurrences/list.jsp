@@ -26,6 +26,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
+        <meta name="section" content="search"/>
         <title><fmt:message key="heading.list"/> | ${hubDisplayName}</title>
 
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />

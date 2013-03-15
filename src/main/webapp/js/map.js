@@ -778,7 +778,12 @@ function fitMapToBounds() {
         if (data.length == 4) {
             var sw = new google.maps.LatLng(data[1],data[0]);
             var ne = new google.maps.LatLng(data[3],data[2]);
-            var dataBounds = new google.maps.LatLngBounds(sw, ne);
+            //var dataBounds = new google.maps.LatLngBounds(sw, ne);
+            var dataBounds = new google.maps.LatLngBounds();
+            dataBounds.extend(ne);
+            dataBounds.extend(sw);
+            var centre = dataBounds.getCenter();
+            //map.fitBounds(bounds);
             var mapBounds = map.getBounds()
 
             if (mapBounds && mapBounds.contains(sw) && mapBounds.contains(ne) && dataBounds) {
@@ -790,7 +795,14 @@ function fitMapToBounds() {
                     map.setZoom(15);
                 }
             } else if (BC_CONF.zoomOutsideAustralia) {
+                //map.fitBounds(dataBounds);
+                //console.log("zoom", map.getZoom())
                 map.fitBounds(dataBounds);
+
+                if (map.getZoom() == 0) {
+                    map.setCenter(centre);
+                    map.setZoom(2);
+                }
             }
         }
     });

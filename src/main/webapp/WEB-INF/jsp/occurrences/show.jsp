@@ -47,6 +47,7 @@
         <!-- Skin selected: ${skin} -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
+        <meta name="section" content="search"/>
         <title><fmt:message key="show.occurrenceRecord"/> ${recordId} | ${hubDisplayName} </title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";

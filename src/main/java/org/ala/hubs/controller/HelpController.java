@@ -51,6 +51,7 @@ public class HelpController {
         SPONSORS ("sponsors", "avh"),
         TERMSOFUSE ("termsOfUse", null),
         CONTACTOBIS ("contactObis", "obis"),
+        CONTACTTEPAPA ("contactTepapa", "tepapa"),
         CONTRIBUTING("contributingToObis", "obis"),
         FAQ("obisFaq", "obis");
 
