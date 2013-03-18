@@ -590,3 +590,7 @@ button#explore-here {
     font-size: 14px;
     color: #999;
 }
+
+p.rowA {
+    padding-bottom: 4px;
+}

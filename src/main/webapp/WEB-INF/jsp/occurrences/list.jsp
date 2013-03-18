@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : list
     Created on : Feb 2, 2011, 10:54:57 AM
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
@@ -289,14 +289,24 @@
                                                     <c:when test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:when>
                                                     <c:when test="${not empty occurrence.raw_vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.raw_vernacularName}</span></c:when>
                                                 </c:choose>
-                                                        <span style="margin-left: 8px;">
-                                                        <c:if test="${not empty occurrence.eventDate}">
+                                                <span style="margin-left: 8px;">
+                                                    <c:choose>
+                                                        <c:when test="${not empty occurrence.eventDate}">
                                                             <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
-                                                        </c:if>
-                                                        <c:if test="${not empty occurrence.stateProvince}">
+                                                        </c:when>
+                                                        <c:when test="${not empty occurrence.occurrenceYear}">
+                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Year:</strong>&nbsp;<fmt:formatDate value="${occurrence.occurrenceYear}" pattern="yyyy"/></span>
+                                                        </c:when>
+                                                    </c:choose>
+                                                    <c:choose>
+                                                        <c:when test="${not empty occurrence.stateProvince}">
                                                             <span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span>
-                                                        </c:if>
-                                                        </span>
+                                                        </c:when>
+                                                        <c:when test="${not empty occurrence.country}">
+                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Country:</strong>&nbsp;<fmt:message key="${occurrence.country}"/></span>
+                                                        </c:when>
+                                                    </c:choose>
+                                                </span>
                                             </p>
                                             <p class="rowB">
                                                 <c:if test="${not empty occurrence.institutionName}">
