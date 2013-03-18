@@ -153,7 +153,7 @@ WMSTileLayer.prototype.getTile = function(a, b, ownerDocument) {
     var tile = ownerDocument.createElement('div');
     tile.style.width = this.tileSize.width + 'px';
     tile.style.height = this.tileSize.height + 'px';
-    tile.style.opacity = 0.9; // Added by NdR
+    tile.style.opacity = 0.8; // Added by NdR
     tile.innerHTML = '<img class="wmstile" src="'+src+'" />';
     totalTileCount++;
     afterFn = this.fn_;

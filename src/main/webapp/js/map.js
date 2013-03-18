@@ -215,10 +215,14 @@ var Maps = (function() {
          * loads google maps and the WMS layers for occurrences
          */
         initialise: function() {
-            
-            var myLatlng = new google.maps.LatLng(-27, 133);
+            var centre = BC_CONF.mapDefaultCentreCoords ? BC_CONF.mapDefaultCentreCoords : "-27, 133";
+            var latlngStr = centre.split(",",2);
+            var lat = parseFloat(latlngStr[0]);
+            var lng = parseFloat(latlngStr[1]);
+            var myLatlng = new google.maps.LatLng(lat, lng);
+            var zoomLevel = BC_CONF.mapDefaultZoom ? parseInt(BC_CONF.mapDefaultZoom) : 4;
             var myOptions = {
-                zoom: 4,
+                zoom: zoomLevel,
                 maxZoom: 20,
                 scrollwheel: false, // Dave says: leave as false
                 center: myLatlng,
