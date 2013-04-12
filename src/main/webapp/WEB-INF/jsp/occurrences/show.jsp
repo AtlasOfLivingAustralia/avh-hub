@@ -63,7 +63,7 @@
                     { recordUuid: recordUuid,assertionUuid: assertionUuid },
                     function(data) {
                         //retrieve all asssertions
-                        $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${record.raw.rowKey}', function(data) {
+                        $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${ala:escapeJS(record.raw.rowKey)}', function(data) {
                             $('#'+assertionUuid).fadeOut('slow', function() {
                                 $('#userAssertions').html(data);
 
@@ -164,7 +164,7 @@
                     var code = $("#issue").val();
                     var userId = '${userId}';
                     var userDisplayName = '${userDisplayName}';
-                    var recordUuid = '${record.raw.rowKey}';
+                    var recordUuid = '${ala:escapeJS(record.raw.rowKey)}';
                     if(code!=""){
                         $('#assertionSubmitProgress').css({'display':'block'});
                         $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
@@ -176,7 +176,7 @@
                                 $("input:reset").hide();
                                 $("input#close").show();
                                 //retrieve all assertions
-                                $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${record.raw.rowKey}', function(data) {
+                                $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${ala:escapeJS(record.raw.rowKey)}', function(data) {
                                     //console.log("data", data);
                                     $('#userAssertions').html(data);
                                     $('#userAssertionsContainer').show("slow");
@@ -216,7 +216,7 @@
                     var assertionUuid = $(this).attr("id");
                     var isConfirmed = confirm('Are you sure you want to delete this issue?');
                     if (isConfirmed === true) {
-                        deleteAssertion('${record.raw.rowKey}', assertionUuid);
+                        deleteAssertion('${ala:escapeJS(record.raw.rowKey)}', assertionUuid);
                     }
                     //isConfirmed = false; // don't remember the confirm
                 });
@@ -289,7 +289,7 @@
                         var code = "50000";
                         var userId = '${userId}';
                         var userDisplayName = '${userDisplayName}';
-                        var recordUuid = '${record.raw.rowKey}';
+                        var recordUuid = '${ala:escapeJS(record.raw.rowKey)}';
                         // send assertion via AJAX... TODO catch errors
                         $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
                             { recordUuid: recordUuid, code: code, userId: userId, userDisplayName: userDisplayName},
