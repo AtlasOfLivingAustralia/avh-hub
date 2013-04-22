@@ -50,13 +50,12 @@ include file="/common/taglibs.jsp" %>
                     <li></li>
                 </ul>
                 <ul id="nav">
-                    <li class="page_item page-item-1"><a href="${pageContext.request.contextPath}/" title="Home">Home</a></li>
-                    <li class="page_item page-item-3"><a href="${pageContext.request.contextPath}/help/about.html" title="About AVH">About AVH</a></li>
-                    <li class="page_item page-item-7"><a href="${pageContext.request.contextPath}/help/termsOfUse.html" title="Terms of use">Terms of use</a></li>
-                    <li class="page_item page-item-4"><a href="${pageContext.request.contextPath}/help/help.html" title="Help">Help</a></li>
+                    <li class="page_item page-item-1"><a href="http://avh.chah.org.au/" title="Home">Home</a></li>
+                    <li class="page_item page-item-3"><a href="http://avh.chah.org.au/index.php/about/" title="About AVH">About AVH</a></li>
+                    <li class="page_item page-item-7"><a href="http://avh.chah.org.au/index.php/terms-of-use/" title="Terms of use">Terms of use</a></li>
+                    <li class="page_item page-item-4"><a href="http://avh.chah.org.au/index.php/terms-of-use/" title="Help">Help</a></li>
                     <li class="page_item page-item-2"><a href="${pageContext.request.contextPath}/search" title="Search">Search</a></li>
-                    <li class="page_item page-item-5"><a href="http://www.rbg.vic.gov.au/avh/news/" title="News">News</a></li>
-                    <!--li class="page_item page-item-6"><a href="http://www.ozcam.org.au/contact-us/" title="Links">Links</a></li-->
+                    <li class="page_item page-item-5"><a href="http://avh.chah.org.au/index.php/news/" title="News">News</a></li>
                 </ul>
             </div>
         </div>
