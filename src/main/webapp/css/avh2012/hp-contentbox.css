@@ -24,6 +24,7 @@
     float: left;
     width: 450px;
     padding-left: 40px;
+    padding-top: 10px;
 }
 
 #hp-content h1 {
@@ -37,8 +38,9 @@
 }
 
 #hp-content p {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 90%;
-    line-height: 18px;
+    line-height: 1.5;
     margin-bottom: 10px;
 }
 

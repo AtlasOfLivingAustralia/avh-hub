@@ -78,7 +78,7 @@ div#search a:hover {
     display: inline-block;
     margin-left: 90px;
     margin-top: 2px;
-    padding: 0 2px;
+    padding: 4px;
     font-size: 13px;
     width: 200px;
 }
@@ -89,7 +89,8 @@ div#search a:hover {
     border: 1px solid #DDD;
     font-size: 13px;
     margin: 3px 5px;
-    padding: 0 4px;
+    padding: 4px;
+    border-radius: 3px;
 }
 
 #solrSearchForm > input#solrSubmit:active {
