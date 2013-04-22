@@ -70,6 +70,8 @@ public class ProxyController {
     String apiKey = null;
     @Value("${clubRoleForHub}")
     String clubRoleForHub = null;
+    @Value("${bieRestService.bieUriPrefix}")
+    String bieUriPrefix = null;
 
     /**
      * Proxy to WordPress site using page_id URI format
@@ -287,7 +289,7 @@ public class ProxyController {
         List<CustomTaxonDTO> ctList = new ArrayList<CustomTaxonDTO>();
         String searchDTOListJson = "";
         List<Map<String, Object>> groupList = new ArrayList<Map<String, Object>>();
-        String jsonUri = "http://biocache.ala.org.au/ws/explore/group/" + group + ".json?" +
+        String jsonUri = biocacheUriPrefix +"/explore/group/" + group + ".json?" +
                 "q=" + requestParams.getQ() + "&fq=" + StringUtils.join(requestParams.getFq() , "&fq=")+ "&taxa=" + taxa +
                 "&qc=" + requestParams.getQc() + "&pageSize=" + requestParams.getPageSize() + "&start=" + requestParams.getStart() +
                 "&sort=" + requestParams.getSort() + "&common=" + common;
@@ -331,7 +333,7 @@ public class ProxyController {
         }
 
         try {
-            final String bieJsonUri = "http://bie.ala.org.au/ws/species/bulklookup.json"; // TODO get it from properties file
+            final String bieJsonUri = bieUriPrefix+"/species/bulklookup.json"; // TODO get it from properties file
             searchDTOListJson = getPostUrlContentAsString(bieJsonUri, null, guidsJsonString);
             // unmarshall json
             Map<String, Object> sr = objectMapper.readValue(searchDTOListJson, Map.class);
