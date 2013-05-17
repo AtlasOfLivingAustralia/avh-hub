@@ -99,7 +99,7 @@
         <c:if test="${searchResults.totalRecords > 0}">
             <jsp:include page="facetsDiv.jsp"/>
         </c:if>
-        <div id="content2">
+        <div id="content2 span9">
         <c:choose>
             <c:when test="${not empty errors}">
                 <h2 style="padding-left: 15px;">Error</h2>

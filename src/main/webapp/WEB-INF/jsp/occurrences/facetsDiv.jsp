@@ -6,7 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ include file="/common/taglibs.jsp" %>
-<div id="SidebarBox" class="facets">
+<div id="SidebarBox" class="facets span3">
     <div class="sidebar">
         <%--<h3 style="display: inline-block;float:left;">Refine Results</h3>--%>
         <div id="customiseFacets"><a href="#" title="customise which categories are displayed below">Refine results</a></div>

@@ -19,8 +19,8 @@
     <properties>
         <!-- This project uses UTF8 for Regular Expressions -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.1.0.RELEASE</spring.version>
-        <geotools.version>2.5-RC1</geotools.version>
+        <spring.version>3.2.2.RELEASE</spring.version>
+        <geotools.version>8.4</geotools.version>
     </properties>
     <dependencies>
         <!-- ALA DEPENDENCIES -->
