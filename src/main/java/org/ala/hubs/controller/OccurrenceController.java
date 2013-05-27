@@ -754,28 +754,27 @@ public class OccurrenceController {
                 FullRecord  pr = record.getProcessed();
                 collectionUid = pr.getAttribution().getCollectionUid();
 
-                Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionUid);
-                if ((Integer) resp[0] == HttpStatus.SC_OK) {
-                    String json = (String) resp[1];
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode rootNode;
-
-                    try {
-                        rootNode = mapper.readValue(json, JsonNode.class);
-                        String name = rootNode.path("name").getTextValue();
-                        String logo = rootNode.path("institutionLogoUrl").getTextValue();
-                        String institution = rootNode.path("institution").getTextValue();
-                        model.addAttribute("collectionName", name);
-                        model.addAttribute("collectionLogo", logo);
-                        model.addAttribute("collectionInstitution", institution);
-                    } catch (Exception e) {
-                        logger.error(e.toString(), e);
+                if(collectionUid != null){
+                    Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionUid);
+                    if ((Integer) resp[0] == HttpStatus.SC_OK) {
+                        String json = (String) resp[1];
+                        try {
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode rootNode = mapper.readValue(json, JsonNode.class);
+                            String name = rootNode.path("name").getTextValue();
+                            String logo = rootNode.path("institutionLogoUrl").getTextValue();
+                            String institution = rootNode.path("institution").getTextValue();
+                            model.addAttribute("collectionName", name);
+                            model.addAttribute("collectionLogo", logo);
+                            model.addAttribute("collectionInstitution", institution);
+                        } catch (Exception e) {
+                            logger.error(e.toString(), e);
+                        }
                     }
                 }
 
                 // Check is user has role: ROLE_COLLECTION_EDITOR or ROLE_COLLECTION_ADMIN
                 // and then call Collections WS to see if they are a member of the current collection uid
-
                 if (userId != null && collectionUid != null
                         && (request.isUserInRole("ROLE_ADMIN")
                         || request.isUserInRole("ROLE_COLLECTION_ADMIN")
@@ -803,21 +802,20 @@ public class OccurrenceController {
                     }
                 }
 
-                        
-            //handle the query assertions
-            AssertionQuery[] assertionQueries= null;
-            if(record.getProcessed().getQueryAssertions().size()>0){
-                assertionQueries = biocacheService.getQueryAssertions(record.getProcessed().getQueryAssertions().keySet().toArray(new String[]{}));
-                model.addAttribute("queryAssertions", assertionQueries);                
-                model.addAttribute("queryAssertionTypes" , new HashSet<String>(record.getProcessed().getQueryAssertions().values()));
-            }
-            
-            
-            if (record.getUserAssertions() != null || assertionQueries!=null) {
-              QualityAssertion[] array = record.getUserAssertions() != null?record.getUserAssertions().toArray(new QualityAssertion[0]) : null; 
-            	Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(array,assertionQueries, userId);
-                model.addAttribute("groupedAssertions", grouped);
-            }
+                //handle the query assertions
+                AssertionQuery[] assertionQueries= null;
+                if(record.getProcessed().getQueryAssertions().size()>0){
+                    assertionQueries = biocacheService.getQueryAssertions(record.getProcessed().getQueryAssertions().keySet().toArray(new String[]{}));
+                    model.addAttribute("queryAssertions", assertionQueries);
+                    model.addAttribute("queryAssertionTypes" , new HashSet<String>(record.getProcessed().getQueryAssertions().values()));
+                }
+
+
+                if (record.getUserAssertions() != null || assertionQueries!=null) {
+                  QualityAssertion[] array = record.getUserAssertions() != null?record.getUserAssertions().toArray(new QualityAssertion[0]) : null;
+                    Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(array,assertionQueries, userId);
+                    model.addAttribute("groupedAssertions", grouped);
+                }
 
 
                 List<SampleDTO> environmentalSampleInfo = new ArrayList<SampleDTO>();
@@ -860,6 +858,7 @@ public class OccurrenceController {
                     }
                     model.addAttribute("metadataForOutlierLayers", metdataForOutlierLayers);
                 }
+
                 boolean suppressDuplicateWarning = false;
                 if(record.getProcessed().getOccurrence().getDuplicationStatus() != null){
                     //retrieve the duplication information
@@ -911,8 +910,8 @@ public class OccurrenceController {
                             boolean add = true;
                             if(name.equals("duplicationStatus") || name.equals("associatedOccurrences")){
                                 map.put("processed","");
-                            if(StringUtils.isEmpty((String)map.get("raw")))
-                              add = false;
+                                if(StringUtils.isEmpty((String)map.get("raw")))
+                                  add = false;
                             }
                             if(add)
                                 newList.add(map);
@@ -928,18 +927,20 @@ public class OccurrenceController {
                 //model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
 
                 Map<String, String> formattedImageSizes = new HashMap<String, String>();
-                for (MediaDTO image : record.getImages()) {
-                    String originalImageUrl = image.getAlternativeFormats().get("imageUrl");
-                    int imageSizeInBytes = getImageSizeInBytes(originalImageUrl);
-                    String formattedImageSize = FileUtils.byteCountToDisplaySize(imageSizeInBytes);
-                    formattedImageSizes.put(originalImageUrl, formattedImageSize);
+                if(record.getImages()!=null){
+                    for (MediaDTO image : record.getImages()) {
+                        String originalImageUrl = image.getAlternativeFormats().get("imageUrl");
+                        int imageSizeInBytes = getImageSizeInBytes(originalImageUrl);
+                        String formattedImageSize = FileUtils.byteCountToDisplaySize(imageSizeInBytes);
+                        formattedImageSizes.put(originalImageUrl, formattedImageSize);
+                    }
                 }
 
                 model.addAttribute("formattedImageSizes", formattedImageSizes);
             }
 
         } catch (Exception e){
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         String viewName = RECORD_SHOW;
