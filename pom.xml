@@ -19,7 +19,7 @@
     <properties>
         <!-- This project uses UTF8 for Regular Expressions -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.2.2.RELEASE</spring.version>
+        <spring.version>3.1.4.RELEASE</spring.version>
         <geotools.version>8.4</geotools.version>
     </properties>
     <dependencies>
@@ -290,7 +290,7 @@
         <dependency>
             <groupId>net.jawr</groupId>
             <artifactId>jawr</artifactId>
-            <version>3.3</version>
+            <version>3.3.3</version>
         </dependency>
         <!-- YUI Compressor -->
         <dependency>

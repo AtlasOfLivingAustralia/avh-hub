@@ -1,0 +1,170 @@
+/*
+ * This CSS file is used to "fix" CSS issues with the Bootstrap version fo the ALA skin.
+ */
+
+#headingBar h1 {
+    margin: 0;
+}
+
+#content #headingBar {
+    margin-left: 0;
+    padding-bottom: 10px;
+    min-height: 55px;
+}
+
+#content #headingBar h1 {
+    padding-top: 15px;
+}
+
+#border #content .recordHeader  {
+    padding: 0 15px !important;
+    margin-bottom: 10px;
+}
+
+#border #content .recordHeader h1 {
+    width:100%;
+    padding-left: 0;
+}
+
+#headingBar #searchBox {
+    float: right;
+    margin-top: 15px;
+    padding-right: 10px;
+}
+
+/*#headingBar #advancedSearchLink a {
+    font-size: 12px;
+}*/
+div#advancedSearch {
+    /*margin-left: 30px;*/
+    /*margin-bottom: 20px;*/
+    margin: 10px 30px 10px 0px;
+    background-color: #eeeeee;
+}
+
+#content form {
+    padding-bottom: 5px;
+}
+
+#advancedSearch table {
+    border-bottom: none;
+}
+
+#content2 {
+    /*margin-right: 10px;*/
+    /*float: left;*/
+}
+
+#content2 > p {
+    padding: 15px;
+}
+
+#content #loginId {
+    display: none;
+}
+
+#results .rowA {
+    padding-bottom: 4px;
+}
+
+#content .sidebar h4 {
+    padding: 0;
+    margin: 8px 0 5px 0;
+}
+
+#content ul {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+#content .sidebar > .subnavlist > ul {
+    list-style: none;
+    margin-left: -4px;
+}
+
+ul#refinedFacets {
+    list-style: none;
+    margin: 5px 0 5px 5px;
+}
+
+ul#refinedFacets li {
+    text-indent: -5px;
+}
+
+.sidebar > .subnavlist > ul li {
+    margin-left: 14px;
+}
+
+#headingBar h1 {
+    color: inherit;
+}
+
+.sidebar #currentFilter h4 {
+    /*color: #718804;*/
+}
+
+input::-webkit-input-placeholder {
+    color: #666666;
+}
+
+.facets a:link, .facets a:visited {
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.facets .sidebar ul li {
+    margin:  3px 0px 3px 3px;
+    text-indent: 0px;
+}
+
+ul.facets {
+    margin-bottom: 0;
+}
+
+.sidebar  h4 > span.FieldName {
+    float: none;
+}
+
+.solrResults #searchNavBar ul li {
+    font-size: 13px;
+}
+
+#content2 > div > h3 {
+    /*color: #718804;*/
+}
+
+span#assertionMaker {
+    font-size: 100%;
+}
+
+input[type="submit"] {
+    color: #000000;
+}
+
+#SidebarBox {
+    margin-left: 0;
+    padding-left: 10px;
+}
+
+#content2 > ul.css-tabs > li > a {
+    padding: 4px 20px;
+}
+
+
+select.btn {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    width: auto;
+}
+
+select.btn-small {
+    height: auto;
+    line-height: 18px;
+    padding-right: 16px;
+}
+
+select.btn-small + .caret {
+    margin-left: -20px;
+    margin-top: 9px;
+}
