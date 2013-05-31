@@ -12,6 +12,10 @@
     min-height: 55px;
 }
 
+#content #headingBar.recordHeader {
+    padding-bottom: 0;
+}
+
 #content #headingBar h1 {
     padding-top: 15px;
 }
@@ -51,8 +55,15 @@ div#advancedSearch {
 }
 
 #content2 {
-    /*margin-right: 10px;*/
-    /*float: left;*/
+    margin-right: 10px;
+    margin-bottom: 20px;
+    float: left;
+}
+
+#content2.span9 {
+    margin-right: 0;
+    margin-bottom: 10px;
+    float: left;
 }
 
 #content2 > p {
@@ -141,15 +152,29 @@ input[type="submit"] {
     color: #000000;
 }
 
-#SidebarBox {
+#SidebarBox{
+    float: left;
+    margin-right: 20px;
+}
+
+#SidebarBox.facets {
     margin-left: 0;
     padding-left: 10px;
+    margin-right: 0px;
+}
+
+#SidebarBox h2 {
+    margin-top: 4px;
+    font-size: 20px;
 }
 
 #content2 > ul.css-tabs > li > a {
     padding: 4px 20px;
 }
 
+.additionalData {
+    clear: left;
+}
 
 select.btn {
     -webkit-appearance: button;
@@ -167,4 +192,12 @@ select.btn-small {
 select.btn-small + .caret {
     margin-left: -20px;
     margin-top: 9px;
+}
+
+.occurrenceTable td, .layerIntersections td {
+    padding: 5px;
+}
+
+h2#headingSciName {
+    margin: 0;
 }

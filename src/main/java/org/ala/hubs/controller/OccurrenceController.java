@@ -928,11 +928,13 @@ public class OccurrenceController {
                 //model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
 
                 Map<String, String> formattedImageSizes = new HashMap<String, String>();
-                for (MediaDTO image : record.getImages()) {
-                    String originalImageUrl = image.getAlternativeFormats().get("imageUrl");
-                    int imageSizeInBytes = getImageSizeInBytes(originalImageUrl);
-                    String formattedImageSize = FileUtils.byteCountToDisplaySize(imageSizeInBytes);
-                    formattedImageSizes.put(originalImageUrl, formattedImageSize);
+                if (record.getImages() != null) {
+                    for (MediaDTO image : record.getImages()) {
+                        String originalImageUrl = image.getAlternativeFormats().get("imageUrl");
+                        int imageSizeInBytes = getImageSizeInBytes(originalImageUrl);
+                        String formattedImageSize = FileUtils.byteCountToDisplaySize(imageSizeInBytes);
+                        formattedImageSizes.put(originalImageUrl, formattedImageSize);
+                    }
                 }
 
                 model.addAttribute("formattedImageSizes", formattedImageSizes);
