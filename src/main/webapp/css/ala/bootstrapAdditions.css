@@ -1,6 +1,21 @@
 /*
  * This CSS file is used to "fix" CSS issues with the Bootstrap version fo the ALA skin.
  */
+/* Fix for Bootstrap and Google maps conflict */
+#mapCanvas img, #mapcanvas img {
+    max-width: none;
+}
+#mapCanvas label, #mapcanvas label {
+    width: auto;
+    display:inline;
+}
+
+.breadcrumb > li > .icon {
+    color: #555555;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    margin: 1px 4px 0;
+}
 
 #headingBar h1 {
     margin: 0;
