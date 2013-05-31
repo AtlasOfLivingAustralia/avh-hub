@@ -90,7 +90,8 @@ div#advancedSearch {
 }
 
 #results .rowA {
-    padding-bottom: 4px;
+    padding-bottom: 2px;
+    margin-bottom: 0;
 }
 
 #content .sidebar h4 {
