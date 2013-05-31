@@ -3,17 +3,16 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
-    </context-param>
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    <!--<context-param>-->
+        <!--<param-name>contextConfigLocation</param-name>-->
+        <!--<param-value>/WEB-INF/applicationContext.xml</param-value>-->
+    <!--</context-param>-->
+    <!--<listener>-->
+        <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
+    <!--</listener>-->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
@@ -34,17 +33,17 @@
 
     <context-param>
         <param-name>serverName</param-name>
-        <param-value>http://localhost:8080</param-value>
+        <param-value>http://dev.ala.org.au:8888</param-value>
     </context-param>
 
     <!-- for local development -->
     <!-- the context param should be empty if a virtual host is in use -->
-    <!--
+
     <context-param>
         <param-name>contextPath</param-name>
         <param-value>/hubs-webapp</param-value>
     </context-param>
-    -->
+
 
     <context-param>
         <param-name>uriFilterPattern</param-name>

@@ -65,7 +65,7 @@
     <div class="inner">
         <%--<h1 title="${shortName}"><a href=""><img src="${pageContext.request.contextPath}/static/images/obis/logo.png"  /></a></h1>--%>
         <section>
-            <h1>LIVING EOTEAROA</h1>
+            <h1>LIVING AOTEAROA</h1>
             <h2>Demonstration site</h2>
             <button class="ac_input freetext" id="explore-here" data-link="${pageContext.request.contextPath}/search">EXPLORE HERE</button>
         </section>

@@ -95,7 +95,7 @@ facets.defaultColourBy=basis_of_record
 facets.supportDynamicFacets=false
 facets.customOrder=
 downloads.extra=recordedBy
-dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups,associatedMedia,images,userQualityAssertion,speciesHabitats,dataProviderUid,dataResourceUid,dataProviderName,dataResourceName,duplicationType
+dwc.exclude=dataHubUid,year,month,day,modified,left,right,provenance,taxonID,preferredFlag,outlierForLayers,speciesGroups,associatedMedia,images,userQualityAssertion,speciesHabitats,dataProviderUid,dataResourceUid,dataProviderName,dataResourceName,duplicationType,taxonomicIssues,subspeciesID,nameMatchMetric
 clubRoleForHub=ROLE_OZCAM_CLUB
 # whether search page map should zoom beyond Australia - leave empty for false OR "true"
 zoomOutsideAustralia=

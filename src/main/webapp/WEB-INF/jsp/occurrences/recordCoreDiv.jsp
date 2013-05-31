@@ -38,7 +38,14 @@
                             <c:set target="${fieldsMap}" property="dataResourceUid" value="true" />
                             <c:set target="${fieldsMap}" property="dataResourceName" value="true" />
                             <a href="${collectionsWebappContext}/public/show/${record.raw.attribution.dataResourceUid}">
-                                    ${record.processed.attribution.dataResourceName}
+                                  <c:choose>
+                                      <c:when test="${not empty record.processed.attribution.dataResourceName}">
+                                          ${record.processed.attribution.dataResourceName}
+                                      </c:when>
+                                      <c:otherwise>
+                                          ${record.processed.attribution.dataResourceUid}
+                                      </c:otherwise>
+                                  </c:choose>
                             </a>
                         </c:when>
                         <c:otherwise>
@@ -76,7 +83,7 @@
                 <c:if test="${not empty record.raw.occurrence.institutionCode}">
                     <c:set target="${fieldsMap}" property="institutionCode" value="true" />
                     <c:if test="${not empty record.processed.attribution.institutionName}"><br/></c:if>
-                    <span class="originalValue">Supplied as "${record.raw.occurrence.institutionCode}"</span>
+                    <span class="originalValue">Supplied institution code "${record.raw.occurrence.institutionCode}"</span>
                 </c:if>
             </alatag:occurrenceTableRow>
         </c:if>
@@ -109,7 +116,7 @@
             <c:if test="${false && not empty record.raw.occurrence.collectionCode}">
                 <c:set target="${fieldsMap}" property="collectionCode" value="true" />
                 <c:if test="${not empty collectionName || not empty record.processed.attribution.collectionName}"><br/></c:if>
-                <span class="originalValue" style="display:none">Supplied as "${record.raw.occurrence.collectionCode}"</span>
+                <span class="originalValue" style="display:none">Supplied collection code "${record.raw.occurrence.collectionCode}"</span>
             </c:if>
         </alatag:occurrenceTableRow>
         <!-- Catalog Number -->
@@ -177,7 +184,7 @@
                 </c:when>
                 <c:when test="${not empty record.processed.occurrence.basisOfRecord && not empty record.raw.occurrence.basisOfRecord}">
                     <fmt:message key="${record.processed.occurrence.basisOfRecord}"/>
-                    <br/><span class="originalValue">Supplied as "${record.raw.occurrence.basisOfRecord}"</span>
+                    <br/><span class="originalValue">Supplied basis "${record.raw.occurrence.basisOfRecord}"</span>
                 </c:when>
                 <c:when test="${not empty record.processed.occurrence.basisOfRecord}">
                     <fmt:message key="${record.processed.occurrence.basisOfRecord}"/>
@@ -237,15 +244,17 @@
                 </c:choose>
             </c:set>
             <c:set target="${fieldsMap}" property="${recordedByField}" value="true" />
-            <c:set var="rawRecordedBy">"${record.raw.occurrence[recordedByField]}"</c:set>
-            <c:set var="proRecordedBy">"${record.processed.occurrence[recordedByField]}"</c:set>
+            <c:set var="rawRecordedBy">${record.raw.occurrence[recordedByField]}</c:set>
+            <c:set var="proRecordedBy">${record.processed.occurrence[recordedByField]}</c:set>
             <c:choose>
                 <c:when test="${not empty record.processed.occurrence[recordedByField] && not empty record.raw.occurrence[recordedByField] && record.processed.occurrence[recordedByField] == record.raw.occurrence[recordedByField]}">
                     ${proRecordedBy}
                 </c:when>
                 <c:when test="${not empty record.processed.occurrence[recordedByField] && not empty record.raw.occurrence[recordedByField]}">
                     ${proRecordedBy}
-                    <br/><span class="originalValue">Supplied as "${rawRecordedBy}"</span>
+                    <c:if test="${proRecordedBy != rawRecordedBy}">
+                        <br/><span class="originalValue">Supplied as "${rawRecordedBy}"</span>
+                    </c:if>
                 </c:when>
                 <c:when test="${not empty record.processed.occurrence[recordedByField]}">
                     ${proRecordedBy}
@@ -303,13 +312,18 @@
             </c:if>
             <c:choose>
               <c:when test="${not empty record.processed.event.eventDate && not empty record.raw.event.eventDate && record.raw.event.eventDate != record.processed.event.eventDate}">
-                <br/><span class="originalValue">Supplied as "${record.raw.event.eventDate}"</span>
+                <br/><span class="originalValue">Supplied date "${record.raw.event.eventDate}"</span>
               </c:when>
               <c:when test="${not empty record.raw.event.year || not empty record.raw.event.month || not empty record.raw.event.day}">
-                <br/><span class="originalValue">Supplied as  "year: ${record.raw.event.year}, month: ${record.raw.event.month}, day: ${record.raw.event.day}"</span>
+                <br/><span class="originalValue">
+                        Supplied as
+                        <c:if test="${not empty record.raw.event.year}">year:${record.raw.event.year}&nbsp;</c:if>
+                        <c:if test="${not empty record.raw.event.month}">month:${record.raw.event.month}&nbsp;</c:if>
+                        <c:if test="${not empty record.raw.event.day}">day:${record.raw.event.day}&nbsp;</c:if>
+                    </span>
               </c:when>
-              <c:when test="${record.raw.event.eventDate != record.processed.event.eventDate}">
-                <br/><span class="originalValue">Supplied as "${record.raw.event.eventDate}"</span>
+              <c:when test="${record.raw.event.eventDate != record.processed.event.eventDate && not empty record.raw.event.eventDate}">
+                <br/><span class="originalValue">Supplied date "${record.raw.event.eventDate}"</span>
               </c:when>
             </c:choose>
         </alatag:occurrenceTableRow>
@@ -428,7 +442,7 @@
                 </a>
             </c:if>
             <c:if test="${not empty record.processed.classification.scientificName && not empty record.raw.classification.scientificName && (fn:toLowerCase(record.processed.classification.scientificName) != fn:toLowerCase(record.raw.classification.scientificName))}">
-                <br/><span class="originalValue">Supplied as "${record.raw.classification.scientificName}"</span>
+                <br/><span class="originalValue">Supplied scientific name "${record.raw.classification.scientificName}"</span>
             </c:if>
             <c:if test="${empty record.processed.classification.scientificName && not empty record.raw.classification.scientificName}">
                 ${record.raw.classification.scientificName}
@@ -490,7 +504,7 @@
                 ${record.raw.classification.vernacularName}
             </c:if>
             <c:if test="${not empty record.processed.classification.vernacularName && not empty record.raw.classification.vernacularName && (fn:toLowerCase(record.processed.classification.vernacularName) != fn:toLowerCase(record.raw.classification.vernacularName))}">
-                <br/><span class="originalValue">Supplied as "${record.raw.classification.vernacularName}"</span>
+                <br/><span class="originalValue">Supplied common name "${record.raw.classification.vernacularName}"</span>
             </c:if>
         </alatag:occurrenceTableRow>
         <!-- Kingdom -->
@@ -690,7 +704,7 @@
         </alatag:occurrenceTableRow>
         <!-- Associated Taxa -->
         <c:if test="${not empty record.raw.occurrence.associatedTaxa}">
-            <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="associatedTaxa" fieldName="Associated species">
+            <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="associatedTaxa" fieldName="Associated species">
                 <c:set target="${fieldsMap}" property="associatedTaxa" value="true" />
                 <c:set var="colon" value=":"/>
                 <c:choose>
@@ -702,6 +716,20 @@
                         <a href="${bieWebappContext}/species/${fn:replace(record.raw.occurrence.associatedTaxa, '  ', ' ')}">${record.raw.occurrence.associatedTaxa}</a>
                     </c:otherwise>
                 </c:choose>
+            </alatag:occurrenceTableRow>
+        </c:if>
+        <c:if test="${not empty record.processed.classification.taxonomicIssue}">
+            <!-- Taxonomic issues -->
+            <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="taxonomicIssue" fieldName="Taxonomic issues">
+                   <alatag:formatJsonArray text="${record.processed.classification.taxonomicIssue}"/>
+            </alatag:occurrenceTableRow>
+        </c:if>
+        <c:if test="${not empty record.processed.classification.nameMatchMetric}">
+            <!-- Taxonomic issues -->
+            <alatag:occurrenceTableRow annotate="true" section="taxonomy" fieldCode="nameMatchMetric" fieldName="Name match metric">
+                   <spring:message code="${record.processed.classification.nameMatchMetric}" text="${record.processed.classification.nameMatchMetric}"/>
+                   <br/>
+                   <spring:message code="nameMatch.${record.processed.classification.nameMatchMetric}" text=""/>
             </alatag:occurrenceTableRow>
         </c:if>
         <!-- output any tags not covered already (excluding those in dwcExcludeFields) -->
@@ -830,7 +858,7 @@
                         ${record.raw.location.geodeticDatum}
                     </c:when>
                     <c:when test="${not empty record.raw.location.geodeticDatum && record.raw.location.geodeticDatum != record.processed.location.geodeticDatum}">
-                        ${record.processed.location.geodeticDatum}<br/><span class="originalValue">Supplied as: "${record.raw.location.geodeticDatum}"</span>
+                        ${record.processed.location.geodeticDatum}<br/><span class="originalValue">Supplied datum: "${record.raw.location.geodeticDatum}"</span>
                     </c:when>
                     <c:when test="${not empty record.processed.location.geodeticDatum}">
                         ${record.processed.location.geodeticDatum}

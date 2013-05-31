@@ -45,7 +45,7 @@ include file="/common/taglibs.jsp" %>
     </nav>
     <header id="site-header">
         <div class="inner">
-            <h1 title="${fullName}"><a href="${pageContext.request.contextPath}/">LIVING EOTEAROA</a></h1>
+            <h1 title="${fullName}"><a href="${pageContext.request.contextPath}/">LIVING AOTEAROA</a></h1>
             <section>
                 <div id="search">
                     <form name="siteSearchForm" id="siteSearchForm" action="${pageContext.request.contextPath}/occurrences/search" method="GET">

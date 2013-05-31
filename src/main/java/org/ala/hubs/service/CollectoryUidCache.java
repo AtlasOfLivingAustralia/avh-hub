@@ -69,6 +69,7 @@ public class CollectoryUidCache {
         checkCacheAge();
         return data_resource_uid;
     }
+
     public List<String> getDataProviders(){
         checkCacheAge();
         return data_provider_uid;
@@ -82,8 +83,8 @@ public class CollectoryUidCache {
         Long timeSinceUpdate = currentDate.getTime() - lastUpdated.getTime();
         logger.debug("timeSinceUpdate = " + timeSinceUpdate);
 
-        if (timeSinceUpdate > this.timeout || (institution_uid.size() < 1 && collection_uid.size() < 1
-                && data_resource_uid.size()<1 && data_provider_uid.size()<1)) {
+        if (timeSinceUpdate > this.timeout || (institution_uid.isEmpty() && collection_uid.isEmpty()
+                && data_resource_uid.isEmpty() && data_provider_uid.isEmpty())) {
             updateCache();
             lastUpdated = new Date(); // update timestamp
         }

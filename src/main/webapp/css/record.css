@@ -203,7 +203,7 @@ div#occurrenceMap {
     font-style: italic; 
 }
 table.occurrenceTable {
-    border-bottom: 1px solid silver;
+    border-bottom: 0px !important;
     margin: 5px 0 10px 0;
     padding-bottom: 5px;
     width: 100%;
