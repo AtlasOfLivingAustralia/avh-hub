@@ -52,7 +52,8 @@
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
         </script>
-        <jwr:style src="/css/record.css"/>
+        <%--<jwr:style src="/css/record.css"/>--%>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/record.css"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/button.css"/>
         <script type="text/javascript">
             /**

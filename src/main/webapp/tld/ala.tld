@@ -64,24 +64,24 @@
         <tag-class>au.org.ala.commonui.headertails.AnayticsTag</tag-class>
         <body-content>JSP</body-content>
     </tag>
-  <tag>
-    <description>Banner Menu Tag</description>
-    <name>bannerMenu</name>
-    <tag-class>au.org.ala.commonui.tag.BannerMenuTag</tag-class>
-    <body-content>JSP</body-content>
-    <attribute>
-      <description>The return url path for the login/logout anchor</description>
-      <name>returnUrlPath</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-      <description>Whether to populate the search box with a request param</description>
-      <name>populateSearchBox</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-  </tag>
+  <!--<tag>-->
+    <!--<description>Banner Menu Tag</description>-->
+    <!--<name>bannerMenu</name>-->
+    <!--<tag-class>au.org.ala.commonui.tag.BannerMenuTag</tag-class>-->
+    <!--<body-content>JSP</body-content>-->
+    <!--<attribute>-->
+      <!--<description>The return url path for the login/logout anchor</description>-->
+      <!--<name>returnUrlPath</name>-->
+      <!--<required>false</required>-->
+      <!--<rtexprvalue>true</rtexprvalue>-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>Whether to populate the search box with a request param</description>-->
+      <!--<name>populateSearchBox</name>-->
+      <!--<required>false</required>-->
+      <!--<rtexprvalue>true</rtexprvalue>-->
+    <!--</attribute>-->
+  <!--</tag>-->
 
   <tag>
     <description>Context Parameter Tag</description>
@@ -96,18 +96,18 @@
     </attribute>
   </tag>
 
-  <tag>
-    <description>Footer Menu Tag</description>
-    <name>footerMenu</name>
-    <tag-class>au.org.ala.commonui.tag.FooterMenuTag</tag-class>
-    <body-content>JSP</body-content>
-    <attribute>
-      <description>The return url path for the login/logout anchor</description>
-      <name>returnUrlPath</name>
-      <required>true</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-  </tag>
+  <!--<tag>-->
+    <!--<description>Footer Menu Tag</description>-->
+    <!--<name>footerMenu</name>-->
+    <!--<tag-class>au.org.ala.commonui.tag.FooterMenuTag</tag-class>-->
+    <!--<body-content>JSP</body-content>-->
+    <!--<attribute>-->
+      <!--<description>The return url path for the login/logout anchor</description>-->
+      <!--<name>returnUrlPath</name>-->
+      <!--<required>true</required>-->
+      <!--<rtexprvalue>true</rtexprvalue>-->
+    <!--</attribute>-->
+  <!--</tag>-->
 
   <tag>
     <description>Login Status Tag</description>

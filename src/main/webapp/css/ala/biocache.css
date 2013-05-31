@@ -874,7 +874,7 @@ a.taxonBrowse2, a.taxonBrowse2:hover, a.taxonBrowse2:focus {
 	font-size:.9em;
 }
 input#locationSearch{
-	padding:1px 2px;
+	/*padding:1px 2px;*/
 }
 button#download {
 /*	padding:1px;*/

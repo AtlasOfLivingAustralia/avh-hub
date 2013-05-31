@@ -42,119 +42,105 @@
         <div id="header">
             <c:if test="${skin == 'ala'}">
                 <div id="breadcrumb">
-                    <a href="${initParam.centralServer}">Home</a>
-                    <a href="${initParam.centralServer}/species-by-location/">Locations</a>
-                    Your Area
+                    <ol class="breadcrumb">
+                        <li><a href="${initParam.centralServer}">Home</a> <span class=" icon icon-arrow-right"></span></li>
+                        <li><a href="${initParam.centralServer}/species-by-location/">Locations</a> <span class=" icon icon-arrow-right"></span></li>
+                        <li class="active">Your Area</li>
+                    </ol>
                 </div>
             </c:if>
             <h1>Explore Your Area</h1>
         </div>
-        <div id="column-one" class="full-width">
-            <div class="section">
-                <div style="position: relative;min-height: 500px;">
-                    <div id="mapOuter" style="width: 400px; height: 440px; padding-bottom: 30px; position: absolute; bottom: 0; right: 0;">
-                        <div id="mapCanvas" style="width: 400px; height: 420px;"></div>
-                        <div style="font-size:11px;width:400px;color:black;height:20px;" class="show-80">
-                            <table id="cellCountsLegend">
-                                <tr>
-                                    <td style="background-color:#000; color:white; text-align:right;">Records:&nbsp;</td>
-                                    <td style="width:60px;background-color:#ffff00;">1&ndash;9</td>
-                                    <td style="width:60px;background-color:#ffcc00;">10&ndash;49</td>
-                                    <td style="width:60px;background-color:#ff9900;">50&ndash;99</td>
-                                    <td style="width:60px;background-color:#ff6600;">100&ndash;249</td>
-                                    <td style="width:60px;background-color:#ff3300;">250&ndash;499</td>
-                                    <td style="width:60px;background-color:#cc0000;">500+</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div id="mapTips">
-                            <b>Tip</b>: you can fine-tune the location of the area by dragging the red marker icon
-                        </div>
-                    </div>
-                    <div id="left-col">
-                        <form name="searchForm" id="searchForm" action="" method="GET">
-                            <div id="locationInput">
-                                <h2>Enter your location or address</h2>
-                                <div id="searchHints">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</div>
-                                <input name="address" id="address" size="50" value="${address}"/>
-                                <input id="locationSearch" type="submit" value="Search"/>
-                                <input type="hidden" name="latitude" id="latitude" value="${latitude}"/>
-                                <input type="hidden" name="longitude" id="longitude" value="${longitude}"/>
-                                <input type="hidden" name="location" id="location" value="${location}"/>
-                            </div>
-                            <div id="locationInfo">
-                                <c:if test="${true || not empty location}">
-                                    <p>
-                                        Showing records for: <span id="markerAddress">${location}</span>&nbsp;&nbsp<a href="#" id="addressHelp" style="text-decoration: none"><span class="help-container">&nbsp;</span></a>
-                                    </p>
-                                </c:if>
-                                <table id="locationOptions">
-                                    <tbody>
-                                        <tr>
-                                            <td>Display records in a
-                                                <select id="radius" name="radius">
-                                                    <option value="1" <c:if test="${radius eq '1.0'}">selected</c:if>>1</option>
-                                                    <option value="5" <c:if test="${radius eq '5.0'}">selected</c:if>>5</option>
-                                                    <option value="10" <c:if test="${radius eq '10.0'}">selected</c:if>>10</option>
-                                                </select> km radius <!--<input type="submit" value="Reload"/>--></td>
-                                            <td><img src="${pageContext.request.contextPath}/static/images/database_go.png" alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"><a href="#" id="viewAllRecords">View <span id="recordsGroupText">all</span> occurrence records</a></td>
-                                            <td><button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)">Download</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div id="dialog-confirm" title="Continue with download?" style="display: none">
-                                    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You are about to
-                                        download a list of species found within a <span id="rad"></span> km radius of <code>${location}</code>.<br/>
-                                        Format: tab-delimited text file (called data.xls)</p>
-                                </div>
-                            </div>
-                            <div id="taxaBox">
-                                <div id="rightList" class="tableContainer">
-                                    <table>
-                                        <thead class="fixedHeader">
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <th><a href="0" id="speciesSort" data-sort="taxa" title="sort by taxa">Species</a>
-                                                    <span id="sortSeparator">:</span>
-                                                    <a href="0" id="commonSort" data-sort="common" title="sort by common name">Common Name</a></th>
-                                                <th><a href="0" data-sort="count" title="sort by record count">Records</a></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="scrollContent">
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div id="leftList">
-                                    <table id="taxa-level-0">
-                                        <thead>
-                                            <tr>
-                                                <th>Group</th>
-                                                <th>Species</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%--<c:forEach var="tg" items="${taxaGroups}">--%>
-                                                <%--<c:set var="indent">--%>
-                                                    <%--<c:choose>--%>
-                                                        <%--<c:when test="${tg.parentGroup == null}"></c:when>--%>
-                                                        <%--<c:when test="${tg.parentGroup == 'ALL_LIFE'}">indent</c:when>--%>
-                                                        <%--<c:otherwise>indent2</c:otherwise>--%>
-                                                    <%--</c:choose>--%>
-                                                <%--</c:set>--%>
-                                                <%--<tr>--%>
-                                                    <%--<td class="${indent}"><a href="${fn:join(tg.taxa, "|")}" id="${tg.rank}" title="${tg.label}" class="taxonBrowse">${tg.label}</a>--%>
-                                                    <%--<td></td>--%>
-                                                <%--</tr>--%>
-                                            <%--</c:forEach>--%>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+        <form name="searchForm" id="searchForm" action="" method="GET">
+            <div id="locationInput">
+                <h2>Enter your location or address</h2>
+                <div id="searchHints">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</div>
+                <input name="address" id="address" size="50" value="${address}"/>
+                <input id="locationSearch" class="btn" type="submit" value="Search"/>
+                <input type="hidden" name="latitude" id="latitude" value="${latitude}"/>
+                <input type="hidden" name="longitude" id="longitude" value="${longitude}"/>
+                <input type="hidden" name="location" id="location" value="${location}"/>
+            </div>
+            <div id="locationInfo">
+                <c:if test="${true || not empty location}">
+                    <p>
+                        Showing records for: <span id="markerAddress">${location}</span>&nbsp;&nbsp<a href="#" id="addressHelp" style="text-decoration: none"><span class="help-container">&nbsp;</span></a>
+                    </p>
+                </c:if>
+                <table id="locationOptions">
+                    <tbody>
+                    <tr>
+                        <td>Display records in a
+                            <select id="radius" name="radius">
+                                <option value="1" <c:if test="${radius eq '1.0'}">selected</c:if>>1</option>
+                                <option value="5" <c:if test="${radius eq '5.0'}">selected</c:if>>5</option>
+                                <option value="10" <c:if test="${radius eq '10.0'}">selected</c:if>>10</option>
+                            </select> km radius <!--<input type="submit" value="Reload"/>--></td>
+                        <td><img src="${pageContext.request.contextPath}/static/images/database_go.png" alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"><a href="#" id="viewAllRecords">View <span id="recordsGroupText">all</span> occurrence records</a></td>
+                        <td><button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)" class="btn">Download</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div id="dialog-confirm" title="Continue with download?" style="display: none">
+                    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You are about to
+                        download a list of species found within a <span id="rad"></span> km radius of <code>${location}</code>.<br/>
+                        Format: tab-delimited text file (called data.xls)</p>
                 </div>
             </div>
-        </div>
+        </form>
+        <div class="row-fluid">
+            <div class="span7">
+
+                <div id="taxaBox">
+                    <div id="rightList" class="tableContainer">
+                        <table>
+                            <thead class="fixedHeader">
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th><a href="0" id="speciesSort" data-sort="taxa" title="sort by taxa">Species</a>
+                                    <span id="sortSeparator">:</span>
+                                    <a href="0" id="commonSort" data-sort="common" title="sort by common name">Common Name</a></th>
+                                <th><a href="0" data-sort="count" title="sort by record count">Records</a></th>
+                            </tr>
+                            </thead>
+                            <tbody class="scrollContent">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="leftList">
+                        <table id="taxa-level-0">
+                            <thead>
+                            <tr>
+                                <th>Group</th>
+                                <th>Species</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- .span7 -->
+            <div class="span5">
+                <div id="mapCanvas" style="width: 400px; height: 420px;margin-top:0px;"></div>
+                <div style="font-size:11px;width:400px;color:black;height:20px;" class="show-80">
+                    <table id="cellCountsLegend">
+                        <tr>
+                            <td style="background-color:#000; color:white; text-align:right;">Records:&nbsp;</td>
+                            <td style="width:60px;background-color:#ffff00;">1&ndash;9</td>
+                            <td style="width:60px;background-color:#ffcc00;">10&ndash;49</td>
+                            <td style="width:60px;background-color:#ff9900;">50&ndash;99</td>
+                            <td style="width:60px;background-color:#ff6600;">100&ndash;249</td>
+                            <td style="width:60px;background-color:#ff3300;">250&ndash;499</td>
+                            <td style="width:60px;background-color:#cc0000;">500+</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="mapTips">
+                    <b>Tip</b>: you can fine-tune the location of the area by dragging the red marker icon
+                </div>
+            </div><!-- .span5 -->
+        </div><!-- .row-fluid -->
+
         <div style="display:none">
             <jsp:include page="../downloadDiv.jsp"/>
         </div>
