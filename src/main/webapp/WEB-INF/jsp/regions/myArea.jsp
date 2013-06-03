@@ -65,7 +65,7 @@
                     <span class="help-inline">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</span>
                 </div>
             </div>
-            <div id="locationInfoZ" class="span8 row-fluid well well-small" style="margin-bottom:20px;margin-left:0;">
+            <div id="locationInfoZ" class="span8 row-fluid " style="margin-bottom:20px;margin-left:0;">
                 <c:if test="${true || not empty location}">
                     <div class="span12">
                         Showing records for: <span id="markerAddress">${location}</span>&nbsp;&nbsp<a href="#" id="addressHelp" style="text-decoration: none"><span class="help-container">&nbsp;</span></a>
@@ -81,11 +81,11 @@
                         </select> km radius
                     </div>
                     <div class="span4">
-                        <img src="${pageContext.request.contextPath}/static/images/database_go.png" alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"><a href="#" id="viewAllRecords">View
+                        <a href="#" id="viewAllRecords" class="btn"><i class="icon-list"></i>&nbsp;&nbsp;View
                         <span id="recordsGroupText">all</span> occurrence records</a>
                     </div>
                     <div class="span4">
-                        <button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)" class="btn">Download</button>
+                        <button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)" class="btn"><i class="icon-download"></i>&nbsp;&nbsp;Download</button>
                     </div>
                 </div>
                 <div id="dialog-confirm" title="Continue with download?" style="display: none">
