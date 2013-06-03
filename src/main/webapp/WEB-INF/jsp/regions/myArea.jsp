@@ -51,36 +51,43 @@
             </c:if>
             <h1>Explore Your Area</h1>
         </div>
-        <form name="searchForm" id="searchForm" action="" method="GET">
-            <div id="locationInput">
-                <h2>Enter your location or address</h2>
-                <div id="searchHints">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</div>
-                <input name="address" id="address" size="50" value="${address}"/>
-                <input id="locationSearch" class="btn" type="submit" value="Search"/>
-                <input type="hidden" name="latitude" id="latitude" value="${latitude}"/>
-                <input type="hidden" name="longitude" id="longitude" value="${longitude}"/>
-                <input type="hidden" name="location" id="location" value="${location}"/>
+        <form name="searchForm" id="searchForm" class="" action="" method="GET">
+            <div class="control-group">
+                <label class="control-label" for="address"><h4>Enter your location or address:</h4></label>
+                <div class="controls">
+                    <div class="input-append">
+                        <input type="text" name="address" id="address" class="input-xlarge">
+                        <input id="locationSearch" type="submit" class="btn" value="Search"/>
+                        <input type="hidden" name="latitude" id="latitude" value="${latitude}"/>
+                        <input type="hidden" name="longitude" id="longitude" value="${longitude}"/>
+                        <input type="hidden" name="location" id="location" value="${location}"/>
+                    </div>
+                    <span class="help-inline">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</span>
+                </div>
             </div>
-            <div id="locationInfo">
+            <div id="locationInfoZ" class="span8 row-fluid well well-small" style="margin-bottom:20px;margin-left:0;">
                 <c:if test="${true || not empty location}">
-                    <p>
+                    <div class="span12">
                         Showing records for: <span id="markerAddress">${location}</span>&nbsp;&nbsp<a href="#" id="addressHelp" style="text-decoration: none"><span class="help-container">&nbsp;</span></a>
-                    </p>
+                    </div>
                 </c:if>
-                <table id="locationOptions">
-                    <tbody>
-                    <tr>
-                        <td>Display records in a
-                            <select id="radius" name="radius">
-                                <option value="1" <c:if test="${radius eq '1.0'}">selected</c:if>>1</option>
-                                <option value="5" <c:if test="${radius eq '5.0'}">selected</c:if>>5</option>
-                                <option value="10" <c:if test="${radius eq '10.0'}">selected</c:if>>10</option>
-                            </select> km radius <!--<input type="submit" value="Reload"/>--></td>
-                        <td><img src="${pageContext.request.contextPath}/static/images/database_go.png" alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"><a href="#" id="viewAllRecords">View <span id="recordsGroupText">all</span> occurrence records</a></td>
-                        <td><button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)" class="btn">Download</button></td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="row-fluid">
+                    <div class="span4">
+                        Display records in a
+                        <select id="radius" name="radius" class="" style="width:auto;line-height:18px;margin-bottom:0;">
+                            <option value="1" <c:if test="${radius eq '1.0'}">selected</c:if>>1</option>
+                            <option value="5" <c:if test="${radius eq '5.0'}">selected</c:if>>5</option>
+                            <option value="10" <c:if test="${radius eq '10.0'}">selected</c:if>>10</option>
+                        </select> km radius
+                    </div>
+                    <div class="span4">
+                        <img src="${pageContext.request.contextPath}/static/images/database_go.png" alt="search list icon" style="margin-bottom:-3px;" class="no-rounding"><a href="#" id="viewAllRecords">View
+                        <span id="recordsGroupText">all</span> occurrence records</a>
+                    </div>
+                    <div class="span4">
+                        <button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)" class="btn">Download</button>
+                    </div>
+                </div>
                 <div id="dialog-confirm" title="Continue with download?" style="display: none">
                     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You are about to
                         download a list of species found within a <span id="rad"></span> km radius of <code>${location}</code>.<br/>
@@ -90,8 +97,18 @@
         </form>
         <div class="row-fluid">
             <div class="span7">
-
                 <div id="taxaBox">
+                    <div id="leftList">
+                        <table id="taxa-level-0">
+                            <thead>
+                            <tr>
+                                <th>Group</th>
+                                <th>Species</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                     <div id="rightList" class="tableContainer">
                         <table>
                             <thead class="fixedHeader">
@@ -105,17 +122,6 @@
                             </thead>
                             <tbody class="scrollContent">
                             </tbody>
-                        </table>
-                    </div>
-                    <div id="leftList">
-                        <table id="taxa-level-0">
-                            <thead>
-                            <tr>
-                                <th>Group</th>
-                                <th>Species</th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
