@@ -21,6 +21,7 @@
         <script src="${pageContext.request.contextPath}/static/js/jquery.tools.min-1.2.6.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.cookie.js"></script>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/base.css" />
         <%--<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/advancedSearch.js"></script>--%>
         <jwr:script src="/js/advancedSearch.js"/>
         <script type="text/javascript">
@@ -64,7 +65,7 @@
                                     <td>
                                         <input type="text" name="taxa" id="taxa" class="name_autocomplete freetext" style="width:500px;" placeholder="" size="70" value=""/>
                                         &nbsp;
-                                        <input type="submit" value="Search" class="freetext"/>
+                                        <input type="submit" value="Search" class="freetext btn"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -87,7 +88,7 @@
                             <thead/>
                             <tbody>
                                 <tr>
-                                    <td class="label">ALL of these words (full text)</td>
+                                    <td class="labels">ALL of these words (full text)</td>
                                     <td>
                                          <input type="text" name="text" id="text" class="dataset" placeholder="" size="80" value="${param.text}"/>
                                     </td>
@@ -101,9 +102,9 @@
                                 <c:forEach begin="1" end="4" step="1" var="i">
                                     <c:set var="lsidParam" value="lsid_${i}"/>
                                     <tr style="" id="taxon_row_${i}">
-                                        <td class="label">Species/Taxon</td>
+                                        <td class="labels">Species/Taxon</td>
                                         <td>
-                                            <input type="text" value="" id="taxa_${i}" name="taxonText" class="name_autocomplete" style="width:35%">
+                                            <input type="text" value="" id="taxa_${i}" name="taxonText" class="name_autocomplete" style="">
                                             <input type="hidden" name="lsid" class="lsidInput" id="taxa_${i}" value=""/>
                                         </td>
                                     </tr>
@@ -115,7 +116,7 @@
                             <thead/>
                             <tbody>
                                 <tr>
-                                    <td class="label">Raw Scientific Name</td>
+                                    <td class="labels">Raw Scientific Name</td>
                                     <td>
                                          <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
                                     </td>
@@ -127,7 +128,7 @@
                             <thead/>
                             <tbody>
                                 <tr>
-                                    <td class="label">Species Group</td>
+                                    <td class="labels">Species Group</td>
                                     <td>
                                          <select class="species_group" name="species_group" id="species_group">
                                             <option value="">-- select a species group --</option>
@@ -144,7 +145,7 @@
                             <thead/>
                             <tbody>
                                 <tr>
-                                    <td class="label">Institution or Collection</td>
+                                    <td class="labels">Institution or Collection</td>
                                     <td>
                                         <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
                                             <option value="">-- select an institution or collection --</option>
@@ -178,7 +179,7 @@
                             <tbody>
                                 <c:if test="${not isALA}">
                                     <tr>
-                                        <td class="label">Country</td>
+                                        <td class="labels">Country</td>
                                         <td>
                                             <select class="country" name="country" id="country">
                                                 <option value="">-- select a country --</option>
@@ -190,7 +191,7 @@
                                     </tr>
                                 </c:if>
                                 <tr>
-                                    <td class="label">State/Territory</td>
+                                    <td class="labels">State/Territory</td>
                                     <td>
                                         <select class="state" name="state" id="state">
                                             <option value="">-- select a state/territory --</option>
@@ -202,7 +203,7 @@
                                 </tr>
                                 <c:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
                                 <tr>
-                                    <td class="label"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
+                                    <td class="labels"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
                                     <td>
                                         <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                         <select class="biogeographic_region" name="ibra" id="ibra">
@@ -214,7 +215,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia">IMCRA</abbr> region</td>
+                                    <td class="labels"><abbr title="Integrated Marine and Coastal Regionalisation of Australia">IMCRA</abbr> region</td>
                                     <td>
                                         <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                         <select class="biogeographic_region" name="imcra" id="imcra">
@@ -226,7 +227,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="label">Local Govt. Area</td>
+                                    <td class="labels">Local Govt. Area</td>
                                     <td>
                                         <select class="biogeographic_region" name="cl959" id="cl959">
                                             <option value="">-- select local government area--</option>
@@ -244,7 +245,7 @@
                             <thead/>
                             <tbody>
                                 <tr>
-                                    <td class="label">Type Status</td>
+                                    <td class="labels">Type Status</td>
                                     <td>
                                          <select class="type_status" name="type_status" id="type_status">
                                             <option value="">-- select a type status --</option>
@@ -263,7 +264,7 @@
                             <thead/>
                             <tbody>
                                 <tr>
-                                    <td class="label">Basis of record</td>
+                                    <td class="labels">Basis of record</td>
                                     <td>
                                          <select class="basis_of_record" name="basis_of_record" id="basis_of_record">
                                             <option value="">-- select a basis of record --</option>
@@ -281,19 +282,19 @@
                             <thead/>
                             <tbody>
                                 <tr>
-                                    <td class="label">Catalogue Number</td>
+                                    <td class="labels">Catalogue Number</td>
                                     <td>
                                          <input type="text" name="catalogue_number" id="catalogue_number" class="dataset" placeholder="" value=""/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="label">Record Number</td>
+                                    <td class="labels">Record Number</td>
                                     <td>
                                          <input type="text" name="record_number" id="record_number" class="dataset" placeholder="" value=""/>
                                     </td>
                                 </tr>
                                 <%--<tr>
-                                    <td class="label">Collector Name</td>
+                                    <td class="labels">Collector Name</td>
                                     <td>
                                          <input type="text" name="collector" id="collector" class="dataset" placeholder="" value=""/>
                                     </td>
@@ -305,14 +306,14 @@
                             <thead/>
                             <tbody>
                                 <tr>
-                                    <td class="label">Begin Date</td>
+                                    <td class="labels">Begin Date</td>
                                     <td>
                                          <input type="text" name="start_date" id="startDate" class="occurrence_date" placeholder="" value=""/>
                                           (YYYY-MM-DD) leave blank for earliest record date
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="label">End Date</td>
+                                    <td class="labels">End Date</td>
                                     <td>
                                          <input type="text" name="end_date" id="endDate" class="occurrence_date" placeholder="" value=""/>
                                          (YYYY-MM-DD) leave blank for most recent record date
@@ -320,35 +321,35 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <input type="submit" value="Search" />
+                        <input type="submit" value="Search" class="btn" />
                         &nbsp;&nbsp;
-                        <input type="reset" value="Clear all" id="clearAll" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
+                        <input type="reset" value="Clear all" id="clearAll" class="btn" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
                     </form>
                 </div><!-- end #advancedSearch div -->
                 <div id="uploadDiv" class="paneDiv homePane">
                     <form name="taxaUploadForm" id="taxaUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
                         <p>Enter a list of taxon names/scientific names, one name per line (common names not currently supported).</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
-                        <p><textarea name="queries" id="raw_names" rows="15" cols="60"></textarea></p>
+                        <p><textarea name="queries" id="raw_names" class="span6" rows="15" cols="60"></textarea></p>
                         <p>
                             <%--<input type="submit" name="action" value="Download" />--%>
                             <%--&nbsp;OR&nbsp;--%>
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
                             <input type="hidden" name="field" value="raw_name"/>
-                            <input type="submit" name="action" value="Search" /></p>
+                            <input type="submit" name="action" value="Search" class="btn" /></p>
                     </form>
                 </div><!-- end #uploadDiv div -->
                 <div id="catalogUploadDiv" class="paneDiv homePane">
                     <form name="catalogUploadForm" id="catalogUploadForm" action="${biocacheServiceUrl}/occurrences/batchSearch" method="POST">
                         <p>Enter a list of catalogue numbers (one number per line).</p>
                         <%--<p><input type="hidden" name="MAX_FILE_SIZE" value="2048" /><input type="file" /></p>--%>
-                        <p><textarea name="queries" id="catalogue_numbers" rows="15" cols="60"></textarea></p>
+                        <p><textarea name="queries" id="catalogue_numbers" class="span6" rows="15" cols="60"></textarea></p>
                         <p>
                             <%--<input type="submit" name="action" value="Download" />--%>
                             <%--&nbsp;OR&nbsp;--%>
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
                             <input type="hidden" name="field" value="catalogue_number"/>
-                            <input type="submit" name="action" value="Search" /></p>
+                            <input type="submit" name="action" value="Search" class="btn"/></p>
                     </form>
                 </div><!-- end #catalogUploadDiv div -->
                 <div id="shapeDiv" class="paneDiv homePane">
@@ -356,8 +357,8 @@
                         <p>Note: this feature is still experimental. If there are multiple polygons present in the shapefile,
                         only the first polygon will be used for searching.</p>
                         <p>Upload a shapefile (*.shp).</p>
-                        <p><input type="file" name="file"/></p>
-                        <p><input type="submit" value="Search" /></p>
+                        <p><input type="file" name="file" class="" /></p>
+                        <p><input type="submit" value="Search" class="btn"/></p>
                     </form>
                 </div><!-- end #shapeDiv div -->
             </div><!-- end panes div -->

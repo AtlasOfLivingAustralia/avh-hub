@@ -85,7 +85,7 @@ table.compact th, table.compact td {
 table.nested th, table.nested td {
     padding: 0;
 }
-td.label {
+td.labels {
     width: 170px;
 }
 #headingBar {

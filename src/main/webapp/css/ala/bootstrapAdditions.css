@@ -223,3 +223,23 @@ h2#headingSciName {
     margin: 0;
     margin-bottom: -12px;
 }
+
+#advancedSearchForm table {
+    width: 100%;
+}
+
+#advancedSearchForm td {
+    vertical-align: middle;
+}
+
+#advancedSearchForm input, #advancedSearchForm select, #advancedSearchForm  textarea, #simpleSearchForm input {
+    margin-bottom: 0;
+}
+
+#advancedSearchForm input[type=text] {
+    width: 35%;
+}
+
+#advancedSearchForm input.occurrence_date {
+    width: 15%;
+}
