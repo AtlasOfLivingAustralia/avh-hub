@@ -80,7 +80,7 @@
             <li class="pic-4"><img src="${pageContext.request.contextPath}/static/images/tepapa/photo4.jpg" alt="stock photo" /></li>
             <li class="pic-5"><img src="${pageContext.request.contextPath}/static/images/tepapa/photo5.jpg" alt="stock photo" /></li>
         </ul>
-        <p id="images-copyright">Images &copy; Te Papa Tongarewa<br/>
+        <p id="images-copyright">Images &copy; Te Papa<br/>
             Albatross images copyright & courtesy of D. Filippi</p>
     </section>
     <section id="homepage-text">
@@ -103,14 +103,14 @@
 <footer>
     <div class="inner">
         <section class="copyright">
-            <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/au/"
+            <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/nz/"
                                      title="External link to Creative Commons"><img
                     src="http://www.ala.org.au/wp-content/themes/ala2011/images/creativecommons.png" width="88"
                     height="31" alt=""/></a></div>
             <p><a href="${pageContext.request.contextPath}/help/termsOfUse" title="Terms of Use">Terms of Use</a> |
                 <a href="${pageContext.request.contextPath}/help/contactTepapa">Contact</a><br/>This site is licensed under
-                a <a href="http://creativecommons.org/licenses/by/3.0/au/" title="External link to Creative Commons"
-                     class="external">Creative Commons Attribution 3.0 Australia License</a>.</p>
+                a <a href="http://creativecommons.org/licenses/by/3.0/nz/" title="External link to Creative Commons"
+                     class="external">Creative Commons Attribution 3.0 New Zealand License</a>.</p>
 
             <div class="img-right"><a href="http://www.ala.org.au" title="Atlas of Living Australia"><img
                     src="http://www.ala.org.au/wp-content/themes/ala2011/images/poweredby-ala.png" width="178"
