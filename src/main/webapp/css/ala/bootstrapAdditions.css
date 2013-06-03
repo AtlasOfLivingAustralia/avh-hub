@@ -217,3 +217,9 @@ select.btn-small + .caret {
 h2#headingSciName {
     margin: 0;
 }
+
+#multipleFacets h3 {
+    line-height: 100%;
+    margin: 0;
+    margin-bottom: -12px;
+}
