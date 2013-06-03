@@ -596,3 +596,8 @@ button#explore-here {
 p.rowA {
     padding-bottom: 4px;
 }
+
+div#toc ul {
+    /*list-style: none;*/
+    margin-left: 20px;
+}
