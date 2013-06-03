@@ -578,6 +578,8 @@ section#homepage-text {
 button#explore-here {
     background-color: #CC9832;
     background-image: none;
+    filter: none;
+    -ms-filter: none;
     padding: 4px 8px 3px 9px;
     border: none;
     color: #FFF;
