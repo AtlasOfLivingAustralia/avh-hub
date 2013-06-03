@@ -104,7 +104,7 @@
                                     <tr style="" id="taxon_row_${i}">
                                         <td class="labels">Species/Taxon</td>
                                         <td>
-                                            <input type="text" value="" id="taxa_${i}" name="taxonText" class="name_autocomplete" style="">
+                                            <input type="text" value="" id="taxa_${i}" name="taxonText" class="name_autocomplete" size="60">
                                             <input type="hidden" name="lsid" class="lsidInput" id="taxa_${i}" value=""/>
                                         </td>
                                     </tr>
@@ -118,7 +118,7 @@
                                 <tr>
                                     <td class="labels">Raw Scientific Name</td>
                                     <td>
-                                         <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
+                                         <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="60" value=""/>
                                     </td>
                                 </tr>
                             </tbody>
