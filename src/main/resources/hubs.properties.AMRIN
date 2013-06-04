@@ -86,6 +86,8 @@ facetLimit=100
 site.displayName=Australian Microbial Resources information Network
 site.displayNameShort=AMRIN
 site.attribution=
+site.jurisdiction=
+site.jurisdiction.code=
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=data_provider_uid,cl918,duplicate_status

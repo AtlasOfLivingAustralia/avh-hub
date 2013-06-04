@@ -68,16 +68,16 @@ include file="/common/taglibs.jsp" %>
     <footer>
         <div class="inner">
             <section class="copyright">
-                <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/au/"
+                <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/nz/"
                                          title="External link to Creative Commons"><img
                         src="http://www.ala.org.au/wp-content/themes/ala2011/images/creativecommons.png" width="88"
                         height="31" alt=""/></a></div>
                 <p><a href="${pageContext.request.contextPath}/help/termsOfUse" title="Terms of Use">Terms of Use</a> |
                     <a href="${pageContext.request.contextPath}/help/contactTepapa">Contact</a>
                     <br/>This site is licensed
-                    under a <a href="http://creativecommons.org/licenses/by/3.0/au/"
+                    under a <a href="http://creativecommons.org/licenses/by/3.0/nz/"
                                title="External link to Creative Commons" class="external">Creative Commons Attribution
-                        3.0 Australia License</a>.</p>
+                        3.0 New Zealand License</a>.</p>
 
                 <div class="img-right">
                     <a href="http://www.tepapa.govt.nz/" title="Museum of New Zealand Te Papa Tongarewa"><img

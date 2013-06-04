@@ -86,6 +86,8 @@ facetLimit=100
 site.displayName=The Australian Seed Bank
 site.displayNameShort=ASBP
 site.attribution=
+site.jurisdiction=
+site.jurisdiction.code=
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=data_provider_uid,cl918,duplicate_status

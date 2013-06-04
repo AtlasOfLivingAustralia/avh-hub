@@ -85,7 +85,9 @@ facetLimit=100
 # define the site name - Atlas of Living Australia || Ozcam || Australia's Virtual Herbarium
 site.displayName=The Living Aotearoa - Biodiversity Portal
 site.displayNameShort=Living Aotearoa
-site.attribution=This research has been funded by Department of Conservation, under a TFBIS grant.
+site.attribution=This research has been funded by the New Zealand Department of Conservation, under a TFBIS grant.
+site.jurisdiction=New Zealand
+site.jurisdiction.code=NZ
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=data_provider_uid,cl918,duplicate_status

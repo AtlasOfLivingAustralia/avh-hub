@@ -85,6 +85,8 @@ googleAnalyticsKey=N/A
 site.displayName=OZCAM
 site.displayNameShort=OZCAM
 site.attribution=
+site.jurisdiction=
+site.jurisdiction.code=
 
 # skin-specific facets to exclude from search results (comma separated list)
 facets.exclude=data_provider_uid,cl918,duplicate_status

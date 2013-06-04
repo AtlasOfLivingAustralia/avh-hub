@@ -89,6 +89,8 @@ googleAnalyticsKey=N/A
 site.displayName=Sandbox (LOCAL) | Atlas of Living Australia
 site.displayNameShort=Sandbox
 site.attribution=
+site.jurisdiction=
+site.jurisdiction.code=
 
 # skin-specific facets to exclude/include from search results (comma separated list)
 facets.exclude=cl918
