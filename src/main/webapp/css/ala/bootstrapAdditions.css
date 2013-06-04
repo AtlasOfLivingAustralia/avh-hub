@@ -243,3 +243,38 @@ h2#headingSciName {
 #advancedSearchForm input.occurrence_date {
     width: 15%;
 }
+
+/* Media width variations */
+@media (min-width: 1200px) {
+    /* Google map width on list page */
+    #mapwrapper #mapcanvas {
+        width: 845px;
+        height: 700px;
+    }
+    #mapwrapper #maploading {
+        width: 835px;
+    }
+}
+
+@media (min-width: 980px) and (max-width: 1199px) {
+    /* Google map width on list page */
+    #mapwrapper #mapcanvas {
+        width: 678px;
+        height: 700px;
+    }
+    #mapwrapper #maploading {
+        width: 668px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    /* Google map width on list page */
+    #mapwrapper #mapcanvas {
+        width: 515px;
+        height: 600px;
+    }
+    #mapwrapper #maploading {
+        width: 505px;
+    }
+}
+
