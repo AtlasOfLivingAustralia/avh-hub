@@ -63,13 +63,12 @@
              */
             function deleteAssertion(recordUuid, assertionUuid){
                 $.post('${pageContext.request.contextPath}/occurrences/assertions/delete',
-                    { recordUuid: recordUuid,assertionUuid: assertionUuid },
+                    { recordUuid: recordUuid, assertionUuid: assertionUuid },
                     function(data) {
                         //retrieve all asssertions
-                        $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${ala:escapeJS(record.raw.rowKey)}', function(data) {
+                        $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${record.raw.uuid}', function(data) {
                             $('#'+assertionUuid).fadeOut('slow', function() {
                                 $('#userAssertions').html(data);
-
                                 //if theres no child elements to the list, hide the heading
                                 //alert("Number of user assertions : " +  $('#userAssertions').children().size()   )
                                 if($('#userAssertions').children().size() < 1){
@@ -131,16 +130,22 @@
                         if(userId == data.userAssertions[i].userId){
                             $clone.find('.deleteAnnotation').css({display:'block'});
                             $clone.find('.deleteAnnotation').attr('id', data.userAssertions[i].uuid);
-                            $clone.find('.deleteAnnotation').live('click', function(e) {
-                                e.preventDefault();
-                                var isConfirmed = confirm('Are you sure you want to delete this issue? ' + this.id);
-                                if (isConfirmed === true) {
-                                    deleteAssertion('${ala:escapeJS(record.raw.rowKey)}', this.id);
-                                }
-                            });
                         }
                     }
+
+                    updateDeleteEvents();
                 });
+            }
+
+            function updateDeleteEvents(){
+              $('.deleteAnnotation').off("click");
+              $('.deleteAnnotation').on("click", function(e){
+                e.preventDefault();
+                var isConfirmed = confirm('Are you sure you want to delete this issue? ' + this.id);
+                if (isConfirmed === true) {
+                    deleteAssertion('${ala:escapeJS(record.raw.uuid)}', this.id);
+                }
+              });
             }
 
             /**
@@ -216,7 +221,7 @@
                                 $("input:reset").hide();
                                 $("input#close").show();
                                 //retrieve all assertions
-                                $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${ala:escapeJS(record.raw.rowKey)}', function(data) {
+                                $.get('${pageContext.request.contextPath}/occurrences/groupedAssertions?recordUuid=${record.raw.uuid}', function(data) {
                                     //console.log("data", data);
                                     $('#userAssertions').html(data);
                                     $('#userAssertionsContainer').show("slow");
@@ -250,17 +255,17 @@
                     $("input#close").hide("slow");
                 });
 
-                //var isConfirmed = {};
-                // catch link to delete user assertion
-                $("a.deleteAssertion").live('click', function(e) {
-                    e.preventDefault();
-                    var assertionUuid = $(this).attr("id");
-                    var isConfirmed = confirm('Are you sure you want to delete this issue?');
-                    if (isConfirmed === true) {
-                        deleteAssertion('${ala:escapeJS(record.raw.rowKey)}', assertionUuid);
-                    }
-                    //isConfirmed = false; // don't remember the confirm
-                });
+                <%--//var isConfirmed = {};--%>
+                <%--// catch link to delete user assertion--%>
+                <%--$("a.deleteAssertion").live('click', function(e) {--%>
+                    <%--e.preventDefault();--%>
+                    <%--var assertionUuid = $(this).attr("id");--%>
+                    <%--var isConfirmed = confirm('Are you sure you want to delete this issue?');--%>
+                    <%--if (isConfirmed === true) {--%>
+                        <%--deleteAssertion('${ala:escapeJS(record.raw.rowKey)}', assertionUuid);--%>
+                    <%--}--%>
+                    <%--//isConfirmed = false; // don't remember the confirm--%>
+                <%--});--%>
 
                 // give every second row a class="grey-bg"
                 $('table.occurrenceTable, table.inner, table.layerIntersections, table.duplicationTable').each(function(i, el) {
@@ -488,21 +493,21 @@
                         <h2>Data quality tests</h2>
 
                         <ul id="systemAssertions">
-                                <li class="failedTestCount">
-                                    <spring:message code="failed" text="failed"/> : ${fn:length(record.systemAssertions['failed'])}
-                                </li>
-                                <li class="warningsTestCount">
-                                    <spring:message code="warnings" text="warnings"/> : ${fn:length(record.systemAssertions['warnings'])}
-                                </li>
-                                <li class="passedTestCount">
-                                    <spring:message code="passed" text="passed"/> : ${fn:length(record.systemAssertions['passed'])}
-                                </li>
-                                <li class="missingTestCount">
-                                    <spring:message code="missing" text="missing"/> : ${fn:length(record.systemAssertions['missing'])}
-                                </li>
-                                <li class="uncheckedTestCount">
-                                    <spring:message code="unchecked" text="unchecked"/> : ${fn:length(record.systemAssertions['unchecked'])}
-                                </li>
+                            <li class="failedTestCount">
+                                <spring:message code="failed" text="failed"/> : ${fn:length(record.systemAssertions['failed'])}
+                            </li>
+                            <li class="warningsTestCount">
+                                <spring:message code="warnings" text="warnings"/> : ${fn:length(record.systemAssertions['warning'])}
+                            </li>
+                            <li class="passedTestCount">
+                                <spring:message code="passed" text="passed"/> : ${fn:length(record.systemAssertions['passed'])}
+                            </li>
+                            <li class="missingTestCount">
+                                <spring:message code="missing" text="missing"/> : ${fn:length(record.systemAssertions['missing'])}
+                            </li>
+                            <li class="uncheckedTestCount">
+                                <spring:message code="unchecked" text="unchecked"/> : ${fn:length(record.systemAssertions['unchecked'])}
+                            </li>
                         </ul>
                         <div id="dataQualityFurtherDetails">
                             <a id="dataQualityReportLink" href="#dataQualityReport">

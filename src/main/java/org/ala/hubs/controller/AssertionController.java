@@ -135,8 +135,7 @@ public class AssertionController {
     public String getUserAssertionsWithParams(
             @RequestParam(value="recordUuid", required=true) String recordUuid,
             HttpServletRequest request,
-            Model model
-            ) throws Exception {
+            Model model) throws Exception {
         return getUserAssertions(recordUuid, request,model);
     }
 

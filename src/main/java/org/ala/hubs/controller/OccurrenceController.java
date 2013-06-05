@@ -979,7 +979,6 @@ public class OccurrenceController {
       return null;
     }
 
-
     private List<SampleDTO> extractEnvironmentalInfo(OccurrenceDTO record, Map<String, Map<String, Object>> layersMetadata) {
         List<SampleDTO> environmentalSampleInfo = new ArrayList<SampleDTO>();
         if(record.getProcessed().getEl() != null){

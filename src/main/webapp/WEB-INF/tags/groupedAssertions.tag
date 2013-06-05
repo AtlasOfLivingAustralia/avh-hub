@@ -13,11 +13,16 @@ attribute name="groupedAssertions" required="false" type="java.util.Collection" 
         <c:when test="${assertion.assertionByUser}">
             <br/>
             <strong>
-                (added by you
-                <c:if test="${fn:length(assertion.users)>1}">
-                    and ${fn:length(assertion.users) - 1} ${fn:length(assertion.users)>2 ? 'other users' : 'other user'})
-                </c:if>
-            - <a href="#" class="deleteAssertion" id="${assertion.usersAssertionUuid}">delete</a>)</strong>
+                ( added by you
+                <c:choose>
+                    <c:when test="${fn:length(assertion.users)>1}">
+                        and ${fn:length(assertion.users) - 1} ${fn:length(assertion.users)>2 ? 'other users' : 'other user'})
+                    </c:when>
+                    <c:otherwise>
+                     )
+                    </c:otherwise>
+                </c:choose>
+            </strong>
         </c:when>
         <c:otherwise>
             (added by ${fn:length(assertion.users)} ${fn:length(assertion.users)>1 ? 'users' : 'user'})
