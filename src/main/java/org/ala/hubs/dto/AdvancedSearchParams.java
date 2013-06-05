@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 public class AdvancedSearchParams {
+
     private final static Logger logger = Logger.getLogger(AdvancedSearchParams.class);
     
     protected String text = "";

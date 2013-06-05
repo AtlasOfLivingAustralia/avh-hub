@@ -47,12 +47,12 @@
                                     if (rootCause == null) {
                                         rootCause = sex;
                                     }
-                                    System.out.println("** Root cause is: " + rootCause.getMessage());
-                                    rootCause.printStackTrace(new java.io.PrintWriter(out));
+                                    System.out.println("** GENERAL - Root cause is: " + rootCause.getMessage());
+                                    rootCause.printStackTrace();
                                 } else {
                                     // It's not a ServletException, so we'll just show it
-                                    System.out.println("\n** Other exception: " + theException.getMessage());
-                                    theException.printStackTrace(new java.io.PrintWriter(out));
+                                    System.out.println("\n** GENERAL - Other exception: " + theException.getMessage());
+                                    theException.printStackTrace();
                                 }
                             } else {
                                 System.out.println("No error information available");
@@ -68,7 +68,7 @@
                             }
 
                         } catch (Exception ex) {
-                            ex.printStackTrace(new java.io.PrintWriter(out));
+                            ex.printStackTrace();
                         }
                     %>
                 </div>

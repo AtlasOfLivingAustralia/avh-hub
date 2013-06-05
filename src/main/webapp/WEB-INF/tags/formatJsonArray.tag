@@ -4,7 +4,6 @@
 %><%
     ObjectMapper om = new ObjectMapper();
     StringBuffer sb = new StringBuffer();
-    System.out.println("######## Attempting to format: " + text);
     if(text instanceof Object[]){
       jspContext.setAttribute("listToFormat",text);
     } else if(text instanceof String && text!=null){

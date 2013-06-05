@@ -3,6 +3,7 @@ package org.ala.hubs.controller;
 import au.org.ala.biocache.QualityAssertion;
 import org.ala.hubs.dto.AssertionDTO;
 import org.ala.hubs.service.BiocacheService;
+import org.ala.hubs.util.AssertionUtils;
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.util.AbstractCasFilter;
@@ -37,61 +38,64 @@ public class AssertionController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        addAssertion(recordUuid, request,response);
-
+        addAssertion(recordUuid, request, response);
     }
     
     /**
-     * add an assertion
+     * Add an assertion
      */
     @RequestMapping(value = {"/occurrences/{recordUuid}/assertions/add"}, method = RequestMethod.POST)
-	public void addAssertion(
-       @PathVariable(value="recordUuid") String recordUuid,
+    public void addAssertion(
+       @PathVariable(value = "recordUuid") String recordUuid,
         HttpServletRequest request,
         HttpServletResponse response) throws Exception {
 
         String code = (String) request.getParameter("code");
         String comment = (String) request.getParameter("comment");
+        String userDisplayName = (String) request.getParameter("userDisplayName");
 
         if (comment == null) {
             comment = ""; // avoid NPE when verifying record
         }
 
-        String userId = (String) request.getParameter("userId");
-        String userDisplayName = (String) request.getParameter("userDisplayName");
-
-        logger.info("Adding assertion to UUID: "+recordUuid+", code: "+code+", userId: "+ userId+", comment: "+ comment );
-
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
 
-        if(assertion!=null){
-           AttributePrincipal ap = assertion.getPrincipal();
-           //System.out.println(ap.getName());
+        if(assertion != null){
 
-           Map<String,Object> properties = new HashMap<String,Object>();
-           properties.put("userId", ap.getName());
-           properties.put("code", code);
-           properties.put("comment", comment);
+            AttributePrincipal ap = assertion.getPrincipal();
+            String userId = (String) ap.getAttributes().get("userid");
+            String userEmail = (String) ap.getAttributes().get("email");
 
-           logger.info("******Calling REST service to add assertion" );
+            logger.info("Adding assertion to UUID: " + recordUuid
+                    + ", code: " + code
+                    + ", comment: " + comment
+                    + ", userId: " + userId
+                    + ", userEmail: " + userEmail
+            );
+
+            Map<String,Object> properties = new HashMap<String,Object>();
+            properties.put("userId", userId);
+            properties.put("userEmail", userEmail);
+            properties.put("code", code);
+            properties.put("comment", comment);
+
+            logger.info("****** Calling REST service to add assertion" );
 
             try {
-                biocacheService.addAssertion(recordUuid, code, comment, ap.getName(), userDisplayName);
+                biocacheService.addAssertion(recordUuid, code, comment, userId, userDisplayName);
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write(e.getMessage());
             }
 
-            logger.info("******Called REST service. Assertion should be added" );
+            logger.info("****** Called REST service. Assertion should be added" );
 
-           response.setStatus(HttpServletResponse.SC_OK);
+            response.setStatus(HttpServletResponse.SC_OK);
         } else {
-
-           logger.info("******Unable to add assertions. Login details not accessible." );
-
-           response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            logger.info("****** Unable to add assertions. Login details not accessible." );
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
     }
     
@@ -103,7 +107,6 @@ public class AssertionController {
      * 
      * @param recordUuid
      * @param assertionUuid
-     * @param request
      * @param response
      * @throws Exception
      */
@@ -111,22 +114,19 @@ public class AssertionController {
     public void deleteAssertionWithParams(
             @RequestParam(value="recordUuid", required=true) String recordUuid,
             @RequestParam(value="assertionUuid", required=true) String assertionUuid,
-            HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-            deleteAssertion(recordUuid, assertionUuid, response);
+        deleteAssertion(recordUuid, assertionUuid, response);
     }
 
     /**
      * Remove an assertion
      */
     @RequestMapping(value = {"/occurrences/{recordUuid}/assertions/delete"}, method = RequestMethod.POST)
-	public void deleteAssertion(
+    public void deleteAssertion(
         @PathVariable(value="recordUuid") String recordUuid,
         @RequestParam(value="assertionUuid", required=true) String assertionUuid,
         HttpServletResponse response) throws Exception {
-
         logger.info("******Deleting assertion....from : " +recordUuid);
-
         biocacheService.deleteAssertion(recordUuid, assertionUuid);
         response.setStatus(HttpServletResponse.SC_OK);
     }
@@ -136,20 +136,19 @@ public class AssertionController {
             @RequestParam(value="recordUuid", required=true) String recordUuid,
             HttpServletRequest request,
             Model model
-            ) throws Exception{
-        
-            return getUserAssertions(recordUuid, request,model);
+            ) throws Exception {
+        return getUserAssertions(recordUuid, request,model);
     }
 
     /**
      * List all assertions
      */
     @RequestMapping(value = {"/occurrences/{recordUuid}/assertions/"}, method = RequestMethod.GET)
-	public String getUserAssertions(@PathVariable(value="recordUuid") String recordUuid,
+    public String getUserAssertions(@PathVariable(value="recordUuid") String recordUuid,
         HttpServletRequest request,
         Model model) throws Exception {
 
-        logger.debug("(All assertions) User prinicipal: " + request.getUserPrincipal());
+        logger.debug("(All assertions) User principal: " + request.getUserPrincipal());
 
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
@@ -171,6 +170,7 @@ public class AssertionController {
         model.addAttribute("assertions", assertions);
         return ASSERTIONS;
     }
+
     @RequestMapping(value = {"/occurrences/groupedAssertions*", "/occurrences/groupedAssertions.json*"}, method = RequestMethod.GET)
     public String getGroupedUserAssertionsWithParams(@RequestParam(value="recordUuid", required=true) String recordUuid,
             HttpServletRequest request,
@@ -188,7 +188,7 @@ public class AssertionController {
      * @throws Exception
      */
     @RequestMapping(value = {"/occurrences/{recordUuid}/groupedAssertions/", "/occurrences/{recordUuid}/groupedAssertions.json"}, method = RequestMethod.GET)
-	public String getGroupedUserAssertions(@PathVariable(value="recordUuid") String recordUuid,
+    public String getGroupedUserAssertions(@PathVariable(value="recordUuid") String recordUuid,
         HttpServletRequest request,
         Model model) throws Exception {
 
@@ -198,7 +198,7 @@ public class AssertionController {
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
         AttributePrincipal principal = null;
-        if(assertion!=null){
+        if(assertion != null){
             principal = assertion.getPrincipal();
             userId = principal.getName();
             logger.debug("username = " + principal.getName());
@@ -213,12 +213,11 @@ public class AssertionController {
         model.addAttribute("recordUuid",recordUuid);
         QualityAssertion[] assertions = biocacheService.getUserAssertions(recordUuid);
         //TODO something about the fact that the query assertions are not coming thorugh here...
-        Collection<AssertionDTO> groupedAssertions = AssertionUtils.groupAssertions(assertions,null, userId);
+        Collection<AssertionDTO> groupedAssertions = AssertionUtils.groupAssertions(assertions, null, userId);
         logger.debug("Number of assertions: " + groupedAssertions.size());
         model.addAttribute("assertions", groupedAssertions);
         return GROUPED_ASSERTIONS;
     }
-
 
     public void setBiocacheService(BiocacheService biocacheService) {
         this.biocacheService = biocacheService;

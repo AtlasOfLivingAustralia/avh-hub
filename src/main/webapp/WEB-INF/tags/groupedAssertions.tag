@@ -14,13 +14,13 @@ attribute name="groupedAssertions" required="false" type="java.util.Collection" 
             <br/>
             <strong>
                 (added by you
-                <c:if test="${fn:length(assertion.userIds)>1}">
-                    and ${fn:length(assertion.userIds) - 1} ${fn:length(assertion.userIds)>2 ? 'other users' : 'other user'})
+                <c:if test="${fn:length(assertion.users)>1}">
+                    and ${fn:length(assertion.users) - 1} ${fn:length(assertion.users)>2 ? 'other users' : 'other user'})
                 </c:if>
             - <a href="#" class="deleteAssertion" id="${assertion.usersAssertionUuid}">delete</a>)</strong>
         </c:when>
         <c:otherwise>
-            (added by ${fn:length(assertion.userIds)} ${fn:length(assertion.userIds)>1 ? 'users' : 'user'})
+            (added by ${fn:length(assertion.users)} ${fn:length(assertion.users)>1 ? 'users' : 'user'})
         </c:otherwise>
     </c:choose>
     <c:if test="${false && isCollectionAdmin && assertion.name != 'userVerified'}">

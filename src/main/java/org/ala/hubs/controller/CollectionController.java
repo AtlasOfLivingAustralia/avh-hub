@@ -37,8 +37,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller("collectionController")
 public class CollectionController {
-    private final static Logger logger = Logger.getLogger(CollectionController.class);
 
+    private final static Logger logger = Logger.getLogger(CollectionController.class);
     /* View names */
 	private final String SHOW_COLLECTION = "collections/show";
     /* Constant String fields */
@@ -73,7 +73,7 @@ public class CollectionController {
         model.addAttribute("type", "Collection");
         // get the HTML fragment from the collection WS
         Document doc = Jsoup.connect(collectory + SHOW_PATH_PREFIX + uid).get();
-        model.addAttribute("entityName", GetNameFromTitle(doc));
+        model.addAttribute("entityName", getNameFromTitle(doc));
 
         // Modify (internal) links to institutions
         manipulateLinks(doc.getElementsByTag("a"), request);
@@ -104,7 +104,7 @@ public class CollectionController {
         // get the HTML fragment from the collection WS
         logger.debug("URL: " + collectory + SHOW_PATH_PREFIX + uid);
         Document doc = Jsoup.connect(collectory + SHOW_PATH_PREFIX + uid).get();
-        model.addAttribute("entityName", GetNameFromTitle(doc));
+        model.addAttribute("entityName", getNameFromTitle(doc));
         // Modify (internal) links to institutions
         manipulateLinks(doc.getElementsByTag("a"), request);
         // Modify src to images
@@ -200,12 +200,11 @@ public class CollectionController {
      * @param doc
      * @return
      */
-    protected String GetNameFromTitle(Document doc) {
+    protected String getNameFromTitle(Document doc) {
         // extract the collection name from the title element
         String title = doc.select("head > title").first().text();
         String[] titleElements = StringUtils.split(title, "|");
-        String name = (titleElements.length > 0) ? titleElements[0].trim() : "";
-        return name;
+        return (titleElements.length > 0) ? titleElements[0].trim() : "";
     }
 
     /**
@@ -239,5 +238,4 @@ public class CollectionController {
     public void setCollectory(String collectory) {
         this.collectory = collectory;
     }
-
 }

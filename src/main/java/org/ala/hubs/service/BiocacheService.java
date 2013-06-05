@@ -37,6 +37,7 @@ import java.util.Map;
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 public interface BiocacheService {
+
     /**
      * Full text search for records
      *
@@ -109,7 +110,7 @@ public interface BiocacheService {
 
     public QualityAssertion[] getUserAssertions(String recordUuid);
     
-    public AssertionQuery[] getQueryAssertions(String[] uuids);
+    public AssertionQuery[] getQueryAssertions(String uuid);
 
     public Map<String, Object> getCompareRecord(String uuid);
 

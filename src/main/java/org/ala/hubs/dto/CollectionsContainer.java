@@ -30,6 +30,7 @@ import java.util.List;
  */
 @Component("collectionsContainer")
 public class CollectionsContainer {
+
     @Inject
     protected CollectionsCache collectionsCache;
     @Inject

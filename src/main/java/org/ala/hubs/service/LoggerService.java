@@ -24,6 +24,5 @@ import java.util.Map;
  */
 public interface LoggerService {
     public List<Map<String,Object>> getReasons();
-
     public List<Map<String,Object>> getSources();
 }

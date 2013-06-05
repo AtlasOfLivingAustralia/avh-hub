@@ -44,7 +44,7 @@
                                         Throwable rootCause = sex.getRootCause();
                                         if (rootCause == null)
                                                 rootCause = sex;
-                                        out.println("** Root cause is: "+ rootCause.getMessage());
+                                        out.println("** PAGENOTFOUND Root cause is: "+ rootCause.getMessage());
                                         rootCause.printStackTrace(new java.io.PrintWriter(out));
                                 }
                                 else {

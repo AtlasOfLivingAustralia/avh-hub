@@ -1,4 +1,4 @@
-package org.ala.hubs.controller;
+package org.ala.hubs.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,10 +12,19 @@ import org.ala.hubs.dto.AssertionDTO;
 
 import au.org.ala.biocache.QualityAssertion;
 import au.org.ala.biocache.AssertionQuery;
+import org.ala.hubs.dto.ContactDTO;
 
 public class AssertionUtils {
 
-    public static Collection<AssertionDTO> groupAssertions(QualityAssertion[] assertions, AssertionQuery[] queryAssertions, String userId){
+    /**
+     * Group the assertion by assertion code.
+     *
+     * @param assertions
+     * @param queryAssertions
+     * @param currentUserId
+     * @return
+     */
+    public static Collection<AssertionDTO> groupAssertions(QualityAssertion[] assertions, AssertionQuery[] queryAssertions, String currentUserId){
 
         //create AssertionDTOs
         Map<Object, AssertionDTO> grouped = new HashMap<Object, AssertionDTO>();
@@ -23,17 +32,21 @@ public class AssertionUtils {
             for(QualityAssertion qa : assertions){
     
                 AssertionDTO a = grouped.get(qa.getCode());
-                if(a==null){
+                if(a == null){
                     a = new AssertionDTO();
                     a.setCode(qa.getCode());
                     a.setName(qa.getName());
                     grouped.put(qa.getCode(), a);
                 }
                 //add the extra users who have made the same assertion
-                a.getUserIds().add(qa.getUserId());
-                a.getUserDisplayNames().add(qa.getUserDisplayName());
-    
-                if(userId!=null &&  userId.equalsIgnoreCase(qa.getUserId())){
+                ContactDTO u = new ContactDTO();
+                u.setEmail(qa.getUserId());
+                u.setDisplayName(qa.getUserDisplayName());
+
+                //is the user affiliated with a collection ????
+                a.getUsers().add(u);
+
+                if(currentUserId != null && currentUserId.equalsIgnoreCase(qa.getUserId())){
                     //this user set this assertion -
                     a.setAssertionByUser(true);
                     a.setUsersAssertionUuid(qa.getUuid());
@@ -42,15 +55,17 @@ public class AssertionUtils {
         }
         
         if(queryAssertions != null){
-            for(AssertionQuery aq:queryAssertions){
+            for(AssertionQuery aq : queryAssertions){
                 AssertionDTO a = grouped.get(aq.assertionType());
                 if(a == null){
                     a = new AssertionDTO();                    
                     a.setName(aq.assertionType());
-                    grouped.put(a.getName(),a);
+                    grouped.put(a.getName(), a);
                 }
-                a.getUserIds().add(aq.getUserName());
-                if(userId!=null &&  userId.equalsIgnoreCase(aq.getUserName())){
+                ContactDTO u = new ContactDTO();
+                u.setEmail(aq.getUserName());
+                a.getUsers().add(u);
+                if(currentUserId !=null &&  currentUserId.equalsIgnoreCase(aq.getUserName())){
                   //this user set this assertion -
                   a.setAssertionByUser(true);
                   a.setUsersAssertionUuid(aq.getUuid());
@@ -63,10 +78,9 @@ public class AssertionUtils {
         groupedValues.addAll(groupedCollection);
         Collections.sort(groupedValues, new Comparator<AssertionDTO>() {
             public int compare(AssertionDTO o, AssertionDTO o1) {
-                return o.getName().compareTo(o1.getName());
+            return o.getName().compareTo(o1.getName());
             }
         });
         return groupedValues;
     }    
-    
 }

@@ -32,7 +32,7 @@
                     </c:choose>
                 </alatag:occurrenceTableRow>
                 <!-- Data Resource -->
-                <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data set">
+                <alatag:occurrenceTableRow annotate="false" section="dataset" fieldCode="dataResource" fieldName="Data resource">
                     <c:choose>
                         <c:when test="${record.raw.attribution.dataResourceUid != null && not empty record.raw.attribution.dataResourceUid}">
                             <c:set target="${fieldsMap}" property="dataResourceUid" value="true" />

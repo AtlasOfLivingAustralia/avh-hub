@@ -70,7 +70,7 @@
                             </select>
                         </p>
                         <p style="margin-top:30px;">
-                            <label for="comment" style="vertical-align:top;">Comment:</label>
+                            <label for="issueComment" style="vertical-align:top;">Comment:</label>
                             <textarea name="comment" id="issueComment" style="width:380px;height:150px;" placeholder="Please add a comment here..."></textarea>
                         </p>
                         <p style="margin-top:20px;">

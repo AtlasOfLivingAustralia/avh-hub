@@ -8,8 +8,7 @@ public class AssertionDTO {
     String name;
     int code;
     boolean isAssertionByUser;
-    List<String> userIds = new ArrayList<String>();
-    List<String> userDisplayNames = new ArrayList<String>();
+    List<ContactDTO> users = new ArrayList<ContactDTO>();
     /**
      * This is the UUID of the assertion made by the user
      * This will be blank for assertions made by other users
@@ -40,20 +39,12 @@ public class AssertionDTO {
         this.name = name;
     }
 
-    public List<String> getUserIds() {
-        return userIds;
+    public List<ContactDTO> getUsers() {
+        return users;
     }
 
-    public void setUserIds(List<String> userIds) {
-        this.userIds = userIds;
-    }
-
-    public List<String> getUserDisplayNames() {
-        return userDisplayNames;
-    }
-
-    public void setUserDisplayNames(List<String> userDisplayNames) {
-        this.userDisplayNames = userDisplayNames;
+    public void setUsers(List<ContactDTO> users) {
+        this.users = users;
     }
 
     public String getUsersAssertionUuid() {

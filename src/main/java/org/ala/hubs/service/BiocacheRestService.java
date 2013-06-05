@@ -270,15 +270,14 @@ public class BiocacheRestService implements BiocacheService {
 
     @Override
     public QualityAssertion[] getUserAssertions(String recordUuid) {
-        //occurrences/0352f657-98fa-436e-81c8-28e54fe06d8c/assertions/
-        final String jsonUri = biocacheUriPrefix + "/occurrences/assertions?recordUuid="+recordUuid;
+        final String jsonUri = biocacheUriPrefix + "/occurrences/"+ recordUuid + "/assertions";
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, QualityAssertion[].class);
     }
     
     @Override
-    public AssertionQuery[] getQueryAssertions(String[] uuids) {
-        final String jsonUri = biocacheUriPrefix + "/assertions/queries/" + StringUtils.join(uuids,",");
+    public AssertionQuery[] getQueryAssertions(String uuid) {
+        final String jsonUri = biocacheUriPrefix + "/occurrences/" + uuid + "/assertionQueries";
         logger.debug("Requesting: " + jsonUri);
         return restTemplate.getForObject(jsonUri, AssertionQuery[].class);
     }
@@ -325,8 +324,6 @@ public class BiocacheRestService implements BiocacheService {
         Assert.notNull(requestParams.getQ(), "query must not be null");
         addQueryContext(requestParams);
         requestParams.setPageSize(0);
-        //requestParams.setFacets(facets);
-        //requestParams.setFlimit(flimit);
         SearchResultDTO searchResults = new SearchResultDTO();
 
         try {
