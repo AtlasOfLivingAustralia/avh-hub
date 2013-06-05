@@ -213,6 +213,14 @@ table.occurrenceTable {
     vertical-align: top;
     font-weight: bold;
 }
+
+.dataQualityResults {
+    border-bottom: 0px !important;
+    margin: 5px 0 10px 0;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
 td.annoText {
     width: 24px;
 }
