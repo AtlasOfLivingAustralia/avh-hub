@@ -889,12 +889,21 @@ button#download {
 }
 #locationInfo {
 	padding-top:.8em;
-	margin-top:.8em;
+	/*margin-top:.8em;*/
 	border-top:1px solid #d9d9d9;
 }
 #locationInfo p {
 	padding-bottom:.8em;
 }
+
+#locationInfo span.pad {
+    margin-right: 15px;
+}
+
+#locationInfo #resultsInfo {
+    margin: 10px 0;
+}
+
 #markerAddress {
 	font-weight:bold;
 }

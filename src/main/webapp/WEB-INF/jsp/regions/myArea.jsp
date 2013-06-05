@@ -57,22 +57,22 @@
                 <div class="controls">
                     <div class="input-append">
                         <input type="text" name="address" id="address" class="input-xlarge">
-                        <input id="locationSearch" type="submit" class="btn" value="Search"/>
                         <input type="hidden" name="latitude" id="latitude" value="${latitude}"/>
                         <input type="hidden" name="longitude" id="longitude" value="${longitude}"/>
                         <input type="hidden" name="location" id="location" value="${location}"/>
+                        <input id="locationSearch" type="submit" class="btn" value="Search"/>
                     </div>
                     <span class="help-inline">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</span>
                 </div>
             </div>
-            <div id="locationInfoZ" class="span12 row-fluid " style="margin-bottom:20px;margin-left:0;">
+            <div id="locationInfo" class="span12 row-fluid " style="margin-bottom:20px;margin-left:0;">
                 <c:if test="${true || not empty location}">
-                    <div class="">
+                    <div id="resultsInfo">
                         Showing records for: <span id="markerAddress">${location}</span>&nbsp;&nbsp<a href="#" id="addressHelp" style="text-decoration: none"><span class="help-container">&nbsp;</span></a>
                     </div>
                 </c:if>
                 <div class="row-fluid">
-                    <span class="">
+                    <span class="pad">
                         Display records in a
                         <select id="radius" name="radius" class="" style="width:auto;line-height:18px;margin-bottom:0;">
                             <option value="1" <c:if test="${radius eq '1.0'}">selected</c:if>>1</option>
@@ -80,11 +80,11 @@
                             <option value="10" <c:if test="${radius eq '10.0'}">selected</c:if>>10</option>
                         </select> km radius
                     </span>
-                    <span class="">
+                    <span class="pad">
                         <a href="#" id="viewAllRecords" class="btn"><i class="icon-list"></i>&nbsp;&nbsp;View
                         <span id="recordsGroupText">all</span>  records</a>
                     </span>
-                    <span class="">
+                    <span class="pad">
                         <button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)" class="btn"><i class="icon-download"></i>&nbsp;&nbsp;Download</button>
                     </span>
                 </div>
