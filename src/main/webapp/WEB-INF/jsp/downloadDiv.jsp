@@ -53,17 +53,17 @@
             <div>
                 <label for="filename" style="float: left;">Download type</label>
                 <div style="display: inline-block; width: 55%; float: left; padding-left: 5px;">
-                    <input type="radio" name="downloadType" value="fast" class="tooltip" title="Faster download but fewer fields are included" checked="checked"/>&nbsp;All Records (fast)<br/>
-                    <input type="radio" name="downloadType" value="detailed" class="tooltip" title="Slower download but all fields are included"/>&nbsp;All Records (detailed)<br/>
-                    <input type="radio" name="downloadType" value="checklist"  class="tooltip" title="Lists all species from the current search results"/>&nbsp;Species Checklist<br/>
+                    <input type="radio" name="downloadType" value="fast" class="tooltips" title="Faster download but fewer fields are included" checked="checked"/>&nbsp;All Records (fast)<br/>
+                    <input type="radio" name="downloadType" value="detailed" class="tooltips" title="Slower download but all fields are included"/>&nbsp;All Records (detailed)<br/>
+                    <input type="radio" name="downloadType" value="checklist"  class="tooltips" title="Lists all species from the current search results"/>&nbsp;Species Checklist<br/>
                     <c:if test="${skin != 'avh'}">
-                        <input type="radio" name="downloadType" value="fieldGuide" class="tooltip" title="PDF file listing species with images and distribution maps"/>&nbsp;Species Field Guide
+                        <input type="radio" name="downloadType" value="fieldGuide" class="tooltips" title="PDF file listing species with images and distribution maps"/>&nbsp;Species Field Guide
                     </c:if>
                 </div>
             </div>
 
             <div style="clear: both; text-align: center;">
-                <br/><input type="submit" value="Start Download" id="downloadStart" class="tooltip"/>
+                <br/><input type="submit" value="Start Download" id="downloadStart" class="btn tooltips"/>
             </div>
 
             <div style="margin-top:10px;">

@@ -111,7 +111,7 @@ $(document).ready(function() {
     });
 
     // QTip tooltips
-    $(".tooltip").qtip({
+    $(".tooltips").qtip({
         style: {
             classes: 'ui-tooltip-rounded ui-tooltip-shadow'
         },
