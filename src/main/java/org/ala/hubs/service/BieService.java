@@ -22,6 +22,7 @@ import java.util.List;
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 public interface BieService {
+
     /**
      * Lookup a GUID for a given scientific name (returns best match/accepted concept)
      * 
@@ -37,5 +38,4 @@ public interface BieService {
      * @return
      */
     public List<String> getNamesForGuids(List<String> guids);
-
 }
