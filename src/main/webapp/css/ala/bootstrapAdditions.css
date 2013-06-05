@@ -278,3 +278,9 @@ h2#headingSciName {
     }
 }
 
+@media (max-width: 767px) {
+    #mapCanvas {
+        margin-top: 50px;
+    }
+}
+

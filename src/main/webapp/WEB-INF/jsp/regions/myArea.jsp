@@ -65,28 +65,28 @@
                     <span class="help-inline">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</span>
                 </div>
             </div>
-            <div id="locationInfoZ" class="span8 row-fluid " style="margin-bottom:20px;margin-left:0;">
+            <div id="locationInfoZ" class="span12 row-fluid " style="margin-bottom:20px;margin-left:0;">
                 <c:if test="${true || not empty location}">
-                    <div class="span12">
+                    <div class="">
                         Showing records for: <span id="markerAddress">${location}</span>&nbsp;&nbsp<a href="#" id="addressHelp" style="text-decoration: none"><span class="help-container">&nbsp;</span></a>
                     </div>
                 </c:if>
                 <div class="row-fluid">
-                    <div class="span4">
+                    <span class="">
                         Display records in a
                         <select id="radius" name="radius" class="" style="width:auto;line-height:18px;margin-bottom:0;">
                             <option value="1" <c:if test="${radius eq '1.0'}">selected</c:if>>1</option>
                             <option value="5" <c:if test="${radius eq '5.0'}">selected</c:if>>5</option>
                             <option value="10" <c:if test="${radius eq '10.0'}">selected</c:if>>10</option>
                         </select> km radius
-                    </div>
-                    <div class="span4">
+                    </span>
+                    <span class="">
                         <a href="#" id="viewAllRecords" class="btn"><i class="icon-list"></i>&nbsp;&nbsp;View
-                        <span id="recordsGroupText">all</span> occurrence records</a>
-                    </div>
-                    <div class="span4">
+                        <span id="recordsGroupText">all</span>  records</a>
+                    </span>
+                    <span class="">
                         <button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)" class="btn"><i class="icon-download"></i>&nbsp;&nbsp;Download</button>
-                    </div>
+                    </span>
                 </div>
                 <div id="dialog-confirm" title="Continue with download?" style="display: none">
                     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You are about to
@@ -127,17 +127,17 @@
                 </div>
             </div><!-- .span7 -->
             <div class="span5">
-                <div id="mapCanvas" style="width: 400px; height: 420px;margin-top:0px;"></div>
-                <div style="font-size:11px;width:400px;color:black;height:20px;" class="show-80">
+                <div id="mapCanvas" style="width: 100%; height: 490px;"></div>
+                <div style="font-size:11px;width:100%;color:black;height:20px;" class="show-80">
                     <table id="cellCountsLegend">
                         <tr>
                             <td style="background-color:#000; color:white; text-align:right;">Records:&nbsp;</td>
-                            <td style="width:60px;background-color:#ffff00;">1&ndash;9</td>
-                            <td style="width:60px;background-color:#ffcc00;">10&ndash;49</td>
-                            <td style="width:60px;background-color:#ff9900;">50&ndash;99</td>
-                            <td style="width:60px;background-color:#ff6600;">100&ndash;249</td>
-                            <td style="width:60px;background-color:#ff3300;">250&ndash;499</td>
-                            <td style="width:60px;background-color:#cc0000;">500+</td>
+                            <td style="background-color:#ffff00;">1&ndash;9</td>
+                            <td style="background-color:#ffcc00;">10&ndash;49</td>
+                            <td style="background-color:#ff9900;">50&ndash;99</td>
+                            <td style="background-color:#ff6600;">100&ndash;249</td>
+                            <td style="background-color:#ff3300;">250&ndash;499</td>
+                            <td style="background-color:#cc0000;">500+</td>
                         </tr>
                     </table>
                 </div>

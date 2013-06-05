@@ -107,7 +107,6 @@
 <div class="container hidden-desktop">
     <%-- Borrowed from http://marcusasplund.com/optout/ --%>
     <a class="btn btn-small toggleResponsive"><i class="icon-resize-full"></i> <span>Desktop</span> version</a>
-    %{--<a class="btn btn-small toggleResponsive"><i class="icon-resize-full"></i> Desktop version</a>--}%
 </div>
 
 <ala:footer/>

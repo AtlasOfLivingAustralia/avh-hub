@@ -743,9 +743,13 @@ table.propertyTable td.propertyNames {
     margin-top: 10px;
 }
 
+#taxaBox {
+    border-bottom:2px solid #d9d9d9;
+}
+
 #taxaBox div#rightList {
     float: left;
-    width: 359px;
+    width: 66%;
     padding: 0;
     margin: 0;
 }
@@ -754,10 +758,10 @@ table.propertyTable td.propertyNames {
     width: 365px;
     /*height: 240px;*/
 	border:0;
-	border-bottom:4px solid #d9d9d9;
+	/*border-bottom:4px solid #d9d9d9;*/
 }
 #taxaBox #leftList {
-    width: 181px;
+    width: 33%;
     float: left;
 }
 #taxaBox td, #taxaBox th {
@@ -770,7 +774,7 @@ table.propertyTable td.propertyNames {
 #taxaBox th {
     text-align: left;
 }
-#taxaBox #leftList th {
+#taxaBox thead tr {
 	border-bottom:2px solid #d9d9d9;
 }
 #taxaBox td.indent1 {
@@ -926,7 +930,6 @@ html>body div.tableContainer table {
 thead.fixedHeader tr {
 	position: relative;
     width: 100%;
-    background-color: white;
 }
 
 /* set THEAD element to have block level attributes. All other non-IE browsers            */
@@ -1261,6 +1264,10 @@ li.showHide a {
 
 #header #breadcrumb {
     width: 750px;
+}
+
+form#searchForm {
+    margin-bottom: 0;
 }
 
 #downloadForm {

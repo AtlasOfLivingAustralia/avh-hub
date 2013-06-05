@@ -804,7 +804,7 @@ function populateSpeciesGroups(data) {
         
         // Dynamically set height of #taxaDiv (to match containing div height)
         var tableHeight = $('#taxa-level-0').height();
-        $('.tableContainer').height(tableHeight+8);
+        $('.tableContainer').height(tableHeight+2);
         var tbodyHeight = $('#taxa-level-0 tbody').height();
         $('#rightList tbody').height(tbodyHeight);
         $('#taxa-level-0 tbody tr.activeRow').click();
