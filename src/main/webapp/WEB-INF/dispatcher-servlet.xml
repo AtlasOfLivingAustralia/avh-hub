@@ -115,6 +115,7 @@
             </props>
         </property>
         <property name="defaultErrorView" value="error/general" />
+        <property name="warnLogCategory" value="SimpleMappingExceptionResolver"/>
     </bean>
 
     <!-- Content negotiation view resolver - uses either accept header mime type of the request
