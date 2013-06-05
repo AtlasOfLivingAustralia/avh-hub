@@ -882,7 +882,7 @@
                         </tr>
                         </c:forEach>
 
-                        <c:set var="testSet" value="${record.systemAssertions['warnings']}"/>
+                        <c:set var="testSet" value="${record.systemAssertions['warning']}"/>
                         <c:forEach items="${testSet}" var="test">
                         <tr>
                             <td><spring:message code="${test.name}" text="${test.name}"/></td>
