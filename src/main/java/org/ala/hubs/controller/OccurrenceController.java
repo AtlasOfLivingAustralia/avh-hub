@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,7 +31,6 @@ import au.org.ala.util.DuplicateRecordDetails;
 import au.org.ala.biocache.AssertionQuery;
 
 import java.net.URLDecoder;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
@@ -43,6 +41,8 @@ import org.ala.biocache.util.CollectionsCache;
 import org.ala.client.util.RestfulClient;
 import org.ala.hubs.dto.*;
 import org.ala.hubs.service.*;
+import org.ala.hubs.util.AssertionUtils;
+import org.ala.hubs.util.ContactUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -85,17 +85,19 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping(value = {"/occurrences","/occurrence"})
 public class OccurrenceController {
 
-	private final static Logger logger = Logger.getLogger(OccurrenceController.class);
-	
-	/** BiocacheService injected by IoC */
+    private final static Logger logger = Logger.getLogger(OccurrenceController.class);
+    
+    /** BiocacheService injected by IoC */
     @Inject
     private BiocacheService biocacheService;
     @Inject
     private BieService bieService;
     @Inject
-	protected RestfulClient restfulClient;
+    protected RestfulClient restfulClient;
     @Inject
     protected CollectionsCache collectionsCache;
+    @Inject
+    protected ContactUtils contactUtils;
     @Inject
     protected GazetteerCache gazetteerCache;
     @Inject
@@ -108,8 +110,6 @@ public class OccurrenceController {
     protected LoggerService loggerService;
     @Inject
     protected CollectionsContainer collectionsContainer;
-    @Inject
-    protected AuthService authService;
 
     /** Spring injected RestTemplate object */
     @Inject
@@ -151,7 +151,6 @@ public class OccurrenceController {
     private final String ANNOTATE_EDITOR = "occurrences/annotationEditor";
     protected String collectoryBaseUrl = "http://collections.ala.org.au";
     protected String summaryServiceUrl  = collectoryBaseUrl + "/lookup/summary";
-    protected String collectionContactsUrl = collectoryBaseUrl + "/ws/collection";
 
     /**
      * Expects a request body in JSON
@@ -179,6 +178,7 @@ public class OccurrenceController {
 
     /**
      * Sets up state variables and calls the annotation editor jsp.
+     *
      * @param uuid
      * @param model
      * @param request
@@ -191,7 +191,7 @@ public class OccurrenceController {
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
         if (assertion != null) {
-        	
+            
             AttributePrincipal principal = assertion.getPrincipal();
             model.addAttribute("userId", principal.getName());
 
@@ -216,19 +216,19 @@ public class OccurrenceController {
      * @throws Exception
      */
     @RequestMapping(value = "/searchByArea*", method = RequestMethod.GET)
-	public String occurrenceSearchByArea(
-			@RequestParam(value="taxa", required=false) String[] taxaQuery,
+    public String occurrenceSearchByArea(
+            @RequestParam(value="taxa", required=false) String[] taxaQuery,
             SpatialSearchRequestParams requestParams,
             BindingResult result,
             HttpServletRequest request,
-			Model model) throws Exception {
+            Model model) throws Exception {
         logger.debug("/searchByArea* TOP");
         
         if (requestParams.getQ() == null || requestParams.getQ().isEmpty()) {
-			return RECORD_LIST;
-		}
+            return RECORD_LIST;
+        }
 
-		if (request.getParameter("pageSize") == null) {
+        if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20); // default is 10
         }
         
@@ -266,14 +266,14 @@ public class OccurrenceController {
             requestParams.setRadius(Float.parseFloat(queryParts[3]));
         }
 
-		StringBuilder displayQuery = new StringBuilder(StringUtils.substringAfter(query, ":").replace("*", "(all taxa)"));
+        StringBuilder displayQuery = new StringBuilder(StringUtils.substringAfter(query, ":").replace("*", "(all taxa)"));
         displayQuery.append(" - within "+requestParams.getRadius()+" km of point ("+requestParams.getLat()+", "+requestParams.getLon()+")");
-		requestParams.setDisplayString(displayQuery.toString());
+        requestParams.setDisplayString(displayQuery.toString());
         // perform the search
         doFullTextSearch(taxaQuery, model, requestParams, request);
 
-		return RECORD_LIST;
-	}
+        return RECORD_LIST;
+    }
 
     /**
      * Performs a search for occurrence records via Biocache web services
@@ -353,7 +353,7 @@ public class OccurrenceController {
             model.addAttribute("dir","desc");
         }
         
-		doFullTextSearch(taxaQuery, model, requestParams, request);
+        doFullTextSearch(taxaQuery, model, requestParams, request);
         
         return RECORD_LIST;
     }
@@ -460,7 +460,6 @@ public class OccurrenceController {
         response.sendRedirect(biocacheUriPrefix + "/occurrences/search.json?" + requestParams.toString());
     }
 
-
     /**
      * Taxa URL from Species pages - redirect to regular search page.
      *
@@ -469,7 +468,7 @@ public class OccurrenceController {
      * @throws Exception
      */
     @RequestMapping(value = "/taxa/{guid:.+}*", method = RequestMethod.GET)
-	public String occurrenceSearchByTaxon(@PathVariable("guid") String guid) throws Exception {
+    public String occurrenceSearchByTaxon(@PathVariable("guid") String guid) throws Exception {
         return "redirect:/occurrences/search?q=lsid:" + guid;
     }
 
@@ -614,7 +613,7 @@ public class OccurrenceController {
             requestParams.setQ("collection_uid:" + query);
         }
         
-		String[] tq = null;
+        String[] tq = null;
         doFullTextSearch(tq, model, requestParams, request);
         
         return RECORD_LIST;
@@ -640,16 +639,23 @@ public class OccurrenceController {
             return RECORD_LIST;
         }
 
-		logger.debug("solr query: " + requestParams);
-		SearchResultDTO searchResult = biocacheService.findByCollection(uid, requestParams);
-		model.addAttribute("searchResults", searchResult);
+        logger.debug("solr query: " + requestParams);
+        SearchResultDTO searchResult = biocacheService.findByCollection(uid, requestParams);
+        model.addAttribute("searchResults", searchResult);
         //model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
         addCommonDataToModel(model);
-		return RECORD_LIST;
-	}
+        return RECORD_LIST;
+    }
 
-
+    /**
+     * Retrieve and format outlier details.
+     *
+     * @param uuid
+     * @param model
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = {"/outlier/{uuid:.+}"}, method = RequestMethod.GET)
     public String getOutlierInfo(@PathVariable("uuid") String uuid, Model model) throws Exception {
 
@@ -700,243 +706,245 @@ public class OccurrenceController {
      * Display an occurrence record by retrieving via its uuid.
      *
      * @param uuid
+     * @return user assertions
+     * @throws Exception
+     */
+    @RequestMapping(value = {"/{uuid:.+}/userAssertions.json"}, method = RequestMethod.GET)
+    public Map<String,Object[]> getUserAssertions(@PathVariable("uuid") String uuid) throws Exception {
+
+        QualityAssertion[] userAssertions = biocacheService.getUserAssertions(uuid);
+        AssertionQuery[] assertionQueries = biocacheService.getQueryAssertions(uuid);
+
+        //handle the user assertions
+        if(userAssertions == null){
+            userAssertions = new QualityAssertion[0];
+        }
+        if(assertionQueries == null){
+            assertionQueries = new AssertionQuery[0];
+        }
+
+        for(QualityAssertion qa : userAssertions){
+            qa.setName(messageSource.getMessage(qa.getName(), null, qa.getName(), Locale.getDefault()));
+        }
+
+        for(AssertionQuery aq : assertionQueries){
+            aq.setAssertionType(messageSource.getMessage(aq.getAssertionType(), null, aq.getAssertionType(), Locale.getDefault()));
+        }
+
+        Map<String,Object[]> assertions = new HashMap<String,Object[]>();
+        assertions.put("userAssertions", userAssertions);
+        assertions.put("assertionQueries", assertionQueries);
+        return assertions;
+    }
+
+    /**
+     * Display an occurrence record by retrieving via its uuid.
+     *
+     * @param uuid
      * @param request
      * @param model
      * @return
      * @throws Exception
      */
     @RequestMapping(value = {"/{uuid:.+}", "/fragment/{uuid:.+}"}, method = RequestMethod.GET)
-	public String getOccurrenceRecord(@PathVariable("uuid") String uuid,
+    public String getOccurrenceRecord(@PathVariable("uuid") String uuid,
             HttpServletRequest request, Model model) throws Exception {
+        try {
+            logger.debug("User principal: " + request.getUserPrincipal());
+            logger.debug("Request servletPath = " + request.getServletPath());
+            logger.debug("User principal: " + request.getUserPrincipal());
+            logger.debug("Club role = " + clubRoleForHub);
 
-        logger.debug("User principal: " + request.getUserPrincipal());
-        logger.debug("Request servletPath = " + request.getServletPath());
-        logger.debug("User principal: " + request.getUserPrincipal());
-        logger.debug("Club role = " + clubRoleForHub);
+            final HttpSession session = request.getSession(false);
+            final Assertion assertion = (Assertion) (session == null ?
+                    request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) :
+                    session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
 
-        final HttpSession session = request.getSession(false);
-        final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
+            //need to handle email VS userID
+            String userId = null;    //CAS ID
+            String userEmail = null; //user's email address
 
-        String userId = null;
-
-        if(assertion!=null){
-            AttributePrincipal principal = assertion.getPrincipal();
-            userId = principal.getName();
-            model.addAttribute("userId", userId);
-            String fullName = "";
-            if (principal.getAttributes().get("firstname")!=null &&  principal.getAttributes().get("lastname")!=null) {
-                fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
-            }
-            model.addAttribute("userDisplayName", fullName);
-        }
-
-        String clubApiKey = null;
-
-        // Check if user has role to view "club" version of records
-        if (userId != null && (request.isUserInRole(clubRoleForHub))) {
-            clubApiKey = apiKey;
-            model.addAttribute("clubView", true);
-        }
-
-        uuid = removeUriExtension(uuid);
-        model.addAttribute("uuid", uuid);
-        logger.debug("Retrieving occurrence record with guid: '" + uuid + "'");
-        OccurrenceDTO record = biocacheService.getRecordByUuid(uuid, clubApiKey);
-        model.addAttribute("errorCodes", biocacheService.getUserCodes());
-        model.addAttribute("isReadOnly", biocacheService.isReadOnly());
-
-        String collectionUid = null;
-        String rowKey = (record != null && record.getRaw() != null)? record.getRaw().getRowKey() : uuid;
-        // add the rowKey for the record.
-        model.addAttribute("rowKey", rowKey);
-
-        if (record != null && record.getProcessed() != null) { // .getAttribution().getCollectionCodeUid()
-            FullRecord  pr = record.getProcessed();
-            collectionUid = pr.getAttribution().getCollectionUid();
-
-            if(collectionUid != null){
-                Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionUid);
-                if ((Integer) resp[0] == HttpStatus.SC_OK) {
-                    String json = (String) resp[1];
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        JsonNode rootNode = mapper.readValue(json, JsonNode.class);
-                        String name = rootNode.path("name").getTextValue();
-                        String logo = rootNode.path("institutionLogoUrl").getTextValue();
-                        String institution = rootNode.path("institution").getTextValue();
-                        model.addAttribute("collectionName", name);
-                        model.addAttribute("collectionLogo", logo);
-                        model.addAttribute("collectionInstitution", institution);
-                    } catch (Exception e) {
-                        logger.error(e.toString(), e);
-                    }
+            if(assertion != null){
+                AttributePrincipal principal = assertion.getPrincipal();
+                userId = (String) principal.getAttributes().get("userid");
+                userEmail = (String) principal.getAttributes().get("email");
+                model.addAttribute("userId", userId);
+                model.addAttribute("userEmail", userEmail);
+                String fullName = "";
+                if (principal.getAttributes().get("firstname") != null &&  principal.getAttributes().get("lastname") != null) {
+                    fullName = principal.getAttributes().get("firstname").toString() + " " + principal.getAttributes().get("lastname").toString();
                 }
+                model.addAttribute("userDisplayName", fullName);
             }
 
-            // Check is user has role: ROLE_COLLECTION_EDITOR or ROLE_COLLECTION_ADMIN
-            // and then call Collections WS to see if they are a member of the current collection uid
-            if (userId != null && collectionUid != null
-                    && (request.isUserInRole("ROLE_ADMIN")
-                    || request.isUserInRole("ROLE_COLLECTION_ADMIN")
-                    || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
-                logger.debug("User has appropriate ROLE...");
-                try {
-                    final String jsonUri = collectionContactsUrl + "/" + collectionUid + "/contacts.json";
-                    logger.debug("Requesting: " + jsonUri);
-                    List<Map<String, Object>> contacts = restTemplate.getForObject(jsonUri, List.class);
-                    logger.debug("number of contacts = " + contacts.size());
+            String clubApiKey = null;
 
-                    for (Map<String, Object> contact : contacts) {
-                        Map<String, String> details = (Map<String, String>) contact.get("contact");
-                        String email = details.get("email");
-                        logger.debug("email = " + email);
-                        if (userId.equalsIgnoreCase(email)) {
-                            logger.info("Logged in user has collection admin rights: " + email);
-                            model.addAttribute("isCollectionAdmin", true);
-                        } else if (request.isUserInRole("ROLE_ADMIN")) {
-                            model.addAttribute("isCollectionAdmin", true);
+            // Check if user has role to view "club" version of records
+            if (userId != null && (request.isUserInRole(clubRoleForHub))) {
+                clubApiKey = apiKey;
+                model.addAttribute("clubView", true);
+            }
+
+            uuid = removeUriExtension(uuid);
+            model.addAttribute("uuid", uuid);
+            logger.debug("Retrieving occurrence record with guid: '" + uuid + "'");
+            OccurrenceDTO record = biocacheService.getRecordByUuid(uuid, clubApiKey);
+            model.addAttribute("errorCodes", biocacheService.getUserCodes());
+            model.addAttribute("isReadOnly", biocacheService.isReadOnly());
+
+            String collectionUid = null;
+            String rowKey = (record != null && record.getRaw() != null)? record.getRaw().getRowKey() : uuid;
+            // add the rowKey for the record.
+            model.addAttribute("rowKey", rowKey);
+
+            if (record != null && record.getProcessed() != null) { // .getAttribution().getCollectionCodeUid()
+                FullRecord  pr = record.getProcessed();
+                collectionUid = pr.getAttribution().getCollectionUid();
+
+                if(collectionUid != null){
+                    Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionUid);
+                    if ((Integer) resp[0] == HttpStatus.SC_OK) {
+                        String json = (String) resp[1];
+                        try {
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode rootNode = mapper.readValue(json, JsonNode.class);
+                            String name = rootNode.path("name").getTextValue();
+                            String logo = rootNode.path("institutionLogoUrl").getTextValue();
+                            String institution = rootNode.path("institution").getTextValue();
+                            model.addAttribute("collectionName", name);
+                            model.addAttribute("collectionLogo", logo);
+                            model.addAttribute("collectionInstitution", institution);
+                        } catch (Exception e) {
+                            logger.error(e.toString(), e);
                         }
                     }
-                } catch (Exception ex) {
-                    logger.error("RestTemplate error: " + ex.getMessage(), ex);
                 }
-            }
 
-            //handle the query assertions
-            AssertionQuery[] assertionQueries= null;
-            if(record.getProcessed().getQueryAssertions().size()>0){
-                assertionQueries = biocacheService.getQueryAssertions(record.getProcessed().getQueryAssertions().keySet().toArray(new String[]{}));
-                model.addAttribute("queryAssertions", assertionQueries);
-                model.addAttribute("queryAssertionTypes" , new HashSet<String>(record.getProcessed().getQueryAssertions().values()));
-            }
-
-
-            if (record.getUserAssertions() != null || assertionQueries!=null) {
-              QualityAssertion[] array = record.getUserAssertions() != null?record.getUserAssertions().toArray(new QualityAssertion[0]) : null;
-                Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(array,assertionQueries, userId);
-                model.addAttribute("groupedAssertions", grouped);
-            }
-
-
-            List<SampleDTO> environmentalSampleInfo = new ArrayList<SampleDTO>();
-            Map<String, Map<String, Object>> layersMetadata = layerMetadataCache.getLayerMetadataLookup();
-
-            //load up the environmental properties
-            if(record.getProcessed().getEl() != null){
-                for (Map.Entry<String, String> entry :record.getProcessed().getEl().entrySet()){
-                    logger.debug("El: " + entry.getKey() + "/" + entry.getValue());
-                    Map<String,Object> metdata = layersMetadata.get(entry.getKey());
-                    if(metdata!=null){
-                        SampleDTO sampleDTO = new SampleDTO((String) metdata.get("uid"),
-                                (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString());
-                        sampleDTO.setClassification1((String)metdata.get("classification1"));
-                        sampleDTO.setUnits((String)metdata.get("environmentalvalueunits"));
-                        environmentalSampleInfo.add(sampleDTO);
+                // Check is user has role: ROLE_COLLECTION_EDITOR or ROLE_COLLECTION_ADMIN
+                // and then call Collections WS to see if they are a member of the current collection uid
+                if (userId != null && userEmail != null && collectionUid != null
+                        && (request.isUserInRole("ROLE_ADMIN")
+                        || request.isUserInRole("ROLE_COLLECTION_ADMIN")
+                        || request.isUserInRole("ROLE_COLLECTION_EDITOR"))) {
+                    logger.debug("User has appropriate ROLE...");
+                    try {
+                        if (request.isUserInRole("ROLE_ADMIN")) {
+                            model.addAttribute("isCollectionAdmin", true);
+                        } else {
+                            model.addAttribute("isCollectionAdmin",contactUtils.isCollectionsAdmin(collectionUid, userEmail));
+                        }
+                    } catch (Exception ex) {
+                        logger.error("RestTemplate error: " + ex.getMessage(), ex);
                     }
                 }
-            }
 
-            List<SampleDTO> contextualSampleInfo = new ArrayList<SampleDTO>();
-            if(record.getProcessed().getCl() != null){
-                for (Map.Entry<String, String> entry : record.getProcessed().getCl().entrySet()){
-                    logger.debug("Cl: " + entry.getKey() + "/" + entry.getValue());
-                    Map<String,Object> metdata = layersMetadata.get(entry.getKey());
-                    if(metdata!=null){
-                        SampleDTO sampleDTO = new SampleDTO((String) metdata.get("uid"),
-                                (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString());
-                        sampleDTO.setClassification1((String)metdata.get("classification1"));
-                        //sampleDTO.setUnits((String)metdata.get("environmentalvalueunits"));  // not relevant
-                        contextualSampleInfo.add(sampleDTO);
+                //handle the query assertions
+                AssertionQuery[] assertionQueries = null;
+                if(record.getProcessed().getQueryAssertions().size() > 0){
+                    assertionQueries = biocacheService.getQueryAssertions(record.getRaw().getUuid());
+                    model.addAttribute("queryAssertions", assertionQueries);
+                    model.addAttribute("queryAssertionTypes" , new HashSet<String>(record.getProcessed().getQueryAssertions().values()));
+                }
+
+                //handle the user assertions
+                if (record.getUserAssertions() != null || assertionQueries != null) {
+                    QualityAssertion[] array = record.getUserAssertions() != null ? record.getUserAssertions().toArray(new QualityAssertion[0]) : null;
+                    Collection<AssertionDTO> grouped = AssertionUtils.groupAssertions(array, assertionQueries, userId);
+                    model.addAttribute("groupedAssertions", grouped);
+                }
+
+                //load up the environmental properties
+                Map<String, Map<String, Object>> layersMetadata = layerMetadataCache.getLayerMetadataLookup();
+                List<SampleDTO> environmentalSampleInfo = extractEnvironmentalInfo(record, layersMetadata);
+                List<SampleDTO> contextualSampleInfo = extractContextualInfo(record, layersMetadata);
+
+                if(record.getProcessed().getOccurrence().getOutlierForLayers() != null){
+                    List<Map<String,Object>> metdataForOutlierLayers = new ArrayList<Map<String,Object>>();
+                    for(String layerId: record.getProcessed().getOccurrence().getOutlierForLayers()){
+                        metdataForOutlierLayers.add(layersMetadata.get(layerId));
                     }
+                    model.addAttribute("metadataForOutlierLayers", metdataForOutlierLayers);
                 }
-            }
 
-            if(record.getProcessed().getOccurrence().getOutlierForLayers() != null){
-                List<Map<String,Object>> metdataForOutlierLayers = new ArrayList<Map<String,Object>>();
-                for(String layerId: record.getProcessed().getOccurrence().getOutlierForLayers()){
-                    metdataForOutlierLayers.add(layersMetadata.get(layerId));
+                boolean suppressDuplicateWarning = false;
+                if(record.getProcessed().getOccurrence().getDuplicationStatus() != null){
+                    //retrieve the duplication information
+                    String duuid = record.getProcessed().getOccurrence().getDuplicationStatus().equals("R")?uuid:record.getProcessed().getOccurrence().getAssociatedOccurrences();
+                    au.org.ala.util.DuplicateRecordDetails drd = biocacheService.getDuplicateRecordDetails(duuid);
+                    if(StringUtils.isNotEmpty(biocacheService.getQueryContext()))
+                        drd = getSantisedDuplicateRecords(drd);
+                    if(drd!=null){
+                        model.addAttribute("duplicateRecordDetails",drd);
+                    }
+                    else{
+                        //need to suppress the issue
+                        suppressDuplicateWarning = true;
+                        record.getProcessed().getOccurrence().setDuplicationStatus(null);
+                        record.getProcessed().getOccurrence().setAssociatedOccurrences(null);
+                    }
+                    //add the data resource cache to the map to allow lookup for names
+                    model.addAttribute("dataResourceCodes", collectionsContainer.getDataResourceMap());
                 }
-                model.addAttribute("metadataForOutlierLayers", metdataForOutlierLayers);
-            }
 
-            boolean suppressDuplicateWarning = false;
-            if(record.getProcessed().getOccurrence().getDuplicationStatus() != null){
-                //retrieve the duplication information
-                String duuid = record.getProcessed().getOccurrence().getDuplicationStatus().equals("R")?uuid:record.getProcessed().getOccurrence().getAssociatedOccurrences();
-                au.org.ala.util.DuplicateRecordDetails drd = biocacheService.getDuplicateRecordDetails(duuid);
-                if(StringUtils.isNotEmpty(biocacheService.getQueryContext()))
-                    drd = getSantisedDuplicateRecords(drd);
-                if(drd!=null){
-                    model.addAttribute("duplicateRecordDetails",drd);
-                }
-                else{
-                    //need to suppress the issue
-                    suppressDuplicateWarning =true;
-                    record.getProcessed().getOccurrence().setDuplicationStatus(null);
-                    record.getProcessed().getOccurrence().setAssociatedOccurrences(null);
-                }
-                //add the data resource cache to the map to allow lookup for names
-                model.addAttribute("dataResourceCodes", collectionsContainer.getDataResourceMap());
-            }
-
-            //suppress particular issues from being reported
-            String localSuppressIssues = suppressDuplicateWarning?suppressIssues + ",inferredDuplicateRecord":suppressIssues;
-            List<String> issuesToSuppress = Arrays.asList(StringUtils.split(localSuppressIssues, ','));
-            List<QualityAssertion> sanitisedAssertions = new ArrayList<QualityAssertion>();
+//                //suppress particular issues from being reported
+//                String localSuppressIssues = suppressDuplicateWarning ? suppressIssues + ",inferredDuplicateRecord" : suppressIssues;
+//                List<String> issuesToSuppress = Arrays.asList(StringUtils.split(localSuppressIssues, ','));
+//                List<QualityAssertion> sanitisedAssertions = new ArrayList<QualityAssertion>();
 //                for(QualityAssertion qassertion : record.getSystemAssertions()){
-//                    if(!issuesToSuppress.contains(qassertion.name())) sanitisedAssertions.add(qassertion);
+//                    if(!issuesToSuppress.contains(qassertion.name())){
+//                        sanitisedAssertions.add(qassertion);
+//                    }
 //                }
 //                record.setSystemAssertions(sanitisedAssertions);
 
-            // sort the list of SampleDTO objects
-            Collections.sort(contextualSampleInfo, new SampleDTOComparator());
-            Collections.sort(environmentalSampleInfo, new SampleDTOComparator());
+                // sort the list of SampleDTO objects
+                Collections.sort(contextualSampleInfo, new SampleDTOComparator());
+                Collections.sort(environmentalSampleInfo, new SampleDTOComparator());
 
-            model.addAttribute("contextualSampleInfo", contextualSampleInfo);
-            model.addAttribute("environmentalSampleInfo", environmentalSampleInfo);
-            model.addAttribute("record", record);
-            model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
-            // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
-            Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
-            if(suppressDuplicateWarning){
-                //need to remove the duplicate information for the compare records
-                List originalList = (List)compareRecord.get("Occurrence");
-                List newList = new ArrayList();
-                for(Object item: originalList){
-                    //should be a map
-                    if(item instanceof Map){
-                        Map map = (Map)item;
-                        String name = map.get("name").toString();
-                        boolean add = true;
-                        if(name.equals("duplicationStatus") || name.equals("associatedOccurrences")){
-                            map.put("processed","");
-                            if(StringUtils.isEmpty((String)map.get("raw")))
-                              add = false;
+                model.addAttribute("contextualSampleInfo", contextualSampleInfo);
+                model.addAttribute("environmentalSampleInfo", environmentalSampleInfo);
+                model.addAttribute("record", record);
+                model.addAttribute("sensitiveDatasets", StringUtils.split(sensitiveDatasets,","));
+                // Get the simplified/flattened compare version of the record for "Raw vs. Processed" table
+                Map<String, Object> compareRecord = biocacheService.getCompareRecord(rowKey);
+                if(suppressDuplicateWarning){
+                    //need to remove the duplicate information for the compare records
+                    List originalList = (List)compareRecord.get("Occurrence");
+                    List newList = new ArrayList();
+                    for(Object item: originalList){
+                        //should be a map
+                        if(item instanceof Map){
+                            Map map = (Map)item;
+                            String name = map.get("name").toString();
+                            boolean add = true;
+                            if(name.equals("duplicationStatus") || name.equals("associatedOccurrences")){
+                                map.put("processed","");
+                                if(StringUtils.isEmpty((String)map.get("raw")))
+                                  add = false;
+                            }
+                            if(add)
+                                newList.add(map);
+
                         }
-                        if(add)
-                            newList.add(map);
+                    }
+                    compareRecord.put("Occurrence", newList);
+                }
+                model.addAttribute("compareRecord", compareRecord);
+                model.addAttribute("dwcExcludeFields", dwcExclude);
 
+                Map<String, String> formattedImageSizes = new HashMap<String, String>();
+                if(record.getImages() != null){
+                    for (MediaDTO image : record.getImages()) {
+                        String originalImageUrl = image.getAlternativeFormats().get("imageUrl");
+                        int imageSizeInBytes = getImageSizeInBytes(originalImageUrl);
+                        String formattedImageSize = FileUtils.byteCountToDisplaySize(imageSizeInBytes);
+                        formattedImageSizes.put(originalImageUrl, formattedImageSize);
                     }
                 }
-                compareRecord.put("Occurrence", newList);
-                //System.out.println("Occurrence: " + test.getClass() + " : " + test.get(0).toString());
+                model.addAttribute("formattedImageSizes", formattedImageSizes);
             }
-            model.addAttribute("compareRecord", compareRecord);
-            model.addAttribute("dwcExcludeFields", dwcExclude);
-            //model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
-            //model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
-
-            Map<String, String> formattedImageSizes = new HashMap<String, String>();
-            if(record.getImages()!=null){
-                for (MediaDTO image : record.getImages()) {
-                    String originalImageUrl = image.getAlternativeFormats().get("imageUrl");
-                    int imageSizeInBytes = getImageSizeInBytes(originalImageUrl);
-                    String formattedImageSize = FileUtils.byteCountToDisplaySize(imageSizeInBytes);
-                    formattedImageSizes.put(originalImageUrl, formattedImageSize);
-                }
-            }
-
-            model.addAttribute("formattedImageSizes", formattedImageSizes);
+        } catch (Exception e){
+            logger.error(e.getMessage(), e);
         }
 
         String viewName = RECORD_SHOW;
@@ -946,21 +954,22 @@ public class OccurrenceController {
             viewName = RECORD_SHOW_CORE;
         }
 
-		return viewName;
-	}
-  /*
-   * Reduces the duplicate record list to record belonging to data resources supported by this hub  
-   */
-  private DuplicateRecordDetails getSantisedDuplicateRecords(DuplicateRecordDetails drd){
-      String repdr = drd.getRowKey().split("\\|")[0];
-      ArrayList<DuplicateRecordDetails> sanitisedDuplicates = new ArrayList<DuplicateRecordDetails>();
-      if(collectoryUidCache.getDataResources().contains(repdr)){
-          //only include the "duplicates" that belong a dr
-         for(DuplicateRecordDetails dup:drd.getDuplicates()){
-             String dr = dup.getRowKey().split("\\|")[0];
-             if(collectoryUidCache.getDataResources().contains(dr)){
-                 sanitisedDuplicates.add(dup);
-             }
+        return viewName;
+    }
+
+    /*
+    * Reduces the duplicate record list to record belonging to data resources supported by this hub
+    */
+    private DuplicateRecordDetails getSantisedDuplicateRecords(DuplicateRecordDetails drd){
+        String repdr = drd.getRowKey().split("\\|")[0];
+        ArrayList<DuplicateRecordDetails> sanitisedDuplicates = new ArrayList<DuplicateRecordDetails>();
+        if(collectoryUidCache.getDataResources().contains(repdr)){
+            //only include the "duplicates" that belong a dr
+            for(DuplicateRecordDetails dup:drd.getDuplicates()){
+                String dr = dup.getRowKey().split("\\|")[0];
+                if(collectoryUidCache.getDataResources().contains(dr)){
+                    sanitisedDuplicates.add(dup);
+                }
          }
          if(sanitisedDuplicates.size()>0){
              drd.setDuplicates(sanitisedDuplicates);
@@ -968,15 +977,52 @@ public class OccurrenceController {
          }
       }
       return null;
-  }
+    }
 
-  private int getImageSizeInBytes(String imageURL) throws Exception {
-      HttpClient httpClient = new HttpClient();
-      HeadMethod headMethod = new HeadMethod(imageURL);
-      httpClient.executeMethod(headMethod);
-      String lengthString = headMethod.getResponseHeader("Content-Length").getValue();
-      return Integer.parseInt(lengthString);
-  }
+
+    private List<SampleDTO> extractEnvironmentalInfo(OccurrenceDTO record, Map<String, Map<String, Object>> layersMetadata) {
+        List<SampleDTO> environmentalSampleInfo = new ArrayList<SampleDTO>();
+        if(record.getProcessed().getEl() != null){
+            for (Map.Entry<String, String> entry :record.getProcessed().getEl().entrySet()){
+                logger.debug("El: " + entry.getKey() + "/" + entry.getValue());
+                Map<String,Object> metdata = layersMetadata.get(entry.getKey());
+                if(metdata!=null){
+                    SampleDTO sampleDTO = new SampleDTO((String) metdata.get("uid"),
+                            (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString());
+                    sampleDTO.setClassification1((String)metdata.get("classification1"));
+                    sampleDTO.setUnits((String)metdata.get("environmentalvalueunits"));
+                    environmentalSampleInfo.add(sampleDTO);
+                }
+            }
+        }
+        return environmentalSampleInfo;
+    }
+
+    private List<SampleDTO> extractContextualInfo(OccurrenceDTO record, Map<String, Map<String, Object>> layersMetadata) {
+        List<SampleDTO> contextualSampleInfo = new ArrayList<SampleDTO>();
+        if(record.getProcessed().getCl() != null){
+            for (Map.Entry<String, String> entry : record.getProcessed().getCl().entrySet()){
+                logger.debug("Cl: " + entry.getKey() + "/" + entry.getValue());
+                Map<String,Object> metdata = layersMetadata.get(entry.getKey());
+                if(metdata!=null){
+                    SampleDTO sampleDTO = new SampleDTO((String) metdata.get("uid"),
+                            (String)metdata.get("name"), (String)metdata.get("displayname"), entry.getValue().toString());
+                    sampleDTO.setClassification1((String)metdata.get("classification1"));
+                    //sampleDTO.setUnits((String)metdata.get("environmentalvalueunits"));  // not relevant
+                    contextualSampleInfo.add(sampleDTO);
+                }
+            }
+        }
+        return contextualSampleInfo;
+    }
+
+    private int getImageSizeInBytes(String imageURL) throws Exception {
+        HttpClient httpClient = new HttpClient();
+        HeadMethod headMethod = new HeadMethod(imageURL);
+        httpClient.executeMethod(headMethod);
+        String lengthString = headMethod.getResponseHeader("Content-Length").getValue();
+        return Integer.parseInt(lengthString);
+    }
 
     /**
      * Requests for mapping functions
@@ -988,13 +1034,13 @@ public class OccurrenceController {
      * @return
      * @throws Exception
      */
-	@RequestMapping(value = "/map", method = RequestMethod.GET)
-	public String map(SpatialSearchRequestParams requestParams, BindingResult result, Model model,
+    @RequestMapping(value = "/map", method = RequestMethod.GET)
+    public String map(SpatialSearchRequestParams requestParams, BindingResult result, Model model,
             HttpServletRequest request) throws Exception {
 
-		if (StringUtils.isEmpty(requestParams.getQ())) {
-			return RECORD_MAP;
-		} else if (request.getParameter("pageSize") == null) {
+        if (StringUtils.isEmpty(requestParams.getQ())) {
+            return RECORD_MAP;
+        } else if (request.getParameter("pageSize") == null) {
             requestParams.setPageSize(20);
         }
 
@@ -1003,13 +1049,10 @@ public class OccurrenceController {
         }
 
         //reverse the sort direction for the "score" field a normal sort should be descending while a reverse sort should be ascending
-        //sortDirection = getSortDirection(sortField, sortDirection);
-
-		requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
+        requestParams.setDisplayString(requestParams.getQ()); // replace with sci name if a match is found
         SearchResultDTO searchResult = biocacheService.findBySpatialFulltextQuery(requestParams);
         logger.debug("searchResult: " + searchResult.getTotalRecords());
         model.addAttribute("searchResults", searchResult);
-        //model.addAttribute("facetMap", addFacetMap(requestParams.getFq()));
         model.addAttribute("lastPage", calculateLastPage(searchResult.getTotalRecords(), requestParams.getPageSize()));
 
         return RECORD_MAP;
@@ -1024,7 +1067,7 @@ public class OccurrenceController {
      * @throws Exception
      */
     @RequestMapping(value = "/shapeUpload", method = RequestMethod.POST)
-	public String uploadShapeSearch(
+    public String uploadShapeSearch(
             HttpServletResponse response,
             HttpServletRequest request,
             @RequestParam(value="file", required=true) MultipartFile multipartFile,
@@ -1069,13 +1112,11 @@ public class OccurrenceController {
                 } else {
                     logger.error("Error extracting WKT");
                     model.addAttribute("errors", "Error extracting WKT from shape file.");
-                    //response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Extracting geometry from file failed: " + originalName);
                 }
             }
-        } else  {
+        } else {
             logger.warn("File uploaded was empty");
         }
-
         return RECORD_LIST;
     }
 
@@ -1156,6 +1197,7 @@ public class OccurrenceController {
      * @param facetValues
      */
     private List<FacetValueDTO> LookupDisplayValuesForFacet(String facet, List<FacetValueDTO> facetValues) {
+
         try {
             FacetsWithCodes fwc = FacetsWithCodes.valueOf(facet);
 
@@ -1435,12 +1477,12 @@ public class OccurrenceController {
                 }
             }
         } catch (Exception ex) {
-        	logger.error(ex.getMessage(),ex);
+            logger.error(ex.getMessage(),ex);
             model.addAttribute("errors", "Search Service unavailable<br/>" + ex.getMessage());
         }
     }
 
-    private Pattern dataResourceUidP = Pattern.compile("data_resource_uid:([a-z]{2,3}[0-9]{1,})");
+//    private Pattern dataResourceUidP = Pattern.compile("data_resource_uid:([a-z]{2,3}[0-9]{1,})");
 
     /**
      * Common code to check for facets cookie and manipulate query, etc
@@ -1450,7 +1492,12 @@ public class OccurrenceController {
      */
     protected void prepareSearchRequest(String[] taxaQuery, HttpServletRequest request, SearchRequestParams requestParams, Model model) {
 
-        String[] defaultFacets = biocacheService.getDefaultFacets().toArray(new String[]{});
+        List<String> defaultFacetList = biocacheService.getDefaultFacets();
+
+        String[] defaultFacets = new String[0];
+        if(defaultFacetList != null){
+            defaultFacets = defaultFacetList.toArray(new String[]{});
+        }
 
         List<String> customFacets = new ArrayList<String>();
 
@@ -1561,39 +1608,7 @@ public class OccurrenceController {
      */
     private List<FacetDTO> retrieveCustomFacets(HttpServletRequest request) {
         List<FacetDTO> customFacets = new ArrayList<FacetDTO>();
-
-        String q = request.getParameter("q");
-        String[] fq = request.getParameterValues("fq");
-
-//        List<String> drs = new ArrayList<String>();
-//        if(qValues !=null){
-//            for(String q: qValues){
-//                Matcher m = dataResourceUidP.matcher(q);
-//                while(m.find()){
-//                    for(int x =0; x<m.groupCount(); x++){
-//                        drs.add(m.group(x).replaceAll("data_resource_uid:", ""));
-//                    }
-//                }
-//            }
-//        }
-//
-//        if(fqValues !=null){
-//            for(String q: fqValues){
-//                Matcher m = dataResourceUidP.matcher(q);
-//                while(m.find()){
-//                    for(int x =0; x<m.groupCount(); x++){
-//                        drs.add(m.group(x).replaceAll("data_resource_uid:", ""));
-//                    }
-//                }
-//            }
-//        }
-
-        //look up facets
-        //for(String dr: drs){
         customFacets.addAll(biocacheService.getDynamicFacets(request.getQueryString()));
-
-    //}
-
         return customFacets;
     }
 
@@ -1608,194 +1623,6 @@ public class OccurrenceController {
         outputName = StringUtils.remove(outputName, ".");
         return outputName;
     }
-
-    /**
-     * Create a HashMap for the filter queries, using the first SOLR field as the key and subsequent
-     * query string as the value.
-     *
-     * Refactor: now returns a Map<String, ActiveFacet> with an additional field "label" that is used to
-     * provide a human readable version of the filter query.
-     *
-     * @param filterQuery
-     * @return
-     */
-    //TODO Delete all the methods below as they have been moved to biocache-service.
-//    protected Map<String, ActiveFacet> addFacetMap(String[] filterQuery) {
-//        Map<String, ActiveFacet> afs = new HashMap<String, ActiveFacet>();
-//        //Map<String, String> userNamesByIds = authService.getMapOfAllUserNamesById(); // cached by Eh Cache
-//
-//        if (filterQuery != null && filterQuery.length > 0) {
-//            // iterate over the fq params
-//            for (String fq : filterQuery) {
-//                if (fq != null && !fq.isEmpty()) {
-//                    Boolean isExcludeFilter = false;
-//                    // remove Boolean braces if present
-//                    if (fq.startsWith("(") && fq.endsWith(")")){
-//                        fq = StringUtils.remove(fq, "(");
-//                        fq = StringUtils.removeEnd(fq, ")");
-//                    } else if (fq.startsWith("-(") && fq.endsWith(")")) {
-//                        fq = StringUtils.remove(fq, "-(");
-//                        fq = StringUtils.removeEnd(fq, ")");
-//                        //fq = "-" + fq;
-//                        isExcludeFilter = true;
-//                    }
-//
-//                    String[] fqBits = StringUtils.split(fq, ":", 2);
-//                    // extract key for map
-//                    if (fqBits.length  == 2) {
-//                        String key = fqBits[0];
-//                        String value = fqBits[1];
-//                        
-//                        if ("data_hub_uid".equals(key)) {
-//                            // exclude these...
-//                            continue;
-//                        }
-//                        
-//                        ActiveFacet af = new ActiveFacet(key, value);
-//                        logger.debug("1. fq = " + key + " => " + value);
-//                        // if there are internal Boolean operators, iterate over sub queries
-//                        String patternStr = "[ ]+(OR)[ ]+";
-//                        String[] tokens = fq.split(patternStr, -1);
-//                        List<String> labels = new ArrayList<String>(); // store sub-queries in this list
-//
-//                        for (String token : tokens) {
-//                            logger.debug("token: " + token);
-//                            String[] tokenBits = StringUtils.split(token, ":", 2);
-//                            if (tokenBits.length == 2) {
-//                                String fn = tokenBits[0];
-//                                String fv = tokenBits[1];
-//                                String i18n = null;
-//                                if(fn.endsWith("_s")){
-//                                    //hack for dynamic facets
-//                                    i18n = fn.replaceAll("_s", "");
-//                                } else {
-//                                    i18n = messageSource.getMessage("facet."+fn, null, fn, null);
-//                                }
-//
-//                                if (StringUtils.equals(fn, "species_guid") || StringUtils.equals(fn, "genus_guid")) {
-//                                    fv = substituteLsidsForNames(fv.replaceAll("\"",""));
-//                                } else if (StringUtils.equals(fn, "occurrence_year")) {
-//                                    fv = substituteYearsForDates(fv);
-//                                } else if (StringUtils.equals(fn, "month")) {
-//                                    fv = substituteMonthNamesForNums(fv);
-//                                } 
-////                                else if (StringUtils.contains(fv, "@")) {
-////                                    //fv = StringUtils.substringBefore(fv, "@"); // hide email addresses
-////                                    if (userNamesByIds.containsKey(StringUtils.remove(fv, "\""))) {
-////                                        fv = userNamesByIds.get(StringUtils.remove(fv, "\""));
-////                                    } else {
-////                                        fv = fv.replaceAll("\\@\\w+", "@.."); // hide email addresses
-////                                    }
-////
-////                                } 
-//                                else {
-//                                    fv = substituteCollectoryNames(fv, fn);
-//                                }
-//
-//                                labels.add(i18n + ":" + fv);
-//                            }
-//                        }
-//
-//                        String label = StringUtils.join(labels, " OR "); // join sub-queries back together
-//                        if (isExcludeFilter) {
-//                            label = "-" + label;
-//                        }
-//                        logger.debug("label = " + label);
-//                        af.setLabel(label);
-//
-//                        afs.put(key, af); // add to map
-//                    }
-//                }
-//            }
-//        }
-//
-//        return afs;
-//    }
-
-//    /**
-//     * Convert month number to its name. E.g. 12 -> December
-//     *
-//     * @param fv
-//     * @return monthStr
-//     */
-//    private String substituteMonthNamesForNums(String fv) {
-//        String monthStr = new String(fv);
-//        try {
-//            int m = Integer.parseInt(monthStr);
-//            Month month = Month.get(m - 1); // 1 index months
-//            monthStr = month.name();
-//        } catch (Exception e) {
-//            // ignore
-//        }
-//        return monthStr;
-//    }
-//
-//    /**
-//     * Turn SOLR date range into year range.
-//     * E.g. [1940-01-01T00:00:00Z TO 1949-12-31T00:00:00Z]
-//     * to
-//     * 1940-1949
-//     * 
-//     * @param fieldValue
-//     * @return
-//     */
-//    private String substituteYearsForDates(String fieldValue) {
-//        String dateRange = URLDecoder.decode(fieldValue);
-//        String formattedDate = StringUtils.replaceChars(dateRange, "[]", "");
-//        String[] dates =  formattedDate.split(" TO ");
-//        
-//        if (dates != null && dates.length > 1) {
-//            // grab just the year portions
-//            dateRange = StringUtils.substring(dates[0], 0, 4) + "-" + StringUtils.substring(dates[1], 0, 4);
-//        }
-//
-//        return dateRange;
-//    }
-//
-//    /**
-//     * Lookup a taxon name for a GUID
-//     *
-//     * @param fieldValue
-//     * @return
-//     */
-//    private String substituteLsidsForNames(String fieldValue) {
-//        String name = fieldValue;
-//        List<String> guids = new ArrayList<String>();
-//        guids.add(fieldValue);
-//        List<String> names = bieService.getNamesForGuids(guids);
-//        
-//        if (names != null && names.size() >= 1) {
-//            name = names.get(0);
-//        }
-//
-//        return name;
-//    }
-//
-//    /**
-//     * Lookup an institution/collection/data resource name via its collectory ID
-//     *
-//     * @param fieldValue
-//     * @return
-//     */
-//    private String substituteCollectoryNames(String fieldValue, String fieldName) {
-//        // substitute collectory names
-//        logger.debug("collectory maps: " + fieldValue);
-//        if (collectionsContainer.getCollectionMap().containsKey(fieldValue)) {
-//            fieldValue = collectionsContainer.getCollectionMap().get(fieldValue);
-//        } else if (collectionsContainer.getInstitutionMap().containsKey(fieldValue)) {
-//            fieldValue = collectionsContainer.getInstitutionMap().get(fieldValue);
-//        } else if (collectionsContainer.getDataResourceMap().containsKey(fieldValue)) {
-//            fieldValue = collectionsContainer.getDataResourceMap().get(fieldValue);
-//        } else if (collectionsContainer.getDataProviderMap().containsKey(fieldValue)) {
-//            fieldValue = collectionsContainer.getDataProviderMap().get(fieldValue);
-//        } else {
-//            // attempt to substitute i18n values
-//            fieldValue = messageSource.getMessage(fieldName+"."+StringUtils.remove(fieldValue, "\""), null, fieldValue, null);
-//            logger.debug("i18n subst: " + fieldName + "|" + fieldValue + " = " + fieldValue);
-//        }
-//        logger.debug("=> " + fieldValue);
-//        return fieldValue;
-//    }
 
     /**
      * Calculate the last page number for pagination
@@ -1886,8 +1713,6 @@ public class OccurrenceController {
         model.addAttribute("downloadExtraFields", downloadExtraFields); // String[]
         model.addAttribute("LoggerSources", loggerService.getSources());
         model.addAttribute("LoggerReason", loggerService.getReasons());
-        //model.addAttribute("userNamesByIdMap", authService.getMapOfAllUserNamesById());
-        //model.addAttribute("userNamesByNumericIdMap", authService.getMapOfAllUserNamesByNumericId());
     }
 
     /**
@@ -1998,7 +1823,6 @@ public class OccurrenceController {
             for (FacetResultDTO facetResult : facetResults) {
                 if (facetName.equals(facetResult.getFieldName())) {
                     List<FieldResultDTO> fieldResults = facetResult.getFieldResult();
-
                     for (FieldResultDTO fieldResult : fieldResults) {
                         if (facetValue.equalsIgnoreCase(fieldResult.getLabel())) {
                             logger.info("mulitmedia = " + fieldResult.getFieldValue());
@@ -2006,14 +1830,12 @@ public class OccurrenceController {
                             break;
                         }
                     }
-
                     break;
                 }
             }
         }
         
         logger.debug("hasMultimedia = " + hasMultimedia);
-        
         return hasMultimedia;
     }
 
@@ -2053,19 +1875,15 @@ public class OccurrenceController {
      * @return 
      */
     public static String getCookieValue(Cookie[] cookies, String cookieName, String defaultValue) {
-    	if(cookies!=null){
-	        for (int i = 0; i < cookies.length; i++) {
-	            Cookie cookie = cookies[i];
-	            if (cookieName.equals(cookie.getName())) {
-	                return (cookie.getValue());
-	            }
-	        }
-    	}
+        if(cookies!=null){
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie cookie = cookies[i];
+                if (cookieName.equals(cookie.getName())) {
+                    return (cookie.getValue());
+                }
+            }
+        }
         return (defaultValue);
-    }
-
-    public void setLayerMetadataCache(LayerMetadataCache layerMetadataCache) {
-        this.layerMetadataCache = layerMetadataCache;
     }
 
     /**
@@ -2083,5 +1901,13 @@ public class OccurrenceController {
                 return s1.getLayerDisplayName().compareToIgnoreCase(s2.getLayerDisplayName());
             }
         }
+    }
+
+    public void setLayerMetadataCache(LayerMetadataCache layerMetadataCache) {
+        this.layerMetadataCache = layerMetadataCache;
+    }
+
+    public void setContactUtils(ContactUtils contactUtils) {
+        this.contactUtils = contactUtils;
     }
 }
