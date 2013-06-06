@@ -406,3 +406,5 @@ div.additionalData {
 li.userAnnotationTemplate p { padding-top: 1px !important; padding-bottom:1px !important; }
 
 li.userAnnotationTemplate { list-style: none; }
+
+#showUncheckedTests:hover { cursor: hand; }

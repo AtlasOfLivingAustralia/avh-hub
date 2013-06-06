@@ -95,9 +95,9 @@
                 $.get("${pageContext.request.contextPath}/occurrences/${record.raw.uuid}/userAssertions.json", function(data) {
 
                     if(data.assertionQueries.length == 0 && data.userAssertions.length == 0){
-                        $('#userAnnotations').hide('slow');
+                        $('#userAnnotationsDiv').hide('slow');
                     } else {
-                        $('#userAnnotations').show('slow');
+                        $('#userAnnotationsDiv').show('slow');
                     }
                     $('#userAnnotationsList').empty();
 
@@ -260,18 +260,6 @@
                     $("input#close").hide("slow");
                 });
 
-                <%--//var isConfirmed = {};--%>
-                <%--// catch link to delete user assertion--%>
-                <%--$("a.deleteAssertion").live('click', function(e) {--%>
-                    <%--e.preventDefault();--%>
-                    <%--var assertionUuid = $(this).attr("id");--%>
-                    <%--var isConfirmed = confirm('Are you sure you want to delete this issue?');--%>
-                    <%--if (isConfirmed === true) {--%>
-                        <%--deleteAssertion('${ala:escapeJS(record.raw.rowKey)}', assertionUuid);--%>
-                    <%--}--%>
-                    <%--//isConfirmed = false; // don't remember the confirm--%>
-                <%--});--%>
-
                 // give every second row a class="grey-bg"
                 $('table.occurrenceTable, table.inner, table.layerIntersections, table.duplicationTable').each(function(i, el) {
                     $(this).find('tr').not('.sectionName').each(function(j, tr) {
@@ -314,16 +302,6 @@
                         });
                     }
                 });
-
-                <c:if test="${not empty record.sounds}">
-                    var myCirclePlayer = new CirclePlayer("#jquery_jplayer_1",
-                    {
-                        oga: "${record.sounds[0].alternativeFormats['audio/ogg']}",
-                        mp4: "${record.sounds[0].alternativeFormats['audio/mpeg']}"
-                    }, {
-                        cssSelectorAncestor: "#cp_container_1"
-                    });
-                </c:if>
 
                 <c:if test="${isCollectionAdmin}">
                     $(".confirmVerifyCheck").click(function(e) {
@@ -544,7 +522,7 @@
                 </c:if>
                 <c:if test="${isCollectionAdmin && (not empty record.systemAssertions || not empty record.userAssertions) && not recordIsVerified}">
                     <div class="sidebar">
-                        <button class="rounded" id="verifyButton" href="#verifyRecord">
+                        <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="verifyButton" href="#verifyRecord">
                             <span id="verifyRecordSpan" title="">Verify record</span>
                         </button>
                         <div style="display:none;">
@@ -582,7 +560,7 @@
                 </c:if>
                 <c:if test="${!isReadOnly && record.processed.attribution.provenance != 'Draft'}">
                 <div class="sidebar">
-                    <button class="rounded" id="assertionButton" href="#loginOrFlag">
+                    <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="assertionButton" href="#loginOrFlag">
                         <span id="loginOrFlagSpan" title="Flag an issue" class="">Flag an issue</span>
                     </button>
                     <div style="display:none">
@@ -627,7 +605,7 @@
                 </div>
                 </c:if>
                 <div class="sidebar">
-                    <button class="roundedxxx btn" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
+                    <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
                         <span id="processedVsRawViewSpan" href="#processedVsRawView" title="">Original vs Processed</span>
                     </button>
                 </div>
@@ -717,38 +695,20 @@
                     </div>
                 </c:if>
                 <c:if test="${not empty record.sounds}">
-                    <style type="text/css">
-                      .cp-play { left:-20px; top: -5px;}
-                      .cp-pause { left:-20px; top: -5px; }
-                      #soundsHeader { margin-top:15px; }
-                    </style>
                     <div class="sidebar">
                         <h2 id="soundsHeader">Sounds</h2>
-                        <!-- The jPlayer div must not be hidden. Keep it at the root of the body element to avoid any such problems. -->
-                        <div id="jquery_jplayer_1" class="cp-jplayer"></div>
-                        <div class="prototype-wrapper"> <!-- A wrapper to emulate use in a webpage and center align -->
-                            <!-- The container for the interface can go where you want to display it. Show and hide it as you need. -->
-                            <div id="cp_container_1" class="cp-container">
-                                <div class="cp-buffer-holder"> <!-- .cp-gt50 only needed when buffer is > than 50% -->
-                                    <div class="cp-buffer-1"></div>
-                                    <div class="cp-buffer-2"></div>
-                                </div>
-                                <div class="cp-progress-holder"> <!-- .cp-gt50 only needed when progress is > than 50% -->
-                                    <div class="cp-progress-1"></div>
-                                    <div class="cp-progress-2"></div>
-                                </div>
-                                <div class="cp-circle-control"></div>
-                                <ul class="cp-controls">
-                                    <li><a href="#" class="cp-play" tabindex="1">play</a></li>
-                                    <li><a href="#" class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
-                                    <!-- Needs the inline style here, or jQuery.show() uses display:inline instead of display:block -->
-                                </ul>
-                            </div>
-                        </div>
+                        <audio controls>
+                          <source src="${record.sounds[0].alternativeFormats['audio/mpeg']}" type="audio/ogg">
+                          <source src="${record.sounds[0].alternativeFormats['audio/mpeg']}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                        </audio>
                         <c:if test="${not empty record.raw.occurrence.rights}">
-                        <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                            <br/>
+                            <cite>Rights: ${record.raw.occurrence.rights}</cite>
                         </c:if>
-                        <p>Please press the play button to hear the sound file associated with this occurrence record.</p>
+                        <p>Please press the play button to hear the sound file
+                            associated with this occurrence record.
+                        </p>
                     </div>
                  </c:if>
                  <c:if test="${not empty record.raw.lastModifiedTime && not empty record.processed.lastModifiedTime}">
@@ -1180,7 +1140,7 @@
                <a class="viewMoreLink" href="#">View more with this annotation</a>
            </p>
            <p class="deleteAnnotation" style="display:none;">
-               <a class="deleteAnnotationButton btn" href="#">Delete this annotation</a>
+               <a class="deleteAnnotationButton <c:if test="${skin != 'ala'}">rounded</c:if> btn" href="#">Delete this annotation</a>
            </p>
         </li>
         </ul>

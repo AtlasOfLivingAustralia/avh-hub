@@ -257,11 +257,11 @@ h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, 
 }
 
 /*---- ALA changes ----*/
-> #headingBar {
+#headingBar {
     min-height: 55px;
 }
 
-> #headingBar > h1 {
+#headingBar > h1 {
     padding-top: 10px;
 }
 
@@ -350,5 +350,5 @@ div#clubView {
 
 .dataQualityResults td, th {
     horizontal-align:left;
-    border-bottom: 1px solid #FCFCFC;
+    border-bottom: 1px solid #808080;
 }
