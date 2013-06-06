@@ -347,3 +347,8 @@ div#clubView {
     display: inline;
     font-size: 13px;
 }
+
+.dataQualityResults td, th {
+    horizontal-align:left;
+    border-bottom: 1px solid #FCFCFC;
+}

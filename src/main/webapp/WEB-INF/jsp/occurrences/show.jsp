@@ -51,8 +51,10 @@
         <title><fmt:message key="show.occurrenceRecord"/> ${recordId} | ${hubDisplayName} </title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
-            var userId = "${userId}";
-            var userDisplayName = "${userDisplayName}"
+            var OCC_REC = {
+                userId: "${userId}",
+                userDisplayName: "${userDisplayName}"
+            }
         </script>
         <%--<jwr:style src="/css/record.css"/>--%>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/record.css"/>
@@ -115,24 +117,24 @@
                         var $clone = $('#userAnnotationTemplate').clone();
                         $clone.find('.issue').text(data.userAssertions[i].name);
                         $clone.find('.user').text(data.userAssertions[i].userDisplayName);
-                        $clone.find('.comment').text(data.userAssertions[i].comment);
+                        $clone.find('.comment').text('Comment: ' + data.userAssertions[i].comment);
                         $clone.find('.userRole').text(data.userAssertions[i].userRole !=null ? data.userAssertions[i].userRole: '');
                         $clone.find('.userEntity').text(data.userAssertions[i].userEntityName !=null ? data.userAssertions[i].userEntityName: '');
-                        $clone.find('.created').text(data.userAssertions[i].created);
-                        if(data.userAssertions[i].userRole !=null){
+                        $clone.find('.created').text('Date created: ' + (new Date(data.userAssertions[i].created)).toString('yyyy-MM-dd'));
+                        if(data.userAssertions[i].userRole != null){
                             $clone.find('.userRole').text(', ' + data.userAssertions[i].userRole);
                         }
                         if(data.userAssertions[i].userEntityName !=null){
                             $clone.find('.userEntity').text(', ' + data.userAssertions[i].userEntityName);
                         }
-                        $('#userAnnotationsList').append($clone);
-
-                        if(userId == data.userAssertions[i].userId){
+                        if(OCC_REC.userId == data.userAssertions[i].userId){
                             $clone.find('.deleteAnnotation').css({display:'block'});
                             $clone.find('.deleteAnnotation').attr('id', data.userAssertions[i].uuid);
+                        } else {
+                            $clone.find('.deleteAnnotation').css({display:'none'});
                         }
+                        $('#userAnnotationsList').append($clone);
                     }
-
                     updateDeleteEvents();
                 });
             }
@@ -141,7 +143,7 @@
               $('.deleteAnnotation').off("click");
               $('.deleteAnnotation').on("click", function(e){
                 e.preventDefault();
-                var isConfirmed = confirm('Are you sure you want to delete this issue? ' + this.id);
+                var isConfirmed = confirm('Are you sure you want to delete this issue?');
                 if (isConfirmed === true) {
                     deleteAssertion('${ala:escapeJS(record.raw.uuid)}', this.id);
                 }
@@ -211,13 +213,12 @@
                     e.preventDefault();
                     var comment = $("#issueComment").val();
                     var code = $("#issue").val();
-                    var userId = '${userId}';
                     var userDisplayName = '${userDisplayName}';
                     var recordUuid = '${ala:escapeJS(record.raw.rowKey)}';
                     if(code!=""){
                         $('#assertionSubmitProgress').css({'display':'block'});
                         $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
-                            { recordUuid: recordUuid, code: code, comment: comment, userId: userId, userDisplayName: userDisplayName},
+                            { recordUuid: recordUuid, code: code, comment: comment, userId: OCC_REC.userId, userDisplayName: userDisplayName},
                             function(data) {
                                 $('#assertionSubmitProgress').css({'display':'none'});
                                 $("#submitSuccess").html("Thanks for flagging the problem!");
@@ -337,12 +338,11 @@
                     });
                     $(".confirmVerify").click(function(e) {
                         var code = "50000";
-                        var userId = '${userId}';
                         var userDisplayName = '${userDisplayName}';
                         var recordUuid = '${ala:escapeJS(record.raw.rowKey)}';
                         // send assertion via AJAX... TODO catch errors
                         $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
-                            { recordUuid: recordUuid, code: code, userId: userId, userDisplayName: userDisplayName},
+                            { recordUuid: recordUuid, code: code, userId: OCC_REC.userId, userDisplayName: userDisplayName},
                             function(data) {
                                 // service simply returns status or OK or FORBIDDEN, so assume it worked...
                                 $("#verifyAsk").fadeOut();
@@ -430,7 +430,7 @@
             google.load("visualization", "1", {packages:["corechart"]});
         </script>
     </head>
-    <body class="show">
+    <body>
         <spring:url var="json" value="/occurrences/${record.raw.uuid}.json" />
         <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
@@ -446,7 +446,7 @@
                             <c:set var="admin" value=" - admin"/>
                         </c:if>
                         <c:if test="${not empty userDisplayName}">
-                            Logged in as: ${userDisplayName} <!--(${userId}${admin})-->
+                            Logged in as: ${userDisplayName}
                         </c:if>
                         <c:if test="${not empty clubView}">
                             <div id="clubView">Showing &quot;Club View&quot;</div>
@@ -857,13 +857,13 @@
 
             <script type="text/javascript" src="${biocacheService}/outlier/record/${uuid}.json?callback=renderOutlierCharts"></script>
 
-            <div id="userAnnotations" class="additionalData">
-                <h2><a href="#userAnnotations">User flagged issues</a></h2>
+            <div id="userAnnotationsDiv" class="additionalData">
+                <h2>User flagged issues<a id="userAnnotations" href="#">&nbsp;</a></h2>
                 <ul id="userAnnotationsList"></ul>
             </div>
 
             <div id="dataQuality" class="additionalData">
-                <h2><a id="dataQualityReport" href="#dataQualityReport">Data quality tests</a></h2>
+                <h2>Data quality tests<a id="dataQualityReport" href="#dataQualityReport">&nbsp;</a></h2>
 
                 <table class="dataQualityResults table table-striped table-condensed">
                     <%--<caption>Details of tests that have been performed for this record.</caption>--%>
@@ -1182,8 +1182,6 @@
            <p class="deleteAnnotation" style="display:none;">
                <a class="deleteAnnotationButton btn" href="#">Delete this annotation</a>
            </p>
-
-           <%--<a href="#" class="replyToIssue">Reply</a>--%>
         </li>
         </ul>
 

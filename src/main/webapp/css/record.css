@@ -402,3 +402,7 @@ div.additionalData {
     margin-left: 20px;
     margin-top: 20px;
 }
+
+li.userAnnotationTemplate p { padding-top: 1px !important; padding-bottom:1px !important; }
+
+li.userAnnotationTemplate { list-style: none; }
