@@ -262,6 +262,14 @@ h2#headingSciName {
     margin-bottom: 4px;
 }
 
+#loginId {
+    text-align: right;
+    margin-top: -14px;
+    margin-bottom: -4px;
+    margin-right: 5px;
+    font-size: 11px;
+}
+
 /* Media width variations */
 @media (min-width: 1200px) {
     /* Google map width on list page */
