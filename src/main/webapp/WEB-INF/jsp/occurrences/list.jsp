@@ -146,18 +146,18 @@
                         <li><a id="t5" href="#imagesView">Record images</a></li>
                     </c:if>
                 </ul>
-                <div class="css-panes">
+                <div class="css-panes clearfix">
                     <div class="paneDiv solrResults">
                         <div id="searchControls">
-                            <div id="downloads" class="buttonDiv">
+                            <div id="downloads" class="buttonDiv btn">
                                 <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
                             </div>
-                            <div id="alerts" class="buttonDiv">
+                            <div id="alerts" class="buttonDiv btn">
                                 <a href="#alert" id="alertsLink" title="Get email alerts for this search">Alerts</a>
                             </div>
                             <div id="sortWidgets">
                                 Results per page:
-                                <select id="per-page" name="per-page" class="btn btn-small">
+                                <select id="per-page" name="per-page" class="input-small">
                                     <c:set var="pageSizeVar">
                                         <c:choose>
                                             <c:when test="${not empty param.pageSize}">${param.pageSize}</c:when>
@@ -171,7 +171,7 @@
                                 </select>
                                 <c:set var="useDefault" value="${empty param.sort && empty param.dir ? true : false }"/>
                                 Sort by:
-                                <select id="sort" name="sort" class="btn btn-small">
+                                <select id="sort" name="sort" class="input-small">
                                     <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>Best match</option>
                                     <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>Taxon name</option>
                                     <option value="common_name" <c:if test="${param.sort eq 'common_name'}">selected</c:if>>Common name</option>
@@ -183,7 +183,7 @@
                                     <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>Last annotated</option>
                                 </select>
                                 Sort order:
-                                <select id="dir" name="dir" class="btn btn-small">
+                                <select id="dir" name="dir" class="input-small">
                                     <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>Ascending</option>
                                     <option value="desc" <c:if test="${useDefault || param.dir eq 'desc'}">selected</c:if>>Descending</option>
                                 </select>

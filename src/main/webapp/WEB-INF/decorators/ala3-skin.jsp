@@ -31,6 +31,7 @@
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
         <script type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>
+        <script src="${pageContext.request.contextPath}/static/js/respond.min.js"></script>
     <![endif]-->
 
     <script type="text/javascript">

@@ -10,6 +10,11 @@
     display:inline;
 }
 
+#nav-site .navbar-inner {
+    filter: none;
+    -ms-filter: none;
+}
+
 .breadcrumb > li > .icon {
     color: #555555;
     opacity: 0.6;
@@ -244,6 +249,19 @@ h2#headingSciName {
     width: 15%;
 }
 
+#sortWidget label {
+    display: inline;
+    padding-left: 8px;
+}
+
+#sortWidgets .input-small, .layerControls select, #speciesGalleryControls select {
+    height: 22px;
+    width: auto;
+    font-size: 11px;
+    line-height: 18px;
+    margin-bottom: 4px;
+}
+
 /* Media width variations */
 @media (min-width: 1200px) {
     /* Google map width on list page */
@@ -253,6 +271,9 @@ h2#headingSciName {
     }
     #mapwrapper #maploading {
         width: 835px;
+    }
+    body.show #content2 {
+        width: 740px;
     }
 }
 
@@ -265,6 +286,12 @@ h2#headingSciName {
     #mapwrapper #maploading {
         width: 668px;
     }
+    #searchBox > #solrSearchForm > input#taxaQuery {
+        width: 360px;
+    }
+    body.show #content2 {
+        width: 600px;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
@@ -276,11 +303,20 @@ h2#headingSciName {
     #mapwrapper #maploading {
         width: 505px;
     }
+    #searchBox > #solrSearchForm > input#taxaQuery {
+        width: 300px;
+    }
+    body.show #content2 {
+        width: 400px;
+    }
 }
 
 @media (max-width: 767px) {
     #mapCanvas {
         margin-top: 50px;
+    }
+    body.show #content2 {
+        width: 100%;
     }
 }
 
