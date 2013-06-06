@@ -408,3 +408,19 @@ li.userAnnotationTemplate p { padding-top: 1px !important; padding-bottom:1px !i
 li.userAnnotationTemplate { list-style: none; }
 
 #showUncheckedTests:hover { cursor: hand; }
+
+
+#systemAssertions {
+    list-style: none;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    padding-left: 0px;
+}
+
+#systemAssertions li {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font-size: 15px;
+    margin-left: 0px;
+    padding-left: 0px;
+}

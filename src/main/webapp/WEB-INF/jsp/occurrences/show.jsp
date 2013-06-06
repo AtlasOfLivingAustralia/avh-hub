@@ -476,26 +476,27 @@
 
                         <ul id="systemAssertions">
                             <li class="failedTestCount">
-                                <spring:message code="failed" text="failed"/> : ${fn:length(record.systemAssertions['failed'])}
+                                <spring:message code="failed" text="failed"/>: ${fn:length(record.systemAssertions['failed'])}
                             </li>
                             <li class="warningsTestCount">
-                                <spring:message code="warnings" text="warnings"/> : ${fn:length(record.systemAssertions['warning'])}
+                                <spring:message code="warnings" text="warnings"/>: ${fn:length(record.systemAssertions['warning'])}
                             </li>
                             <li class="passedTestCount">
-                                <spring:message code="passed" text="passed"/> : ${fn:length(record.systemAssertions['passed'])}
+                                <spring:message code="passed" text="passed"/>: ${fn:length(record.systemAssertions['passed'])}
                             </li>
                             <li class="missingTestCount">
-                                <spring:message code="missing" text="missing"/> : ${fn:length(record.systemAssertions['missing'])}
+                                <spring:message code="missing" text="missing"/>: ${fn:length(record.systemAssertions['missing'])}
                             </li>
                             <li class="uncheckedTestCount">
-                                <spring:message code="unchecked" text="unchecked"/> : ${fn:length(record.systemAssertions['unchecked'])}
+                                <spring:message code="unchecked" text="unchecked"/>: ${fn:length(record.systemAssertions['unchecked'])}
+                            </li>
+
+                            <li id="dataQualityFurtherDetails">
+                                <a id="dataQualityReportLink" href="#dataQualityReport">
+                                    View full data quality report
+                                </a>
                             </li>
                         </ul>
-                        <div id="dataQualityFurtherDetails">
-                            <a id="dataQualityReportLink" href="#dataQualityReport">
-                                View full data quality report
-                            </a>
-                        </div>
 
                         <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
                         <c:set var="recordIsVerified" value="false"/>
