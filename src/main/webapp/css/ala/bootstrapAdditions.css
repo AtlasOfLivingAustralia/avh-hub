@@ -270,6 +270,10 @@ h2#headingSciName {
     font-size: 11px;
 }
 
+#alert {
+    text-align: center;
+}
+
 /* Media width variations */
 @media (min-width: 1200px) {
     /* Google map width on list page */
