@@ -187,6 +187,10 @@
                     $('.uncheckTestResult').toggle();
                 });
 
+                $('#showMissingPropResult').on('click', function(e){
+                    $('.missingPropResult').toggle();
+                });
+
                 // raw vs processed popup
                 $("#showRawProcessed").fancybox({
                     //'href': '#loginOrFlag',
@@ -861,19 +865,25 @@
                         </tr>
                         </c:forEach>
 
+                        <c:if test="${not empty record.systemAssertions['missing']}">
+                            <tr>
+                                <td colspan="2">
+                                <a href="javascript:void(0)" id="showMissingPropResult">Show/Hide  ${fn:length(record.systemAssertions['missing'])} missing properties</a>
+                                </td>
+                            </tr>
+                        </c:if>
                         <c:set var="testSet" value="${record.systemAssertions['missing']}"/>
                         <c:forEach items="${testSet}" var="test">
-                        <tr>
+                        <tr class="missingPropResult" style="display:none;">
                             <td><spring:message code="${test.name}" text="${test.name}"/></td>
                             <td><i class=" icon-question-sign"></i>Missing</td>
-                            <%--<td>More info</td>--%>
                         </tr>
                         </c:forEach>
 
                         <c:if test="${not empty record.systemAssertions['unchecked']}">
                             <tr>
                                 <td colspan="2">
-                                <a id="showUncheckedTests">Show/Hide  ${fn:length(record.systemAssertions['unchecked'])} tests that havent been ran</a>
+                                <a href="javascript:void(0)" id="showUncheckedTests">Show/Hide  ${fn:length(record.systemAssertions['unchecked'])} tests that havent been ran</a>
                                 </td>
                             </tr>
                         </c:if>
@@ -882,7 +892,6 @@
                         <tr class="uncheckTestResult" style="display:none;">
                             <td><spring:message code="${test.name}" text="${test.name}"/></td>
                             <td>Unchecked (lack of data)</td>
-                            <%--<td>More info</td>--%>
                         </tr>
                         </c:forEach>
 
