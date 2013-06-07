@@ -13,7 +13,10 @@
     <c:set var="recordId" value="${record.raw.occurrence.catalogNumber}"/>
 </c:when>
 <c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
-	<c:set var="recordId" value="${record.raw.occurrence.collectionCode}:${record.raw.occurrence.catalogNumber}"/>
+	<c:set var="recordId" value="${record.raw.occurrence.collectionCode} - ${record.raw.occurrence.catalogNumber}"/>
+</c:when>
+<c:when test="${not empty record.processed.attribution.dataResourceName && not empty record.raw.occurrence.catalogNumber}">
+	<c:set var="recordId" value="${record.processed.attribution.dataResourceName} - ${record.raw.occurrence.catalogNumber}"/>
 </c:when>
 <c:when test="${not empty record.raw.occurrence.occurrenceID}">
 	<c:set var="recordId" value="${record.raw.occurrence.occurrenceID}"/>
@@ -48,7 +51,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
         <meta name="section" content="search"/>
-        <title><fmt:message key="show.occurrenceRecord"/> ${recordId} | ${hubDisplayName} </title>
+        <title>${recordId} | <fmt:message key="show.occurrenceRecord"/>  | ${hubDisplayName} </title>
         <script type="text/javascript">
             contextPath = "${pageContext.request.contextPath}";
             var OCC_REC = {
