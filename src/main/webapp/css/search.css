@@ -10,69 +10,134 @@
    TODO customize this sample style
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
-#headingBar {
-    border-bottom: 1px solid #ccc;
-    margin-left: 30px;
-    padding-left: 0px;
-    height: 40px;
-}
-#headingBar h1 {
-    border: none;
-}
-#headingBar h1 {
-    width: 40%;
-    float: left;
-    height: 32px;
+
+.searchInfo {
+    margin: 15px 0;
+    font-size: 14px;
 }
 
-#headingBar > #searchBox {
+#facetWell {
+    margin-top: 40px;
+}
+
+#facetWell .dropdown-menu {
+    padding: 5px 10px 10px 15px;
+    background-color: #fffef7;
+}
+
+.overrideHide {
+    display: block !important;
+}
+
+#content ul.nav-tabs {
+    list-style: none;
+    margin-left: 0;
+}
+
+#facetWell h3 {
     margin: 0;
-    padding:0;
-    width: 60%;
-    float: left;
-    height: 36px;
-    text-align: right;
+    margin-bottom: 5px;
+    line-height: normal;
 }
 
-#searchBox > #searchLabel { 
-    display:inline-block;
-    padding-top:0px; 
+#facetWell .sidebar h4 {
+    font-size: 13px;
+    padding: 0;
+    margin: 6px 0 2px 0;
 }
 
-#searchBox #advancedSearchLink {
+#customiseFacetsButton {
     display: block;
+    float: right;
+}
+
+#updateFacetOptions {
+    font-weight: bold;
+}
+
+#listHeader {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    /*margin-left: 30px;*/
+    /*padding-left: 0px;*/
+    /*height: 40px;*/
+}
+#listHeader h1 {
+    border: none;
+    margin: 20px 0 5px 0;
+    padding: 0;
+}
+/*#listHeader h1 {*/
+    /*width: 40%;*/
+    /*float: left;*/
+    /*height: 32px;*/
+/*}*/
+
+/*#headingBar > #searchBox {*/
+    /*margin: 0;*/
+    /*padding:0;*/
+    /*width: 60%;*/
+    /*float: left;*/
+    /*height: 36px;*/
+    /*text-align: right;*/
+/*}*/
+
+/*#searchBox > #searchLabel { */
+    /*display:inline-block;*/
+    /*padding-top:0px; */
+/*}*/
+
+#advancedSearchLink {
+    /*display: block;*/
     padding: 0;
 /*    margin: 0;*/
     margin-bottom: 0;
-    margin-right: 5px;
+    margin-right: 10px;
     font-size: 11px;
 }
-*+html #searchBox #advancedSearchLink {
+*+html #advancedSearchLink {
     display: block;
     padding: 0;
     margin-right: 80px;
     margin-bottom: -6px;
 }
 
-#searchBox  #advancedSearchLink a {
+#advancedSearchLink a {
     font-size: 10px;
 }
-#searchBox #advancedSearchLink > a {
+#advancedSearchLink > a {
     font-size: 11px; 
 }
 #solrSearchForm input {
-    margin: 0
+    margin: 0;
 }
 #solrSearchForm > input#taxaQuery {
     display: inline-block;
     margin-top: 2px;
     font-size: 13px;
-    width: 440px;
+    /*width: 440px;*/
 }
 #solrSearchForm > input#solrSubmit {
     display: inline-block;
     font-size: 13px;
     margin: 3px 6px;
+}
+
+.nav-tabs li a {
+    background-color: #f0f0e8;
+    border: 1px solid #ddd;
+    margin-right: 4px;
+}
+
+.tabbable .nav-tabs {
+    margin-bottom: 0;
+}
+
+.tab-content {
+    border-bottom: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    border-left: 1px solid #DDD;
+    padding: 15px;
 }
 
 #listMapToggle {
@@ -81,25 +146,46 @@
 .sidebar li {
     border: none;
     padding: 2px 3px;
-    margin: 5px 10px;
+    margin: 2px 10px;
 }
 
 #listMapToggle {
     float: right;
 }
+
 #listMapToggle > label {
-    
+
 }
 .subnavlist > ul {
     margin-left: 7px;
     clear: left;
     /*padding-left: 24px;*/
 }
+
+#content .sidebar > .subnavlist > ul {
+    list-style: none;
+    margin-left: -4px;
+}
+
+ul#refinedFacets {
+    list-style: none;
+    margin: 5px 0 5px 5px;
+}
+
 .subnavlist > ul> li {
     text-indent: -4px;
     text-transform: none;
     line-height: 1.2em;
 }
+
+ul#refinedFacets li {
+    text-indent: -5px;
+}
+
+.sidebar > .subnavlist > ul li {
+    margin-left: 14px;
+}
+
 div#currentFilter {
     border: 1px solid #bbb;
     background-color: #F0F0E8;
@@ -127,8 +213,9 @@ div#currentFilter {
 }
 #content2 #resultsReturned {
     font-size: 110%;
-    padding: 4px 5px 5px 4px;
+    padding: 5px 5px 5px 4px;
     margin: 5px 0 5px 0;
+    height: 20px;
 }
 #results {
     border-bottom: none;
@@ -161,7 +248,8 @@ div#currentFilter {
 /*    background-color: #E0E0E0;
     border-top: 2px solid silver;*/
     border-bottom: 1px solid silver;
-    padding: 0 0 10px 0;
+    margin-bottom: 6px;
+    padding: 2px 0 12px 0;
     height: 22px;
 }
 
@@ -176,44 +264,44 @@ div#currentFilter {
 }
 #searchNavBar {
     text-align: center;
+    margin-top: 15px;
 }
 #navLinks {
     text-align: center;
-    width: 70%;
+    width: 80%;
     margin: auto;
-    padding: 5px;
-    height: 2.0em;
+    padding: 10px 5px;
 }
-#searchNavBar ul {
-    display: inline-block;
-}
-#searchNavBar ul li {
-    display: inline;
-    list-style: none;
-    font-size: 14px;
-}
-#searchNavBar ul li a, #searchNavBar ul li.currentPage, #searchNavBar ul li#prevPage {
+/*#searchNavBar ul {*/
+    /*display: inline-block;*/
+/*}*/
+/*#searchNavBar ul li {*/
+    /*display: inline;*/
+    /*list-style: none;*/
+    /*font-size: 14px;*/
+/*}*/
+/*#searchNavBar ul li a, #searchNavBar ul li.currentPage, #searchNavBar ul li#prevPage {*/
     /* border: 1px solid #01716E; */
-    display: inline-block;
-    float: left;
-    margin: 0px 5px 0px 0px;
-    padding: 0px 5px;
-    text-decoration: none;
-}
-li.currentPage {
-    font-size: 110%;
-    font-weight: bold;
-    color: #DD3102;
-}
-#searchNavBar li a {
+    /*display: inline-block;*/
+    /*float: left;*/
+    /*margin: 0px 5px 0px 0px;*/
+    /*padding: 0px 5px;*/
+    /*text-decoration: none;*/
+/*}*/
+/*li.currentPage {*/
+    /*font-size: 110%;*/
+    /*font-weight: bold;*/
+    /*color: #DD3102;*/
+/*}*/
+/*#searchNavBar li a {*/
     /*color:#005A8E;*/
-    text-decoration:none;
-    font-size: 14px;
-}
-#searchNavBar li a:hover  {
+    /*text-decoration:none;*/
+    /*font-size: 14px;*/
+/*}*/
+/*#searchNavBar li a:hover  {*/
     /*color:#6DB71D;*/
-    text-decoration:none;
-}
+    /*text-decoration:none;*/
+/*}*/
 div.recordHeader {
     margin-left: 30px;
     margin-bottom: 20px;
@@ -277,7 +365,7 @@ div#download {
 .showHide a:link, .showHide a:visited  {
     /*color: #005A8E;*/
     font-size: 11px;
-    font-weight: bold;
+    font-weight: normal; /* was bold */
     text-decoration: none;
 }
 div#advancedSearch {
@@ -336,11 +424,11 @@ div.facetsColumn {
     margin-top: 0;
 }
 
-span#queryDisplay {
+span.queryDisplay {
     font-weight: bold;
 }
 
-span#queryDisplay a:hover {
+span.queryDisplay a:hover {
     text-decoration: none;
 }
 

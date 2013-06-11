@@ -173,16 +173,20 @@ a.annotationIcon {
 #mask {
     opacity: 0.5;
 }
-*/
+
 #content2 {
     width: 640px;
 }
 .sidebar {
     width: 290px;
 }
-
+*/
 .sidebar h2 {
     margin-top: 20px;
+}
+
+#warnings ul {
+    margin-bottom: 10px;
 }
 
 .sidebar > button {
@@ -195,7 +199,7 @@ div.recordHeader {
     border-bottom: 1px solid #CCC;
 }
 div#occurrenceMap {
-    height: 290px;
+    height: 300px;
     margin-top: 5px;
 }
 .originalValue {
@@ -203,22 +207,22 @@ div#occurrenceMap {
     font-style: italic; 
 }
 table.occurrenceTable {
-    border-bottom: 0px !important;
-    margin: 5px 0 10px 0;
-    padding-bottom: 5px;
-    width: 100%;
+    /*border-bottom: 0px !important;*/
+    /*margin: 5px 0 10px 0;*/
+    /*padding-bottom: 5px;*/
+    /*width: 100%;*/
 }
 .occurrenceTable td.dwcLabel {
-    width: 140px;
+    width: 33%;
     vertical-align: top;
     font-weight: bold;
 }
 
 .dataQualityResults {
-    border-bottom: 0px !important;
+    /*border-bottom: 0px !important;*/
     margin: 5px 0 10px 0;
-    padding-bottom: 5px;
-    width: 100%;
+    /*padding-bottom: 5px;*/
+    /*width: 100%;*/
 }
 
 td.annoText {
@@ -392,8 +396,8 @@ div#backButton a:hover {
     text-decoration: underline;
 }
 
-.sectionName {
-    background-color:#D0D0D0;
+tr.sectionName td {
+    background-color:#E0E0E0 !important;
     color:#222;
     font-weight:bold;
 }
@@ -401,6 +405,10 @@ div#backButton a:hover {
 div.additionalData {
     margin-left: 20px;
     margin-top: 20px;
+}
+
+.additionalData table {
+    min-width: 80%;
 }
 
 li.userAnnotationTemplate p { padding-top: 1px !important; padding-bottom:1px !important; }
@@ -423,4 +431,10 @@ li.userAnnotationTemplate { list-style: none; }
     font-size: 15px;
     margin-left: 0px;
     padding-left: 0px;
+}
+
+#systemAssertions li#dataQualityFurtherDetails {
+    list-style: none;
+    margin-left: -18px;
+    margin-top: 8px;
 }

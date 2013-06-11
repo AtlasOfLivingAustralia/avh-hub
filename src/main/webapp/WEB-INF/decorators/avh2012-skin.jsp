@@ -28,6 +28,11 @@ include file="/common/taglibs.jsp" %>
 
     <title><decorator:title default="AVH"/></title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/avh2012/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/bootstrap.css">
+    <link id="responsiveCss" rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ala/bootstrapAdditions.css" type="text/css" media="screen,projection" />
+
     <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/static/css/avh2012/style.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     
@@ -38,6 +43,8 @@ include file="/common/taglibs.jsp" %>
     <!-- CIRCLE PLAYER -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/circle.skin/circle.player.css" type="text/css" media="screen" />
 
+
+    <script src="${pageContext.request.contextPath}/static/js/bootstrap.js"></script>
     <decorator:head />
 </head>
 

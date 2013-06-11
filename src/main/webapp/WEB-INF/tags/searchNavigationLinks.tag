@@ -11,7 +11,7 @@
 <%@ attribute name="maxPageLinks" required="false" type="java.lang.Integer" %>
 <%@ attribute name="title" required="false" type="java.lang.String" %>
 <%@ attribute name="queryString" required="false" type="java.lang.String" %>
-<div id="navLinks">
+<div id="navLinks" class="pagination">
     <c:if test="${empty maxPageLinks}"><c:set var="maxPageLinks" value="10"/></c:if>
     <fmt:formatNumber var="pageNumber" value="${(startIndex / pageSize) + 1}" pattern="0" />
     <c:set var="hash" value=""/>
@@ -50,28 +50,28 @@
             </c:otherwise>
         </c:choose>
     </c:set>
-    <ul>
+    <%--<ul>--%>
         <c:choose>
             <c:when test="${startIndex > 0}">
-                <li id="prevPage"><a href="${coreParams}start=${startIndex - pageSize}${hash}&title=${title}">&laquo; Previous</a></li>
+                <a href="${coreParams}start=${startIndex - pageSize}${hash}&title=${title}" class="prevLink">Previous</a>
             </c:when>
             <c:otherwise>
-                <li id="prevPage">&laquo; Previous</li>
+                <%--<span id="prevPage">&laquo; Previous</span>--%>
             </c:otherwise>
         </c:choose>
         <c:forEach var="pageLink" begin="${startPageLink}" end="${endPageLink}" step="1">
             <c:choose>
-                <c:when test="${pageLink == pageNumber}"><li class="currentPage">${pageLink}</li></c:when>
-                <c:otherwise><li><a href="${coreParams}start=${(pageLink * pageSize) - pageSize}${hash}&title=${title}">${pageLink}</a></li></c:otherwise>
+                <c:when test="${pageLink == pageNumber}"><span class="currentStep">${pageLink}</span></c:when>
+                <c:otherwise><a href="${coreParams}start=${(pageLink * pageSize) - pageSize}${hash}&title=${title}" class="step" class="step">${pageLink}</a></c:otherwise>
             </c:choose>
         </c:forEach>
         <c:choose>
             <c:when test="${!(pageNumber == lastPage)}">
-                <li id="nextPage"><a href="${coreParams}start=${startIndex + pageSize}${hash}&title=${title}">Next &raquo;</a></li>
+                <a href="${coreParams}start=${startIndex + pageSize}${hash}&title=${title}" class="nextLink">Next</a>
             </c:when>
             <c:otherwise>
-                <li id="nextPage">Next &raquo;</li>
+                <%--<span id="nextPage">Next &raquo;</span>--%>
             </c:otherwise>
         </c:choose>
-    </ul>
+    <%--</ul>--%>
 </div>

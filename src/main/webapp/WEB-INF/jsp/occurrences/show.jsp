@@ -268,13 +268,13 @@
                 });
 
                 // give every second row a class="grey-bg"
-                $('table.occurrenceTable, table.inner, table.layerIntersections, table.duplicationTable').each(function(i, el) {
-                    $(this).find('tr').not('.sectionName').each(function(j, tr) {
-                        if (j % 2 == 0) {
-                            $(this).addClass("grey-bg");
-                        }
-                    });
-                });
+//                $('table.occurrenceTable, table.inner, table.layerIntersections, table.duplicationTable').each(function(i, el) {
+//                    $(this).find('tr').not('.sectionName').each(function(j, tr) {
+//                        if (j % 2 == 0) {
+//                            $(this).addClass("grey-bg");
+//                        }
+//                    });
+//                });
 
                 // convert camel case field names to "normal"
                 $("td.dwc, span.dwc").each(function(i, el) {
@@ -466,8 +466,8 @@
                     </h2>
                 </c:if>
             </div>
-
-            <div id="SidebarBox">
+            <div class="row-fluid">
+                <div id="SidebarBoxZ" class="span4">
                 <c:if test="${not empty collectionLogo}">
                     <div class="sidebar">
                         <img src="${collectionLogo}" alt="institution logo" id="institutionLogo"/>
@@ -475,58 +475,59 @@
                 </c:if>
 
                 <c:if test="${record.processed.attribution.provenance != 'Draft'}">
-                <div class="sidebar">
-                    <div id="warnings">
+                    <div class="sidebar">
+                        <div id="warnings">
 
-                        <div id="systemAssertionsContainer" <c:if test="${empty record.systemAssertions}">style="display:none"</c:if>>
-                        <h2>Data quality tests</h2>
+                            <div id="systemAssertionsContainer" <c:if test="${empty record.systemAssertions}">style="display:none"</c:if>>
+                                <h3>Data quality tests</h3>
 
-                        <ul id="systemAssertions">
-                            <li class="failedTestCount">
-                                <spring:message code="failed" text="failed"/>: ${fn:length(record.systemAssertions['failed'])}
-                            </li>
-                            <li class="warningsTestCount">
-                                <spring:message code="warnings" text="warnings"/>: ${fn:length(record.systemAssertions['warning'])}
-                            </li>
-                            <li class="passedTestCount">
-                                <spring:message code="passed" text="passed"/>: ${fn:length(record.systemAssertions['passed'])}
-                            </li>
-                            <li class="missingTestCount">
-                                <spring:message code="missing" text="missing"/>: ${fn:length(record.systemAssertions['missing'])}
-                            </li>
-                            <li class="uncheckedTestCount">
-                                <spring:message code="unchecked" text="unchecked"/>: ${fn:length(record.systemAssertions['unchecked'])}
-                            </li>
+                                <ul id="systemAssertions">
+                                    <li class="failedTestCount">
+                                        <spring:message code="failed" text="failed"/>: ${fn:length(record.systemAssertions['failed'])}
+                                    </li>
+                                    <li class="warningsTestCount">
+                                        <spring:message code="warnings" text="warnings"/>: ${fn:length(record.systemAssertions['warning'])}
+                                    </li>
+                                    <li class="passedTestCount">
+                                        <spring:message code="passed" text="passed"/>: ${fn:length(record.systemAssertions['passed'])}
+                                    </li>
+                                    <li class="missingTestCount">
+                                        <spring:message code="missing" text="missing"/>: ${fn:length(record.systemAssertions['missing'])}
+                                    </li>
+                                    <li class="uncheckedTestCount">
+                                        <spring:message code="unchecked" text="unchecked"/>: ${fn:length(record.systemAssertions['unchecked'])}
+                                    </li>
 
-                            <li id="dataQualityFurtherDetails">
-                                <a id="dataQualityReportLink" href="#dataQualityReport">
-                                    View full data quality report
-                                </a>
-                            </li>
-                        </ul>
+                                    <li id="dataQualityFurtherDetails">
+                                        <i class="icon-hand-right"></i>&nbsp;
+                                        <a id="dataQualityReportLink" href="#dataQualityReport">
+                                            View full data quality report
+                                        </a>
+                                    </li>
+                                </ul>
 
-                        <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
-                        <c:set var="recordIsVerified" value="false"/>
-                        <c:set var="hasExpertDistribution" value="false"/>
-                        <c:forEach items="${record.userAssertions}" var="userAssertion">
-                            <c:if test="${userAssertion.name == 'userVerified'}"><c:set var="recordIsVerified" value="true"/></c:if>
-                        </c:forEach>
-                        </div>
+                                <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
+                                <c:set var="recordIsVerified" value="false"/>
+                                <c:set var="hasExpertDistribution" value="false"/>
+                                <c:forEach items="${record.userAssertions}" var="userAssertion">
+                                    <c:if test="${userAssertion.name == 'userVerified'}"><c:set var="recordIsVerified" value="true"/></c:if>
+                                </c:forEach>
+                            </div>
 
-                        <div id="userAssertionsContainer" <c:if test="${empty record.userAssertions && empty queryAssertions}">style="display:none"</c:if>>
-                        <h2>User flagged issues</h2>
-                        <ul id="userAssertions">
-                        <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
-                            <alatag:groupedAssertions groupedAssertions="${groupedAssertions}" />
-                        </ul>
-                        <div id="userAssertionsDetailsLink">
-                            <a id="showUserFlaggedIssues" href="#userAnnotations">
-                                View issue list & comments
-                            </a>
-                        </div>
+                            <div id="userAssertionsContainer" <c:if test="${empty record.userAssertions && empty queryAssertions}">style="display:none"</c:if>>
+                                <h3>User flagged issues</h3>
+                                <ul id="userAssertions">
+                                    <!--<p class="half-padding-bottom">Users have highlighted the following possible issues:</p>-->
+                                    <alatag:groupedAssertions groupedAssertions="${groupedAssertions}" />
+                                </ul>
+                                <div id="userAssertionsDetailsLink">
+                                    <a id="showUserFlaggedIssues" href="#userAnnotations">
+                                        View issue list & comments
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </c:if>
                 <c:if test="${isCollectionAdmin && (not empty record.systemAssertions || not empty record.userAssertions) && not recordIsVerified}">
                     <div class="sidebar">
@@ -554,89 +555,89 @@
                     </div>
                 </c:if>
                 <c:if test="${not empty record.processed.attribution.provenance && record.processed.attribution.provenance == 'Draft'}">
-                <div class="sidebar">
-                    <p class="grey-bg" style="padding:5px; margin-top:15px; margin-bottom:10px;">
-                        This record was transcribed from the label by an online volunteer.
-                        It has not yet been validated by the owner institution
-                        <a href="http://volunteer.ala.org.au/">Biodiversity Volunteer Portal</a>.
-                    </p>
+                    <div class="sidebar">
+                        <p class="grey-bg" style="padding:5px; margin-top:15px; margin-bottom:10px;">
+                            This record was transcribed from the label by an online volunteer.
+                            It has not yet been validated by the owner institution
+                            <a href="http://volunteer.ala.org.au/">Biodiversity Volunteer Portal</a>.
+                        </p>
 
-                    <button class="rounded" id="viewDraftButton" >
-                        <span id="viewDraftSpan" title="View Draft">See draft in Biodiversity Volunteer Portal</span>
-                    </button>
-                </div>
+                        <button class="rounded" id="viewDraftButton" >
+                            <span id="viewDraftSpan" title="View Draft">See draft in Biodiversity Volunteer Portal</span>
+                        </button>
+                    </div>
                 </c:if>
                 <c:if test="${!isReadOnly && record.processed.attribution.provenance != 'Draft'}">
-                <div class="sidebar">
-                    <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="assertionButton" href="#loginOrFlag">
-                        <span id="loginOrFlagSpan" title="Flag an issue" class="">Flag an issue</span>
-                    </button>
-                    <div style="display:none">
-                        <c:choose>
-                        <c:when test="${empty userId}">
-                            <div id="loginOrFlag">
-                                Login please
-                                <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrences/${record.raw.uuid}">Click here</a>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div id="loginOrFlag">
-                                You are logged in as  <strong>${userDisplayName} (${userEmail})</strong>.
-                                <form id="issueForm">
-                                   <p style="margin-top:20px;">
-                                        <label for="issue">Issue type:</label>
-                                        <select name="issue" id="issue">
-                                            <c:forEach items="${errorCodes}" var="code">
-                                            <option value="${code.code}"><spring:message code="${code.name}" text="${code.name}"/></option>
-                                            </c:forEach>
-                                        </select>
-                                    </p>
-                                    <p style="margin-top:30px;">
-                                        <label for="issueComment" style="vertical-align:top;">Comment:</label>
-                                        <textarea name="comment" id="issueComment" style="width:380px;height:150px;" placeholder="Please add a comment here..."></textarea>
-                                    </p>
-                                    <p style="margin-top:20px;">
-                                        <input id="issueFormSubmit" type="submit" value="Submit" />
-                                        <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
-                                        <input type="button" id="close" value="Close" style="display:none;"/>
-                                        <span id="submitSuccess"></span>
-                                    </p>
-                                    <p id="assertionSubmitProgress" style="display:none;">
-                                        <img src="${initParam.serverName}${pageContext.request.contextPath}/static/images/indicator.gif"/>
-                                    </p>
+                    <div class="sidebar">
+                        <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="assertionButton" href="#loginOrFlag">
+                            <span id="loginOrFlagSpan" title="Flag an issue" class=""><i class="icon-flag"></i> Flag an issue</span>
+                        </button>
+                        <div style="display:none">
+                            <c:choose>
+                                <c:when test="${empty userId}">
+                                    <div id="loginOrFlag">
+                                        Login please
+                                        <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrences/${record.raw.uuid}">Click here</a>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div id="loginOrFlag">
+                                        You are logged in as  <strong>${userDisplayName} (${userEmail})</strong>.
+                                        <form id="issueForm">
+                                            <p style="margin-top:20px;">
+                                                <label for="issue">Issue type:</label>
+                                                <select name="issue" id="issue">
+                                                    <c:forEach items="${errorCodes}" var="code">
+                                                        <option value="${code.code}"><spring:message code="${code.name}" text="${code.name}"/></option>
+                                                    </c:forEach>
+                                                </select>
+                                            </p>
+                                            <p style="margin-top:30px;">
+                                                <label for="issueComment" style="vertical-align:top;">Comment:</label>
+                                                <textarea name="comment" id="issueComment" style="width:380px;height:150px;" placeholder="Please add a comment here..."></textarea>
+                                            </p>
+                                            <p style="margin-top:20px;">
+                                                <input id="issueFormSubmit" type="submit" value="Submit" />
+                                                <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
+                                                <input type="button" id="close" value="Close" style="display:none;"/>
+                                                <span id="submitSuccess"></span>
+                                            </p>
+                                            <p id="assertionSubmitProgress" style="display:none;">
+                                                <img src="${initParam.serverName}${pageContext.request.contextPath}/static/images/indicator.gif"/>
+                                            </p>
 
-                                </form>
-                            </div>
-                        </c:otherwise>
-                        </c:choose>
+                                        </form>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                </div>
                 </c:if>
                 <div class="sidebar">
                     <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
-                        <span id="processedVsRawViewSpan" href="#processedVsRawView" title="">Original vs Processed</span>
+                        <span id="processedVsRawViewSpan" href="#processedVsRawView" title=""><i class="icon-th"></i> Original vs Processed</span>
                     </button>
                 </div>
                 <c:if test="${not empty record.images}">
                     <div class="sidebar">
-                        <h2>Images</h2>
+                        <h3>Images</h3>
                         <div id="occurrenceImages" style="margin-top:5px;">
-                        <c:forEach items="${record.images}" var="image">
-                           <a href="${image.alternativeFormats['largeImageUrl']}" target="_blank">
-                               <img src="${image.alternativeFormats['smallImageUrl']}" style="max-width: 250px;"/>
-                           </a>
-                          <br/>
-                            <c:if test="${not empty record.raw.occurrence.photographer}">
-                                <cite>Photographer: ${record.raw.occurrence.photographer}</cite>
-                            </c:if>
-                            <c:if test="${not empty record.raw.occurrence.rights}">
-                               <cite>Rights: ${record.raw.occurrence.rights}</cite>
-                            </c:if>
-                            <c:if test="${not empty record.raw.occurrence.rightsholder}">
-                                <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
-                            </c:if>
-                            <a href="${image.alternativeFormats['imageUrl']}" target="_blank">Original image (${formattedImageSizes[image.alternativeFormats['imageUrl']]})</a>
-                        </c:forEach>
+                            <c:forEach items="${record.images}" var="image">
+                                <a href="${image.alternativeFormats['largeImageUrl']}" target="_blank">
+                                    <img src="${image.alternativeFormats['smallImageUrl']}" style="max-width: 100%;"/>
+                                </a>
+                                <br/>
+                                <c:if test="${not empty record.raw.occurrence.photographer}">
+                                    <cite>Photographer: ${record.raw.occurrence.photographer}</cite>
+                                </c:if>
+                                <c:if test="${not empty record.raw.occurrence.rights}">
+                                    <cite>Rights: ${record.raw.occurrence.rights}</cite>
+                                </c:if>
+                                <c:if test="${not empty record.raw.occurrence.rightsholder}">
+                                    <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
+                                </c:if>
+                                <a href="${image.alternativeFormats['imageUrl']}" target="_blank">Original image (${formattedImageSizes[image.alternativeFormats['imageUrl']]})</a>
+                            </c:forEach>
                         </div>
                     </div>
                 </c:if>
@@ -695,20 +696,20 @@
                                     // bind circle to marker
                                     circle.bindTo('center', marker, 'position');
                                 }
-                            </c:if>
+                                </c:if>
                             });
                         </script>
-                        <h2>Location of record</h2>
+                        <h3>Location of record</h3>
                         <div id="occurrenceMap"></div>
                     </div>
                 </c:if>
                 <c:if test="${not empty record.sounds}">
                     <div class="sidebar">
-                        <h2 id="soundsHeader">Sounds</h2>
+                        <h3 id="soundsHeader">Sounds</h3>
                         <audio controls>
-                          <source src="${record.sounds[0].alternativeFormats['audio/mpeg']}" type="audio/ogg">
-                          <source src="${record.sounds[0].alternativeFormats['audio/mpeg']}" type="audio/mpeg">
-                        Your browser does not support the audio element.
+                            <source src="${record.sounds[0].alternativeFormats['audio/mpeg']}" type="audio/ogg">
+                            <source src="${record.sounds[0].alternativeFormats['audio/mpeg']}" type="audio/mpeg">
+                            Your browser does not support the audio element.
                         </audio>
                         <c:if test="${not empty record.raw.occurrence.rights}">
                             <br/>
@@ -718,29 +719,31 @@
                             associated with this occurrence record.
                         </p>
                     </div>
-                 </c:if>
-                 <c:if test="${not empty record.raw.lastModifiedTime && not empty record.processed.lastModifiedTime}">
-                     <div class="sidebar" style="margin-top: 10px;font-size: 12px; color: #555;">
-                         <c:catch var="parseError">
-                             <fmt:parseDate var="rawLastModified" value="${record.raw.lastModifiedTime}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
-                             <fmt:formatDate var="rawLastModifiedString" value="${rawLastModified}" pattern="yyyy-MM-dd"/>
-                             <fmt:parseDate var="processedLastModified" value="${record.processed.lastModifiedTime}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
-                             <fmt:formatDate var="processedLastModifiedString" value="${processedLastModified}" pattern="yyyy-MM-dd"/>
-                         </c:catch>
-                         <c:if test="${not empty parseError}">
-                             <c:set var="rawLastModifiedString" value="${record.raw.lastModifiedTime}"/>
-                             <c:set var="processedLastModifiedString" value="${record.processed.lastModifiedTime}"/>
-                         </c:if>
-                         <p style="margin-bottom:20px;">
-                         Date loaded: ${rawLastModifiedString}<br/>
-                         Date last processed: ${processedLastModifiedString}<br/>
-                         </p>
-                     </div>
-                 </c:if>
-            </div><!-- end div#SidebarBox -->
-            <div id="content2">
-                <jsp:include page="recordCoreDiv.jsp"/>
-            </div><!-- end of div#content2 -->
+                </c:if>
+                <c:if test="${not empty record.raw.lastModifiedTime && not empty record.processed.lastModifiedTime}">
+                    <div class="sidebar" style="margin-top: 10px;font-size: 12px; color: #555;">
+                        <c:catch var="parseError">
+                            <fmt:parseDate var="rawLastModified" value="${record.raw.lastModifiedTime}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
+                            <fmt:formatDate var="rawLastModifiedString" value="${rawLastModified}" pattern="yyyy-MM-dd"/>
+                            <fmt:parseDate var="processedLastModified" value="${record.processed.lastModifiedTime}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
+                            <fmt:formatDate var="processedLastModifiedString" value="${processedLastModified}" pattern="yyyy-MM-dd"/>
+                        </c:catch>
+                        <c:if test="${not empty parseError}">
+                            <c:set var="rawLastModifiedString" value="${record.raw.lastModifiedTime}"/>
+                            <c:set var="processedLastModifiedString" value="${record.processed.lastModifiedTime}"/>
+                        </c:if>
+                        <p style="margin-bottom:20px;">
+                            Date loaded: ${rawLastModifiedString}<br/>
+                            Date last processed: ${processedLastModifiedString}<br/>
+                        </p>
+                    </div>
+                </c:if>
+                </div><!-- end div#SidebarBox -->
+                <div id="content2Z" class="span8">
+                    <jsp:include page="recordCoreDiv.jsp"/>
+                </div><!-- end of div#content2 -->
+            </div>
+
 
             <c:if test="${hasExpertDistribution}">
                 <div id="hasExpertDistribution"  class="additionalData" style="clear:both;padding-top: 20px;">
@@ -833,19 +836,21 @@
             <div id="dataQuality" class="additionalData">
                 <h2>Data quality tests<a id="dataQualityReport" href="#dataQualityReport">&nbsp;</a></h2>
 
-                <table class="dataQualityResults table table-striped table-condensed">
+                <table class="dataQualityResults table-striped table-bordered table-condensed">
                     <%--<caption>Details of tests that have been performed for this record.</caption>--%>
                     <thead>
-                        <th class="dataQualityTestName">Test name</th>
-                        <th class="dataQualityTestResult">Result</th>
-                        <%--<th class="dataQualityMoreInfo">More information</th>--%>
+                        <tr class="sectionName">
+                            <td class="dataQualityTestName">Test name</td>
+                            <td class="dataQualityTestResult">Result</td>
+                            <%--<th class="dataQualityMoreInfo">More information</th>--%>
+                        </tr>
                     </thead>
                     <tbody>
                         <c:set var="testSet" value="${record.systemAssertions['failed']}"/>
                         <c:forEach items="${testSet}" var="test">
                         <tr>
                             <td><spring:message code="${test.name}" text="${test.name}"/></td>
-                            <td><i class="icon-thumbs-down icon-red"></i>Failed</td>
+                            <td><i class="icon-thumbs-down icon-red"></i> Failed</td>
                             <%--<td>More info</td>--%>
                         </tr>
                         </c:forEach>
@@ -854,7 +859,7 @@
                         <c:forEach items="${testSet}" var="test">
                         <tr>
                             <td><spring:message code="${test.name}" text="${test.name}"/></td>
-                            <td><i class="icon-warning-sign"></i>Warning</td>
+                            <td><i class="icon-warning-sign"></i> Warning</td>
                             <%--<td>More info</td>--%>
                         </tr>
                         </c:forEach>
@@ -863,7 +868,7 @@
                         <c:forEach items="${testSet}" var="test">
                         <tr>
                             <td><spring:message code="${test.name}" text="${test.name}"/></td>
-                            <td><i class="icon-thumbs-up icon-green"></i>Passed</td>
+                            <td><i class="icon-thumbs-up icon-green"></i> Passed</td>
                             <%--<td>More info</td>--%>
                         </tr>
                         </c:forEach>
@@ -879,7 +884,7 @@
                         <c:forEach items="${testSet}" var="test">
                         <tr class="missingPropResult" style="display:none;">
                             <td><spring:message code="${test.name}" text="${test.name}"/></td>
-                            <td><i class=" icon-question-sign"></i>Missing</td>
+                            <td><i class=" icon-question-sign"></i> Missing</td>
                         </tr>
                         </c:forEach>
 
@@ -954,7 +959,7 @@
 						</ul>
 					</p>
 					<c:if test="${not empty duplicateRecordDetails}">
-						<table class="duplicationTable" style="border-bottom:none;">
+						<table class="duplicationTable table-striped table-bordered table-condensed" style="border-bottom:none;">
 							<tr class="sectionName"><td colspan="4">Representative Record</td></tr>
 							<alatag:occurrenceTableRow
                                     annotate="false"
@@ -1085,11 +1090,11 @@
                 <div id="outlierInformation" class="additionalData">
                     <c:if test="${not empty contextualSampleInfo}">
                     <h3>Additional political boundaries information</h3>
-                    <table class="layerIntersections" style="border-bottom:none;">
+                    <table class="layerIntersections table-striped table-bordered table-condensed">
                         <tbody>
                         <c:forEach items="${contextualSampleInfo}" var="sample" varStatus="vs">
                             <c:if test="${not empty sample.classification1 && (vs.first || (sample.classification1 != contextualSampleInfo[vs.index-1].classification1 && !vs.end))}">
-                                <tr class="sectionName"><td colspan="4">${sample.classification1}</td></tr>
+                                <tr class="sectionName"><td colspan="2">${sample.classification1}</td></tr>
                             </c:if>
                             <alatag:occurrenceTableRow
                                     annotate="false"
@@ -1103,11 +1108,11 @@
 
                     <c:if test="${not empty environmentalSampleInfo}">
                     <h3>Environmental sampling for this location</h3>
-                    <table class="layerIntersections" style="border-bottom:none;">
+                    <table class="layerIntersections table-striped table-bordered table-condensed" >
                         <tbody>
                         <c:forEach items="${environmentalSampleInfo}" var="sample" varStatus="vs">
                             <c:if test="${not empty sample.classification1 && (vs.first || (sample.classification1 != environmentalSampleInfo[vs.index-1].classification1 && !vs.end))}">
-                                <tr class="sectionName"><td colspan="4">${sample.classification1}</td></tr>
+                                <tr class="sectionName"><td colspan="2">${sample.classification1}</td></tr>
                             </c:if>
                             <alatag:occurrenceTableRow
                                     annotate="false"

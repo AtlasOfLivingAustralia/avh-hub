@@ -29,7 +29,7 @@
         <meta name="section" content="search"/>
         <title><fmt:message key="heading.list"/> | ${hubDisplayName}</title>
 
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />
+        <%--<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/tabs-no-images.css" />--%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/search.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/button.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/map.css" type="text/css" media="screen" />
@@ -82,376 +82,382 @@
         <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
     </head>
     <body>
-        <input type="hidden" id="userId" value="${userId}">
-        <div id="headingBar">
-            <h1><fmt:message key="heading.list"/><a name="resultsTop">&nbsp;</a><!--<fmt:message key="test.value"/>--></h1>
-            <div id="searchBox">
+        <div id="listHeader" class="row-fluid">
+            <div class="span5">
+                <h1><fmt:message key="heading.list"/><a name="resultsTop">&nbsp;</a></h1>
+            </div>
+            <div id="searchBoxZ" class="span7 text-right">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                    <span id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advancedSearch">Advanced search</a></span>
+                    <div id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advancedSearch">Advanced search</a></div>
                     <%--<span id="#searchLabel">Search:</span>--%>
-                    <input type="text" id="taxaQuery" name="taxa" value="<c:out value='${param.taxa}'/>">
+                    <input type="text" id="taxaQuery" name="taxa" class="span6" value="<c:out value='${param.taxa}'/>">
                     <input type="submit" id="solrSubmit" class="btn" value="Quick search"/>
                 </form>
             </div>
-           <input type="hidden" id="lsid" value="${param.lsid}"/>
+            <input type="hidden" id="userId" value="${userId}">
+            <input type="hidden" id="lsid" value="${param.lsid}"/>
         </div>
-        <div style="clear: both;"></div>
-
-        <c:if test="${searchResults.totalRecords > 0}">
-            <jsp:include page="facetsDiv.jsp"/>
-        </c:if>
-        <div id="content2" class="span9">
         <c:choose>
             <c:when test="${not empty errors}">
-                <h2 style="padding-left: 15px;">Error</h2>
-                <p>${errors}</p>
-            </c:when>
-            <c:when test="${searchResults.totalRecords > 0 && empty errors}">
-                <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
-                <div>
-                    <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
-                        for <span id="queryDisplay">${queryDisplay}</span>
-                        <!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
-                    </div>
-                    <div style="display:none">
-                        <div id="alert">
-                            <h2>Email alerts</h2>
-                            <br/>
-                            <div class="buttonDiv centered">
-                                <a href="#alertNewRecords" id="alertNewRecords" class="tooltips" data-method="createBiocacheNewRecordsAlert" title="Notify me when new records come online for this search">Get
-                                    email alerts for new <u>records</u> </a>
-                            </div>
-                            <br/>
-                            <div class="buttonDiv centered">
-                                <a href="#alertNewAnnotations" id="alertNewAnnotations" data-method="createBiocacheNewAnnotationsAlert" class="tooltips" title="Notify me when new annotations (corrections, comments, etc) come online for this search">Get
-                                    email alerts for new <u>annotations</u></a>
-                            </div>
-                            <p>&nbsp;</p>
-                            <p><a href="http://alerts.ala.org.au/notification/myAlerts">View your current alerts</a></p>
-                        </div>
-                    </div>
-                    <div style="display:none">
-                        <jsp:include page="../downloadDiv.jsp"/>
-                    </div>
-                    <div style="display:none">
-                        <jsp:include page="../mapDiv.jsp"/>
-                    </div>
+                <div class="searchInfo">
+                    <h2 style="padding-left: 15px;">Error</h2>
+                    <p>${errors}</p>
                 </div>
-                <ul class="css-tabs">
-                    <li><a id="t1" href="#recordsView">Records</a></li>
-                    <li><a id="t2" href="#mapView">Map</a></li>
-                    <li><a id="t3" href="#chartsView">Charts</a></li>
-                    <li><a id="t4" href="#species">Species images</a></li>
-                    <c:if test="${showImages}">
-                        <li><a id="t5" href="#imagesView">Record images</a></li>
-                    </c:if>
-                </ul>
-                <div class="css-panes clearfix">
-                    <div class="paneDiv solrResults">
-                        <div id="searchControls">
-                            <div id="downloads" class="buttonDiv btn">
-                                <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
-                            </div>
-                            <div id="alerts" class="buttonDiv btn">
-                                <a href="#alert" id="alertsLink" title="Get email alerts for this search">Alerts</a>
-                            </div>
-                            <div id="sortWidgets">
-                                Results per page:
-                                <select id="per-page" name="per-page" class="input-small">
-                                    <c:set var="pageSizeVar">
-                                        <c:choose>
-                                            <c:when test="${not empty param.pageSize}">${param.pageSize}</c:when>
-                                            <c:otherwise>20</c:otherwise>
-                                        </c:choose>
-                                    </c:set>
-                                    <option value="10" <c:if test="${pageSizeVar eq '10'}">selected</c:if>>10</option>
-                                    <option value="20" <c:if test="${pageSizeVar eq '20'}">selected</c:if>>20</option>
-                                    <option value="50" <c:if test="${pageSizeVar eq '50'}">selected</c:if>>50</option>
-                                    <option value="100" <c:if test="${pageSizeVar eq '100'}">selected</c:if>>100</option>
-                                </select>
-                                <c:set var="useDefault" value="${empty param.sort && empty param.dir ? true : false }"/>
-                                Sort by:
-                                <select id="sort" name="sort" class="input-small">
-                                    <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>Best match</option>
-                                    <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>Taxon name</option>
-                                    <option value="common_name" <c:if test="${param.sort eq 'common_name'}">selected</c:if>>Common name</option>
-                                    <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>${skin == 'avh' ? 'Collecting date' : 'Record date'}</option>
-                                    <c:if test="${skin != 'avh'}">
-                                        <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>Record type</option>
-                                    </c:if>
-                                    <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>Date added</option>
-                                    <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>Last annotated</option>
-                                </select>
-                                Sort order:
-                                <select id="dir" name="dir" class="input-small">
-                                    <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>Ascending</option>
-                                    <option value="desc" <c:if test="${useDefault || param.dir eq 'desc'}">selected</c:if>>Descending</option>
-                                </select>
-                            </div><!-- sortWidget -->
-                        </div><!-- searchControls -->
-                        <div id="results">
-                            <c:forEach var="occurrence" items="${searchResults.occurrences}">
-                                <div class="recordRow" id="${occurrence.uuid}">
-                                    <c:set var="rawScientificName">
-                                        <c:choose>
-                                            <c:when test="${not empty occurrence.raw_scientificName}">${occurrence.raw_scientificName}</c:when>
-                                            <c:when test="${not empty occurrence.species}">${occurrence.species}</c:when>
-                                            <c:when test="${not empty occurrence.genus}">${occurrence.genus}</c:when>
-                                            <c:when test="${not empty occurrence.family}">${occurrence.family}</c:when>
-                                            <c:when test="${not empty occurrence.order}">${occurrence.order}</c:when>
-                                            <c:when test="${not empty occurrence.phylum}">${occurrence.phylum}</c:when>
-                                            <c:when test="${not empty occurrence.kingdom}">${occurrence.kingdom}</c:when>
-                                            <c:otherwise>No name supplied</c:otherwise>
-                                        </c:choose>
-                                    </c:set>
-                                    <c:choose>
-                                        <c:when test="${skin == 'avh'}"><%-- AVH hubs --%>
-                                            <p class="rowA">
-                                                <span class="occurrenceNames">${rawScientificName}</span>
-                                                <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
-                                                            <span style="display:inline-block;float:right;">
-                                                                <strong class="resultsLabel">Catalogue&nbsp;number:</strong>&nbsp;${occurrence.raw_catalogNumber}
-                                                            </span>
-                                                </c:if>
-                                            </p>
-                                            <table class="avhRowB">
-                                                <tr>
-                                                    <c:if test="${not empty occurrence.stateProvince}">
-                                                        <td><strong class="resultsLabel">State:</strong>&nbsp;${occurrence.stateProvince}</td>
-                                                    </c:if>
-                                                    <c:if test="${not empty occurrence.lga}">
-                                                        <td colspan="2"><strong class="resultsLabel">Locality:</strong>&nbsp;<fmt:message key="${occurrence.lga}"/></td>
-                                                    </c:if>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}&nbsp;&nbsp;${occurrence.recordNumber}</td>
-                                                    <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
-                                                        <td><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</td>
-                                                    </c:if>
-                                                    <c:choose>
-                                                        <c:when test="${not empty occurrence.eventDate}">
-                                                            <td><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></td>
-                                                        </c:when>
-                                                        <c:when test="${empty occurrence.eventDate && not empty occurrence.year}">
-                                                            <td><strong class="resultsLabel">Date:</strong>&nbsp;${occurrence.year}</td>
-                                                        </c:when>
-                                                    </c:choose>
-                                                </tr>
-                                                <tr>
-                                                    <c:if test="${not empty occurrence.collectionName}">
-                                                        <td><strong class="resultsLabel">Herbarium:</strong>&nbsp;${occurrence.collectionName}</td>
-                                                    </c:if>
-                                                    <td class="viewRecord"><a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a></td>
-                                                </tr>
-                                            </table>
-                                            <p class="rowB" style="display:none">
-                                                <c:if test="${not empty occurrence.stateProvince}">
-                                                    <span class="resultListItem"><strong class="resultsLabel">State:</strong>&nbsp;${occurrence.stateProvince}</span>
-                                                </c:if>
-                                                <c:if test="${not empty occurrence.lga}">
-                                                    <span class="resultListItem"><strong class="resultsLabel">Locality:</strong>&nbsp;<fmt:message key="${occurrence.lga}"/></span>
-                                                </c:if>
-                                                <br/>
-                                                    <%--<c:if test="${not empty occurrence.institutionName}">
-                                                        <span class="resultListItem" style="text-transform: capitalize;white-space: nowrap;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
-                                                    </c:if>--%>
-                                                <c:if test="${not empty occurrence.collectionName}">
-                                                    <span class="resultListItem"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
-                                                </c:if>
-                                                <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
-                                                    <span class="resultListItem"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
-                                                </c:if>
-                                                    <%--<c:if test="${occurrence.collector != null && not empty occurrence.collector}">
-                                                        <span class="resultListItem"><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}</span>
-                                                    </c:if>--%>
-                                                <c:choose>
-                                                    <c:when test="${not empty occurrence.eventDate}">
-                                                        <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
-                                                    </c:when>
-                                                    <c:when test="${not empty occurrence.year}">
-                                                        <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;${occurrence.year}</span>
-                                                    </c:when>
-                                                </c:choose>
-
-                                                        <span style="display:inline-block;float:right;">
-                                                            <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
-                                                        </span>
-                                            </p>
-                                        </c:when>
-                                        <c:otherwise><%-- All other hubs --%>
-                                            <p class="rowA">
-                                                <c:choose>
-                                                    <c:when test="${not empty occurrence.taxonRank && not empty occurrence.scientificName}">
-                                                        <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${occurrence.scientificName}"/></span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="occurrenceNames">${occurrence.raw_scientificName}</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <c:choose>
-                                                    <c:when test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:when>
-                                                    <c:when test="${not empty occurrence.raw_vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.raw_vernacularName}</span></c:when>
-                                                </c:choose>
-                                                <span style="margin-left: 8px;">
-                                                    <c:choose>
-                                                        <c:when test="${not empty occurrence.eventDate}">
-                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
-                                                        </c:when>
-                                                        <c:when test="${not empty occurrence.occurrenceYear}">
-                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Year:</strong>&nbsp;<fmt:formatDate value="${occurrence.occurrenceYear}" pattern="yyyy"/></span>
-                                                        </c:when>
-                                                    </c:choose>
-                                                    <c:choose>
-                                                        <c:when test="${not empty occurrence.stateProvince}">
-                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span>
-                                                        </c:when>
-                                                        <c:when test="${not empty occurrence.country}">
-                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Country:</strong>&nbsp;<fmt:message key="${occurrence.country}"/></span>
-                                                        </c:when>
-                                                    </c:choose>
-                                                </span>
-                                            </p>
-                                            <p class="rowB">
-                                                <c:if test="${not empty occurrence.institutionName}">
-                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
-                                                </c:if>
-                                                <c:if test="${not empty occurrence.collectionName}">
-                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
-                                                </c:if>
-                                                <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
-                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
-                                                </c:if>
-                                                <c:if test="${not empty occurrence.basisOfRecord}">
-                                                    <span style="text-transform: capitalize;"><strong class="resultsLabel">Basis&nbsp;of&nbsp;record:</strong>&nbsp;${occurrence.basisOfRecord}</span>
-                                                </c:if>
-                                                <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
-                                                    <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
-                                                </c:if>
-                                                <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
-                                            </p>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </c:forEach>
-                        </div><!--close results-->
-                        <div id="searchNavBar">
-                            <alatag:searchNavigationLinks totalRecords="${searchResults.totalRecords}" startIndex="${searchResults.startIndex}"
-                                                          queryString="${searchRequestParams.q}" lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
-                        </div>
-                    </div><!--end solrResults-->
-                    <div id="mapwrapper" class="paneDiv">
-                        <table id="mapLayerControls">
-                            <tr>
-                                <td>
-                                    <label for="colourFacets">Colour by:&nbsp;</label>
-                                    <div class="layerControls">
-                                        <select name="colourFacets" id="colourFacets">
-                                            <option value=""> None </option>
-                                            <c:forEach var="facetResult" items="${searchResults.facetResults}">
-                                                <c:set var="Defaultselected">
-                                                    <c:if test="${not empty defaultFacetMapColourBy && facetResult.fieldName == defaultFacetMapColourBy}">selected="selected"</c:if>
-                                                </c:set>
-                                                <c:if test="${fn:length(facetResult.fieldResult) > 1}">
-                                                    <option value="${facetResult.fieldName}" ${Defaultselected}>
-                                                        <c:choose>
-                                                            <c:when test="${fn:substring(facetResult.fieldName, fn:length(facetResult.fieldName)-2, fn:length(facetResult.fieldName)) eq '_s'}">${fn:replace(fn:substring(facetResult.fieldName, 0, fn:length(facetResult.fieldName)-2), '_', ' ')}</c:when>
-                                                            <c:otherwise><fmt:message key="facet.${facetResult.fieldName}"/></c:otherwise>
-                                                        </c:choose>
-                                                    </option>
-                                                </c:if>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </td>
-                                <c:if test="${skin == 'avh'}">
-                                <td>
-                                    <label for="envLyrList">Environmental layer:&nbsp;</label>
-                                    <div class="layerControls">
-                                        <select id="envLyrList">
-                                            <option value="">None</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                </c:if>
-                                <td>
-                                    <label for="sizeslider">Size:</label>
-                                    <div class="layerControls">
-                                        <span id="sizeslider-val">4</span>
-                                        <div id="sizeslider"></div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
-                                    <c:set var='spatialPortalUrlParams'><ala:propertyLoader bundle="hubs" property="spatialPortalUrlParams"/></c:set>
-                                    <!--  <a class="buttonDiv" id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>-->
-                                    <div id="downloadMaps" class="buttonDiv">
-                                        <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
-                                    </div>
-                                    <div id="downloadMaps" class="buttonDiv">
-                                        <a href="#downloadMap" id="downloadMapLink" title="Download a publication quality map">Download map</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <div id="maploading">Loading...</div>
-                        <div id="mapcanvas"></div>
-                        <div id="legend" title="Toggle layers/legend display">
-                            <div class="title">Legend<span>&nabla;</span></div>
-                            <div id="layerlist">
-                                <div id="toggleAll">Toggle all</div>
-                                <div id="legendContent"></div>
-                            </div>
-                        </div>
-                        <div id='envLegend'></div>
-                    </div><!-- end #mapwrapper -->
-                    <div id="chartsWrapper" class="paneDiv">
-                        <div id="charts"></div>
-                    </div><!-- end #chartsWrapper -->
-                    <div id="speciesWrapper" class="paneDiv">
-                        <h3>Representative images of species</h3>
-                        <div id="speciesGalleryControls">
-                            Filter by group
-                            <select id="speciesGroup">
-                                <option>no species groups loaded</option>
-                            </select>
-                            &nbsp;
-                            Sort by
-                            <select id="speciesGallerySort">
-                                <option value="common">Common name</option>
-                                <option value="taxa">Scientific name</option>
-                                <option value="count">Record count</option>
-                            </select>
-                        </div>
-                        <div id="speciesGallery">[image gallery should appear here]</div>
-                        <div id="loadMoreSpecies" style="display:none;">
-                            <button>Show more images</button><img style="display:none;" src="${pageContext.request.contextPath}/static/images/indicator.gif"/>
-                        </div>
-                    </div><!-- end #speciesWrapper -->
-                    <c:if test="${showImages}">
-                        <div id="imagesWrapper" class="paneDiv">
-                            <h3>Images from occurrence records</h3>
-                            <p>(see also <a href="#species">representative species images</a>)</p>
-                            <div id="imagesGrid">
-                                loading images...
-                            </div>
-                            <div id="loadMoreImages" style="display:none;">
-                                <button>Show more images</button>
-                            </div>
-                        </div><!-- end #imagesWrapper -->
-                    </c:if>
-                </div><!-- end .css-panes -->
-                <form name="raw_taxon_search" class="rawTaxonSearch" id="rawTaxonSearchForm" action="${pageContext.request.contextPath}/occurrences/search/taxa" method="POST">
-                        <%-- taxon concept search drop-down div are put in here via Jquery --%>
-                    <div style="display:none;">
-                    </div>
-                </form>
+            </c:when>
+            <c:when test="${searchResults.totalRecords == 0}">
+                <div class="searchInfo">
+                    <p>No Records found for <span class="queryDisplay">${not empty queryDisplay ? queryDisplay : param.q}</span></p>
+                </div>
             </c:when>
             <c:otherwise>
-                <p>No Records found for <span id="queryDisplay">${not empty queryDisplay ? queryDisplay : param.q}</span></p>
+                <div class="row-fluid clearfix">
+                    <div class="span3">
+                        <jsp:include page="facetsDiv.jsp"/>
+                    </div>
+                    <div id="content2" class="span9">
+                        <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
+                        <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
+                            for <span class="queryDisplay">${queryDisplay}</span>
+                            <!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
+                        </div>
+                        <div style="display:none">
+                            <div id="alert">
+                                <h2>Email alerts</h2>
+                                <br/>
+                                <div class="buttonDiv centered">
+                                    <a href="#alertNewRecords" id="alertNewRecords" class="tooltips" data-method="createBiocacheNewRecordsAlert" title="Notify me when new records come online for this search">Get
+                                        email alerts for new <u>records</u> </a>
+                                </div>
+                                <br/>
+                                <div class="buttonDiv centered">
+                                    <a href="#alertNewAnnotations" id="alertNewAnnotations" data-method="createBiocacheNewAnnotationsAlert" class="tooltips" title="Notify me when new annotations (corrections, comments, etc) come online for this search">Get
+                                        email alerts for new <u>annotations</u></a>
+                                </div>
+                                <p>&nbsp;</p>
+                                <p><a href="http://alerts.ala.org.au/notification/myAlerts">View your current alerts</a></p>
+                            </div>
+                        </div>
+                        <div style="display:none">
+                            <jsp:include page="../downloadDiv.jsp"/>
+                        </div>
+                        <div style="display:none">
+                            <jsp:include page="../mapDiv.jsp"/>
+                        </div>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li><a id="t1" href="#recordsView" data-toggle="tab">Records</a></li>
+                                <li><a id="t2" href="#mapView" data-toggle="tab">Map</a></li>
+                                <li><a id="t3" href="#chartsView" data-toggle="tab">Charts</a></li>
+                                <li><a id="t4" href="#speciesImages" data-toggle="tab">Species images</a></li>
+                                <c:if test="${showImages}">
+                                    <li><a id="t5" href="#recordImages" data-toggle="tab">Record images</a></li>
+                                </c:if>
+                            </ul>
+                        </div>
+                        <div class="tab-content clearfix">
+                            <div class="tab-pane active solrResults" id="recordsView">
+                                <div id="searchControls">
+                                    <div id="downloads" class="buttonDiv btn">
+                                        <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
+                                    </div>
+                                    <div id="alerts" class="buttonDiv btn">
+                                        <a href="#alert" id="alertsLink" title="Get email alerts for this search">Alerts</a>
+                                    </div>
+                                    <div id="sortWidgets">
+                                        Results per page:
+                                        <select id="per-page" name="per-page" class="input-small">
+                                            <c:set var="pageSizeVar">
+                                                <c:choose>
+                                                    <c:when test="${not empty param.pageSize}">${param.pageSize}</c:when>
+                                                    <c:otherwise>20</c:otherwise>
+                                                </c:choose>
+                                            </c:set>
+                                            <option value="10" <c:if test="${pageSizeVar eq '10'}">selected</c:if>>10</option>
+                                            <option value="20" <c:if test="${pageSizeVar eq '20'}">selected</c:if>>20</option>
+                                            <option value="50" <c:if test="${pageSizeVar eq '50'}">selected</c:if>>50</option>
+                                            <option value="100" <c:if test="${pageSizeVar eq '100'}">selected</c:if>>100</option>
+                                        </select>
+                                        <c:set var="useDefault" value="${empty param.sort && empty param.dir ? true : false }"/>
+                                        Sort by:
+                                        <select id="sort" name="sort" class="input-small">
+                                            <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>Best match</option>
+                                            <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>Taxon name</option>
+                                            <option value="common_name" <c:if test="${param.sort eq 'common_name'}">selected</c:if>>Common name</option>
+                                            <option value="occurrence_date" <c:if test="${param.sort eq 'occurrence_date'}">selected</c:if>>${skin == 'avh' ? 'Collecting date' : 'Record date'}</option>
+                                            <c:if test="${skin != 'avh'}">
+                                                <option value="record_type" <c:if test="${param.sort eq 'record_type'}">selected</c:if>>Record type</option>
+                                            </c:if>
+                                            <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>Date added</option>
+                                            <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>Last annotated</option>
+                                        </select>
+                                        Sort order:
+                                        <select id="dir" name="dir" class="input-small">
+                                            <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>Ascending</option>
+                                            <option value="desc" <c:if test="${useDefault || param.dir eq 'desc'}">selected</c:if>>Descending</option>
+                                        </select>
+                                    </div><!-- sortWidget -->
+                                </div><!-- searchControls -->
+                                <div id="results">
+                                    <c:forEach var="occurrence" items="${searchResults.occurrences}">
+                                        <div class="recordRow" id="${occurrence.uuid}">
+                                            <c:set var="rawScientificName">
+                                                <c:choose>
+                                                    <c:when test="${not empty occurrence.raw_scientificName}">${occurrence.raw_scientificName}</c:when>
+                                                    <c:when test="${not empty occurrence.species}">${occurrence.species}</c:when>
+                                                    <c:when test="${not empty occurrence.genus}">${occurrence.genus}</c:when>
+                                                    <c:when test="${not empty occurrence.family}">${occurrence.family}</c:when>
+                                                    <c:when test="${not empty occurrence.order}">${occurrence.order}</c:when>
+                                                    <c:when test="${not empty occurrence.phylum}">${occurrence.phylum}</c:when>
+                                                    <c:when test="${not empty occurrence.kingdom}">${occurrence.kingdom}</c:when>
+                                                    <c:otherwise>No name supplied</c:otherwise>
+                                                </c:choose>
+                                            </c:set>
+                                            <c:choose>
+                                                <c:when test="${skin == 'avh'}"><%-- AVH hubs --%>
+                                                    <p class="rowA">
+                                                        <span class="occurrenceNames">${rawScientificName}</span>
+                                                        <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
+                                                                            <span style="display:inline-block;float:right;">
+                                                                                <strong class="resultsLabel">Catalogue&nbsp;number:</strong>&nbsp;${occurrence.raw_catalogNumber}
+                                                                            </span>
+                                                        </c:if>
+                                                    </p>
+                                                    <table class="avhRowB">
+                                                        <tr>
+                                                            <c:if test="${not empty occurrence.stateProvince}">
+                                                                <td><strong class="resultsLabel">State:</strong>&nbsp;${occurrence.stateProvince}</td>
+                                                            </c:if>
+                                                            <c:if test="${not empty occurrence.lga}">
+                                                                <td colspan="2"><strong class="resultsLabel">Locality:</strong>&nbsp;<fmt:message key="${occurrence.lga}"/></td>
+                                                            </c:if>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}&nbsp;&nbsp;${occurrence.recordNumber}</td>
+                                                            <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
+                                                                <td><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</td>
+                                                            </c:if>
+                                                            <c:choose>
+                                                                <c:when test="${not empty occurrence.eventDate}">
+                                                                    <td><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></td>
+                                                                </c:when>
+                                                                <c:when test="${empty occurrence.eventDate && not empty occurrence.year}">
+                                                                    <td><strong class="resultsLabel">Date:</strong>&nbsp;${occurrence.year}</td>
+                                                                </c:when>
+                                                            </c:choose>
+                                                        </tr>
+                                                        <tr>
+                                                            <c:if test="${not empty occurrence.collectionName}">
+                                                                <td><strong class="resultsLabel">Herbarium:</strong>&nbsp;${occurrence.collectionName}</td>
+                                                            </c:if>
+                                                            <td class="viewRecord"><a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a></td>
+                                                        </tr>
+                                                    </table>
+                                                    <p class="rowB" style="display:none">
+                                                        <c:if test="${not empty occurrence.stateProvince}">
+                                                            <span class="resultListItem"><strong class="resultsLabel">State:</strong>&nbsp;${occurrence.stateProvince}</span>
+                                                        </c:if>
+                                                        <c:if test="${not empty occurrence.lga}">
+                                                            <span class="resultListItem"><strong class="resultsLabel">Locality:</strong>&nbsp;<fmt:message key="${occurrence.lga}"/></span>
+                                                        </c:if>
+                                                        <br/>
+                                                            <%--<c:if test="${not empty occurrence.institutionName}">
+                                                                <span class="resultListItem" style="text-transform: capitalize;white-space: nowrap;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
+                                                            </c:if>--%>
+                                                        <c:if test="${not empty occurrence.collectionName}">
+                                                            <span class="resultListItem"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
+                                                        </c:if>
+                                                        <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
+                                                            <span class="resultListItem"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
+                                                        </c:if>
+                                                            <%--<c:if test="${occurrence.collector != null && not empty occurrence.collector}">
+                                                                <span class="resultListItem"><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}</span>
+                                                            </c:if>--%>
+                                                        <c:choose>
+                                                            <c:when test="${not empty occurrence.eventDate}">
+                                                                <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
+                                                            </c:when>
+                                                            <c:when test="${not empty occurrence.year}">
+                                                                <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;${occurrence.year}</span>
+                                                            </c:when>
+                                                        </c:choose>
+
+                                                                        <span style="display:inline-block;float:right;">
+                                                                            <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
+                                                                        </span>
+                                                    </p>
+                                                </c:when>
+                                                <c:otherwise><%-- All other hubs --%>
+                                                    <p class="rowA">
+                                                        <c:choose>
+                                                            <c:when test="${not empty occurrence.taxonRank && not empty occurrence.scientificName}">
+                                                                <span style="text-transform: capitalize">${occurrence.taxonRank}</span>:&nbsp;<span class="occurrenceNames"><alatag:formatSciName rankId="6000" name="${occurrence.scientificName}"/></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="occurrenceNames">${occurrence.raw_scientificName}</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <c:choose>
+                                                            <c:when test="${not empty occurrence.vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.vernacularName}</span></c:when>
+                                                            <c:when test="${not empty occurrence.raw_vernacularName}">&nbsp;|&nbsp;<span class="occurrenceNames">${occurrence.raw_vernacularName}</span></c:when>
+                                                        </c:choose>
+                                                                <span style="margin-left: 8px;">
+                                                                    <c:choose>
+                                                                        <c:when test="${not empty occurrence.eventDate}">
+                                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Date:</strong>&nbsp;<fmt:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
+                                                                        </c:when>
+                                                                        <c:when test="${not empty occurrence.occurrenceYear}">
+                                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Year:</strong>&nbsp;<fmt:formatDate value="${occurrence.occurrenceYear}" pattern="yyyy"/></span>
+                                                                        </c:when>
+                                                                    </c:choose>
+                                                                    <c:choose>
+                                                                        <c:when test="${not empty occurrence.stateProvince}">
+                                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">State:</strong>&nbsp;<fmt:message key="region.${occurrence.stateProvince}"/></span>
+                                                                        </c:when>
+                                                                        <c:when test="${not empty occurrence.country}">
+                                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Country:</strong>&nbsp;<fmt:message key="${occurrence.country}"/></span>
+                                                                        </c:when>
+                                                                    </c:choose>
+                                                                </span>
+                                                    </p>
+                                                    <p class="rowB">
+                                                        <c:if test="${not empty occurrence.institutionName}">
+                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Institution:</strong>&nbsp;${occurrence.institutionName}</span>
+                                                        </c:if>
+                                                        <c:if test="${not empty occurrence.collectionName}">
+                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Collection:</strong>&nbsp;${occurrence.collectionName}</span>
+                                                        </c:if>
+                                                        <c:if test="${empty occurrence.collectionName && not empty occurrence.dataResourceName}">
+                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
+                                                        </c:if>
+                                                        <c:if test="${not empty occurrence.basisOfRecord}">
+                                                            <span style="text-transform: capitalize;"><strong class="resultsLabel">Basis&nbsp;of&nbsp;record:</strong>&nbsp;${occurrence.basisOfRecord}</span>
+                                                        </c:if>
+                                                        <c:if test="${occurrence.raw_catalogNumber!= null && not empty occurrence.raw_catalogNumber}">
+                                                            <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
+                                                        </c:if>
+                                                        <a href="<c:url value="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
+                                                    </p>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                    </c:forEach>
+                                </div><!--close results-->
+                                <div id="searchNavBar">
+                                    <alatag:searchNavigationLinks totalRecords="${searchResults.totalRecords}" startIndex="${searchResults.startIndex}"
+                                                                  queryString="${searchRequestParams.q}" lastPage="${lastPage}" pageSize="${searchResults.pageSize}"/>
+                                </div>
+                            </div><!--end solrResults-->
+                            <div id="mapView" class="tab-pane">
+                                <table id="mapLayerControls">
+                                    <tr>
+                                        <td>
+                                            <label for="colourFacets">Colour by:&nbsp;</label>
+                                            <div class="layerControls">
+                                                <select name="colourFacets" id="colourFacets">
+                                                    <option value=""> None </option>
+                                                    <c:forEach var="facetResult" items="${searchResults.facetResults}">
+                                                        <c:set var="Defaultselected">
+                                                            <c:if test="${not empty defaultFacetMapColourBy && facetResult.fieldName == defaultFacetMapColourBy}">selected="selected"</c:if>
+                                                        </c:set>
+                                                        <c:if test="${fn:length(facetResult.fieldResult) > 1}">
+                                                            <option value="${facetResult.fieldName}" ${Defaultselected}>
+                                                                <c:choose>
+                                                                    <c:when test="${fn:substring(facetResult.fieldName, fn:length(facetResult.fieldName)-2, fn:length(facetResult.fieldName)) eq '_s'}">${fn:replace(fn:substring(facetResult.fieldName, 0, fn:length(facetResult.fieldName)-2), '_', ' ')}</c:when>
+                                                                    <c:otherwise><fmt:message key="facet.${facetResult.fieldName}"/></c:otherwise>
+                                                                </c:choose>
+                                                            </option>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <c:if test="${skin == 'avh'}">
+                                        <td>
+                                            <label for="envLyrList">Environmental layer:&nbsp;</label>
+                                            <div class="layerControls">
+                                                <select id="envLyrList">
+                                                    <option value="">None</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        </c:if>
+                                        <td>
+                                            <label for="sizeslider">Size:</label>
+                                            <div class="layerControls">
+                                                <span id="sizeslider-val">4</span>
+                                                <div id="sizeslider"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
+                                            <c:set var='spatialPortalUrlParams'><ala:propertyLoader bundle="hubs" property="spatialPortalUrlParams"/></c:set>
+                                            <!--  <a class="buttonDiv" id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>-->
+                                            <div id="downloadMaps" class="buttonDiv btn">
+                                                <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
+                                            </div>
+                                            <div id="downloadMaps" class="buttonDiv btn">
+                                                <a href="#downloadMap" id="downloadMapLink" title="Download a publication quality map">Download map</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div id="maploading">Loading...</div>
+                                <div id="mapcanvas"></div>
+                                <div id="legend" title="Toggle layers/legend display">
+                                    <div class="title">Legend<span>&nabla;</span></div>
+                                    <div id="layerlist">
+                                        <div id="toggleAll">Toggle all</div>
+                                        <div id="legendContent"></div>
+                                    </div>
+                                </div>
+                                <div id='envLegend'></div>
+                            </div><!-- end #mapwrapper -->
+                            <div id="chartsView" class="tab-pane">
+                                <div id="charts"></div>
+                            </div><!-- end #chartsWrapper -->
+                            <div id="speciesImages" class="tab-pane">
+                                <h3>Representative images of species</h3>
+                                <div id="speciesGalleryControls">
+                                    Filter by group
+                                    <select id="speciesGroup">
+                                        <option>no species groups loaded</option>
+                                    </select>
+                                    &nbsp;
+                                    Sort by
+                                    <select id="speciesGallerySort">
+                                        <option value="common">Common name</option>
+                                        <option value="taxa">Scientific name</option>
+                                        <option value="count">Record count</option>
+                                    </select>
+                                </div>
+                                <div id="speciesGallery">[image gallery should appear here]</div>
+                                <div id="loadMoreSpecies" style="display:none;">
+                                    <button>Show more images</button><img style="display:none;" src="${pageContext.request.contextPath}/static/images/indicator.gif"/>
+                                </div>
+                            </div><!-- end #speciesWrapper -->
+                            <c:if test="${showImages}">
+                                <div id="recordImages" class="tab-pane">
+                                    <h3>Images from occurrence records</h3>
+                                    <%--<p>(see also <a href="#tab_speciesImages">representative species images</a>)</p>--%>
+                                    <div id="imagesGrid">
+                                        loading images...
+                                    </div>
+                                    <div id="loadMoreImages" style="display:none;">
+                                        <button>Show more images</button>
+                                    </div>
+                                </div><!-- end #imagesWrapper -->
+                            </c:if>
+                        </div><!-- end .css-panes -->
+                        <form name="raw_taxon_search" class="rawTaxonSearch" id="rawTaxonSearchForm" action="${pageContext.request.contextPath}/occurrences/search/taxa" method="POST">
+                                <%-- taxon concept search drop-down div are put in here via Jquery --%>
+                            <div style="display:none;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </c:otherwise>
         </c:choose>
-        </div>
-  </body>
+    </body>
 </html>

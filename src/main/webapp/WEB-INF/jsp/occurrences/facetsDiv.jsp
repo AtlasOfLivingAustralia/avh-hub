@@ -6,30 +6,45 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ include file="/common/taglibs.jsp" %>
-<div id="SidebarBox" class="facets span3">
-    <div class="sidebar">
-        <%--<h3 style="display: inline-block;float:left;">Refine Results</h3>--%>
-        <div id="customiseFacets"><a href="#" title="customise which categories are displayed below">Refine results</a></div>
-        <div id="facetOptions">
-            <h4 style="padding-top: 8px;">Select the filter categories that you want to appear in the &quot;Refine results&quot; column</h4>
-            <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
-            <div id="facetCheckboxes">
-                Select: <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a><br/>
-                <div class="facetsColumn">
-                    <c:forEach var="facet" items="${defaultFacets}" varStatus="status">
-                        <c:if test="${status.index > 0 && status.index % 18 == 0}">
-                            </div><div class="facetsColumn">
-                        </c:if>
-                        <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
-                               ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
-                    </c:forEach>
+<div id="facetWell" class="well well-small"> <%--SidebarBox--%>
+    <h3 class="visible-phone">
+        <a href="#" id="toggleFacetDisplay"><i class="icon-chevron-down" id="facetIcon"></i>
+            Refine results</a>
+    </h3>
+    <div class="sidebar hidden-phone">
+        <div id="customiseFacetsButton" class="btn-group">
+            <a class="btn btn-small dropdown-toggle tooltips" data-toggle="dropdown" href="#" title="Customise the contents of this column">
+                <i class="icon-cog"></i>
+                <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu" role="menu"> <%--facetOptions--%>
+                <h4>Select the filter categories that you want to appear in the &quot;Refine results&quot; column</h4>
+                <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
+                <div id="facetCheckboxes">
+                    <input type="button" id="updateFacetOptions" class="btn btn-small" value="Update"/>
+                    &nbsp;&nbsp;
+                    Select:
+                    <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a>
+                    <br/>
+                    <div class="facetsColumn">
+                        <c:forEach var="facet" items="${defaultFacets}" varStatus="status">
+                            <c:if test="${status.index > 0 && status.index % 18 == 0}">
+                                </div>
+                                <div class="facetsColumn">
+                            </c:if>
+                            <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
+                                ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
+                        </c:forEach>
+                    </div>
                 </div>
+                <div class="clearfix"></div>
             </div>
-            <div style="clear:both;"></div>
-            <input type="button" id="updateFacetOptions" value="Update"/>
         </div>
+        <h3 class="hidden-phone">Refine results</h3>
+        <%--<div id="customiseFacets"><a href="#" title="customise which categories are displayed below">Customise</a></div>--%>
+
     </div>
-    <div class="sidebar" style="clear:both;">
+    <div class="sidebar hidden-phone" style="clear:both;">
         <c:if test="${not empty searchResults.query}">
             <c:set var="queryStr" value="${param.q ? param.q : searchRequestParams.q}"/>
             <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/></c:when><c:otherwise>q=<c:out escapeXml="true" value="${queryStr}"/></c:otherwise></c:choose><c:if
@@ -206,7 +221,7 @@
                 <c:if test="${fn:length(facetResult.fieldResult) > 1}">
                     <div class="showHide">
                         <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="${fieldDisplayName}"
-                           title="See more options or refine with multiple values">choose more...</a>
+                           title="See more options or refine with multiple values"><i class="icon-hand-right"></i> choose more...</a>
                     </div>
                 </c:if>
             </c:if>

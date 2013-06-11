@@ -28,7 +28,7 @@
 
 #content #headingBar {
     margin-left: 0;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
     min-height: 55px;
 }
 
@@ -50,11 +50,11 @@
     padding-left: 0;
 }
 
-#headingBar #searchBox {
-    float: right;
-    margin-top: 15px;
-    padding-right: 10px;
-}
+/*#headingBar #searchBox {*/
+    /*float: right;*/
+    /*margin-top: 15px;*/
+    /*padding-right: 10px;*/
+/*}*/
 
 /*#headingBar #advancedSearchLink a {
     font-size: 12px;
@@ -66,13 +66,22 @@ div#advancedSearch {
     background-color: #eeeeee;
 }
 
-#content form {
-    padding-bottom: 5px;
+/*#content heading {*/
+    /*padding-bottom: 5px;*/
+/*}*/
+
+#solrSearchForm {
+    margin: 0;
 }
 
 #advancedSearch table {
     border-bottom: none;
 }
+
+/*#listHeader {*/
+    /*border-bottom: 1px solid #ccc;*/
+    /*padding-bottom: 10px;*/
+/*}*/
 
 #content2 {
     margin-right: 10px;
@@ -99,35 +108,14 @@ div#advancedSearch {
     margin-bottom: 0;
 }
 
-#content .sidebar h4 {
-    padding: 0;
-    margin: 8px 0 5px 0;
-}
-
 #content ul {
     list-style: disc;
     margin-left: 20px;
 }
 
-#content .sidebar > .subnavlist > ul {
-    list-style: none;
-    margin-left: -4px;
-}
 
-ul#refinedFacets {
-    list-style: none;
-    margin: 5px 0 5px 5px;
-}
 
-ul#refinedFacets li {
-    text-indent: -5px;
-}
-
-.sidebar > .subnavlist > ul li {
-    margin-left: 14px;
-}
-
-#headingBar h1 {
+#listHeader h1 {
     color: inherit;
 }
 
@@ -278,7 +266,7 @@ h2#headingSciName {
 @media (min-width: 1200px) {
     /* Google map width on list page */
     #mapwrapper #mapcanvas {
-        width: 845px;
+        width: 100%;
         height: 700px;
     }
     #mapwrapper #maploading {
