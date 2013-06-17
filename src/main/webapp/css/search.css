@@ -17,7 +17,7 @@
 }
 
 #facetWell {
-    margin-top: 40px;
+    margin-top: 45px;
 }
 
 #facetWell .dropdown-menu {
@@ -214,7 +214,7 @@ div#currentFilter {
 #content2 #resultsReturned {
     font-size: 110%;
     padding: 5px 5px 5px 4px;
-    margin: 5px 0 5px 0;
+    margin: 5px 0 10px 0;
     height: 20px;
 }
 #results {
@@ -249,18 +249,22 @@ div#currentFilter {
     border-top: 2px solid silver;*/
     border-bottom: 1px solid silver;
     margin-bottom: 6px;
-    padding: 2px 0 12px 0;
-    height: 22px;
+    padding: 2px 0 10px 0;
+    min-height: 22px;
 }
 
 #results {
     clear: both;
 }
-
+#downloads a, #alerts a {
+    font-size: 12px;
+    font-weight: bold;
+}
 #sortWidgets {
     text-align: right;
-    float: right;
-    width: 75%;
+    padding-top: 4px;
+    /*float: right;*/
+    /*width: 75%;*/
 }
 #searchNavBar {
     text-align: center;
@@ -437,7 +441,7 @@ span.queryDisplay a:hover {
 /*    float: left;*/
     text-align: left;
     padding: 2px 5px;
-    margin: 4px 0px;
+    /*margin: 4px 0px;*/
     background-color: #F0F0E8;
     border: 1px solid #BBBBBB;
 }

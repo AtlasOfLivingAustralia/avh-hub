@@ -156,15 +156,18 @@
                         </div>
                         <div class="tab-content clearfix">
                             <div class="tab-pane active solrResults" id="recordsView">
-                                <div id="searchControls">
-                                    <div id="downloads" class="buttonDiv btn">
-                                        <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
+                                <div id="searchControls" class="row-fluid">
+                                    <div class="span3">
+                                        <div id="downloads" class="btn btn-small">
+                                            <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
+                                        </div>
+                                        <div id="alerts" class="btn btn-small">
+                                            <a href="#alert" id="alertsLink" title="Get email alerts for this search">Alerts</a>
+                                        </div>
                                     </div>
-                                    <div id="alerts" class="buttonDiv btn">
-                                        <a href="#alert" id="alertsLink" title="Get email alerts for this search">Alerts</a>
-                                    </div>
-                                    <div id="sortWidgets">
-                                        Results per page:
+
+                                    <div id="sortWidgets" class="span9">
+                                        <span class="hidden-phone">results per </span>page:
                                         <select id="per-page" name="per-page" class="input-small">
                                             <c:set var="pageSizeVar">
                                                 <c:choose>
@@ -178,7 +181,7 @@
                                             <option value="100" <c:if test="${pageSizeVar eq '100'}">selected</c:if>>100</option>
                                         </select>
                                         <c:set var="useDefault" value="${empty param.sort && empty param.dir ? true : false }"/>
-                                        Sort by:
+                                        sort<span class="hidden-phone"> by</span>:
                                         <select id="sort" name="sort" class="input-small">
                                             <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>Best match</option>
                                             <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>Taxon name</option>
@@ -190,7 +193,7 @@
                                             <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>Date added</option>
                                             <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>Last annotated</option>
                                         </select>
-                                        Sort order:
+                                        <span class="hidden-phone">sort </span>order:
                                         <select id="dir" name="dir" class="input-small">
                                             <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>Ascending</option>
                                             <option value="desc" <c:if test="${useDefault || param.dir eq 'desc'}">selected</c:if>>Descending</option>
@@ -452,7 +455,7 @@
                         </div><!-- end .css-panes -->
                         <form name="raw_taxon_search" class="rawTaxonSearch" id="rawTaxonSearchForm" action="${pageContext.request.contextPath}/occurrences/search/taxa" method="POST">
                                 <%-- taxon concept search drop-down div are put in here via Jquery --%>
-                            <div style="display:none;">
+                            <div style="display:none;" >
                             </div>
                         </form>
                     </div>
