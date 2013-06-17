@@ -60,13 +60,12 @@
                     <ul id="refinedFacets">
                         <c:forEach var="item" items="${searchResults.activeFacetMap}">
                             <li>
-                                <c:set var="closeLink">&nbsp;[<b><a href="#" data-facet="${item.key}:${fn:escapeXml(item.value.value)}" onClick="removeFacet(this); return false;" class="removeLink" title="remove filter">X</a></b>]</c:set>
-
+                                <c:set var="closeLink">&nbsp;<a href="#" data-facet="${item.key}:${fn:escapeXml(item.value.value)}" onClick="removeFacet(this); return false;" class="btn btn-mini btn-primary removeLink" title="remove filter"><i class="icon-remove icon-white" style="margin-left:5px"></i></a></c:set>
                                 <c:set var="filterLabel"><c:choose>
                                     <c:when test="${fn:endsWith(item.value.displayName, '_s')}">${fn:replace(item.value.displayName, '_s','')}</c:when>
                                     <c:otherwise><fmt:message key="${item.value.displayName}"/></c:otherwise>
-                                    </c:choose></c:set>
-
+                                    </c:choose>
+                                </c:set>
                                 <c:set var="fqLabel">
                                     <c:choose>
                                         <c:when test="${fn:startsWith(filterLabel,'-')}"><span class="red">[exclude]</span> ${fn:substring(filterLabel, 1, -1)}</c:when>

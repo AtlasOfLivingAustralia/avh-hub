@@ -187,8 +187,8 @@ ul#refinedFacets li {
 }
 
 div#currentFilter {
-    border: 1px solid #bbb;
-    background-color: #F0F0E8;
+    /*border: 1px solid #bbb;*/
+    /*background-color: #F0F0E8;*/
     /*-moz-border-radius: 5px;*/
     /*-webkit-border-radius: 5px;*/
     /*-khtml-border-radius: 5px;*/
@@ -206,6 +206,8 @@ div#currentFilter {
     font-family: sans-serif;
     font-weight: bold;
     text-decoration: none;
+    line-height: 18px;
+    padding: 0 4px;
 }
 #refine-results h3 strong {
     font-weight: bold;
@@ -259,6 +261,7 @@ div#currentFilter {
 #downloads a, #alerts a {
     font-size: 12px;
     font-weight: bold;
+    color: inherit;
 }
 #sortWidgets {
     text-align: right;

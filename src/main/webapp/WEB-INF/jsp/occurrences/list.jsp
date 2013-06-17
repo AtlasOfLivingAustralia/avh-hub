@@ -159,10 +159,10 @@
                                 <div id="searchControls" class="row-fluid">
                                     <div class="span3">
                                         <div id="downloads" class="btn btn-small">
-                                            <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist">Downloads</a>
+                                            <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist"><i class="icon-download"></i> Downloads</a>
                                         </div>
                                         <div id="alerts" class="btn btn-small">
-                                            <a href="#alert" id="alertsLink" title="Get email alerts for this search">Alerts</a>
+                                            <a href="#alert" id="alertsLink" title="Get email alerts for this search"><i class="icon-bell"></i> Alerts</a>
                                         </div>
                                     </div>
 
