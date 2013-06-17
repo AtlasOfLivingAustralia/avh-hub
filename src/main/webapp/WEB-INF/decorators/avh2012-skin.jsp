@@ -60,7 +60,7 @@ include file="/common/taglibs.jsp" %>
                     <li class="page_item page-item-1"><a href="http://avh.chah.org.au/" title="Home">Home</a></li>
                     <li class="page_item page-item-3"><a href="http://avh.chah.org.au/index.php/about/" title="About AVH">About AVH</a></li>
                     <li class="page_item page-item-7"><a href="http://avh.chah.org.au/index.php/terms-of-use/" title="Terms of use">Terms of use</a></li>
-                    <li class="page_item page-item-4"><a href="http://avh.chah.org.au/index.php/terms-of-use/" title="Help">Help</a></li>
+                    <li class="page_item page-item-4"><a href="http://avh.chah.org.au/index.php/help/" title="Help">Help</a></li>
                     <li class="page_item page-item-2"><a href="${pageContext.request.contextPath}/search" title="Search">Search</a></li>
                     <li class="page_item page-item-5"><a href="http://avh.chah.org.au/index.php/news/" title="News">News</a></li>
                 </ul>
