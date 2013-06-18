@@ -20,6 +20,7 @@ import org.ala.biocache.util.CollectionsCache;
 import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -65,9 +66,21 @@ public class HomePageController {
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String homePage(Model model) {
+    public String homePage(Model model, HttpServletRequest request, HttpServletResponse response) {
         addLookupToModel(model);
         logger.debug("/ homepage = " + homePage);
+
+        String skin = (String) request.getAttribute("skin");
+
+        if ("avh".equals(skin)) {
+            // homePage should be a URI for avh, not a JSP
+            try {
+                response.sendRedirect(homePage);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+
         return homePage;
     }
 

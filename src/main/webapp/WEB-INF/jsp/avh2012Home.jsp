@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 
+<%-- NOTE: this page is no longer used as webapp root for AVH redirects to http://avh.chah.org.au/ --%>
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
