@@ -337,7 +337,7 @@
                     });
                 </c:if>
 
-                $("#backButton a").click(function(e) {
+                $("#backBtn a").click(function(e) {
                     e.preventDefault();
                     var url = $(this).attr("href");
                     if (url) {
@@ -419,11 +419,6 @@
         <spring:url var="json" value="/occurrences/${record.raw.uuid}.json" />
         <c:if test="${not empty record.raw}">
             <div id="headingBar" class="recordHeader">
-                <c:if test="${not empty lastSearchUri}">
-                    <div id="backButton" >
-                        <a href="${lastSearchUri}" title="Return to search results">Back to search results</a>
-                    </div>
-                </c:if>
                 <h1><fmt:message key="show.occurrenceRecord"/>: <span id="recordId">${recordId}</span></h1>
                 <c:if test="${skin != 'avh'}">
                     <div id="jsonLink">
@@ -437,6 +432,11 @@
                             <div id="clubView">Showing &quot;Club View&quot;</div>
                         </c:if>
                         <!-- <a href="${json}">JSON</a> -->
+                    </div>
+                </c:if>
+                <c:if test="${not empty lastSearchUri}">
+                    <div id="backBtn" class="pull-right">
+                        <a href="${lastSearchUri}" title="Return to search results" class="btn">Back to search results</a>
                     </div>
                 </c:if>
                 <c:if test="${not empty record.raw.classification}">
