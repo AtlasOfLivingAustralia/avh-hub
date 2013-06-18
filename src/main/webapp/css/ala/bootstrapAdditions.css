@@ -108,10 +108,10 @@ div#advancedSearch {
     margin-bottom: 0;
 }
 
-#content ul {
-    list-style: disc;
-    margin-left: 20px;
-}
+/*#content ul {*/
+    /*list-style: disc;*/
+    /*margin-left: 20px;*/
+/*}*/
 
 
 
@@ -157,9 +157,9 @@ span#assertionMaker {
     font-size: 100%;
 }
 
-input[type="submit"] {
-    color: #000000;
-}
+/*input[type="submit"] {*/
+    /*color: #000000;*/
+/*}*/
 
 #SidebarBox{
     float: left;

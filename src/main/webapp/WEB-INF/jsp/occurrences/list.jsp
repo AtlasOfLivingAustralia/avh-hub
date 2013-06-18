@@ -88,7 +88,7 @@
             </div>
             <div id="searchBoxZ" class="span7 text-right">
                 <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
-                    <div id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#advancedSearch">Advanced search</a></div>
+                    <div id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#tab_advanceSearch">Advanced search</a></div>
                     <%--<span id="#searchLabel">Search:</span>--%>
                     <input type="text" id="taxaQuery" name="taxa" class="span6" value="<c:out value='${param.taxa}'/>">
                     <input type="submit" id="solrSubmit" class="btn" value="Quick search"/>
