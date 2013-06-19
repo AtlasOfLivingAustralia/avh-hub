@@ -531,7 +531,7 @@
                 </c:if>
                 <c:if test="${isCollectionAdmin && (not empty record.systemAssertions || not empty record.userAssertions) && not recordIsVerified}">
                     <div class="sidebar">
-                        <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="verifyButton" href="#verifyRecord">
+                        <button class="btn" id="verifyButton" href="#verifyRecord">
                             <span id="verifyRecordSpan" title="">Verify record</span>
                         </button>
                         <div style="display:none;">
@@ -562,14 +562,14 @@
                             <a href="http://volunteer.ala.org.au/">Biodiversity Volunteer Portal</a>.
                         </p>
 
-                        <button class="rounded" id="viewDraftButton" >
+                        <button class="btn" id="viewDraftButton" >
                             <span id="viewDraftSpan" title="View Draft">See draft in Biodiversity Volunteer Portal</span>
                         </button>
                     </div>
                 </c:if>
                 <c:if test="${!isReadOnly && record.processed.attribution.provenance != 'Draft'}">
                     <div class="sidebar">
-                        <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="assertionButton" href="#loginOrFlag">
+                        <button class="btn" id="assertionButton" href="#loginOrFlag">
                             <span id="loginOrFlagSpan" title="Flag an issue" class=""><i class="icon-flag"></i> Flag an issue</span>
                         </button>
                         <div style="display:none">
@@ -614,7 +614,7 @@
                     </div>
                 </c:if>
                 <div class="sidebar">
-                    <button class="<c:if test="${skin != 'ala'}">rounded</c:if> btn" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
+                    <button class="btn" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">
                         <span id="processedVsRawViewSpan" href="#processedVsRawView" title=""><i class="icon-th"></i> Original vs Processed</span>
                     </button>
                 </div>
@@ -1158,7 +1158,7 @@
                <a class="viewMoreLink" href="#">View more with this annotation</a>
            </p>
            <p class="deleteAnnotation" style="display:none;">
-               <a class="deleteAnnotationButton <c:if test="${skin != 'ala'}">rounded</c:if> btn" href="#">Delete this annotation</a>
+               <a class="deleteAnnotationButton btn" href="#">Delete this annotation</a>
            </p>
         </li>
         </ul>

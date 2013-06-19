@@ -348,7 +348,11 @@ div#clubView {
     font-size: 13px;
 }
 
-.dataQualityResults td, th {
-    horizontal-align:left;
-    border-bottom: 1px solid #808080;
+/*.dataQualityResults td, th {*/
+    /*horizontal-align:left;*/
+    /*border-bottom: 1px solid #808080;*/
+/*}*/
+
+#loginId {
+    font-size: 13px;
 }

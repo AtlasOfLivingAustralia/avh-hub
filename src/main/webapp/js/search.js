@@ -226,8 +226,8 @@ $(document).ready(function() {
                 "These results include records for synonyms and names of child taxa of <b>" + nameString +
                 "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
                 "view species page</a>).<br/><br/>The result set contains records " +
-                "provided under the following names: <input type='submit' class='rawTaxonSumbit' id='rawTaxonSumbit_"+i+
-                "' value='Search with selected verbatim names' style='display:inline-block;float:right;'/>" +
+                "provided under the following names: <input type='submit' class='rawTaxonSumbit btn btn-small' id='rawTaxonSumbit_"+i+
+                "' value='Search with selected verbatim names' style='display:inline-block;float:right;font-size:12px;'/>" +
                 "<div class='rawTaxaList'>";
             var synListSize = 0;
             $.each(data.facetResults, function(k, el) {

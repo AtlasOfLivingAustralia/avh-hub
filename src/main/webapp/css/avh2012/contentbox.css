@@ -13,11 +13,12 @@
 /*---------------PAGE---------------*/
 #contentBox {
     background-color: #FFF;
-    width: 1024px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-    padding-left: 0px;
+    margin-bottom: 20px;
+    /*width: 1024px;*/
+    /*margin-right: auto;*/
+    /*margin-bottom: 0px;*/
+    /*margin-left: auto;*/
+    /*padding-left: 0px;*/
 }
 
 #indentContent {
@@ -37,6 +38,10 @@
 #loginId {
 	width: 974px;
 	margin: 0px 10px;
+}
+
+.rightMenu a {
+    font-size: 13px;
 }
 
 #Logo {

@@ -41,7 +41,7 @@
         <div id="headingBar">
             <h1 style="width:100%;" id="searchHeader">Search for records in <ala:propertyLoader bundle="hubs" property="site.displayName"/></h1>
         </div>
-        <div id="content3">
+        <div id="content3" class="searchPage">
             <!-- the tabs -->
             <ul class="css-tabs">
                 <li><a id="t1" href="#quickSearch">Quick search</a></li>
@@ -53,14 +53,14 @@
             <div class="css-panes">
                 <div id="simpleSearchDiv" class="paneDiv homePane">
                     <form name="simpleSearchForm" id="simpleSearchForm" action="${pageContext.request.contextPath}/occurrences/search" method="GET">
-                        <table border="0" width="100" cellspacing="2" class="compact" style="margin-top: 15px;">
+                        <table border="0" width="100" cellspacing="2" class="" style="margin-top: 15px;width: 100%;">
                             <thead/>
                             <tbody>
                                 <tr>
                                     <td>
                                         <input type="text" name="taxa" id="taxa" class="name_autocomplete freetext" placeholder="" size="70" style="width:500px;" value=""/>
                                         &nbsp;
-                                        <input type="submit" value="Search" class="freetext"/>
+                                        <input type="submit" value="Search" class="btn"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -77,18 +77,18 @@
                     <form name="advancedSearchForm" id="advancedSearchForm" action="${pageContext.request.contextPath}/advancedSearch" method="POST">
                         <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;">${param.q}</input>
                         <!--<a href="#searchOptions" id="extendedOptionsLink" class="toggleTitle">Search options</a>-->
-                        <div class="toggleSectionXXX" id="extendedOptionsXXXX">
+                        <div class="" id="">
 
                             <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Taxonomy</a>
                             <div class="toggleSection" id="taxonomySection">
                                 <div id="taxonSearchDiv">
-                                    <table border="0" width="100" cellspacing="2" class="compact"  id="taxonomyOptions">
+                                    <table border="0" width="100" cellspacing="2" class=""  id="taxonomyOptions">
                                         <thead/>
                                         <tbody>
                                             <c:forEach begin="1" end="4" step="1" var="i">
                                                 <c:set var="lsidParam" value="lsid_${i}"/>
                                                 <tr style="" id="taxon_row_${i}">
-                                                    <td class="label">Taxon name</td>
+                                                    <td class="labels">Taxon name</td>
                                                     <td>
                                                         <input type="text" name="taxonText" id="taxa_${i}" class="name_autocomplete" size="50" value="">
                                                         <input type="hidden" name="lsid" class="lsidInput" id="lsid_${i}" value=""/>
@@ -99,19 +99,19 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <table border="0" width="100" cellspacing="2" class="compact" style="margin-left: 1px;">
+                                <table border="0" width="100" cellspacing="2" class="" style="margin-left: 1px;">
                                     <thead/>
                                     <tbody>
                                         <c:if test="${skin != 'avh'}">
                                             <tr>
-                                                <td class="label">Verbatim scientific name</td>
+                                                <td class="labels">Verbatim scientific name</td>
                                                 <td>
                                                      <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
                                                 </td>
                                             </tr>
                                         </c:if>
                                         <tr>
-                                            <td class="label">Botanical group</td>
+                                            <td class="labels">Botanical group</td>
                                             <td>
                                                 <select class="taxaGroup" name="species_group" id="species_group">
                                                     <option value="">-- select a botanical group --</option>
@@ -122,13 +122,13 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Determiner</td>
+                                            <td class="labels">Determiner</td>
                                             <td>
                                                 <input type="text" name="identified_by" id="identified_by" class="dataset" placeholder=""  value=""/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Determination date</td>
+                                            <td class="labels">Determination date</td>
                                             <td>
                                                 <input type="text" name="identified_date_start" id="identified_date_start" class="occurrence_date" placeholder="" value=""/>
                                                 to
@@ -141,11 +141,11 @@
                             </div><!-- end div.toggleSection -->
                             <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Specimen</a>
                             <div class="toggleSection">
-                                <table border="0" width="100" cellspacing="2" class="compact">
+                                <table border="0" width="100" cellspacing="2" class="">
                                     <thead/>
                                     <tbody>
                                         <tr>
-                                            <td class="label">Herbarium</td>
+                                            <td class="labels">Herbarium</td>
                                             <td>
                                                 <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
                                                     <option value="">-- select an herbarium --</option>
@@ -160,26 +160,26 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Catalogue number</td>
+                                            <td class="labels">Catalogue number</td>
                                             <td>
                                                 <input type="text" name="catalogue_number" id="catalogue_number" class="dataset" placeholder="" value=""/>
                                             </td>
                                         </tr>
                                         <tr>
                                         <tr style="display:none;">
-                                            <td class="label">Type material</td>
+                                            <td class="labels">Type material</td>
                                             <td>
                                                 <input type="checkbox" name="type_material" id="type_material" class="dataset"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Full text search</td>
+                                            <td class="labels">Full text search</td>
                                             <td>
                                                 <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Record updated</td>
+                                            <td class="labels">Record updated</td>
                                             <td>
                                                 <input type="text" name="last_load_start" id="last_load_start" class="occurrence_date" placeholder="" value=""/>
                                                 to
@@ -193,22 +193,22 @@
                             </div><!-- end div.toggleSection Specimen-->
                             <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Collecting event</a>
                             <div class="toggleSection">
-                                <table border="0" width="100" cellspacing="2" class="compact">
+                                <table border="0" width="100" cellspacing="2" class="">
                                     <thead/>
                                     <tbody>
                                     <tr>
-                                        <td class="label">Collector</td>
+                                        <td class="labels">Collector</td>
                                         <td>
                                             <input type="text" name="collector" id="collector" class="dataset" placeholder=""  value=""/>
                                         </td>
                                     </tr>
-                                    <td class="label">Collecting number</td>
+                                    <td class="labels">Collecting number</td>
                                     <td>
                                         <input type="text" name="record_number" id="record_number" class="dataset" placeholder=""  value=""/>
                                     </td>
                                     </tr>
                                     <tr>
-                                        <td class="label">Collecting date</td>
+                                        <td class="labels">Collecting date</td>
                                         <td>
                                             <input type="text" name="start_date" id="startDate" class="occurrence_date" placeholder="" value=""/>
                                             to
@@ -218,7 +218,7 @@
                                     </tr>
                                     <c:if test="${skin == 'avh'}">
                                         <tr>
-                                            <td class="label">Establishment means</td>
+                                            <td class="labels">Establishment means</td>
                                             <td>
                                                 <select class="" name="cultivation_status" id="cultivation_status">
                                                     <option value="">-- select an establishment means --</option>
@@ -234,12 +234,12 @@
                             </div><!-- end div.toggleSection Collecting Event -->
                             <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Geography</a>
                             <div class="toggleSection">
-                                <table border="0" width="100" cellspacing="2" class="compact">
+                                <table border="0" width="100" cellspacing="2" class="">
                                     <thead/>
                                     <tbody>
                                         <c:if test="${skin != 'ala'}">
                                             <tr>
-                                                <td class="label">Country</td>
+                                                <td class="labels">Country</td>
                                                 <td>
                                                     <select class="country" name="country" id="country">
                                                         <option value="">-- select a country --</option>
@@ -251,7 +251,7 @@
                                             </tr>
                                         </c:if>
                                         <tr>
-                                            <td class="label">State or territory</td>
+                                            <td class="labels">State or territory</td>
                                             <td>
                                                 <select class="state" name="state" id="state">
                                                     <option value="">-- select a state or territory --</option>
@@ -263,7 +263,7 @@
                                         </tr>
                                         <c:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
                                         <tr>
-                                            <td class="label"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
+                                            <td class="labels"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
                                             <td>
                                                 <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                                 <select class="biogeographic_region" name="ibra" id="ibra">
@@ -275,7 +275,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label"><abbr title="Integrated Marine and Coastal Regionalisation of Australia (meso-scale)">IMCRA</abbr> region</td>
+                                            <td class="labels"><abbr title="Integrated Marine and Coastal Regionalisation of Australia (meso-scale)">IMCRA</abbr> region</td>
                                             <td>
                                                 <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                                 <select class="biogeographic_region" name="imcra_meso" id="imcra">
@@ -287,7 +287,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="label">Local government area</td>
+                                            <td class="labels">Local government area</td>
                                             <td>
                                                 <select class="biogeographic_region" name="cl959" id="cl959">
                                                     <option value="">-- select local government area--</option>
@@ -303,11 +303,11 @@
                             <c:if test="${skin == 'avh'}">
                                 <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Herbarium transactions</a>
                                 <div class="toggleSection">
-                                    <table border="0" width="100" cellspacing="2" class="compact">
+                                    <table border="0" width="100" cellspacing="2" class="">
                                         <thead/>
                                         <tbody>
                                             <tr>
-                                                <td class="label">Duplicates sent to</td>
+                                                <td class="labels">Duplicates sent to</td>
                                                 <td>
                                                         <%--<select class="institution_uid collection_uid" name="duplicates_institution_collection" id="duplicates_institution_collection"
                                                                  onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
@@ -335,19 +335,19 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="label">Loan number</td>
+                                                <td class="labels">Loan number</td>
                                                 <td>
                                                     <input type="text" name="loan_identifier" id="loan_identifier" class="dataset" placeholder=""  value=""/>
                                                 </td>
                                             </tr>
                                             <tr style="display:none">
-                                                <td class="label">Exchange number</td>
+                                                <td class="labels">Exchange number</td>
                                                 <td>
                                                     <input type="text" name="exchange_number" id="exchange_number" class="dataset" placeholder="not currently searchable" readonly="readonly" value=""/>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="label">Borrowing institution</td>
+                                                <td class="labels">Borrowing institution</td>
                                                 <td>
                                                     <%--<input type="text" name="loan_destination" id="loan_destination" class="dataset" placeholder=""  value=""/>--%>
                                                     <select class="dataset" name="loan_destination" id="loan_destination">
@@ -363,9 +363,9 @@
                                 </div><!-- end div.toggleSection Herbarium Transactions-->
                             </c:if>
                             <br/>
-                            <input type="submit" value="Search" />
+                            <input type="submit" value="Search" class="btn"/>
                             &nbsp;&nbsp;
-                            <input type="reset" value="Clear all" id="clearAll" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
+                            <input type="reset" value="Clear all" id="clearAll" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;" class="btn"/>
 
                         </div><!-- end #extendedOptions -->
                     </form>
@@ -380,7 +380,7 @@
                             <%--&nbsp;OR&nbsp;--%>
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
                             <input type="hidden" name="field" value="raw_name"/>
-                            <input type="submit" name="action" value="Search" /></p>
+                            <input type="submit" name="action" value="Search" class="btn"/></p>
                     </form>
                 </div><!-- end #uploadDiv div -->
                 <div id="catalogUploadDiv" class="paneDiv homePane">
@@ -393,7 +393,7 @@
                             <%--&nbsp;OR&nbsp;--%>
                             <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
                             <input type="hidden" name="field" value="catalogue_number"/>
-                            <input type="submit" name="action" value="Search" /></p>
+                            <input type="submit" name="action" value="Search"  class="btn"/></p>
                     </form>
                 </div><!-- end #uploadDiv div -->
                 <div id="shapeDiv" class="paneDiv homePane">
@@ -402,7 +402,7 @@
                             only the first polygon will be used for searching.</p>
                         <p>Upload a shapefile (.shp).</p>
                         <p><input type="file" name="file" value="Choose file"/></p>
-                        <p><input type="submit" value="Search" /></p>
+                        <p><input type="submit" value="Search"  class="btn"/></p>
                     </form>
                 </div>
             </div><!-- end panes div -->

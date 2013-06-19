@@ -19,14 +19,14 @@ html #content img {
     font-size: 13px;
     line-height: 1.5em;
 }
-#content2 {
-    width: 720px;
-}
+/*#content2 {*/
+    /*width: 720px;*/
+/*}*/
 .sidebar {
-    width: 210px;
+    /*width: 210px;*/
 }
 a:link, a:visited, #content2 a:link, #content2 a:visited {
-    font-size: 13px;
+    /*font-size: 13px;*/
     text-decoration: none;
 /*    color: #005A8E;*/
 }
@@ -41,9 +41,9 @@ a:hover, #content2 a:hover {
 #nav li a {
     font-size: 100%;
 }
-#contentBox {
-    width: 1000px;
-}
+/*#contentBox {*/
+    /*width: 1000px;*/
+/*}*/
 label {
     display: inline;
 }
@@ -64,7 +64,7 @@ table th {
 }
 table td, table th  {
     text-align: left;
-    padding: 6px 6px;
+    padding: 4px 6px;
     line-height: 1.3em;
     vertical-align: top;
 /*    color: #666;*/
@@ -219,6 +219,10 @@ span#taxonName {
 .toggleSection {
     display:block;
     padding-left: 10px;
+    padding-top: 7px;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #DDD;
 }
 #extendedOptions {
     display: none;
@@ -253,12 +257,13 @@ table#taxonomyOptions {
 }
 
 #taxonSearchDiv {
-    border: 1px solid #AAA !important;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    border-radius: 5px;
-    width: 95%;
+    border-bottom: 1px solid #DDD;
+    /*border: 1px solid #AAA !important;*/
+    /*-moz-border-radius: 5px;*/
+    /*-webkit-border-radius: 5px;*/
+    /*-khtml-border-radius: 5px;*/
+    /*border-radius: 5px;*/
+    /*width: 95%;*/
 }
 
 #nameMatchingOptions {

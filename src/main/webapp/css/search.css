@@ -17,10 +17,14 @@
 }
 
 #facetWell {
-    margin-top: 45px;
+    margin-top: 10px;
 }
 
-#facetWell .dropdown-menu {
+#customiseFacetsButton {
+    margin-top: 10px;
+}
+
+#customiseFacetsButton .dropdown-menu {
     padding: 5px 10px 10px 15px;
     background-color: #fffef7;
 }
@@ -44,11 +48,6 @@
     font-size: 13px;
     padding: 0;
     margin: 6px 0 2px 0;
-}
-
-#customiseFacetsButton {
-    display: block;
-    float: right;
 }
 
 #updateFacetOptions {
@@ -115,6 +114,8 @@
     display: inline-block;
     margin-top: 2px;
     font-size: 13px;
+    min-height: 20px;
+    height: 30px;
     /*width: 440px;*/
 }
 #solrSearchForm > input#solrSubmit {
@@ -425,7 +426,7 @@ div.facetsColumn {
     top: -9999px;
     width: 500px;
     z-index: 501;
-    background-color: #EEEEEE;
+    background-color: #f0f0e8;
     border: 1px solid #BBBBBB;
     padding: 10px;
     margin-top: 0;

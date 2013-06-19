@@ -157,7 +157,7 @@
                         <div class="tab-content clearfix">
                             <div class="tab-pane active solrResults" id="recordsView">
                                 <div id="searchControls" class="row-fluid">
-                                    <div class="span3">
+                                    <div class="span4">
                                         <div id="downloads" class="btn btn-small">
                                             <a href="#download" id="downloadLink" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records OR species checklist"><i class="icon-download"></i> Downloads</a>
                                         </div>
@@ -166,8 +166,8 @@
                                         </div>
                                     </div>
 
-                                    <div id="sortWidgets" class="span9">
-                                        <span class="hidden-phone">results per </span>page:
+                                    <div id="sortWidgets" class="span8">
+                                        <span class="hidden-phone">per </span>page:
                                         <select id="per-page" name="per-page" class="input-small">
                                             <c:set var="pageSizeVar">
                                                 <c:choose>
@@ -179,7 +179,7 @@
                                             <option value="20" <c:if test="${pageSizeVar eq '20'}">selected</c:if>>20</option>
                                             <option value="50" <c:if test="${pageSizeVar eq '50'}">selected</c:if>>50</option>
                                             <option value="100" <c:if test="${pageSizeVar eq '100'}">selected</c:if>>100</option>
-                                        </select>
+                                        </select>&nbsp;
                                         <c:set var="useDefault" value="${empty param.sort && empty param.dir ? true : false }"/>
                                         sort<span class="hidden-phone"> by</span>:
                                         <select id="sort" name="sort" class="input-small">
@@ -192,7 +192,7 @@
                                             </c:if>
                                             <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>Date added</option>
                                             <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>Last annotated</option>
-                                        </select>
+                                        </select>&nbsp;
                                         <span class="hidden-phone">sort </span>order:
                                         <select id="dir" name="dir" class="input-small">
                                             <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>Ascending</option>

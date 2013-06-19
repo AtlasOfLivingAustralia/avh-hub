@@ -16,11 +16,11 @@
     max-width: 250px;
 }
 
-#contentBox #content2 {
-    float: left;
-    margin-left: 8px;
-    width: 720px;
-}
+/*#contentBox #content2 {*/
+    /*float: left;*/
+    /*margin-left: 8px;*/
+    /*width: 720px;*/
+/*}*/
 
 .sidebar li {
     font-size: 12px;

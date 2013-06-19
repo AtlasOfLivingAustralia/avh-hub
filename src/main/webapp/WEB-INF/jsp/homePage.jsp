@@ -69,7 +69,7 @@
                         <li><a id="t5" href="#shapeFileUpload" data-toggle="tab">Shapefile search</a></li>
                     </ul>
                 </div>
-                <div class="tab-content">
+                <div class="tab-content searchPage">
                     <div id="simpleSearch" class="tab-pane active">
                         <form name="simpleSearchForm" id="simpleSearchForm" action="${pageContext.request.contextPath}/occurrences/search" method="GET">
                             <br/>

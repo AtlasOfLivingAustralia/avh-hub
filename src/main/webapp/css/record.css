@@ -193,11 +193,15 @@ a.annotationIcon {
     margin: 10px 0;
 }
 div.recordHeader {
-    margin-left: 30px;
-    margin-bottom: 20px;
+    /*margin-left: 30px;*/
+    margin-bottom: 10px;
     padding-left: 0 !important;
     border-bottom: 1px solid #CCC;
 }
+#headingBar h1 {
+    margin: 0;
+}
+
 div#occurrenceMap {
     height: 300px;
     margin-top: 5px;
