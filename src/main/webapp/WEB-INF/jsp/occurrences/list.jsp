@@ -201,7 +201,7 @@
                             <jsp:include page="../mapDiv.jsp"/>
                         </div>
                         <div class="tabbable">
-                            <ul class="nav nav-tabs">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
                                 <li><a id="t1" href="#recordsView" data-toggle="tab">Records</a></li>
                                 <li><a id="t2" href="#mapView" data-toggle="tab">Map</a></li>
                                 <li><a id="t3" href="#chartsView" data-toggle="tab">Charts</a></li>
@@ -212,7 +212,7 @@
                             </ul>
                         </div>
                         <div class="tab-content clearfix">
-                            <div class="tab-pane active solrResults" id="recordsView">
+                            <div class="tab-pane solrResults" id="recordsView">
                                 <div id="searchControls" class="row-fluid">
                                     <div class="span4">
                                         <div id="downloads" class="btn btn-small">

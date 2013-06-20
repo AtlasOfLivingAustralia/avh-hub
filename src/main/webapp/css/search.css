@@ -11,6 +11,10 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
+form {
+    margin-bottom: 0;
+}
+
 .searchInfo {
     margin: 15px 0;
     font-size: 14px;
@@ -318,6 +322,10 @@ div#currentFilter {
     padding-top: 4px;
     /*float: right;*/
     /*width: 75%;*/
+}
+
+#sortWidgets select {
+    padding:0;
 }
 #searchNavBar {
     text-align: center;

@@ -62,7 +62,7 @@ $(document).ready(function() {
     };
 
     // work-around for intitialIndex & history being mutually exclusive
-    if (!window.location.hash) {
+    if (BC_CONF.defaultListView && !window.location.hash) {
         window.location.hash = BC_CONF.defaultListView; // used for avh, etc
     }
 
@@ -152,7 +152,7 @@ $(document).ready(function() {
 
     // bootstrap dropdowns - allow clicking inside dropdown div
     $('#facetCheckboxes').children().not('#updateFacetOptions').click(function(e) {
-        console.log("detected a Click");
+        //console.log("detected a Click");
         e.stopPropagation();
     });
 
@@ -281,7 +281,7 @@ $(document).ready(function() {
             $clone.removeClass("hide");
             // prevent BS dropdown from closing when clicking on content
             $clone.find('.stopProp').children().not('input.rawTaxonSumbit').click(function(e) {
-                e.stopPropagation();
+                //e.stopPropagation();
             });
 
 //            $("#rawTaxonSearchForm").append(synList);
