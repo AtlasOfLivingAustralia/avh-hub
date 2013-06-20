@@ -150,7 +150,9 @@ $(document).ready(function() {
         $(":input#solrQuery").val("");
     }
 
+    // bootstrap dropdowns - allow clicking inside dropdown div
     $('#facetCheckboxes').children().not('#updateFacetOptions').click(function(e) {
+        console.log("detected a Click");
         e.stopPropagation();
     });
 
@@ -214,65 +216,94 @@ $(document).ready(function() {
     $("span.lsid").each(function(i, el) {
         var lsid = $(this).attr("id");
         var nameString = $(this).html();
-        var maxFacets = 30;
+        var maxFacets = 20;
+        var index = i; // keep a copy
         var queryContextParam = (BC_CONF.queryContext) ? "&qc=" + BC_CONF.queryContext : "";
         var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json?q=lsid:" + lsid + "&" + BC_CONF.facetQueries +
             "&facets=raw_taxon_name&pageSize=0&flimit=" + maxFacets + queryContextParam + "&callback=?";
+
+        var $clone = $('#resultsReturned #template').clone();
+        $clone.attr("id",""); // remove the ID
+        $clone.find(".taxaMenuContent").addClass("stopProp");
+        // add unique IDs to some elements
+        $clone.find("form.raw_taxon_search").attr("id","rawTaxonSearch_" + i);
+        $clone.find(":input.rawTaxonSumbit").attr("id","rawTaxonSumbit_" + i);
+        $clone.find('.refineTaxaSearch').attr("id", "refineTaxaSearch_" + i);
+
         $.getJSON(jsonUri, function(data) {
             // list of synonyms
-            var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" +
-                //"<form name='raw_taxon_search' class='rawTaxonSearch' id='rawTaxonSearch_"+i+"' action='" +
-                // BC_CONF.contextPath + "/occurrences/search' method='POST'>" +
-                "These results include records for synonyms and names of child taxa of <b>" + nameString +
-                "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
-                "view species page</a>).<br/><br/>The result set contains records " +
-                "provided under the following names: <input type='submit' class='rawTaxonSumbit btn btn-small' id='rawTaxonSumbit_"+i+
-                "' value='Search with selected verbatim names' style='display:inline-block;float:right;font-size:12px;'/>" +
-                "<div class='rawTaxaList'>";
+//            var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" +
+//                //"<form name='raw_taxon_search' class='rawTaxonSearch' id='rawTaxonSearch_"+i+"' action='" +
+//                // BC_CONF.contextPath + "/occurrences/search' method='POST'>" +
+//                "These results include records for synonyms and names of child taxa of <b>" + nameString +
+//                "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
+//                "view species page</a>).<br/><br/>The result set contains records " +
+//                "provided under the following names: <input type='submit' class='rawTaxonSumbit btn btn-small' id='rawTaxonSumbit_"+i+
+//                "' value='Search with selected verbatim names' style='display:inline-block;float:right;font-size:12px;'/>" +
+//                "<div class='rawTaxaList'>";
+
+            // use HTML template, see http://stackoverflow.com/a/1091493/249327
+            var speciesPageUri = BC_CONF.bieWebappUrl + "/species/" + lsid;
+            var speciesPageLink = "<a href='" + speciesPageUri + "' title='Species page' target='BIE'>view species page</a>";
+            $clone.find('a.btn').text(nameString).attr("href", speciesPageUri);
+            $clone.find('.nameString').text(nameString);
+            $clone.find('.speciesPageLink').html(speciesPageLink);
+
             var synListSize = 0;
+            var synList1 = "";
             $.each(data.facetResults, function(k, el) {
                 //console.log("el", el);
                 if (el.fieldName == "raw_taxon_name") {
                     $.each(el.fieldResult, function(j, el1) {
                         synListSize++;
-                        synList += "<input type='checkbox' name='raw_taxon_guid' id='rawTaxon_" + j +
+                        synList1 += "<input type='checkbox' name='raw_taxon_guid' id='rawTaxon_" + index + "_" + j +
                             "' class='rawTaxonCheckBox' value='" + el1.label + "'/>&nbsp;" +
-                            "<a href='" + BC_CONF.contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label + "%22'>" + el1.label + "</a> (" + el1.count + ")<br/>";
+                            "<a href='" + BC_CONF.contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label +
+                            "%22'>" + el1.label + "</a> (" + el1.count + ")<br/>";
                     });
 
                 }
             });
 
             if (synListSize == 0) {
-                synList += "[no records found]";
+                synList1 += "[no records found]";
             }
 
-            synList += "</div>";
+            //synList1 += "</div>";
 
             if (synListSize >= maxFacets) {
-                synList += "<div>[Only showing the top " + maxFacets + " names]</div>";
+                synList1 += "<div><br>Only showing the first " + maxFacets + " names<br>See the \"Scientific name (unprocessed)\" section in the \"Refine results\" column on the left for a complete list</div>";
             }
 
-            synList += "</div>";
-            $("#rawTaxonSearchForm").append(synList);
-            // position it under the drop down
-            $("#refineTaxaSearch_"+i).position({
-                my: "right top",
-                at: "right bottom",
-                of: $(el), // or this
-                offset: "0 -1",
-                collision: "none"
+//            synList += "</div>";
+
+            $clone.find('div.rawTaxaList').html(synList1);
+            $clone.removeClass("hide");
+            // prevent BS dropdown from closing when clicking on content
+            $clone.find('.stopProp').children().not('input.rawTaxonSumbit').click(function(e) {
+                e.stopPropagation();
             });
-            $("#refineTaxaSearch_"+i).hide();
+
+//            $("#rawTaxonSearchForm").append(synList);
+            // position it under the drop down
+//            $("#refineTaxaSearch_"+i).position({
+//                my: "right top",
+//                at: "right bottom",
+//                of: $(el), // or this
+//                offset: "0 -1",
+//                collision: "none"
+//            });
+//            $("#refineTaxaSearch_"+i).hide();
         });
         // format display with drop-down
         //$("span.lsid").before("<span class='plain'> which matched: </span>");
-        $(el).html("<a href='#' title='click for details about this taxon search' id='lsid_" + i + "'>" + nameString + "</a>");
-        $(el).addClass("dropDown");
+//        $(el).html("<a href='#' title='click for details about this taxon search' id='lsid_" + i + "'>" + nameString + "</a>");
+//        $(el).addClass("dropDown");
+        $(el).html($clone);
     });
 
     // form validation for raw_taxon_name popup div with checkboxes
-    $(":input.rawTaxonSumbit").live("click", function(e) {
+    $(":input.rawTaxonSumbit").on("click", function(e) {
         e.preventDefault();
         var submitId = $(this).attr("id");
         var formNum = submitId.replace("rawTaxonSumbit_",""); // 1, 2, etc
@@ -286,34 +317,36 @@ $(document).ready(function() {
         });
 
         if (checkedFound) {
-            $("form#rawTaxonSearchForm").submit();
+            //$("form#rawTaxonSearchForm").submit();
+            var form  = this.form
+            $(form).submit();
         } else {
             alert("Please check at least one \"verbatim scientific name\" checkbox.");
         }
     });
 
-    $(".queryDisplay a").click(function(e) {
-        e.preventDefault();
-        var j = $(this).attr("id").replace("lsid_", "");
-        $("#refineTaxaSearch_"+j).toggle();
-    });
+//    $(".queryDisplay a").click(function(e) {
+//        e.preventDefault();
+//        var j = $(this).attr("id").replace("lsid_", "");
+//        $("#refineTaxaSearch_"+j).toggle();
+//    });
 
     // close drop-down divs when clicked outside
-    $('#customiseFacets > a, #refineTaxaSearch, .queryDisplay a, #facetOptions').live("mouseover mouseout", function(event) {
-        if ( event.type == "mouseover" ) {
-            hoverDropDownDiv = true;
-        } else {
-            hoverDropDownDiv = false;
-        }
-    });
+//    $('#customiseFacets > a, #refineTaxaSearch, .queryDisplay a, #facetOptions').live("mouseover mouseout", function(event) {
+//        if ( event.type == "mouseover" ) {
+//            hoverDropDownDiv = true;
+//        } else {
+//            hoverDropDownDiv = false;
+//        }
+//    });
 
     // Hide taxonConcept popup div if clicked outside popup
-    $("body").mouseup(function(e) {
-        var target = $(e.target);
-        if (!hoverDropDownDiv && target.parents(".refineTaxaSearch").length == 0) {
-            $('.refineTaxaSearch, #facetOptions').hide();
-        }
-    });
+//    $("body").mouseup(function(e) {
+//        var target = $(e.target);
+//        if (!hoverDropDownDiv && target.parents(".refineTaxaSearch").length == 0) {
+//            $('.refineTaxaSearch, #facetOptions').hide();
+//        }
+//    });
 
     // load more images button
     $("#loadMoreImages").live("click", function(e) {
@@ -428,7 +461,7 @@ $(document).ready(function() {
     // QTip generated tooltips
     if($.fn.qtip.plugins.iOS) { return false; }
 
-    $("a.multipleFacetsLink, a#downloadLink, a#alertsLink, .tooltips, .tooltip, span.dropDown a, div#customiseFacets > a, a.removeLink").qtip({
+    $("a.multipleFacetsLink, a#downloadLink, a#alertsLink, .tooltips, .tooltip, span.dropDown a, div#customiseFacets > a, a.removeLink, .btn, .rawTaxonSumbit").qtip({
         style: {
             classes: 'ui-tooltip-rounded ui-tooltip-shadow'
         },

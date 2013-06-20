@@ -110,16 +110,73 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="row-fluid clearfix">
+                <div class="row-fluid clearfix" id="searchInfoRow">
+                    <div class="span3">
+                        <div id="customiseFacetsButton" class="btn-group">
+                            <a class="btn btn-small dropdown-toggle tooltips" data-toggle="dropdown" href="#" title="Customise the contents of this column">
+                                <i class="icon-cog"></i>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" role="menu"> <%--facetOptions--%>
+                                <h4>Select the filter categories that you want to appear in the &quot;Refine results&quot; column</h4>
+                                    <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
+                                <div id="facetCheckboxes">
+                                    <input type="button" id="updateFacetOptions" class="btn btn-small" value="Update"/>
+                                    &nbsp;&nbsp;
+                                    Select:
+                                    <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a>
+                                    <br/>
+                                    <div class="facetsColumn">
+                                        <c:forEach var="facet" items="${defaultFacets}" varStatus="status">
+                                        <c:if test="${status.index > 0 && status.index % 18 == 0}">
+                                    </div>
+                                    <div class="facetsColumn">
+                                        </c:if>
+                                        <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
+                                            ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span9">
+                        <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
+                        <div id="resultsReturned">
+                            <span id="returnedText"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results for</span>
+                            <span class="queryDisplay"><strong>${queryDisplay}</strong></span>
+                                <%-- jQuery template used for taxon drop-downs --%>
+                            <div class="btn-group hide" id="template">
+                                <a class="btn btn-small" href="" id="taxa_" title="view species page" target="BIE">placeholder</a>
+                                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown" title="click for more info on this query">
+                                    <span class="caret"></span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="taxa_">
+                                    <div class="taxaMenuContent">
+                                        The search results include records for synonyms and child taxa of
+                                        <b class="nameString">placeholder</b> (<span class="speciesPageLink">link placeholder</span>).
+
+                                        <form name="raw_taxon_search" class="rawTaxonSearch" action="${pageContext.request.contextPath}/occurrences/search/taxa" method="POST">
+                                            <div class="refineTaxaSearch">
+                                                The result set contains records provided under the following names:
+                                                <input type="submit" class="btn btn-small rawTaxonSumbit"
+                                                       value="Refine search" title="Restrict results to the selected names">
+                                                <div class="rawTaxaList">placeholder taxa list</div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid">
                     <div class="span3">
                         <jsp:include page="facetsDiv.jsp"/>
                     </div>
                     <div id="content2" class="span9">
-                        <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
-                        <div id="resultsReturned"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results
-                            for <span class="queryDisplay">${queryDisplay}</span>
-                            <!--                        (<a href="#download" title="Download all <fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/> records as a tab-delimited file" id="downloadLink">Download all records</a>)-->
-                        </div>
+
                         <div style="display:none">
                             <div id="alert">
                                 <h2>Email alerts</h2>
@@ -181,7 +238,7 @@
                                             <option value="100" <c:if test="${pageSizeVar eq '100'}">selected</c:if>>100</option>
                                         </select>&nbsp;
                                         <c:set var="useDefault" value="${empty param.sort && empty param.dir ? true : false }"/>
-                                        sort<span class="hidden-phone"> by</span>:
+                                        sort:
                                         <select id="sort" name="sort" class="input-small">
                                             <option value="score" <c:if test="${param.sort eq 'score'}">selected</c:if>>Best match</option>
                                             <option value="taxon_name" <c:if test="${param.sort eq 'taxon_name'}">selected</c:if>>Taxon name</option>
@@ -193,7 +250,7 @@
                                             <option value="first_loaded_date" <c:if test="${useDefault || param.sort eq 'first_loaded_date'}">selected</c:if>>Date added</option>
                                             <option value="last_assertion_date" <c:if test="${param.sort eq 'last_assertion_date'}">selected</c:if>>Last annotated</option>
                                         </select>&nbsp;
-                                        <span class="hidden-phone">sort </span>order:
+                                        <span class="hidden-phone">order:
                                         <select id="dir" name="dir" class="input-small">
                                             <option value="asc" <c:if test="${param.dir eq 'asc'}">selected</c:if>>Ascending</option>
                                             <option value="desc" <c:if test="${useDefault || param.dir eq 'desc'}">selected</c:if>>Descending</option>

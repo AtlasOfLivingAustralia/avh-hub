@@ -17,16 +17,57 @@
 }
 
 #facetWell {
+    /*margin-top: 10px;*/
+}
+
+#loginId {
+    margin-right: 10px;
+}
+
+#searchInfoRow > div {
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #customiseFacetsButton {
-    margin-top: 10px;
+    padding-top: 2px;
 }
 
 #customiseFacetsButton .dropdown-menu {
     padding: 5px 10px 10px 15px;
     background-color: #fffef7;
+}
+
+#resultsReturned .dropdown-menu {
+    padding: 10px 12px;
+    background-color: #fffef7;
+    width: 400px;
+    white-space:normal;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+#resultsReturned > span {
+    vertical-align:middle;
+}
+
+#returnedText {
+    display: inline-block;
+    /*padding-top: 2px;*/
+}
+
+.rawTaxaList {
+    margin-top: 5px;
+}
+
+.rawTaxaList input[type="checkbox"] {
+    margin: 0px;
+}
+
+.rawTaxonSumbit {
+    display: inline-block;
+    float: right;
+    margin-top: 5px;
 }
 
 .overrideHide {
@@ -36,6 +77,11 @@
 #content ul.nav-tabs {
     list-style: none;
     margin-left: 0;
+}
+
+.nav-tabs > li > a {
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 
 #facetWell h3 {
@@ -219,6 +265,9 @@ div#currentFilter {
     padding: 5px 5px 5px 4px;
     margin: 5px 0 10px 0;
     height: 20px;
+}
+#resultsReturned .btn-small {
+    font-size: 13px;
 }
 #results {
     border-bottom: none;
@@ -421,19 +470,20 @@ div.facetsColumn {
     display:none;
 }
 
-.refineTaxaSearch {
-    position: absolute;
-    top: -9999px;
-    width: 500px;
-    z-index: 501;
-    background-color: #f0f0e8;
-    border: 1px solid #BBBBBB;
-    padding: 10px;
-    margin-top: 0;
-}
+/*.refineTaxaSearch {*/
+    /*position: absolute;*/
+    /*top: -9999px;*/
+    /*width: 500px;*/
+    /*z-index: 501;*/
+    /*background-color: #f0f0e8;*/
+    /*border: 1px solid #BBBBBB;*/
+    /*padding: 10px;*/
+    /*margin-top: 0;*/
+/*}*/
 
 span.queryDisplay {
-    font-weight: bold;
+    /*font-weight: bold;*/
+    display: inline-block;
 }
 
 span.queryDisplay a:hover {

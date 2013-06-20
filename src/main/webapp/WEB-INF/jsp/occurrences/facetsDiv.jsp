@@ -6,34 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ include file="/common/taglibs.jsp" %>
-<div id="customiseFacetsButton" class="btn-group">
-    <a class="btn btn-small dropdown-toggle tooltips" data-toggle="dropdown" href="#" title="Customise the contents of this column">
-        <i class="icon-cog"></i>
-        <span class="caret"></span>
-    </a>
-    <div class="dropdown-menu" role="menu"> <%--facetOptions--%>
-        <h4>Select the filter categories that you want to appear in the &quot;Refine results&quot; column</h4>
-        <%-- <form:checkboxes path="facets" items="${defaultFacets}" itemValue="key" itemLabel="value" /> --%>
-        <div id="facetCheckboxes">
-            <input type="button" id="updateFacetOptions" class="btn btn-small" value="Update"/>
-            &nbsp;&nbsp;
-            Select:
-            <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a>
-            <br/>
-            <div class="facetsColumn">
-                <c:forEach var="facet" items="${defaultFacets}" varStatus="status">
-                <c:if test="${status.index > 0 && status.index % 18 == 0}">
-            </div>
-            <div class="facetsColumn">
-                </c:if>
-                <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
-                    ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
-                </c:forEach>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-    </div>
-</div>
+
 <div id="facetWell" class="well well-small"> <%--SidebarBox--%>
     <h3 class="visible-phone">
         <a href="#" id="toggleFacetDisplay"><i class="icon-chevron-down" id="facetIcon"></i>
