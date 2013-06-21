@@ -185,6 +185,10 @@ a.annotationIcon {
     margin-top: 20px;
 }
 
+#loginId {
+    display: none;
+}
+
 #warnings ul {
     margin-bottom: 10px;
 }
