@@ -6211,3 +6211,13 @@ div.ac_results {
     padding-left: 20px;
   }
 }
+@media (min-width: 200px) and (max-width: 480px) {
+  #site-header .navbar-inner #search-2013 {
+    width: 160px;
+  }
+}
+@media (min-width: 480px) and (max-width: 490px) {
+  #site-header .navbar-inner #search-2013 {
+    width: 200px;
+  }
+}
