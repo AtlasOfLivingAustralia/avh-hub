@@ -454,10 +454,10 @@
                                             <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
                                             <c:set var='spatialPortalUrlParams'><ala:propertyLoader bundle="hubs" property="spatialPortalUrlParams"/></c:set>
                                             <!--  <a class="buttonDiv" id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>-->
-                                            <div id="downloadMaps" class="buttonDiv btn">
+                                            <div id="downloadMaps" class="btn btn-small">
                                                 <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
                                             </div>
-                                            <div id="downloadMaps" class="buttonDiv btn">
+                                            <div id="downloadMaps" class="btn btn-small">
                                                 <a href="#downloadMap" id="downloadMapLink" title="Download a publication quality map">Download map</a>
                                             </div>
                                         </td>
@@ -494,7 +494,7 @@
                                 </div>
                                 <div id="speciesGallery">[image gallery should appear here]</div>
                                 <div id="loadMoreSpecies" style="display:none;">
-                                    <button>Show more images</button><img style="display:none;" src="${pageContext.request.contextPath}/static/images/indicator.gif"/>
+                                    <button class="btn">Show more images</button><img style="display:none;" src="${pageContext.request.contextPath}/static/images/indicator.gif"/>
                                 </div>
                             </div><!-- end #speciesWrapper -->
                             <c:if test="${showImages}">
@@ -505,7 +505,7 @@
                                         loading images...
                                     </div>
                                     <div id="loadMoreImages" style="display:none;">
-                                        <button>Show more images</button>
+                                        <button class="btn">Show more images</button>
                                     </div>
                                 </div><!-- end #imagesWrapper -->
                             </c:if>

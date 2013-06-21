@@ -15,6 +15,15 @@
     -ms-filter: none;
 }
 
+/* Quick fix for wrong tab in banner being selected */
+#nav-site .navbar-inner .nav > .active > a {
+    background-color: inherit;
+}
+
+#nav-site .navbar-inner .nav > li:nth-child(5) > a {
+    background-color: #333a3f;
+}
+
 .breadcrumb > li > .icon {
     color: #555555;
     opacity: 0.6;
