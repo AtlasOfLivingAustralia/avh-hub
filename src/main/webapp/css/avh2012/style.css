@@ -356,3 +356,7 @@ div#clubView {
 #loginId {
     font-size: 13px;
 }
+
+.btn-group > .btn + .btn {
+    margin-left: -5px;
+}

@@ -36,7 +36,7 @@
                 //$("#advancedSearch").show();
                 //$("ul.tabs").tabs("div.panes > div");
                 //$(".css-tabs:first").tabs(".css-panes:first > div", { history: true });
-                $('#searchTabs a:first').tab('show');
+                //$('#searchTabs a:first').tab('show');
 
                 $('a[data-toggle="tab"]').on('shown', function(e) {
                     //console.log("this", $(this).attr('id'));

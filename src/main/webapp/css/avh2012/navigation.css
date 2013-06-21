@@ -17,7 +17,7 @@
     margin-right: auto;
     margin-bottom: 0;
     margin-left: auto;
-    background-image: url(/images/n-bg.jpg);
+    background-image: url("images/n-bg.jpg");
     background-repeat: repeat-x;
     height: 53px;
 }
