@@ -223,7 +223,7 @@ h2#headingSciName {
 #multipleFacets h3 {
     line-height: 100%;
     margin: 0;
-    margin-bottom: -12px;
+    margin-bottom: 4px;
 }
 
 #advancedSearchForm table {

@@ -275,7 +275,7 @@ div#currentFilter {
     margin: 5px 0 10px 0;
     height: 20px;
 }
-#resultsReturned .btn-small {
+#resultsReturned .btn-small, #submitFacets .btn-small {
     font-size: 13px;
 }
 #results {

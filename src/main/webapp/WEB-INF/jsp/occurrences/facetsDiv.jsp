@@ -206,9 +206,9 @@
         <h3>Refine your search</h3>
         <div id="dynamic" class="tableContainer"></div>
         <div id='submitFacets'>
-            <input type='submit' class='submit' id="include" value="INCLUDE selected items in search"/>
+            <input type='submit' class='submit btn btn-small' id="include" value="INCLUDE selected items in search"/>
             &nbsp;
-            <input type='submit' class='submit' id="exclude" value="EXCLUDE selected items from search"/>
+            <input type='submit' class='submit btn btn-small' id="exclude" value="EXCLUDE selected items from search"/>
         </div>
     </div>
 </div>
