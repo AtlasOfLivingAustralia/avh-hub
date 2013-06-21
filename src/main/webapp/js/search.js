@@ -281,7 +281,7 @@ $(document).ready(function() {
             $clone.removeClass("hide");
             // prevent BS dropdown from closing when clicking on content
             $clone.find('.stopProp').children().not('input.rawTaxonSumbit').click(function(e) {
-                //e.stopPropagation();
+                e.stopPropagation();
             });
 
 //            $("#rawTaxonSearchForm").append(synList);
