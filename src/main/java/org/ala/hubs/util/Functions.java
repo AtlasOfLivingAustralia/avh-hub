@@ -16,6 +16,9 @@ package org.ala.hubs.util;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * Custom tag functions for JSP pages
  *
@@ -34,6 +37,24 @@ public final class Functions {
      */
     public static String escapeJS(String value) {
         return StringEscapeUtils.escapeJavaScript(value);
+    }
+
+    /**
+     * Custom tag to URI escape String values
+     *
+     * @param value
+     * @return
+     */
+    public static String escapeUri(String value) {
+        String returnValue = value;
+
+        try {
+            returnValue = URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return returnValue;
     }
 
     /**

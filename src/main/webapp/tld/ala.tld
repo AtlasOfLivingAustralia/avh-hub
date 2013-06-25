@@ -207,6 +207,15 @@
     </function>
 
     <function>
+        <description>URI Escape function</description>
+        <name>escapeUri</name>
+        <function-class>org.ala.hubs.util.Functions</function-class>
+        <function-signature>java.lang.String escapeUri(java.lang.String)</function-signature>
+    </function>
+
+    escapeUri
+
+    <function>
         <name>replaceAll</name>
         <function-class>org.ala.hubs.util.Functions</function-class>
         <function-signature>java.lang.String replaceAll(java.lang.String, java.lang.String, java.lang.String)</function-signature>

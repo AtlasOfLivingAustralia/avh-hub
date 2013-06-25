@@ -28,6 +28,7 @@ import org.ala.hubs.dto.AdvancedSearchParams;
 import org.ala.hubs.service.CollectoryUidCache;
 import org.ala.hubs.service.GazetteerCache;
 import org.ala.hubs.service.ServiceCache;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,14 +69,16 @@ public class HomePageController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String homePage(Model model, HttpServletRequest request, HttpServletResponse response) {
         addLookupToModel(model);
-        logger.debug("/ homepage = " + homePage);
-
         String skin = (String) request.getAttribute("skin");
 
-        if ("avh".equals(skin)) {
+        logger.debug("/ homepage = " + homePage + " for skin: " + skin);
+
+        if ("avh".equals(skin) && StringUtils.startsWith(homePage, "http")) {
             // homePage should be a URI for avh, not a JSP
             try {
+                logger.info("AVH homepage, redirecting to " + homePage);
                 response.sendRedirect(homePage);
+                return null;
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
