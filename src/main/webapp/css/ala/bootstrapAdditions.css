@@ -350,5 +350,8 @@ h2#headingSciName {
     body.show #content2 {
         width: 100%;
     }
+    #resultsReturned {
+        margin-left: 60px !important; /* Fix for absolutely positioned costomise button to the left */
+    }
 }
 
