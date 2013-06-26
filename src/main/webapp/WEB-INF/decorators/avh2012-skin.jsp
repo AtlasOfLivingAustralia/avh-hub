@@ -41,35 +41,41 @@ include file="/common/taglibs.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
 
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>
+      <script src="${pageContext.request.contextPath}/static/js/respond.min.js"></script>
+    <![endif]-->
+
     <script src="${pageContext.request.contextPath}/static/js/bootstrap.js"></script>
     <decorator:head />
 </head>
 
 <body>
-    <div class="wrapper">
-        <!--Header-->
-        <div id="navigation">
-            <div id="nav-inside">
-                <ul id="nav_start">
-                    <li></li>
-                </ul>
-                <ul id="nav">
-                    <li class="page_item page-item-1"><a href="http://avh.chah.org.au/" title="Home">Home</a></li>
-                    <li class="page_item page-item-3"><a href="http://avh.chah.org.au/index.php/about/" title="About AVH">About AVH</a></li>
-                    <li class="page_item page-item-7"><a href="http://avh.chah.org.au/index.php/terms-of-use/" title="Terms of use">Terms of use</a></li>
-                    <li class="page_item page-item-4"><a href="http://avh.chah.org.au/index.php/help/" title="Help">Help</a></li>
-                    <li class="page_item page-item-2"><a href="${pageContext.request.contextPath}/search" title="Search">Search</a></li>
-                    <li class="page_item page-item-5"><a href="http://avh.chah.org.au/index.php/news/" title="News">News</a></li>
-                </ul>
-            </div>
-        </div>
-        <div id="header">
-            <div id="feature">
-                <div id="LogoBox">
-                    <div id="Logo"></div>
+    <div class="wrapper ">
+        <!-- BS style header -->
+        <div class="navbarFullWidth">
+            <div class="navbar navbar-static-top ">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <ul class="nav">
+                            <li class="page_item page-item-1"><a href="http://avh.chah.org.au/" title="Home">Home</a></li>
+                            <li class="page_item page-item-3 hidden-phone"><a href="http://avh.chah.org.au/index.php/about/" title="About AVH">About AVH</a></li>
+                            <li class="page_item page-item-7 hidden-phone"><a href="http://avh.chah.org.au/index.php/terms-of-use/" title="Terms of use">Terms of use</a></li>
+                            <li class="page_item page-item-4"><a href="http://avh.chah.org.au/index.php/help/" title="Help">Help</a></li>
+                            <li class="page_item page-item-2"><a href="${pageContext.request.contextPath}/search" title="Search">Search</a></li>
+                            <li class="page_item page-item-5 hidden-phone"><a href="http://avh.chah.org.au/index.php/news/" title="News">News</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="rightMenu">
-                    <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
+            </div><!-- /.navbar -->
+            <div class="container">
+                <div id="avhLogoRow" class="row-fluid">
+                    <div class="span6">
+                        <a href="http://avh.chah.org.au/"><img src="${pageContext.request.contextPath}/static/css/avh2012/images/logo_AVH-white-transparent-small.png"/></a>
+                    </div>
+                    <div class="span6 pull-right" id="rightMenu">
+                        <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
                         <c:set var="loginId"><ala:loggedInUserId/></c:set>
                         <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
                         <c:if test="${not empty loginId}">|</c:if>
@@ -78,10 +84,46 @@ include file="/common/taglibs.jsp" %>
                         <c:if test="${clubView}">
                             | <div id="clubView"><span>Club View</span></div>
                         </c:if>
-
+                    </div>
+                </div><!-- /.row-fluid -->
+            </div>
+            <div id="header" class="hide">
+                <div id="feature">
+                    <div id="LogoBox">
+                        <div id="Logo"></div>
+                    </div>
+                    <div class="rightMenu">
+                        <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
+                        <c:set var="loginId"><ala:loggedInUserId/></c:set>
+                        <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
+                        <c:if test="${not empty loginId}">|</c:if>
+                        <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                        <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
+                        <c:if test="${clubView}">
+                            | <div id="clubView"><span>Club View</span></div>
+                        </c:if>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!--Header-->
+        <%--<div id="navigation">--%>
+            <%--<div id="nav-inside">--%>
+                <%--<ul id="nav_start">--%>
+                    <%--<li></li>--%>
+                <%--</ul>--%>
+                <%--<ul id="nav">--%>
+                    <%--<li class="page_item page-item-1"><a href="http://avh.chah.org.au/" title="Home">Home</a></li>--%>
+                    <%--<li class="page_item page-item-3"><a href="http://avh.chah.org.au/index.php/about/" title="About AVH">About AVH</a></li>--%>
+                    <%--<li class="page_item page-item-7"><a href="http://avh.chah.org.au/index.php/terms-of-use/" title="Terms of use">Terms of use</a></li>--%>
+                    <%--<li class="page_item page-item-4"><a href="http://avh.chah.org.au/index.php/help/" title="Help">Help</a></li>--%>
+                    <%--<li class="page_item page-item-2"><a href="${pageContext.request.contextPath}/search" title="Search">Search</a></li>--%>
+                    <%--<li class="page_item page-item-5"><a href="http://avh.chah.org.au/index.php/news/" title="News">News</a></li>--%>
+                <%--</ul>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+
         <div id="contentBox" class="container" style="margin-top: 20px;">
             <decorator:body />
             <div class="push"></div>

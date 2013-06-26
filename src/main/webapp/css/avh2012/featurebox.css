@@ -15,10 +15,10 @@
     margin-right: auto;
     margin-bottom: 0px;
     margin-left: auto;
-	padding-left: 120px;
+	padding-left: 20px;
 }
 #slider{
-    width: 444px;
+    /*width: 444px;*/
     height: 270px;
     box-shadow: 7px 7px 8px #818181;
     -webkit-box-shadow: 1px 1px 8px #000000;
