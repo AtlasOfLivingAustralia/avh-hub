@@ -21,11 +21,13 @@
     <div class="sidebar hidden-phone" style="clear:both;">
         <c:if test="${not empty searchResults.query}">
             <c:set var="queryStr" value="${param.q ? param.q : searchRequestParams.q}"/>
-            <c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/></c:when><c:otherwise>q=<c:out escapeXml="true" value="${queryStr}"/></c:otherwise></c:choose><c:if
-                    test="${not empty param.fq}">&fq=<c:out escapeXml="true" value="${fn:join(paramValues.fq, '&fq=')}"/></c:if><c:if
-                    test="${not empty param.lat}">&lat=${param.lat}</c:if><c:if 
-                    test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if 
-                    test="${not empty param.radius}">&radius=${param.radius}</c:if></c:set>
+            <c:set var="paramList"></c:set>
+            <%--<c:set var="queryParam"><c:choose><c:when test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/></c:when><c:otherwise>q=<c:out escapeXml="true" value="${queryStr}"/></c:otherwise></c:choose><c:if--%>
+                    <%--test="${not empty param.fq}">${ala:escapeJS(fqParams)}</c:if><c:if--%>
+                    <%--test="${not empty param.lat}">&lat=${param.lat}</c:if><c:if --%>
+                    <%--test="${not empty param.lon}">&lon=${param.lon}</c:if><c:if --%>
+                    <%--test="${not empty param.radius}">&radius=${param.radius}</c:if></c:set>--%>
+            <c:set var="queryParam"><c:out escapeXml="true" value="${fn:replace(fn:substring(searchResults.urlParameters,1,-1),'\"','%22')}"/></c:set>
         </c:if>
         <c:if test="${not empty searchResults.activeFacetMap}">
             <div id="currentFilter">

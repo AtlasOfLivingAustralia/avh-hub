@@ -163,25 +163,16 @@ public class ProxyController {
         }
         
         logger.debug("path = " + path);
+        String queryString = request.getQueryString();
+        logger.debug("queryStr = " + queryString);
         String biocacheServiceUrl = biocacheUriPrefix + "/occurrences/" + path + "?";
-        List<String> paramList = new ArrayList<String>();
-        
-        //for (String paramName : (List<String>) request.getParameterNames()) {
-        Enumeration enumeration = request.getParameterNames();
-        while (enumeration.hasMoreElements()) {
-            String paramName = (String) enumeration.nextElement();
-            String[] paramValues = request.getParameterValues(paramName);
-            
-            for (String paramValue : paramValues) {
-                paramList.add(paramName + "=" + paramValue);
-            }
-        }
-        
+
         // check for club role...
         final HttpSession session = request.getSession(false);
         final Assertion assertion = (Assertion) (session == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
         String userId = null;
-        String url = biocacheServiceUrl + StringUtils.join(paramList, "&");
+        //String url = biocacheServiceUrl + StringUtils.join(paramList, "&");
+        String url = biocacheServiceUrl + queryString;
 
         if (assertion != null) {
             AttributePrincipal principal = assertion.getPrincipal();
@@ -205,6 +196,7 @@ public class ProxyController {
         HttpClient client = new HttpClient(params, manager);
         URI uri = new URI(url);
         GetMethod method = new GetMethod(uri.getEscapedURI());
+//        GetMethod method = new GetMethod(url);
 
         try {
             // Execute the method.
