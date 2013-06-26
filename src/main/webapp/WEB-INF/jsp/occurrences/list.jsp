@@ -141,7 +141,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="span9">
+                    <div class="span9 offset3">
                         <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
                         <div id="resultsReturned">
                             <span id="returnedText"><strong><fmt:formatNumber value="${searchResults.totalRecords}" pattern="#,###,###"/></strong> results for</span>

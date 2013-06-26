@@ -33,6 +33,17 @@ form {
     margin-right: 10px;
 }
 
+/* Next 2 styles are to get customise button to stay just above the facets column */
+#searchInfoRow {
+    position: relative;
+}
+
+#searchInfoRow .span3 {
+    position:absolute;
+    bottom:0;
+    left:0;
+}
+
 #searchInfoRow > div {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -269,12 +280,17 @@ div#currentFilter {
     font-weight: bold;
     font-size: 130%;
 }
-#content2 #resultsReturned {
-    font-size: 110%;
-    padding: 5px 5px 5px 4px;
-    margin: 5px 0 10px 0;
-    height: 20px;
+/*#content2 #resultsReturned {*/
+    /*font-size: 110%;*/
+    /*padding: 5px 5px 5px 4px;*/
+    /*margin: 5px 0 10px -20px;*/
+    /*height: 20px;*/
+/*}*/
+
+#resultsReturned {
+    margin-left: -20px; /* Fix for absolutely positioned costomise button to the left */
 }
+
 #resultsReturned .btn-small, #submitFacets .btn-small {
     font-size: 13px;
 }
