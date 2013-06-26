@@ -87,11 +87,15 @@
                 <h1><fmt:message key="heading.list"/><a name="resultsTop">&nbsp;</a></h1>
             </div>
             <div id="searchBoxZ" class="span7 text-right">
-                <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm">
+                <form action="${pageContext.request.contextPath}/occurrences/search" id="solrSearchForm" class="">
                     <div id="advancedSearchLink"><a href="${pageContext.request.contextPath}/search#tab_advanceSearch">Advanced search</a></div>
                     <%--<span id="#searchLabel">Search:</span>--%>
-                    <input type="text" id="taxaQuery" name="taxa" class="span6" value="<c:out value='${param.taxa}'/>">
-                    <input type="submit" id="solrSubmit" class="btn" value="Quick search"/>
+                    <div class="input-append">
+                        <input type="text" id="taxaQuery" name="taxa" class="input-xlarge" value="<c:out value='${param.taxa}'/>">
+                        <button type="submit" id="solrSubmit" class="btn">Quick search</button>
+                    </div>
+                    <%--<input type="text" id="taxaQuery" name="taxa" class="span6" value="<c:out value='${param.taxa}'/>">--%>
+                    <%--<input type="submit" id="solrSubmit" class="btn" value="Quick search"/>--%>
                 </form>
             </div>
             <input type="hidden" id="userId" value="${userId}">

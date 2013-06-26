@@ -25,7 +25,7 @@ include file="/common/taglibs.jsp" %>
 	<meta name="DC.Availability" content="Freely available. Some parts of this resource are username and password restricted" />
 	<meta name="DC.Rights" content="(c) Council of Heads of Australasian Herbaria, 2010" />
 	<meta name="DC.Rights" content="Unless other stated, Intellectual Property associated with this resource resides with the Council of Heads of Australasian Herbaria and individual herbaria. Applications, source code and data are freely available for research, non-commercial and public good purposes" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <title><decorator:title default="AVH"/></title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/avh2012/favicon.ico" />
@@ -44,8 +44,8 @@ include file="/common/taglibs.jsp" %>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>
-      <script src="${pageContext.request.contextPath}/static/js/respond.min.js"></script>
+        <script type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/respond.min.js"></script>
     <![endif]-->
 
     <script src="${pageContext.request.contextPath}/static/js/bootstrap.js"></script>

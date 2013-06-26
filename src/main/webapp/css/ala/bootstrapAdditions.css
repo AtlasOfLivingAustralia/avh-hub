@@ -353,5 +353,11 @@ h2#headingSciName {
     #resultsReturned {
         margin-left: 60px !important; /* Fix for absolutely positioned costomise button to the left */
     }
+    .input-append {
+        display: block;
+    }
+    input#taxaQuery {
+        width: 70%;
+    }
 }
 

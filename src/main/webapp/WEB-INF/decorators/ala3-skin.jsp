@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="Atlas of Living Australia"/>
     <meta name="author" content="Atlas of Living Australia">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1">
 
     <title><decorator:title default="Atlas of Living Australia" /></title>
 
@@ -65,8 +65,11 @@
             });
 
             // Mobile/desktop toggle
-            // TODO: set a cookie so user's choice is remembered across pages
+            // TODO: set a cookie so user's choice is remembered across page requests
             var responsiveCssFile = $("#responsiveCss").attr("href"); // remember set href
+            var viewportMeta = document.querySelector("meta[name=viewport]");
+            var viewPortDefault = viewportMeta.getAttribute('content');
+
             $(".toggleResponsive").click(function(e) {
                 e.preventDefault();
                 $(this).find("i").toggleClass("icon-resize-small icon-resize-full");
@@ -74,9 +77,11 @@
                 if (currentHref) {
                     $("#responsiveCss").attr("href", ""); // set to desktop (fixed)
                     $(this).find("span").html("Mobile");
+                    viewportMeta.setAttribute('content', 'width=980, initial-scale=1, maximum-scale=1');
                 } else {
                     $("#responsiveCss").attr("href", responsiveCssFile); // set to mobile (responsive)
                     $(this).find("span").html("Desktop");
+                    viewportMeta.setAttribute('content', viewPortDefault);
                 }
             });
         });
