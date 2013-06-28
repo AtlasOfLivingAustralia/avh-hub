@@ -344,7 +344,7 @@ div#clubView {
     font-size: 13px;
 }
 
-.btn-group > .btn + .btn {
+.btn-group > .btn + .btn, .input-append > input + .btn {
     margin-left: -5px;
 }
 
