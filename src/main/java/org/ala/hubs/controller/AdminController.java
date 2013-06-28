@@ -91,33 +91,4 @@ public class AdminController {
         return SET_OUTAGE;
     }
 
-//    @RequestMapping(value = "/setOutageMessage", method = RequestMethod.POST)
-//    public String setOutageMessage(
-//            @ModelAttribute OutageBanner outageBanner,
-//            BindingResult result
-//            //,RedirectAttributes redirectAttributes
-//    ) throws Exception {
-//
-//        logger.debug("/outageMessage POST: " + outageBanner);
-//
-//        if (result.hasErrors()) {
-//            logger.warn("BindingResult errors: " + result.toString());
-//        }
-//
-//        if (outageBanner != null) {
-//            // values in form have been sent
-//            outageService.setOutageBanner(outageBanner);
-//            //redirectAttributes.addFlashAttribute("message", "Successfully updated message");
-//        } else {
-//            // set flash message
-//            logger.warn("outageBanner was not provided (is NULL)");
-//            //redirectAttributes.addFlashAttribute("message", "Error: outageBanner was not provided");
-//        }
-//
-//
-//        //model.addAttribute("outageBanner", outageBanner);
-//        return "redirect:outageMessage";
-//    }
-
-
 }
