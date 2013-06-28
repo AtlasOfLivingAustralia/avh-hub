@@ -102,7 +102,7 @@ h2 {
 /*---------------FEATURE BOX---------------*/
 /*------------------------------------------------*/
 #feature {
-	width: 1100px;
+	/*width: 1100px;*/
 	margin-top: 0px;
 	margin-right: auto;
 	margin-bottom: 0px;
@@ -228,7 +228,7 @@ h2 {
 #contentBox {
 	background-color: #FFF;
 	/*width: 960px;*/
-	margin-top: 20px;
+	margin-top: 0px;
 	margin-right: auto;
 	margin-bottom: 0px;
 	margin-left: auto;
@@ -495,4 +495,99 @@ h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, 
 
 #outageMessage {
     background-color: #e3e3e3;
+}
+
+/* BS changes to banner */
+
+.navbar.navbar-static-top  {
+    min-height: 40px;
+    background-image: url("images/n-bg.jpg");
+    background-repeat: repeat-x;
+    border-bottom: 1px solid #d4d4d4;
+}
+.navbar-inner {
+    min-height: 40px;
+    padding-left: 0;
+    padding-right: 0;
+    background-color: inherit;
+    background-image: inherit;
+    background-repeat: repeat-x;
+    filter: none;
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0x;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    *zoom: 1;
+}
+.navbar .nav {
+    margin: 0;
+    display: table;
+    width: 100%;
+    background-color: #fafafa;
+    background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+    background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+    background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+    background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+    background-image: url("images/n-bg.jpg");
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+    border: none;
+    *zoom: 1;
+}
+.navbar .nav li {
+    display: table-cell;
+    width: 1%;
+    float: none;
+    background-image: url(images/n-sep.jpg);
+    background-repeat: no-repeat;
+    background-position: right;
+}
+.navbar .nav li a {
+    font-weight: normal;
+    text-align: center;
+    /*border-left: 1px solid rgba(255,255,255,.75);*/
+    /*border-right: 1px solid rgba(0,0,0,.1);*/
+    white-space: nowrap;
+    color: #666666; /*#0c6fb5;*/
+    text-decoration: none;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 16px;
+    padding: 15px;
+}
+.navbar .nav li:first-child a {
+    border-left: 0;
+    margin-left: 0;
+    background-image: url(images/n-sep.jpg);
+    background-repeat: no-repeat;
+    background-position: left;
+    /*border-radius: 3px 0 0 3px;*/
+}
+.navbar .nav li:last-child a {
+    border-right: 0;
+    margin-right: 0;
+    /*border-radius: 0 3px 3px 0;*/
+}
+/*.navbar .nav > li > a {*/
+/*padding: 15px;*/
+/*display: block;*/
+/*color: #666666; *//*#0c6fb5;*/
+/*text-decoration: none;*/
+/*height: 33px;*/
+/*padding: 15px;*/
+/*text-align: center;*/
+/*line-height: 175%;*/
+/*}*/
+
+.navbar .nav li a:hover {
+    color: #FFF;
+    text-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    background-color:  #a2a2a2;
+    background-image: -moz-linear-gradient(100% 100% 90deg, #696969, #a2a2a2);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a2a2a2), to(#696969));
 }

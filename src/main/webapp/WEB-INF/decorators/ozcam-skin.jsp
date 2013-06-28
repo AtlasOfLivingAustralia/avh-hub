@@ -34,27 +34,28 @@ include file="/common/taglibs.jsp" %>
 </head>
     <body>
         <ala:outageBanner />
-        <div class="wrapper">
-            <!--Header-->
-            <div id="navigation">
-                <div id="nav-inside">
-                    <ul id="nav_start">
-                        <li></li>
-                    </ul>
-                    <ul id="nav">
-                        <li class="page_item page-item-4"><a href="http://www.ozcam.org.au/" title="Home">Home</a></li>
-                        <li class="page_item page-item-6"><a href="http://www.ozcam.org.au/ozcam-data/" title="About OZCAM">About <span class="caps">OZCAM</span></a></li>
-                        <li class="page_item page-item-9 current_page_item"><a href="http://www.ozcam.org.au/using-ozcam-data/" title="OZCAM Data"><span class="caps">OZCAM</span> Data</a></li>
-                        <li class="page_item page-item-11"><a href="http://www.ozcam.org.au/rights/" title="Copyright">Copyright</a></li>
-                        <li class="page_item page-item-13"><a href="http://www.ozcam.org.au/contact-us/" title="Contact us">Contact us</a></li>
-                        <li class="page_item page-item-154"><a href="http://www.ozcam.org.au/news/" title="News">News</a></li>
-                    </ul>
-                </div></div>
+        <div class="wrapper ">
+            <!-- BS style header -->
+            <div class="navbar navbar-static-top ">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <ul class="nav">
+                            <li class="page_item page-item-4"><a href="http://www.ozcam.org.au/" title="Home">Home</a></li>
+                            <li class="page_item page-item-6"><a href="http://www.ozcam.org.au/ozcam-data/" title="About OZCAM">About <span class="caps">OZCAM</span></a></li>
+                            <li class="page_item page-item-9 current_page_item"><a href="http://www.ozcam.org.au/using-ozcam-data/" title="OZCAM Data"><span class="caps">OZCAM</span> Data</a></li>
+                            <li class="page_item page-item-11 hidden-phone"><a href="http://www.ozcam.org.au/rights/" title="Copyright">Copyright</a></li>
+                            <li class="page_item page-item-13 hidden-phone"><a href="http://www.ozcam.org.au/contact-us/" title="Contact us">Contact us</a></li>
+                            <li class="page_item page-item-154 hidden-phone"><a href="http://www.ozcam.org.au/news/" title="News">News</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <!-- etc. -->
             <div id="header">
                 <div id="feature">
                     <div id="LogoBox">
-                        <div id="Logo"></div></div>
+                        <div id="Logo"></div>
+                    </div>
                 </div>
             </div>
             <div id="contentBox" class="container" >
