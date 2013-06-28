@@ -12,7 +12,7 @@
 <%-- c:set target="${fieldsMap}" property="aKey" value="value for a key" /--%>
 <div id="occurrenceDataset">
     <h3>Dataset</h3>
-    <table class="occurrenceTable table table-bordered table-striped" id="datasetTable">
+    <table class="occurrenceTable table table-bordered table-striped table-condensed" id="datasetTable">
         <c:if test="${useAla == 'true'}">
             <!-- Data Provider -->
             <c:if test="${not fn:contains(skin, 'avh')}">
@@ -416,7 +416,7 @@
 </div>
 <div id="occurrenceTaxonomy">
     <h3>Taxonomy</h3>
-    <table class="occurrenceTable table table-bordered table-striped" id="taxonomyTable">
+    <table class="occurrenceTable table table-bordered table-striped table-condensed" id="taxonomyTable">
         <!-- Higher classification -->
         <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="higherClassification" fieldName="Higher classification">
             <c:set target="${fieldsMap}" property="higherClassification" value="true" />
@@ -739,7 +739,7 @@
 <c:if test="${not empty compareRecord.Location}">
     <div id="geospatialTaxonomy">
         <h3>Geospatial</h3>
-        <table class="occurrenceTable table table-bordered table-striped" id="geospatialTable">
+        <table class="occurrenceTable table table-bordered table-striped table-condensed" id="geospatialTable">
             <!-- Higher Geography -->
             <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="higherGeography" fieldName="Higher geography">
                 <c:set target="${fieldsMap}" property="higherGeography" value="true" />
@@ -984,7 +984,7 @@
 <c:if test="${not empty record.raw.miscProperties}">
     <div id="additionalProperties">
         <h3>Additional properties</h3>
-        <table class="occurrenceTable table table-bordered table-striped" id="miscellaneousPropertiesTable">
+        <table class="occurrenceTable table table-bordered table-striped table-condensed" id="miscellaneousPropertiesTable">
             <!-- Higher Geography -->
             <c:forEach items="${record.raw.miscProperties}" var="entry">
                 <alatag:occurrenceTableRow annotate="true" section="geospatial" fieldCode="${entry.key}" fieldName="<span class='dwc'>${entry.key}</span>">${entry.value}</alatag:occurrenceTableRow>

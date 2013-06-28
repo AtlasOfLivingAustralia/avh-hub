@@ -60,7 +60,7 @@ h2 {
 	color: #0c6fb5;
 	text-decoration: none;
 	height: 33px;
-	padding: 10px;
+	padding: 13px 0 7px 0;
 	text-align: center;
 	line-height: 175%;
 }
@@ -227,8 +227,8 @@ h2 {
 /*---------------PAGE---------------*/
 #contentBox {
 	background-color: #FFF;
-	width: 960px;
-	margin-top: 40px;
+	/*width: 960px;*/
+	margin-top: 20px;
 	margin-right: auto;
 	margin-bottom: 0px;
 	margin-left: auto;
@@ -253,18 +253,18 @@ h2 {
 	background-position: 13px;
 	margin-top: 20px;
 }
-#content2 {
-	float: left;
-	margin-left: 40px;
-	width: 640px;
-}
-#content2 ul {
-	list-style-type: none;
-	list-style-position: inside;
-	list-style-image: url(images/bg-list-item.png);
-	margin-top: 10px;
-	line-height: 24px;
-	}
+/*#content2 {*/
+	/*float: left;*/
+	/*margin-left: 40px;*/
+	/*width: 640px;*/
+/*}*/
+/*#content2 ul {*/
+	/*list-style-type: none;*/
+	/*list-style-position: inside;*/
+	/*list-style-image: url(images/bg-list-item.png);*/
+	/*margin-top: 10px;*/
+	/*line-height: 24px;*/
+	/*}*/
 #content2 h1 {
 	color: #1775BA;
 	font-size: 40px;
@@ -479,4 +479,20 @@ h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, 
 .dataQualityResults td, th {
     horizontal-align:left;
     border-bottom: 1px solid #FCFCFC;
+}
+
+.btn-group > .btn + .btn, .input-append > input + .btn {
+    margin-left: -5px;
+}
+
+#searchTabs {
+    margin-bottom: 0;
+}
+
+.nav-tabs li.active > a {
+    background-color: #fff;
+}
+
+#outageMessage {
+    background-color: #e3e3e3;
 }
