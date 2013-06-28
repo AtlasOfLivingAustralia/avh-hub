@@ -48,8 +48,11 @@ public class AdminController {
     @Inject
     OutageService outageService;
 
-
-
+    /**
+     * InitBinder to provide data conversion when binding
+     *
+     * @param binder
+     */
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
