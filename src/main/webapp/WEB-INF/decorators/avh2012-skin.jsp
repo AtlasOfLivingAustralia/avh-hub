@@ -53,6 +53,7 @@ include file="/common/taglibs.jsp" %>
 </head>
 
 <body>
+    <ala:outageBanner />
     <div class="wrapper ">
         <!-- BS style header -->
         <div class="navbarFullWidth">
