@@ -5,4 +5,5 @@
     <!--<cache name="authCache" maxElementsInMemory="10000" eternal="false" overflowToDisk="false" timeToLiveSeconds="600" />
     <cache name="webServiceCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false" />-->
     <cache name="loggerCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false" />
+    <cache name="outageCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false" timeToLiveSeconds="600" />
 </ehcache>

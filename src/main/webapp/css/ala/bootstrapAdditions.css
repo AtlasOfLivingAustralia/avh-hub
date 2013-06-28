@@ -294,6 +294,14 @@ h2#headingSciName {
     padding-right: 0;
 }
 
+#outageMessage {
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #df4a21;
+}
+
 /* Media width variations */
 @media (min-width: 1200px) {
     /* Google map width on list page */

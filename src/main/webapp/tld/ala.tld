@@ -199,6 +199,13 @@
     <body-content>JSP</body-content>
   </tag>
 
+    <tag>
+        <description>Outage Banner Tag</description>
+        <name>outageBanner</name>
+        <tag-class>org.ala.hubs.util.OutageBannerTag</tag-class>
+        <body-content>JSP</body-content>
+    </tag>
+
     <function>
         <description>JavaScript Escape function</description>
         <name>escapeJS</name>
