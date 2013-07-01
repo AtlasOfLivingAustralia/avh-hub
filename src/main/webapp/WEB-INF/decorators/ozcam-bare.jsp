@@ -15,13 +15,19 @@ include file="/common/taglibs.jsp" %>
         <!--<link rel="icon" type="image/x-icon" href="http://www.ozcam.org.au/favicon.ico" />-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
         <style type="text/css">
-		div#fancy_inner {border-color:#BBBBBB}
-		div#fancy_close {right:-15px;top:-12px}
-		div#fancy_bg {background-color:#FFFFFF}
+            div#fancy_inner {border-color:#BBBBBB}
+            div#fancy_close {right:-15px;top:-12px}
+            div#fancy_bg {background-color:#FFFFFF}
+            body {background-color: #ffffff;}
         </style>
         <%@ include file="commonJS.jspf" %>
+
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/bootstrap.css">
+        <link id="responsiveCss" rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/bootstrap-responsive.css">
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ala/bootstrapAdditions.css" type="text/css" media="screen,projection" />
         <decorator:head />
     </head>
     <body>

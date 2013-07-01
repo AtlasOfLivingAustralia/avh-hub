@@ -112,15 +112,10 @@
                 font-size: 14px;
                 font-weight: bold;
                 margin-top: 15px;
-                padding: 4px 8px;
-                border: 1px solid #666;
-                background-color: #DDD;
-                -moz-border-radius: 4px; /* FF1+ */
-                -webkit-border-radius: 4px; /* Saf3+, Chrome */
-                -o-border-radius: 4px;
-                -icab-border-radius: 4px;
-                -khtml-border-radius: 4px;
-                border-radius: 4px; /* Opera 7.7, IE 9 */
+            }
+
+            div#fullRecord a:link {
+                text-decoration: none;
             }
 
             #container {
@@ -146,7 +141,7 @@
     <c:if test="${not empty record.raw}">
         <div id="headingBar" class="recordHeader">
             <div id="fullRecord">
-                <a href="${pageContext.request.contextPath}/occurrence/${record.raw.uuid}" id="fullRecordLink"
+                <a href="${pageContext.request.contextPath}/occurrence/${record.raw.uuid}" id="fullRecordLink" class="btn"
                    target="_parent"  title="View the full record">View full record</a>
             </div>
             <h1><fmt:message key="show.occurrenceRecord"/>: <span id="recordId">${recordId}</span></h1>
