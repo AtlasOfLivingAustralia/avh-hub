@@ -52,7 +52,7 @@ include file="/common/taglibs.jsp" %>
             </div>
             <!-- etc. -->
             <div id="header">
-                <div id="feature">
+                <div id="feature" class="container">
                     <div id="LogoBox">
                         <div id="Logo"></div>
                     </div>
