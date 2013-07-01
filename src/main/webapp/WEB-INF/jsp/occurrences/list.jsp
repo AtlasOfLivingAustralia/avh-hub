@@ -185,13 +185,15 @@
                             <div id="alert">
                                 <h2>Email alerts</h2>
                                 <br/>
-                                <div class="buttonDiv centered">
-                                    <a href="#alertNewRecords" id="alertNewRecords" class="tooltips" data-method="createBiocacheNewRecordsAlert" title="Notify me when new records come online for this search">Get
+                                <div class="">
+                                    <a href="#alertNewRecords" id="alertNewRecords" class="btn tooltips" data-method="createBiocacheNewRecordsAlert"
+                                       title="Notify me when new records come online for this search">Get
                                         email alerts for new <u>records</u> </a>
                                 </div>
                                 <br/>
-                                <div class="buttonDiv centered">
-                                    <a href="#alertNewAnnotations" id="alertNewAnnotations" data-method="createBiocacheNewAnnotationsAlert" class="tooltips" title="Notify me when new annotations (corrections, comments, etc) come online for this search">Get
+                                <div class="">
+                                    <a href="#alertNewAnnotations" id="alertNewAnnotations" data-method="createBiocacheNewAnnotationsAlert"
+                                       class="btn tooltips" title="Notify me when new annotations (corrections, comments, etc) come online for this search">Get
                                         email alerts for new <u>annotations</u></a>
                                 </div>
                                 <p>&nbsp;</p>
