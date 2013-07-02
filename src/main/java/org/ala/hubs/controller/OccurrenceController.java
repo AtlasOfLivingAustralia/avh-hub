@@ -1104,8 +1104,11 @@ public class OccurrenceController {
                     String qid = ProxyController.getPostUrlContentAsString(url, params, null);
 
                     if (qid != null) {
+                        logger.debug("doing redirect: " + serverName + contextPath + "/occurrence/search?q=qid:" + qid);
                         response.sendRedirect(serverName + contextPath + "/occurrence/search?q=qid:" + qid);
+                        return null;
                     } else {
+                        logger.error("Shape file upload failed. " + qid);
                         model.addAttribute("errors", "Shape file upload failed.");
                     }
                 } else {
