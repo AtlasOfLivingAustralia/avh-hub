@@ -632,7 +632,7 @@ function removeFacet(el) {
     if (fqList instanceof Array) {
         //alert("fqList is an array");
         for (var i in fqList) {
-            var thisFq = decodeURIComponent(fqList[i]); //.replace(':[',':'); // for dates to work
+            var thisFq = decodeURIComponent(fqList[i].replace('+',' ')); //.replace(':[',':'); // for dates to work
             //alert("fq = "+thisFq + " || facet = "+decodeURIComponent(facet));
             if (thisFq.indexOf(decodeURIComponent(facet)) != -1) {  // if(str1.indexOf(str2) != -1){
                 //alert("removing fq: "+fqList[i]);
