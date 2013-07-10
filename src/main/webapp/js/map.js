@@ -102,7 +102,7 @@ var Maps = (function() {
         }
 
         var baseurl = Config.OCC_SEARCH_URL;
-        var wmsinfo = baseurl + ((BC_CONF.searchString) ? encodeURI(BC_CONF.searchString) : "?"); // window.location.search;
+        var wmsinfo = baseurl + ((BC_CONF.searchString) ? BC_CONF.searchString : "?"); // NdR removed encodeURI()
         // remove spatial params from searchString param
         wmsinfo = wmsinfo.replace(/&lat\=.*/, '');
         wmsinfo += "&zoom=" + map.getZoom();
@@ -175,7 +175,7 @@ var Maps = (function() {
         }
 
         //Add query string params to custom params
-        var searchParam = encodeURI(BC_CONF.searchString); // NdR - fixes bug where terms have quotes around them
+        var searchParam = BC_CONF.searchString; // NdR - removed encodeURI(BC_CONF.searchString) as encoding is coming from biocache-service now
         var pairs = searchParam.substring(1).split('&');
         for (var j = 0; j < pairs.length; j++) {
             customParams.push(pairs[j]);
@@ -207,7 +207,7 @@ var Maps = (function() {
          */
         loadMap: function() {
             var baseurl = "http://localhost:8080/biocache-service/occurrences/static";
-            var wmsimg = baseurl + encodeURI(BC_CONF.searchString); // window.location.search;
+            var wmsimg = baseurl + BC_CONF.searchString; // NdR removed encodeURI()
             document.getElementById('wmsimg').src= wmsimg;
         },
         
