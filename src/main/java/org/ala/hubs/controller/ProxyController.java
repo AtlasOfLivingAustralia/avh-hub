@@ -194,9 +194,9 @@ public class ProxyController {
         HttpClientParams params = new HttpClientParams();
         params.setContentCharset("UTF-8");
         HttpClient client = new HttpClient(params, manager);
-        URI uri = new URI(url);
-        GetMethod method = new GetMethod(uri.getEscapedURI());
-//        GetMethod method = new GetMethod(url);
+//        URI uri = new URI(url);
+//        GetMethod method = new GetMethod(uri.getEscapedURI());
+        GetMethod method = new GetMethod(url);
 
         try {
             // Execute the method.
