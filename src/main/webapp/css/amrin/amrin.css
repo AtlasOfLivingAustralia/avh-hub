@@ -36,6 +36,7 @@ ul#nav-site a:link, ul#nav-site a:visited {
 
 h1, h2, h3, h4, h5 {
     line-height: 1.2em;
+    padding-bottom: 0;
 }
 
 h1 {
@@ -130,6 +131,10 @@ ul.facets {
     padding: 15px;
 }
 
+.recordHeader #jsonLink {
+    display: none;
+}
+
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover,
 .nav-tabs > .active > a:focus {
@@ -138,4 +143,8 @@ ul.facets {
 
 ul#nav-site li {
     line-height: 50px;
+}
+
+#solrSearchForm {
+    display: none;
 }
