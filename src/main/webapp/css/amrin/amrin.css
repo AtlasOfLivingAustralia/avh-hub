@@ -38,6 +38,35 @@ h1, h2, h3, h4, h5 {
     line-height: 1.2em;
 }
 
+h1 {
+    font-size:30px;
+}
+
+h2 {
+    font-size:26px;
+}
+
+h3 {
+    font-size:20px;
+}
+
+h4{
+    font-size:16px;
+}
+
+h5{
+    font-size:14px;
+}
+
+h6{
+    font-size:14px;
+    letter-spacing:.1em;
+}
+
+p, ul {
+    padding-bottom: 0;
+}
+
 #mapLayerControls label {
     margin: 0;
 }
@@ -78,6 +107,35 @@ div#mainmenu a div#loginId {
     width: 740px;
 }
 
+/* Tabs in search page */
 ul.facets {
     padding-bottom: 0;
+}
+
+.nav-tabs li a {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-right: 4px;
+}
+
+.tabbable .nav-tabs {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.tab-content {
+    border-bottom: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    border-left: 1px solid #DDD;
+    padding: 15px;
+}
+
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus {
+    background-color: #fff;
+}
+
+ul#nav-site li {
+    line-height: 50px;
 }
