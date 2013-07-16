@@ -14,21 +14,31 @@ include file="/common/taglibs.jsp" %>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><decorator:title default="${shortName}"/></title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1">
 
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/bootstrap.css">
+    <link id="responsiveCss" rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/bootstrap-responsive.css">
     <link rel="stylesheet" href="http://www.ala.org.au/wp-content/themes/ala2011/css/amrin.css" type="text/css" media="screen,projection" />
     <link rel="stylesheet" href="http://www.ala.org.au/wp-content/themes/ala2011/css/buttons.css" type="text/css" media="screen,projection" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/obis/style.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ala/bootstrapAdditions.css" type="text/css" media="screen,projection" />
 
     <%@ include file="commonJS.jspf" %>
+
+    <script src="${pageContext.request.contextPath}/static/js/bootstrap.js"></script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/respond.min.js"></script>
+    <![endif]-->
 
     <decorator:head />
 </head>
 <body>
     <nav>
-        <div class="inner">
+        <div class="container">
             <ul id="nav-site">
                 <li><a href="${pageContext.request.contextPath}/">Home</a></li>
                 <li class="${(section=='search')?'selected':''}"><a href="${pageContext.request.contextPath}/search">Search</a></li>
@@ -43,7 +53,7 @@ include file="/common/taglibs.jsp" %>
         </div>
     </nav>
     <header id="site-header">
-        <div class="inner">
+        <div class="container">
             <h1 title="${fullName}"><a href=""><img src="${pageContext.request.contextPath}/static/images/obis/logo-small.png" /></a></h1>
             <section>
                 <div id="search">
@@ -59,13 +69,13 @@ include file="/common/taglibs.jsp" %>
             </section>
         </div>
     </header>
-    <div class="inner">
-        <section>
+    <div id="content">
+        <section class="container">
             <decorator:body />
         </section>
     </div><!-- end div#inner -->
-    <footer>
-        <div class="inner">
+    <footer class="">
+        <div class="container">
             <section class="copyright">
                 <div class="img-left"><a href="http://creativecommons.org/licenses/by/3.0/au/"
                                          title="External link to Creative Commons"><img

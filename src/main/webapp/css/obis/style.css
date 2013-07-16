@@ -2,6 +2,10 @@ ul#nav-site a:link, ul#nav-site a:visited {
     font-size: 17px;
 }
 
+ul#nav-site li {
+    line-height: 50px;
+}
+
 header#site-header {
     padding: 12px 0 12px 0;
     margin:0 0 18px 0;
@@ -22,15 +26,28 @@ header#site-header {
 }
 
 header#site-header section {
-    float: left;
-    position: absolute;
-    bottom: 2px;
-    right: 0;
+    float: right;
+    position: relative;
+    bottom: auto;
+    right:  auto;
+    margin-top: 15px;
+    text-align: left;
+}
+.container {
+    text-align: left;
 }
 
 .home header#site-header section {
     bottom: 33%;
     left: 22%;
+}
+
+.inner {
+    width: auto;
+}
+
+#headingBar #jsonLink {
+    display: none;
 }
 
 .two-col section {
@@ -41,7 +58,7 @@ header#site-header section {
     margin-left: 0 !important;
 }
 
-#searchBox {
+#searchBox, #solrSearchForm {
     display:none;
 }
 
@@ -124,4 +141,15 @@ div.subnavlist {
 
 #downloadMap #downloadMapForm fieldset p {
     padding: 4px 0;
+}
+
+.tabbable .nav-tabs {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus {
+    background-color: #fff;
 }
