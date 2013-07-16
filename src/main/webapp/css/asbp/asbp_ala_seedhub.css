@@ -9,7 +9,7 @@ body {
     height: 100%;
     margin: 0 auto;
     padding-top: 1em;
-    width: 995px; /* was 965px */
+    /*width: 995px; *//* was 965px */
 }
 a:link {
     color: #5C5CAD;
@@ -180,4 +180,16 @@ ul.nice-menu li {
     border-collapse: collapse;
     border-spacing: 0;
     border-color: gray;
+}
+
+ul.nav-tabs {
+    padding-left: 0;
+}
+
+#advancedSearchForm input.seed_quantity, #advancedSearchForm input.seed_viability {
+    width: 20%;
+}
+
+#headingBar #jsonLink {
+    display: none;
 }
