@@ -53,8 +53,8 @@
             <div>
                 <label for="filename" style="float: left;">Download type</label>
                 <div style="display: inline-block; width: 55%; float: left; padding-left: 5px;">
-                    <input type="radio" name="downloadType" value="fast" class="tooltips" title="Faster download but fewer fields are included" checked="checked"/>&nbsp;All Records (fast)<br/>
-                    <input type="radio" name="downloadType" value="detailed" class="tooltips" title="Slower download but all fields are included"/>&nbsp;All Records (detailed)<br/>
+                    <input type="radio" name="downloadType" value="fast" class="tooltips" title="Download the occurrence records" checked="checked"/>&nbsp;All Records<br/>
+                    <%--<input type="radio" name="downloadType" value="detailed" class="tooltips" title="Slower download but all fields are included" checked="checked"/>&nbsp;All Records (detailed)<br/>--%>
                     <input type="radio" name="downloadType" value="checklist"  class="tooltips" title="Lists all species from the current search results"/>&nbsp;Species Checklist<br/>
                     <c:if test="${skin != 'avh'}">
                         <input type="radio" name="downloadType" value="fieldGuide" class="tooltips" title="PDF file listing species with images and distribution maps"/>&nbsp;Species Field Guide
