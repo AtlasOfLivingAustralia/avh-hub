@@ -96,7 +96,8 @@
         <div id="participants">
             PARTICIPATING ORGANISATIONS:
             <br/>
-            <a href="http://www.tepapa.govt.nz" target="_blank"><img src="${pageContext.request.contextPath}/static/images/tepapa/tepapa-logo.png" alt="logo"/></a>
+            <a href="http://www.tepapa.govt.nz/" target="_blank"><img src="${pageContext.request.contextPath}/static/images/tepapa/tepapa-logo.png" alt="tepapa logo"/></a>
+            <a href="http://www.niwa.co.nz/" target="_blank"><img src="${pageContext.request.contextPath}/static/images/tepapa/niwa-colour-50.png" alt="niwa logo" style="vertical-align:top;margin-top:35px;"/></a>
         </div>
     </section>
 </div>

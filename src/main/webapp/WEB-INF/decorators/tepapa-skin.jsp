@@ -76,12 +76,14 @@ include file="/common/taglibs.jsp" %>
                     <a href="${pageContext.request.contextPath}/help/contactTepapa">Contact</a>
                     <br/>This site is licensed
                     under a <a href="http://creativecommons.org/licenses/by/3.0/nz/"
-                               title="External link to Creative Commons" class="external">Creative Commons Attribution
+                               title="External link to Creative Commons" class="external">Creative Commons<br/>Attribution
                         3.0 New Zealand License</a>.</p>
 
                 <div class="img-right">
                     <a href="http://www.tepapa.govt.nz/" title="Museum of New Zealand Te Papa Tongarewa"><img
                             src="${pageContext.request.contextPath}/static/images/tepapa/tepapa-logo.png" alt="logo"/></a>
+                    <a href="http://www.niwa.co.nz/" title="National Institute of Water & Atmospheric Research (NIWA)"><img
+                            src="${pageContext.request.contextPath}/static/images/tepapa/niwa-colour-50.png" alt="logo"/></a>
                     <a href="http://www.ala.org.au" title="Atlas of Living Australia"><img
                         src="http://www.ala.org.au/wp-content/themes/ala2011/images/poweredby-ala.png" width="178"
                         height="62" alt=""/></a>
