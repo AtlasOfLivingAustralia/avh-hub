@@ -186,19 +186,17 @@
                             <table border="0" width="100" cellspacing="2" class="compact">
                                 <thead/>
                                 <tbody>
-                                <c:if test="${not isALA}">
-                                    <tr>
-                                        <td class="labels">Country</td>
-                                        <td>
-                                            <select class="country" name="country" id="country">
-                                                <option value="">-- select a country --</option>
-                                                <c:forEach var="country" items="${countries}">
-                                                    <option value="${country}">${country}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </c:if>
+                                <tr>
+                                    <td class="labels">Country</td>
+                                    <td>
+                                        <select class="country" name="country" id="country">
+                                            <option value="">-- select a country --</option>
+                                            <c:forEach var="country" items="${countries}">
+                                                <option value="${country}">${country}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td class="labels">State/Territory</td>
                                     <td>
@@ -238,7 +236,7 @@
                                 <tr>
                                     <td class="labels">Local Govt. Area</td>
                                     <td>
-                                        <select class="biogeographic_region" name="cl959" id="cl959">
+                                        <select class="lga" name="cl959" id="cl959">
                                             <option value="">-- select local government area--</option>
                                             <c:forEach var="region" items="${lgas}">
                                                 <option value="${region}">${region}</option>

@@ -1,4 +1,4 @@
-<%--                                                                                       userAssertionComments
+<%--
     Document   : list
     Created on : Feb 2, 2011, 10:54:57 AM
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
@@ -62,6 +62,10 @@
         <%--<jwr:style src="/css/record.css"/>--%>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/record.css"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/button.css"/>
+        <style type="text/css">
+            #expertDistroMap img {  max-width: none; }
+            #occurrenceMap img {  max-width: none; }
+        </style>
         <script type="text/javascript">
             /**
              * Delete a user assertion
@@ -504,11 +508,34 @@
                                             View full data quality report
                                         </a>
                                     </li>
+
+                                    <c:set var="hasExpertDistribution" value="false"/>
+                                    <c:forEach var="systemAssertion" items="${record.systemAssertions['failed']}">
+                                        <c:if test="${systemAssertion.code == 26}">
+                                            <c:set var="hasExpertDistribution" value="true"/>
+                                        </c:if>
+                                    </c:forEach>
+
+                                    <c:if test="${hasExpertDistribution}">
+                                       <li><i class="icon-hand-right"></i>&nbsp;
+                                        <a id="expertRangeLink" href="#expertReport">
+                                            Outside expert range - view details
+                                        </a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:if test="${not empty record.processed.occurrence.outlierForLayers}">
+                                       <li><i class="icon-hand-right"></i>&nbsp;
+                                        <a id="outlierReportLink" href="#outlierReport">
+                                            Environmental outlier - view details
+                                        </a>
+                                        </li>
+                                    </c:if>
                                 </ul>
 
                                 <!--<p class="half-padding-bottom">Data validation tools identified the following possible issues:</p>-->
                                 <c:set var="recordIsVerified" value="false"/>
-                                <c:set var="hasExpertDistribution" value="false"/>
+
                                 <c:forEach items="${record.userAssertions}" var="userAssertion">
                                     <c:if test="${userAssertion.name == 'userVerified'}"><c:set var="recordIsVerified" value="true"/></c:if>
                                 </c:forEach>
@@ -747,7 +774,7 @@
 
             <c:if test="${hasExpertDistribution}">
                 <div id="hasExpertDistribution"  class="additionalData" style="clear:both;padding-top: 20px;">
-                    <h2>Record outside of expert distribution area (shown in red)</h2>
+                    <h2>Record outside of expert distribution area (shown in red) <a id="expertReport" href="#expertReport">&nbsp;</a></h2>
                     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/wms2.js"></script>
                     <script type="text/javascript">
                         $(document).ready(function() {
@@ -910,7 +937,7 @@
             <div id="outlierFeedback">
                 <c:if test="${not empty record.processed.occurrence.outlierForLayers}">
                     <div id="outlierInformation" class="additionalData">
-                        <h2>Outlier information</h2>
+                        <h2>Outlier information <a id="outlierReport" href="#outlierReport">&nbsp;</a></h2>
                         <p>
                             This record has been detected as an outlier using the
                             <a href="http://code.google.com/p/ala-dataquality/wiki/DETECTED_OUTLIER_JACKKNIFE">Reverse Jackknife algorithm</a>
