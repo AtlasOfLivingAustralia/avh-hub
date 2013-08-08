@@ -692,7 +692,7 @@
                     <i>${record.raw.classification.species}</i>
                 </c:when>
                 <c:when test="${not empty record.raw.classification.specificEpithet && not empty record.raw.classification.genus}">
-                    <i>${record.raw.classification.genus} ${record.raw.classification.specificEpithet}</i>
+                    <i>${record.raw.classification.genus}&nbsp;${record.raw.classification.specificEpithet}</i>
                 </c:when>
             </c:choose>
             <c:if test="${not empty record.processed.classification.speciesID}">
