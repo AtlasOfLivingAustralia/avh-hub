@@ -302,6 +302,10 @@ h2#headingSciName {
     color: #df4a21;
 }
 
+.container .tabbable .nav-tabs {
+    margin-bottom: 0;
+}
+
 /* Media width variations */
 @media (min-width: 1200px) {
     /* Google map width on list page */

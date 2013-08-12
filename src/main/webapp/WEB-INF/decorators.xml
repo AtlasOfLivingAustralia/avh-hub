@@ -13,7 +13,8 @@
         <pattern>/index</pattern>
     </excludes>
     <decorator name="ala"   page="ala3-skin.jsp" />
-    <decorator name="ozcam" page="ozcam-skin.jsp" />
+    <!--<decorator name="ozcam" page="ozcam-skin.jsp" />-->
+    <decorator name="ozcam" page="ozcam2013-skin.jsp" />
     <decorator name="avh"   page="avh2012-skin.jsp" />
     <decorator name="amrin"   page="amrin-skin.jsp" />
     <decorator name="obis"   page="obis-skin.jsp" />
