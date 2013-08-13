@@ -927,7 +927,7 @@
             <alatag:occurrenceTableRow annotate="false" section="geospatial" fieldCode="coordinatePrecision" fieldName="Coordinate precision">
                 <c:set target="${fieldsMap}" property="coordinatePrecision" value="true" />
                 <c:if test="${not empty record.raw.location.decimalLatitude || not empty record.raw.location.decimalLongitude}">
-                    ${not empty record.processed.location.coordinatePrecision ? record.processed.location.coordinatePrecision : 'Unknown'}
+                    ${not empty record.raw.location.coordinatePrecision ? record.raw.location.coordinatePrecision : 'Unknown'}
                 </c:if>
             </alatag:occurrenceTableRow>
             <!-- Coordinate Uncertainty -->
