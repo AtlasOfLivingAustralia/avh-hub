@@ -836,6 +836,8 @@ public class OccurrenceController {
                     } catch (Exception ex) {
                         logger.error("RestTemplate error: " + ex.getMessage(), ex);
                     }
+                } else if (request.isUserInRole("ROLE_ADMIN")) {
+                    model.addAttribute("isCollectionAdmin", true);
                 }
 
                 //handle the query assertions

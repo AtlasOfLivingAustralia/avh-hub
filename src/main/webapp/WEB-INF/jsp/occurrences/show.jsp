@@ -124,6 +124,7 @@
                         var $clone = $('#userAnnotationTemplate').clone();
                         $clone.find('.issue').text(data.userAssertions[i].name);
                         $clone.find('.user').text(data.userAssertions[i].userDisplayName);
+                        //$clone.find('.userDisplayName').text("User: " + data.userAssertions[i].userDisplayName);
                         $clone.find('.comment').text('Comment: ' + data.userAssertions[i].comment);
                         $clone.find('.userRole').text(data.userAssertions[i].userRole !=null ? data.userAssertions[i].userRole: '');
                         $clone.find('.userEntity').text(data.userAssertions[i].userEntityName !=null ? data.userAssertions[i].userEntityName: '');
@@ -326,18 +327,30 @@
                         $.fancybox.close();
                     });
                     $(".confirmVerify").click(function(e) {
+                        $("#verifySpinner").show();
                         var code = "50000";
                         var userDisplayName = '${userDisplayName}';
                         var recordUuid = '${ala:escapeJS(record.raw.rowKey)}';
+                        var comment = $("#verifyComment").val();
+                        if (!comment) {
+                            alert("Please add a comment");
+                            $("#verifyComment").focus();
+                            $("#verifySpinner").hide();
+                            return false;
+                        }
                         // send assertion via AJAX... TODO catch errors
                         $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
-                            { recordUuid: recordUuid, code: code, userId: OCC_REC.userId, userDisplayName: userDisplayName},
+                            { recordUuid: recordUuid, code: code, comment: comment, userId: OCC_REC.userId, userDisplayName: userDisplayName},
                             function(data) {
                                 // service simply returns status or OK or FORBIDDEN, so assume it worked...
                                 $("#verifyAsk").fadeOut();
                                 $("#verifyDone").fadeIn();
                             }
-                        );
+                        ).error(function (request, status, error) {
+                            alert("Error verifying record: " + request.responseText);
+                        }).complete(function() {
+                            $("#verifySpinner").hide();
+                        });
                     });
                 </c:if>
 
@@ -565,17 +578,23 @@
                             <div id="verifyRecord">
                                 <h3>Confirmation</h3>
                                 <div id="verifyAsk">
+                                    <p>
+                                        Record is marked as <b>${record.processed.geospatiallyKosher ? "geospatially suspect" : ""} ${record.processed.taxonomicallyKosher ? "taxonomically suspect" : ""}</b>
+                                    </p>
                                     <p style="margin-bottom:10px;">
                                         Click the &quot;Confirm&quot; button to verify that this record is correct and that
-                                        the listed &quot;validation issues&quot; are incorrect/invalid.
+                                        the listed &quot;validation issues&quot; are incorrect/invalid.<br/>Please provide a
+                                        short comment supporting your verification.
                                     </p>
-                                    <button class="confirmVerify">Confirm</button>
-                                    <button class="cancelVerify">Cancel</button>
+                                    <textarea id="verifyComment" rows="3"></textarea><br/>
+                                    <button class="btn confirmVerify">Confirm</button>
+                                    <button class="btn cancelVerify">Cancel</button>
+                                    <img src="${pageContext.request.contextPath}/static/images/loading.gif" id="verifySpinner" class="hide" alt="spinner icon"/>
                                 </div>
                                 <div id="verifyDone" style="display:none;">
                                     Record successfully verified
                                     <br/>
-                                    <button class="closeVerify">Close</button>
+                                    <button class="btn closeVerify">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -624,9 +643,9 @@
                                                 <textarea name="comment" id="issueComment" style="width:380px;height:150px;" placeholder="Please add a comment here..."></textarea>
                                             </p>
                                             <p style="margin-top:20px;">
-                                                <input id="issueFormSubmit" type="submit" value="Submit" />
-                                                <input type="reset" value="Cancel" onClick="$.fancybox.close();"/>
-                                                <input type="button" id="close" value="Close" style="display:none;"/>
+                                                <input id="issueFormSubmit" type="submit" value="Submit" class="btn" />
+                                                <input type="reset" value="Cancel" class="btn" onClick="$.fancybox.close();"/>
+                                                <input type="button" id="close" value="Close" class="btn" style="display:none;"/>
                                                 <span id="submitSuccess"></span>
                                             </p>
                                             <p id="assertionSubmitProgress" style="display:none;">
@@ -856,7 +875,7 @@
             <script type="text/javascript" src="${biocacheService}/outlier/record/${uuid}.json?callback=renderOutlierCharts"></script>
 
             <div id="userAnnotationsDiv" class="additionalData">
-                <h2>User flagged issues<a id="userAnnotations" href="#">&nbsp;</a></h2>
+                <h2>User flagged issues<a id="userAnnotations">&nbsp;</a></h2>
                 <ul id="userAnnotationsList"></ul>
             </div>
 
@@ -1179,7 +1198,7 @@
         <li id="userAnnotationTemplate" class="userAnnotationTemplate">
            <h3><span class="issue"></span> - flagged by <span class="user"></span><span class="userRole"></span><span class="userEntity"></span></h3>
            <p class="comment"></p>
-           <p class="userDisplayName"></p>
+           <p class="hide userDisplayName"></p>
            <p class="created"></p>
            <p class="viewMore" style="display:none;">
                <a class="viewMoreLink" href="#">View more with this annotation</a>
