@@ -286,7 +286,13 @@
                     <br/><span class="originalValue">Supplied as "${record.raw.occurrence.recordNumber}"</span>
                 </c:when>
                 <c:otherwise>
+                    <c:if test="${not empty record.raw.occurrence.recordNumber && fn:startsWith(record.raw.occurrence.recordNumber,'http://')}">
+                      <a href="${record.raw.occurrence.recordNumber}">
+                    </c:if>
                     ${record.raw.occurrence.recordNumber}
+                    <c:if test="${not empty record.raw.occurrence.recordNumber && fn:startsWith(record.raw.occurrence.recordNumber,'http://')}">
+                      </a>
+                    </c:if>
                 </c:otherwise>
             </c:choose>
         </alatag:occurrenceTableRow>

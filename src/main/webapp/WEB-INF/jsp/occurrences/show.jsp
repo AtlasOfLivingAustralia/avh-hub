@@ -9,21 +9,21 @@
 <%@ page import="java.util.HashMap" %>
 <!DOCTYPE html>
 <c:choose>
-<c:when test="${skin == 'avh'}">
-    <c:set var="recordId" value="${record.raw.occurrence.catalogNumber}"/>
-</c:when>
-<c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
-	<c:set var="recordId" value="${record.raw.occurrence.collectionCode} - ${record.raw.occurrence.catalogNumber}"/>
-</c:when>
-<c:when test="${not empty record.processed.attribution.dataResourceName && not empty record.raw.occurrence.catalogNumber}">
-	<c:set var="recordId" value="${record.processed.attribution.dataResourceName} - ${record.raw.occurrence.catalogNumber}"/>
-</c:when>
-<c:when test="${not empty record.raw.occurrence.occurrenceID}">
-	<c:set var="recordId" value="${record.raw.occurrence.occurrenceID}"/>
-</c:when>
-<c:otherwise>
-	<c:set var="recordId" value="${record.raw.uuid}"/>
-</c:otherwise>
+    <c:when test="${skin == 'avh'}">
+        <c:set var="recordId" value="${record.raw.occurrence.catalogNumber}"/>
+    </c:when>
+    <c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
+        <c:set var="recordId" value="${record.raw.occurrence.collectionCode} - ${record.raw.occurrence.catalogNumber}"/>
+    </c:when>
+    <c:when test="${not empty record.processed.attribution.dataResourceName && not empty record.raw.occurrence.catalogNumber}">
+        <c:set var="recordId" value="${record.processed.attribution.dataResourceName} - ${record.raw.occurrence.catalogNumber}"/>
+    </c:when>
+    <c:when test="${not empty record.raw.occurrence.occurrenceID}">
+        <c:set var="recordId" value="${record.raw.occurrence.occurrenceID}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="recordId" value="${record.raw.uuid}"/>
+    </c:otherwise>
 </c:choose>
 <c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
 <c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
@@ -31,7 +31,6 @@
 <c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
 <c:set var="biocacheService" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
 <c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader bundle="hubs" property="spatialPortalUrl"/></c:set>
-<%--<c:set var="sensitiveDatasets" scope="request"><ala:propertyLoader bundle="hubs" property="sensitiveDatasets.NSW_DECCW"/></c:set>--%>
 <c:set var="scientificName">
     <c:choose>
         <c:when test="${not empty record.processed.classification.scientificName}">
@@ -59,12 +58,14 @@
                 userDisplayName: "${userDisplayName}"
             }
         </script>
+        <script src="${pageContext.request.contextPath}/static/js/audiojs/audio.min.js"></script>
         <%--<jwr:style src="/css/record.css"/>--%>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/record.css"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/button.css"/>
         <style type="text/css">
             #expertDistroMap img {  max-width: none; }
             #occurrenceMap img {  max-width: none; }
+            .audiojs { width:360px; margin: 15px 0px 20px; }
         </style>
         <script type="text/javascript">
             /**
@@ -752,16 +753,18 @@
                 <c:if test="${not empty record.sounds}">
                     <div class="sidebar">
                         <h3 id="soundsHeader">Sounds</h3>
-                        <audio controls>
-                            <source src="${record.sounds[0].alternativeFormats['audio/mpeg']}" type="audio/ogg">
-                            <source src="${record.sounds[0].alternativeFormats['audio/mpeg']}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
+                        <div id="audioWrapper">
+                            <audio src="${record.sounds[0].alternativeFormats['audio/mpeg']}" preload="auto" />
+                            <div class="track-details">
+                              ${record.raw.classification.scientificName}
+                            </div>
+                        </div>
                         <c:if test="${not empty record.raw.occurrence.rights}">
                             <br/>
                             <cite>Rights: ${record.raw.occurrence.rights}</cite>
                         </c:if>
-                        <p>Please press the play button to hear the sound file
+                        <p>
+                            Please press the play button to hear the sound file
                             associated with this occurrence record.
                         </p>
                     </div>
@@ -1215,6 +1218,12 @@
                 <p>The requested record ID "${uuid}" was not found</p>
             </div>
         </c:if>
-
+        <c:if test="${not empty record.sounds}">
+        <script>
+          audiojs.events.ready(function() {
+            var as = audiojs.createAll();
+          });
+        </script>
+        </c:if>
     </body>
 </html>
