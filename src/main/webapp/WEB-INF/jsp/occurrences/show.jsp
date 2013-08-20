@@ -65,7 +65,9 @@
         <style type="text/css">
             #expertDistroMap img {  max-width: none; }
             #occurrenceMap img {  max-width: none; }
-            .audiojs { width:360px; margin: 15px 0px 20px; }
+            div.audiojs { margin: 15px 0px 10px; }
+            div.audiojs div.scrubber { width:120px;}
+            div.audiojs div.time { width:50px; }
         </style>
         <script type="text/javascript">
             /**
@@ -753,11 +755,13 @@
                 <c:if test="${not empty record.sounds}">
                     <div class="sidebar">
                         <h3 id="soundsHeader">Sounds</h3>
-                        <div id="audioWrapper">
+                        <div class="row-fluid">
+                        <div id="audioWrapper" class="span12">
                             <audio src="${record.sounds[0].alternativeFormats['audio/mpeg']}" preload="auto" />
                             <div class="track-details">
                               ${record.raw.classification.scientificName}
                             </div>
+                        </div>
                         </div>
                         <c:if test="${not empty record.raw.occurrence.rights}">
                             <br/>
@@ -792,7 +796,6 @@
                     <jsp:include page="recordCoreDiv.jsp"/>
                 </div><!-- end of div#content2 -->
             </div>
-
 
             <c:if test="${hasExpertDistribution}">
                 <div id="hasExpertDistribution"  class="additionalData" style="clear:both;padding-top: 20px;">
