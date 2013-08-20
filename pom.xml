@@ -61,6 +61,10 @@
                     <artifactId>slf4j-jdk14</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>org.apache.solr</groupId>
+                    <artifactId>solr-core</artifactId>
+                </exclusion> 
+                <exclusion>
                     <groupId>javax.servlet</groupId>
                     <artifactId>servlet-api</artifactId>
                 </exclusion>
