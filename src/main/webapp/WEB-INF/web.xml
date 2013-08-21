@@ -7,24 +7,32 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext.xml</param-value>
     </context-param>
+    
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
+         <load-on-startup>2</load-on-startup> 
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+<!--  Set up the default JNDI entry for the prepertiesFile -->
+    <env-entry> 
+        <env-entry-name>configPropFile</env-entry-name> 
+        <env-entry-value>/data/hubs/config/hubs-config.properties</env-entry-value> 
+        <env-entry-type>java.lang.String</env-entry-type> 
+    </env-entry>
+
     <!-- CAS -->
-    <context-param>
+<!--     <context-param>
         <param-name>casServerName</param-name>
         <param-value>https://auth.ala.org.au</param-value>
-    </context-param>
+    </context-param> -->
 
     <!-- The Central Server hosting the CMS -->
     <context-param>
@@ -32,10 +40,10 @@
         <param-value>http://www.ala.org.au</param-value>
     </context-param>
 
-    <context-param>
+    <!-- <context-param>
         <param-name>serverName</param-name>
         <param-value>http://localhost:8080</param-value>
-    </context-param>
+    </context-param> -->
 
     <!-- for local development -->
     <!-- the context param should be empty if a virtual host is in use -->
@@ -46,22 +54,22 @@
     </context-param>
     -->
 
-    <context-param>
+    <!-- <context-param>
         <param-name>uriFilterPattern</param-name>
         <param-value>/occurrence/.*, /admin, /admin/edit*, /admin/upload, /admin/multiUpload, /admin/multiUpload/.*, /admin/optimise,
             /admin/reloadAllRanks, /admin/loadCaab, /admin/reloadCollections, /admin/reloadInstitutions,
             /admin/reloadDataProviders, /admin/reloadDataResources</param-value>
-    </context-param>
+    </context-param> -->
 
-    <context-param>
+    <!-- <context-param>
         <param-name>uriExclusionFilterPattern</param-name>
         <param-value>/occurrences/shapeUpload,/images.*,/css.*,/js.*,.*json,/help/.*</param-value>
-    </context-param>
+    </context-param> -->
 
-    <context-param>
+    <!-- <context-param>
         <param-name>authenticateOnlyIfLoggedInFilterPattern</param-name>
         <param-value>/occurrences/.*,/explore/your-area,/query,/proxy/download/.*,/</param-value>
-    </context-param>
+    </context-param> -->
 
     <!-- CAS Authentication Service filters -->
     <filter>
@@ -93,10 +101,10 @@
             <param-name>filterClass</param-name>
             <param-value>org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</param-value>
         </init-param>
-        <init-param>
+        <!-- <init-param>
             <param-name>casServerUrlPrefix</param-name>
             <param-value>https://auth.ala.org.au/cas</param-value>
-        </init-param>
+        </init-param> -->
     </filter>
 
     <filter>
@@ -128,24 +136,16 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- Specify the skin to use -->
+    <!-- Specify the skin to use - 
+        NC 2013-08-09 this now uses a delegating filter proxy that allows spring to inject a skin name into SkinFilter -->
     <filter>
         <filter-name>skinFilter</filter-name>
-        <filter-class>org.ala.hubs.skins.SkinFilter</filter-class>
-        <init-param>
-            <param-name>barePatterns</param-name>
-            <param-value>/fragment/,/annotation/</param-value>
-        </init-param>
-        <init-param>
-            <param-name>skin</param-name>
-            <param-value>ala</param-value>
-        </init-param>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>skinFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <!-- SiteMesh -->
     <filter>
         <filter-name>sitemesh</filter-name>

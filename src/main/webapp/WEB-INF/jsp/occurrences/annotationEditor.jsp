@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<c:set var="serverName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="serverName" checkInit="true"/></c:set>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 <%@ include file="/common/taglibs.jsp" %>
@@ -54,7 +55,7 @@
             <c:when test="${empty userId}">
                 <div id="loginOrFlag">
                     Login please
-                    <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrences/annotate/${uuid}&format=minimal">Click here</a>
+                    <a href="https://auth.ala.org.au/cas/login?service=${serverName}${pageContext.request.contextPath}/occurrences/annotate/${uuid}&format=minimal">Click here</a>
                 </div>
             </c:when>
             <c:otherwise>

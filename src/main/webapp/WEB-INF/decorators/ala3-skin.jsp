@@ -2,6 +2,7 @@
     taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %><%@
     taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
     include file="/common/taglibs.jsp" %>
+<c:set var="serverName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="serverName" checkInit="true"/></c:set>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,7 +99,7 @@
 </c:set>
 <body class="${bodyClass}">
 <ala:outageBanner />
-<c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${fn:escapeXml(pageContext.request.queryString)}"/>
+<c:set var="returnUrlPath" value="${serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${fn:escapeXml(pageContext.request.queryString)}"/>
 <ala:header logoutControllerUrlPath="/logout" returnUrlPath="${returnUrlPath}" populateSearchBox="true" />
 
 <ala:menu/>

@@ -7,9 +7,9 @@
 <%@ include file="/common/taglibs.jsp" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
-<c:set var="googleKey" scope="request"><ala:propertyLoader bundle="hubs" property="googleKey"/></c:set>
-<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
-<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="googleKey" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="googleKey"/></c:set>
+<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="queryContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -20,13 +20,13 @@
         <c:set var="recordId" value="${record.raw.uuid}"/>
     </c:otherwise>
 </c:choose>
-<c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
-<c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
-<c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
-<c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
-<c:set var="biocacheService" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="bieWebappContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="bieWebappContext"/></c:set>
+<c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="collectionsWebappContext"/></c:set>
+<c:set var="useAla" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="useAla"/></c:set>
+<c:set var="hubDisplayName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/></c:set>
+<c:set var="biocacheService" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
 
-<%--<c:set var="sensitiveDatasets" scope="request"><ala:propertyLoader bundle="hubs" property="sensitiveDatasets.NSW_DECCW"/></c:set>--%>
+<%--<c:set var="sensitiveDatasets" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="sensitiveDatasets.NSW_DECCW"/></c:set>--%>
 <c:set var="scientificName">
     <c:choose>
         <c:when test="${not empty record.processed.classification.scientificName}">
@@ -62,7 +62,7 @@
                 // load a JS map with sensitiveDatasets values from hubs.properties file
                 var sensitiveDatasets = {
                     <c:forEach var="sds" items="${sensitiveDatasets}" varStatus="s">
-                    ${sds}: '<ala:propertyLoader bundle="hubs" property="sensitiveDatasets.${sds}"/>'<c:if test="${not s.last}">,</c:if>
+                    ${sds}: '<ala:propertyLoader checkSupplied="true" bundle="hubs" property="sensitiveDatasets.${sds}"/>'<c:if test="${not s.last}">,</c:if>
                     </c:forEach>
                 }
 

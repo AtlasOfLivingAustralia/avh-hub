@@ -25,12 +25,13 @@
         <c:set var="recordId" value="${record.raw.uuid}"/>
     </c:otherwise>
 </c:choose>
-<c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
-<c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="collectionsWebappContext"/></c:set>
-<c:set var="useAla" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
-<c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
-<c:set var="biocacheService" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
-<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader bundle="hubs" property="spatialPortalUrl"/></c:set>
+<c:set var="bieWebappContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="bieWebappContext"/></c:set>
+<c:set var="collectionsWebappContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="collectionsWebappContext"/></c:set>
+<c:set var="useAla" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="useAla"/></c:set>
+<c:set var="hubDisplayName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/></c:set>
+<c:set var="biocacheService" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="spatialPortalUrl"/></c:set>
+<c:set var="serverName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="serverName" checkInit="true"/></c:set>
 <c:set var="scientificName">
     <c:choose>
         <c:when test="${not empty record.processed.classification.scientificName}">
@@ -293,7 +294,7 @@
                 // load a JS map with sensitiveDatasets values from hubs.properties file
                 var sensitiveDatasets = {
                     <c:forEach var="sds" items="${sensitiveDatasets}" varStatus="s">
-                        ${sds}: '<ala:propertyLoader bundle="hubs" property="sensitiveDatasets.${sds}"/>'<c:if test="${not s.last}">,</c:if>
+                        ${sds}: '<ala:propertyLoader checkSupplied="true" bundle="hubs" property="sensitiveDatasets.${sds}"/>'<c:if test="${not s.last}">,</c:if>
                     </c:forEach>
                 }
 
@@ -626,7 +627,7 @@
                                 <c:when test="${empty userId}">
                                     <div id="loginOrFlag">
                                         Login please
-                                        <a href="https://auth.ala.org.au/cas/login?service=${initParam.serverName}${pageContext.request.contextPath}/occurrences/${record.raw.uuid}">Click here</a>
+                                        <a href="https://auth.ala.org.au/cas/login?service=${serverName}${pageContext.request.contextPath}/occurrences/${record.raw.uuid}">Click here</a>
                                     </div>
                                 </c:when>
                                 <c:otherwise>
@@ -652,7 +653,7 @@
                                                 <span id="submitSuccess"></span>
                                             </p>
                                             <p id="assertionSubmitProgress" style="display:none;">
-                                                <img src="${initParam.serverName}${pageContext.request.contextPath}/static/images/indicator.gif"/>
+                                                <img src="${serverName}${pageContext.request.contextPath}/static/images/indicator.gif"/>
                                             </p>
 
                                         </form>

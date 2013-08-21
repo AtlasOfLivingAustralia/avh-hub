@@ -6,9 +6,10 @@
 taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %><%@
 taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 include file="/common/taglibs.jsp" %>
-<c:set var="fullName"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
-<c:set var="shortName"><ala:propertyLoader bundle="hubs" property="site.displayNameShort"/></c:set>
+<c:set var="fullName"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/></c:set>
+<c:set var="shortName"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayNameShort"/></c:set>
 <c:set var="section"><decorator:getProperty property="meta.section"/></c:set>
+<c:set var="serverName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="serverName" checkInit="true"/></c:set>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">    
 <head>
@@ -38,7 +39,7 @@ include file="/common/taglibs.jsp" %>
             </ul>
             <ul id="nav-user">
                 <li><a href="http://www.ala.org.au/my-profile/" title="My profile">My profile</a></li>
-                <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                <c:set var="returnUrlPath" value="${serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
                 <li class="last"><ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/></li>
             </ul>
         </div>

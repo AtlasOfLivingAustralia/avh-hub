@@ -23,6 +23,7 @@
 
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
     <context:component-scan base-package="org.ala.hubs"/>
+    
 
     <!-- Custom conversionService -->
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
@@ -36,11 +37,28 @@
     <!-- Where to load static resources (css, js, images) -->
     <mvc:resources mapping="/static/**" location="/" />
 
+
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+    <!-- <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer">
+</bean> -->
+<!--     <bean id="hubsProperty" class="org.ala.hubs.spring.HubsProperties" >
+        <property name="fileName" value="${propertiesFile}"/>                  
+    </bean> -->
+
     <!-- Over-ride bean properties - including dataSource configs -->
-    <context:property-override location="classpath:hubs.properties" ignore-unresolvable="true" ignore-resource-not-found="true"/>
+    <!-- <context:property-override location="classpath:hubs.properties" ignore-unresolvable="true" ignore-resource-not-found="true"/> -->
+    <context:property-override properties-ref="hubsProperty" ignore-unresolvable="true" ignore-resource-not-found="true"/>
 
     <!-- Also make hubs properties available for lookup (via Spring EL) -->
-    <context:property-placeholder location="classpath:hubs.properties" />
+    <context:property-placeholder properties-ref="hubsProperty"/>
+    <!-- <context:property-placeholder location="classpath:hubs.properties" /> -->
+<!--     <bean id="propertyConfigurer" class="org.ala.hubs.spring.HubsPropertiesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:hubs.properties</value>                
+            </list>
+        </property>        
+    </bean> -->
 
     <!-- File uploads need this bean defined -->
     <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

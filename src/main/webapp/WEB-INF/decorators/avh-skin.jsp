@@ -7,6 +7,7 @@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %
 taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 include file="/common/taglibs.jsp" %>
 <c:set var="avhUrl" value="http://avh.ala.org.au/sp/"/>
+<c:set var="serverName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="serverName" checkInit="true"/></c:set>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">    
 <head>
@@ -63,7 +64,7 @@ include file="/common/taglibs.jsp" %>
             <div><a href="${avhUrl}partners.html">Partners</a></div>            
             <div><a href="${avhUrl}links.html">Links</a></div>
             <div class="rightMenu">
-                <c:set var="returnUrlPath" value="${initParam.serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
+                <c:set var="returnUrlPath" value="${serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
                 <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
             </div>
             <c:if test="${clubView}">

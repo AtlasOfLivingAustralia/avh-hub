@@ -1,18 +1,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="hostName" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}"/>
-<c:set var="fullName"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
-<c:set var="shortName"><ala:propertyLoader bundle="hubs" property="site.displayNameShort"/></c:set>
-<c:set var="attribution"><ala:propertyLoader bundle="hubs" property="site.attribution"/></c:set>
-<c:set var="jurisdiction"><ala:propertyLoader bundle="hubs" property="site.jurisdiction"/></c:set>
-<c:set var="jurisdictionCode"><ala:propertyLoader bundle="hubs" property="site.jurisdiction.code"/></c:set>
+<c:set var="fullName"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/></c:set>
+<c:set var="shortName"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayNameShort"/></c:set>
+<c:set var="attribution"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.attribution"/></c:set>
+<c:set var="jurisdiction"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.jurisdiction"/></c:set>
+<c:set var="jurisdictionCode"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.jurisdiction.code"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="decorator" content="${skin}"/>
     <meta name="section" content="help"/>
-    <title><ala:propertyLoader bundle="hubs" property="site.displayName"/> - Terms of Use </title>
+    <title><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/> - Terms of Use </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/help.css" type="text/css" media="screen">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/toc.js"></script>
 </head>

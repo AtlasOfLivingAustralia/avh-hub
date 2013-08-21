@@ -5,15 +5,16 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
-<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
-<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader bundle="hubs" property="spatialPortalUrl"/></c:set>
-<c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>    
-<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
-<c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
-<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
-<c:set var="facetLimit" scope="request"><ala:propertyLoader bundle="hubs" property="facetLimit"/></c:set>
-<c:set var="defaultFacetMapColourBy" scope="request"><ala:propertyLoader bundle="hubs" property="facets.defaultColourBy"/></c:set>
-<c:set var="defaultListView" scope="request"><ala:propertyLoader bundle="hubs" property="defaultListView"/></c:set>
+<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.biocacheUriPrefix" /></c:set>
+<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="spatialPortalUrl"/></c:set>
+<c:set var="bieWebappContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="bieWebappContext"/></c:set>    
+<c:set var="queryContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="hubDisplayName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/></c:set>
+<c:set var="queryContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="facetLimit" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="facetLimit"/></c:set>
+<c:set var="defaultFacetMapColourBy" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="facets.defaultColourBy"/></c:set>
+<c:set var="defaultListView" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="defaultListView"/></c:set>
+<c:set var="serverName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="serverName" checkInit="true"/></c:set>
 <c:set var="queryDisplay">
     <c:choose>
         <c:when test="${fn:contains(searchRequestParams.displayString,'matchedTaxon')}">${searchRequestParams.displayString}</c:when>
@@ -43,7 +44,7 @@
             <c:set var="fqParams"><c:if test="${not empty paramValues.fq}">&fq=<c:out escapeXml="false" value="${fn:join(paramValues.fq, '&fq=')}"/></c:if></c:set>
             var BC_CONF = {
                 contextPath: "${pageContext.request.contextPath}",
-                serverName: "${initParam.serverName}${pageContext.request.contextPath}",
+                serverName: "${serverName}${pageContext.request.contextPath}",
                 searchString: "${ala:escapeJS(searchResults.urlParameters)}", //  JSTL var can contain double quotes
                 facetQueries: "${ala:escapeJS(fqParams)}",//"encodeURIComponent('${fn:escapeXml(fqParams)}')", //'${fqParams}',
                 queryString: "${ala:escapeJS(queryDisplay)}",
@@ -54,9 +55,9 @@
                 resourceName: "${hubDisplayName}",
                 facetLimit: "${(not empty facetLimit) ? facetLimit : '50'}",
                 queryContext: "${queryContext}",
-                zoomOutsideAustralia: Boolean("<ala:propertyLoader bundle="hubs" property="zoomOutsideAustralia"/>"),
-                mapDefaultCentreCoords:"<ala:propertyLoader bundle="hubs" property="mapDefaultCentreCoords"/>",
-                mapDefaultZoom:"<ala:propertyLoader bundle="hubs" property="mapDefaultZoom"/>",
+                zoomOutsideAustralia: Boolean("<ala:propertyLoader checkSupplied="true" bundle="hubs" property="zoomOutsideAustralia"/>"),
+                mapDefaultCentreCoords:"<ala:propertyLoader checkSupplied="true" bundle="hubs" property="mapDefaultCentreCoords"/>",
+                mapDefaultZoom:"<ala:propertyLoader checkSupplied="true" bundle="hubs" property="mapDefaultZoom"/>",
                 hasMultimedia: ${(not empty hasImages) ? hasImages : 'false'} // will be either true or false
             };
         </script>
@@ -458,7 +459,7 @@
                                         </td>
                                         <td>
                                             <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
-                                            <c:set var='spatialPortalUrlParams'><ala:propertyLoader bundle="hubs" property="spatialPortalUrlParams"/></c:set>
+                                            <c:set var='spatialPortalUrlParams'><ala:propertyLoader checkSupplied="true" bundle="hubs" property="spatialPortalUrlParams"/></c:set>
                                             <!--  <a class="buttonDiv" id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>-->
                                             <div id="downloadMaps" class="btn btn-small">
                                                 <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>

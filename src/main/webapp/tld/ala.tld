@@ -177,7 +177,7 @@
     <description>Property Loader Tag</description>
     <name>propertyLoader</name>
     <tag-class>au.org.ala.commonui.tag.PropertyLoaderTag</tag-class>
-    <body-content>JSP</body-content>
+    <body-content>JSP</body-content>    
     <attribute>
       <description>The bundle name</description>
       <name>bundle</name>
@@ -188,6 +188,18 @@
       <description>the property name</description>
       <name>property</name>
       <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description>Whether or not check the init params of the web.xml</description>
+      <name>checkInit</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description>Whether or not check the in the properties file that was supplied by JNDI</description>
+      <name>checkSupplied</name>
+      <required>false</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
   </tag>

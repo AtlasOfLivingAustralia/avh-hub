@@ -5,15 +5,16 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
-<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
-<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
-<c:set var="isALA" scope="request"><ala:propertyLoader bundle="hubs" property="useAla"/></c:set>
+<c:set var="queryContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="isALA" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="useAla"/></c:set>
+<c:set var="serverName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="serverName" checkInit="true"/></c:set>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="decorator" content="${skin}"/>
-        <title>Search for records | <ala:propertyLoader bundle="hubs" property="site.displayName"/></title>
+        <title>Search for records | <ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/></title>
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/charts.css" type="text/css" media="screen">
         <script type="text/javascript" language="javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/charts.js"></script> --%>
@@ -68,7 +69,7 @@
     </head>
     <body>
         <div id="headingBar">
-            <h1 style="width:100%;" id="searchHeader">Search for records in <ala:propertyLoader bundle="hubs" property="site.displayName"/></h1>
+            <h1 style="width:100%;" id="searchHeader">Search for records in <ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/></h1>
         </div>
         <div class="row-fluid" id="content">
             <div class="span12">
@@ -409,7 +410,7 @@
                             <p>
                                 <%--<input type="submit" name="action" value="Download" />--%>
                                 <%--&nbsp;OR&nbsp;--%>
-                                <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                                <input type="hidden" name="redirectBase" value="${serverName}${pageContext.request.contextPath}/occurrences/search"/>
                                 <input type="hidden" name="field" value="raw_name"/>
                                 <input type="submit" name="action" value="Search" class="btn" /></p>
                         </form>
@@ -422,7 +423,7 @@
                             <p>
                                 <%--<input type="submit" name="action" value="Download" />--%>
                                 <%--&nbsp;OR&nbsp;--%>
-                                <input type="hidden" name="redirectBase" value="${initParam.serverName}${pageContext.request.contextPath}/occurrences/search"/>
+                                <input type="hidden" name="redirectBase" value="${serverName}${pageContext.request.contextPath}/occurrences/search"/>
                                 <input type="hidden" name="field" value="catalogue_number"/>
                                 <input type="submit" name="action" value="Search" class="btn"/></p>
                         </form>
