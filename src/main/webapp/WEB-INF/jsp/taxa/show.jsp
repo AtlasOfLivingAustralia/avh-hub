@@ -6,11 +6,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp" %>
 <c:set var="hostName" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}"/>
-<c:set var="queryContext" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
-<c:set var="hubDisplayName" scope="request"><ala:propertyLoader bundle="hubs" property="site.displayName"/></c:set>
-<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
-<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader bundle="hubs" property="spatialPortalUrl"/></c:set>
-<c:set var="bieWebappContext" scope="request"><ala:propertyLoader bundle="hubs" property="bieWebappContext"/></c:set>
+<c:set var="queryContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.queryContext"/></c:set>
+<c:set var="hubDisplayName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="site.displayName"/></c:set>
+<c:set var="biocacheServiceUrl" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="biocacheRestService.biocacheUriPrefix"/></c:set>
+<c:set var="spatialPortalUrl" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="spatialPortalUrl"/></c:set>
+<c:set var="bieWebappContext" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="bieWebappContext"/></c:set>
 <!DOCTYPE html>
 <html>
     <head>
