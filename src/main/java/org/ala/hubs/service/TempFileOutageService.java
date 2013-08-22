@@ -46,7 +46,7 @@ public class TempFileOutageService implements OutageService {
         try {
             outageBanner = mapper.readValue(new File(FILE_PATH), OutageBanner.class);
         } catch (IOException e) {
-            logger.error("Failed to read outage JSON: " + e.getMessage(), e);
+            logger.warn("Outage message JSON not found: " + e.getMessage());
         }
 
         return outageBanner;
