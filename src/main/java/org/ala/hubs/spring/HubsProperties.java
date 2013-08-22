@@ -22,7 +22,7 @@ public class HubsProperties extends Properties implements InitializingBean {
     private final static Logger logger = Logger.getLogger(HubsProperties.class);
     private String fileName="/data/hubs/config/hubs-config.properties";
     public HubsProperties(){
-        //System.out.println("PPPPP: Started...");
+        
     }
    
     public void init() throws Exception {
@@ -33,13 +33,15 @@ public class HubsProperties extends Properties implements InitializingBean {
             //use the default value for the hubs property file
         }
         
-        logger.info("propFile::: " + fileName);
+        logger.info("The configPropFile: " + fileName);
         //now initialise the properties
         java.io.File file = new java.io.File(fileName);
         if(file.exists()){
             load(new java.io.FileInputStream(file));
+        } else{
+            logger.error("Unable to locate the configPropFile to use " + fileName + ". Please ensure the file exists.");
         }
-        logger.info("MY PROPERTIES:::: " +this);
+        logger.info("The HUBS properties: " +this);
     }
     /**
      * @return the fileName
@@ -55,8 +57,7 @@ public class HubsProperties extends Properties implements InitializingBean {
         this.fileName = fileName;
     }
     @Override
-    public void afterPropertiesSet() throws Exception {
-        // TODO Auto-generated method stub
+    public void afterPropertiesSet() throws Exception {        
         logger.debug("HUB Proeprties are set ");
         logger.debug("Properties file " + fileName);
         init();
