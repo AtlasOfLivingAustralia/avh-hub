@@ -134,11 +134,18 @@
                                     <div class="facetsColumn">
                                         <c:forEach var="facet" items="${defaultFacets}" varStatus="status">
                                         <c:if test="${status.index > 0 && status.index % 18 == 0}">
-                                    </div>
-                                    <div class="facetsColumn">
+                                            </div>
+                                            <div class="facetsColumn">
                                         </c:if>
                                         <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
                                             ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
+                                        </c:forEach>
+                                    </div>
+                                    <div class="facetsColumn">
+                                        <h4>Dynamic facets</h4>
+                                        <c:forEach var="facet" items="${dynamicFacets}" varStatus="status">
+                                            <input type="checkbox" name="facets" class="facetOpts" value="${facet.name}"
+                                                ${(facet.name) ? 'checked="checked"' : ''}>&nbsp;<alatag:formatFacetName fieldName="${facet.name}"/><br>
                                         </c:forEach>
                                     </div>
                                 </div>
@@ -459,7 +466,7 @@
                                         </td>
                                         <td>
                                             <c:set var='spatialPortalLink'>${fn:replace(searchResults.urlParameters, "\"", "&#034;") }</c:set>
-                                            <c:set var='spatialPortalUrlParams'><ala:propertyLoader checkSupplied="true" bundle="hubs" property="spatialPortalUrlParams"/></c:set>
+                                            <c:set var='spatialPortalUrlParams'><ala:propertyLoader bundle="hubs" property="spatialPortalUrlParams"/></c:set>
                                             <!--  <a class="buttonDiv" id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>-->
                                             <div id="downloadMaps" class="btn btn-small">
                                                 <a id="spatialPortalLink" href="${spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>

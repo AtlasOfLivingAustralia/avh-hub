@@ -57,15 +57,7 @@
         </c:if>
         <c:forEach var="facetResult" items="${searchResults.facetResults}">
             <c:if test="${fn:length(facetResult.fieldResult) >= 1 && empty searchResults.activeFacetMap[facetResult.fieldName]}"> <%-- || not empty facetMap[facetResult.fieldName] --%>
-                <c:set var="fieldDisplayName"><c:choose>
-                    <c:when test="${fn:substring(facetResult.fieldName, fn:length(facetResult.fieldName)-2, fn:length(facetResult.fieldName)) eq '_s'}">
-                        ${fn:replace(fn:substring(facetResult.fieldName, 0, fn:length(facetResult.fieldName)-2), '_', ' ')}
-                    </c:when>
-                    <c:otherwise>
-                        <fmt:message key="facet.${facetResult.fieldName}"/>
-                    </c:otherwise>
-                </c:choose></c:set>
-                <h4><span class="FieldName">${fieldDisplayName}</span>
+                <h4><span class="FieldName"><alatag:formatFacetName fieldName="${facetResult.fieldName}"/></span>
                     <c:if test="${false && fn:length(facetResult.fieldResult) > 1}">
                         <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="${fieldDisplayName}"
                            title="Refine with multiple values"><img src="${pageContext.request.contextPath}/static/images/options_icon.jpg" class="optionsIcon"/></a>
@@ -139,13 +131,6 @@
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:${fieldResult.label}"><fmt:message key="geospatial_kosher.${not empty fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
                                         (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
                                     </c:when>
-<%--                                    NC 2013-01-14: This is now handled by the fq param in the facetResult. 
-										<c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'collector') || fn:containsIgnoreCase(facetResult.fieldName, 'assertion_user_id')}">
-                                        <c:set var="fqValue"><alatag:uriEscapeParamValue input="${fieldResult.label}"/></c:set><!-- fqValue = ${fqValue} -->
-                                        <c:set var="fullName"><alatag:authUserLookup userId="${fieldResult.label}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
-                                        <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22<c:out escapeXml='true' value='${fqValue}'/>%22"><fmt:message key="${fullName}"/></a>
-                                        (<fmt:formatNumber value="${fieldResult.count}" pattern="#,###,###"/>)</li>
-                                    </c:when> --%>
                                     <c:when test="${fn:containsIgnoreCase(facetResult.fieldName, 'outlier_layer')}">
                                         <c:set var="fqValue" value="${fn:replace(fieldResult.label, '\"','%22')}"/><!-- fqValue = ${fqValue} -->
                                         <li><a href="?${queryParam}&fq=${facetResult.fieldName}:<c:out escapeXml='true' value='${fqValue}'/>">
