@@ -87,6 +87,7 @@ i18n.code=ozcam
 
 # Google Analytics Key - either "UA-4355440-1" or "N/A"
 googleAnalyticsKey=N/A
+googleDrive.dataQualityChecks.url=https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv
 
 # define the skin to use - possible values are: ala || ozcam || avh
 # IMPORTANT!!!!! This configuration is being used again.  The web.xml is using a DelegatingFilterProxy where this property is injected into the SkinFilter

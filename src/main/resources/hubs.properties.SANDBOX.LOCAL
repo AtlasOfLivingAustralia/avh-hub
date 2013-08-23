@@ -80,6 +80,7 @@ i18n.code=
 
 # Google Analytics Key - either "UA-4355440-1" or "N/A"
 googleAnalyticsKey=N/A
+googleDrive.dataQualityChecks.url=https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv
 
 # define the skin to use - possible values are: ala || ozcam || avh
 # IMPORTANT!!!!! to switch skins, there is now some configuration in the web.xml of this project

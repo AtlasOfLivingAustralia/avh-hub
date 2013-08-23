@@ -378,7 +378,98 @@
                     // split long DNA sequences into blocks of 10 chars
                     $(sequenceTd).html("<code>"+sequenceStr.replace(/(.{10})/g,"$1 ")+"</code>");
                 }
+
+                // context sensitive help on data quality tests
+                $(".dataQualityHelpLinkZZZ").click(function(e) {
+                    e.preventDefault();
+                    $("#dataQualityModal .modal-body").html(""); // clear content
+                    var code = $(this).data("code");
+                    var dataQualityItem = getDataQualityItem(code);
+                    var content = "Error: info not found";
+                    if (dataQualityItem) {
+                        content = "<div><b>Name: " + dataQualityItem.name + "</b></div>";
+                        content += "<div>" + dataQualityItem.description + "</div>";
+                        content += "<div><a href='http://code.google.com/p/ala-dataquality/wiki/" +
+                                dataQualityItem.name + "' target='wiki' title='More details on the wiki page'>Wiki page</a></div>";
+                    }
+
+                    //$("#dataQualityModal .modal-body").html(content);
+                    //$('#dataQualityModal').modal({show:true});
+                    $(this).popover({
+                        html : true,
+                        content: function() {
+                            return content;
+                        }
+                    });
+                });
+
+                $(".dataQualityHelpLinkZZ").popover({
+                    html : true,
+                    content: "Just a test"
+                }).click('click', function(e) { e.preventDefault(); });
+
+
+
+                $(".dataQualityHelpLink").popover({
+                    html : true,
+                    trigger: "click",
+                    title: function() {
+                        var code = $(this).data("code");
+                        var content = "";
+                        var dataQualityItem = getDataQualityItem(code);
+                        if (dataQualityItem) {
+                            content = "<button type='button' class='close' onclick='$(&quot;.dataQualityHelpLink&quot;).popover(&quot;hide&quot;);'>×</button>" + dataQualityItem.name;
+                        }
+                        return content;
+                    },
+                    content: function() {
+                        var code = $(this).data("code");
+                        var dataQualityItem = getDataQualityItem(code);
+                        var content = "Error: info not found";
+                        if (dataQualityItem) {
+                            //content = "<div><b>" + dataQualityItem.name + "</b></div>";
+                            content = "<div>" + dataQualityItem.description + "</div>";
+                            if (dataQualityItem.wiki) {
+                                content += "<div><i class='icon-share-alt'></i>&nbsp;<a href='http://code.google.com/p/ala-dataquality/wiki/" +
+                                        dataQualityItem.name + "' target='wiki' title='More details on the wiki page'>Wiki page</a></div>";
+                            }
+                        }
+                        return content;
+                    }
+                }).click('click', function(e) { e.preventDefault(); });
+
             }); // end JQuery document ready
+
+            var dataQualityDataIsLoaded = false;
+            var dataQualityItems = {};
+
+            function getDataQualityItem(code) {
+
+                if (!dataQualityDataIsLoaded) {
+                    var url = "${pageContext.request.contextPath}/data-quality/allCodes.json";
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data && data[1]) {
+                                $.each(data, function(key, val) {
+                                    console.log("data", key, val);
+                                    dataQualityItems[key] = val;
+                                });
+                            }
+                        },
+                        complete: function() {
+                            dataQualityDataIsLoaded = true;
+                        },
+                        async: false
+                    });
+                }
+                console.log("dataQualityItems",dataQualityItems);
+                if (dataQualityItems[code]) {
+                    return dataQualityItems[code];
+                }
+            }
 
             /*
              * IE doesn't support String.trim(), so add it in manually
@@ -886,9 +977,20 @@
                 <ul id="userAnnotationsList"></ul>
             </div>
 
-            <div id="dataQuality" class="additionalData">
-                <h2>Data quality tests<a id="dataQualityReport" href="#dataQualityReport">&nbsp;</a></h2>
-
+            <div id="dataQuality" class="additionalData"><a name="dataQualityReport"></a>
+                <h2>Data quality tests</h2>
+                <div id="dataQualityModal" class="modal hide fade" tabindex="-1" role="dialog">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h3>Data Quality Details</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>loading...</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
                 <table class="dataQualityResults table-striped table-bordered table-condensed">
                     <%--<caption>Details of tests that have been performed for this record.</caption>--%>
                     <thead>
@@ -902,7 +1004,7 @@
                         <c:set var="testSet" value="${record.systemAssertions['failed']}"/>
                         <c:forEach items="${testSet}" var="test">
                         <tr>
-                            <td><spring:message code="${test.name}" text="${test.name}"/></td>
+                            <td><spring:message code="${test.name}" text="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
                             <td><i class="icon-thumbs-down icon-red"></i> Failed</td>
                             <%--<td>More info</td>--%>
                         </tr>
@@ -911,7 +1013,7 @@
                         <c:set var="testSet" value="${record.systemAssertions['warning']}"/>
                         <c:forEach items="${testSet}" var="test">
                         <tr>
-                            <td><spring:message code="${test.name}" text="${test.name}"/></td>
+                            <td><spring:message code="${test.name}" text="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
                             <td><i class="icon-warning-sign"></i> Warning</td>
                             <%--<td>More info</td>--%>
                         </tr>
@@ -920,7 +1022,7 @@
                         <c:set var="testSet" value="${record.systemAssertions['passed']}"/>
                         <c:forEach items="${testSet}" var="test">
                         <tr>
-                            <td><spring:message code="${test.name}" text="${test.name}"/></td>
+                            <td><spring:message code="${test.name}" text="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
                             <td><i class="icon-thumbs-up icon-green"></i> Passed</td>
                             <%--<td>More info</td>--%>
                         </tr>
@@ -936,7 +1038,7 @@
                         <c:set var="testSet" value="${record.systemAssertions['missing']}"/>
                         <c:forEach items="${testSet}" var="test">
                         <tr class="missingPropResult" style="display:none;">
-                            <td><spring:message code="${test.name}" text="${test.name}"/></td>
+                            <td><spring:message code="${test.name}" text="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
                             <td><i class=" icon-question-sign"></i> Missing</td>
                         </tr>
                         </c:forEach>
@@ -951,7 +1053,7 @@
                         <c:set var="testSet" value="${record.systemAssertions['unchecked']}"/>
                         <c:forEach items="${testSet}" var="test">
                         <tr class="uncheckTestResult" style="display:none;">
-                            <td><spring:message code="${test.name}" text="${test.name}"/></td>
+                            <td><spring:message code="${test.name}" text="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
                             <td>Unchecked (lack of data)</td>
                         </tr>
                         </c:forEach>

@@ -28,7 +28,7 @@
 
     <decorator:head />
 
-    <script src="${pageContext.request.contextPath}/static/js/bootstrap.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/bootstrap.min.js"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
         <script type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>

@@ -84,7 +84,8 @@ useAla=true
 i18n.code=
 
 # Google Analytics Key - either "UA-4355440-1" or "N/A"
-googleAnalyticsKey=UA-4355440-1
+googleAnalyticsKey=N/A
+googleDrive.dataQualityChecks.url=https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv
 
 # max facets to show in popups
 facetLimit=100
