@@ -141,13 +141,15 @@
                                             ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<fmt:message key="facet.${facet.key}"/><br>
                                         </c:forEach>
                                     </div>
+                                    <c:if test="${not empty dynamicFacets}">
                                     <div class="facetsColumn">
-                                        <h4>Dynamic facets</h4>
+                                        <h4>Custom facets</h4>
                                         <c:forEach var="facet" items="${dynamicFacets}" varStatus="status">
                                             <input type="checkbox" name="facets" class="facetOpts" value="${facet.name}"
                                                 ${(facet.name) ? 'checked="checked"' : ''}>&nbsp;<alatag:formatFacetName fieldName="${facet.name}"/><br>
                                         </c:forEach>
                                     </div>
+                                    </c:if>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
