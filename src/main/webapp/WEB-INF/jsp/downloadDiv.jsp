@@ -25,6 +25,12 @@
                 <input type="hidden" name="url" id="fastDownloadUrl" value="${biocacheServiceUrl}/occurrences/index/download"/>
             </c:otherwise>
         </c:choose>
+        <!--  20130918 we need to set the source id before it is used. -->
+        <c:set var="sourceId">
+            <c:forEach var="it" items="${LoggerSources}">
+                <c:if test="${fn:toUpperCase(skin) == it.name}">${it.id}</c:if>
+            </c:forEach>
+        </c:set>
         <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download"/>
         <input type="hidden" name="url" id="downloadFieldGuideUrl" value="${pageContext.request.contextPath}/occurrences/fieldguide/download"/>
         <input type="hidden" name="extra" id="extraFields" value="${downloadExtraFields}"/>
@@ -45,11 +51,7 @@
                     </c:forEach>
                 </select>
             </div>
-            <c:set var="sourceId">
-                <c:forEach var="it" items="${LoggerSources}">
-                    <c:if test="${fn:toUpperCase(skin) == it.name}">${it.id}</c:if>
-                </c:forEach>
-            </c:set>
+
             <div>
                 <label for="filename" style="float: left;">Download type</label>
                 <div style="display: inline-block; width: 55%; float: left; padding-left: 5px;">
