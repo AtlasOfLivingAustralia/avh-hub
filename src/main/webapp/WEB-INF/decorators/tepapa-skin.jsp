@@ -1,5 +1,5 @@
 <%--
-    Document   : amrin-skin.jsp (sitemesh decorator file)
+    Document   : tepapa-skin.jsp (sitemesh decorator file)
     Created on : 11/10/2012, 11:20
     Author     : dos009
 --%><%@
@@ -11,19 +11,28 @@ include file="/common/taglibs.jsp" %>
 <c:set var="section"><decorator:getProperty property="meta.section"/></c:set>
 <c:set var="serverName" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="serverName" checkInit="true"/></c:set>
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">    
+<html dir="ltr" lang="en-US">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><decorator:title default="${shortName}"/></title>
 
-    <%--<link rel="stylesheet" href="http://www.ala.org.au/wp-content/themes/ala2011/css/amrin.css" type="text/css" media="screen,projection" />--%>
-    <link rel="stylesheet" href="http://www.ala.org.au/wp-content/themes/ala2011/css/buttons.css" type="text/css" media="screen,projection" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/bootstrap.css">
+    <link id="responsiveCss" rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/static/css/bootstrap-responsive.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/tepapa/style.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ala/bootstrapAdditions.css" type="text/css" media="screen,projection" />
+
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/tepapa/favicon.ico" />
     <%@ include file="commonJS.jspf" %>
+
+    <script src="${pageContext.request.contextPath}/static/js/bootstrap.js"></script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="${initParam.centralServer}/wp-content/themes/ala2011/scripts/html5.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/autocomplete.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css" type="text/css" media="screen" />
     <decorator:head />
 </head>
 <body>
@@ -61,7 +70,7 @@ include file="/common/taglibs.jsp" %>
             </section>
         </div>
     </header>
-    <div class="inner">
+    <div class="inner" id="content">
         <section>
             <decorator:body />
         </section>

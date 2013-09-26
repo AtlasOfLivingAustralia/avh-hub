@@ -101,6 +101,7 @@ nav ul#nav-user {
     margin-right: 5px;
 }
 nav ul#nav-site li {
+    line-height: 50px;
     font-size:1.4em;
     display:inline;
     float:left;
@@ -315,6 +316,9 @@ footer .copyright {
 p, ul {
     padding-bottom:24px;
 }
+#content ul {
+    padding-bottom: 0;
+}
 header#site-header p {
     padding-bottom:0;
 }
@@ -337,19 +341,19 @@ nav ol, nav ul {
 }
 
 h1 {
-    font-size:3.0em;
+    font-size:2.0em;
     line-height:1;
     padding-bottom:12px;
 }
 
 h2 {
-    font-size:2.2em;
+    font-size:1.6em;
     line-height:1;
     padding-bottom:12px;
     /*color:#4d719b;*/
 }
 h3 {
-    font-size:1.8em;
+    font-size:1.4em;
     line-height:1;
     padding-bottom:12px;
 }
@@ -359,7 +363,7 @@ h4, h5, h6 {
     line-height:1;
 }
 h4{
-    font-size:1.3em;
+    font-size:1.2em;
 }
 h5{
     font-size:1.0em;
@@ -600,4 +604,10 @@ p.rowA {
 div#toc ul {
     /*list-style: none;*/
     margin-left: 20px;
+}
+
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus {
+    background-color: #ffffff;
 }

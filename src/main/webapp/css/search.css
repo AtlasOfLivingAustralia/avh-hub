@@ -55,6 +55,9 @@ form {
 
 #customiseFacetsButton .dropdown-menu {
     padding: 5px 10px 10px 15px;
+}
+
+#main-content #customiseFacetsButton .dropdown-menu {
     background-color: #fffef7;
 }
 
