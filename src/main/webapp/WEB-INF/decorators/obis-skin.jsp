@@ -63,10 +63,10 @@ include file="/common/taglibs.jsp" %>
                         <input id="taxaQuery" title="Search" type="text" name="taxa" placeholder="Quick search" class="ac_input freetext" value="<c:out value='${param.taxa}'/>" /><button value="Search" type="submit">Search</button>
                     </form>
                 </div>
-                <p><strong>More options</strong>: <a href="${pageContext.request.contextPath}/search#advancedSearch">Advanced search</a>,
-                    <a href="${pageContext.request.contextPath}/search#taxaUpload">Batch taxon search</a>,
-                    <a href="${pageContext.request.contextPath}/search#catalogUpload">Batch catalogue no. search</a>,
-                    <a href="${pageContext.request.contextPath}/search#shapeFileUpload">Shapefile search</a></p>
+                <p><strong>More options</strong>: <a href="${pageContext.request.contextPath}/search#tab_advanceSearch">Advanced search</a>,
+                    <a href="${pageContext.request.contextPath}/search#tab_taxaUpload">Batch taxon search</a>,
+                    <a href="${pageContext.request.contextPath}/search#tab_catalogUpload">Batch catalogue no. search</a>,
+                    <a href="${pageContext.request.contextPath}/search#tab_shapeFileUpload">Shapefile search</a></p>
             </section>
         </div>
     </header>
