@@ -45,7 +45,7 @@ public class DataQualityInfoController {
     private final static Logger logger = Logger.getLogger(DataQualityInfoController.class);
     @Inject
     private WebService webService;
-    @Value("${googleDrive.dataQualityChecks.url}")
+    @Value("${googleDrive.dataQualityChecks.url:https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv}")
     String dataQualityChecksUrl = null; //"https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv";
 
     /**
