@@ -974,7 +974,7 @@
 
             <div id="userAnnotationsDiv" class="additionalData">
                 <h2>User flagged issues<a id="userAnnotations">&nbsp;</a></h2>
-                <ul id="userAnnotationsList"></ul>
+                <ul id="userAnnotationsList" style="list-style: none; margin:0;"></ul>
             </div>
 
             <div id="dataQuality" class="additionalData"><a name="dataQualityReport"></a>
@@ -1304,7 +1304,7 @@
         </c:if>
 
         <ul style="display:none;">
-        <li id="userAnnotationTemplate" class="userAnnotationTemplate">
+        <li id="userAnnotationTemplate" class="userAnnotationTemplate well">
            <h3><span class="issue"></span> - flagged by <span class="user"></span><span class="userRole"></span><span class="userEntity"></span></h3>
            <p class="comment"></p>
            <p class="hide userDisplayName"></p>
