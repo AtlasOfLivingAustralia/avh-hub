@@ -76,6 +76,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.multipart.MultipartFile;
 
+
 /**
  * Occurrence record Controller
  *
@@ -107,7 +108,7 @@ public class OccurrenceController {
     @Inject
     private AbstractMessageSource messageSource;
     @Inject
-    protected LoggerService loggerService;
+    protected org.ala.biocache.service.LoggerService loggerService;
     @Inject
     protected CollectionsContainer collectionsContainer;
 

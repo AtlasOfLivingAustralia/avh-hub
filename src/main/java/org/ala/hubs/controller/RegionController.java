@@ -38,7 +38,7 @@ public class RegionController {
 
 	private final static Logger logger = Logger.getLogger(RegionController.class);
     @Inject
-    protected LoggerService loggerService;
+    protected org.ala.biocache.service.LoggerService loggerService;
     @Value("${downloads.extra}")
     String downloadExtraFields = null;
     /** Name of view for site home page */

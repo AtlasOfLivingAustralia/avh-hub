@@ -112,11 +112,9 @@ public class HomePageController {
         return searchPage;
     }
 
-    private void addLookupToModel(Model model) {
-        List<String> inguids = collectoryUidCache.getInstitutions();
-        List<String> coguids = collectoryUidCache.getCollections();
-        model.addAttribute("collections", collectionsCache.getCollections(inguids, coguids));
-        model.addAttribute("institutions", collectionsCache.getInstitutions(inguids, coguids));
+    private void addLookupToModel(Model model) {        
+        model.addAttribute("collections", collectionsCache.getCollections());
+        model.addAttribute("institutions", collectionsCache.getInstitutions());
         model.addAttribute("typeStatus", serviceCache.getTypeStatuses());
         model.addAttribute("basisOfRecord", serviceCache.getBasisOfRecord());
         model.addAttribute("speciesGroups", serviceCache.getSpeciesGroups());
@@ -128,7 +126,7 @@ public class HomePageController {
         model.addAttribute("imcra", serviceCache.getIMCRA());
         model.addAttribute("imcraMeso", serviceCache.getIMCRA_MESO());
         model.addAttribute("countries", serviceCache.getCountries());
-        model.addAttribute("lgas", serviceCache.getLGAs());
+        model.addAttribute("lgas", serviceCache.getLGAs());        
         //String[] cultivationStatus = {"is cultivated", "is not cultivated"};
         //model.addAttribute("cultivationStatus", cultivationStatus); // TODO get proper list of cultivationStatus
     }

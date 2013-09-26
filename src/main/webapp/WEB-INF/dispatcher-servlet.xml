@@ -194,6 +194,11 @@
 
     <!-- CollectionCache from biocache-service -->
     <bean id="collectionCache" class="org.ala.biocache.util.CollectionsCache"/>
+    
+    <!--  LoggerService from biocache-service
+        NC 20130626:  This class was moved to biocache-service so that both projects can make use of it.
+     -->
+    <bean id="loggerRestService" class="org.ala.biocache.service.LoggerRestService"/>
 
     <!-- Ecache settings @see http://blog.goyello.com/2010/07/29/quick-start-with-ehcache-annotations-for-spring/ -->
     <ehcache:annotation-driven />

@@ -24,7 +24,10 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.ala.biocache.dto.*;
+import org.ala.biocache.util.CollectionsCache;
+import org.ala.hubs.dto.CollectionsContainer;
 import org.apache.log4j.Logger;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 
@@ -40,10 +43,16 @@ public class CollectoryUidCache {
 
     @Inject
     private BiocacheService biocacheService;
+    
+    @Inject 
+    private CollectionsCache collectionsCache;
+    @Inject
+    private CollectionsContainer collectionsContainer;
     protected List<String> institution_uid = new ArrayList<String>();
     protected List<String> collection_uid = new ArrayList<String>();
     protected List<String> data_resource_uid = new ArrayList<String>();
     protected List<String> data_provider_uid = new ArrayList<String>();
+    protected List<String> data_hub_uid = new ArrayList<String>();
     
     /** Spring injected RestTemplate object */
     @Inject
@@ -55,29 +64,27 @@ public class CollectoryUidCache {
     protected Long timeout = 3600000L; // in millseconds (1 hour)
 
 
-    public List<String> getInstitutions(){
-        checkCacheAge();
+    public List<String> getInstitutions(){        
         return institution_uid;
     }
 
-    public List<String> getCollections(){
-        checkCacheAge();
+    public List<String> getCollections(){        
         return collection_uid;
     }
 
-    public List<String> getDataResources(){
-        checkCacheAge();
+    public List<String> getDataResources(){        
         return data_resource_uid;
     }
 
-    public List<String> getDataProviders(){
-        checkCacheAge();
+    public List<String> getDataProviders(){        
         return data_provider_uid;
     }
 
       /**
      * Check age of cache and retrieve new values from biocache webservices if needed.
+     * @deprecated cache is refreshed based on a spring scheduler instead of a manual synchronous check
      */
+    @Deprecated 
     protected void checkCacheAge() {
         Date currentDate = new Date();
         Long timeSinceUpdate = currentDate.getTime() - lastUpdated.getTime();
@@ -92,17 +99,18 @@ public class CollectoryUidCache {
 
     /**
      * Update the entity types (fields)
+     * scheduled for every hour
      */
+    @Scheduled(fixedDelay = 3600000L) //every hour
     public void updateCache() {
     
         logger.info("Updating collection uid cache...");
         SpatialSearchRequestParams srp = new SpatialSearchRequestParams();
-        srp.setFacets(new String[]{"institution_uid","collection_uid","data_resource_uid", "data_provider_uid"});
+        srp.setFacets(new String[]{"institution_uid","collection_uid","data_resource_uid", "data_provider_uid", "data_hub_uid"});
         srp.setFlimit(-1);
         srp.setQ("*:*");
         srp.setPageSize(0);
-        SearchResultDTO result = biocacheService.findBySpatialFulltextQuery(srp);
-
+        SearchResultDTO result = biocacheService.findBySpatialFulltextQuery(srp);        
         if(result != null && result.getFacetResults() !=null){
             //now update the cache with the facet names
             for(FacetResultDTO res : result.getFacetResults()){
@@ -123,6 +131,11 @@ public class CollectoryUidCache {
         } else {
              logger.warn("No results for  facet query");
         }
+        
+        //now set the value for the collection cache
+        collectionsCache.updateUidLists(collection_uid, institution_uid, data_resource_uid, data_provider_uid, data_hub_uid);
+        //tell the collection container to reload because we may have had things change
+        collectionsContainer.init();
     }
 
     public Long getTimeout() {

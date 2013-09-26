@@ -2,6 +2,7 @@ package org.ala.hubs.service;
 
 import org.ala.biocache.dto.*;
 import org.apache.log4j.Logger;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 
@@ -38,74 +39,63 @@ public class ServiceCache {
     protected Long timeout = 3600000L; // in millseconds (1 hour)
 
 
-    public List<String> getTypeStatuses(){
-        checkCacheAge();
+    public List<String> getTypeStatuses(){        
         return type_status;
     }
 
-    public List<String> getBasisOfRecord(){
-        checkCacheAge();
+    public List<String> getBasisOfRecord(){        
         return basis_of_record;
     }
 
-    public List<String> getSpeciesGroups(){
-        checkCacheAge();
+    public List<String> getSpeciesGroups(){        
         return species_group;
     }
 
-    public List<String> getKingdoms(){
-        checkCacheAge();
+    public List<String> getKingdoms(){        
         return kingdom;
     }
 
-    public List<String> getStates(){
-        checkCacheAge();
+    public List<String> getStates(){        
         return state;
     }
 
-    public List<String> getCountries(){
-        checkCacheAge();
+    public List<String> getCountries(){        
         return country;
     }
 
-    public List<String> getIBRA(){
-        checkCacheAge();
+    public List<String> getIBRA(){        
         return ibra;
     }
 
-    public List<String> getIMCRA(){
-        checkCacheAge();
+    public List<String> getIMCRA(){        
         return imcra;
     }
 
-    public List<String> getIMCRA_MESO(){
-        checkCacheAge();
+    public List<String> getIMCRA_MESO(){        
         return cl966;
     }
 
-    public List<String> getLGAs(){
-        checkCacheAge();
+    public List<String> getLGAs(){        
         return cl959;
     }
 
-    public List<String> getLoanDestination(){
-        checkCacheAge();
+    public List<String> getLoanDestination(){        
         return loan_destination;
     }
 
-    public List<String> getEstablishment_means(){
-        checkCacheAge();
+    public List<String> getEstablishment_means(){        
         return establishment_means;
     }
 
-    public List<String> getStateConservations() {
-        checkCacheAge();
+    public List<String> getStateConservations() {        
         return state_conservation;
     }
 
-      /**
+    /**
      * Check age of cache and retrieve new values from biocache webservices if needed.
+     * @deprecated cache is refreshed based on a spring scheduler instead of a manual synchronous check
      */
+    @Deprecated
     protected void checkCacheAge() {
         Date currentDate = new Date();
         Long timeSinceUpdate = currentDate.getTime() - lastUpdated.getTime();
@@ -120,6 +110,7 @@ public class ServiceCache {
     /**
      * Update the entity types (fields)
      */
+    @Scheduled(fixedDelay = 3600000L) //every hour
     public void updateCache() {
 
         logger.info("Updating service cache...");
@@ -137,14 +128,17 @@ public class ServiceCache {
                // grab cached values (map) in case WS is not available (uses reflection)
                 try{
                     Field f = this.getClass().getDeclaredField(res.getFieldName()); // field is plural form
-                    list = (List<String>) f.get(this);
-                    list.clear(); //reset this list
+                    
+                    //list = (List<String>) f.get(this);
+                    List<String>tmpList = new ArrayList<String>();
+                    //list.clear(); //reset this list
                     //now add all the values
                     for(FieldResultDTO fieldResult :res.getFieldResult()){
-                        list.add(fieldResult.getLabel());
+                        tmpList.add(fieldResult.getLabel());
                     }
 
-                    Collections.sort(list);
+                    Collections.sort(tmpList);
+                    f.set(this, tmpList);
                 }
                 catch(Exception e){
                     logger.error("Unable to load cache for " + res.getFieldName());
