@@ -293,7 +293,7 @@ public class BiocacheRestService implements BiocacheService {
         Assert.notNull(requestParams.getQ(), "query must not be null");
         addQueryContext(requestParams);
         SearchResultDTO searchResults = new SearchResultDTO();
-        String uriString = biocacheUriPrefix + "/occurrences/searchByArea?" + requestParams.getEncodedParams();
+        String uriString = biocacheUriPrefix + "/occurrences/search?" + requestParams.getEncodedParams();
         logger.debug("uriString = " + uriString);
  
         try {
