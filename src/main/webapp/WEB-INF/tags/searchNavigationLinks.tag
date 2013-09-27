@@ -11,10 +11,11 @@
 <%@ attribute name="maxPageLinks" required="false" type="java.lang.Integer" %>
 <%@ attribute name="title" required="false" type="java.lang.String" %>
 <%@ attribute name="queryString" required="false" type="java.lang.String" %>
+<c:set var="defaultListView" scope="request"><ala:propertyLoader checkSupplied="true" bundle="hubs" property="defaultListView" checkInit="true"/></c:set>
 <div id="navLinks" class="pagination">
     <c:if test="${empty maxPageLinks}"><c:set var="maxPageLinks" value="10"/></c:if>
     <fmt:formatNumber var="pageNumber" value="${(startIndex / pageSize) + 1}" pattern="0" />
-    <c:set var="hash" value=""/>
+    <c:set var="hash" value="${not empty defaultListView ? '#tab_recordsView' : ''}"/>
     <c:set var="queryStr" value="${param.q ? param.q : queryString}"/>
     <c:set var="coreParams">?<c:if test="${not empty queryStr && empty param.taxa}">q=<c:out escapeXml="true" value="${queryStr}"/>&</c:if><c:if
             test="${not empty param.taxa}">taxa=<c:out escapeXml="true" value="${fn:join(paramValues.taxa, '&taxa=')}"/>&</c:if><c:if
@@ -25,7 +26,7 @@
             test="${not empty param.lat}">lat=${param.lat}&</c:if><c:if 
             test="${not empty param.lon}">lon=${param.lon}&</c:if><c:if 
             test="${not empty param.radius}">radius=${param.radius}&</c:if></c:set>
-    <!-- queryStr = ${queryStr} || ${queryString} || ${param.q} -->
+    <!-- queryStr = ${queryStr} || ${queryString} || ${param.q} || defaultListView = ${defaultListView} || hash = ${hash} -->
     <!-- coreParams = ${coreParams} || lastPage = ${lastPage} || startIndex = ${startIndex} || pageNumber = ${pageNumber} -->
     <c:set var="startPageLink">
         <c:choose>
@@ -53,7 +54,7 @@
     <%--<ul>--%>
         <c:choose>
             <c:when test="${startIndex > 0}">
-                <a href="${coreParams}start=${startIndex - pageSize}${hash}&title=${title}" class="prevLink">Previous</a>
+                <a href="${coreParams}start=${startIndex - pageSize}${title?'&title='+title:''}${hash}" class="prevLink">Previous</a>
             </c:when>
             <c:otherwise>
                 <%--<span id="prevPage">&laquo; Previous</span>--%>
@@ -62,12 +63,12 @@
         <c:forEach var="pageLink" begin="${startPageLink}" end="${endPageLink}" step="1">
             <c:choose>
                 <c:when test="${pageLink == pageNumber}"><span class="currentStep">${pageLink}</span></c:when>
-                <c:otherwise><a href="${coreParams}start=${(pageLink * pageSize) - pageSize}${hash}&title=${title}" class="step" class="step">${pageLink}</a></c:otherwise>
+                <c:otherwise><a href="${coreParams}start=${(pageLink * pageSize) - pageSize}${title?'&title='+title:''}${hash}" class="step" class="step">${pageLink}</a></c:otherwise>
             </c:choose>
         </c:forEach>
         <c:choose>
             <c:when test="${!(pageNumber == lastPage)}">
-                <a href="${coreParams}start=${startIndex + pageSize}${hash}&title=${title}" class="nextLink">Next</a>
+                <a href="${coreParams}start=${startIndex + pageSize}${title?'&title='+title:''}${hash}" class="nextLink">Next</a>
             </c:when>
             <c:otherwise>
                 <%--<span id="nextPage">Next &raquo;</span>--%>
