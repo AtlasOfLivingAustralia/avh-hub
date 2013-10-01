@@ -127,7 +127,7 @@ include file="/common/taglibs.jsp" %>
             <%--</div>--%>
         <%--</div>--%>
 
-        <div id="contentBox" class="container" style="margin-top: 20px;">
+        <div id="contentBox" class="container content" style="margin-top: 20px;">
             <decorator:body />
             <div class="push"></div>
         </div>
