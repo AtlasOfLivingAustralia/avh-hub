@@ -69,16 +69,18 @@
 <header id="site-header" class="">
     <div class="container">
         <div class="row-fluid">
-            <h1 title="${shortName}"><a href=""><img src="${pageContext.request.contextPath}/static/images/obis/logo.png"  /></a></h1>
-            <section>
-                <div id="search">
+            <div class="span3">
+                <h1 title="${shortName}"><a href=""><img src="${pageContext.request.contextPath}/static/images/obis/logo.png"  /></a></h1>
+            </div>
+            <div class="span9" style="margin-top: 30px;">
+                <div id="search" class="">
                     <form name="siteSearchForm" id="siteSearchForm" action="${pageContext.request.contextPath}/occurrences/search" method="GET">
                         <label for="search">Quick search</label>
                         <input id="taxaQuery" title="Search" type="text" name="taxa" placeholder="Quick search" class="name_autocomplete freetext" /><button value="Search" type="submit">Search</button>
                     </form>
                 </div>
                 <p><strong>More options</strong>: <a href="${pageContext.request.contextPath}/search#advancedSearch">Advanced search</a>, <a href="${pageContext.request.contextPath}/search#taxaUpload">Batch name search</a>, <a href="${pageContext.request.contextPath}/search#catalogUpload">Batch catalogue no. search</a>, <a href="${pageContext.request.contextPath}/search#shapeFileUpload">Shapefile search</a></p>
-            </section>
+            </div>
         </div>
     </div>
 </header>
