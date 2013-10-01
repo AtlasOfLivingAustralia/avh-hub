@@ -11,7 +11,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/asbp/tabs-no-images.css" type="text/css" media="screen" />
     <!--css for asbp-->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/asbp/asbp_ala_seedhub.css" type="text/css" media="screen" />
-
+    <style type="text/css">
+        body {
+            width: 995px;
+        }
+    </style>
 </head>
 
 <body>

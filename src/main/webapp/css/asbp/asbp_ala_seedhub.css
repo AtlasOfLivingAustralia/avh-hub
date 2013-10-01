@@ -9,6 +9,7 @@ body {
     height: 100%;
     margin: 0 auto;
     padding-top: 1em;
+    background-color: #FFFFFF;
     /*width: 995px; *//* was 965px */
 }
 a:link {
