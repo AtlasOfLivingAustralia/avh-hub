@@ -624,6 +624,19 @@
                                         </c:if>
                                     </c:forEach>
 
+                                    <c:set var="isDuplicate" value="false"/>
+                                    <c:if test="${not empty record.processed.occurrence.duplicationStatus}">
+                                        <c:set var="isDuplicate" value="true"/>
+                                    </c:if>
+
+                                    <c:if test="${isDuplicate}">
+                                       <li><i class="icon-hand-right"></i>&nbsp;
+                                        <a id="duplicateLink" href="#inferredOccurrenceDetails">
+                                            Potential duplicate record - view details
+                                        </a>
+                                        </li>
+                                    </c:if>
+
                                     <c:if test="${hasExpertDistribution}">
                                        <li><i class="icon-hand-right"></i>&nbsp;
                                         <a id="expertRangeLink" href="#expertReport">
