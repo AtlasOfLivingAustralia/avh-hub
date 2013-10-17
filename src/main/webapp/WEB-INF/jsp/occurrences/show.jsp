@@ -60,6 +60,7 @@
             }
         </script>
         <script src="${pageContext.request.contextPath}/static/js/audiojs/audio.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/js/moment.min.js"></script>
         <%--<jwr:style src="/css/record.css"/>--%>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/record.css"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/button.css"/>
@@ -132,7 +133,7 @@
                         $clone.find('.comment').text('Comment: ' + data.userAssertions[i].comment);
                         $clone.find('.userRole').text(data.userAssertions[i].userRole !=null ? data.userAssertions[i].userRole: '');
                         $clone.find('.userEntity').text(data.userAssertions[i].userEntityName !=null ? data.userAssertions[i].userEntityName: '');
-                        $clone.find('.created').text('Date created: ' + (new Date(data.userAssertions[i].created)).toString('yyyy-MM-dd'));
+                        $clone.find('.created').text('Date created: ' + (moment(data.userAssertions[i].created)).format('YYYY-MM-DD'));
                         if(data.userAssertions[i].userRole != null){
                             $clone.find('.userRole').text(', ' + data.userAssertions[i].userRole);
                         }
