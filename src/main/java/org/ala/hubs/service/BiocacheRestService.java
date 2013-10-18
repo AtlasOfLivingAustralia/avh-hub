@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestOperations;
+import org.springframework.web.util.UriUtils;
 
 import javax.inject.Inject;
 import java.net.URI;
@@ -345,9 +346,9 @@ public class BiocacheRestService implements BiocacheService {
         Map<String, Object> compareRecord = null;
         
         try {
-            final String jsonUri = biocacheUriPrefix + "/occurrence/compare?uuid=" + uuid;            
+            final String jsonUri = biocacheUriPrefix + "/occurrence/compare?uuid=" + UriUtils.encodeQueryParam(uuid, "UTF-8");
             logger.debug("Requesting: " + jsonUri);
-            compareRecord = restTemplate.getForObject(jsonUri, Map.class);
+            compareRecord = restTemplate.getForObject(new URI(jsonUri), Map.class);
         } catch (Exception ex) {
             logger.error("RestTemplate error: " + ex.getMessage(), ex);
             //searchResults.setStatus("Error: " + ex.getMessage());
