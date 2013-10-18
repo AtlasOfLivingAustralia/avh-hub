@@ -94,7 +94,7 @@
 <c:set var="bodyClass">
     <c:choose>
         <c:when test="${not empty callingBodyClass}">${callingBodyClass}</c:when>
-        <c:otherwise>datasets</c:otherwise>
+        <c:otherwise>nav-datasets</c:otherwise>
     </c:choose>
 </c:set>
 <body class="${bodyClass}">

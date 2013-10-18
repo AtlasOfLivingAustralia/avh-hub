@@ -20,7 +20,18 @@
     background-color: inherit;
 }
 
-#nav-site .navbar-inner .nav > li:nth-child(5) > a {
+/*#nav-site .navbar-inner .nav > li:nth-child(5) > a {*/
+    /*background-color: #333a3f;*/
+/*}*/
+/* navbar active tabs */
+body.nav-species #nav-site .navbar-inner .nav > li.nav-species > a,
+body.nav-locations #nav-site .navbar-inner .nav > li.nav-locations > a,
+body.nav-collections #nav-site .navbar-inner .nav > li.nav-collections > a,
+body.nav-mapping #nav-site .navbar-inner .nav > li.nav-mapping > a,
+body.nav-datasets #nav-site .navbar-inner .nav > li.nav-datasets > a,
+body.nav-blogs #nav-site .navbar-inner .nav > li.nav-blogs > a,
+body.nav-getinvolved #nav-site .navbar-inner .nav > li.nav-getinvolved > a,
+body.nav-about #nav-site .navbar-inner .nav > li.nav-about > a {
     background-color: #333a3f;
 }
 

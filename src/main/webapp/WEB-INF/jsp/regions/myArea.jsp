@@ -38,7 +38,7 @@
         </script>
         <jwr:script src="/js/explore/yourAreaMap.js"/>
     </head>
-    <body class="regions">
+    <body class="nav-locations">
         <div id="header">
             <c:if test="${skin == 'ala'}">
                 <div id="breadcrumb">
