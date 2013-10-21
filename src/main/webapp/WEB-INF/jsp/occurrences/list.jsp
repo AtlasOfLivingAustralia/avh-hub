@@ -80,7 +80,7 @@
             google.load("visualization", "1", {packages:["corechart"]});
         </script>
         <script src="${pageContext.request.contextPath}/static/js/jquery.tools.min-1.2.6.js"></script>
-        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/keydragzoom/2.0.5/src/keydragzoom.js"></script>
+        <script type="${pageContext.request.contextPath}/static/js/keydragzoom.js"></script>
     </head>
     <body>
         <div id="listHeader" class="row-fluid">
