@@ -678,7 +678,7 @@
                         </div>
                     </div>
                 </c:if>
-                <c:if test="${isCollectionAdmin && (not empty record.systemAssertions || not empty record.userAssertions) && not recordIsVerified}">
+                <c:if test="${isCollectionAdmin && (not empty record.systemAssertions.failed || not empty record.userAssertions) && not recordIsVerified}">
                     <div class="sidebar">
                         <button class="btn" id="verifyButton" href="#verifyRecord">
                             <span id="verifyRecordSpan" title="">Verify record</span>
@@ -687,8 +687,18 @@
                             <div id="verifyRecord">
                                 <h3>Confirmation</h3>
                                 <div id="verifyAsk">
+                                    <c:set var="markedAssertions"/>
+                                    <c:if test="!record.processed.geospatiallyKosher">
+                                        <c:set var="markedAssertions">geospatially suspect</c:set>
+                                    </c:if>
+                                    <c:if test="!record.processed.taxonomicallyKosher">
+                                        <c:set var="markedAssertions">${not empty markedAssertions ? markedAssertions + ", " : ""}taxonomically suspect</c:set>
+                                    </c:if>
+                                    <c:forEach var="sysAss" items="${record.systemAssertions.failed}">
+                                        <c:set var="markedAssertions">${not empty markedAssertions ? markedAssertions + ", " : ""}<spring:message code="${sysAss.name}" text="${sysAss.name}"/></c:set>
+                                    </c:forEach>
                                     <p>
-                                        Record is marked as <b>${record.processed.geospatiallyKosher ? "geospatially suspect" : ""} ${record.processed.taxonomicallyKosher ? "taxonomically suspect" : ""}</b>
+                                        Record is marked as <b>${markedAssertions}</b>
                                     </p>
                                     <p style="margin-bottom:10px;">
                                         Click the &quot;Confirm&quot; button to verify that this record is correct and that
