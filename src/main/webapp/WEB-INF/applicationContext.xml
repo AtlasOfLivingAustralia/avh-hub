@@ -31,7 +31,7 @@
     <context:property-placeholder properties-ref="hubsProperty"/>
     
     <bean id="skinFilter" class="org.ala.hubs.skins.SkinFilter">
-        <property name="barePatterns" value="/fragment/,/annotation/"/>
+        <property name="barePatternsString" value="/fragment/,/annotation/"/>
     </bean>
     
 </beans>

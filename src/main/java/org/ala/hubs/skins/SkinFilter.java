@@ -1,9 +1,12 @@
 package org.ala.hubs.skins;
 
 
+import javax.annotation.PostConstruct;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -13,10 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class SkinFilter implements Filter {
 
+    protected String barePatternsString;
     protected List<String> barePatterns = new ArrayList<String>();
     @Value("${sitemesh.skin}")
     protected String skin = "ala";
     protected String bareSkinSuffix = "-bare";
+    private final static Logger log = Logger.getLogger(SkinFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -25,13 +30,20 @@ public class SkinFilter implements Filter {
         
         
         String barePatternsAsString = filterConfig.getInitParameter("barePatterns");
-        
         barePatterns = Arrays.asList(barePatternsAsString.split(","));
+    }
+
+    /**
+     * init method above does not appear to be called when filter is specified as DelegatingFilterProxy in web.xml
+     */
+    @PostConstruct
+    public void initSpring() {
+        barePatterns = Arrays.asList(barePatternsString.split(","));
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        
+        //log.debug("barePatterns = " + StringUtils.join(barePatterns, "|"));
         boolean isBare = false;
         if(request instanceof HttpServletRequest){
             String uri = ((HttpServletRequest) request).getRequestURI();
@@ -71,5 +83,12 @@ public class SkinFilter implements Filter {
     public void setBarePatterns(List<String> barePatterns) {
         this.barePatterns = barePatterns;
     }
-    
+
+    public String getBarePatternsString() {
+        return barePatternsString;
+    }
+
+    public void setBarePatternsString(String barePatternsString) {
+        this.barePatternsString = barePatternsString;
+    }
 }
