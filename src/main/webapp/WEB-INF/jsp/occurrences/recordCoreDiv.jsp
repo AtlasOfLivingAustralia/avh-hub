@@ -43,7 +43,7 @@
                                           ${record.processed.attribution.dataResourceName}
                                       </c:when>
                                       <c:otherwise>
-                                          ${record.processed.attribution.dataResourceUid}
+                                          ${record.raw.attribution.dataResourceUid}
                                       </c:otherwise>
                                   </c:choose>
                             </a>
