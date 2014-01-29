@@ -34,6 +34,15 @@ include file="/common/taglibs.jsp" %><c:set
         h4 { font-size: 18px; line-height: 20px; }
         h5 { font-size: 14px; line-height: 20px; }
         h6 { font-size: 12px; line-height: 20px; }
+        body > #main-content {
+            margin-top: 0px;
+        }
+        #footer {
+            margin: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #CCC;
+            font-size: 12px;
+        }
     </style>
         <%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>--%>
     <%@ include file="commonJS.jspf" %>
@@ -101,7 +110,7 @@ include file="/common/taglibs.jsp" %><c:set
     </script>
 </head>
 <body class="<decorator:getProperty property='body.class'/>">
-    <div class="navbar navbar-inverse">
+    <div class="navbar navbar-inverse navbar-static-top">
         <div class="navbar-inner">
             <div class="container-fluid">
                 <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
