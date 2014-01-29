@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <decorators defaultdir="/WEB-INF/decorators">
     <excludes>
         <pattern>/styles/*</pattern>
@@ -13,7 +13,7 @@
         <pattern>/index</pattern>
     </excludes>
     <decorator name="ala"   page="ala3-skin.jsp" />
-    <!--<decorator name="ozcam" page="ozcam-skin.jsp" />-->
+    <decorator name="generic"   page="generic-skin.jsp" />
     <decorator name="ozcam" page="ozcam2013-skin.jsp" />
     <decorator name="avh"   page="avh2012-skin.jsp" />
     <decorator name="amrin"   page="amrin-skin.jsp" />
@@ -22,6 +22,7 @@
     <decorator name="tepapa"   page="tepapa-skin.jsp" />
 
     <decorator name="ala-bare"  page="ala-bare.jsp"/>
+    <decorator name="generic-bare"  page="generic-bare.jsp"/>
     <decorator name="ozcam-bare"  page="ozcam-bare.jsp"/>
     <decorator name="avh-bare"  page="avh-bare.jsp"/>
     <decorator name="amrin-bare"  page="ala-bare.jsp"/>
