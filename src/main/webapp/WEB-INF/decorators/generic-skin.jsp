@@ -27,7 +27,7 @@ include file="/common/taglibs.jsp" %><c:set
     <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ala/widget.css" type="text/css" media="screen,projection" />--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/ala/bootstrapAdditions.css" type="text/css" media="screen,projection" />
     <style type="text/css">
-        /* BS headings are too big - reduce them a bit */
+        /* CSS Fixes for this skin */
         h1 { font-size: 30px; line-height: 30px; }
         h2 { font-size: 26px; line-height: 30px; }
         h3 { font-size: 22px; line-height: 30px; }
@@ -36,6 +36,14 @@ include file="/common/taglibs.jsp" %><c:set
         h6 { font-size: 12px; line-height: 20px; }
         body > #main-content {
             margin-top: 0px;
+        }
+        #navLinks .step, #navLinks .currentStep, #navLinks .prevLink, #navLinks .nextLink {
+            padding: 6px 10px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+            background-color: #ececec;
         }
         #footer {
             margin: 20px;
