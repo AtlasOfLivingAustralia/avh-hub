@@ -43,6 +43,9 @@ include file="/common/taglibs.jsp" %><c:set
             border-top: 1px solid #CCC;
             font-size: 12px;
         }
+        #main-content #content #customiseFacetsButton .dropdown-menu, #main-content #resultsReturned .dropdown-menu  {
+            background-color: #fff;
+        }
     </style>
         <%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>--%>
     <%@ include file="commonJS.jspf" %>
