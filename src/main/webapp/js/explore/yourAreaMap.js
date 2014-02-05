@@ -150,6 +150,8 @@ $(document).ready(function() {
     // hash coding: #lat|lng|zoom
     var hash = window.location.hash.replace( /^#/, '');
     var hash2;
+    var defaultParam = $.url().param('default'); // requires JS import: purl.js
+    console.log("defaultParam", defaultParam);
 
     if (hash.indexOf("%7C") != -1) {
         // already escaped
@@ -159,7 +161,9 @@ $(document).ready(function() {
         hash2 = encodeURIComponent(hash);
     }
 
-    if (hash2) {
+    if (defaultParam) {
+        initialize();
+    } else if (hash2) {
         //console.log("url hash", hash2);
         var hashParts = hash2.split("%7C"); // note escaped version of |
         if (hashParts.length == 3) {
@@ -173,6 +177,7 @@ $(document).ready(function() {
         //console.log("url not set, geolocating...");
         attemptGeolocation();
     }
+
 
     // catch the link for "View all records"
     $('#viewAllRecords').live("click", function(e) {

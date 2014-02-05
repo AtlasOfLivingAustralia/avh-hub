@@ -39,7 +39,12 @@ public class RegionController {
     @Inject
     protected org.ala.biocache.service.LoggerService loggerService;
     @Value("${downloads.extra}")
-    String downloadExtraFields = null;
+    protected String downloadExtraFields = null;
+    @Value("${exploreYourArea.lat}")
+    protected Float defaultLatitude;
+    @Value("${exploreYourArea.lng}")
+    protected Float defaultLongitude;
+
     /** Name of view for site home page */
     private String MY_AREA = "regions/myArea";
     private String speciesPageUrl = "http://bie.ala.org.au/species/";
@@ -56,16 +61,15 @@ public class RegionController {
     @RequestMapping(value = {"/region/my-area*","explore/your-area*"}, method = RequestMethod.GET)
     public String yourAreaView(
             @RequestParam(value="radius", required=false, defaultValue="5f") Float radius,
-            @RequestParam(value="latitude", required=false, defaultValue="-35.27412f") Float latitude,
-            @RequestParam(value="longitude", required=false, defaultValue="149.11288f") Float longitude,
-            @RequestParam(value="address", required=false, defaultValue=DEFAULT_LOCATION) String address,
-            @RequestParam(value="location", required=false, defaultValue="") String location,
-            HttpServletRequest request,
+            @RequestParam(value="latitude", required=false) Float latitude,
+            @RequestParam(value="longitude", required=false) Float longitude,
             Model model) throws Exception {
+
+        latitude = (latitude != null) ? latitude : defaultLatitude;
+        longitude = (longitude != null) ? longitude : defaultLongitude;
 
         model.addAttribute("latitude", latitude);
         model.addAttribute("longitude", longitude);
-        model.addAttribute("location", location); // TODO delete if not used in JSP
         model.addAttribute("radius", radius);
         model.addAttribute("zoom", radiusToZoomLevelMap.get(radius));
         model.addAttribute("taxaGroups", TaxaGroup.values());

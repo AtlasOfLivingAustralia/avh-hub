@@ -22,6 +22,7 @@
         <script type="text/javascript" src="https://www.google.com/jsapi?key=${googleKey}"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-ui-1.8.4.custom.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.qtip.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/purl.js"></script>
         <script type="text/javascript">
             // Global variables for yourAreaMap.js
             var EYA_CONF = {
