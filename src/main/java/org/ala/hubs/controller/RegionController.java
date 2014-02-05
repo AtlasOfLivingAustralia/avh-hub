@@ -40,9 +40,9 @@ public class RegionController {
     protected org.ala.biocache.service.LoggerService loggerService;
     @Value("${downloads.extra}")
     protected String downloadExtraFields = null;
-    @Value("${exploreYourArea.lat}")
+    @Value("${exploreYourArea.lat:-35.27412f}")
     protected Float defaultLatitude;
-    @Value("${exploreYourArea.lng}")
+    @Value("${exploreYourArea.lng:149.11288f}")
     protected Float defaultLongitude;
 
     /** Name of view for site home page */
