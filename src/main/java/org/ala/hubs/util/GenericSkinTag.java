@@ -31,7 +31,7 @@ import java.io.*;
 
 
 /**
- * Taglib for inserting header/footer from external URL
+ * Taglib for inserting header from external URL or internal JSP
  *
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
@@ -91,24 +91,6 @@ public class GenericSkinTag extends RequestContextAwareTag {
         }
 
         return SKIP_BODY;
-    }
-
-    private class CharArrayWriterResponse extends HttpServletResponseWrapper {
-
-        private final CharArrayWriter charArray = new CharArrayWriter();
-
-        public CharArrayWriterResponse(HttpServletResponse response) {
-            super(response);
-        }
-
-        @Override
-        public PrintWriter getWriter() throws IOException {
-            return new PrintWriter(charArray);
-        }
-
-        public String getOutput() {
-            return charArray.toString();
-        }
     }
 
 }
