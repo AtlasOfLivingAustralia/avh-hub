@@ -24,9 +24,6 @@ import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.*;
 
 
