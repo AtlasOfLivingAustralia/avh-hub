@@ -218,6 +218,13 @@
         <body-content>JSP</body-content>
     </tag>
 
+    <tag>
+        <description>Generic Skin Tag</description>
+        <name>genericSkinTag</name>
+        <tag-class>org.ala.hubs.util.GenericSkinTag</tag-class>
+        <body-content>JSP</body-content>
+    </tag>
+
     <function>
         <description>JavaScript Escape function</description>
         <name>escapeJS</name>
