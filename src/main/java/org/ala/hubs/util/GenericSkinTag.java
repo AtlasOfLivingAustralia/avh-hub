@@ -48,9 +48,7 @@ public class GenericSkinTag extends RequestContextAwareTag {
         /*
          * Servlet Tags are instantiated by the Servlet and NOT by Spring but the
          * RequestContextAwareTag provides access to the request context, which then allows
-         * us to autowire this class manually. In this case the implementation
-         * is provided which uses EhCache to provide caching of the bean (5 minutes before it
-         * then goes to disk to see if there has been a change).
+         * us to autowire this class manually.
          */
         if (apacheHttpWebService == null) {
             logger.debug("Autowiring the bean");
