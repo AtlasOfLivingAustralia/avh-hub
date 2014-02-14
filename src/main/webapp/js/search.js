@@ -535,7 +535,7 @@ $(document).ready(function() {
         url += "queryDisplayName="+encodeURIComponent(query);
         url += "&baseUrlForWS=" + encodeURIComponent(BC_CONF.biocacheServiceUrl.replace(/\/ws$/,""));
         url += "&baseUrlForUI=" + encodeURIComponent(BC_CONF.serverName);
-        url += "&webserviceQuery=%2Fws%2Foccurrences%2Fsearch" + encodeURIComponent(BC_CONF.searchString);
+        url += "&webserviceQuery=%2Fws%2Foccurrences%2Fsearch" + BC_CONF.searchString;
         url += "&uiQuery=%2Foccurrences%2Fsearch%3Fq%3D*%3A*";
         url += "&resourceName=" + encodeURIComponent(BC_CONF.resourceName);
         //console.log("url", query, methodName, url);
@@ -1052,7 +1052,7 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                     
                     //NC: 2013-01-16 I changed the link so that the search string is uri encoded so that " characters do not cause issues 
                     //Problematic URL http://biocache.ala.org.au/occurrences/search?q=lsid:urn:lsid:biodiversity.org.au:afd.taxon:b76f8dcf-fabd-4e48-939c-fd3cafc1887a&fq=geospatial_kosher:true&fq=state:%22Australian%20Capital%20Territory%22
-                    var link = encodeURI(BC_CONF.searchString) + "&fq=" + fqParam;
+                    var link = BC_CONF.searchString + "&fq=" + fqParam;
                     //console.log(link)
                     var rowType = (i % 2 == 0) ? "normalRow" : "alternateRow";
                     html += "<tr class='" + rowType + "'><td>" +
