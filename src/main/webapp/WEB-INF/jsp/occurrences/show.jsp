@@ -692,10 +692,10 @@
                                         <c:set var="markedAssertions">geospatially suspect</c:set>
                                     </c:if>
                                     <c:if test="!record.processed.taxonomicallyKosher">
-                                        <c:set var="markedAssertions">${not empty markedAssertions ? markedAssertions + ", " : ""}taxonomically suspect</c:set>
+                                        <c:set var="markedAssertions">${markedAssertions}${not empty markedAssertions ? ", " : ""}taxonomically suspect</c:set>
                                     </c:if>
                                     <c:forEach var="sysAss" items="${record.systemAssertions.failed}">
-                                        <c:set var="markedAssertions">${not empty markedAssertions ? markedAssertions + ", " : ""}<spring:message code="${sysAss.name}" text="${sysAss.name}"/></c:set>
+                                        <c:set var="markedAssertions">${markedAssertions}${not empty markedAssertions ? ", " : ""}<fmt:message key="${sysAss.name}" /></c:set>
                                     </c:forEach>
                                     <p>
                                         Record is marked as <b>${markedAssertions}</b>
