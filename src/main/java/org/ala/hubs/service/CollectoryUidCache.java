@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 
 import org.ala.biocache.dto.*;
@@ -59,6 +62,8 @@ public class CollectoryUidCache {
     private RestOperations restTemplate; // NB MappingJacksonHttpMessageConverter() injected by Spring
     /** Log4J logger */
     private final static Logger logger = Logger.getLogger(CollectoryUidCache.class);
+    
+    protected Pattern uidPattern = Pattern.compile("(?:[\"]*)?(?:[a-z_]*_uid:\")([a-z0-9]*)(?:[\"]*)?");
 
     protected Date lastUpdated = new Date();
     protected Long timeout = 3600000L; // in millseconds (1 hour)
@@ -121,7 +126,13 @@ public class CollectoryUidCache {
                     list = (List<String>) f.get(this);
                     //now add all the values
                     for(FieldResultDTO fieldResult :res.getFieldResult()){
-                        list.add(fieldResult.getLabel());
+                        //NQ 2014-02-18 we need to match on the fq because the Label is i18n value.
+                        //TODO: change biocache-service to include a value field too that contains the raw value if different from the label
+                        Matcher m = uidPattern.matcher(fieldResult.getFq());
+                        if(m.matches()){
+                            list.add(m.group(1));
+                        }
+                        //list.add(fieldResult.getLabel());
                     }
                 }
                 catch(Exception e){
@@ -131,6 +142,8 @@ public class CollectoryUidCache {
         } else {
              logger.warn("No results for  facet query");
         }
+        logger.info("The lists:: " + collection_uid + " "+ institution_uid+" " + data_resource_uid + " " + data_provider_uid);
+        
         
         //now set the value for the collection cache
         collectionsCache.updateUidLists(collection_uid, institution_uid, data_resource_uid, data_provider_uid, data_hub_uid);
