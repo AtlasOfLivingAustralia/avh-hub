@@ -13,7 +13,7 @@
 
 grails.project.groupId = "au.org.ala" // change this to alter the default package name and Maven publishing destination
 
-println "default_config = ${default_config}"
+println "default_config = ${default_config?:'not set'}"
 def ENV_NAME = "${appName.toUpperCase()}_CONFIG"
 default_config = "/data/${appName}/config/${appName}-config.properties"
 if(!grails.config.locations || !(grails.config.locations instanceof List)) {
@@ -21,7 +21,7 @@ if(!grails.config.locations || !(grails.config.locations instanceof List)) {
 }
 
 // add ala skin conf (needed for version >= 0.1.10)
-grails.config.locations.add("classpath:ala-config.groovy")
+grails.config.locations.add("classpath:resources/hubs.properties")
 
 if(System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) {
     println "[${appName}] Including configuration file specified in environment: " + System.getenv(ENV_NAME);
@@ -121,6 +121,9 @@ if (!security.cas.casServerUrlPrefix) {
 if (!security.cas.bypass) {
     security.cas.bypass = "true" // not sure this is working
 }
+if(!auth.admin_role){
+    auth.admin_role = "ROLE_ADMIN"
+}
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
@@ -198,6 +201,7 @@ environments {
         serverName='http://dev.ala.org.au:8080'
         security.cas.appServerName = serverName
         security.cas.contextPath = "/${appName}"
+        grails.resources.debug = true // cache & resources plugins
     }
     test {
         grails.serverURL = 'http://biocache-test.ala.org.au'

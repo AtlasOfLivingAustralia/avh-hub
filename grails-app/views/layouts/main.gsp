@@ -66,13 +66,13 @@
     <r:layoutResources/>
     <g:layoutHead />
 </head>
-<body class="${pageProperty(name:'body.class')}" id="${pageProperty(name:'body.id')}" onload="${pageProperty(name:'body.onload')}">
+<body class="${pageProperty(name:'body.class')?:'nav-datasets'}" id="${pageProperty(name:'body.id')}" onload="${pageProperty(name:'body.onload')}">
 
 <hf:banner logoutUrl="${grailsApplication.config.grails.serverURL}/logout/logout"/>
 
 <hf:menu/>
 
-<div class="container" id="main-content">
+<div class="container" id="content">
     <g:layoutBody />
 </div><!--/.container-->
 
