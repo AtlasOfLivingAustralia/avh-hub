@@ -1,6 +1,7 @@
 package au.org.ala.biocache.hubs
 
 import groovy.xml.MarkupBuilder
+import org.apache.commons.lang.StringUtils
 
 class OccurrenceTagLib {
     //static defaultEncodeAs = 'html'
@@ -119,7 +120,7 @@ class OccurrenceTagLib {
                 href:"#",
                 class: "btn btn-mini btn-primary removeLink",
                 title: "remove filter",
-                "data-facet":"${item.key}:${item.value.value.encodeAsHTML()}",
+                "data-facet":"${item.key}:${item.value.value.encodeAsURL()}",
                 onClick:"removeFacet(this); return false;"
         ) {
             i(class:"icon-remove icon-white", style:"margin-left:5px", "")
@@ -158,19 +159,33 @@ class OccurrenceTagLib {
             }
         }
 
+        // Catch specific facets fields
         if (fieldResult.fq) {
+            // biocache-service has provided a fq field in the fieldResults list
             mb.li {
                 a(href:"?${queryParam}&fq=${fieldResult.fq?.encodeAsURL()}") {
                     mkp.yield(message(code:"${fieldResult.label?:'unknown'}", default:"${fieldResult.label}"))
                     addCounts(fieldResult.count)
                 }
             }
-        } else if (false) {
-            // todo
+        } else if (StringUtils.startsWith(facetResult.fieldName, "occurrence_") && StringUtils.endsWith(fieldResult.label, "Z")) {
+            // decade year ranges
+            def startYear = fieldResult.label.substring(0, 4)
+            def endDate = fieldResult.label.replace('0-01-01T00:00:00Z','9-12-31T11:59:59Z')
+            def endYear = endDate.substring(0, 4)
+
+            mb.li {
+                a(href:"?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${endDate}]") {
+                    mkp.yieldUnescaped("${startYear} - ${endYear}")
+                    addCounts(fieldResult.count)
+                }
+            }
         } else {
+            def label = g.message(code:"${facetResult.fieldName}.${fieldResult.label}", default:"")?:
+                    g.message(code:"${fieldResult.label?:'unknown'}", default:"${fieldResult.label}")
             mb.li {
                 a(href:"?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22") {
-                    mkp.yield(message(code:"${fieldResult.label?:'unknown'}", default:"${fieldResult.label}"))
+                    mkp.yield(label)
                     addCounts(fieldResult.count)
                 }
             }

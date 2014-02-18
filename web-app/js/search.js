@@ -611,7 +611,7 @@ function reloadWithParam(paramName, paramValue) {
  * page minus the requested fq param
  */
 function removeFacet(el) {
-    var facet = $(el).data("facet");
+    var facet = $(el).data("facet").replace(/\+/g,' ');
     var q = $.url().param('q'); //$.query.get('q')[0];
     var fqList = $.url().param('fq'); //$.query.get('fq');
     var lat = $.url().param('lat');
@@ -622,6 +622,13 @@ function removeFacet(el) {
     if (q != null) {
         paramList.push("q=" + q);
     }
+    console.log("0. fqList", fqList);
+    // add filter query param
+    if (fqList && typeof fqList === "string") {
+        fqList = [ fqList ];
+    }
+
+    //console.log("1. fqList", fqList);
     
     if (lat && lon && rad) {
         paramList.push("lat=" + lat);

@@ -292,6 +292,7 @@ div#currentFilter {
 
 #resultsReturned {
     margin-left: -20px; /* Fix for absolutely positioned costomise button to the left */
+    font-size: 16px;
 }
 
 #resultsReturned .btn-small, #submitFacets .btn-small {
@@ -410,6 +411,7 @@ div.recordHeader {
 div#download {
 /*    display: none;*/
     font-size: 13px;
+    line-height: 1.4em;
 }
 #downloadForm {
     text-align: left;
@@ -421,12 +423,12 @@ div#download {
     padding-right: 10px;
     color: #444;
 }
-
-#download {
-    line-height: 1.4em;
+#download p {
+    margin: 0;
 }
 #downloadForm input {
     float: none;
+    margin: 0;
 }
 #termsOfUseDownload { 
     text-align:left; padding-bottom:15px;
