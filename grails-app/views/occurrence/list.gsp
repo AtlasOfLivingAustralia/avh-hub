@@ -23,7 +23,7 @@
             facetQueries: "${fqParams.encodeAsURL()}",
             queryString: "${queryDisplay.encodeAsJavaScript()}",
             bieWebappUrl: "${grailsApplication.config.bieWebappContext}",
-            biocacheServiceUrl: "${grailsApplication.config.biocacheRestService.biocacheUriPrefix}",
+            biocacheServiceUrl: "${grailsApplication.config.biocacheRestService.biocacheUriPrefix?:grailsApplication.config.biocacheServicesUrl}",
             skin: "${grailsApplication.config.sitemesh.skin}",
             defaultListView: "${grailsApplication.config.defaultListView}",
             resourceName: "${grailsApplication.config.hubDisplayName}",
@@ -154,7 +154,7 @@
                 <g:render template="facets" />
             </div>
             <div id="content2" class="span9">
-                <div id="alert" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="alertLabel" aria-hidden="true">
+                <div id="alert" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="alertLabel" aria-hidden="true">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <h3 id="myModalLabel">Email alerts</h3>

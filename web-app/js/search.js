@@ -420,6 +420,20 @@ $(document).ready(function() {
 //        }
 //    });
 
+    $('.multipleFacetsLink').click(function() {
+        var link = this;
+        var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name",
+            "data_resource").replace("data_provider_name","data_provider").replace("occurrence_year","decade").replace(/(_[id])$/,"$1_RNG");
+        var displayName = $(link).data("displayname");
+        //console.log(facetName, displayName);
+        loadMoreFacets(facetName, displayName, null);
+    });
+
+    $('#multipleFacets').on('hidden', function () {
+        // clear the tbody content
+        $("tbody.scrollContent tr").not("#spinnerRow").remove();
+    });
+
     // form validation for form#facetRefineForm
     $("#submitFacets :input.submit").live("click", function(e) {
         e.preventDefault();
@@ -970,15 +984,15 @@ var hoverDropDownDiv = false;
 
 /**
  * draws the div for selecting multiple facets (popup div)
+ *
+ * Uses HTML template, found in the table itself.
+ * See: http://stackoverflow.com/a/1091493/249327
  */
-function loadMultiFacets(facetName, displayName, fsort, foffset) {
+function loadMoreFacets(facetName, displayName, fsort, foffset) {
     foffset = (foffset) ? foffset : "0";
     var facetLimit = BC_CONF.facetLimit;
-    //$("#dynamic").html("Loading...");
-    var facet = facetName; //(facetName == "occurrence_year") ? "year" : facetName; // Date facets have different name
-    //console.log("loadMultiFacets", facetName,  displayName, fsort);
-    // pull params out of BC_CONF.searchString
     var params = BC_CONF.searchString.replace(/^\?/, "").split("&");
+    // include hidden inputs for current request params
     var inputsHtml = "";
     $.each(params, function(i, el) {
         var pair = el.split("=");
@@ -986,19 +1000,12 @@ function loadMultiFacets(facetName, displayName, fsort, foffset) {
             inputsHtml += "<input type='hidden' name='" + pair[0] + "' value='" + pair[1] + "'/>";
         }
     });
-    // draw the table and buttons
-    //$("#dynamic").html(""); // reset div
-    var html = "<form name='facetRefineForm' id='facetRefineForm' method='GET' action='" +
-                BC_CONF.contextPath + "/occurrences/search/facets'>";
-    html += inputsHtml ;// add existing params
-    html += "<table class='compact scrollTable' id='fullFacets' data-facet='" + facet + "' data-label='" + displayName + "'>";
-    html += "<thead class='fixedHeader'><tr class='tableHead'><th>&nbsp;</th><th id='indexCol'><a href='#index' class='fsort' data-sort='index' data-foffset='0' title='Sort by " + displayName + "'>" + displayName + "</a></th>";
-    html += "<th><a href='#count' class='fsort' data-sort='count' data-foffset='0' title='Sort by record count'>Count</a></th></tr></thead>";
-    html += "<tbody class='scrollContent'><tr id='loadingRow'><td colspan='3'>Loading... <img src='" + BC_CONF.contextPath + "/static/images/loading.gif' alt='loading'/></td></tr></tbody>";
-    //html += "<tfoot><tr id='submitFacets'><td colspan='3'><input type='submit' class='submit'/></form></td></tr></tfoot>"; // empty row that gets loaded via AJAX
-    html += "</table></form>";
-    //html += "<input type='submit' class='submit'/></form>";
-    $("div#dynamic").append(html);
+    $('#facetRefineForm').append(inputsHtml);
+    $('table#fullFacets').data('facet', facetName); // data attribute for storing facet field
+    $('table#fullFacets').data('label', displayName); // data attribute for storing facet display name
+    $('#indexCol a').html(displayName); // table heading
+    $('#indexCol a').attr('title', 'sort by ' + displayName); // table heading
+
     $("a.fsort").qtip({
         style: {
             classes: 'ui-tooltip-rounded ui-tooltip-shadow'
@@ -1011,37 +1018,39 @@ function loadMultiFacets(facetName, displayName, fsort, foffset) {
         }
     });
     // perform ajax
-    loadFacetsContent(facet, fsort, foffset, facetLimit);
+    loadFacetsContent(facetName, fsort, foffset, facetLimit);
+
 }
 
 function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets) {
-    var jsonUri = BC_CONF.contextPath + "/occurrences/facet/values.json" + BC_CONF.searchString +
-        "&facets=" + facetName + "&flimit=" + facetLimit + "&foffset=" + foffset; // + "&fsort=" + fsort
+    var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json" + BC_CONF.searchString +
+        "&facets=" + facetName + "&flimit=" + facetLimit + "&foffset=" + foffset + "&pageSize=0"; // + "&fsort=" + fsort
 
     if (fsort) {
         // so default facet sorting is used in initial loading
         jsonUri += "&fsort=" + fsort;
     }
+    jsonUri += "&callback=?"; // JSONP trigger
 
     $.getJSON(jsonUri, function(data) {
         //console.log("data",data);
-
-        if (data.length > 0) {
+        if (data.totalRecords && data.totalRecords > 0) {
             var hasMoreFacets = false;
             var html = "";
             $("tr#loadingRow").remove(); // remove the loading message
             $("tr#loadMore").remove(); // remove the load more records link
             if (replaceFacets) {
                 // remove any facet values in table
-                $("table#fullFacets tr").not("tr.tableHead").remove();
+                $("table#fullFacets tr").not("tr.tableHead").not("#spinnerRow").remove();
             }
-            $.each(data, function(i, el) {
+            $.each(data.facetResults[0].fieldResult, function(i, el) {
+                //console.log("facet", el);
                 if (el.count > 0) {
                     // surround with quotes: fq value if contains spaces but not for range queries
                     var fqEsc = ((el.label.indexOf(" ") != -1 || el.label.indexOf("lsid") != -1) && el.label.indexOf("[") != 0)
                         ? "\"" + el.label + "\""
                         : el.label; // .replace(/:/g,"\\:")
-                    var label = el.displayLabel;
+                    var label = (el.displayLabel) ? el.displayLabel : el.label ;
                     if (label.indexOf("@") != -1) {
                         label = label.substring(0,label.indexOf("@"));
                     } else if (jQuery.i18n.prop(label).indexOf("[") == -1) {
@@ -1078,6 +1087,7 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
                 }
             });
             $("table#fullFacets tbody").append(html);
+            $('#spinnerRow').hide();
             // Fix some border issues
             $("table#fullFacets tr:last td").css("border-bottom", "1px solid #CCCCCC");
             $("table#fullFacets td:last-child, table#fullFacets th:last-child").css("border-right", "none");
@@ -1109,6 +1119,7 @@ function loadFacetsContent(facetName, fsort, foffset, facetLimit, replaceFacets)
         } else {
             $("tr#loadingRow").remove(); // remove the loading message
             $("tr#loadMore").remove(); // remove the load more records link
+            $('#spinnerRow').hide();
             $("table#fullFacets tbody").append("<tr><td></td><td>[Error: no values returned]</td></tr>");
         }
     });

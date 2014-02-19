@@ -28,7 +28,8 @@
         </g:if>
         <g:each var="facetResult" in="${sr.facetResults}">
             <g:if test="${facetResult.fieldResult.length() >= 1 && ! sr.activeFacetMap?.containsKey(facetResult.fieldName) }">
-                <h4><span class="FieldName"><alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/></span>
+                <g:set var="fieldDisplayName" value="${alatag.formatDynamicFacetName(fieldName:"${facetResult.fieldName}")}"/>
+                <h4><span class="FieldName">${fieldDisplayName}</span>
                 </h4>
                 <div class="subnavlist" style="clear:left">
                     <ul class="facets">
@@ -48,7 +49,7 @@
                 </div>
                 <g:if test="${facetResult.fieldResult.length() > 1}">
                     <div class="showHide">
-                        <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" data-displayname="${fieldDisplayName}"
+                        <a href="#multipleFacets" class="multipleFacetsLink" id="multi-${facetResult.fieldName}" role="button" data-toggle="modal" data-displayname="${fieldDisplayName}"
                            title="See more options or refine with multiple values"><i class="icon-hand-right"></i> choose more...</a>
                     </div>
                 </g:if>
@@ -56,15 +57,43 @@
         </g:each>
     </div>
 </div><!--end facets-->
-<div style="display:none"><!-- fancybox popup div -->
-    <div id="multipleFacets">
-        <h3>Refine your search</h3>
-        <div id="dynamic" class="tableContainer"></div>
-        <div id='submitFacets'>
-            <input type='submit' class='submit btn btn-small' id="include" value="INCLUDE selected items in search"/>
-            &nbsp;
-            <input type='submit' class='submit btn btn-small' id="exclude" value="EXCLUDE selected items from search"/>
+<!-- modal popup for "choose more" link -->
+<div id="multipleFacets" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="multipleFacetsLabel" aria-hidden="true"><!-- BS modal div -->
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="multipleFacetsLabel">Refine your search</h3>
+    </div>
+    <div class="modal-body">
+        <div id="dynamic" class="tableContainer">
+            <form name="facetRefineForm" id="facetRefineForm" method="GET" action="/occurrences/search/facets">
+                <table class="table table-bordered table-condensed table-striped scrollTable" id="fullFacets">
+                    <thead class="fixedHeader">
+                        <tr class="tableHead">
+                            <th>&nbsp;</th>
+                            <th id="indexCol" width="80%"><a href="#index" class="fsort" data-sort="index" data-foffset="0"></a></th>
+                            <th style="border-right-style: none;text-align: right;"><a href="#count" class="fsort" data-sort="count" data-foffset="0" title="Sort by record count">Count</a></th>
+                        </tr>
+                    </thead>
+                    <tbody class="scrollContent">
+                        <tr class="hide">
+                            <td><input type="checkbox" name="fqs" class="fqs" value=""></td>
+                            <td><a href=""></a></td>
+                            <td style="text-align: right; border-right-style: none;"></td>
+                        </tr>
+                        <tr id="spinnerRow">
+                            <td colspan="3" style="text-align: center;">loading data... <g:img dir="images" file="spinner.gif" id="spinner2" class="spinner" alt="spinner icon"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
         </div>
+    </div>
+    <div id='submitFacets' class="modal-footer" style="text-align: left;">
+        <input type='submit' class='submit btn btn-small' id="include" value="INCLUDE selected items"/>
+        &nbsp;
+        <input type='submit' class='submit btn btn-small' id="exclude" value="EXCLUDE selected items"/>
+        &nbsp;
+        <button class="btn btn-small" data-dismiss="modal" aria-hidden="true" style="float:right;">Close</button>
     </div>
 </div>
 

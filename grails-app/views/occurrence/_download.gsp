@@ -3,7 +3,7 @@
     Created on : Feb 25, 2011, 4:20:32 PM
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
 --%>
-<div id="download" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="downloadsLabel" aria-hidden="true">
+<div id="download" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="downloadsLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="downloadsLabel">Downloads</h3>
