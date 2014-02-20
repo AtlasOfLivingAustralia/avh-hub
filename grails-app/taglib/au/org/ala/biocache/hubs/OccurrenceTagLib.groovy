@@ -190,6 +190,252 @@ class OccurrenceTagLib {
                 }
             }
         }
+    }
+
+    /**
+     * Determine the recordId
+     *
+     * @attr record REQUIRED the record object (JsonObject)
+     */
+    def getRecordId = { attrs ->
+//        <c:when test="${skin == 'avh'}">
+//            <c:set var="recordId" value="${record.raw.occurrence.catalogNumber}"/>
+//        </c:when>
+//        <c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
+//            <c:set var="recordId" value="${record.raw.occurrence.collectionCode} - ${record.raw.occurrence.catalogNumber}"/>
+//        </c:when>
+//        <c:when test="${not empty record.processed.attribution.dataResourceName && not empty record.raw.occurrence.catalogNumber}">
+//            <c:set var="recordId" value="${record.processed.attribution.dataResourceName} - ${record.raw.occurrence.catalogNumber}"/>
+//        </c:when>
+//        <c:when test="${not empty record.raw.occurrence.occurrenceID}">
+//            <c:set var="recordId" value="${record.raw.occurrence.occurrenceID}"/>
+//        </c:when>
+//        <c:otherwise>
+//            <c:set var="recordId" value="${record.raw.uuid}"/>
+//        </c:otherwise>
+        def record = attrs.record
+        out << record.raw.uuid
+    }
+
+    /**
+     * Determine the scientific name
+     *
+     * @attr record REQUIRED the record object (JsonObject)
+     */
+    def getScientificName = { attrs ->
+//        <c:choose>
+//            <c:when test="${not empty record.processed.classification.scientificName}">
+//                    ${record.processed.classification.scientificName} ${record.processed.classification.scientificNameAuthorship}
+//            </c:when>
+//            <c:when test="${not empty record.raw.classification.scientificName}">
+//                ${record.raw.classification.scientificName} ${record.raw.classification.scientificNameAuthorship}
+//            </c:when>
+//            <c:otherwise>
+//                    ${record.raw.classification.genus} ${record.raw.classification.specificEpithet}
+//            </c:otherwise>
+//        </c:choose>
+        def record = attrs.record
+        out << "${record.raw.classification.genus} ${record.raw.classification.specificEpithet}"
+    }
+
+    /**
+     * TODO
+     *
+     * @attr groupedAssertions REQUIRED
+     */
+    def groupedAssertions = { attrs ->
+        def groupedAssertions = attrs.groupedAssertions
+        out << "${groupedAssertions} TODO"
+    }
+
+    /**
+     * TODO
+     *
+     * @attr code REQUIRED
+     */
+    def dataQualityHelp = { attrs ->
+        def code = attrs.code
+        out << "${code} TODO"
+    }
+
+    /**
+     * TODO
+     *
+     * @attr map REQUIRED
+     */
+    def formatRawVsProcessed = { attrs ->
+//        <c:forEach var="group" items="${map}">
+//            <c:choose>
+//                <c:when test="${not empty group.value}">
+//                    <c:forEach var="field" items="${group.value}" varStatus="status">
+//                        <c:set var="grayBg">${(status.index % 2 == 0) ? 'grey-bg': ''}</c:set>
+//                        <c:set var="rawRecordedBy"><alatag:authUserLookup userId="${field.raw}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
+//                        <c:set var="proRecordedBy"><alatag:authUserLookup userId="${field.processed}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
+//                        <tr>
+//                            <c:if test="${status.first}">
+//                                <td rowspan="${fn:length(group.value)}">${group.key}</td>
+//                            </c:if>
+//                            <td class="${grayBg} dwc">${field.name}</td>
+//                            <td class="${grayBg}">${(field.name == 'recordedBy' && fn:contains(field.raw,'@')) ? rawRecordedBy : field.raw}<%-- we're obfuscating email addresses --%></td>
+//                            <td class="${grayBg}">${(field.name == 'recordedBy' && fn:contains(field.processed,'@')) ? proRecordedBy : field.processed}<%-- we're obfuscating email addresses --%></td>
+//                        </tr>
+//                    </c:forEach>
+//                </c:when>
+//            </c:choose>
+//        </c:forEach>
+        def map = attrs.map
+        def mb = new MarkupBuilder(out)
+
+        map.each { group ->
+            if (group.value) {
+                group.value.eachWithIndex() { field, i ->
+                    mb.tr() {
+                        if (i == 0) {
+                            td(class:"noStripe", rowspan:"${group.value.length()}", group.key)
+                        }
+                        td(field.name)
+                        td(field.raw)
+                        td(field.processed)
+                    }
+                }
+            }
+        }
 
     }
+
+    /**
+     * TODO
+     *
+     * @attr fieldName REQUIRED
+     * @attr fieldNameIsMsgCode
+     * @attr fieldCode REQUIRED
+     * @attr section REQUIRED
+     * @attr annotate REQUIRED
+     * @attr path
+     * @attr guid
+     */
+    def occurrenceTableRow = { attrs, body ->
+//        <c:set var="bodyText"><jsp:doBody/></c:set>
+//        <c:set var="annoIcon"><c:if test="${annotate}">${section}</c:if></c:set>
+//        <c:choose>
+//          <c:when test="${not empty guid}">
+//            <c:set var="link">${path}${guid}</c:set>
+//          </c:when>
+//          <c:otherwise>
+//            <c:set var="link"></c:set>
+//          </c:otherwise>
+//        </c:choose>
+//        <c:if test="${not empty bodyText}">
+//            <tr id="${fieldCode}">
+//                <td class="dwcLabel">
+//                <c:choose>
+//                <c:when test="${fieldNameIsMsgCode}"><fmt:message key="${fieldName}"/></c:when>
+//                        <c:otherwise>${fieldName}</c:otherwise>
+//                </c:choose>
+//                </td>
+//                <%--<td class="annoText" name="${fieldCode}"></td>--%>
+//                <td class="value">
+//                    <c:if test="${not empty link}"><a href="${link}"></c:if>${bodyText}<c:if test="${not empty link}"></a></c:if>
+//                <div class="annoText"></div>
+//                </td>
+//                <%--<td class="${annoIcon}" name="${fieldCode}"></td>--%>
+//            </tr>
+//        </c:if>
+        String bodyText = (String) body()
+        def guid = attrs.guid
+        def path = attrs.path
+        def fieldCode = attrs.fieldCode
+        def fieldName = attrs.fieldName
+        def fieldNameIsMsgCode = attrs.fieldNameIsMsgCode
+
+        if (StringUtils.isNotBlank(bodyText)) {
+            def link = (guid) ? "${path}${guid}" : ""
+            def mb = new MarkupBuilder(out)
+
+            mb.tr(id:"${fieldCode}") {
+                td(class:"dwcLabel") {
+                    if (fieldNameIsMsgCode) {
+                        mkp.yield(g.message(code: "${fieldName}", default :"${fieldName}"))
+                    } else {
+                        mkp.yieldUnescaped(fieldName)
+                    }
+
+                }
+                td(class:"value") {
+                    if (link) {
+                        a(href: link) {
+                            mkp.yieldUnescaped(bodyText)
+                        }
+                    } else {
+                        mkp.yieldUnescaped(bodyText)
+                    }
+                }
+            }
+        }
+    }
+
+//    attribute name="compareRecord" required="true" type="java.util.Map" %><%@
+//    attribute name="fieldsMap" required="true" type="java.util.Map" %><%@
+//    attribute name="group" required="true" type="java.lang.String" %><%@
+//    attribute name="exclude" required="true" type="java.lang.String" %>
+
+//    <c:forEach items="${compareRecord[group]}" var="cr">
+//        <c:set var="key" value="${cr.name}" />
+//        <c:if test="${empty fieldsMap[key] && !fn:contains(exclude, key)}">
+//            <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="${cr.name}" fieldName="<span class='dwc'>${cr.name}</span>">
+//                <c:choose>
+//                    <c:when test="${not empty cr.processed && not empty cr.raw && cr.processed == cr.raw}">${cr.processed}</c:when>
+//                    <c:when test="${empty cr.raw && not empty cr.processed}"><fmt:message key="${cr.processed}"/></c:when>
+//                    <c:when test="${not empty cr.raw && empty cr.processed}"><fmt:message key="${cr.raw}"/></c:when>
+//                    <c:otherwise>${cr.processed} <br/><span class="originalValue">Supplied as ${cr.raw}</span></c:otherwise>
+//                </c:choose>
+//            </alatag:occurrenceTableRow>
+//        </c:if>
+//    </c:forEach>
+
+
+    /**
+     * TODO
+     *
+     * @attr compareRecord REQUIRED
+     * @attr fieldsMap REQUIRED
+     * @attr group REQUIRED
+     * @attr exclude REQUIRED
+     */
+    def formatExtraDwC = { attrs ->
+        def compareRecord = attrs.compareRecord
+        Map fieldsMap = attrs.fieldsMap
+        def group = attrs.group
+        def exclude = attrs.exclude
+        def output = ""
+        def mb = new MarkupBuilder(out)
+
+        compareRecord.get(group).each { cr ->
+            def key = cr.name
+            def label = g.message(code:key, default:"")?:StringUtils.capitalize(key)
+
+            // only output fields not already included (by checking fieldsMap Map) && not in excluded list
+            if (!fieldsMap.containsKey(key) && !StringUtils.containsIgnoreCase(exclude, key)) {
+                //def mb = new MarkupBuilder(out)
+                def tagBody
+
+                if (cr.processed && cr.raw && cr.processed == cr.raw) {
+                    tagBody = cr.processed
+                } else if (!cr.raw && cr.processed) {
+                    tagBody = cr.processed
+                } else if (cr.raw && !cr.processed) {
+                    tagBody = cr.raw
+                } else {
+                    tagBody = "${cr.processed} <br/><span class='originalValue'>Supplied as ${cr.raw}</span>"
+                }
+                output += alatag.occurrenceTableRow(annotate:"true", section:"dataset", fieldCode:"${key}", fieldName:"<span class='dwc'>${label}</span>") {
+                    tagBody
+                }
+            }
+        }
+
+        out << output
+    }
+
+
 }

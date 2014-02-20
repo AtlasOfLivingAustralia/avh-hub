@@ -14,4 +14,10 @@ modules = {
         resource url:'js/jquery.i18n.properties-1.0.9.js'
         resource url:'js/search.js'
     }
+
+    show {
+        resource url:'css/record.css'
+        resource url:'js/audiojs/audio.min.js'
+        resource url:'js/moment.min.js'
+    }
 }

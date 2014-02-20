@@ -275,7 +275,7 @@
                                                 <g:if test="${occurrence.collectionName}">
                                                     <td><strong class="resultsLabel">Herbarium:</strong>&nbsp;${occurrence.collectionName}</td>
                                                 </g:if>
-                                                <td class="viewRecord"><a href="<g:createLink url="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a></td>
+                                                <td class="viewRecord"><a href="<g:createLink url="${request.contextPath}/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a></td>
                                             </tr>
                                         </table>
                                         <p class="rowB" style="display:none">
@@ -304,7 +304,7 @@
                                             </g:elseif>
 
                                             <span style="display:inline-block;float:right;">
-                                                <a href="<g:createLink url="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
+                                                <a href="<g:createLink url="${request.contextPath}/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
                                             </span>
                                         </p>
                                     </g:if>
@@ -350,7 +350,7 @@
                                             <g:if test="${occurrence.raw_catalogNumber!= null && occurrence.raw_catalogNumber}">
                                                 <strong class="resultsLabel">Catalog&nbsp;number:</strong>&nbsp;${occurrence.raw_collectionCode}:${occurrence.raw_catalogNumber}
                                             </g:if>
-                                            <a href="<g:createLink url="/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
+                                            <a href="<g:createLink url="${request.contextPath}/occurrences/${occurrence.uuid}"/>" class="occurrenceLink" style="margin-left: 15px;">View record</a>
                                         </p>
                                     </g:else>
                                 </div>

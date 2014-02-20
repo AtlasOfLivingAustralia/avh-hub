@@ -25,4 +25,14 @@ class SearchService {
         }
         hasImages
     }
+
+    def JSONObject getRecord(String id) {
+        def url = "${grailsApplication.config.biocacheServicesUrl}/occurrence/${id.encodeAsURL()}"
+        httpWebService.getJson(url)
+    }
+
+    def JSONObject getCompareRecord(String id) {
+        def url = "${grailsApplication.config.biocacheServicesUrl}/occurrence/compare?uuid=${id.encodeAsURL()}"
+        httpWebService.getJson(url)
+    }
 }

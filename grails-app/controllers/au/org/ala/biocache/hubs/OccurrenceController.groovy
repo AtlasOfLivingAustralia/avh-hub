@@ -1,5 +1,6 @@
 package au.org.ala.biocache.hubs
 
+import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONObject
 
 class OccurrenceController {
@@ -35,7 +36,27 @@ class OccurrenceController {
         ]
     }
 
+    def show(String id) {
+        JSONObject record = searchService.getRecord(id)
+        JSONObject compareRecord = searchService.getCompareRecord(id)
+
+        render view: 'show', model: [
+                record: record,
+                compareRecord: compareRecord,
+                skin: grailsApplication.config.sitemesh.skin?:grailsApplication.config.ala.skin
+        ]
+    }
+
+    // JSON webservices for debugging/testing
+
     def searchJson (SpatialSearchRequestParams requestParams) {
         render searchService.fullTextSearch(requestParams)
+    }
+
+    def showJson (String id) {
+        def combined = [:]
+        combined.record = searchService.getRecord(id)
+        combined.compareRecord = searchService.getCompareRecord(id)
+        render combined as JSON
     }
 }
