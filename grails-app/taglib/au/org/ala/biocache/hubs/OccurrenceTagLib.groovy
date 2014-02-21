@@ -78,19 +78,10 @@ class OccurrenceTagLib {
         }  else if (rec.kingdom) {
             name = rec.kingdom
         } else {
-            name = ${g.message(code:"record.noNameSupplied", default: "No name supplied")}
+            name = g.message(code:"record.noNameSupplied", default: "No name supplied")
         }
 
         out << name
-
-//        <g:if test="${occurrence.raw_scientificName}">${occurrence.raw_scientificName}</g:if>
-//        <g:elseif test="${occurrence.species}">${occurrence.species}</g:elseif>
-//        <g:elseif test="${occurrence.genus}">${occurrence.genus}</g:elseif>
-//        <g:elseif test="${occurrence.family}">${occurrence.family}</g:elseif>
-//        <g:elseif test="${occurrence.order}">${occurrence.order}</g:elseif>
-//        <g:elseif test="${occurrence.phylum}">${occurrence.phylum}</g:elseif>
-//        <g:elseif test="${occurrence.kingdom}">${occurrence.kingdom}</g:elseif>
-//        <g:else>No name supplied</g:else>
     }
 
     /**
@@ -99,14 +90,6 @@ class OccurrenceTagLib {
      * @attr item REQUIRED
      */
     def currentFilterItem = { attrs ->
-//        <g:set var="closeLink">&nbsp;<a href="#" data-facet="${item.key}:${item.value.value.encodeAsHTML()}" onClick="removeFacet(this); return false;" class="btn btn-mini btn-primary removeLink" title="remove filter">
-//            <i class="icon-remove icon-white" style="margin-left:5px"></i></a></g:set>
-//        <g:set var="filterLabel" value="${alatag.formatDynamicFacetName(fieldName: item.value.displayName)}"/>
-//        <g:set var="fqLabel">
-//            <g:if test="${filterLabel.startsWith('-')}"><span class="red">[exclude]</span> ${filterLabel.substring(1, filterLabel.size())}</g:if>
-//            <g:else>${filterLabel}</g:else>
-//        </g:set>
-//        <span class="activeFq"><g:message code="${fqLabel}" default="{fqLabel}"/></span>${closeLink}
         def item = attrs.item
         def filterLabel = alatag.formatDynamicFacetName(fieldName: item.value.displayName)
         def fqLabel = (filterLabel.startsWith('-')) ? "<span class=\"red\">[exclude]</span> ${filterLabel.substring(1, filterLabel.size())}" : filterLabel
@@ -138,16 +121,6 @@ class OccurrenceTagLib {
         def fieldResult = attrs.fieldResult
         def facetResult = attrs.facetResult
         def queryParam = attrs.queryParam
-//        <g:if test="${fieldResult.fq}">
-//            <g:set var="fqValue" value="${fieldResult.label?.encodeAsURL()}" /><!-- fieldResult: fqValue = ${fqValue} -->
-//            <li><a href="?${queryParam}&fq=${fieldResult.fq?.encodeAsURL()}"><g:message code="${fieldResult.label?:'unknown'}" default="${fieldResult.label}"/></a>
-//                (<g:formatNumber number="${fieldResult.count}" format="#,###,###"/>)</li>
-//        </g:if>
-//        <g:else>
-//            <g:set var="fqValue" value="${fieldResult.label?.encodeAsURL()}" /><!-- ELSE fqValue = ${fqValue} -->
-//            <li><a href="?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22"><g:message code="${fieldResult.label ? fieldResult.label : 'unknown'}"/></a>
-//            (<g:formatNumber number="${fieldResult.count}" format="#,###,###"/>)</li>
-//        </g:else>
         def mb = new MarkupBuilder(out)
         def fqValue = fieldResult.label?.encodeAsURL()
 
@@ -193,7 +166,7 @@ class OccurrenceTagLib {
     }
 
     /**
-     * Determine the recordId
+     * Determine the recordId TODO
      *
      * @attr record REQUIRED the record object (JsonObject)
      */
@@ -213,8 +186,8 @@ class OccurrenceTagLib {
 //        <c:otherwise>
 //            <c:set var="recordId" value="${record.raw.uuid}"/>
 //        </c:otherwise>
-        def record = attrs.record
-        out << record.raw.uuid
+        def record = attrs.record?:null
+        out << record?.get("raw")?.get("uuid")
     }
 
     /**
@@ -235,7 +208,7 @@ class OccurrenceTagLib {
 //            </c:otherwise>
 //        </c:choose>
         def record = attrs.record
-        out << "${record.raw.classification.genus} ${record.raw.classification.specificEpithet}"
+        out << "${record?.raw?.classification?.genus} ${record?.raw?.classification?.specificEpithet}"
     }
 
     /**
@@ -249,40 +222,30 @@ class OccurrenceTagLib {
     }
 
     /**
-     * TODO
+     * Generate the icon and popup for the data quality help codes/linsks
      *
      * @attr code REQUIRED
      */
     def dataQualityHelp = { attrs ->
-        def code = attrs.code
-        out << "${code} TODO"
+        def mb = new MarkupBuilder(out)
+        mb.a(
+                href: "#",
+                class:"dataQualityHelpLink",
+                "data-toggle":"popover",
+                "data-code": attrs.code?:""
+        ) {
+            i(class:"icon-question-sign", "")
+        }
+        //def html = "&nbsp;<a href='#' class='dataQualityHelpLink' data-toggle='popover' data-code='${code}'><i class='icon-question-sign'></i></a>"
+        //out << html
     }
 
     /**
-     * TODO
+     * Generate the table body for the raw vs processed table (popup)
      *
      * @attr map REQUIRED
      */
     def formatRawVsProcessed = { attrs ->
-//        <c:forEach var="group" items="${map}">
-//            <c:choose>
-//                <c:when test="${not empty group.value}">
-//                    <c:forEach var="field" items="${group.value}" varStatus="status">
-//                        <c:set var="grayBg">${(status.index % 2 == 0) ? 'grey-bg': ''}</c:set>
-//                        <c:set var="rawRecordedBy"><alatag:authUserLookup userId="${field.raw}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
-//                        <c:set var="proRecordedBy"><alatag:authUserLookup userId="${field.processed}" allUserNamesByIdMap="${userNamesByIdMap}" allUserNamesByNumericIdMap="${userNamesByNumericIdMap}"/></c:set>
-//                        <tr>
-//                            <c:if test="${status.first}">
-//                                <td rowspan="${fn:length(group.value)}">${group.key}</td>
-//                            </c:if>
-//                            <td class="${grayBg} dwc">${field.name}</td>
-//                            <td class="${grayBg}">${(field.name == 'recordedBy' && fn:contains(field.raw,'@')) ? rawRecordedBy : field.raw}<%-- we're obfuscating email addresses --%></td>
-//                            <td class="${grayBg}">${(field.name == 'recordedBy' && fn:contains(field.processed,'@')) ? proRecordedBy : field.processed}<%-- we're obfuscating email addresses --%></td>
-//                        </tr>
-//                    </c:forEach>
-//                </c:when>
-//            </c:choose>
-//        </c:forEach>
         def map = attrs.map
         def mb = new MarkupBuilder(out)
 
@@ -293,7 +256,7 @@ class OccurrenceTagLib {
                         if (i == 0) {
                             td(class:"noStripe", rowspan:"${group.value.length()}", group.key)
                         }
-                        td(field.name)
+                        td(alatag.camelCaseToHuman(text: field.name))
                         td(field.raw)
                         td(field.processed)
                     }
@@ -304,43 +267,29 @@ class OccurrenceTagLib {
     }
 
     /**
-     * TODO
+     * Camel case converted, taken from JS code:
+     *
+     * str.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase().capitalize();
+     *
+     * @attr text REQUIRED the input text
+     */
+    def camelCaseToHuman = { attrs ->
+        String text = attrs.text
+        out << text.replaceAll(/([a-z])([A-Z])/, '$1 $2').toLowerCase().capitalize()
+    }
+
+    /**
+     * Generate an occurrence table row
      *
      * @attr fieldName REQUIRED
      * @attr fieldNameIsMsgCode
-     * @attr fieldCode REQUIRED
+     * @attr fieldCode
      * @attr section REQUIRED
      * @attr annotate REQUIRED
      * @attr path
      * @attr guid
      */
     def occurrenceTableRow = { attrs, body ->
-//        <c:set var="bodyText"><jsp:doBody/></c:set>
-//        <c:set var="annoIcon"><c:if test="${annotate}">${section}</c:if></c:set>
-//        <c:choose>
-//          <c:when test="${not empty guid}">
-//            <c:set var="link">${path}${guid}</c:set>
-//          </c:when>
-//          <c:otherwise>
-//            <c:set var="link"></c:set>
-//          </c:otherwise>
-//        </c:choose>
-//        <c:if test="${not empty bodyText}">
-//            <tr id="${fieldCode}">
-//                <td class="dwcLabel">
-//                <c:choose>
-//                <c:when test="${fieldNameIsMsgCode}"><fmt:message key="${fieldName}"/></c:when>
-//                        <c:otherwise>${fieldName}</c:otherwise>
-//                </c:choose>
-//                </td>
-//                <%--<td class="annoText" name="${fieldCode}"></td>--%>
-//                <td class="value">
-//                    <c:if test="${not empty link}"><a href="${link}"></c:if>${bodyText}<c:if test="${not empty link}"></a></c:if>
-//                <div class="annoText"></div>
-//                </td>
-//                <%--<td class="${annoIcon}" name="${fieldCode}"></td>--%>
-//            </tr>
-//        </c:if>
         String bodyText = (String) body()
         def guid = attrs.guid
         def path = attrs.path
@@ -374,28 +323,8 @@ class OccurrenceTagLib {
         }
     }
 
-//    attribute name="compareRecord" required="true" type="java.util.Map" %><%@
-//    attribute name="fieldsMap" required="true" type="java.util.Map" %><%@
-//    attribute name="group" required="true" type="java.lang.String" %><%@
-//    attribute name="exclude" required="true" type="java.lang.String" %>
-
-//    <c:forEach items="${compareRecord[group]}" var="cr">
-//        <c:set var="key" value="${cr.name}" />
-//        <c:if test="${empty fieldsMap[key] && !fn:contains(exclude, key)}">
-//            <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="${cr.name}" fieldName="<span class='dwc'>${cr.name}</span>">
-//                <c:choose>
-//                    <c:when test="${not empty cr.processed && not empty cr.raw && cr.processed == cr.raw}">${cr.processed}</c:when>
-//                    <c:when test="${empty cr.raw && not empty cr.processed}"><fmt:message key="${cr.processed}"/></c:when>
-//                    <c:when test="${not empty cr.raw && empty cr.processed}"><fmt:message key="${cr.raw}"/></c:when>
-//                    <c:otherwise>${cr.processed} <br/><span class="originalValue">Supplied as ${cr.raw}</span></c:otherwise>
-//                </c:choose>
-//            </alatag:occurrenceTableRow>
-//        </c:if>
-//    </c:forEach>
-
-
     /**
-     * TODO
+     * Generate a compare record "row"
      *
      * @attr compareRecord REQUIRED
      * @attr fieldsMap REQUIRED
@@ -412,7 +341,7 @@ class OccurrenceTagLib {
 
         compareRecord.get(group).each { cr ->
             def key = cr.name
-            def label = g.message(code:key, default:"")?:StringUtils.capitalize(key)
+            def label = g.message(code:key, default:"")?:alatag.camelCaseToHuman(text: key)?:StringUtils.capitalize(key)
 
             // only output fields not already included (by checking fieldsMap Map) && not in excluded list
             if (!fieldsMap.containsKey(key) && !StringUtils.containsIgnoreCase(exclude, key)) {

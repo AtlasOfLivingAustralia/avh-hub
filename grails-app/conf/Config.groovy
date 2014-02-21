@@ -84,6 +84,9 @@ if (!spatial.baseURL) {
 if (!ala.baseURL) {
     ala.baseURL = "http://www.ala.org.au"
 }
+if (!collections.baseUrl) {
+    collections.baseUrl = "http://collections.ala.org.au"
+}
 
 /******************************************************************************\
  *  CAS SETTINGS
@@ -194,6 +197,24 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
+
+// EhCache settings
+grails.cache.config = {
+    defaults {
+        eternal false
+        overflowToDisk false
+        maxElementsInMemory 20000
+        timeToLiveSeconds 3600
+    }
+    cache {
+        name 'collectoryCache'
+        timeToLiveSeconds 7200
+    }
+    cache {
+        name 'spatialCache'
+        timeToLiveSeconds (3600 * 12)
+    }
+}
 
 environments {
     development {

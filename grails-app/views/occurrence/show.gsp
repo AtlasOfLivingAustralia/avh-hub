@@ -13,8 +13,8 @@
 <g:set var="useAla" value="${grailsApplication.config.useAla}"/>
 <g:set var="dwcExcludeFields" value="${grailsApplication.config.dwc.exclude}"/>
 <g:set var="hubDisplayName" value="${grailsApplication.config.site.displayName}"/>
-<g:set var="biocacheService" value="${grailsApplication.config.site.biocacheRestService.biocacheUriPrefix}"/>
-<g:set var="spatialPortalUrl" value="${grailsApplication.config.site.spatialPortalUrl}"/>
+<g:set var="biocacheService" value="${grailsApplication.config.biocacheRestService.biocacheUriPrefix}"/>
+<g:set var="spatialPortalUrl" value="${grailsApplication.config.spatial.baseURL}"/>
 <g:set var="serverName" value="${grailsApplication.config.site.serverName?:grailsApplication.config.biocacheServicesUrl}"/>
 <g:set var="scientificName" value="${alatag.getScientificName(record: record)}"/>
 
@@ -34,7 +34,8 @@
     </r:script>
 </head>
 <body>
-    <g:set var="json" value="${request.contextPath}/occurrences/${record.raw.uuid}.json" />
+    %{--<g:set var="json" value="${request.contextPath}/occurrences/${record?.raw?.uuid}.json" />--}%
+    <g:if test="${record}">
         <g:if test="${record.raw}">
             <div id="headingBar" class="recordHeader">
                 <h1><g:message code="show.occurrenceRecord" default="Occurrence record"/>: <span id="recordId">${recordId}</span></h1>
@@ -97,19 +98,19 @@
 
                                 <ul id="systemAssertions">
                                     <li class="failedTestCount">
-                                        <g:message code="failed" default="failed"/>: ${record.systemAssertions.get('failed').length()}
+                                        <g:message code="failed" default="failed"/>: ${record.systemAssertions.failed?.length()}
                                     </li>
                                     <li class="warningsTestCount">
-                                        <g:message code="warnings" default="warnings"/>: ${record.systemAssertions.get('warning').length()}
+                                        <g:message code="warnings" default="warnings"/>: ${record.systemAssertions.warning.length()}
                                     </li>
                                     <li class="passedTestCount">
-                                        <g:message code="passed" default="passed"/>: ${record.systemAssertions.get('passed').length()}
+                                        <g:message code="passed" default="passed"/>: ${record.systemAssertions.passed.length()}
                                     </li>
                                     <li class="missingTestCount">
-                                        <g:message code="missing" default="missing"/>: ${record.systemAssertions.get('missing').length()}
+                                        <g:message code="missing" default="missing"/>: ${record.systemAssertions.missing.length()}
                                     </li>
                                     <li class="uncheckedTestCount">
-                                        <g:message code="unchecked" default="unchecked"/>: ${record.systemAssertions.get('unchecked').length()}
+                                        <g:message code="unchecked" default="unchecked"/>: ${record.systemAssertions.unchecked.length()}
                                     </li>
 
                                     <li id="dataQualityFurtherDetails">
@@ -120,7 +121,7 @@
                                     </li>
 
                                     <g:set var="hasExpertDistribution" value="false"/>
-                                    <g:each var="systemAssertion" in="${record.systemAssertions.get('failed')}">
+                                    <g:each var="systemAssertion" in="${record.systemAssertions.failed}">
                                         <g:if test="${systemAssertion.code == 26}">
                                             <g:set var="hasExpertDistribution" value="true"/>
                                         </g:if>
@@ -291,8 +292,8 @@
                         <h3>Images</h3>
                         <div id="occurrenceImages" style="margin-top:5px;">
                             <g:each in="${record.images}" var="image">
-                                <a href="${image.alternativeFormats.get('largeImageUrl')}" target="_blank">
-                                    <img src="${image.alternativeFormats.get('smallImageUrl')}" style="max-width: 100%;"/>
+                                <a href="${image.alternativeFormats.largeImageUrl}" target="_blank">
+                                    <img src="${image.alternativeFormats.smallImageUrl}" style="max-width: 100%;"/>
                                 </a>
                                 <br/>
                                 <g:if test="${record.raw.occurrence.photographer}">
@@ -304,7 +305,7 @@
                                 <g:if test="${record.raw.occurrence.rightsholder}">
                                     <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
                                 </g:if>
-                                <a href="${image.alternativeFormats.get('imageUrl')}" target="_blank">Original image (${formattedImageSizes.get(image.alternativeFormats?.get('imageUrl'))})</a>
+                                <a href="${image.alternativeFormats.imageUrl}" target="_blank">Original image (${formattedImageSizes.get(image.alternativeFormats?.imageUrl)})</a>
                             </g:each>
                         </div>
                     </div>
@@ -374,7 +375,7 @@
                         <h3 id="soundsHeader">Sounds</h3>
                         <div class="row-fluid">
                         <div id="audioWrapper" class="span12">
-                            <audio src="${record.sounds.get(0).alternativeFormats.get('audio/mpeg')}" preload="auto" />
+                            <audio src="${record.sounds.get(0).alternativeFormats.audio/mpeg}" preload="auto" />
                             <div class="track-details">
                               ${record.raw.classification.scientificName}
                             </div>
@@ -527,7 +528,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <g:set var="testSet" value="${record.systemAssertions.get('failed')}"/>
+                        <g:set var="testSet" value="${record.systemAssertions.failed}"/>
                         <g:each in="${testSet}" var="test">
                         <tr>
                             <td><g:message code="${test.name}" default="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
@@ -536,7 +537,7 @@
                         </tr>
                         </g:each>
 
-                        <g:set var="testSet" value="${record.systemAssertions.get('warning')}"/>
+                        <g:set var="testSet" value="${record.systemAssertions.warning}"/>
                         <g:each in="${testSet}" var="test">
                         <tr>
                             <td><g:message code="${test.name}" default="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
@@ -545,7 +546,7 @@
                         </tr>
                         </g:each>
 
-                        <g:set var="testSet" value="${record.systemAssertions.get('passed')}"/>
+                        <g:set var="testSet" value="${record.systemAssertions.passed}"/>
                         <g:each in="${testSet}" var="test">
                         <tr>
                             <td><g:message code="${test.name}" default="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
@@ -554,14 +555,14 @@
                         </tr>
                         </g:each>
 
-                        <g:if test="${record.systemAssertions.get('missing')}">
+                        <g:if test="${record.systemAssertions.missing}">
                             <tr>
                                 <td colspan="2">
-                                <a href="javascript:void(0)" id="showMissingPropResult">Show/Hide  ${record.systemAssertions.get('missing').length()} missing properties</a>
+                                <a href="javascript:void(0)" id="showMissingPropResult">Show/Hide  ${record.systemAssertions.missing.length()} missing properties</a>
                                 </td>
                             </tr>
                         </g:if>
-                        <g:set var="testSet" value="${record.systemAssertions.get('missing')}"/>
+                        <g:set var="testSet" value="${record.systemAssertions.missing}"/>
                         <g:each in="${testSet}" var="test">
                         <tr class="missingPropResult" style="display:none;">
                             <td><g:message code="${test.name}" default="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
@@ -569,14 +570,14 @@
                         </tr>
                         </g:each>
 
-                        <g:if test="${record.systemAssertions.get('unchecked')}">
+                        <g:if test="${record.systemAssertions.unchecked}">
                             <tr>
                                 <td colspan="2">
-                                <a href="javascript:void(0)" id="showUncheckedTests">Show/Hide  ${record.systemAssertions.get('unchecked').length()} tests that havent been ran</a>
+                                <a href="javascript:void(0)" id="showUncheckedTests">Show/Hide  ${record.systemAssertions.unchecked.length()} tests that havent been ran</a>
                                 </td>
                             </tr>
                         </g:if>
-                        <g:set var="testSet" value="${record.systemAssertions.get('unchecked')}"/>
+                        <g:set var="testSet" value="${record.systemAssertions.unchecked}"/>
                         <g:each in="${testSet}" var="test">
                         <tr class="uncheckTestResult" style="display:none;">
                             <td><g:message code="${test.name}" default="${test.name}"/><alatag:dataQualityHelp code="${test.code}"/></td>
@@ -599,9 +600,9 @@
                         <ul>
                         <g:each in="${metadataForOutlierLayers}" var="layerMetadata">
                             <li>
-                                <a href="http://spatial.ala.org.au/layers/more/${layerMetadata.get('name')}">${layerMetadata.get('displayname')} - ${layerMetadata.get('source')}</a><br/>
-                                Notes: ${layerMetadata.get('notes')}<br/>
-                                Scale: ${layerMetadata.get('scale')}
+                                <a href="http://spatial.ala.org.au/layers/more/${layerMetadata.name}">${layerMetadata.displayname} - ${layerMetadata.source}</a><br/>
+                                Notes: ${layerMetadata.notes}<br/>
+                                Scale: ${layerMetadata.scale}
                             </li>
                         </g:each>
                         </ul>
@@ -771,16 +772,17 @@
                     <h3>Additional political boundaries information</h3>
                     <table class="layerIntersections table-striped table-bordered table-condensed">
                         <tbody>
-                        <g:each in="${contextualSampleInfo}" var="sample" varStatus="vs">
-                            <g:if test="${sample.classification1 && (vs.first || (sample.classification1 != contextualSampleInfo.get(vs.index-1).classification1 && !vs.end))}">
+                        <g:each in="${contextualSampleInfo}" var="sample" status="vs">
+                            <g:if test="${sample.classification1 && (vs == 0 || (sample.classification1 != contextualSampleInfo.get(vs - 1).classification1 && vs != contextualSampleInfo.size() - 1))}">
                                 <tr class="sectionName"><td colspan="2">${sample.classification1}</td></tr>
                             </g:if>
-                            %{--<alatag:occurrenceTableRow--}%
-                                    %{--annotate="false"--}%
-                                    %{--section="contextual"--}%
-                                    %{--fieldCode="${sample.layerName}"--}%
-                                    %{--fieldName="<a href='${spatialPortalUrl}layers/more/${sample.layerName}' title='more information about this layer'>${sample.layerDisplayName}</a>">--}%
-                            %{--${sample.value}</alatag:occurrenceTableRow>--}%
+                            <g:set var="fn"><a href='${spatialPortalUrl}layers/more/${sample.layerName}' title='more information about this layer'>${sample.layerDisplayName}</a></g:set>
+                            <alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="contextual"
+                                    fieldCode="${sample.layerName}"
+                                    fieldName="${fn}">
+                            ${sample.value}</alatag:occurrenceTableRow>
                         </g:each>
                         </tbody>
                     </table>
@@ -790,17 +792,18 @@
                     <h3>Environmental sampling for this location</h3>
                     <table class="layerIntersections table-striped table-bordered table-condensed" >
                         <tbody>
-                        <g:each in="${environmentalSampleInfo}" var="sample" varStatus="vs">
-                            <g:if test="${sample.classification1 && (vs.first || (sample.classification1 != environmentalSampleInfo.get(vs.index-1).classification1 && !vs.end))}">
+                        <g:each in="${environmentalSampleInfo}" var="sample" status="vs">
+                            <g:if test="${sample.classification1 && (vs == 0 || (sample.classification1 != environmentalSampleInfo.get(vs - 1).classification1 && vs != environmentalSampleInfo.size() - 1))}">
                                 <tr class="sectionName"><td colspan="2">${sample.classification1}</td></tr>
                             </g:if>
-                            %{--<alatag:occurrenceTableRow--}%
-                                    %{--annotate="false"--}%
-                                    %{--section="contextual"--}%
-                                    %{--fieldCode="${sample.layerName}"--}%
-                                    %{--fieldName="<a href='${spatialPortalUrl}layers/more/${sample.layerName}' title='More information about this layer'>${sample.layerDisplayName}</a>">--}%
-                                %{--${sample.value} ${(sample.units && !StringUtils.containsIgnoreCase(sample.units,'dimensionless')) ? sample.units : ''}--}%
-                            %{--</alatag:occurrenceTableRow>--}%
+                            <g:set var="fn"><a href='${spatialPortalUrl}layers/more/${sample.layerName}' title='More information about this layer'>${sample.layerDisplayName}</a></g:set>
+                            <alatag:occurrenceTableRow
+                                    annotate="false"
+                                    section="contextual"
+                                    fieldCode="${sample.layerName}"
+                                    fieldName="${fn}">
+                                ${sample.value} ${(sample.units && !StringUtils.containsIgnoreCase(sample.units,'dimensionless')) ? sample.units : ''}
+                            </alatag:occurrenceTableRow>
                         </g:each>
                         </tbody>
                     </table>
@@ -874,12 +877,16 @@
                 <p>The requested record ID "${uuid}" was not found</p>
             </div>
         </g:if>
-        <g:if test="${record.sounds}">
-        <script>
-          audiojs.events.ready(function() {
-            var as = audiojs.createAll();
-          });
-        </script>
+            <g:if test="${record.sounds}">
+            <script>
+              audiojs.events.ready(function() {
+                var as = audiojs.createAll();
+              });
+            </script>
+        </g:if>
     </g:if>
+    <g:else>
+        <h3>An error occurred <br/>${flash.message}</h3>
+    </g:else>
 </body>
 </html>
