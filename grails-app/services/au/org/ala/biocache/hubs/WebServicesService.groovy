@@ -2,20 +2,20 @@ package au.org.ala.biocache.hubs
 
 import grails.converters.JSON
 import grails.plugin.cache.Cacheable
-import org.codehaus.groovy.grails.web.converters.exceptions.ConverterException
 import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONElement
 import org.codehaus.groovy.grails.web.json.JSONObject
 
 
-class SearchService {
+class WebServicesService {
 
     public static final String ENVIRONMENTAL = "Environmental"
     public static final String CONTEXTUAL = "Contextual"
-    def httpWebService, grailsApplication
+    def grailsApplication
 
     def JSONObject fullTextSearch(SpatialSearchRequestParams requestParams) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrences/search?${requestParams.getEncodedParams()}"
-        httpWebService.getJson(url)
+        getJsonElements(url)
     }
 
     def resultsHaveImages(JSONObject searchResults) {
@@ -34,25 +34,35 @@ class SearchService {
 
     def JSONObject getRecord(String id) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrence/${id.encodeAsURL()}"
-        httpWebService.getJson(url)
+        getJsonElements(url)
     }
 
     def JSONObject getCompareRecord(String id) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrence/compare?uuid=${id.encodeAsURL()}"
-        httpWebService.getJson(url)
+        getJsonElements(url)
+    }
+
+    def JSONArray getUserAssertions(String id) {
+        def url = "${grailsApplication.config.biocacheServicesUrl}/occurrences/${id.encodeAsURL()}/assertions"
+        getJsonElements(url)
+    }
+
+    def JSONArray getQueryAssertions(String id) {
+        def url = "${grailsApplication.config.biocacheServicesUrl}/occurrences/${id.encodeAsURL()}/assertionQueries"
+        getJsonElements(url)
     }
 
     @Cacheable('collectoryCache')
     def JSONObject getCollectionInfo(String id) {
         def url = "${grailsApplication.config.collections.baseUrl}/lookup/summary/${id.encodeAsURL()}"
-        httpWebService.getJson(url)
+        getJsonElements(url)
     }
 
     @Cacheable('spatialCache')
     def Map getLayersMetaData() {
         Map layersMetaMap = [:]
         def url = "${grailsApplication.config.spatial.baseURL}/layers.json"
-        def jsonArray = getJsonArray(url)
+        def jsonArray = getJsonElements(url)
 
         jsonArray.each {
             def subset = [:]
@@ -73,7 +83,7 @@ class SearchService {
         return layersMetaMap
     }
 
-    private JSONArray getJsonArray(String url) {
+    private JSONElement getJsonElements(String url) {
         log.debug "(internal) getJson URL = " + url
         def conn = new URL(url).openConnection()
         //JSONObject.NULL.metaClass.asBoolean = {-> false}

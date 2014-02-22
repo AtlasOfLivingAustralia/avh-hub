@@ -138,8 +138,8 @@ class OccurrenceTagLib {
             mb.li {
                 a(href:"?${queryParam}&fq=${fieldResult.fq?.encodeAsURL()}") {
                     mkp.yield(message(code:"${fieldResult.label?:'unknown'}", default:"${fieldResult.label}"))
-                    addCounts(fieldResult.count)
                 }
+                addCounts(fieldResult.count)
             }
         } else if (StringUtils.startsWith(facetResult.fieldName, "occurrence_") && StringUtils.endsWith(fieldResult.label, "Z")) {
             // decade year ranges
@@ -150,8 +150,8 @@ class OccurrenceTagLib {
             mb.li {
                 a(href:"?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${endDate}]") {
                     mkp.yieldUnescaped("${startYear} - ${endYear}")
-                    addCounts(fieldResult.count)
                 }
+                addCounts(fieldResult.count)
             }
         } else {
             def label = g.message(code:"${facetResult.fieldName}.${fieldResult.label}", default:"")?:
@@ -159,8 +159,8 @@ class OccurrenceTagLib {
             mb.li {
                 a(href:"?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22") {
                     mkp.yield(label)
-                    addCounts(fieldResult.count)
                 }
+                addCounts(fieldResult.count)
             }
         }
     }
@@ -169,6 +169,7 @@ class OccurrenceTagLib {
      * Determine the recordId TODO
      *
      * @attr record REQUIRED the record object (JsonObject)
+     * @attr skin
      */
     def getRecordId = { attrs ->
 //        <c:when test="${skin == 'avh'}">
@@ -187,7 +188,20 @@ class OccurrenceTagLib {
 //            <c:set var="recordId" value="${record.raw.uuid}"/>
 //        </c:otherwise>
         def record = attrs.record?:null
-        out << record?.get("raw")?.get("uuid")
+        def skin = attrs.skin?:"ala"
+        def recordId = record.raw.uuid
+
+        if (skin == 'avh') {
+            recordId = record.raw.occurrence.catalogNumber
+        } else if (record.raw.occurrence.collectionCode && record.raw.occurrence.catalogNumber) {
+            recordId = record.raw.occurrence.collectionCode + " - " + record.raw.occurrence.catalogNumber
+        } else if (record.processed.attribution.dataResourceName && record.raw.occurrence.catalogNumber) {
+            recordId = record.processed.attribution.dataResourceName + " - " + record.raw.occurrence.catalogNumber
+        } else if (record.raw.occurrence.occurrenceID) {
+            recordId = record.raw.occurrence.occurrenceID
+        }
+
+        out << recordId
     }
 
     /**
@@ -263,7 +277,6 @@ class OccurrenceTagLib {
                 }
             }
         }
-
     }
 
     /**

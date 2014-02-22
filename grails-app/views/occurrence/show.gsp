@@ -7,7 +7,7 @@
 --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="org.apache.commons.lang.StringUtils" contentType="text/html;charset=UTF-8" %>
-<g:set var="recordId" value="${alatag.getRecordId(record: record)}"/>
+<g:set var="recordId" value="${alatag.getRecordId(record: record, skin: skin)}"/>
 <g:set var="bieWebappContext" value="${grailsApplication.config.bieWebappContext}"/>
 <g:set var="collectionsWebappContext" value="${grailsApplication.config.collectionsWebappContext}"/>
 <g:set var="useAla" value="${grailsApplication.config.useAla}"/>
@@ -17,21 +17,118 @@
 <g:set var="spatialPortalUrl" value="${grailsApplication.config.spatial.baseURL}"/>
 <g:set var="serverName" value="${grailsApplication.config.site.serverName?:grailsApplication.config.biocacheServicesUrl}"/>
 <g:set var="scientificName" value="${alatag.getScientificName(record: record)}"/>
-
+<g:set var="sensitiveDatasetRaw" value="${grailsApplication.config.sensitiveDataset.list}"/>
+<g:set var="sensitiveDatasets" value="${sensitiveDatasetRaw.split(',')}"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="layout" content="${grailsApplication.config.ala.skin}"/>
     <title>${recordId} | <g:message code="show.occurrenceRecord" default="Occurrence record"/>  | ${hubDisplayName}</title>
-    <r:require module="show"/>
-    <r:script type="text/javascript">
-        //contextPath = "${request.contextPath}";
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        // Global var OCC_REC to pass GSP data to external JS file
         var OCC_REC = {
             userId: "${userId}",
             userDisplayName: "${userDisplayName}",
-            contextPath: "${request.contextPath}"
+            contextPath: "${request.contextPath}",
+            recordUuid: "${record.raw.uuid}",
+            taxonRank: "${record.processed.classification.taxonRank}",
+            taxonConceptID: "${record.processed.classification.taxonConceptID}",
+            sensitiveDatasets: {
+                <g:each var="sds" in="${sensitiveDatasets}"
+                   status="s">'${sds}': '${grailsApplication.config.sensitiveDatasets[sds]}'${s < (sensitiveDatasets.size() - 1) ? ',' : ''}
+                </g:each>
+            }
         }
-    </r:script>
+
+        $(document).ready(function() {
+            <g:if test="${record.processed.attribution.provenance == 'Draft'}">\
+                // draft view button\
+                $('#viewDraftButton').click(function(){
+                    document.location.href = '${record.raw.occurrence.occurrenceID}';
+                });
+            </g:if>
+            <g:if test="${isCollectionAdmin}">
+                $(".confirmVerifyCheck").click(function(e) {
+                    $("#verifyAsk").hide();
+                    $("#verifyDone").show();
+                });
+                $(".cancelVerify").click(function(e) {
+                    //$.fancybox.close(); // TODO fix
+                });
+                $(".closeVerify").click(function(e) {
+                    //$.fancybox.close(); // TODO fix
+                });
+                $(".confirmVerify").click(function(e) {
+                    $("#verifySpinner").show();
+                    var code = "50000";
+                    var userDisplayName = '${userDisplayName}';
+                    var recordUuid = '${record.raw.rowKey.encodeAsURL()}';
+                    var comment = $("#verifyComment").val();
+                    if (!comment) {
+                        alert("Please add a comment");
+                        $("#verifyComment").focus();
+                        $("#verifySpinner").hide();
+                        return false;
+                    }
+                    // send assertion via AJAX... TODO catch errors
+                    $.post("${pageContext.request.contextPath}/occurrences/assertions/add",
+                            { recordUuid: recordUuid, code: code, comment: comment, userId: OCC_REC.userId, userDisplayName: userDisplayName},
+                            function(data) {
+                                // service simply returns status or OK or FORBIDDEN, so assume it worked...
+                                $("#verifyAsk").fadeOut();
+                                $("#verifyDone").fadeIn();
+                            }
+                    ).error(function (request, status, error) {
+                                alert("Error verifying record: " + request.responseText);
+                            }).complete(function() {
+                                $("#verifySpinner").hide();
+                            });
+                });
+            </g:if>
+        }); // end $(document).ready()
+
+        function renderOutlierCharts(data){
+            var chartQuery = null;
+
+            if (OCC_REC.taxonRank  == 'species') {
+                chartQuery = 'species_guid:' + OCC_REC.taxonConceptID.replace(/:/,'\:');
+            } else if (OCC_REC.taxonRank  == 'subspecies') {
+                chartQuery = 'species_guid:' + OCC_REC.taxonConceptID.replace(/:/,'\:');
+            }
+
+            if(chartQuery != null){
+                $.each(data, function() {
+                    drawChart(this.layerId, chartQuery, this.layerId+'Outliers', this.outlierValues, this.recordLayerValue, false);
+                    drawChart(this.layerId, chartQuery, this.layerId+'OutliersCumm', this.outlierValues, this.recordLayerValue, true);
+                })
+            }
+        }
+
+        function drawChart(facetName, biocacheQuery, chartName, outlierValues, valueForThisRecord, cumulative){
+
+            var facetChartOptions = { error: "badQuery", legend: 'right'}
+            facetChartOptions.query = biocacheQuery;
+            facetChartOptions.charts = [chartName];
+            facetChartOptions.backgroundColor = '#FFFEF7';
+            facetChartOptions.width = "75%";
+            facetChartOptions[facetName] = {chartType: 'scatter'};
+
+
+            //additional config
+            facetChartOptions.cumulative = cumulative;
+            facetChartOptions.outlierValues = outlierValues;    //retrieved from WS
+            facetChartOptions.highlightedValue = valueForThisRecord;           //retrieved from the record
+
+            //console.log('Start the drawing...' + chartName);
+            facetChartGroup.loadAndDrawFacetCharts(facetChartOptions);
+            //console.log('Finished the drawing...' + chartName);
+        }
+
+        // Google charts
+        google.load("visualization", "1", {packages:["corechart"]});
+    </script>
+    <r:require module="show"/>
 </head>
 <body>
     %{--<g:set var="json" value="${request.contextPath}/occurrences/${record?.raw?.uuid}.json" />--}%
@@ -236,45 +333,53 @@
                 </g:if>
                 <g:if test="${!isReadOnly && record.processed.attribution.provenance != 'Draft'}">
                     <div class="sidebar">
-                        <button class="btn" id="assertionButton" href="#loginOrFlag">
+                        <button class="btn" id="assertionButton" href="#loginOrFlag" role="button" data-toggle="modal" title="report a problem or suggest a correction for this record">
                             <span id="loginOrFlagSpan" title="Flag an issue" class=""><i class="icon-flag"></i> Flag an issue</span>
                         </button>
-                        <div style="display:none">
-                            <g:if test="${!userId}">
-                                <div id="loginOrFlag">
-                                    Login please
-                                    <a href="https://auth.ala.org.au/cas/login?service=${serverName}${request.contextPath}/occurrences/${record.raw.uuid}">Click here</a>
-                                </div>
-                            </g:if>
-                            <g:else>
-                                <div id="loginOrFlag">
-                                    You are logged in as  <strong>${userDisplayName} (${userEmail})</strong>.
-                                    <form id="issueForm">
-                                        <p style="margin-top:20px;">
-                                            <label for="issue">Issue type:</label>
-                                            <select name="issue" id="issue">
-                                                <g:each in="${errorCodes}" var="code">
-                                                    <option value="${code.code}"><g:message code="${code.name}" default="${code.name}"/></option>
-                                                </g:each>
-                                            </select>
-                                        </p>
-                                        <p style="margin-top:30px;">
-                                            <label for="issueComment" style="vertical-align:top;">Comment:</label>
-                                            <textarea name="comment" id="issueComment" style="width:380px;height:150px;" placeholder="Please add a comment here..."></textarea>
-                                        </p>
-                                        <p style="margin-top:20px;">
-                                            <input id="issueFormSubmit" type="submit" value="Submit" class="btn" />
-                                            <input type="reset" value="Cancel" class="btn" onClick="$.fancybox.close();"/>
-                                            <input type="button" id="close" value="Close" class="btn" style="display:none;"/>
-                                            <span id="submitSuccess"></span>
-                                        </p>
-                                        <p id="assertionSubmitProgress" style="display:none;">
-                                            <img src="${serverName}${request.contextPath}/images/indicator.gif"/>
-                                        </p>
+                        <div id="loginOrFlag" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="loginOrFlagLabel" aria-hidden="true"><!-- BS modal div -->
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h3 id="loginOrFlagLabel">Flag an issue</h3>
+                            </div>
+                            <div class="modal-body">
+                                <g:if test="${!userId}">
+                                    <div style="margin: 20px 0;">Login please:
+                                        <a href="https://auth.ala.org.au/cas/login?service=${serverName}${request.contextPath}/occurrences/${record.raw.uuid}">Click here</a>
+                                    </div>
+                                </g:if>
+                                <g:else>
+                                    <div>
+                                        You are logged in as  <strong>${userDisplayName} (${userEmail})</strong>.
+                                        <form id="issueForm">
+                                            <p style="margin-top:20px;">
+                                                <label for="issue">Issue type:</label>
+                                                <select name="issue" id="issue">
+                                                    <g:each in="${errorCodes}" var="code">
+                                                        <option value="${code.code}"><g:message code="${code.name}" default="${code.name}"/></option>
+                                                    </g:each>
+                                                </select>
+                                            </p>
+                                            <p style="margin-top:30px;">
+                                                <label for="issueComment" style="vertical-align:top;">Comment:</label>
+                                                <textarea name="comment" id="issueComment" style="width:380px;height:150px;" placeholder="Please add a comment here..."></textarea>
+                                            </p>
+                                            <p style="margin-top:20px;">
+                                                <input id="issueFormSubmit" type="submit" value="Submit" class="btn" />
+                                                <input type="reset" value="Cancel" class="btn" onClick="$.fancybox.close();"/>
+                                                <input type="button" id="close" value="Close" class="btn" style="display:none;"/>
+                                                <span id="submitSuccess"></span>
+                                            </p>
+                                            <p id="assertionSubmitProgress" style="display:none;">
+                                                <img src="${serverName}${request.contextPath}/images/indicator.gif"/>
+                                            </p>
 
-                                    </form>
-                                </div>
-                            </g:else>
+                                        </form>
+                                    </div>
+                                </g:else>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-small" data-dismiss="modal" aria-hidden="true" style="float:right;">Close</button>
+                            </div>
                         </div>
                     </div>
                 </g:if>
@@ -283,9 +388,6 @@
                             title="Table showing both original and processed record values">
                         <span id="processedVsRawViewSpan" href="#processedVsRawView" title=""><i class="icon-th"></i> Original vs Processed</span>
                     </button>
-                    %{--<button class="hide" id="showRawProcessed" href="#processedVsRawView" title="Table showing both original and processed record values">--}%
-                        %{--<span id="processedVsRawViewSpan" href="#processedVsRawView" title=""><i class="icon-th"></i> Original vs Processed</span>--}%
-                    %{--</button>--}%
                 </div>
                 <g:if test="${record.images}">
                     <div class="sidebar">
@@ -305,7 +407,7 @@
                                 <g:if test="${record.raw.occurrence.rightsholder}">
                                     <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
                                 </g:if>
-                                <a href="${image.alternativeFormats.imageUrl}" target="_blank">Original image (${formattedImageSizes.get(image.alternativeFormats?.imageUrl)})</a>
+                                <a href="${image.alternativeFormats.imageUrl}" target="_blank">Original image (${formattedImageSizes?.get(image.alternativeFormats?.imageUrl)})</a>
                             </g:each>
                         </div>
                     </div>
@@ -470,7 +572,7 @@
                             <g:if test="${record.processed.location.coordinateUncertaintyInMeters}">
                                 var radius1 = parseInt('${record.processed.location.coordinateUncertaintyInMeters}');
 
-                                if (!isNaN(radius)) {
+                                if (!isNaN(radius1)) {
                                     // Add a Circle overlay to the map.
                                     circle1 = new google.maps.Circle({
                                         map: distroMap,

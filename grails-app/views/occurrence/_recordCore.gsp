@@ -113,10 +113,6 @@
     ${fieldsMap.put("otherCatalogNumbers", true)}
     ${record.raw.occurrence.otherCatalogNumbers}
 </alatag:occurrenceTableRow>
-<alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="citation" fieldName="Record citation">
-    ${fieldsMap.put("citation", true)}
-    ${record.raw.attribution.citation}
-</alatag:occurrenceTableRow>
 <!-- Occurrence ID -->
 <alatag:occurrenceTableRow annotate="true" section="dataset" fieldCode="occurrenceID" fieldName="Occurrence ID">
     ${fieldsMap.put("occurrenceID", true)}
@@ -209,9 +205,10 @@
         <g:elseif test="${record.raw.occurrence.userId}">userId</g:elseif>
         <g:else>recordedBy</g:else>
     </g:set>
-    ${fieldsMap.put("${recordedByField}", true)}
-    <g:set var="rawRecordedBy">${record.raw.occurrence[recordedByField]}</g:set>
-    <g:set var="proRecordedBy">${record.processed.occurrence[recordedByField]}</g:set>
+    <g:set var="recordedByField" value="${recordedByField.trim()}"/>
+    ${fieldsMap.put(recordedByField, true)}
+    <g:set var="rawRecordedBy" value="${record.raw.occurrence[recordedByField]}"/>
+    <g:set var="proRecordedBy" value="${record.processed.occurrence[recordedByField]}"/>
     <g:if test="${record.processed.occurrence[recordedByField] && record.raw.occurrence[recordedByField] && record.processed.occurrence[recordedByField] == record.raw.occurrence[recordedByField]}">
             ${proRecordedBy}
     </g:if>

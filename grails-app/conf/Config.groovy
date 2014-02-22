@@ -207,8 +207,14 @@ grails.cache.config = {
         timeToLiveSeconds 3600
     }
     cache {
+        name 'biocacheCache'
+        timeToLiveSeconds (60 * 5)
+        maxElementsInMemory 20000
+        overflowToDisk true
+    }
+    cache {
         name 'collectoryCache'
-        timeToLiveSeconds 7200
+        timeToLiveSeconds (3600 * 4)
     }
     cache {
         name 'spatialCache'

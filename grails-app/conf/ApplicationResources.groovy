@@ -4,7 +4,7 @@ modules = {
     }
 
     search {
-        //dependsOn 'jquery'
+        dependsOn 'jquery'
         resource url:'css/bootstrapAdditions.css'
         resource url:'css/search.css'
         resource url:'css/jquery.qtip.min.css'
@@ -12,12 +12,15 @@ modules = {
         resource url:'js/jquery.cookie.js'
         resource url:'js/jquery.qtip.min.js'
         resource url:'js/jquery.i18n.properties-1.0.9.js'
-        resource url:'js/search.js'
+        resource url:'js/search.js', disposition: 'head'
     }
 
     show {
+        dependsOn 'jquery'
+        //resource url: "http://www.google.com/jsapi"
         resource url:'css/record.css'
         resource url:'js/audiojs/audio.min.js'
         resource url:'js/moment.min.js'
+        resource url:'js/show.js'
     }
 }

@@ -200,10 +200,10 @@
                     <div class="tab-pane solrResults active" id="recordsView">
                         <div id="searchControls" class="row-fluid">
                             <div class="span4">
-                                <div id="downloads" class="btn btn-small">
+                                <div id="downloads" class="btn btn-small tooltips">
                                     <a href="#download" role="button" data-toggle="modal"  title="Download all ${g.formatNumber(number:sr.totalRecords, format:"#,###,###")} records OR species checklist"><i class="icon-download"></i> Downloads</a>
                                 </div>
-                                <div id="alerts" class="btn btn-small">
+                                <div id="alerts" class="btn btn-small tooltips">
                                     <a href="#alert" role="button" data-toggle="modal" title="Get email alerts for this search"><i class="icon-bell"></i> Alerts</a>
                                 </div>
                             </div>
