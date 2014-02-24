@@ -56,6 +56,7 @@ grails.project.dependency.resolution = {
         //}
         runtime "commons-httpclient:commons-httpclient:3.1"
         runtime "commons-lang:commons-lang:2.6"
+        runtime "net.sf.supercsv:super-csv:2.1.0"
     }
 
     plugins {

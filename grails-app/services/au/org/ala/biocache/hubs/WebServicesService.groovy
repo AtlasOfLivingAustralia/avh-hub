@@ -74,13 +74,19 @@ class WebServicesService {
         return layersMetaMap
     }
 
+    @Cacheable('googleSpreadSheetCache')
+    def String getDataQualityCsv() {
+        String url = grailsApplication.config.dataQualityChecksUrl ?: "https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv"
+        getText(url)
+    }
+
     /**
      * Perform HTTP GET on a JSON web service
      *
      * @param url
      * @return
      */
-    private JSONElement getJsonElements(String url) {
+    def JSONElement getJsonElements(String url) {
         log.debug "(internal) getJson URL = " + url
         def conn = new URL(url).openConnection()
         //JSONObject.NULL.metaClass.asBoolean = {-> false}
@@ -91,10 +97,32 @@ class WebServicesService {
             def json = conn.content.text
             return JSON.parse(json)
         } catch (Exception e) {
-            def error = "Failed to get json (array) from web service (${url}). ${e.getClass()} ${e.getMessage()}, ${e}"
+            def error = "Failed to get json from web service (${url}). ${e.getClass()} ${e.getMessage()}, ${e}"
             log.error error
             return null
         }
 
+    }
+
+    /**
+     * Perform HTTP GET on a text-based web service
+     *
+     * @param url
+     * @return
+     */
+    def String getText(String url) {
+        log.debug "(internal text) getJson URL = " + url
+        def conn = new URL(url).openConnection()
+
+        try {
+            conn.setConnectTimeout(10000)
+            conn.setReadTimeout(50000)
+            def text = conn.content.text
+            return text
+        } catch (Exception e) {
+            def error = "Failed to get text from web service (${url}). ${e.getClass()} ${e.getMessage()}, ${e}"
+            log.error error
+            return null
+        }
     }
 }

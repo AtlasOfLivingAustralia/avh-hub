@@ -87,6 +87,9 @@ if (!ala.baseURL) {
 if (!collections.baseUrl) {
     collections.baseUrl = "http://collections.ala.org.au"
 }
+if (!dataQualityChecksUrl) {
+    dataQualityChecksUrl = "https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv"
+}
 
 /******************************************************************************\
  *  CAS SETTINGS
@@ -218,6 +221,10 @@ grails.cache.config = {
     }
     cache {
         name 'spatialCache'
+        timeToLiveSeconds (3600 * 12)
+    }
+    cache {
+        name 'googleSpreadSheetCache'
         timeToLiveSeconds (3600 * 12)
     }
 }
