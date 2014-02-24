@@ -55,6 +55,7 @@ grails.project.dependency.resolution = {
         //    excludes "icu4j","servlet-api","spring-core","spring-context","spring-context-support","spring-beans","spring-web","spring-mvc"
         //}
         runtime "commons-httpclient:commons-httpclient:3.1"
+        runtime "commons-lang:commons-lang:2.6"
     }
 
     plugins {

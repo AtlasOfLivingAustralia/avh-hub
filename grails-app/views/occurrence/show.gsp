@@ -17,7 +17,7 @@
 <g:set var="spatialPortalUrl" value="${grailsApplication.config.spatial.baseURL}"/>
 <g:set var="serverName" value="${grailsApplication.config.site.serverName?:grailsApplication.config.biocacheServicesUrl}"/>
 <g:set var="scientificName" value="${alatag.getScientificName(record: record)}"/>
-<g:set var="sensitiveDatasetRaw" value="${grailsApplication.config.sensitiveDataset.list}"/>
+<g:set var="sensitiveDatasetRaw" value="${grailsApplication.config.sensitiveDataset?.list?:''}"/>
 <g:set var="sensitiveDatasets" value="${sensitiveDatasetRaw.split(',')}"/>
 <!DOCTYPE html>
 <html>

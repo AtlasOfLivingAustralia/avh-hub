@@ -15,6 +15,12 @@ modules = {
         resource url:'js/search.js', disposition: 'head'
     }
 
+    leaflet {
+        resource url:'css/leaflet.css'
+        resource url:'js/leaflet.js'
+        resource url:'js/leaflet-plugins/layer/tile/Google.js'
+    }
+
     show {
         dependsOn 'jquery'
         //resource url: "http://www.google.com/jsapi"

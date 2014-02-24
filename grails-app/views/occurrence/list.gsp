@@ -12,14 +12,16 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.ala.skin}"/>
     <title><g:message code="search.title" default="Search results"/> | ${hubDisplayName}</title>
-    <r:require module="search"/>
+    <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
+    <r:require modules="search,leaflet"/>
     <r:script type="text/javascript">
         // single global var for app conf settings
         <g:set var="fqParams" value="${(params.fq) ? "&fq=" + params.list('fq')?.join('&fq=') : ''}"/>
+        <g:set var="searchString" value="${raw(sr?.urlParameters).encodeAsURL()}"/>
         var BC_CONF = {
             contextPath: "${request.contextPath}",
             serverName: "${grailsApplication.config.serverName}${request.contextPath}",
-            searchString: "${raw(sr?.urlParameters).encodeAsURL()}", //  JSTL var can contain double quotes // .encodeAsJavaScript()
+            searchString: "${searchString}", //  JSTL var can contain double quotes // .encodeAsJavaScript()
             facetQueries: "${fqParams.encodeAsURL()}",
             queryString: "${queryDisplay.encodeAsJavaScript()}",
             bieWebappUrl: "${grailsApplication.config.bieWebappContext}",
@@ -29,24 +31,15 @@
             resourceName: "${grailsApplication.config.hubDisplayName}",
             facetLimit: "${grailsApplication.config.facetLimit?:50}",
             queryContext: "${grailsApplication.config.biocacheRestService.queryContext}",
-            zoomOutsideAustralia: Boolean("${grailsApplication.config.zoomOutsideAustralia}"),
+            zoomOutsideScopedRegion: Boolean("${grailsApplication.config.zoomOutsideScopedRegion}"),
             mapDefaultCentreCoords:"${grailsApplication.config.mapDefaultCentreCoords}",
             mapDefaultZoom:"${grailsApplication.config.mapDefaultZoom}",
             hasMultimedia: ${hasImages?:'false'} // will be either true or false
         };
-
-        // Conf for map JS (Ajay)
-        //Config.setupUrls("${grailsApplication.config.biocacheRestService.biocacheUriPrefix}", "${grailsApplication.config.biocacheRestService.biocacheRestService.queryContext}");
-        //google.load('maps','3.3',{ other_params: "sensor=false" });
-        //google.load("visualization", "1", {packages:["corechart"]});
     </r:script>
 </head>
 
 <body>
-    %{--<h1><g:message code="heading.list" default="Search results"/></h1>--}%
-    %{--<p>Search for ${sr.queryTitle} returned ${sr.totalRecords} results</p>--}%
-    %{--<p>has images = ${hasImages}</p>--}%
-    %{--<pre>${sr?.toString(2).encodeAsHTML()}</pre>--}%
     <div id="listHeader" class="row-fluid">
         <div class="span5">
             <h1><g:message code="heading.list" default="Search results"/><a name="resultsTop">&nbsp;</a></h1>
@@ -72,7 +65,7 @@
     </g:if>
     <g:elseif test="${sr.totalRecords == 0}">
         <div class="searchInfo">
-            <p>No Records found for <span class="queryDisplay">${queryDisplay?:params.q}</span></p>
+            <p>No records found for <span class="queryDisplay">${queryDisplay?:params.q}</span></p>
         </div>
     </g:elseif>
     <g:else>
@@ -179,11 +172,9 @@
                         %{--<button class="btn btn-primary">Save changes</button>--}%
                     </div>
                 </div><!-- /#alerts -->
-                %{--<div style="display:none">--}%
-                    <g:render template="download"/>
-                %{--</div>--}%
+                <g:render template="download"/>
                 <div style="display:none">
-                    <g:render template="mapVars"/>
+
                 </div>
                 <div class="tabbable">
                     <ul class="nav nav-tabs" data-tabs="tabs">
@@ -292,10 +283,6 @@
                                             <g:if test="${!occurrence.collectionName && occurrence.dataResourceName}">
                                                 <span class="resultListItem"><strong class="resultsLabel">Data&nbsp;Resource:</strong>&nbsp;${occurrence.dataResourceName}</span>
                                             </g:if>
-                                            <%--<g:if test="${occurrence.collector != null && occurrence.collector}">
-                                                <span class="resultListItem"><strong class="resultsLabel">Collector:</strong>&nbsp;${occurrence.collector}</span>
-                                            </g:if>--%>
-
                                             <g:if test="${occurrence.eventDate}">
                                                 <span class="resultListItem"><strong class="resultsLabel">Date:</strong>&nbsp;<g:formatDate value="${occurrence.eventDate}" pattern="yyyy-MM-dd"/></span>
                                             </g:if>
@@ -357,8 +344,6 @@
                             </g:each>
                         </div><!--close results-->
                         <div id="searchNavBar" class="pagination">
-                            <%-- <alatag:searchNavigationLinks totalRecords="${sr.totalRecords}" startIndex="${sr.startIndex}"
-                                                          queryString="${searchRequestParams.q}" lastPage="${lastPage}" pageSize="${sr.pageSize}"/> --%>
                             <g:paginate total="${sr.totalRecords}" max="${sr.pageSize}" offset="${sr.startIndex}" params="${[q:params.q, fq:params.fq]}"/>
                         </div>
                     </div><!--end solrResults-->
@@ -414,15 +399,11 @@
                                 </td>
                             </tr>
                         </table>
-                        <div id="maploading">Loading...</div>
-                        <div id="mapcanvas"></div>
-                        <div id="legend" title="Toggle layers/legend display">
-                            <div class="title">Legend<span>&nabla;</span></div>
-                            <div id="layerlist">
-                                <div id="toggleAll">Toggle all</div>
-                                <div id="legendContent"></div>
-                            </div>
-                        </div>
+                        <g:render template="map"
+                                  model="[mappingUrl:grailsApplication.config.biocacheServicesUrl,
+                                          searchString: searchString,
+                                          queryDisplayString:queryDisplay]"
+                        />
                         <div id='envLegend'></div>
                     </div><!-- end #mapwrapper -->
                     <div id="chartsView" class="tab-pane">
@@ -470,4 +451,11 @@
         </div>
     </g:else>
 </body>
+<r:script type="text/javascript">
+    $(function(){
+        $('#t2').click(function(){
+            initialiseMap();
+        })
+    })
+</r:script>
 </html>
