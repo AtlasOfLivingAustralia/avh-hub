@@ -195,19 +195,19 @@
 
                                 <ul id="systemAssertions">
                                     <li class="failedTestCount">
-                                        <g:message code="failed" default="failed"/>: ${record.systemAssertions.failed?.length()}
+                                        <g:message code="failed" default="failed"/>: ${record.systemAssertions.failed?.size()?:0}
                                     </li>
                                     <li class="warningsTestCount">
-                                        <g:message code="warnings" default="warnings"/>: ${record.systemAssertions.warning.length()}
+                                        <g:message code="warnings" default="warnings"/>: ${record.systemAssertions.warning?.size()?:0}
                                     </li>
                                     <li class="passedTestCount">
-                                        <g:message code="passed" default="passed"/>: ${record.systemAssertions.passed.length()}
+                                        <g:message code="passed" default="passed"/>: ${record.systemAssertions.passed?.size()?:0}
                                     </li>
                                     <li class="missingTestCount">
-                                        <g:message code="missing" default="missing"/>: ${record.systemAssertions.missing.length()}
+                                        <g:message code="missing" default="missing"/>: ${record.systemAssertions.missing?.size()?:0}
                                     </li>
                                     <li class="uncheckedTestCount">
-                                        <g:message code="unchecked" default="unchecked"/>: ${record.systemAssertions.unchecked.length()}
+                                        <g:message code="unchecked" default="unchecked"/>: ${record.systemAssertions.unchecked?.size()?:0}
                                     </li>
 
                                     <li id="dataQualityFurtherDetails">
