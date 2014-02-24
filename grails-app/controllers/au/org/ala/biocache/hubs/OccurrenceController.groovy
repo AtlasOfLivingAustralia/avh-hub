@@ -33,6 +33,10 @@ class OccurrenceController {
             requestParams.dir = "desc"
         }
 
+        if (!params.q) {
+            requestParams.q= "*:*"
+        }
+
         JSONObject searchResults = webServicesService.fullTextSearch(requestParams)
         // log.info "searchResults = ${searchResults.toString(2)}"
         log.info "userid = ${authService.getUserId()}"

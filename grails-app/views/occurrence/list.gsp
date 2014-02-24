@@ -13,7 +13,7 @@
     <meta name="layout" content="${grailsApplication.config.ala.skin}"/>
     <title><g:message code="search.title" default="Search results"/> | ${hubDisplayName}</title>
     <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
-    <r:require modules="search,leaflet"/>
+    <r:require modules="search, leaflet"/>
     <r:script type="text/javascript">
         // single global var for app conf settings
         <g:set var="fqParams" value="${(params.fq) ? "&fq=" + params.list('fq')?.join('&fq=') : ''}"/>
@@ -348,61 +348,14 @@
                         </div>
                     </div><!--end solrResults-->
                     <div id="mapView" class="tab-pane">
-                        <table id="mapLayerControls">
-                            <tr>
-                                <td>
-                                    <label for="colourFacets">Colour by:&nbsp;</label>
-                                    <div class="layerControls">
-                                        <select name="colourFacets" id="colourFacets">
-                                            <option value=""> None </option>
-                                            <g:each var="facetResult" in="${sr.facetResults}">
-                                                <g:set var="Defaultselected">
-                                                    <g:if test="${defaultFacetMapColourBy && facetResult.fieldName == defaultFacetMapColourBy}">selected="selected"</g:if>
-                                                </g:set>
-                                                <g:if test="${facetResult.fieldResult.size() > 1}">
-                                                    <option value="${facetResult.fieldName}" ${Defaultselected}>
-                                                        <alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>
-                                                    </option>
-                                                </g:if>
-                                            </g:each>
-                                        </select>
-                                    </div>
-                                </td>
-                                <g:if test="${skin == 'avh'}">
-                                <td>
-                                    <label for="envLyrList">Environmental layer:&nbsp;</label>
-                                    <div class="layerControls">
-                                        <select id="envLyrList">
-                                            <option value="">None</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                </g:if>
-                                <td>
-                                    <label for="sizeslider">Size:</label>
-                                    <div class="layerControls">
-                                        <span id="sizeslider-val">4</span>
-                                        <div id="sizeslider"></div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <g:set var='spatialPortalLink' value="${sr.urlParameters}"/>
-                                    <g:set var='spatialPortalUrlParams' value="${grailsApplication.config.spatialPortalUrlParams}" />
-                                    <div id="downloadMaps" class="btn btn-small">
-                                        <a id="spatialPortalLink" href="${grailsApplication.config.spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
-                                    </div>
-                                    <div id="downloadMaps" class="btn btn-small">
-                                        <a href="#downloadMap" id="downloadMapLink" title="Download a publication quality map">Download map</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+
                         <g:render template="map"
                                   model="[mappingUrl:grailsApplication.config.biocacheServicesUrl,
                                           searchString: searchString,
-                                          queryDisplayString:queryDisplay]"
+                                          queryDisplayString:queryDisplay,
+                                          facets:sr.facetResults,
+                                          defaultColourBy:defaultFacetMapColourBy
+                                  ]"
                         />
                         <div id='envLegend'></div>
                     </div><!-- end #mapwrapper -->

@@ -172,21 +172,6 @@ class OccurrenceTagLib {
      * @attr skin
      */
     def getRecordId = { attrs ->
-//        <c:when test="${skin == 'avh'}">
-//            <c:set var="recordId" value="${record.raw.occurrence.catalogNumber}"/>
-//        </c:when>
-//        <c:when test="${not empty record.raw.occurrence.collectionCode && not empty record.raw.occurrence.catalogNumber}">
-//            <c:set var="recordId" value="${record.raw.occurrence.collectionCode} - ${record.raw.occurrence.catalogNumber}"/>
-//        </c:when>
-//        <c:when test="${not empty record.processed.attribution.dataResourceName && not empty record.raw.occurrence.catalogNumber}">
-//            <c:set var="recordId" value="${record.processed.attribution.dataResourceName} - ${record.raw.occurrence.catalogNumber}"/>
-//        </c:when>
-//        <c:when test="${not empty record.raw.occurrence.occurrenceID}">
-//            <c:set var="recordId" value="${record.raw.occurrence.occurrenceID}"/>
-//        </c:when>
-//        <c:otherwise>
-//            <c:set var="recordId" value="${record.raw.uuid}"/>
-//        </c:otherwise>
         def record = attrs.record?:null
         def skin = attrs.skin?:"ala"
         def recordId = record.raw.uuid
@@ -210,17 +195,6 @@ class OccurrenceTagLib {
      * @attr record REQUIRED the record object (JsonObject)
      */
     def getScientificName = { attrs ->
-//        <c:choose>
-//            <c:when test="${not empty record.processed.classification.scientificName}">
-//                    ${record.processed.classification.scientificName} ${record.processed.classification.scientificNameAuthorship}
-//            </c:when>
-//            <c:when test="${not empty record.raw.classification.scientificName}">
-//                ${record.raw.classification.scientificName} ${record.raw.classification.scientificNameAuthorship}
-//            </c:when>
-//            <c:otherwise>
-//                    ${record.raw.classification.genus} ${record.raw.classification.specificEpithet}
-//            </c:otherwise>
-//        </c:choose>
         def record = attrs.record
         def sciName = ""
 
@@ -400,7 +374,7 @@ class OccurrenceTagLib {
         def compareRecord = attrs.compareRecord
         Map fieldsMap = attrs.fieldsMap
         def group = attrs.group
-        def exclude = attrs.exclude
+        def exclude = attrs.exclude?:''
         def output = ""
         def mb = new MarkupBuilder(out)
 
@@ -427,9 +401,6 @@ class OccurrenceTagLib {
                 }
             }
         }
-
         out << output
     }
-
-
 }
