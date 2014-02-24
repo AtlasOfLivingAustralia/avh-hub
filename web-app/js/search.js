@@ -378,7 +378,7 @@ $(document).ready(function() {
     // add click even on each record row in results list
     $(".recordRow").click(function(e) {
         e.preventDefault();
-        window.location.href = BC_CONF.contextPath + "/occurrence/" + $(this).attr("id");
+        window.location.href = BC_CONF.contextPath + "/occurrences/" + $(this).attr("id");
     }).hover(function(){
             // mouse in
             $(this).css('cursor','pointer');
