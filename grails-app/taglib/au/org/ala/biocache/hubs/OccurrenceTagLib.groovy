@@ -222,17 +222,69 @@ class OccurrenceTagLib {
 //            </c:otherwise>
 //        </c:choose>
         def record = attrs.record
-        out << "${record?.raw?.classification?.genus} ${record?.raw?.classification?.specificEpithet}"
+        def sciName = ""
+
+        if (record.processed.classification.scientificName) {
+            sciName = record.processed.classification.scientificName
+        } else if (record.raw.classification.scientificName) {
+            sciName = record.raw.classification.scientificName
+        } else {
+            sciName = "${record.raw.classification.genus} ${record.raw.classification.specificEpithet}"
+        }
+        out << sciName
     }
 
     /**
-     * TODO
+     * Print a <li> for user assertions on occurrence record page
      *
      * @attr groupedAssertions REQUIRED
      */
     def groupedAssertions = { attrs ->
-        def groupedAssertions = attrs.groupedAssertions
-        out << "${groupedAssertions} TODO"
+        List groupedAssertions = attrs.groupedAssertions
+//        <c:forEach items="${groupedAssertions}" var="assertion">
+//            <li id="${assertion.usersAssertionUuid}">
+//                <fmt:message key="${assertion.name}"/>
+//                <c:choose>
+//                    <c:when test="${assertion.assertionByUser}">
+//                        <br/>
+//                        <strong>
+//                            ( added by you
+//                            <c:choose>
+//                                <c:when test="${fn:length(assertion.users)>1}">
+//                                    and ${fn:length(assertion.users) - 1} ${fn:length(assertion.users)>2 ? 'other users' : 'other user'})
+//                                </c:when>
+//                                <c:otherwise>
+//                                 )
+//                                </c:otherwise>
+//                            </c:choose>
+//                        </strong>
+//                    </c:when>
+//                    <c:otherwise>
+//                        (added by ${fn:length(assertion.users)} ${fn:length(assertion.users)>1 ? 'users' : 'user'})
+//                    </c:otherwise>
+//                </c:choose>
+//            </li>
+//        </c:forEach>
+        def mb = new MarkupBuilder(out)
+
+        groupedAssertions.each { assertion ->
+
+            mb.li(id: assertion?.usersAssertionUuid) {
+                mkp.yield(g.message(code: "${assertion.name}", default :"${assertion.name}"))
+
+                if (assertion.assertionByUser) {
+                    br()
+                    strong() {
+                        mkp.yield(" (added by you")
+                        if (assertion.users?.size() > 1) {
+                            mkp.yield(" and ${assertion.users.size() - 1} other user${(assertion.users.size() > 2) ? 's':''})")
+                        }
+                    }
+                } else {
+                    mkp.yield(" (added by ${assertion.users?.size()} user${(assertion.users?.size() > 1) ? 's':''})")
+                }
+            }
+        }
     }
 
     /**

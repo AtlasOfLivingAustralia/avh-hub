@@ -18,7 +18,7 @@
 <g:set var="serverName" value="${grailsApplication.config.site.serverName?:grailsApplication.config.biocacheServicesUrl}"/>
 <g:set var="scientificName" value="${alatag.getScientificName(record: record)}"/>
 <g:set var="sensitiveDatasetRaw" value="${grailsApplication.config.sensitiveDataset?.list?:''}"/>
-<g:set var="sensitiveDatasets" value="${sensitiveDatasetRaw.split(',')}"/>
+<g:set var="sensitiveDatasets" value="${sensitiveDatasetRaw?.split(',')}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -217,16 +217,16 @@
                                         </a>
                                     </li>
 
-                                    <g:set var="hasExpertDistribution" value="false"/>
+                                    <g:set var="hasExpertDistribution" value="${false}"/>
                                     <g:each var="systemAssertion" in="${record.systemAssertions.failed}">
                                         <g:if test="${systemAssertion.code == 26}">
-                                            <g:set var="hasExpertDistribution" value="true"/>
+                                            <g:set var="hasExpertDistribution" value="${true}"/>
                                         </g:if>
                                     </g:each>
 
-                                    <g:set var="isDuplicate" value="false"/>
+                                    <g:set var="isDuplicate" value="${false}"/>
                                     <g:if test="${record.processed.occurrence.duplicationStatus}">
-                                        <g:set var="isDuplicate" value="true"/>
+                                        <g:set var="isDuplicate" value="${true}"/>
                                     </g:if>
 
                                     <g:if test="${isDuplicate}">

@@ -9,7 +9,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
  */
 class OccurrenceController {
 
-    def webServicesService, authService
+    def webServicesService, postProcessingService, authService
     def ENVIRO_LAYER = "el"
     def CONTEXT_LAYER = "cl"
 
@@ -40,7 +40,7 @@ class OccurrenceController {
         render view: "list", model: [
                 sr: searchResults,
                 searchRequestParams: requestParams,
-                hasImages: webServicesService.resultsHaveImages(searchResults),
+                hasImages: postProcessingService.resultsHaveImages(searchResults),
                 sort: requestParams.sort,
                 dir: requestParams.dir,
                 userId: authService.getUserId(),
@@ -57,21 +57,24 @@ class OccurrenceController {
     def show(String id) {
 
         JSONObject record = webServicesService.getRecord(id)
+        String userId = authService.getUserId()
 
         if (record) {
             JSONObject compareRecord = webServicesService.getCompareRecord(id)
             JSONObject collectionInfo = webServicesService.getCollectionInfo(record.processed.attribution.collectionUid)
+            List groupedAssertions = postProcessingService.getGroupedAssertions(webServicesService.getUserAssertions(id), webServicesService.getQueryAssertions(id), userId)
             Map layersMetaData = webServicesService.getLayersMetaData()
 
             [
                     record: record,
                     uuid: id,
                     compareRecord: compareRecord,
+                    groupedAssertions: groupedAssertions,
                     collectionName: collectionInfo?.name,
                     collectionLogo: collectionInfo?.institutionLogoUrl,
                     collectionInstitution: collectionInfo?.institution,
-                    environmentalSampleInfo: getLayerSampleInfo(ENVIRO_LAYER, record, layersMetaData),
-                    contextualSampleInfo: getLayerSampleInfo(CONTEXT_LAYER, record, layersMetaData),
+                    environmentalSampleInfo: postProcessingService.getLayerSampleInfo(ENVIRO_LAYER, record, layersMetaData),
+                    contextualSampleInfo: postProcessingService.getLayerSampleInfo(CONTEXT_LAYER, record, layersMetaData),
                     skin: grailsApplication.config.sitemesh.skin?:grailsApplication.config.ala.skin
             ]
         } else {
@@ -107,27 +110,5 @@ class OccurrenceController {
         combined.record = webServicesService.getRecord(id)
         combined.compareRecord = webServicesService.getCompareRecord(id)
         render combined as JSON
-    }
-
-    /*
-     * Private utility methods
-     */
-    private List getLayerSampleInfo(String layerType, JSONObject record, Map layersMetaData) {
-        def sampleInfo = []
-
-        if (record.processed[layerType]) {
-            record.processed[layerType].each {
-                String key = it.key.trim()
-                String value = it.value.trim()
-
-                if (layersMetaData.containsKey(key)) {
-                    Map metaMap = layersMetaData.get(key)
-                    metaMap.value = value
-                    sampleInfo.add(metaMap)
-                }
-            }
-        }
-
-        return sampleInfo.sort{a,b -> (a.classification1 <=> b.classification1 ?: a.layerDisplayName <=> b.layerDisplayName)}
     }
 }

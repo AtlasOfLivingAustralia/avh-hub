@@ -13,40 +13,31 @@ class WebServicesService {
     public static final String CONTEXTUAL = "Contextual"
     def grailsApplication
 
+    @Cacheable('biocacheCache')
     def JSONObject fullTextSearch(SpatialSearchRequestParams requestParams) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrences/search?${requestParams.getEncodedParams()}"
         getJsonElements(url)
     }
 
-    def resultsHaveImages(JSONObject searchResults) {
-        Boolean hasImages = false
-        searchResults.facetResults.each { fr ->
-            if (fr.fieldName == "multimedia") {
-                fr.fieldResult.each {
-                    if (it.label =~ /(?i)image/) {
-                        hasImages = true
-                    }
-                }
-            }
-        }
-        hasImages
-    }
-
+    @Cacheable('biocacheCache')
     def JSONObject getRecord(String id) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrence/${id.encodeAsURL()}"
         getJsonElements(url)
     }
 
+    @Cacheable('biocacheCache')
     def JSONObject getCompareRecord(String id) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrence/compare?uuid=${id.encodeAsURL()}"
         getJsonElements(url)
     }
 
+    @Cacheable('biocacheCache')
     def JSONArray getUserAssertions(String id) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrences/${id.encodeAsURL()}/assertions"
         getJsonElements(url)
     }
 
+    @Cacheable('biocacheCache')
     def JSONArray getQueryAssertions(String id) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrences/${id.encodeAsURL()}/assertionQueries"
         getJsonElements(url)
@@ -83,6 +74,12 @@ class WebServicesService {
         return layersMetaMap
     }
 
+    /**
+     * Perform HTTP GET on a JSON web service
+     *
+     * @param url
+     * @return
+     */
     private JSONElement getJsonElements(String url) {
         log.debug "(internal) getJson URL = " + url
         def conn = new URL(url).openConnection()
@@ -94,9 +91,9 @@ class WebServicesService {
             def json = conn.content.text
             return JSON.parse(json)
         } catch (Exception e) {
-            def error = "{'error': 'Failed to get json (array) from web service. ${e.getClass()} ${e.getMessage()} URL= ${url}.', 'exception': '${e}'}"
+            def error = "Failed to get json (array) from web service (${url}). ${e.getClass()} ${e.getMessage()}, ${e}"
             log.error error
-            return new JSONArray()
+            return null
         }
 
     }
