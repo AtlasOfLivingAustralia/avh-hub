@@ -266,8 +266,8 @@ function refreshUserAnnotations(){
             var $clone = $('#userAnnotationTemplate').clone();
             $clone.find('.issue').text(data.assertionQueries[i].assertionType);
             $clone.find('.user').text(data.assertionQueries[i].userName);
-            $clone.find('.comment').text(data.assertionQueries[i].comment);
-            $clone.find('.created').text(data.assertionQueries[i].created);
+            $clone.find('.comment').text('Comment: ' + data.assertionQueries[i].comment);
+            $clone.find('.created').text('Date created: ' + (moment(data.assertionQueries[i].createdDate).format('YYYY-MM-DD')));
             if(data.assertionQueries[i].recordCount > 1){
                 $clone.find('.viewMore').css({display:'block'});
                 $clone.find('.viewMoreLink').attr('href', OCC_REC.contextPath + '}/occurrences/search?q=query_assertion_uuid:' + data.assertionQueries[i].uuid);
