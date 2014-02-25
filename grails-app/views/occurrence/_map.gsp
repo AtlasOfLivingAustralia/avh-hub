@@ -60,23 +60,23 @@ i.legendColour {
 <table id="mapLayerControls">
 <tr>
     <td>
-        %{--<label for="colourFacets">Colour by:&nbsp;</label>--}%
+        <label for="colourBySelect">Colour by:&nbsp;</label>
 
-        %{--<div class="layerControls">--}%
-            %{--<select name="colourFacets" id="colourFacets">--}%
-                %{--<option value="">None</option>--}%
-                %{--<g:each var="facetResult" in="${facets}">--}%
-                    %{--<g:set var="Defaultselected">--}%
-                        %{--<g:if test="${defaultColourBy && facetResult.fieldName == defaultColourBy}">selected="selected"</g:if>--}%
-                    %{--</g:set>--}%
-                    %{--<g:if test="${facetResult.fieldResult.size() > 1}">--}%
-                        %{--<option value="${facetResult.fieldName}" ${Defaultselected}>--}%
-                            %{--<alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>--}%
-                        %{--</option>--}%
-                    %{--</g:if>--}%
-                %{--</g:each>--}%
-            %{--</select>--}%
-        %{--</div>--}%
+        <div class="layerControls">
+            <select name="colourFacets" id="colourBySelect">
+                <option value="">None</option>
+                <g:each var="facetResult" in="${facets}">
+                    <g:set var="Defaultselected">
+                        <g:if test="${defaultColourBy && facetResult.fieldName == defaultColourBy}">selected="selected"</g:if>
+                    </g:set>
+                    <g:if test="${facetResult.fieldResult.size() > 1}">
+                        <option value="${facetResult.fieldName}" ${Defaultselected}>
+                            <alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>
+                        </option>
+                    </g:if>
+                </g:each>
+            </select>
+        </div>
     </td>
     <g:if test="${skin == 'avh'}">
         <td>
@@ -100,16 +100,16 @@ i.legendColour {
             <div id="sizeslider"></div>
         </div>
     </td>
-    <td>
+    <td class="pull-right">
         <g:set var='spatialPortalLink' value="${sr.urlParameters}"/>
         <g:set var='spatialPortalUrlParams' value="${grailsApplication.config.spatialPortalUrlParams}"/>
         <div id="downloadMaps" class="btn btn-small">
             <a id="spatialPortalLink"
                href="${grailsApplication.config.spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
         </div>
-
         <div id="downloadMaps" class="btn btn-small">
-            <a href="#downloadMap" id="downloadMapLink" title="Download a publication quality map">Download map</a>
+            <a href="#downloadMap" id="downloadMapLink" title="Download a publication quality map">
+                <i class="icon-download"></i> Download map</a>
         </div>
     </td>
 </tr>
@@ -120,33 +120,31 @@ i.legendColour {
 <div id="template" style="display:none">
     <div class="colourbyTemplate">
         <a class="leaflet-control-layers-toggle colour-by-control" href="#" title="Layers"></a>
-
         <form class="leaflet-control-layers-list">
-            <div class="leaflet-control-layers-base">
-                <label>
-                    <span>Colour by:</span>
-                    <select name="colourBySelect" id="colourBySelect">
-                        <g:each var="facetResult" in="${facets}">
-                            <g:set var="Defaultselected">
-                                <g:if test="${defaultColourBy && facetResult.fieldName == defaultColourBy}">selected="selected"</g:if>
-                            </g:set>
-                            <g:if test="${facetResult.fieldResult.size() > 1}">
-                                <option value="${facetResult.fieldName}" ${Defaultselected}>
-                                    <alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>
-                                </option>
-                            </g:if>
-                        </g:each>
-                    </select>
-                </label>
-            </div>
+            %{--<div class="leaflet-control-layers-base">--}%
+                %{--<label>--}%
+                    %{--<span>Colour by:</span>--}%
+                    %{--<select name="colourBySelect" id="colourBySelect">--}%
+                        %{--<g:each var="facetResult" in="${facets}">--}%
+                            %{--<g:set var="Defaultselected">--}%
+                                %{--<g:if test="${defaultColourBy && facetResult.fieldName == defaultColourBy}">selected="selected"</g:if>--}%
+                            %{--</g:set>--}%
+                            %{--<g:if test="${facetResult.fieldResult.size() > 1}">--}%
+                                %{--<option value="${facetResult.fieldName}" ${Defaultselected}>--}%
+                                    %{--<alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>--}%
+                                %{--</option>--}%
+                            %{--</g:if>--}%
+                        %{--</g:each>--}%
+                    %{--</select>--}%
+                %{--</label>--}%
+            %{--</div>--}%
 
-            <div class="leaflet-control-layers-separator"></div>
+            %{--<div class="leaflet-control-layers-separator"></div>--}%
 
             <div class="leaflet-control-layers-overlays">
                 <div style="overflow:auto; max-height:400px;">
                 <table class="legendTable">
                      <tbody>
-
                      </tbody>
                 </table>
                 </div>
@@ -240,11 +238,12 @@ i.legendColour {
 
         $('#colourBySelect').change(function(e) {
             addLayersByFacet();
-            var e1 = $.Event( "mousedown", { which: 1 } );
-            $("body").trigger(e1);
-            console.log('Fire mouseup');
-            var e1 = $.Event( "mouseup", { which: 1 } );
-            $("body").trigger(e1);
+//            var e1 = $.Event( "mousedown", { which: 1 } );
+//            $("body").trigger(e1);
+//            console.log('Fire mouseup');
+//            var e1 = $.Event( "mouseup", { which: 1 } );
+//            $("body").trigger(e1);
+//            $('.colour-by-control').click();
         });
 
         $('.colour-by-control').click(function(e){
@@ -259,16 +258,12 @@ i.legendColour {
             return false;
         });
 //
-//        $('#colourByControl').click(function(e){
+//        $('.colour-by-control-hide').click(function(e){
 //
-//            if($(this).parent().hasClass('leaflet-control-layers-expanded')){
-//                $(this).parent().removeClass('leaflet-control-layers-expanded');
-//            } else {
-//                $(this).parent().addClass('leaflet-control-layers-expanded');
-//            }
-//            e.preventDefault();
-//            e.stopPropagation();
-//            return false;
+//            $(this).removeClass('leaflet-control-layers-expanded');
+////            e.preventDefault();
+////            e.stopPropagation();
+////            return false;
 //        });
     }
 
@@ -316,6 +311,7 @@ i.legendColour {
                             .append($('<td>')
                                 .append($('<input>')
                                     .attr('type', 'checkbox')
+                                    .attr('checked', 'checked')
                                 )
                             )
                             .append($('<td>')
