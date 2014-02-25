@@ -89,7 +89,7 @@
                             <br/>
                         <div class="facetsColumn">
                             <g:each var="facet" in="${defaultFacets}" status="status">
-                                <g:if test="${status.index > 0 && status.index % 18 == 0}">
+                                <g:if test="${status > 0 && status % 18 == 0}">
                                     </div>
                                     <div class="facetsColumn">
                                 </g:if>
@@ -100,7 +100,7 @@
                             <g:if test="${dynamicFacets}"><!-- Sandbox dynamic facets TODO: add to model -->
                                 <div class="facetsColumn">
                                     <h4>Custom facets</h4>
-                                    <g:each var="facet" in="${dynamicFacets}" status="status">
+                                    <g:each var="facet" in="${dynamicFacets}">
                                         <input type="checkbox" name="facets" class="facetOpts" value="${facet.name}"
                                             ${(facet.name) ? 'checked="checked"' : ''}>&nbsp;<alatag:formatDynamicFacetName fieldName="${facet.name}"/><br>
                                     </g:each>

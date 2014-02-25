@@ -6,7 +6,9 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONElement
 import org.codehaus.groovy.grails.web.json.JSONObject
 
-
+/**
+ * Service to perform web service DAO operations
+ */
 class WebServicesService {
 
     public static final String ENVIRONMENTAL = "Environmental"
@@ -43,13 +45,19 @@ class WebServicesService {
         getJsonElements(url)
     }
 
+    @Cacheable('longTermCache')
+    def JSONArray getDefaultFacets() {
+        def url = "${grailsApplication.config.biocacheServicesUrl}/search/facets"
+        getJsonElements(url)
+    }
+
     @Cacheable('collectoryCache')
     def JSONObject getCollectionInfo(String id) {
         def url = "${grailsApplication.config.collections.baseUrl}/lookup/summary/${id.encodeAsURL()}"
         getJsonElements(url)
     }
 
-    @Cacheable('spatialCache')
+    @Cacheable('longTermCache')
     def Map getLayersMetaData() {
         Map layersMetaMap = [:]
         def url = "${grailsApplication.config.spatial.baseURL}/layers.json"
@@ -73,8 +81,12 @@ class WebServicesService {
 
         return layersMetaMap
     }
-
-    @Cacheable('googleSpreadSheetCache')
+    /**
+     * Get the CSV for ALA data quality checks meta data
+     *
+     * @return
+     */
+    @Cacheable('longTermCache')
     def String getDataQualityCsv() {
         String url = grailsApplication.config.dataQualityChecksUrl ?: "https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv"
         getText(url)

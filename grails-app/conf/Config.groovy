@@ -223,11 +223,7 @@ grails.cache.config = {
         timeToLiveSeconds (3600 * 4)
     }
     cache {
-        name 'spatialCache'
-        timeToLiveSeconds (3600 * 12)
-    }
-    cache {
-        name 'googleSpreadSheetCache'
+        name 'longTermCache'
         timeToLiveSeconds (3600 * 12)
     }
 }
@@ -298,5 +294,6 @@ log4j = {
     debug  'grails.app.controllers',
            'grails.app.services',
            //'grails.app.taglib',
+           'au.org.ala.cas',
            'au.org.ala.biocache.hubs'
 }

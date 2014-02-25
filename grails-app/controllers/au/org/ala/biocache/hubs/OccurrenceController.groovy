@@ -37,13 +37,20 @@ class OccurrenceController {
             requestParams.q= "*:*"
         }
 
+        Map defaultFacets = postProcessingService.getAllFacets(webServicesService.getDefaultFacets())
+        String[] userFacets = postProcessingService.getFacetsFromCookie(request)
+        String[] filteredFacets = postProcessingService.getFilteredFacets(defaultFacets)
+        requestParams.facets = userFacets ?: filteredFacets
+
         JSONObject searchResults = webServicesService.fullTextSearch(requestParams)
+
         // log.info "searchResults = ${searchResults.toString(2)}"
         log.info "userid = ${authService.getUserId()}"
 
         render view: "list", model: [
                 sr: searchResults,
                 searchRequestParams: requestParams,
+                defaultFacets: defaultFacets,
                 hasImages: postProcessingService.resultsHaveImages(searchResults),
                 sort: requestParams.sort,
                 dir: requestParams.dir,
