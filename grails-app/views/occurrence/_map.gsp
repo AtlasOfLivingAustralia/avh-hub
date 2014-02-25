@@ -121,32 +121,13 @@ i.legendColour {
     <div class="colourbyTemplate">
         <a class="leaflet-control-layers-toggle colour-by-control" href="#" title="Layers"></a>
         <form class="leaflet-control-layers-list">
-            %{--<div class="leaflet-control-layers-base">--}%
-                %{--<label>--}%
-                    %{--<span>Colour by:</span>--}%
-                    %{--<select name="colourBySelect" id="colourBySelect">--}%
-                        %{--<g:each var="facetResult" in="${facets}">--}%
-                            %{--<g:set var="Defaultselected">--}%
-                                %{--<g:if test="${defaultColourBy && facetResult.fieldName == defaultColourBy}">selected="selected"</g:if>--}%
-                            %{--</g:set>--}%
-                            %{--<g:if test="${facetResult.fieldResult.size() > 1}">--}%
-                                %{--<option value="${facetResult.fieldName}" ${Defaultselected}>--}%
-                                    %{--<alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>--}%
-                                %{--</option>--}%
-                            %{--</g:if>--}%
-                        %{--</g:each>--}%
-                    %{--</select>--}%
-                %{--</label>--}%
-            %{--</div>--}%
-
-            %{--<div class="leaflet-control-layers-separator"></div>--}%
-
             <div class="leaflet-control-layers-overlays">
                 <div style="overflow:auto; max-height:400px;">
-                <table class="legendTable">
-                     <tbody>
-                     </tbody>
-                </table>
+                    <a href="#" class="hideColourControl pull-right" style="padding-left:10px;"><i class="icon-remove icon-grey"></i></a>
+                    <table class="legendTable">
+                         <tbody>
+                         </tbody>
+                    </table>
                 </div>
             </div>
         </form>
@@ -164,19 +145,9 @@ i.legendColour {
     var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
             cmUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
 
-    var minimal   = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr}),
-            midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr}),
-            motorways = L.tileLayer(cmUrl, {styleId: 46561, attribution: cmAttr});
-
-    var gmap_layer = new L.Google('ROADMAP');
-    var gmap_terrain_layer = new L.Google('TERRAIN');
-    var gmap_hybrid_layer = new L.Google('HYBRID');
+    var minimal = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr});
 
     var MAP_VAR = {
-        colourlist : new Array('3366cc', 'dc3912', 'ff99', '109618', '9999', '99c6', 'dd4477',
-                '66aa', 'b82e2e', '316395', '994499', '22aa99', 'aaaa11', '6633cc', 'e673', '8b0707',
-                '651067', '329262', '5574a6', '3b3eac', 'b77322', '16d620', 'b91383', 'f4359e', '9c5935',
-                'a9c413', '2a778d', '668d1c', 'bea413', '0c5922', '743411'),
         mappingUrl : "${mappingUrl}",
         query : "${searchString}",
         queryDisplayString : "${queryDisplayString}",
@@ -184,10 +155,10 @@ i.legendColour {
         overlays : {},
         baseLayers : {
             "Minimal" : minimal,
-            "Night view" : midnight,
-            "Road" : gmap_layer,
-            "Terrain" : gmap_terrain_layer,
-            "Satellite" : gmap_hybrid_layer
+            "Night view" : L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr}),
+            "Road" : new L.Google('ROADMAP'),
+            "Terrain" : new L.Google('TERRAIN'),
+            "Satellite" : new L.Google('HYBRID')
         },
         layerControl : null,
         currentLayers : []
@@ -238,12 +209,6 @@ i.legendColour {
 
         $('#colourBySelect').change(function(e) {
             addLayersByFacet();
-//            var e1 = $.Event( "mousedown", { which: 1 } );
-//            $("body").trigger(e1);
-//            console.log('Fire mouseup');
-//            var e1 = $.Event( "mouseup", { which: 1 } );
-//            $("body").trigger(e1);
-//            $('.colour-by-control').click();
         });
 
         $('.colour-by-control').click(function(e){
@@ -257,14 +222,15 @@ i.legendColour {
             e.stopPropagation();
             return false;
         });
-//
-//        $('.colour-by-control-hide').click(function(e){
-//
-//            $(this).removeClass('leaflet-control-layers-expanded');
-////            e.preventDefault();
-////            e.stopPropagation();
-////            return false;
-//        });
+
+        $('.hideColourControl').click(function(e){
+
+            $('#colourByControl').removeClass('leaflet-control-layers-expanded');
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
+
     }
 
     /**
