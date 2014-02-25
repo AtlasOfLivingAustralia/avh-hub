@@ -407,7 +407,7 @@
                                 <g:if test="${record.raw.occurrence.rightsholder}">
                                     <cite>Rights holder: ${record.raw.occurrence.rightsholder}</cite>
                                 </g:if>
-                                <a href="${image.alternativeFormats.imageUrl}" target="_blank">Original image (${formattedImageSizes?.get(image.alternativeFormats?.imageUrl)})</a>
+                                <a href="${image.alternativeFormats.imageUrl}" target="_blank">Original image (${formattedImageSizes?.get(image.alternativeFormats?.imageUrl)?:'file size not known'})</a>
                             </g:each>
                         </div>
                     </div>
