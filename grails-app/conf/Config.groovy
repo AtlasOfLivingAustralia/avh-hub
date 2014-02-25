@@ -53,6 +53,9 @@ if (!skin.orgNameLong) {
 if (!skin.orgNameShort) {
     skin.orgNameShort = "ALA"
 }
+if(!map.pointColour){
+    map.pointColour = "ffcc00"
+}
 if (!skin.includeBaseUrl) {
     // whether crumb trail should include a home link that is external to this webabpp - ala.baseUrl is used if true
     skin.includeBaseUrl = true

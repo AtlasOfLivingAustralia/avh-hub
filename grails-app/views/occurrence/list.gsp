@@ -379,7 +379,8 @@
                         </div>
                         <div id="speciesGallery">[image gallery should appear here]</div>
                         <div id="loadMoreSpecies" style="display:none;">
-                            <button class="btn">Show more images</button><img style="display:none;" src="${request.contextPath}/static/images/indicator.gif"/>
+                            <button class="btn">Show more images</button>
+                            <img style="display:none;" src="${request.contextPath}/images/indicator.gif"/>
                         </div>
                     </div><!-- end #speciesWrapper -->
                     <g:if test="${showImages}">

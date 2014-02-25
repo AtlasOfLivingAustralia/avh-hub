@@ -52,6 +52,12 @@ class OccurrenceController {
         ]
     }
 
+    def legend(){
+       def legend = webServicesService.getText("http://biocache.ala.org.au/ws/webportal/legend?" + request.queryString)
+       response.setContentType("application/json")
+       render legend
+    }
+
     /**
      * Display an occurrence record
      *

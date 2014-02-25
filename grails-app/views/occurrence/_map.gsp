@@ -6,34 +6,82 @@
     font-size: 12px;
     line-height: 18px;
 }
+
 #leafletMap, input {
-    margin:0px;
+    margin: 0px;
 }
+
+.leaflet-control-layers-base  {
+    font-size: 12px;
+}
+
+.leaflet-control-layers-base label,  .leaflet-control-layers-base input, .leaflet-control-layers-base button, .leaflet-control-layers-base select, .leaflet-control-layers-base textarea {
+    margin:0px;
+    height:20px;
+    font-size: 12px;
+    line-height:18px;
+    width:auto;
+}
+.leaflet-control-layers-overlays label {
+    font-size: 12px;
+    line-height: 18px;
+    margin-bottom: 0px;
+}
+
+.leaflet-drag-target {
+    line-height:18px;
+    font-size: 12px;
+}
+
+i.legendColour {
+    -webkit-background-clip: border-box;
+    -webkit-background-origin: padding-box;
+    -webkit-background-size: auto;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-image: none;
+    background-origin: padding-box;
+    background-size: auto;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    width: 14px;
+}
+
+.legendTable  {
+    align: left;
+}
+.legendTable tr td  {
+    vertical-align: top;
+}
+
 </style>
 
 <table id="mapLayerControls">
 <tr>
     <td>
-        <label for="colourFacets">Colour by:&nbsp;</label>
-        <div class="layerControls">
-            <select name="colourFacets" id="colourFacets">
-                <option value=""> None </option>
-                <g:each var="facetResult" in="${facets}">
-                    <g:set var="Defaultselected">
-                        <g:if test="${defaultColourBy && facetResult.fieldName == defaultColourBy}">selected="selected"</g:if>
-                    </g:set>
-                    <g:if test="${facetResult.fieldResult.size() > 1}">
-                        <option value="${facetResult.fieldName}" ${Defaultselected}>
-                            <alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>
-                        </option>
-                    </g:if>
-                </g:each>
-            </select>
-        </div>
+        %{--<label for="colourFacets">Colour by:&nbsp;</label>--}%
+
+        %{--<div class="layerControls">--}%
+            %{--<select name="colourFacets" id="colourFacets">--}%
+                %{--<option value="">None</option>--}%
+                %{--<g:each var="facetResult" in="${facets}">--}%
+                    %{--<g:set var="Defaultselected">--}%
+                        %{--<g:if test="${defaultColourBy && facetResult.fieldName == defaultColourBy}">selected="selected"</g:if>--}%
+                    %{--</g:set>--}%
+                    %{--<g:if test="${facetResult.fieldResult.size() > 1}">--}%
+                        %{--<option value="${facetResult.fieldName}" ${Defaultselected}>--}%
+                            %{--<alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>--}%
+                        %{--</option>--}%
+                    %{--</g:if>--}%
+                %{--</g:each>--}%
+            %{--</select>--}%
+        %{--</div>--}%
     </td>
     <g:if test="${skin == 'avh'}">
         <td>
             <label for="envLyrList">Environmental layer:&nbsp;</label>
+
             <div class="layerControls">
                 <select id="envLyrList">
                     <option value="">None</option>
@@ -45,17 +93,21 @@
     </g:if>
     <td>
         <label for="sizeslider">Size:</label>
+
         <div class="layerControls">
             <span id="sizeslider-val">4</span>
+
             <div id="sizeslider"></div>
         </div>
     </td>
     <td>
         <g:set var='spatialPortalLink' value="${sr.urlParameters}"/>
-        <g:set var='spatialPortalUrlParams' value="${grailsApplication.config.spatialPortalUrlParams}" />
+        <g:set var='spatialPortalUrlParams' value="${grailsApplication.config.spatialPortalUrlParams}"/>
         <div id="downloadMaps" class="btn btn-small">
-            <a id="spatialPortalLink" href="${grailsApplication.config.spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
+            <a id="spatialPortalLink"
+               href="${grailsApplication.config.spatialPortalUrl}${spatialPortalLink}${spatialPortalUrlParams}">View in spatial portal</a>
         </div>
+
         <div id="downloadMaps" class="btn btn-small">
             <a href="#downloadMap" id="downloadMapLink" title="Download a publication quality map">Download map</a>
         </div>
@@ -64,34 +116,45 @@
 </table>
 
 <div id="leafletMap" class="span12" style="height:600px;"></div>
+
 <div id="template" style="display:none">
     <div class="colourbyTemplate">
         <a class="leaflet-control-layers-toggle colour-by-control" href="#" title="Layers"></a>
+
         <form class="leaflet-control-layers-list">
             <div class="leaflet-control-layers-base">
                 <label>
-                    <span>Colour by: </span>
-                    <select name="colourBySelect">
-                        <option>Specimen type</option>
-                        <option>Dataset</option>
-                        <option>Collector</option>
+                    <span>Colour by:</span>
+                    <select name="colourBySelect" id="colourBySelect">
+                        <g:each var="facetResult" in="${facets}">
+                            <g:set var="Defaultselected">
+                                <g:if test="${defaultColourBy && facetResult.fieldName == defaultColourBy}">selected="selected"</g:if>
+                            </g:set>
+                            <g:if test="${facetResult.fieldResult.size() > 1}">
+                                <option value="${facetResult.fieldName}" ${Defaultselected}>
+                                    <alatag:formatDynamicFacetName fieldName="${facetResult.fieldName}"/>
+                                </option>
+                            </g:if>
+                        </g:each>
                     </select>
                 </label>
             </div>
+
             <div class="leaflet-control-layers-separator"></div>
+
             <div class="leaflet-control-layers-overlays">
-                <label><input type="checkbox" class="leaflet-control-layers-selector" checked=""><span>
-                    <img src="http://biocache.ala.org.au/ws/occurrences/legend?colourby=3368652&amp;width=10&amp;height=10&amp;qc="/> Observation</span></label>
-                <label><input type="checkbox" class="leaflet-control-layers-selector" checked=""><span>
-                    <img src="http://biocache.ala.org.au/ws/occurrences/legend?colourby=3368652&amp;width=10&amp;height=10&amp;qc="/> Specimen</span></label>
-                <label><input type="checkbox" class="leaflet-control-layers-selector" checked=""><span>
-                    <img src="http://biocache.ala.org.au/ws/occurrences/legend?colourby=3368652&amp;width=10&amp;height=10&amp;qc="/> GenomicDNA</span></label>
-                <label><input type="checkbox" class="leaflet-control-layers-selector" checked=""><span>
-                    <img src="http://biocache.ala.org.au/ws/occurrences/legend?colourby=3368652&amp;width=10&amp;height=10&amp;qc="/> Image</span></label>
+                <div style="overflow:auto; max-height:400px;">
+                <table class="legendTable">
+                     <tbody>
+
+                     </tbody>
+                </table>
+                </div>
             </div>
         </form>
     </div>
 </div>
+
 
 <div id="recordPopup" style="display:none;">
     <a href="#">View records at this point</a>
@@ -99,6 +162,17 @@
 
 
 <r:script>
+
+    var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+            cmUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
+
+    var minimal   = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr}),
+            midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr}),
+            motorways = L.tileLayer(cmUrl, {styleId: 46561, attribution: cmAttr});
+
+    var gmap_layer = new L.Google('ROADMAP');
+    var gmap_terrain_layer = new L.Google('TERRAIN');
+    var gmap_hybrid_layer = new L.Google('HYBRID');
 
     var MAP_VAR = {
         colourlist : new Array('3366cc', 'dc3912', 'ff99', '109618', '9999', '99c6', 'dd4477',
@@ -108,40 +182,43 @@
         mappingUrl : "${mappingUrl}",
         query : "${searchString}",
         queryDisplayString : "${queryDisplayString}",
-        facetLimit : 30,
-        foffset : 0,
         map : null,
-        queryLayers : new Array(),
         overlays : {},
-        baseLayers : null,
-        layerControl : null,
-        currentLayers : []
-    };
-
-    function initialiseMap(){
-
-        //add a base layer
-        var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-                cmUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
-
-        var minimal   = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr}),
-                midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr}),
-                motorways = L.tileLayer(cmUrl, {styleId: 46561, attribution: cmAttr});
-
-        var gmap_layer = new L.Google('ROADMAP');
-        var gmap_terrain_layer = new L.Google('TERRAIN');
-        var gmap_sat_layer = new L.Google('SATELLITE');
-        var gmap_hybrid_layer = new L.Google('HYBRID');
-
-        MAP_VAR.baseLayers = {
+        baseLayers : {
             "Minimal" : minimal,
             "Night view" : midnight,
             "Road" : gmap_layer,
             "Terrain" : gmap_terrain_layer,
-            "Hybrid" : gmap_hybrid_layer,
-            "Satellite" : gmap_sat_layer
-        };
+            "Satellite" : gmap_hybrid_layer
+        },
+        layerControl : null,
+        currentLayers : []
+    };
 
+    var ColourByControl = L.Control.extend({
+        options: {
+            position: 'topright',
+            collapsed: false
+        },
+        onAdd: function (map) {
+            // create the control container with a particular class name
+            var $controlToAdd = $('.colourbyTemplate').clone();
+            var container = L.DomUtil.create('div', 'leaflet-control-layers');
+            var $container = $(container);
+            $container.attr("id","colourByControl");
+            $container.attr('aria-haspopup', true);
+            $container.html($controlToAdd.html());
+            return container;
+        }
+    });
+
+    function initialiseMap(){
+
+        if(MAP_VAR.map != null){
+            return;
+        }
+
+        //initialise map
         MAP_VAR.map = L.map('leafletMap', {
             center: [-23.6,133.6],
             zoom: 4
@@ -150,45 +227,54 @@
         //add the default base layer
         MAP_VAR.map.addLayer(minimal);
 
-        MAP_VAR.layerControl = L.control.layers(MAP_VAR.baseLayers, MAP_VAR.overlays, {collapsed:true});
+        MAP_VAR.layerControl = L.control.layers(MAP_VAR.baseLayers, MAP_VAR.overlays, {collapsed:true, position:'topleft'});
         MAP_VAR.layerControl.addTo(MAP_VAR.map);
 
         addLayersByFacet();
 
-        MAP_VAR.map.on('click', onMapClick);
+        MAP_VAR.map.addControl(new ColourByControl());
 
-        var MyControl = L.Control.extend({
-            options: {
-                position: 'topright',
-                collapsed: true
-            },
-            onAdd: function (map) {
-                // create the control container with a particular class name
-                var $controlToAdd = $('.colourbyTemplate').clone();
-                var container = L.DomUtil.create('div', 'leaflet-control-layers');
-                var $container = $(container);
-                $container.attr('aria-haspopup', true);
-                $container.html($controlToAdd.html());
-                return container;
-            }
+        MAP_VAR.map.on('click', pointLookup);
+
+        L.Util.requestAnimFrame(MAP_VAR.map.invalidateSize, MAP_VAR.map, !1, MAP_VAR.map._container);
+
+        $('#colourBySelect').change(function(e) {
+            addLayersByFacet();
+            var e1 = $.Event( "mousedown", { which: 1 } );
+            $("body").trigger(e1);
+            console.log('Fire mouseup');
+            var e1 = $.Event( "mouseup", { which: 1 } );
+            $("body").trigger(e1);
         });
 
-//        map.addControl(new MyControl());
+        $('.colour-by-control').click(function(e){
 
-        %{--$('.colour-by-control').click(function(){--}%
-            %{--$(this).parent().addClass('leaflet-control-layers-expanded');--}%
-        %{--});--}%
+            if($(this).parent().hasClass('leaflet-control-layers-expanded')){
+                $(this).parent().removeClass('leaflet-control-layers-expanded');
+            } else {
+                $(this).parent().addClass('leaflet-control-layers-expanded');
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
+//
+//        $('#colourByControl').click(function(e){
+//
+//            if($(this).parent().hasClass('leaflet-control-layers-expanded')){
+//                $(this).parent().removeClass('leaflet-control-layers-expanded');
+//            } else {
+//                $(this).parent().addClass('leaflet-control-layers-expanded');
+//            }
+//            e.preventDefault();
+//            e.stopPropagation();
+//            return false;
+//        });
+    }
 
-
-    L.Util.requestAnimFrame(MAP_VAR.map.invalidateSize, MAP_VAR.map, !1, MAP_VAR.map._container);
-
-    $('#colourFacets').change(function() {
-        //remove the existing layers
-//        alert('Colour by: ' + $('#colourFacets').val())
-        addLayersByFacet();
-    });
-}
-
+    /**
+     * A tile layer to map colouring the dots by the selected colour.
+     */
     function addLayersByFacet(){
 
         console.log('Current layers - ' + MAP_VAR.currentLayers.length);
@@ -199,9 +285,9 @@
 
         MAP_VAR.currentLayers = [];
 
-        var colourByFacet = $('#colourFacets').val();
+        var colourByFacet = $('#colourBySelect').val();
 
-        var envProperty = "color:ff9900;name:circle;size:5;opacity:1"
+        var envProperty = "color:${grailsApplication.config.map.pointColour};name:circle;size:5;opacity:1"
 
         if(colourByFacet){
             envProperty = "colormode:" + colourByFacet +";name:circle;size:5;opacity:1"
@@ -216,87 +302,82 @@
             outline:"true",
             ENV: envProperty
         });
+
+        //update the legend
+        $('.legendTable').find('tbody').html('<tr><td>Loading legend....</td></tr>');
+        $.ajax({
+            url: "${grailsApplication.config.security.cas.contextPath}/occurrence/legend" + MAP_VAR.query + "&cm=" + colourByFacet + "&type=application/json",
+            success: function(data) {
+                $('.legendTable').find('tbody').html('');
+                $.each(data, function(index, legendDef){
+                    var legItemName = legendDef.name ? legendDef.name : 'Not specified';
+                    $(".legendTable").find('tbody')
+                        .append($('<tr>')
+                            .append($('<td>')
+                                .append($('<input>')
+                                    .attr('type', 'checkbox')
+                                )
+                            )
+                            .append($('<td>')
+                                .append($('<i>')
+                                    .addClass('legendColour')
+                                    .attr('style', "background-color:rgb("+ legendDef.red +","+ legendDef.green +","+ legendDef.blue + ");")
+                                )
+                            )
+                            .append($('<td>')
+                                .html(legItemName)
+                            )
+                        );
+                });
+            }
+        });
+
         MAP_VAR.layerControl.addOverlay(layer, 'query layer');
         MAP_VAR.map.addLayer(layer);
         MAP_VAR.currentLayers.push(layer);
     }
 
+    function rgbToHex(redD, greenD, blueD){
+        var red = parseInt(redD);
+        var green = parseInt(greenD);
+        var blue = parseInt(blueD);
 
+        var rgb = blue | (green << 8) | (red << 16);
+        return rgb.toString(16);
+    }
 
-%{--function addLayersByFacetXXXXXX(map, layerControl, colourByFacet){--}%
+    /**
+     * Event handler for point lookup.
+     * @param e
+     */
+    function pointLookup(e) {
 
-    %{--var jsonUri = BC_CONF.biocacheServiceUrl + "/occurrences/search.json"--}%
-        %{--+ query +--}%
-        %{--"&flimit=" + facetLimit + "&foffset=" + foffset + "&pageSize=0";--}%
+        console.log('pointLookup fired');
+        console.log(e.target);
 
+        var popup = L.popup()
+            .setLatLng(e.latlng)
+            .setContent("<div>Loading....</div>")
+            .openOn(MAP_VAR.map);
 
-    %{--if(colourByFacet){--}%
-       %{--jsonUri = jsonUri + "&facets=" + colourByFacet;--}%
-    %{--}--}%
-
-    %{--jsonUri = jsonUri + "&callback=?";--}%
-
-    %{--//remove existing layers--}%
-
-
-    %{--$.each(currentLayers, function(value, index){--}%
-        %{--layerControl.removeLayer(currentLayers[index]);--}%
-    %{--});--}%
-
-    %{--currentLayers = [];--}%
-
-
-    %{--$.getJSON(jsonUri, function(data) {--}%
-        %{--//console.log("data",data);--}%
-        %{--if (data.totalRecords && data.totalRecords > 0) {--}%
-            %{--$.each(data.facetResults[0].fieldResult, function(index, value){--}%
-                %{--console.log(value.label + " = " + value.count);--}%
-                %{--if(value.count > 0){--}%
-                    %{--var queryLayer = L.tileLayer.wms(mappingUrl + "/webportal/wms/reflect" + query + '&fq=' + colourByFacet + '%3A'+ value.label, {--}%
-                        %{--layers: 'ALA:occurrences',--}%
-                        %{--format: 'image/png',--}%
-                        %{--transparent: true,--}%
-                        %{--attribution: "${grailsApplication.config.skin.orgNameLong}",--}%
-                        %{--bgcolor:"0x000000",--}%
-                        %{--outline:"true",--}%
-                        %{--ENV: "color:" + colourlist[index] +";name:circle;size:5;opacity:1"--}%
-                    %{--});--}%
-                    %{--layerControl.addOverlay(queryLayer, value.label);--}%
-                    %{--map.addLayer(queryLayer);--}%
-                    %{--currentLayers.push(queryLayer);--}%
-                %{--}--}%
-            %{--});--}%
-        %{--}--}%
-    %{--});--}%
-%{--}--}%
-
-
-function onMapClick(e) {
-//    alert('clicked');
-
-    var popup = L.popup()
-        .setLatLng(e.latlng)
-        .setContent("<div>Loading....</div>")
-        .openOn(MAP_VAR.map);
-
-    $.ajax({
-        url: MAP_VAR.mappingUrl + "/occurrences/info" + MAP_VAR.query,
-        jsonp: "callback",
-        dataType: "jsonp",
-        data: {
-            zoom: MAP_VAR.map.getZoom(),
-            lat: e.latlng.lat,
-            lon: e.latlng.lng,
-            radius: 20,
-            format: "json"
-        },
-        success: function(response) {
-            if(response.count){
-                popup.setContent("<div><h3>Records: " + response.count + "</h3></div>");
-            } else {
-                popup.setContent("<div>No records at this point</div>");
+        $.ajax({
+            url: MAP_VAR.mappingUrl + "/occurrences/info" + MAP_VAR.query,
+            jsonp: "callback",
+            dataType: "jsonp",
+            data: {
+                zoom: MAP_VAR.map.getZoom(),
+                lat: e.latlng.lat,
+                lon: e.latlng.lng,
+                radius: 20,
+                format: "json"
+            },
+            success: function(response) {
+                if(response.count){
+                    popup.setContent("<div><h3>Records: " + response.count + "</h3></div>");
+                } else {
+                    popup.setContent("<div>No records at this point</div>");
+                }
             }
-        }
-    });
-}
+        });
+    }
 </r:script>
