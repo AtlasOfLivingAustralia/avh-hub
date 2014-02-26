@@ -51,6 +51,7 @@ class OccurrenceController {
                 sr: searchResults,
                 searchRequestParams: requestParams,
                 defaultFacets: defaultFacets,
+                groupedFacets: webServicesService.getGroupedFacets(),
                 hasImages: postProcessingService.resultsHaveImages(searchResults),
                 sort: requestParams.sort,
                 dir: requestParams.dir,

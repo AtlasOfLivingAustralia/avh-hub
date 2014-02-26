@@ -51,6 +51,20 @@ class WebServicesService {
         getJsonElements(url)
     }
 
+    @Cacheable('longTermCache')
+    def Map getGroupedFacets() {
+        def url = "${grailsApplication.config.biocacheServicesUrl}/search/grouped/facets"
+        JSONArray groupedArray = getJsonElements(url)
+        Map groupedMap = [:] // LinkedHashMap by default so ordering is maintained
+
+        // simplify DS into a Map with key as group name and value as list of facets
+        groupedArray.each { group ->
+            groupedMap.put(group.title, group.facets.collect { it.field })
+        }
+
+        groupedMap
+    }
+
     @Cacheable('collectoryCache')
     def JSONObject getCollectionInfo(String id) {
         def url = "${grailsApplication.config.collections.baseUrl}/lookup/summary/${id.encodeAsURL()}"
@@ -137,4 +151,5 @@ class WebServicesService {
             return null
         }
     }
+
 }

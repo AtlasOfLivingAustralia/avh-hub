@@ -87,16 +87,23 @@
                             Select:
                             <a href="#" id="selectAll">All</a> | <a href="#" id="selectNone">None</a>
                             <br/>
-                        <div class="facetsColumn">
-                            <g:each var="facet" in="${defaultFacets}" status="status">
-                                <g:if test="${status > 0 && status % 18 == 0}">
-                                    </div>
-                                    <div class="facetsColumn">
-                                </g:if>
-                                <input type="checkbox" name="facets" class="facetOpts" value="${facet.key}"
-                                    ${(facet.value) ? 'checked="checked"' : ''}>&nbsp;<g:message code="facet.${facet.key}"/><br>
+                            %{--<div class="facetsColumn">--}%
+                            <%-- iterate over the groupedFacets, checking the defaultFacets for each entry --%>
+                            <g:set var="count" value="${0}"/>
+                            <g:each var="group" in="${groupedFacets}">
+                                <div class="facetsColumn">
+                                    <div class="facetGroupName">${group.key}</div>
+                                    <g:each in="${group.value}" var="facetFromGroup">
+                                        %{--<g:set var="facet" value="${defaultFacets.get(facetFromGroup)}"/>--}%
+                                        <g:if test="${defaultFacets.containsKey(facetFromGroup)}">
+                                            <g:set var="count" value="${count+1}"/>
+                                            <input type="checkbox" name="facets" class="facetOpts" value="${facetFromGroup}"
+                                                ${(defaultFacets.get(facetFromGroup)) ? 'checked=checked' : ''}>&nbsp;<g:message code="facet.${facetFromGroup}"/><br>
+                                        </g:if>
+                                    </g:each>
+                                </div>
                             </g:each>
-                        </div>
+                            %{--</div>--}%
                             <g:if test="${dynamicFacets}"><!-- Sandbox dynamic facets TODO: add to model -->
                                 <div class="facetsColumn">
                                     <h4>Custom facets</h4>

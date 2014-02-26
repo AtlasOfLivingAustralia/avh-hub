@@ -699,6 +699,12 @@ img.optionsIcon {
     margin: 0 auto;
 }
 
+.facetGroupName {
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
 table#fullFacets thead th {
     border-bottom: 1px solid #D9D9D9;
 }

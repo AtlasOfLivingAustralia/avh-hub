@@ -23,7 +23,7 @@ class PostProcessingService {
      */
     def Boolean resultsHaveImages(JSONObject searchResults) {
         Boolean hasImages = false
-        searchResults.facetResults.each { fr ->
+        searchResults?.facetResults?.each { fr ->
             if (fr.fieldName == "multimedia") {
                 fr.fieldResult.each {
                     if (it.label =~ /(?i)image/) {
