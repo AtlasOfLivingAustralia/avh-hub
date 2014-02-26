@@ -67,16 +67,16 @@
     <g:layoutHead />
 </head>
 <body class="${pageProperty(name:'body.class')?:'nav-datasets'}" id="${pageProperty(name:'body.id')}" onload="${pageProperty(name:'body.onload')}">
+<g:set var="fluidLayout" value="${grailsApplication.config.skin.fluidLayout}"/>
+<hf:banner logoutUrl="${grailsApplication.config.grails.serverURL}/logout/logout" fluidLayout="${true}"/>
 
-<hf:banner logoutUrl="${grailsApplication.config.grails.serverURL}/logout/logout"/>
+<hf:menu fluidLayout="${true}"/>
 
-<hf:menu/>
-
-<div class="container" id="content">
+<div class="${fluidLayout?'container-fluid':'container'}" id="main-content">
     <g:layoutBody />
 </div><!--/.container-->
 
-<div class="container hidden-desktop">
+<div class="${fluidLayout?'container-fluid':'container'} hidden-desktop">
     <%-- Borrowed from http://marcusasplund.com/optout/ --%>
     <a class="btn btn-small toggleResponsive"><i class="icon-resize-full"></i> <span>Desktop</span> version</a>
     %{--<a class="btn btn-small toggleResponsive"><i class="icon-resize-full"></i> Desktop version</a>--}%

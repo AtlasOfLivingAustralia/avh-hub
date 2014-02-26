@@ -149,7 +149,7 @@
             </div><!-- /.span3 -->
         </div><!-- /#searchInfoRow -->
         <!--  Second row - facet column and results column -->
-        <div class="row-fluid">
+        <div class="row-fluid" id="content">
             <div class="span3">
                 <g:render template="facets" />
             </div>

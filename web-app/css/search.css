@@ -291,7 +291,7 @@ div#currentFilter {
 /*}*/
 
 #resultsReturned {
-    margin-left: -20px; /* Fix for absolutely positioned costomise button to the left */
+    margin-left: -30px; /* Fix for absolutely positioned customise button to the left */
     font-size: 16px;
 }
 
@@ -765,7 +765,7 @@ tr#loadingRow td {
     width: 490px;
 }
 
-div#content2 div#envLegend {
+div#content div#envLegend {
     padding-top: 5px;
     line-height: 2em;
 }

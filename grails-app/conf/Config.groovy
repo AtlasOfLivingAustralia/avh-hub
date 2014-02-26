@@ -66,6 +66,9 @@ if (!skin.headerUrl) {
 if (!skin.footerUrl) {
     skin.footerUrl = "classpath:resources/generic-footer.jsp" // can be external URL
 }
+if (!skin.fluidLayout) {
+    skin.fluidLayout = true // true or false
+}
 /******************************************************************************\
  *  EXTERNAL SERVERS
  \******************************************************************************/
