@@ -102,8 +102,8 @@ class OccurrenceController {
     }
 
     /**
-     * Create combined asssertions JSON web service from the user and quality assertion services
-     * on biocahce-service.
+     * Create combined assertions JSON web service from the user and quality assertion services
+     * on biocache-service.
      * Note: mapped to URL: /assertions/$id to avoid CAS cookie check
      *
      * @param id
@@ -121,7 +121,7 @@ class OccurrenceController {
      * JSON webservices for debugging/testing
      */
     def searchJson (SpatialSearchRequestParams requestParams) {
-        render webServicesService.fullTextSearch(requestParams)
+        render webServicesService.fullTextSearch(requestParams) as JSON
     }
 
     def showJson (String id) {

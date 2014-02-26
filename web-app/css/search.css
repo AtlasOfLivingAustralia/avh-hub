@@ -109,7 +109,7 @@ form {
 
 #facetWell h3 {
     margin: 0;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     line-height: normal;
 }
 
@@ -232,7 +232,7 @@ form {
     /*padding-left: 24px;*/
 }
 
-#content .sidebar > .subnavlist > ul {
+#content .sidebar .subnavlist > ul {
     list-style: none;
     margin-left: -4px;
 }
@@ -265,7 +265,7 @@ div#currentFilter {
     /*border-radius: 5px;*/
     margin-left: -2px;
     margin-right: 4px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     /*margin-top: 2px;*/
     padding-left: 5px;
 }
@@ -700,9 +700,45 @@ img.optionsIcon {
 }
 
 .facetGroupName {
+    margin-left: -10px;
+    margin-right: -10px;
+    padding: 8px 10px 3px 10px;
+    border-top: 1px solid silver;
     font-weight: bold;
     font-size: 14px;
     margin-top: 5px;
+}
+
+.facetsGroup {
+    margin-left: 8px;
+    margin-bottom: 10px;
+}
+
+#facetWell .caret {
+    margin-top: 8px;
+    margin-left: -2px;
+    margin-right: 2px;
+}
+
+#facetWell .right-caret {
+    margin-top: 6px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.right-caret {
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-left: 4px solid #000000;
+    display: inline-block;
+    height: 0;
+    /*opacity: 0.3;*/
+    vertical-align: top;
+    width: 0;
+}
+
+.facetGroupName > .showHideFacetGroup, .facetGroupName > .showHideFacetGroup:hover {
+    text-decoration: none;
 }
 
 table#fullFacets thead th {

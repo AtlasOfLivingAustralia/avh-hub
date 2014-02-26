@@ -403,4 +403,10 @@ class OccurrenceTagLib {
         }
         out << output
     }
+
+    def substituteFacetNames = { attrs ->
+        def facet = attrs.facet
+        Map facetNameSynonyms = grailsApplication.config.facet.synonyms // from Config.groovy ONLY
+        
+    }
 }

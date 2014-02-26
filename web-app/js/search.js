@@ -569,6 +569,14 @@ $(document).ready(function() {
         callback: function(){} //alert( "facet.conservationStatus = " + jQuery.i18n.prop('facet.conservationStatus')); }
     });
 
+    // Show/hide the facet groups
+    $('.showHideFacetGroup').click(function(e) {
+        e.preventDefault();
+        var name = $(this).data('name');
+        $(this).find('span').toggleClass('right-caret');
+        $('#group_' + name).slideToggle(600);
+    });
+
 }); // end JQuery document ready
 
 /**
