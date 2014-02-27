@@ -477,12 +477,13 @@ $(document).ready(function() {
      * Load Spring i18n messages into JS
      */
     jQuery.i18n.properties({
-        name:'Messages',
+        name:'messages',
         path: BC_CONF.contextPath + '/messages/i18n/',
         mode:'map',
-        //language:'en', // default is to use browser specified locale
-        callback: function(){} //alert( "facet.conservationStatus = " + jQuery.i18n.prop('facet.conservationStatus')); }
+        //language:'es', // default is to use browser specified locale
+        //callback: function(){} //alert( "facet.conservationStatus = " + jQuery.i18n.prop('facet.conservationStatus')); }
     });
+    //alert( "default.paginate.prev = " + jQuery.i18n.prop('default.paginate.prev'));
 
     // Show/hide the facet groups
     $('.showHideFacetGroup').click(function(e) {

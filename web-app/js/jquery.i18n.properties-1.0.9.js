@@ -65,15 +65,24 @@ $.i18n.properties = function(settings) {
 	// load and parse bundle files
 	var files = getFiles(settings.name);
 	for(i=0; i<files.length; i++) {
-		// 1. load base (eg, Messages.properties)
-		loadAndParseFile(settings.path + files[i] + '.properties', settings);
-        // 2. with language code (eg, Messages_pt.properties)
-		if(settings.language.length >= 2) {
-            loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 2) +'.properties', settings);
-		}
-		// 3. with language code and country code (eg, Messages_pt_PT.properties)
-        if(settings.language.length >= 5) {
+//		// 1. load base (eg, Messages.properties)
+//		loadAndParseFile(settings.path + files[i] + '.properties', settings);
+//        // 2. with language code (eg, Messages_pt.properties)
+//		if(settings.language.length >= 2) {
+//            loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 2) +'.properties', settings);
+//		}
+//		// 3. with language code and country code (eg, Messages_pt_PT.properties)
+//        if(settings.language.length >= 5) {
+//            loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 5) +'.properties', settings);
+//        }
+
+        // NdR changes to only request a single file, as my messages implementation already has fallback values included
+        if (settings.language.length >= 5) {
             loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 5) +'.properties', settings);
+        } else if (settings.language.length >= 2) {
+            loadAndParseFile(settings.path + files[i] + '_' + settings.language.substring(0, 2) +'.properties', settings);
+        } else {
+            loadAndParseFile(settings.path + files[i] + '.properties', settings);
         }
 	}
 	

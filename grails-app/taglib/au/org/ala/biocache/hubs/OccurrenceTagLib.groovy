@@ -96,7 +96,7 @@ class OccurrenceTagLib {
 
         def mb = new MarkupBuilder(out)
         mb.span(class:'activeFq') {
-            mkp.yield(message(code: fqLabel, default: fqLabel))
+            mkp.yieldUnescaped(message(code: fqLabel, default: fqLabel))
         }
         mb.span() { mkp.yieldUnescaped("&nbsp;") }
         mb.a(

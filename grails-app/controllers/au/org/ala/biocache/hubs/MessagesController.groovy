@@ -22,15 +22,19 @@ class MessagesController {
     /**
      * Export raw i18n message properties as TEXT for use by JavaScript i18n library
      *
-     * @param id - locale string, e.g. en, es, en_US or es_ES
+     * @param id - messageSource file name
      * @return
      */
     def i18n(String id) {
         Locale locale = request.locale
 
-        if (id) {
+        if (id && id.startsWith("messages_")) {
+            // Assume standard messageSource file name pattern:
+            // messages.properties, messages_en.properties, messages_en_US.properties
+            // String locale_suffix = id.replaceFirst(/messages_(.*)/,'$1')
             List locBits = id?.tokenize('_')
-            locale = new Locale(locBits[0], locBits[1]?:'')
+            locale = new Locale(locBits[1], locBits[2]?:'')
+            log.debug "id = ${id} || locale = ${locale} || locBits = ${locBits}"
         }
 
         Map props = messageSource.listMessageCodes(locale?:request.locale)

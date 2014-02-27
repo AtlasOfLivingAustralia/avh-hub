@@ -773,3 +773,7 @@ div#content div#envLegend {
 span.activeFq {
     font-weight: bold;
 }
+
+span.red {
+    color:red;
+}
