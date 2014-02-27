@@ -32,6 +32,7 @@ class PostProcessingService {
                 }
             }
         }
+        log.debug "hasImages = ${hasImages}"
         hasImages
     }
 

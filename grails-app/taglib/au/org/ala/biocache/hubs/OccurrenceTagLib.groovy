@@ -262,7 +262,7 @@ class OccurrenceTagLib {
     }
 
     /**
-     * Generate the icon and popup for the data quality help codes/linsks
+     * Generate the icon and popup for the data quality help codes/links
      *
      * @attr code REQUIRED
      */
@@ -376,7 +376,6 @@ class OccurrenceTagLib {
         def group = attrs.group
         def exclude = attrs.exclude?:''
         def output = ""
-        def mb = new MarkupBuilder(out)
 
         compareRecord.get(group).each { cr ->
             def key = cr.name
@@ -402,11 +401,5 @@ class OccurrenceTagLib {
             }
         }
         out << output
-    }
-
-    def substituteFacetNames = { attrs ->
-        def facet = attrs.facet
-        Map facetNameSynonyms = grailsApplication.config.facet.synonyms // from Config.groovy ONLY
-        
     }
 }

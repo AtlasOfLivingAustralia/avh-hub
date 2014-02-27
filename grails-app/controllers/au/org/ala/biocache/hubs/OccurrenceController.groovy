@@ -68,6 +68,7 @@ class OccurrenceController {
                 defaultFacets: defaultFacets,
                 groupedFacets: webServicesService.getGroupedFacets(),
                 hasImages: postProcessingService.resultsHaveImages(searchResults),
+                showSpeciesImages: false,
                 sort: requestParams.sort,
                 dir: requestParams.dir,
                 userId: authService.getUserId(),

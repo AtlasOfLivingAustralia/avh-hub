@@ -192,8 +192,10 @@
                         <li class="active"><a id="t1" href="#recordsView" data-toggle="tab">Records</a></li>
                         <li><a id="t2" href="#mapView" data-toggle="tab">Map</a></li>
                         <li><a id="t3" href="#chartsView" data-toggle="tab">Charts</a></li>
-                        <li><a id="t4" href="#speciesImages" data-toggle="tab">Species images</a></li>
-                        <g:if test="${showImages}">
+                        <g:if test="${showSpeciesImages}">
+                            <li><a id="t4" href="#speciesImages" data-toggle="tab">Species images</a></li>
+                        </g:if>
+                        <g:if test="${hasImages}">
                             <li><a id="t5" href="#recordImages" data-toggle="tab">Record images</a></li>
                         </g:if>
                     </ul>
@@ -373,28 +375,30 @@
                     <div id="chartsView" class="tab-pane">
                         <div id="charts"></div>
                     </div><!-- end #chartsWrapper -->
-                    <div id="speciesImages" class="tab-pane">
-                        <h3>Representative images of species</h3>
-                        <div id="speciesGalleryControls">
-                            Filter by group
-                            <select id="speciesGroup">
-                                <option>no species groups loaded</option>
-                            </select>
-                            &nbsp;
-                            Sort by
-                            <select id="speciesGallerySort">
-                                <option value="common">Common name</option>
-                                <option value="taxa">Scientific name</option>
-                                <option value="count">Record count</option>
-                            </select>
-                        </div>
-                        <div id="speciesGallery">[image gallery should appear here]</div>
-                        <div id="loadMoreSpecies" style="display:none;">
-                            <button class="btn">Show more images</button>
-                            <img style="display:none;" src="${request.contextPath}/images/indicator.gif"/>
-                        </div>
-                    </div><!-- end #speciesWrapper -->
-                    <g:if test="${showImages}">
+                    <g:if test="${showSpeciesImages}">
+                        <div id="speciesImages" class="tab-pane">
+                            <h3>Representative images of species</h3>
+                            <div id="speciesGalleryControls">
+                                Filter by group
+                                <select id="speciesGroup">
+                                    <option>no species groups loaded</option>
+                                </select>
+                                &nbsp;
+                                Sort by
+                                <select id="speciesGallerySort">
+                                    <option value="common">Common name</option>
+                                    <option value="taxa">Scientific name</option>
+                                    <option value="count">Record count</option>
+                                </select>
+                            </div>
+                            <div id="speciesGallery">[image gallery should appear here]</div>
+                            <div id="loadMoreSpecies" style="display:none;">
+                                <button class="btn">Show more images</button>
+                                <img style="display:none;" src="${request.contextPath}/images/indicator.gif"/>
+                            </div>
+                        </div><!-- end #speciesWrapper -->
+                    </g:if>
+                    <g:if test="${hasImages}">
                         <div id="recordImages" class="tab-pane">
                             <h3>Images from occurrence records</h3>
                             <%--<p>(see also <a href="#tab_speciesImages">representative species images</a>)</p>--%>
