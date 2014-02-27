@@ -12,7 +12,8 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.ala.skin}"/>
     <title><g:message code="search.title" default="Search results"/> | ${hubDisplayName}</title>
-    <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
+    %{--<script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>--}%
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <r:require modules="search, leaflet"/>
     <r:script type="text/javascript">
         // single global var for app conf settings
@@ -36,6 +37,9 @@
             mapDefaultZoom:"${grailsApplication.config.mapDefaultZoom}",
             hasMultimedia: ${hasImages?:'false'} // will be either true or false
         };
+
+        google.load('maps','3.3',{ other_params: "sensor=false" });
+        google.load("visualization", "1", {packages:["corechart"]});
     </r:script>
 </head>
 

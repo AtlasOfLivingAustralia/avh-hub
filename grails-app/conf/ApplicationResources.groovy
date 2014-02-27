@@ -12,8 +12,10 @@ modules = {
         resource url:'js/jquery.cookie.js'
         resource url:'js/jquery.inview.min.js'
         resource url:'js/jquery.qtip.min.js'
+        resource url:'js/jquery.jsonp-2.4.0.min.js'
         resource url:'js/jquery.i18n.properties-1.0.9.js'
-        resource url:'js/search.js', disposition: 'head'
+        resource url:'js/charts2.js', disposition: 'head'
+        resource url:'js/search.js'
     }
 
     leaflet {
