@@ -43,16 +43,33 @@ i.legendColour {
     background-origin: padding-box;
     background-size: auto;
     display: inline-block;
-    height: 14px;
-    line-height: 14px;
+    height: 12px;
+    line-height: 12px;
     width: 14px;
+    margin-bottom: -5px;
+    margin-left:2px;
+    margin-right:2px;
+
 }
 
-.legendTable  {
-    align: left;
+.legendTable {
+    padding: 0px;
+    margin: 0px;
 }
-.legendTable tr td  {
-    vertical-align: top;
+
+a.colour-by-legend-toggle {
+    color: #000000;
+    text-decoration: none;
+    cursor: auto;
+    display: block;
+    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 18px;
+    text-decoration: none solid rgb(0, 120, 168);
+    padding:10px;
 }
 
 </style>
@@ -119,15 +136,12 @@ i.legendColour {
 
 <div id="template" style="display:none">
     <div class="colourbyTemplate">
-        <a class="leaflet-control-layers-toggle colour-by-control" href="#" title="Layers"></a>
+        <a class="colour-by-legend-toggle colour-by-control" href="#" title="Map legend">Legend</a>
         <form class="leaflet-control-layers-list">
             <div class="leaflet-control-layers-overlays">
                 <div style="overflow:auto; max-height:400px;">
                     <a href="#" class="hideColourControl pull-right" style="padding-left:10px;"><i class="icon-remove icon-grey"></i></a>
-                    <table class="legendTable">
-                         <tbody>
-                         </tbody>
-                    </table>
+                    <table class="legendTable"></table>
                 </div>
             </div>
         </form>
@@ -161,7 +175,8 @@ i.legendColour {
             "Satellite" : new L.Google('HYBRID')
         },
         layerControl : null,
-        currentLayers : []
+        currentLayers : [],
+        additionalFqs : '',
     };
 
     var ColourByControl = L.Control.extend({
@@ -199,44 +214,57 @@ i.legendColour {
         MAP_VAR.layerControl = L.control.layers(MAP_VAR.baseLayers, MAP_VAR.overlays, {collapsed:true, position:'topleft'});
         MAP_VAR.layerControl.addTo(MAP_VAR.map);
 
-        addLayersByFacet();
+        addQueryLayer(true);
 
         MAP_VAR.map.addControl(new ColourByControl());
-
-        MAP_VAR.map.on('click', pointLookup);
 
         L.Util.requestAnimFrame(MAP_VAR.map.invalidateSize, MAP_VAR.map, !1, MAP_VAR.map._container);
 
         $('#colourBySelect').change(function(e) {
-            addLayersByFacet();
+            MAP_VAR.additionalFqs = '';
+            addQueryLayer(true);
         });
 
         $('.colour-by-control').click(function(e){
 
             if($(this).parent().hasClass('leaflet-control-layers-expanded')){
                 $(this).parent().removeClass('leaflet-control-layers-expanded');
+                $('.colour-by-legend-toggle').show();
             } else {
                 $(this).parent().addClass('leaflet-control-layers-expanded');
+                $('.colour-by-legend-toggle').hide();
             }
             e.preventDefault();
             e.stopPropagation();
             return false;
         });
 
-        $('.hideColourControl').click(function(e){
+        $('#colourByControl').mouseover(function(e){
+            MAP_VAR.map.dragging.disable();
+            MAP_VAR.map.off('click', pointLookup);
+        });
 
+        $('#colourByControl').mouseout(function(e){
+            MAP_VAR.map.dragging.enable();
+            MAP_VAR.map.on('click', pointLookup);
+        });
+
+        $('.hideColourControl').click(function(e){
             $('#colourByControl').removeClass('leaflet-control-layers-expanded');
+            $('.colour-by-legend-toggle').show();
             e.preventDefault();
             e.stopPropagation();
             return false;
         });
 
+        //enable the point lookup
+        MAP_VAR.map.on('click', pointLookup);
     }
 
     /**
      * A tile layer to map colouring the dots by the selected colour.
      */
-    function addLayersByFacet(){
+    function addQueryLayer(redraw){
 
         console.log('Current layers - ' + MAP_VAR.currentLayers.length);
         $.each(MAP_VAR.currentLayers, function(index, value){
@@ -254,7 +282,7 @@ i.legendColour {
             envProperty = "colormode:" + colourByFacet +";name:circle;size:5;opacity:1"
         }
 
-        var layer = L.tileLayer.wms(MAP_VAR.mappingUrl + "/webportal/wms/reflect" + MAP_VAR.query, {
+        var layer = L.tileLayer.wms(MAP_VAR.mappingUrl + "/webportal/wms/reflect" + MAP_VAR.query + MAP_VAR.additionalFqs, {
             layers: 'ALA:occurrences',
             format: 'image/png',
             transparent: true,
@@ -264,39 +292,86 @@ i.legendColour {
             ENV: envProperty
         });
 
-        //update the legend
-        $('.legendTable').find('tbody').html('<tr><td>Loading legend....</td></tr>');
-        $.ajax({
-            url: "${grailsApplication.config.security.cas.contextPath}/occurrence/legend" + MAP_VAR.query + "&cm=" + colourByFacet + "&type=application/json",
-            success: function(data) {
-                $('.legendTable').find('tbody').html('');
-                $.each(data, function(index, legendDef){
-                    var legItemName = legendDef.name ? legendDef.name : 'Not specified';
-                    $(".legendTable").find('tbody')
-                        .append($('<tr>')
-                            .append($('<td>')
-                                .append($('<input>')
-                                    .attr('type', 'checkbox')
-                                    .attr('checked', 'checked')
-                                )
-                            )
-                            .append($('<td>')
-                                .append($('<i>')
-                                    .addClass('legendColour')
-                                    .attr('style', "background-color:rgb("+ legendDef.red +","+ legendDef.green +","+ legendDef.blue + ");")
-                                )
-                            )
-                            .append($('<td>')
-                                .html(legItemName)
-                            )
-                        );
+        if(redraw){
+             if(!colourByFacet){
+                $('.legendTable').html('');
+                addDefaultLegendItem("${grailsApplication.config.map.pointColour}");
+             } else {
+                //update the legend
+                $('.legendTable').html('<tr><td>Loading legend....</td></tr>');
+                $.ajax({
+                    url: "${grailsApplication.config.security.cas.contextPath}/occurrence/legend" + MAP_VAR.query + "&cm=" + colourByFacet + "&type=application/json",
+                    success: function(data) {
+                        $('.legendTable').html('');
+
+                        $.each(data, function(index, legendDef){
+                            var legItemName = legendDef.name ? legendDef.name : 'Not specified';
+                            addLegendItem(legItemName, legendDef.red,legendDef.green,legendDef.blue );
+                        });
+
+                        $('.layerFacet').click(function(e){
+                            console.log('###### legend click.....' + new Date());
+                            var controlIdx = 0;
+                            MAP_VAR.additionalFqs = '';
+                            $('#colourByControl').find('.layerFacet').each(function(idx, layerInput){
+                                var include =  $(layerInput).is(':checked');
+
+                                if(!include){
+                                    MAP_VAR.additionalFqs = MAP_VAR.additionalFqs + '&HQ=' + controlIdx;
+                                }
+                                controlIdx = controlIdx + 1;
+                                addQueryLayer(false);
+                            });
+                            console.log('additionalFqs: ' + MAP_VAR.additionalFqs);
+                        });
+                    }
                 });
             }
-        });
-
+        }
         MAP_VAR.layerControl.addOverlay(layer, 'query layer');
         MAP_VAR.map.addLayer(layer);
         MAP_VAR.currentLayers.push(layer);
+    }
+
+    function addDefaultLegendItem(pointColour){
+        $(".legendTable")
+            .append($('<tr>')
+                .append($('<td>')
+                    .append($('<i>')
+                        .addClass('legendColour')
+                        .attr('style', "background-color:#"+ pointColour + ";")
+                    )
+                    .append($('<span>')
+                        .addClass('legendItemName')
+                        .html("All records")
+                    )
+                )
+        );
+    }
+
+    function addLegendItem(name, red, green, blue){
+        $(".legendTable")
+            .append($('<tr>')
+                .append($('<td>')
+                    .append($('<input>')
+                        .attr('type', 'checkbox')
+                        .attr('checked', 'checked')
+                        .attr('id', name)
+                        .addClass('layerFacet')
+                        .addClass('leaflet-control-layers-selector')
+                    )
+                )
+                .append($('<td>')
+                    .append($('<i>')
+                        .addClass('legendColour')
+                        .attr('style', "background-color:rgb("+ red +","+ green +","+ blue + ");")
+                    )
+                    .append($('<span>')
+                        .addClass('legendItemName')
+                        .html(name)
+                    )
+                )
+        );
     }
 
     function rgbToHex(redD, greenD, blueD){

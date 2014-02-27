@@ -166,10 +166,10 @@ class PostProcessingService {
     def LinkedHashMap getAllFacets(JSONArray defaultFacets) {
         LinkedHashMap<String, Boolean> facetsMap = new LinkedHashMap<String, Boolean>()
         List orderedFacets = []
-        List facetsToInclude = grailsApplication.config.facets.include?.split(',') ?: []
-        List facetsToExclude = grailsApplication.config.facets.exclude?.split(',') ?: []
-        List facetsToHide = grailsApplication.config.facets.hide?.split(',') ?: []
-        List customOrder = grailsApplication.config.facets.customOrder?.split(',') ?: []
+        List facetsToInclude = grailsApplication.config.facets?.include?.split(',') ?: []
+        List facetsToExclude = grailsApplication.config.facets?.exclude?.split(',') ?: []
+        List facetsToHide = grailsApplication.config.facets?.hide?.split(',') ?: []
+        List customOrder = grailsApplication.config.facets?.customOrder?.split(',') ?: []
         List allFacets = new ArrayList(defaultFacets)
         allFacets.addAll(facetsToInclude)
 

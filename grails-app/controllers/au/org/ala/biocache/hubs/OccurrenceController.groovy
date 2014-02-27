@@ -77,7 +77,7 @@ class OccurrenceController {
     }
 
     def legend(){
-       def legend = webServicesService.getText("http://biocache.ala.org.au/ws/webportal/legend?" + request.queryString)
+       def legend = webServicesService.getText(grailsApplication.config.biocacheServicesUrl + "/webportal/legend?" + request.queryString)
        response.setContentType("application/json")
        render legend
     }
@@ -95,7 +95,12 @@ class OccurrenceController {
 
         if (record) {
             JSONObject compareRecord = webServicesService.getCompareRecord(id)
-            JSONObject collectionInfo = webServicesService.getCollectionInfo(record.processed.attribution.collectionUid)
+
+            JSONObject collectionInfo = null
+            if(record.processed.attribution.collectionUid){
+                collectionInfo = webServicesService.getCollectionInfo(record.processed.attribution.collectionUid)
+            }
+
             List groupedAssertions = postProcessingService.getGroupedAssertions(webServicesService.getUserAssertions(id), webServicesService.getQueryAssertions(id), userId)
             Map layersMetaData = webServicesService.getLayersMetaData()
 

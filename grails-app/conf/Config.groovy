@@ -40,6 +40,19 @@ println "[${appName}] (*) grails.config.locations = ${grails.config.locations}"
 println "default_config = ${default_config}"
 
 
+if(!facets.include){
+    facets.include = ""
+}
+if(!facets.exclude){
+    facets.exclude = ""
+}
+if(!facets.hide){
+    facets.hide = ""
+}
+if(!facets.customOrder){
+    facets.customOrder = ""
+}
+
 /******************************************************************************\
  *  SKINNING
  \******************************************************************************/
@@ -54,7 +67,7 @@ if (!skin.orgNameShort) {
     skin.orgNameShort = "ALA"
 }
 if(!map.pointColour){
-    map.pointColour = "ffcc00"
+    map.pointColour = "df4a21"
 }
 if (!skin.includeBaseUrl) {
     // whether crumb trail should include a home link that is external to this webabpp - ala.baseUrl is used if true
@@ -79,10 +92,10 @@ if (!bie.searchPath) {
     bie.searchPath = "/search"
 }
 if (!biocache.baseURL) {
-    biocache.baseURL = "http://biocache.ala.org.au"
+    biocache.baseURL = "http://dev.ala.org.au:8080/biocache-hubs"
 }
 if(!biocacheServicesUrl){
-    biocacheServicesUrl = "http://biocache.ala.org.au/ws"
+    biocacheServicesUrl = "http://biocache-test.ala.org.au/ws"
 }
 if (!spatial.baseURL) {
     spatial.baseURL = "http://spatial.ala.org.au/"
