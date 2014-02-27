@@ -68,9 +68,9 @@
 </head>
 <body class="${pageProperty(name:'body.class')?:'nav-datasets'}" id="${pageProperty(name:'body.id')}" onload="${pageProperty(name:'body.onload')}">
 <g:set var="fluidLayout" value="${grailsApplication.config.skin.fluidLayout}"/>
-<hf:banner logoutUrl="${grailsApplication.config.grails.serverURL}/logout/logout" fluidLayout="${true}"/>
+<hf:banner logoutUrl="${grailsApplication.config.grails.serverURL}/logout/logout" fluidLayout="${fluidLayout}"/>
 
-<hf:menu fluidLayout="${true}"/>
+<hf:menu fluidLayout="${fluidLayout}"/>
 
 <div class="${fluidLayout?'container-fluid':'container'}" id="main-content">
     <g:layoutBody />

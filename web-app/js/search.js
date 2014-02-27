@@ -563,9 +563,9 @@ $(document).ready(function() {
      */
     jQuery.i18n.properties({
         name:'Messages',
-        path: BC_CONF.contextPath + '/proxy/i18n/',
+        path: BC_CONF.contextPath + '/messages/i18n/',
         mode:'map',
-        //language:'en',
+        //language:'en', // default is to use browser specified locale
         callback: function(){} //alert( "facet.conservationStatus = " + jQuery.i18n.prop('facet.conservationStatus')); }
     });
 
@@ -848,7 +848,7 @@ function loadSpeciesInTab(start, sortField, group) {
     }
 
     if (start == 0) {
-        $("#speciesGallery").empty().before("<div id='loadingSpecies'>Loading... <img src='" + BC_CONF.contextPath + "/static/images/spinner.gif'/></div>");
+        $("#speciesGallery").empty().before("<div id='loadingSpecies'>Loading... <img src='" + BC_CONF.contextPath + "/images/spinner.gif'/></div>");
         $("#loadMoreSpecies").hide();
     } else {
         $("#loadMoreSpecies img").show();

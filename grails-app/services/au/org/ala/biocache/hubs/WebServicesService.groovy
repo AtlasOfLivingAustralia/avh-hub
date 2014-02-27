@@ -137,7 +137,7 @@ class WebServicesService {
      * @return
      */
     def String getText(String url) {
-        log.debug "(internal text) getJson URL = " + url
+        log.debug "(internal text) getText URL = " + url
         def conn = new URL(url).openConnection()
 
         try {
@@ -151,5 +151,4 @@ class WebServicesService {
             return null
         }
     }
-
 }
