@@ -38,22 +38,6 @@ $(document).ready(function() {
         reloadWithParam('pageSize',val);
     });
 
-    // download link
-//    $("#downloadLink, #alertsLink, #downloadMapLink").fancybox({
-//        'hideOnContentClick' : false,
-//        'hideOnOverlayClick': true,
-//        'showCloseButton': true,
-//        'titleShow' : false,
-//        'autoDimensions' : false,
-//        'width': '500',
-//        'height': '500',
-//        'padding': 10,
-//        'margin': 10,
-//        onCleanup: function() {
-//            $("label[for='reasonTypeId']").css("color","#444");
-//        }
-//    });
-
     // Jquery Tools Tabs setup
     var tabsInit = {
         map: false,
@@ -233,17 +217,6 @@ $(document).ready(function() {
         $clone.find('.refineTaxaSearch').attr("id", "refineTaxaSearch_" + i);
 
         $.getJSON(jsonUri, function(data) {
-            // list of synonyms
-//            var synList = "<div class='refineTaxaSearch' id='refineTaxaSearch_"+i+"'>" +
-//                //"<form name='raw_taxon_search' class='rawTaxonSearch' id='rawTaxonSearch_"+i+"' action='" +
-//                // BC_CONF.contextPath + "/occurrences/search' method='POST'>" +
-//                "These results include records for synonyms and names of child taxa of <b>" + nameString +
-//                "</b> (<a href='" + BC_CONF.bieWebappUrl + "/species/" + lsid + "' title='Species page' target='BIE'>" +
-//                "view species page</a>).<br/><br/>The result set contains records " +
-//                "provided under the following names: <input type='submit' class='rawTaxonSumbit btn btn-small' id='rawTaxonSumbit_"+i+
-//                "' value='Search with selected verbatim names' style='display:inline-block;float:right;font-size:12px;'/>" +
-//                "<div class='rawTaxaList'>";
-
             // use HTML template, see http://stackoverflow.com/a/1091493/249327
             var speciesPageUri = BC_CONF.bieWebappUrl + "/species/" + lsid;
             var speciesPageLink = "<a href='" + speciesPageUri + "' title='Species page' target='BIE'>view species page</a>";
@@ -263,7 +236,6 @@ $(document).ready(function() {
                             "<a href='" + BC_CONF.contextPath + "/occurrences/search?q=raw_taxon_name:%22" + el1.label +
                             "%22'>" + el1.label + "</a> (" + el1.count + ")<br/>";
                     });
-
                 }
             });
 
@@ -327,29 +299,6 @@ $(document).ready(function() {
         }
     });
 
-//    $(".queryDisplay a").click(function(e) {
-//        e.preventDefault();
-//        var j = $(this).attr("id").replace("lsid_", "");
-//        $("#refineTaxaSearch_"+j).toggle();
-//    });
-
-    // close drop-down divs when clicked outside
-//    $('#customiseFacets > a, #refineTaxaSearch, .queryDisplay a, #facetOptions').live("mouseover mouseout", function(event) {
-//        if ( event.type == "mouseover" ) {
-//            hoverDropDownDiv = true;
-//        } else {
-//            hoverDropDownDiv = false;
-//        }
-//    });
-
-    // Hide taxonConcept popup div if clicked outside popup
-//    $("body").mouseup(function(e) {
-//        var target = $(e.target);
-//        if (!hoverDropDownDiv && target.parents(".refineTaxaSearch").length == 0) {
-//            $('.refineTaxaSearch, #facetOptions').hide();
-//        }
-//    });
-
     // load more images button
     $("#loadMoreImages").live("click", function(e) {
         e.preventDefault();
@@ -383,42 +332,11 @@ $(document).ready(function() {
             // mouse in
             $(this).css('cursor','pointer');
             $(this).css('background-color','#FFF');
-        }, function(){
+        }, function() {
             // mouse out
             $(this).css('cursor','default');
             $(this).css('background-color','transparent');
-        });
-
-    // fancybox div for refining search with multiple facet values
-//    $(".multipleFacetsLink").fancybox({
-//        'hideOnContentClick' : false,
-//        'hideOnOverlayClick': true,
-//        'showCloseButton': true,
-//        'titleShow' : false,
-//        'transitionIn': 'elastic',
-//        'transitionOut': 'elastic',
-//        'speedIn': 400,
-//        'speedOut': 400,
-//        'scrolling': 'auto',
-//        'centerOnScroll': true,
-//        'autoDimensions' : false,
-//        'width': 560,
-//        'height': 560,
-//        'padding': 10,
-//        'margin': 10,
-//        onCleanup: function() {
-//            // clear the div#dynamic html
-//            $("#dynamic").html("");
-//        },
-//        onComplete: function(links) {
-//            var link = links[0];
-//            // substitute some facet names so sorting works
-//            var facetName = link.id.replace("multi-","").replace("_guid","").replace("_uid","_name").replace("data_resource_name",
-//                "data_resource").replace("data_provider_name","data_provider").replace("occurrence_year","decade").replace(/(_[id])$/,"$1_RNG");
-//            var displayName = $(link).data("displayname");
-//            loadMultiFacets(facetName, displayName, null);
-//        }
-//    });
+    });
 
     $('.multipleFacetsLink').click(function() {
         var link = this;
@@ -458,10 +376,7 @@ $(document).ready(function() {
             fq = "(" + fq + ")"; // so that exclude (inverse) searches work
         }
 
-        if (facetName == "species_guid" && false) {
-            // TODO: remove once service is fixed for this
-            alert("Searching with multiple species is temporarily unavailable due to a technical issue. This should be fixed soon.");
-        } else if (checkedFound && selectedCount > maxSelected) {
+        if (checkedFound && selectedCount > maxSelected) {
             alert("Too many options selected - maximum is " + maxSelected + ", you have selected " + selectedCount + ", please de-select " +
                 (selectedCount - maxSelected) + " options");
         } else if (checkedFound) {
