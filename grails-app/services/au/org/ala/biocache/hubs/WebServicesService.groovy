@@ -95,6 +95,38 @@ class WebServicesService {
 
         return layersMetaMap
     }
+
+    /**
+     * Query the BIE for GUIDs for a given list of names
+     *
+     * @param taxaQueries
+     * @return
+     */
+    @Cacheable('longTermCache')
+    def List<String> getGuidsForTaxa(List taxaQueries) {
+        List guids = []
+
+        if (taxaQueries.size() == 1) {
+            String taxaQ = taxaQueries[0]
+            //taxaQueries.clear()
+            taxaQueries.addAll(taxaQ.split(" OR ") as List)
+            taxaQueries.remove(0)
+        }
+
+        List encodedQueries = taxaQueries.collect { it.encodeAsURL() } // URL encode params
+
+        def url = grailsApplication.config.bie.baseURL + "/ws/guid/batch?q=" + encodedQueries.join("&q=")
+        JSONObject guidsJson = getJsonElements(url)
+
+        taxaQueries.each { key ->
+            def match = guidsJson.get(key)[0]
+            def guid = match?.acceptedIdentifier
+            guids.add(guid)
+        }
+
+        return guids
+    }
+
     /**
      * Get the CSV for ALA data quality checks meta data
      *

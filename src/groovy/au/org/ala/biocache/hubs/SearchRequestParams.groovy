@@ -8,40 +8,37 @@ import org.apache.commons.httpclient.util.URIUtil
  * Data Transfer Object to represent the request parameters required to search
  * for occurrence records against biocache-service.
  *
- * http://biocache.ala.org.au/ws/search/facets
- * http://biocache.ala.org.au/ws/search/grouped/facets
- *
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 @Validateable
 public class SearchRequestParams {
-    Long qId = null;  // "qid:12312321"
-    String formattedQuery = null;
-    String q = "";
+    Long qId // "qid:12312321"
+    String formattedQuery
+    String q = ""
     String[] fq = []; // must not be null
-    String fl = "";
+    String fl = ""
     /** The facets to be included by the search Initialised with the default facets to use */
     String[] facets = [] // get from http://biocache.ala.org.au/ws/search/facets (and cache) // FacetThemes.allFacets;
     /** The limit for the number of facets to return */
-    Integer flimit = 30;
+    Integer flimit = 30
     /** The sort order in which to return the facets.  Either count or index.  When empty string the default values are used as defined in the Theme based facets */
-    String fsort = "";
+    String fsort = ""
     /** The offset of facets to return.  Used in conjunction to flimit */
-    Integer foffset = 0;
+    Integer foffset = 0
     /** The prefix to limit facet values*/
-    String fprefix = "";
+    String fprefix = ""
     /**  pagination params */
-    Integer start = 0;
-    Integer offset = null; // grails version of start
-    Integer pageSize = 10;
-    Integer max = null; // grails version of pageSize
-    String sort = "score";
-    String dir = "asc";
-    String displayString;
+    Integer start = 0
+    Integer offset // grails version of start
+    Integer pageSize = 10
+    Integer max // grails version of pageSize
+    String sort = "score"
+    String dir = "asc"
+    String displayString
     /**  The query context to be used for the search.  This will be used to generate extra query filters based on the search technology */
-    String qc = "";
+    String qc = ""
     /** To disable facets */
-    Boolean facet = true;
+    Boolean facet = true
 
     /**
      * Custom toString method to produce a String to be used as the request parameters
@@ -72,11 +69,6 @@ public class SearchRequestParams {
     public String toString(Boolean encodeParams) {
         StringBuilder req = new StringBuilder();
         req.append("q=").append(conditionalEncode(q, encodeParams));
-//        if (fq.length > 0) {
-//            for (String it1 : fq) {
-//                req.append("&fq=").append(conditionalEncode(it1, encodeParams));
-//            }
-//        }
         fq.each { filter ->
             req.append("&fq=").append(conditionalEncode(filter, encodeParams));
         }

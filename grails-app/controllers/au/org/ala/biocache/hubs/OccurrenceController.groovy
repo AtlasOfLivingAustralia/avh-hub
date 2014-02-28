@@ -48,7 +48,15 @@ class OccurrenceController {
             requestParams.dir = "desc"
         }
 
-        if (!params.q) {
+        List taxaQueries = (ArrayList<String>) params.list("taxa") // will be list for even one instance
+
+        if (!params.q && taxaQueries) {
+            // taxa query
+            List guidsForTaxa = webServicesService.getGuidsForTaxa(taxaQueries)
+            requestParams.q = postProcessingService.createQueryWithTaxaParam(taxaQueries, guidsForTaxa)
+        }
+
+        if (!requestParams.q) {
             requestParams.q= "*:*"
         }
 
@@ -58,7 +66,7 @@ class OccurrenceController {
         requestParams.facets = userFacets ?: filteredFacets
 
         JSONObject searchResults = webServicesService.fullTextSearch(requestParams)
-
+        // postProcessingService.modifyQueryTitle(searchResults, taxaQueries)
         // log.info "searchResults = ${searchResults.toString(2)}"
         log.info "userid = ${authService.getUserId()}"
 

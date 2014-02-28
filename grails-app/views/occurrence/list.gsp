@@ -52,7 +52,7 @@
             <form action="${g.createLink(controller: 'occurrence', action: 'search')}" id="solrSearchForm" class="">
                 <div id="advancedSearchLink"><a href="${g.createLink(controller: 'home', action: 'search')}#tab_advanceSearch">Advanced search</a></div>
                 <div class="input-append">
-                    <input type="text" id="taxaQuery" name="taxa" class="input-xlarge" value="${params.taxa}">
+                    <input type="text" id="taxaQuery" name="taxa" class="input-xlarge" value="${params.list('taxa').join(' OR ')}">
                     <button type="submit" id="solrSubmit" class="btn">Quick search</button>
                 </div>
             </form>
@@ -126,7 +126,7 @@
                 <a name="map" class="jumpTo"></a><a name="list" class="jumpTo"></a>
                 <div id="resultsReturned">
                     <span id="returnedText"><strong><g:formatNumber number="${sr.totalRecords}" format="#,###,###"/></strong> results for</span>
-                    <span class="queryDisplay"><strong>${queryDisplay}</strong></span>
+                    <span class="queryDisplay"><strong>${raw(queryDisplay)}</strong></span>
                     <%-- jQuery template used for taxon drop-downs --%>
                     <div class="btn-group hide" id="template">
                         <a class="btn btn-small" href="" id="taxa_" title="view species page" target="BIE">placeholder</a>

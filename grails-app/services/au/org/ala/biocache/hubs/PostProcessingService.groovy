@@ -217,6 +217,12 @@ class PostProcessingService {
         return filteredFacets
     }
 
+    /**
+     * Read the request cookie to determine which facets are active
+     *
+     * @param request
+     * @return
+     */
     def String[] getFacetsFromCookie(HttpServletRequest request) {
 
         String userFacets = null
@@ -257,4 +263,37 @@ class PostProcessingService {
 
         return cookieValue
     }
+
+    /**
+     * Generate SOLR query from a taxa[] query
+     *
+     * @param taxaQueries
+     * @param guidsForTaxa
+     * @return
+     */
+    def String createQueryWithTaxaParam(List taxaQueries, List guidsForTaxa) {
+        String query
+        List expandedQueries = []
+
+        if (taxaQueries.size() != guidsForTaxa.size()) {
+            // Both Lists must the same size
+            throw new IllegalArgumentException("Arguments (List) are not the same size: taxaQueries.size() (${taxaQueries.size()}) != guidsForTaxa.size() (${guidsForTaxa.size()})");
+        }
+
+        if (taxaQueries.size() > 1) {
+            guidsForTaxa.eachWithIndex { guid, i ->
+                if (guid) {
+                    expandedQueries.add("lsid:" + guid)
+                } else {
+                    expandedQueries.add(taxaQueries[i])
+                }
+            }
+            query = "(" + expandedQueries.join(" OR ") + ")"
+        } else {
+            query = (guidsForTaxa[0]) ? "lsid:" + guidsForTaxa[0] : taxaQueries[0]
+        }
+
+        return query
+    }
+
 }
