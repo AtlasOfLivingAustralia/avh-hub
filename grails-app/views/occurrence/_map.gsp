@@ -82,7 +82,7 @@ a.colour-by-legend-toggle {
     font-weight: normal;
     line-height: 18px;
     text-decoration: none solid rgb(0, 120, 168);
-    padding:10px;
+    padding:5px 10px 5px 10px;
 }
 
 </style>
@@ -123,12 +123,10 @@ a.colour-by-legend-toggle {
     </g:if>
     <td>
         <label for="sizeslider">Size:</label>
-
         <div class="layerControls">
             <span id="sizeslider-val">4</span>
-
-            <div id="sizeslider"></div>
         </div>
+        <div id="sizeslider" style="width:100px;"></div>
     </td>
     <td class="pull-right">
         <g:set var='spatialPortalLink' value="${sr.urlParameters}"/>
@@ -175,10 +173,10 @@ a.colour-by-legend-toggle {
     var minimal = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr});
 
     var MAP_VAR = {
+        map : null,
         mappingUrl : "${mappingUrl}",
         query : "${searchString}",
         queryDisplayString : "${queryDisplayString}",
-        map : null,
         overlays : {},
         baseLayers : {
             "Minimal" : minimal,
@@ -189,7 +187,7 @@ a.colour-by-legend-toggle {
         },
         layerControl : null,
         currentLayers : [],
-        additionalFqs : '',
+        additionalFqs : ''
     };
 
     var ColourByControl = L.Control.extend({
@@ -271,6 +269,15 @@ a.colour-by-legend-toggle {
             return false;
         });
 
+        $( "#sizeslider" ).slider({
+            min:2,
+            max:10,
+            tooltip: 'hide'
+        }).on('slideStop', function(ev){
+            $('#sizeslider-val').html(ev.value);
+            addQueryLayer(true);
+        });
+
         //enable the point lookup - but still allow double clicks to propagate
         var clickCount = 0;
         MAP_VAR.map.on('click', function(e) {
@@ -291,9 +298,7 @@ a.colour-by-legend-toggle {
      */
     function addQueryLayer(redraw){
 
-        console.log('Current layers - ' + MAP_VAR.currentLayers.length);
         $.each(MAP_VAR.currentLayers, function(index, value){
-            console.log('Removing - ' + MAP_VAR.currentLayers[index]);
             MAP_VAR.map.removeLayer(MAP_VAR.currentLayers[index]);
             MAP_VAR.layerControl.removeLayer(MAP_VAR.currentLayers[index]);
         });
@@ -301,11 +306,12 @@ a.colour-by-legend-toggle {
         MAP_VAR.currentLayers = [];
 
         var colourByFacet = $('#colourBySelect').val();
+        var pointSize = $('#sizeslider-val').html();
 
-        var envProperty = "color:${grailsApplication.config.map.pointColour};name:circle;size:5;opacity:1"
+        var envProperty = "color:${grailsApplication.config.map.pointColour};name:circle;size:"+pointSize+";opacity:1"
 
         if(colourByFacet){
-            envProperty = "colormode:" + colourByFacet +";name:circle;size:5;opacity:1"
+            envProperty = "colormode:" + colourByFacet +";name:circle;size:"+pointSize+";opacity:1"
         }
 
         var layer = L.tileLayer.wms(MAP_VAR.mappingUrl + "/webportal/wms/reflect" + MAP_VAR.query + MAP_VAR.additionalFqs, {
@@ -347,7 +353,6 @@ a.colour-by-legend-toggle {
                                 controlIdx = controlIdx + 1;
                                 addQueryLayer(false);
                             });
-                            console.log('additionalFqs: ' + MAP_VAR.additionalFqs);
                         });
                     }
                 });
@@ -415,13 +420,82 @@ a.colour-by-legend-toggle {
      */
     function pointLookup(e) {
 
-        console.log('pointLookup fired');
-        console.log(e.target);
+        var popup = L.popup().setLatLng(e.latlng);
+        var radius = 0;
+        var size = $('sizeslider-val').html();
+        var zoomLevel = MAP_VAR.map.getZoom();
+        switch (zoomLevel){
+            case 0:
+                radius = 800;
+                break;
+            case 1:
+                radius = 400;
+                break;
+            case 2:
+                radius = 200;
+                break;
+            case 3:
+                radius = 100;
+                break;
+            case 4:
+                radius = 50;
+                break;
+            case 5:
+                radius = 25;
+                break;
+            case 6:
+                radius = 20;
+                break;
+            case 7:
+                radius = 7.5;
+                break;
+            case 8:
+                radius = 3;
+                break;
+            case 9:
+                radius = 1.5;
+                break;
+            case 10:
+                radius = .75;
+                break;
+            case 11:
+                radius = .25;
+                break;
+            case 12:
+                radius = .15;
+                break;
+            case 13:
+                radius = .1;
+                break;
+            case 14:
+                radius = .05;
+                break;
+            case 15:
+                radius = .025;
+                break;
+            case 16:
+                radius = .015;
+                break;
+            case 17:
+                radius = 0.0075;
+                break;
+            case 18:
+                radius = 0.004;
+                break;
+            case 19:
+                radius = 0.002;
+                break;
+            case 20:
+                radius = 0.001;
+                break;
+        }
 
-        var popup = L.popup()
-            .setLatLng(e.latlng)
-            .setContent("<div>Loading....</div>")
-            .openOn(MAP_VAR.map);
+        if (size >= 5 && size < 8){
+            radius = radius * 2;
+        }
+        if (size >= 8){
+            radius = radius * 3;
+        }
 
         $.ajax({
             url: MAP_VAR.mappingUrl + "/occurrences/info" + MAP_VAR.query,
@@ -431,16 +505,69 @@ a.colour-by-legend-toggle {
                 zoom: MAP_VAR.map.getZoom(),
                 lat: e.latlng.lat,
                 lon: e.latlng.lng,
-                radius: 20,
+                radius: radius,
                 format: "json"
             },
             success: function(response) {
-                if(response.count){
-                    popup.setContent("<div><h3>Records: " + response.count + "</h3></div>");
-                } else {
-                    popup.setContent("<div>No records at this point</div>");
+
+                console.log(response);
+
+                var $popupClone = null;
+
+                var occLookup = "&radius=" + radius + "&lat=" + e.latlng.lat + "&lon=" + e.latlng.lng;
+
+                if(response.count == 1){
+                    var popupClone = $('.popupSingleRecordTemplate').clone();
+                    $popupClone = $(popupClone);
+                    $popupClone.find('.viewRecord').attr('href', "${grailsApplication.config.biocache.baseURL }/occurrences/" + response.occurrences[0]);
+                    popup.setContent($popupClone.html());
+                    popup.openOn(MAP_VAR.map);
+                }
+                if(response.count > 1){
+                    var popupClone = $('.popupMultiRecordTemplate').clone();
+                    $popupClone = $(popupClone);
+                    $popupClone.find('.viewRecord').attr('href', "${grailsApplication.config.biocache.baseURL }/occurrences/" + response.occurrences[0]);
+                    $popupClone.find('.viewAllRecords').attr('href', "${grailsApplication.config.biocache.baseURL }/occurrences/search" + MAP_VAR.query + occLookup);
+                    $popupClone.find('.recordCount').html(response.count);
+                    popup.setContent($popupClone.html());
+                    popup.openOn(MAP_VAR.map);
                 }
             }
         });
     }
+
+    function getRecordInfo(){
+        http://biocache.ala.org.au/ws/occurrences/c00c2f6a-3ae8-4e82-ade4-fc0220529032
+        $.ajax({
+            url: "${grailsApplication.config.biocacheServicesUrl}/occurrences/info" + MAP_VAR.query,
+            jsonp: "callback",
+            dataType: "jsonp",
+            success: function(response) {
+
+            }
+        });
+    }
+
 </r:script>
+
+<div style="display:none;">
+
+<div class="popupSingleRecordTemplate">
+    <span class="dataResource">Dummy resource</span><br/>
+    <span class="institution">Dummy institution</span><br/>
+    <span class="collection">Dummy collection</span><br/>
+    <span class="catalogueNumber">Dummy catalogue number</span><br/>
+    <a href="" class="viewRecord">View this record</a>
+</div>
+
+<div class="popupMultiRecordTemplate">
+    <span>Records: </span><a href="" class="viewAllRecords"><span class="recordCount">1,321</span></a><br/>
+    <span class="dataResource">Dummy resource</span><br/>
+    <span class="institution">Dummy institution</span><br/>
+    <span class="collection">Dummy collection</span><br/>
+    <span class="catalogueNumber">Dummy catalogue number</span><br/>
+    <a href="" class="viewRecord" >View this record</a><br/>
+    <a href="" class="viewAllRecords">View <span class="recordCount">1,321</span> records at this point</a>
+</div>
+
+</div>

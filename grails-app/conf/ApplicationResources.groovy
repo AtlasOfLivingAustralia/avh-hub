@@ -18,6 +18,11 @@ modules = {
         resource url:'js/search.js'
     }
 
+    slider {
+        resource url:'css/slider.css'
+        resource url:'js/bootstrap-slider.js'
+    }
+
     leaflet {
         resource url:'css/leaflet.css'
         resource url:'js/leaflet.js'
@@ -26,7 +31,6 @@ modules = {
 
     show {
         dependsOn 'jquery'
-        //resource url: "http://www.google.com/jsapi"
         resource url:'css/record.css'
         resource url:'js/audiojs/audio.min.js'
         resource url:'js/moment.min.js'
