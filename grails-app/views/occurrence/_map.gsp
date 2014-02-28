@@ -218,7 +218,8 @@ a.colour-by-legend-toggle {
         //initialise map
         MAP_VAR.map = L.map('leafletMap', {
             center: [-23.6,133.6],
-            zoom: 4
+            zoom: 4,
+            scrollWheelZoom: false
         });
 
         //add the default base layer
@@ -271,7 +272,20 @@ a.colour-by-legend-toggle {
         });
 
         //enable the point lookup
-        MAP_VAR.map.on('click', pointLookup);
+        //MAP_VAR.map.on('click', pointLookup);
+        var clickCount = 0;
+        MAP_VAR.map.on('click', function(e) {
+            //if (popupOpen) return;
+            clickCount += 1;
+            if (clickCount <= 1) {
+                setTimeout(function() {
+                    if (clickCount <= 1) {
+                        pointLookup(e);
+                    }
+                    clickCount = 0;
+                }, 400);
+            }
+        });
     }
 
     /**
