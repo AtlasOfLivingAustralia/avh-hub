@@ -271,8 +271,7 @@ a.colour-by-legend-toggle {
             return false;
         });
 
-        //enable the point lookup
-        //MAP_VAR.map.on('click', pointLookup);
+        //enable the point lookup - but still allow double clicks to propagate
         var clickCount = 0;
         MAP_VAR.map.on('click', function(e) {
             clickCount += 1;

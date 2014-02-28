@@ -479,7 +479,7 @@ $(document).ready(function() {
     jQuery.i18n.properties({
         name:'messages',
         path: BC_CONF.contextPath + '/messages/i18n/',
-        mode:'map',
+        mode:'map'
         //language:'es', // default is to use browser specified locale
         //callback: function(){} //alert( "facet.conservationStatus = " + jQuery.i18n.prop('facet.conservationStatus')); }
     });
@@ -491,6 +491,16 @@ $(document).ready(function() {
         var name = $(this).data('name');
         $(this).find('span').toggleClass('right-caret');
         $('#group_' + name).slideToggle(600);
+    });
+
+    // Hide any facet groups if they don't contain any facet values
+    $('.facetsGroup').each(function(i, el) {
+        var name = $(el).attr('id').replace(/^group_/, '');
+        //console.log("name", name);
+        if ($.trim($(el).html()) == '') {
+            //console.log("is empty", name);
+            $('#heading_' + name).hide();
+        }
     });
 
 }); // end JQuery document ready

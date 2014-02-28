@@ -28,13 +28,13 @@
         </g:if>
         <g:set var="firstGroup" value="${true}"/>
         <g:each var="group" in="${groupedFacets}">
-            <div class="facetGroupName">
+            <div class="facetGroupName" id="heading_${group.key.replaceAll(/\s+/,'')}">
                 <a href="#" class="showHideFacetGroup" data-name="${group.key.replaceAll(/\s+/,'')}"><span class="caret ${(firstGroup)?'':'right-caret'}" style=""></span> ${group.key}</a>
             </div>
             <div class="facetsGroup ${(firstGroup) ? '': 'hide'}" id="group_${group.key.replaceAll(/\s+/,'')}">
                 <g:set var="firstGroup" value="${false}"/>
                 <g:each in="${group.value}" var="facetFromGroup">
-                    <!--  facetFromGroup = ${facetFromGroup} -->
+                    <%--  facetFromGroup = ${facetFromGroup} --%>
                     <g:set var="facetResult" value="${sr.facetResults.find{ it.fieldName == g.message(code:'facet.synonym.'+facetFromGroup, default:facetFromGroup) }}"/>
                     <g:if test="${facetResult && facetResult.fieldResult.length() >= 1 && ! sr.activeFacetMap?.containsKey(facetResult.fieldName) }">
                         <g:set var="fieldDisplayName" value="${alatag.formatDynamicFacetName(fieldName:"${facetResult.fieldName}")}"/>
