@@ -22,6 +22,12 @@
     line-height:18px;
     width:auto;
 }
+
+.leaflet-control-layers {
+    opacity:0.8;
+    filter:alpha(opacity=80);
+}
+
 .leaflet-control-layers-overlays label {
     font-size: 12px;
     line-height: 18px;
@@ -49,7 +55,14 @@ i.legendColour {
     margin-bottom: -5px;
     margin-left:2px;
     margin-right:2px;
+    opacity:1;
+    filter:alpha(opacity=100);
+}
 
+i#defaultLegendColour {
+    margin-bottom: -2px;
+    margin-left: 2px;
+    margin-right: 5px;
 }
 
 .legendTable {
@@ -270,6 +283,7 @@ a.colour-by-legend-toggle {
         $.each(MAP_VAR.currentLayers, function(index, value){
             console.log('Removing - ' + MAP_VAR.currentLayers[index]);
             MAP_VAR.map.removeLayer(MAP_VAR.currentLayers[index]);
+            MAP_VAR.layerControl.removeLayer(MAP_VAR.currentLayers[index]);
         });
 
         MAP_VAR.currentLayers = [];
@@ -310,7 +324,6 @@ a.colour-by-legend-toggle {
                         });
 
                         $('.layerFacet').click(function(e){
-                            console.log('###### legend click.....' + new Date());
                             var controlIdx = 0;
                             MAP_VAR.additionalFqs = '';
                             $('#colourByControl').find('.layerFacet').each(function(idx, layerInput){
@@ -328,7 +341,7 @@ a.colour-by-legend-toggle {
                 });
             }
         }
-        MAP_VAR.layerControl.addOverlay(layer, 'query layer');
+        MAP_VAR.layerControl.addOverlay(layer, 'Occurrences');
         MAP_VAR.map.addLayer(layer);
         MAP_VAR.currentLayers.push(layer);
     }
@@ -340,6 +353,7 @@ a.colour-by-legend-toggle {
                     .append($('<i>')
                         .addClass('legendColour')
                         .attr('style', "background-color:#"+ pointColour + ";")
+                        .attr('id', 'defaultLegendColour')
                     )
                     .append($('<span>')
                         .addClass('legendItemName')
