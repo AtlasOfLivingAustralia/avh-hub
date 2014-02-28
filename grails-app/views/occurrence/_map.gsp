@@ -275,7 +275,6 @@ a.colour-by-legend-toggle {
         //MAP_VAR.map.on('click', pointLookup);
         var clickCount = 0;
         MAP_VAR.map.on('click', function(e) {
-            //if (popupOpen) return;
             clickCount += 1;
             if (clickCount <= 1) {
                 setTimeout(function() {

@@ -108,9 +108,8 @@ class WebServicesService {
 
         if (taxaQueries.size() == 1) {
             String taxaQ = taxaQueries[0]
-            //taxaQueries.clear()
             taxaQueries.addAll(taxaQ.split(" OR ") as List)
-            taxaQueries.remove(0)
+            taxaQueries.remove(0) // remove first entry
         }
 
         List encodedQueries = taxaQueries.collect { it.encodeAsURL() } // URL encode params
