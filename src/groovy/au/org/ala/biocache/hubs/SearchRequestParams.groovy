@@ -1,5 +1,6 @@
 package au.org.ala.biocache.hubs
 
+import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.commons.httpclient.URIException
 import org.apache.commons.httpclient.util.URIUtil
@@ -36,7 +37,7 @@ public class SearchRequestParams {
     String dir = "asc"
     String displayString
     /**  The query context to be used for the search.  This will be used to generate extra query filters based on the search technology */
-    String qc = ""
+    String qc = Holders.config.biocacheRestService.queryContext?:""
     /** To disable facets */
     Boolean facet = true
 

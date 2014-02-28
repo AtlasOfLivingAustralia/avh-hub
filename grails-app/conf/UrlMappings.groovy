@@ -13,7 +13,7 @@ class UrlMappings {
         "/occurrences/$id"(controller: 'occurrence', action: 'show')
         "/occurrence/$id"(controller: 'occurrence', action: 'show')
         "/assertions/$id"(controller: 'occurrence', action: 'assertions')
-        "/"(view:"/index")
+        "/$action?"(controller:"home")
         "500"(view:'/error')
         "404"(view:'/error')
 	}

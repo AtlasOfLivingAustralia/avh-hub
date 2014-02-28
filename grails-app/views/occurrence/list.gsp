@@ -50,7 +50,7 @@
         </div>
         <div id="searchBoxZ" class="span7 text-right">
             <form action="${g.createLink(controller: 'occurrence', action: 'search')}" id="solrSearchForm" class="">
-                <div id="advancedSearchLink"><a href="${g.createLink(controller: 'home', action: 'search')}#tab_advanceSearch">Advanced search</a></div>
+                <div id="advancedSearchLink"><a href="${g.createLink(controller: 'home')}#tab_advanceSearch">Advanced search</a></div>
                 <div class="input-append">
                     <input type="text" id="taxaQuery" name="taxa" class="input-xlarge" value="${params.list('taxa').join(' OR ')}">
                     <button type="submit" id="solrSubmit" class="btn">Quick search</button>

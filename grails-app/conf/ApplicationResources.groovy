@@ -1,11 +1,12 @@
 modules = {
     application {
         resource url:'js/application.js'
+        resource url:'css/base.css'
+        resource url:'css/bootstrapAdditions.css'
     }
 
     search {
         dependsOn 'jquery'
-        resource url:'css/bootstrapAdditions.css'
         resource url:'css/search.css'
         resource url:'css/jquery.qtip.min.css'
         resource url:'js/purl.js'
