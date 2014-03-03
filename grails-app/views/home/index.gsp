@@ -7,6 +7,7 @@
 --%>
 <%@ page import="au.org.ala.biocache.hubs.FacetsName; org.apache.commons.lang.StringUtils" contentType="text/html;charset=UTF-8" %>
 <g:set var="hubDisplayName" value="${grailsApplication.config.site.displayName}"/>
+<g:set var="biocacheServiceUrl" value="${grailsApplication.config.site.biocacheServicesUrl}"/>
 <g:set var="serverName" value="${grailsApplication.config.site.serverName?:grailsApplication.config.biocacheServicesUrl}"/>
 <!DOCTYPE html>
 <html>
