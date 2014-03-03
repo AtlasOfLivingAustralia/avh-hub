@@ -5,7 +5,7 @@
   Time: 3:15 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="org.apache.commons.lang.StringUtils" contentType="text/html;charset=UTF-8" %>
+<%@ page import="au.org.ala.biocache.hubs.FacetsName; org.apache.commons.lang.StringUtils" contentType="text/html;charset=UTF-8" %>
 <g:set var="hubDisplayName" value="${grailsApplication.config.site.displayName}"/>
 <g:set var="serverName" value="${grailsApplication.config.site.serverName?:grailsApplication.config.biocacheServicesUrl}"/>
 <!DOCTYPE html>
@@ -120,8 +120,8 @@
                                 <td>
                                     <select class="species_group" name="species_group" id="species_group">
                                         <option value="">-- select a species group --</option>
-                                        <g:each var="group" in="${speciesGroups}">
-                                            <option value="${group}">${group}</option>
+                                        <g:each var="group" in="${request.getAttribute(FacetsName.SPECIES_GROUP.fieldname)}">
+                                            <option value="${group.key}">${group.value}</option>
                                         </g:each>
                                     </select>
                                 </td>
@@ -137,10 +137,10 @@
                                 <td>
                                     <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
                                         <option value="">-- select an institution or collection --</option>
-                                        <g:each var="inst" in="${institutions}">
+                                        <g:each var="inst" in="${request.getAttribute(FacetsName.INSTITUTION.fieldname)}">
                                             <optgroup label="${inst.value}">
                                                 <option value="${inst.key}">All records from ${inst.value}</option>
-                                                <g:each var="coll" in="${collections}">
+                                                <g:each var="coll" in="${request.getAttribute(FacetsName.COLLECTION.fieldname)}">
                                                     <g:if test="${inst.key == 'in13' && StringUtils.startsWith(coll.value, inst.value)}">
                                                         <option value="${coll.key}">${StringUtils.replace(StringUtils.replace(coll.value, inst.value, ""), " - " ,"")} Collection</option>
                                                     </g:if>
@@ -168,8 +168,8 @@
                                 <td>
                                     <select class="country" name="country" id="country">
                                         <option value="">-- select a country --</option>
-                                        <g:each var="country" in="${countries}">
-                                            <option value="${country}">${country}</option>
+                                        <g:each var="country" in="${request.getAttribute(FacetsName.COUNTRIES.fieldname)}">
+                                            <option value="${country.key}">${country.value}</option>
                                         </g:each>
                                     </select>
                                 </td>
@@ -179,8 +179,8 @@
                                 <td>
                                     <select class="state" name="state" id="state">
                                         <option value="">-- select a state/territory --</option>
-                                        <g:each var="state" in="${states}">
-                                            <option value="${state}">${state}</option>
+                                        <g:each var="state" in="${request.getAttribute(FacetsName.STATES.fieldname)}">
+                                            <option value="${state.key}">${state.value}</option>
                                         </g:each>
                                     </select>
                                 </td>
@@ -192,8 +192,8 @@
                                     <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                     <select class="biogeographic_region" name="ibra" id="ibra">
                                         <option value="">-- select an IBRA region --</option>
-                                        <g:each var="region" in="${ibra}">
-                                            <option value="${region}">${region}</option>
+                                        <g:each var="region" in="${request.getAttribute(FacetsName.IBRA.fieldname)}">
+                                            <option value="${region.key}">${region.value}</option>
                                         </g:each>
                                     </select>
                                 </td>
@@ -204,8 +204,8 @@
                                     <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                     <select class="biogeographic_region" name="imcra" id="imcra">
                                         <option value="">-- select an IMCRA region --</option>
-                                        <g:each var="region" in="${imcra}">
-                                            <option value="${region}">${region}</option>
+                                        <g:each var="region" in="${request.getAttribute(FacetsName.IMCRA.fieldname)}">
+                                            <option value="${region.key}">${region.value}</option>
                                         </g:each>
                                     </select>
                                 </td>
@@ -215,15 +215,15 @@
                                 <td>
                                     <select class="lga" name="cl959" id="cl959">
                                         <option value="">-- select local government area--</option>
-                                        <g:each var="region" in="${lgas}">
-                                            <option value="${region}">${region}</option>
+                                        <g:each var="region" in="${request.getAttribute(FacetsName.LGA.fieldname)}">
+                                            <option value="${region.key}">${region.value}</option>
                                         </g:each>
                                     </select>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-                        <g:if test="${StringUtils.length(typeStatus) >1}">
+                        <g:if test="${request.getAttribute(FacetsName.TYPE_STATUS.fieldname).size() > 1}">
                             <b>Find records from the following type status</b>
                             <table border="0" width="100" cellspacing="2" class="compact">
                                 <thead/>
@@ -233,8 +233,8 @@
                                     <td>
                                         <select class="type_status" name="type_status" id="type_status">
                                             <option value="">-- select a type status --</option>
-                                            <g:each var="type" in="${typeStatus}">
-                                                <option value="${type}">${type}</option>
+                                            <g:each var="type" in="${request.getAttribute(FacetsName.TYPE_STATUS.fieldname)}">
+                                                <option value="${type.key}">${type.value}</option>
                                             </g:each>
                                         </select>
                                     </td>
@@ -242,7 +242,7 @@
                                 </tbody>
                             </table>
                         </g:if>
-                        <g:if test="${StringUtils.length(typeStatus) >1}">
+                        <g:if test="${request.getAttribute(FacetsName.BASIS_OF_RECORD.fieldname).size() > 1}">
                             <b>Find records from the following basis of record (record type)</b>
                             <table border="0" width="100" cellspacing="2" class="compact">
                                 <thead/>
@@ -252,8 +252,8 @@
                                     <td>
                                         <select class="basis_of_record" name="basis_of_record" id="basis_of_record">
                                             <option value="">-- select a basis of record --</option>
-                                            <g:each var="bor" in="${basisOfRecord}">
-                                                <option value="${bor}"><g:message code="${bor}"/></option>
+                                            <g:each var="bor" in="${request.getAttribute(FacetsName.BASIS_OF_RECORD.fieldname)}">
+                                                <option value="${bor.key}"><g:message code="${bor.value}"/></option>
                                             </g:each>
                                         </select>
                                     </td>

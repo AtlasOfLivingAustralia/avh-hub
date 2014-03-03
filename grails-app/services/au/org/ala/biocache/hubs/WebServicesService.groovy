@@ -21,6 +21,12 @@ class WebServicesService {
         getJsonElements(url)
     }
 
+    @Cacheable('longTermCache')
+    def JSONObject cachedFullTextSearch(SpatialSearchRequestParams requestParams) {
+        def url = "${grailsApplication.config.biocacheServicesUrl}/occurrences/search?${requestParams.getEncodedParams()}"
+        getJsonElements(url)
+    }
+
     @Cacheable('biocacheCache')
     def JSONObject getRecord(String id) {
         def url = "${grailsApplication.config.biocacheServicesUrl}/occurrence/${id.encodeAsURL()}"

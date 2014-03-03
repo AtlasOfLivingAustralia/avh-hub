@@ -19,6 +19,7 @@ import grails.plugin.cache.CacheEvict
 
 class AdminController {
     def scaffold = true
+    def facetsCacheService
 
     def index() {
         render "Not available to the public"
@@ -37,5 +38,10 @@ class AdminController {
     @CacheEvict(value='longTermCache', allEntries=true)
     def clearLongTermCache() {
         render(text:"longTermCache cache cleared")
+    }
+
+    def clearFacetsCache() {
+        facetsCacheService.clearCache()
+        redirect(action: "clearLongTermCache") // clear webservice cache as well
     }
 }

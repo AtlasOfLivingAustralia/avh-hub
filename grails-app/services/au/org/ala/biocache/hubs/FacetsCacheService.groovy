@@ -15,62 +15,52 @@
 
 package au.org.ala.biocache.hubs
 
+import org.apache.commons.lang.StringUtils
+import org.codehaus.groovy.grails.web.json.JSONObject
+
+/**
+ * Service to cache the facet values available from a given data hub.
+ * Used to populate the values in select drop-down lists in advanced search page.
+ */
 class FacetsCacheService {
+    def webServicesService
+    Map facetsMap = [:]
 
-    def getCollections() {
-        []
+    def Map getFacetNamesFor(FacetsName facet) {
+        if (!facetsMap) {
+            loadSearchResults()
+        }
+
+        return facetsMap?.get(facet.fieldname)
     }
 
-    def getInstitutions() {
-        []
+    def clearCache() {
+        facetsMap = [:]
     }
 
-    def getTypeStatuses() {
-        []
-    }
+    private void loadSearchResults() {
+        SpatialSearchRequestParams requestParams = new SpatialSearchRequestParams()
+        requestParams.setQ("*:*")
+        requestParams.setPageSize(0)
+        requestParams.setFlimit(-1)
+        requestParams.setFacets(FacetsName.values().collect{ it.fieldname } as String[])
+        JSONObject sr = webServicesService.cachedFullTextSearch(requestParams)
 
-    def getBasisOfRecord() {
-        []
-    }
+        sr.facetResults.each { fq ->
+            def fieldName = fq.fieldName
+            def fields = [:]
+            fq.fieldResult.each {
+                if (it.fq) {
+                    def values = it.fq.tokenize(":")
+                    def value = StringUtils.remove(values[1], '"') // some values have surrounding quotes
+                    fields.put(value, it.label)
+                } else {
+                    fields.put(it.label, it.label)
+                }
+            }
 
-    def getSpeciesGroups() {
-        []
-    }
-
-    def getLoanDestination() {
-
-    }
-
-    def getEstablishment_means() {
-
-    }
-
-    def getStateConservations() {
-
-    }
-
-    def getStates() {
-
-    }
-
-    def getIBRA() {
-
-    }
-
-    def getIMCRA() {
-
-    }
-
-    def getIMCRA_MESO() {
-
-    }
-
-    def getCountries() {
-
-    }
-
-    def getLGAs() {
-
+            facetsMap.put(fieldName, fields)
+        }
     }
 
 }
