@@ -95,18 +95,20 @@ class OccurrenceTagLib {
         def fqLabel = (filterLabel.startsWith('-')) ? "<span class=\"red\">[exclude]</span> ${filterLabel.substring(1, filterLabel.size())}" : filterLabel
 
         def mb = new MarkupBuilder(out)
-        mb.span(class:'activeFq') {
-            mkp.yieldUnescaped(message(code: fqLabel, default: fqLabel))
-        }
-        mb.span() { mkp.yieldUnescaped("&nbsp;") }
-        mb.a(
-                href:"#",
-                class: "btn btn-mini btn-primary removeLink",
-                title: "remove filter",
-                "data-facet":"${item.key}:${item.value.value.encodeAsURL()}",
-                onClick:"removeFacet(this); return false;"
-        ) {
-            i(class:"icon-remove icon-white", style:"margin-left:5px", "")
+        mb.li() {
+            a(      href:"#",
+                    class: "tooltips",
+                    title: "remove filter",
+                    "data-facet":"${item.key}:${item.value.value.encodeAsURL()}",
+                    onClick:"removeFacet(this); return false;"
+            ) {
+                span(class:'checkbox-checked') {
+                    mkp.yieldUnescaped("&nbsp;")
+                }
+                span(class:'activeFq') {
+                    mkp.yieldUnescaped(message(code: fqLabel, default: fqLabel).replaceFirst(':',': '))
+                }
+            }
         }
     }
 
@@ -123,6 +125,7 @@ class OccurrenceTagLib {
         def queryParam = attrs.queryParam
         def mb = new MarkupBuilder(out)
         def fqValue = fieldResult.label?.encodeAsURL()
+        def linkTitle = "Filter results by ${alatag.formatDynamicFacetName(fieldName:facetResult.fieldName)}"
 
         def addCounts = { count ->
             mb.span(class:"facetCount") {
@@ -136,31 +139,71 @@ class OccurrenceTagLib {
         if (fieldResult.fq) {
             // biocache-service has provided a fq field in the fieldResults list
             mb.li {
-                a(href:"?${queryParam}&fq=${fieldResult.fq?.encodeAsURL()}") {
-                    mkp.yield(message(code:"${fieldResult.label?:'unknown'}", default:"${fieldResult.label}"))
+                a(      href:"?${queryParam}&fq=${fieldResult.fq?.encodeAsURL()}",
+                        class: "tooltips",
+                        title: linkTitle
+                ) {
+                    span(class:"checkbox-unchecked"){
+                        mkp.yieldUnescaped("&nbsp;")
+                    }
+                    span(class:"facet-item") {
+                        mkp.yield(message(code:"${fieldResult.label?:'unknown'}", default:"${fieldResult.label}"))
+                        addCounts(fieldResult.count)
+                    }
+
                 }
-                addCounts(fieldResult.count)
+
             }
-        } else if (StringUtils.startsWith(facetResult.fieldName, "occurrence_") && StringUtils.endsWith(fieldResult.label, "Z")) {
+        } else if (StringUtils.startsWith(facetResult.fieldName, "occurrence_")) {
             // decade year ranges
-            def startYear = fieldResult.label.substring(0, 4)
-            def endDate = fieldResult.label.replace('0-01-01T00:00:00Z','9-12-31T11:59:59Z')
-            def endYear = endDate.substring(0, 4)
+            def startDate = ""
+            def startYear = ""
+            def endDate = ""
+            def endYear = ""
+
+            if (fieldResult.label.toLowerCase() == "before") {
+                startDate = "*"
+                startYear = "Before "
+                endDate = facetResult.fieldResult?.get(0)?.label
+                endYear = endDate?.substring(0, 4)
+            } else {
+                startDate = fieldResult.label
+                startYear = fieldResult.label.substring(0, 4)
+                endDate = fieldResult.label.replace('0-01-01T00:00:00Z','9-12-31T11:59:59Z')
+                endYear = " - " + endDate.substring(0, 4)
+            }
 
             mb.li {
-                a(href:"?${queryParam}&fq=${facetResult.fieldName}:[${fieldResult.label} TO ${endDate}]") {
-                    mkp.yieldUnescaped("${startYear} - ${endYear}")
+                a(      href:"?${queryParam}&fq=${facetResult.fieldName}:[${startDate} TO ${endDate}]",
+                        class: "tooltips",
+                        title: linkTitle
+                ) {
+                    span(class:"checkbox-unchecked"){
+                        mkp.yieldUnescaped("&nbsp;")
+                    }
+                    span(class:"facet-item") {
+                        mkp.yieldUnescaped("${startYear} ${endYear}")
+                        addCounts(fieldResult.count)
+                    }
                 }
-                addCounts(fieldResult.count)
+
             }
         } else {
             def label = g.message(code:"${facetResult.fieldName}.${fieldResult.label}", default:"")?:
                     g.message(code:"${fieldResult.label?:'unknown'}", default:"${fieldResult.label}")
             mb.li {
-                a(href:"?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22") {
-                    mkp.yield(label)
+                a(      href:"?${queryParam}&fq=${facetResult.fieldName}:%22${fqValue}%22",
+                        class: "tooltips",
+                        title: linkTitle
+                ) {
+                    span(class:"checkbox-unchecked"){
+                        mkp.yieldUnescaped("&nbsp;")
+                    }
+                    span(class:"facet-item") {
+                        mkp.yield(label)
+                        addCounts(fieldResult.count)
+                    }
                 }
-                addCounts(fieldResult.count)
             }
         }
     }

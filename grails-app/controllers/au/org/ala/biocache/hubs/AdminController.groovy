@@ -15,10 +15,27 @@
 
 package au.org.ala.biocache.hubs
 
+import grails.plugin.cache.CacheEvict
+
 class AdminController {
     def scaffold = true
 
     def index() {
         render "Not available to the public"
+    }
+
+    @CacheEvict(value='biocacheCache', allEntries=true)
+    def clearBiocacheCache() {
+        render(text:"biocacheCache cache cleared")
+    }
+
+    @CacheEvict(value='collectoryCache', allEntries=true)
+    def clearCollectoryCache() {
+        render(text:"collectoryCache cache cleared")
+    }
+
+    @CacheEvict(value='longTermCache', allEntries=true)
+    def clearLongTermCache() {
+        render(text:"longTermCache cache cleared")
     }
 }

@@ -147,10 +147,10 @@ input::-webkit-input-placeholder {
     color: #666666;
 }
 
-.facets a:link, .facets a:visited {
-    font-size: 12px;
-    text-decoration: none;
-}
+/*.facets a:link, .facets a:visited {*/
+    /*font-size: 12px;*/
+    /*text-decoration: none;*/
+/*}*/
 
 .facets .sidebar ul li {
     margin:  3px 0px 3px 3px;

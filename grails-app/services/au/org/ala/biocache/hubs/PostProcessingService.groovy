@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest
  */
 class PostProcessingService {
     def grailsApplication
+
     /**
      * Determine if the record contains images
      *
