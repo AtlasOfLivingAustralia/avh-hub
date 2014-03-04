@@ -25,8 +25,8 @@ modules = {
     }
 
     leaflet {
-        resource url:'css/leaflet.css'
-        resource url:'js/leaflet.js'
+        resource url:'js/leaflet-0.7.2/leaflet.css'
+        resource url:'js/leaflet-0.7.2/leaflet.js'
         resource url:'js/leaflet-plugins/layer/tile/Google.js'
     }
 

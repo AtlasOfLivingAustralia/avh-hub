@@ -168,7 +168,7 @@ a.colour-by-legend-toggle {
 <r:script>
 
     var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-            cmUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
+            cmUrl = 'http://{s}.tile.cloudmade.com/${grailsApplication.config.map.cloudmade.key}/{styleId}/256/{z}/{x}/{y}.png';
 
     var minimal = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr});
 
@@ -278,7 +278,8 @@ a.colour-by-legend-toggle {
             addQueryLayer(true);
         });
 
-        fitMapToBounds(); // zoommap if points are contained within Australia
+        fitMapToBounds(); // zoom map if points are contained within Australia
+        drawCircleRadius(); // draw circle around lat/lon/radius searches
 
         //enable the point lookup - but still allow double clicks to propagate
         var clickCount = 0;
@@ -500,7 +501,7 @@ a.colour-by-legend-toggle {
         }
 
         $.ajax({
-            url: MAP_VAR.mappingUrl + "/occurrences/info" + MAP_VAR.query,
+            url: MAP_VAR.mappingUrl + "/occurrences/info",
             jsonp: "callback",
             dataType: "jsonp",
             data: {
@@ -551,7 +552,6 @@ a.colour-by-legend-toggle {
     }
 
     /**
-     * Triggered on map bounds change event.
      * Zooms map to either spatial search or from WMS data bounds
      */
     function fitMapToBounds() {
@@ -566,7 +566,7 @@ a.colour-by-legend-toggle {
                 var ne = L.latLng(data[3],data[2]);
                 //console.log("sw", sw.toString());
                 var dataBounds = L.latLngBounds(sw, ne);
-                var centre = dataBounds.getCenter();
+                //var centre = dataBounds.getCenter();
                 var mapBounds = MAP_VAR.map.getBounds();
 
                 if (mapBounds && mapBounds.contains(sw) && mapBounds.contains(ne) && dataBounds) {
@@ -589,6 +589,36 @@ a.colour-by-legend-toggle {
                 }
             }
         });
+    }
+
+    /**
+     * Spatial searches from Explore Your Area - draw a circle representing
+     * the radius boundary for the search.
+     *
+     * Note: this function has a dependency on purl.js:
+     * https://github.com/allmarkedup/purl
+     */
+    function drawCircleRadius() {
+        var lat = $.url().param('lat');
+        var lng = $.url().param('lon');
+        var radius = $.url().param('radius');
+
+        if (lat && lng && radius) {
+            // spatial search from EYA
+            var latLng = L.latLng(lat, lng);
+            var circOpts = {
+                weight: 1,
+                color: 'white',
+                opacity: 0.5,
+                fillColor: '#222', // '#2C48A6'
+                fillOpacity: 0.2
+            }
+
+            var popupText = "Centre of spatial search with radius of " + radius + " km";
+            L.circle(latLng, radius * 1010, circOpts).addTo(MAP_VAR.map);
+            //L.marker(latLng, {title: popupText}).bindPopup(popupText).addTo(MAP_VAR.map);
+            L.circleMarker(latLng, {radius: 6, opacity: 0.8, fillOpacity: 1.0}).bindPopup(popupText).addTo(MAP_VAR.map);
+        }
     }
 
 </r:script>
