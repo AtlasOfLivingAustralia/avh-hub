@@ -29,7 +29,7 @@
         <g:set var="facetCount" value="${0}"/>
         <g:each var="group" in="${groupedFacets}">
             <div class="facetGroupName" id="heading_${group.key.replaceAll(/\s+/,'')}">
-                <a href="#" class="showHideFacetGroup" data-name="${group.key.replaceAll(/\s+/,'')}"><span class="caret ${(facetCount)?'':'right-caret'}" style=""></span> ${group.key}</a>
+                <a href="#" class="showHideFacetGroup" data-name="${group.key.replaceAll(/\s+/,'')}"><span class="caret ${(facetCount < 6)?'':'right-caret'}" style=""></span> ${group.key}</a>
             </div>
             <div class="facetsGroup ${(facetCount < 6) ? '': 'hide'}" id="group_${group.key.replaceAll(/\s+/,'')}">
                 <g:set var="firstGroup" value="${false}"/>
