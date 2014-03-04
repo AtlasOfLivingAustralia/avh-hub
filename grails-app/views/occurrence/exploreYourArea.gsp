@@ -88,9 +88,9 @@
             <span class="pad">
                 Display records in a
                 <select id="radius" name="radius" class="" style="height:24px;width:auto;line-height:18px;margin-bottom:0;">
-                    <option value="1" <g:if test="${radius == '1.0'}">selected</g:if>>1</option>
-                    <option value="5" <g:if test="${radius == '5.0'}">selected</g:if>>5</option>
-                    <option value="10" <g:if test="${radius == '10.0'}">selected</g:if>>10</option>
+                    <option value="1" <g:if test="${radius == 1}">selected</g:if>>1</option>
+                    <option value="5" <g:if test="${radius == 5}">selected</g:if>>5</option>
+                    <option value="10" <g:if test="${radius == 10}">selected</g:if>>10</option>
                 </select> km radius
             </span>
             <span class="pad">
