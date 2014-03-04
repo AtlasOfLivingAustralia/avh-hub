@@ -116,6 +116,13 @@ if (!map.cloudmade.key) {
 if (!downloads.extra) {
     downloads.extra = "dataResourceUid,dataResourceName.p"
 }
+if (!googleKey) {
+    googleKey = "ABQIAAAAoBSAWIKN0nq5ftlHnSqAURRYnbqkszd6zrcg1s-Fm7JsBxVj5xRaQWSGnjeflao2CYtNRBZxuDrYyg"
+}
+if (!biocacheRestService.queryContext) {
+    // data hub uid
+    biocacheRestService.queryContext = ""
+}
 
 /******************************************************************************\
  *  CAS SETTINGS

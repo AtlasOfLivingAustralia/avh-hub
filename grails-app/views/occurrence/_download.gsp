@@ -18,7 +18,7 @@
             Please provide the following details before downloading (* required):
         </p>
         <form id="downloadForm">
-            <input type="hidden" name="searchParams" id="searchParams" value="${sr.urlParameters}"/>
+            <input type="hidden" name="searchParams" id="searchParams" value="${sr?.urlParameters}"/>
             <g:if test="${clubView}">
                 <input type="hidden" name="url" id="downloadUrl" value="${request.contextPath}/proxy/download/download"/>
                 <input type="hidden" name="url" id="fastDownloadUrl" value="${request.contextPath}/proxy/download/index/download"/>

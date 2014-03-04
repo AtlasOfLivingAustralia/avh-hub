@@ -93,6 +93,27 @@ class OccurrenceController {
         redirect(action: "search", params: [q:"lsid:" + id])
     }
 
+    def exploreYourArea() {
+        def radius = params.radius?:5
+        Map radiusToZoomLevelMap = [
+                1: 14,
+                5: 12,
+                10: 11,
+                50: 9
+        ]
+        render(
+                view: "exploreYourArea",
+                model: [
+                        latitude:  params.latitude?:grailsApplication.config.exploreYourArea.lat,
+                        longitude: params.longitude?:grailsApplication.config.exploreYourArea.lng,
+                        radius: radius,
+                        zoom: radiusToZoomLevelMap.get(radius),
+                        location: grailsApplication.config.exploreYourArea.location,
+                        speciesPageUrl: grailsApplication.config.bie.baseURL + "species/"
+                ]
+        )
+    }
+
     def legend(){
        def legend = webServicesService.getText(grailsApplication.config.biocacheServicesUrl + "/webportal/legend?" + request.queryString)
        response.setContentType("application/json")

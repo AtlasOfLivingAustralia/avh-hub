@@ -14,6 +14,7 @@ class UrlMappings {
         "/occurrences/$id"(controller: 'occurrence', action: 'show')
         "/occurrence/$id"(controller: 'occurrence', action: 'show')
         "/assertions/$id"(controller: 'occurrence', action: 'assertions')
+        "/explore/your-area"(controller: 'occurrence', action: 'exploreYourArea')
         "/$action?"(controller:"home")
         "500"(view:'/error')
         "404"(view:'/error')

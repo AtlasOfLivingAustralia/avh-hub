@@ -491,6 +491,7 @@ div#download {
 }
 .sidebar .showHide {
     margin: -2px 0 0 0;
+    line-height: 1.4em;
     padding: 0;
 }
 .showHide a:link, .showHide a:visited  {
@@ -818,4 +819,8 @@ div#content div#envLegend {
 
 span.red {
     color:red;
+}
+
+.dropdown-menu {
+    z-index: 2000;
 }

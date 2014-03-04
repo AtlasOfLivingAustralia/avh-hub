@@ -37,4 +37,13 @@ modules = {
         resource url:'js/moment.min.js'
         resource url:'js/show.js'
     }
+
+    exploreYourArea {
+        dependsOn 'jquery'
+        resource url:'css/jquery.qtip.min.css'
+        resource url:'css/exploreYourArea.css'
+        resource url:'js/jquery.qtip.min.js'
+        resource url:'js/purl.js'
+        resource url:'js/yourAreaMap.js'
+    }
 }
