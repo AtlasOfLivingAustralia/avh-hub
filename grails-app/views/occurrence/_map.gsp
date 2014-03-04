@@ -278,6 +278,8 @@ a.colour-by-legend-toggle {
             addQueryLayer(true);
         });
 
+        fitMapToBounds(); // zoommap if points are contained within Australia
+
         //enable the point lookup - but still allow double clicks to propagate
         var clickCount = 0;
         MAP_VAR.map.on('click', function(e) {
@@ -544,6 +546,47 @@ a.colour-by-legend-toggle {
             dataType: "jsonp",
             success: function(response) {
 
+            }
+        });
+    }
+
+    /**
+     * Triggered on map bounds change event.
+     * Zooms map to either spatial search or from WMS data bounds
+     */
+    function fitMapToBounds() {
+        // all other searches (non-spatial)
+        // do webservice call to get max extent of WMS data
+        var jsonUrl = "${grailsApplication.config.biocacheServicesUrl}/webportal/bounds.json" + MAP_VAR.query + "&callback=?";
+
+        $.getJSON(jsonUrl, function(data) {
+            if (data.length == 4) {
+                //console.log("data", data);
+                var sw = L.latLng(data[1],data[0]);
+                var ne = L.latLng(data[3],data[2]);
+                //console.log("sw", sw.toString());
+                var dataBounds = L.latLngBounds(sw, ne);
+                var centre = dataBounds.getCenter();
+                var mapBounds = MAP_VAR.map.getBounds();
+
+                if (mapBounds && mapBounds.contains(sw) && mapBounds.contains(ne) && dataBounds) {
+                    // data bounds is smaller than all of Aust
+                    //console.log("smaller bounds",dataBounds,mapBounds)
+                    MAP_VAR.map.fitBounds(dataBounds);
+
+                    if (MAP_VAR.map.getZoom() > 15) {
+                        MAP_VAR.map.setZoom(15);
+                    }
+                } else if (BC_CONF.zoomOutsideAustralia) {
+                    //map.fitBounds(dataBounds);
+                    //console.log("zoom", map.getZoom())
+                    MAP_VAR.map.fitBounds(dataBounds);
+
+                    if (MAP_VAR.map.getZoom() == 0) {
+                        //MAP_VAR.map.setCenter(centre);
+                        MAP_VAR.map.setZoom(2);
+                    }
+                }
             }
         });
     }
