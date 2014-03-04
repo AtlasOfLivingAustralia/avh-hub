@@ -59,7 +59,11 @@ class FacetsCacheService {
                 }
             }
 
-            facetsMap.put(fieldName, fields)
+            if (fields.size() > 0) {
+                facetsMap.put(fieldName, fields)
+            } else {
+                log.warn "No facet values found for ${fieldName}"
+            }
         }
     }
 
