@@ -3,6 +3,7 @@
     Created on : Feb 25, 2011, 4:20:32 PM
     Author     : "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
 --%>
+<g:set var="biocacheServiceUrl" value="${grailsApplication.config.biocacheServicesUrl}"/>
 <div id="download" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="downloadsLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -26,16 +27,11 @@
                 <input type="hidden" name="url" id="downloadUrl" value="${biocacheServiceUrl}/occurrences/download"/>
                 <input type="hidden" name="url" id="fastDownloadUrl" value="${biocacheServiceUrl}/occurrences/index/download"/>
             </g:else>
-        <!--  20130918 we need to set the source id before it is used. -->
-            <g:set var="sourceId">
-                <g:each var="it" in="${LoggerSources}">
-                    <g:if test="${skin.toUpperCase() == it.name}">${it.id}</g:if>
-                </g:each>
-            </g:set>
+
             <input type="hidden" name="url" id="downloadChecklistUrl" value="${biocacheServiceUrl}/occurrences/facets/download"/>
             <input type="hidden" name="url" id="downloadFieldGuideUrl" value="${request.contextPath}/occurrences/fieldguide/download"/>
-            <input type="hidden" name="extra" id="extraFields" value="${downloadExtraFields}"/>
-            <input type="hidden" name="sourceTypeId" id="sourceTypeId" value="${sourceId}"/>
+            <input type="hidden" name="extra" id="extraFields" value="${grailsApplication.config.downloads.extra}"/>
+            <input type="hidden" name="sourceTypeId" id="sourceTypeId" value="${alatag.getSourceId()}"/>
 
             <fieldset>
                 <div><label for="email">Email</label>
@@ -47,7 +43,7 @@
                 <div><label for="reasonTypeId" style="vertical-align: top">Download reason *</label>
                     <select name="reasonTypeId" id="reasonTypeId">
                         <option value="">-- select a reason --</option>
-                        <g:each var="it" in="${LoggerReason}">
+                        <g:each var="it" in="${alatag.getLoggerReasons()}">
                             <option value="${it.id}">${it.name}</option>
                         </g:each>
                     </select>

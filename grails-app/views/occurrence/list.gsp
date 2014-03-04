@@ -63,7 +63,7 @@
     </div>
     <g:if test="${errors}">
         <div class="searchInfo">
-            <h2 style="padding-left: 15px;">Error</h2>
+            <h2 style="padding-left: 10px;">Error</h2>
             <h4>${errors}</h4>
         </div>
     </g:if>

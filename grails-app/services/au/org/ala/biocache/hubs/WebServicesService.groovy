@@ -144,6 +144,18 @@ class WebServicesService {
         getText(url)
     }
 
+    @Cacheable('longTermCache')
+    def JSONArray getLoggerReasons() {
+        def url = "http://logger.ala.org.au/service/logger/reasons"
+        getJsonElements(url)
+    }
+
+    @Cacheable('longTermCache')
+    def JSONArray getLoggerSources() {
+        def url = "http://logger.ala.org.au/service/logger/sources"
+        getJsonElements(url)
+    }
+
     /**
      * Perform HTTP GET on a JSON web service
      *

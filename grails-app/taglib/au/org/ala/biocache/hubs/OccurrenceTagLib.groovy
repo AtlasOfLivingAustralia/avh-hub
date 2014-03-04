@@ -6,6 +6,8 @@ import org.apache.commons.lang.StringUtils
 class OccurrenceTagLib {
     //static defaultEncodeAs = 'html'
     //static encodeAsForTags = [tagName: 'raw']
+    static returnObjectForTags = ['getLoggerReasons']
+    def webServicesService
     static namespace = 'alatag'     // namespace for headers and footers
 
     /**
@@ -445,4 +447,31 @@ class OccurrenceTagLib {
         }
         out << output
     }
+
+    /**
+     * Get the list of available reason codes and labels from the Logger app
+     *
+     * Note: outputs an Object and thus needs:
+     *
+     *   static returnObjectForTags = ['getLoggerReasons']
+     *
+     * at top of taglib
+     */
+    def getLoggerReasons = { attrs ->
+        webServicesService.getLoggerReasons()
+    }
+
+    /**
+     * Get the appropriate sourceId for the current hub
+     */
+    def getSourceId = { attrs ->
+        def skin = grailsApplication.config.ala.skin?.toUpperCase()
+        def sources = webServicesService.getLoggerSources()
+        sources.each {
+            if (it.name == skin) {
+                out << it.id
+            }
+        }
+    }
+
 }
