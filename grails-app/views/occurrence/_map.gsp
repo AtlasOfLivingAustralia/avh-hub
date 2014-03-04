@@ -616,8 +616,8 @@ a.colour-by-legend-toggle {
 
             var popupText = "Centre of spatial search with radius of " + radius + " km";
             L.circle(latLng, radius * 1010, circOpts).addTo(MAP_VAR.map);
-            //L.marker(latLng, {title: popupText}).bindPopup(popupText).addTo(MAP_VAR.map);
-            L.circleMarker(latLng, {radius: 6, opacity: 0.8, fillOpacity: 1.0}).bindPopup(popupText).addTo(MAP_VAR.map);
+            L.marker(latLng, {title: popupText}).bindPopup(popupText).addTo(MAP_VAR.map);
+            //L.circleMarker(latLng, {radius: 6, opacity: 0.8, fillOpacity: 1.0}).bindPopup(popupText).addTo(MAP_VAR.map);
         }
     }
 
