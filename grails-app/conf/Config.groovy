@@ -109,6 +109,9 @@ if (!collections.baseUrl) {
 if (!dataQualityChecksUrl) {
     dataQualityChecksUrl = "https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv"
 }
+if (!map.cloudmade.key) {
+    map.cloudmade.key = "BC9A493B41014CAABB98F0471D759707" // this is website specific
+}
 
 /******************************************************************************\
  *  CAS SETTINGS
