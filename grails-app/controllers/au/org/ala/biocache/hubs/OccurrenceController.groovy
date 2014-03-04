@@ -60,28 +60,37 @@ class OccurrenceController {
             requestParams.q= "*:*"
         }
 
-        Map defaultFacets = postProcessingService.getAllFacets(webServicesService.getDefaultFacets())
-        String[] userFacets = postProcessingService.getFacetsFromCookie(request)
-        String[] filteredFacets = postProcessingService.getFilteredFacets(defaultFacets)
-        requestParams.facets = userFacets ?: filteredFacets
+        try {
+            Map defaultFacets = postProcessingService.getAllFacets(webServicesService.getDefaultFacets())
+            String[] userFacets = postProcessingService.getFacetsFromCookie(request)
+            String[] filteredFacets = postProcessingService.getFilteredFacets(defaultFacets)
+            requestParams.facets = userFacets ?: filteredFacets
 
-        JSONObject searchResults = webServicesService.fullTextSearch(requestParams)
-        // postProcessingService.modifyQueryTitle(searchResults, taxaQueries)
-        // log.info "searchResults = ${searchResults.toString(2)}"
-        log.info "userid = ${authService.getUserId()}"
+            JSONObject searchResults = webServicesService.fullTextSearch(requestParams)
+            // postProcessingService.modifyQueryTitle(searchResults, taxaQueries)
+            // log.info "searchResults = ${searchResults.toString(2)}"
+            log.info "userid = ${authService.getUserId()}"
 
-        render view: "list", model: [
-                sr: searchResults,
-                searchRequestParams: requestParams,
-                defaultFacets: defaultFacets,
-                groupedFacets: webServicesService.getGroupedFacets(),
-                hasImages: postProcessingService.resultsHaveImages(searchResults),
-                showSpeciesImages: false,
-                sort: requestParams.sort,
-                dir: requestParams.dir,
-                userId: authService.getUserId(),
-                userEmail: authService.getEmail()
-        ]
+            render view: "list", model: [
+                    sr: searchResults,
+                    searchRequestParams: requestParams,
+                    defaultFacets: defaultFacets,
+                    groupedFacets: webServicesService.getGroupedFacets(),
+                    hasImages: postProcessingService.resultsHaveImages(searchResults),
+                    showSpeciesImages: false,
+                    sort: requestParams.sort,
+                    dir: requestParams.dir,
+                    userId: authService.getUserId(),
+                    userEmail: authService.getEmail()
+            ]
+        } catch (Exception e) {
+            render view: "list", model: [errors: e.message, sr: [:]]
+        }
+    }
+
+    def taxa(String id) {
+        log.debug "taxa search for ${id}"
+        redirect(action: "search", params: [q:"lsid:" + id])
     }
 
     def legend(){

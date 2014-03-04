@@ -5,6 +5,7 @@ import grails.plugin.cache.Cacheable
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONElement
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.springframework.web.client.RestClientException
 
 /**
  * Service to perform web service DAO operations
@@ -162,7 +163,7 @@ class WebServicesService {
         } catch (Exception e) {
             def error = "Failed to get json from web service (${url}). ${e.getClass()} ${e.getMessage()}, ${e}"
             log.error error
-            return null
+            throw new RestClientException(error)
         }
 
     }
@@ -185,7 +186,8 @@ class WebServicesService {
         } catch (Exception e) {
             def error = "Failed to get text from web service (${url}). ${e.getClass()} ${e.getMessage()}, ${e}"
             log.error error
-            return null
+            //return null
+            throw new RestClientException(error) // exception will result in no caching as opposed to returning null
         }
     }
 }

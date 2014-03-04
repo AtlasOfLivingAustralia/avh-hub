@@ -8,6 +8,7 @@ class UrlMappings {
         }
         "/occurrences/search"(controller: 'occurrence', action: 'search')
         "/occurrence/search"(controller: 'occurrence', action: 'search')
+        "/occurrences/taxa/$id"(controller: 'occurrence', action: 'taxa')
         "/occurrence/index"(controller: 'occurrence', action: 'index')
         "/occurrence/legend"(controller: 'occurrence', action: 'legend')
         "/occurrences/$id"(controller: 'occurrence', action: 'show')

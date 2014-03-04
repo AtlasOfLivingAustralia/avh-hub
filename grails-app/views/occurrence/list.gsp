@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<g:set var="queryDisplay" value="${sr.queryTitle?:searchRequestParams.displayString}"/>
+<g:set var="queryDisplay" value="${sr?.queryTitle?:searchRequestParams?.displayString?:''}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,10 +64,10 @@
     <g:if test="${errors}">
         <div class="searchInfo">
             <h2 style="padding-left: 15px;">Error</h2>
-            <p>${errors}</p>
+            <h4>${errors}</h4>
         </div>
     </g:if>
-    <g:elseif test="${sr.totalRecords == 0}">
+    <g:elseif test="${!sr || sr.totalRecords == 0}">
         <div class="searchInfo">
             <p>No records found for <span class="queryDisplay">${queryDisplay?:params.q}</span></p>
         </div>
