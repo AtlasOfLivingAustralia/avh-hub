@@ -296,7 +296,7 @@ function loadMap() {
     });
 
     // Add a Circle overlay to the map.
-    var radius = parseInt($('select#radius').val()) * 1000;
+    var radius = parseInt($('select#radius').val()) * 1010;
     circle = new google.maps.Circle({
         map: map,
         radius: radius,

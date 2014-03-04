@@ -444,32 +444,6 @@ div.recordHeader {
     padding-left: 10px;
     text-align: right;
 }
-div#download {
-/*    display: none;*/
-    font-size: 13px;
-    line-height: 1.4em;
-}
-#downloadForm {
-    text-align: left;
-}
-#downloadForm label {
-    width: 35%;
-    display: inline-block;
-    text-align: right;
-    padding-right: 10px;
-    color: #444;
-}
-#download p {
-    margin: 0;
-}
-#downloadForm input {
-    float: none;
-    margin: 0;
-}
-#termsOfUseDownload { 
-    text-align:left; padding-bottom:15px;
-}
-
 #resultsOuter {
     position: relative;
     overflow: hidden;

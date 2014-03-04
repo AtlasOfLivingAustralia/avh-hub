@@ -97,12 +97,10 @@
                 <a href="#" id="viewAllRecords" class="btn btn-small"><i class="icon-list"></i>&nbsp;&nbsp;View
                     <span id="recordsGroupText">all</span>  records</a>
             </span>
-            %{--<span class="pad">--}%
-                %{--<button id="downloadLink" href="#download" title="Download a list of all species (tab-delimited file)" class="btn"><i class="icon-download"></i>&nbsp;&nbsp;Download</button>--}%
-            %{--</span>--}%
-            <div id="downloads" class="btn btn-small">
-                <a href="#download" role="button" data-toggle="modal" class="tooltips" title="Download all records OR species checklist"><i class="icon-download"></i> Downloads</a>
-            </div>
+            <span class="pad">
+                <a href="#download" role="button" data-toggle="modal" class="btn btn-small tooltips" title="Download all records OR species checklist">
+                    <i class="icon-download"></i> Downloads</a>
+            </span>
         </div>
         <div id="dialog-confirm" title="Continue with download?" style="display: none">
             <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You are about to
@@ -163,8 +161,8 @@
     </div><!-- .span5 -->
 </div><!-- .row-fluid -->
 
-<div style="display:none">
+%{--<div style="display:none">--}%
     <g:render template="download"/>
-</div>
+%{--</div>--}%
 </body>
 </html>
