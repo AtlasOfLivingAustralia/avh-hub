@@ -423,11 +423,4 @@
         </div>
     </g:else>
 </body>
-<r:script type="text/javascript">
-    $(function(){
-        $('#t2').click(function(){
-            initialiseMap();
-        })
-    })
-</r:script>
 </html>

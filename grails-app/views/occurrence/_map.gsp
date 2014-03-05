@@ -208,7 +208,7 @@ a.colour-by-legend-toggle {
     });
 
     function initialiseMap(){
-
+        console.log("initialiseMap", MAP_VAR.map );
         if(MAP_VAR.map != null){
             return;
         }
@@ -555,40 +555,42 @@ a.colour-by-legend-toggle {
      * Zooms map to either spatial search or from WMS data bounds
      */
     function fitMapToBounds() {
-        // all other searches (non-spatial)
-        // do webservice call to get max extent of WMS data
-        var jsonUrl = "${grailsApplication.config.biocacheServicesUrl}/webportal/bounds.json" + MAP_VAR.query + "&callback=?";
+        // Don't run for spatial searches, which have their own fitBounds() method
+        if (!isSpatialRadiusSearch()) {
+            // all other searches (non-spatial)
+            // do webservice call to get max extent of WMS data
+            var jsonUrl = "${grailsApplication.config.biocacheServicesUrl}/webportal/bounds.json" + MAP_VAR.query + "&callback=?";
+            $.getJSON(jsonUrl, function(data) {
+                if (data.length == 4) {
+                    //console.log("data", data);
+                    var sw = L.latLng(data[1],data[0]);
+                    var ne = L.latLng(data[3],data[2]);
+                    //console.log("sw", sw.toString());
+                    var dataBounds = L.latLngBounds(sw, ne);
+                    //var centre = dataBounds.getCenter();
+                    var mapBounds = MAP_VAR.map.getBounds();
 
-        $.getJSON(jsonUrl, function(data) {
-            if (data.length == 4) {
-                //console.log("data", data);
-                var sw = L.latLng(data[1],data[0]);
-                var ne = L.latLng(data[3],data[2]);
-                //console.log("sw", sw.toString());
-                var dataBounds = L.latLngBounds(sw, ne);
-                //var centre = dataBounds.getCenter();
-                var mapBounds = MAP_VAR.map.getBounds();
+                    if (mapBounds && mapBounds.contains(sw) && mapBounds.contains(ne) && dataBounds) {
+                        // data bounds is smaller than all of Aust
+                        //console.log("smaller bounds",dataBounds,mapBounds)
+                        MAP_VAR.map.fitBounds(dataBounds);
 
-                if (mapBounds && mapBounds.contains(sw) && mapBounds.contains(ne) && dataBounds) {
-                    // data bounds is smaller than all of Aust
-                    //console.log("smaller bounds",dataBounds,mapBounds)
-                    MAP_VAR.map.fitBounds(dataBounds);
+                        if (MAP_VAR.map.getZoom() > 15) {
+                            MAP_VAR.map.setZoom(15);
+                        }
+                    } else if (BC_CONF.zoomOutsideAustralia) {
+                        //map.fitBounds(dataBounds);
+                        //console.log("zoom", map.getZoom())
+                        MAP_VAR.map.fitBounds(dataBounds);
 
-                    if (MAP_VAR.map.getZoom() > 15) {
-                        MAP_VAR.map.setZoom(15);
-                    }
-                } else if (BC_CONF.zoomOutsideAustralia) {
-                    //map.fitBounds(dataBounds);
-                    //console.log("zoom", map.getZoom())
-                    MAP_VAR.map.fitBounds(dataBounds);
-
-                    if (MAP_VAR.map.getZoom() == 0) {
-                        //MAP_VAR.map.setCenter(centre);
-                        MAP_VAR.map.setZoom(2);
+                        if (MAP_VAR.map.getZoom() == 0) {
+                            //MAP_VAR.map.setCenter(centre);
+                            MAP_VAR.map.setZoom(2);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -599,14 +601,13 @@ a.colour-by-legend-toggle {
      * https://github.com/allmarkedup/purl
      */
     function drawCircleRadius() {
-        var lat = $.url().param('lat');
-        var lng = $.url().param('lon');
-        var radius = $.url().param('radius');
-
-        if (lat && lng && radius) {
+        if (isSpatialRadiusSearch()) {
             // spatial search from EYA
+            var lat = $.url().param('lat');
+            var lng = $.url().param('lon');
+            var radius = $.url().param('radius');
             var latLng = L.latLng(lat, lng);
-            var circOpts = {
+            var circleOpts = {
                 weight: 1,
                 color: 'white',
                 opacity: 0.5,
@@ -615,10 +616,30 @@ a.colour-by-legend-toggle {
             }
 
             var popupText = "Centre of spatial search with radius of " + radius + " km";
-            L.circle(latLng, radius * 1010, circOpts).addTo(MAP_VAR.map);
+            var circle = L.circle(latLng, radius * 1010, circleOpts);
+            circle.addTo(MAP_VAR.map);
+            MAP_VAR.map.fitBounds(circle.getBounds()); // make circle the centre of the map, not the points
             L.marker(latLng, {title: popupText}).bindPopup(popupText).addTo(MAP_VAR.map);
             //L.circleMarker(latLng, {radius: 6, opacity: 0.8, fillOpacity: 1.0}).bindPopup(popupText).addTo(MAP_VAR.map);
         }
+    }
+
+    /**
+     * Returns true for a lat/lon/radius (params) style search
+     *
+     * @returns {boolean}
+     */
+    function isSpatialRadiusSearch() {
+        var returnBool = false;
+        var lat = $.url().param('lat');
+        var lng = $.url().param('lon');
+        var radius = $.url().param('radius');
+
+        if (lat && lng && radius) {
+            returnBool = true;
+        }
+
+        return returnBool
     }
 
 </r:script>
