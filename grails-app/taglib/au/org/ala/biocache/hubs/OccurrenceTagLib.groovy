@@ -7,7 +7,7 @@ class OccurrenceTagLib {
     //static defaultEncodeAs = 'html'
     //static encodeAsForTags = [tagName: 'raw']
     static returnObjectForTags = ['getLoggerReasons']
-    def webServicesService
+    def webServicesService, authService
     static namespace = 'alatag'     // namespace for headers and footers
 
     /**
@@ -446,6 +446,14 @@ class OccurrenceTagLib {
             }
         }
         out << output
+    }
+
+    def loggedInUserId = { attrs ->
+        out << authService.userId
+    }
+
+    def outageBanner = { attrs ->
+        out << "TODO "
     }
 
     /**

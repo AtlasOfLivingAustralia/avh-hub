@@ -1,8 +1,19 @@
 modules = {
     application {
         resource url:'js/application.js'
+    }
+
+    ala {
+        dependsOn 'bootstrap'
         resource url:'css/base.css'
         resource url:'css/bootstrapAdditions.css'
+    }
+
+    avh {
+        dependsOn 'bootstrap'
+        resource url:'css/bootstrapAdditions.css'
+        resource url:'css/avh/style.css'
+        resource url:'css/base.css'
     }
 
     search {
