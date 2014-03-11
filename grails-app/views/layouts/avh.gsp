@@ -97,7 +97,7 @@
     <div class="footer">
         <div id="footer">
             <span class="footer_item_1">
-                <a href="http://ala.org.au/"><img src="${request.contextPath}/images/atlas-poweredby_rgb-lightbg.png" alt=""/></a>
+                <a href="http://ala.org.au/"><r:img dir="images" file="atlas-poweredby_rgb-lightbg.png" plugin="biocache-hubs" alt="Powered by ALA logo"/></a>
             </span>
             <span class="footer_item_2">
                 AVH is an initiative of the Council of Heads of Australasian Herbaria (CHAH)

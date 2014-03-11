@@ -7,7 +7,7 @@ modules = {
 
     avh {
         dependsOn 'bootstrap2', 'core' // from ala-web-theme plugin
-        resource url:[dir:'css', file:'avh/style.css', plugin:'biocache-hubs']
+        resource url:[dir:'css', file:'avh/style.css']
     }
 
 }
