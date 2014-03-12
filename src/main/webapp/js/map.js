@@ -270,7 +270,7 @@ var Maps = (function() {
             var zoomParam = $.urlParam('zoom');
             google.maps.event.addListener(map, 'bounds_changed', function() {
                 if (!zoomed && zoomParam != 'off') {
-                    fitMapToBounds();
+                    leadflet();
                 }
                 zoomed = true;
             });

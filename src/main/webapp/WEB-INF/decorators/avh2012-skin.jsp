@@ -83,7 +83,7 @@ include file="/common/taglibs.jsp" %>
                         <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
                         <c:if test="${not empty loginId}">|</c:if>
                         <c:set var="returnUrlPath" value="${serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
-                        <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
+                        <ala:loginLogoutLink logoutControllerPath="${pageContext.request.contextPath}/logout" returnUrlPath="${returnUrlPath}"/>
                         <c:if test="${clubView}">
                             | <div id="clubView"><span>Club View</span></div>
                         </c:if>
@@ -101,7 +101,7 @@ include file="/common/taglibs.jsp" %>
                         <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
                         <c:if test="${not empty loginId}">|</c:if>
                         <c:set var="returnUrlPath" value="${serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
-                        <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
+                        <ala:loginLogoutLink logoutControllerPath="${pageContext.request.contextPath}/logout" returnUrlPath="${returnUrlPath}"/>
                         <c:if test="${clubView}">
                             | <div id="clubView"><span>Club View</span></div>
                         </c:if>

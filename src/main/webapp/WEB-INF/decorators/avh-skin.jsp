@@ -65,7 +65,7 @@ include file="/common/taglibs.jsp" %>
             <div><a href="${avhUrl}links.html">Links</a></div>
             <div class="rightMenu">
                 <c:set var="returnUrlPath" value="${serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
-                <ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/>
+                <ala:loginLogoutLink logoutControllerPath="${pageContext.request.contextPath}/logout" returnUrlPath="${returnUrlPath}"/>
             </div>
             <c:if test="${clubView}">
                 <div class="rightMenu" id="clubView"><span>Club View</span></div>

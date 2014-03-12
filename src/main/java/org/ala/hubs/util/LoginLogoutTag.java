@@ -43,7 +43,10 @@ public class LoginLogoutTag extends TagSupport {
     public int doStartTag() throws JspException {
 
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-        String casServer = pageContext.getServletContext().getInitParameter("casServerName");
+        ExternalPropertiesReader propertiesReader = ExternalPropertiesReader.getInstance();
+        //String casServer = pageContext.getServletContext().getInitParameter("casServerName");
+        String casServer = propertiesReader.getPropertyValue("casServerName", pageContext);
+
         String logoutUrl;
 
         if (!logoutControllerPath.isEmpty()) {

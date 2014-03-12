@@ -128,6 +128,7 @@ public class HomePageController {
         model.addAttribute("countries", serviceCache.getCountries());
         model.addAttribute("lgas", serviceCache.getLGAs());        
         //String[] cultivationStatus = {"is cultivated", "is not cultivated"};
+        logger.debug("collection uid cache = " + StringUtils.join(collectoryUidCache.getCollections(), "|"));
         //model.addAttribute("cultivationStatus", cultivationStatus); // TODO get proper list of cultivationStatus
     }
 

@@ -45,7 +45,7 @@ include file="/common/taglibs.jsp" %>
             <ul id="nav-user">
                 <li><a href="http://www.ala.org.au/my-profile/" title="My profile">My profile</a></li>
                 <c:set var="returnUrlPath" value="${serverName}${pageContext.request.requestURI}${not empty pageContext.request.queryString ? '?' : ''}${pageContext.request.queryString}"/>
-                <li class="last"><ala:loginLogoutLink returnUrlPath="${returnUrlPath}"/></li>
+                <li class="last"><ala:loginLogoutLink logoutControllerPath="${pageContext.request.contextPath}/logout" returnUrlPath="${returnUrlPath}"/></li>
             </ul>
         </div>
     </nav>
