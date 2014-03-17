@@ -55,7 +55,7 @@ skin.fluidLayout = true // true or false
 bie.baseURL = "http://bie.ala.org.au/"
 bie.searchPath = "/search"
 biocache.baseURL = "http://dev.ala.org.au:8080/biocache-hubs"
-biocacheServicesUrl = "http://biocache-test.ala.org.au/ws"
+biocacheServicesUrl = "http://biocache.ala.org.au/ws"
 spatial.baseURL = "http://spatial.ala.org.au/"
 ala.baseURL = "http://www.ala.org.au"
 collections.baseUrl = "http://collections.ala.org.au"
@@ -80,12 +80,12 @@ serverName = 'http://dev.ala.org.au:8080'
 security.cas.appServerName = "http://dev.ala.org.au:8080"
 security.cas.casServerName = 'https://auth.ala.org.au'
 security.cas.uriFilterPattern = '/admin, /admin/.*'
-security.cas.authenticateOnlyIfLoggedInPattern = ""
+security.cas.authenticateOnlyIfLoggedInPattern = "/occurrences/(?!.+userAssertions|facet.+).+,/explore/your-area"
 ssecurity.cas.uriExclusionFilterPattern = '/images.*,/css.*,/js.*'
 security.cas.loginUrl = 'https://auth.ala.org.au/cas/login'
 security.cas.logoutUrl = 'https://auth.ala.org.au/cas/logout'
 security.cas.casServerUrlPrefix = 'https://auth.ala.org.au/cas'
-security.cas.bypass = "true" // not sure this is working
+security.cas.bypass = false // not sure this is working
 auth.admin_role = "ROLE_ADMIN"
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
