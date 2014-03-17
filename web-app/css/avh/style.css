@@ -477,3 +477,8 @@ div#rightMenu a {
 span.checkbox-checked {
     background: url('images/checkbox-checked-green.png') no-repeat left top;
 }
+
+.btn-primary, .btn-primary:hover {
+    background-color: #006600;
+    background-image: none;
+}
