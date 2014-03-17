@@ -473,3 +473,7 @@ div#rightMenu a {
 .nav-tabs > .active > a:focus {
     background-color: #ffffff;
 }
+
+span.checkbox-checked {
+    background: url('images/checkbox-checked-green.png') no-repeat left top;
+}
