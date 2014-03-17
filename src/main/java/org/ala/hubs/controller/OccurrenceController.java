@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -92,9 +93,7 @@ public class OccurrenceController {
     @Inject
     private BiocacheService biocacheService;
     @Inject
-    private BieService bieService;
-    @Inject
-    protected RestfulClient restfulClient;
+    private BieService bieService;    
     @Inject
     protected CollectionsCache collectionsCache;
     @Inject
@@ -803,21 +802,19 @@ public class OccurrenceController {
                 collectionUid = pr.getAttribution().getCollectionUid();
 
                 if(collectionUid != null){
-                    Object[] resp = restfulClient.restGet(summaryServiceUrl + "/" + collectionUid);
-                    if ((Integer) resp[0] == HttpStatus.SC_OK) {
-                        String json = (String) resp[1];
-                        try {
-                            ObjectMapper mapper = new ObjectMapper();
-                            JsonNode rootNode = mapper.readValue(json, JsonNode.class);
-                            String name = rootNode.path("name").getTextValue();
-                            String logo = rootNode.path("institutionLogoUrl").getTextValue();
-                            String institution = rootNode.path("institution").getTextValue();
-                            model.addAttribute("collectionName", name);
-                            model.addAttribute("collectionLogo", logo);
-                            model.addAttribute("collectionInstitution", institution);
-                        } catch (Exception e) {
-                            logger.error(e.toString(), e);
-                        }
+                    try{
+                    Map<String, Object> collectionDetails = restTemplate.getForObject(summaryServiceUrl + "/" + collectionUid, Map.class);                    
+                    if(collectionDetails != null) {
+                        String name = (String)collectionDetails.get("name");
+                        String institution = (String)collectionDetails.get("institution");
+                        Object oinstLogo = collectionDetails.get("institutionLogoUrl");
+                        String logo = oinstLogo != null? oinstLogo.toString():null;
+                        model.addAttribute("collectionName", name);
+                        model.addAttribute("collectionLogo", logo);
+                        model.addAttribute("collectionInstitution", institution);
+                    }
+                    } catch(Exception e){
+                        logger.error(e.toString(), e);
                     }
                 }
 
