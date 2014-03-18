@@ -77,11 +77,11 @@
                 </div>
                 <div class="span6 pull-right" id="rightMenu">
                     <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
-                    <g:set var="loginId"><alatag:loggedInUserId/></g:set>
+                    <g:set var="loginId"><alatag:loggedInUserDisplayname/></g:set>
                     <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
                     <g:if test="${loginId}">|</g:if>
                     <g:set var="returnUrlPath" value="${serverName}${request.requestURI}${request.queryString ? '?' : ''}${request.queryString}"/>
-                    <hf:loginLogout returnUrlPath="${returnUrlPath}"/>
+                    <hf:loginLogout logoutUrl="${request.contextPath}/logout/logout" returnUrlPath="${returnUrlPath}"/>
                     <g:if test="${clubView}">
                         | <div id="clubView"><span>Club View</span></div>
                     </g:if>

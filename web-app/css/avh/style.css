@@ -482,3 +482,7 @@ span.checkbox-checked {
     background-color: #006600;
     background-image: none;
 }
+
+#jsonLink {
+    display: none;
+}
