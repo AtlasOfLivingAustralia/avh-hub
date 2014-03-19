@@ -31,46 +31,6 @@
     max-width: 250px;
 }
 
-/*#contentBox #content2 {*/
-    /*float: left;*/
-    /*margin-left: 8px;*/
-    /*width: 720px;*/
-/*}*/
-
-/*.sidebar li {*/
-    /*font-size: 12px;*/
-    /*list-style-image: url(images/arrow_r.jpg);*/
-    /*border-bottom-width: 1px;*/
-    /*border-bottom-style: solid;*/
-    /*border-bottom-color: #E8E8E8;*/
-    /*margin-right: 20px;*/
-    /*margin-bottom: 5px;*/
-    /*padding-top: 7px;*/
-    /*padding-right: 3px;*/
-    /*padding-bottom: 7px;*/
-    /*padding-left: 3px;*/
-    /*behavior: url(ie-css3.htc); *//* This lets IE know to call the script on all elements which get the 'box' class */
-    /*margin-left: 20px;*/
-/*}*/
-
-/*.sidebar li a {*/
-    /*color:#005A8E;*/
-    /*text-decoration:none;*/
-/*}*/
-/*.sidebar li a:hover  {*/
-    /*color:#6DB71D;*/
-    /*text-decoration:none;*/
-/*}*/
-/*.sidebar p {*/
-    /*font-size: 12px;*/
-    /*line-height: 18px;*/
-    /*color: #545454;*/
-/*}*/
-
-/*.sidebar h4 {*/
-    /*margin-top: 0;*/
-/*}*/
-
 body table td {
     font-size: 13px;
 }
@@ -88,7 +48,6 @@ body table td {
 
 .Newssidebar li {
     font-size: 12px;
-    /*list-style-image: url(images/arrow_r.jpg);*/
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: #E8E8E8;
@@ -98,7 +57,6 @@ body table td {
     padding-right: 3px;
     padding-bottom: 7px;
     padding-left: 3px;
-    behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */
     margin-left: 20px;
 
 }
@@ -123,7 +81,7 @@ body table td {
     -webkit-border-radius: 12px;
     -khtml-border-radius: 12px;
     border-radius: 8px;
-    behavior: url(ie-css3.htc);
+    /*behavior: url(ie-css3.htc);*/
     padding-top: 7px;
     padding-right: 0px;
     padding-bottom: 0px;
@@ -152,7 +110,7 @@ body table td {
     padding-top: 16px;
     padding-right: 25px;
     padding-bottom: 16px;
-    behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */
+    /*behavior: url(ie-css3.htc); *//* This lets IE know to call the script on all elements which get the 'box' class */
 
 }
 #img-sb h1{
@@ -230,7 +188,7 @@ div.spacer {
     -khtml-border-radius: 12px;
     border-radius: 8px;
     padding: 0px;
-    behavior: url(ie-css3.htc); /* This lets IE know to call the script on all elements which get the 'box' class */
+    /*behavior: url(ie-css3.htc); *//* This lets IE know to call the script on all elements which get the 'box' class */
 }
 #search-sb h1{
     color: #666;
@@ -250,7 +208,7 @@ div.spacer {
 }
 
 .searchbtn  {
-    background-image: url(images/hp-button.png);
+    /*background-image: url(images/hp-button.png);*/
     height: 50px;
     width: 194px;
     background-repeat: no-repeat;

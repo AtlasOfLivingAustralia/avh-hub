@@ -59,7 +59,7 @@ div#search li  {
     font-size: 12px;
     line-height: 50px;
     list-style-type: none;
-    background-image: url(images/Start-Search.png);
+    /*background-image: url(images/Start-Search.png);*/
     background-repeat: no-repeat;
     padding-left: 30px;
 }
