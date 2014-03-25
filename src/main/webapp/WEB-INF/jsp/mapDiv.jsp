@@ -175,41 +175,40 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.colourPicker.css" type="text/css" media="screen" />
 </div>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.colourPicker.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.colourPicker.js"></script>
+<script type="text/javascript">
 
-$(document).ready(function(){
-       $('#pcolour').colourPicker({
-          ico:    '${pageContext.request.contextPath}/static/images/jquery.colourPicker.gif',
-           title:    false
-       });
-});
+    $(document).ready(function(){
+           $('#pcolour').colourPicker({
+              ico:    '${pageContext.request.contextPath}/static/images/jquery.colourPicker.gif',
+               title:    false
+           });
+    });
 
+   $('#submitDownloadMap').click(function(){downloadMapNow();});
 
-       $('#submitDownloadMap').click(function(){downloadMapNow();});
+   function downloadMapNow(){
 
-       function downloadMapNow(){
+       var bounds = map.getBounds();
+       var ne =  bounds.getNorthEast();
+       var sw =  bounds.getSouthWest();
+       var extents = sw.lng() + ',' + sw.lat() + ',' + ne.lng() + ','+ ne.lat();
 
-           var bounds = map.getBounds();
-           var ne =  bounds.getNorthEast();
-           var sw =  bounds.getSouthWest();
-           var extents = sw.lng() + ',' + sw.lat() + ',' + ne.lng() + ','+ ne.lat();
-
-           var downloadUrl =  $('#mapDownloadUrl').val() +
-                   '${fn:escapeXml(searchRequestParams.urlParams)}' +
-                   //'&extents=' + '142,-45,151,-38' +  //need to retrieve the
-                   '&extents=' + extents +  //need to retrieve the
-                   '&format=' + $('#format').val() +
-                   '&dpi=' + $('#dpi').val() +
-                   '&pradiusmm=' + $('#pradiusmm').val() +
-                   '&popacity=' + $('#popacity').val() +
-                   '&pcolour=' + $(':input[name=pcolour]').val().toUpperCase() +
-                   '&widthmm=' + $('#widthmm').val() +
-                   '&scale=' + $(':input[name=scale]:checked').val() +
-                   '&outline=' + $(':input[name=outline]:checked').val() +
-                   '&outlineColour=0x000000' +
-                   '&baselayer=' + $('#baselayer').val()+
-                   '&fileName=' + $('#fileName').val()+'.'+$('#format').val().toLowerCase();
-           document.location.href = downloadUrl;
-       }
-    </script>
+       var downloadUrl =  $('#mapDownloadUrl').val() +
+               '${searchRequestParams.urlParams}' +
+               //'&extents=' + '142,-45,151,-38' +  //need to retrieve the
+               '&extents=' + extents +  //need to retrieve the
+               '&format=' + $('#format').val() +
+               '&dpi=' + $('#dpi').val() +
+               '&pradiusmm=' + $('#pradiusmm').val() +
+               '&popacity=' + $('#popacity').val() +
+               '&pcolour=' + $(':input[name=pcolour]').val().toUpperCase() +
+               '&widthmm=' + $('#widthmm').val() +
+               '&scale=' + $(':input[name=scale]:checked').val() +
+               '&outline=' + $(':input[name=outline]:checked').val() +
+               '&outlineColour=0x000000' +
+               '&baselayer=' + $('#baselayer').val()+
+               '&fileName=' + $('#fileName').val()+'.'+$('#format').val().toLowerCase();
+       document.location.href = downloadUrl;
+   }
+</script>
