@@ -10,7 +10,7 @@
         This is a Spring 3.0 MVC web application for the ALA Hubs project
     </description>
     <scm>
-        <developerConnection>scm:svn:https://ala-hubs.googlecode.com/svn/trunck/hubs-webapp/</developerConnection>
+        <developerConnection>scm:svn:https://ala-hubs.googlecode.com/svn/trunk/hubs-webapp/</developerConnection>
     </scm>
     <properties>
         <!-- This project uses UTF8 for Regular Expressions -->
