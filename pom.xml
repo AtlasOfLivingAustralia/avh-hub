@@ -3,14 +3,14 @@
     <groupId>au.org.ala</groupId>
     <artifactId>hubs-webapp</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Hubs Webapp</name>
     <url>http://www.ala.org.au</url>
     <description>
         This is a Spring 3.0 MVC web application for the ALA Hubs project
     </description>
     <scm>
-        <developerConnection>scm:svn:https://ala-hubs.googlecode.com/svn/trunk/hubs-webapp/</developerConnection>
+        <developerConnection>scm:svn:https://ala-hubs.googlecode.com/svn/tags/hubs-webapp-1.0</developerConnection>
     </scm>
     <properties>
         <!-- This project uses UTF8 for Regular Expressions -->
