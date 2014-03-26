@@ -11,7 +11,7 @@
     </description>
     <scm>
         <connection>scm:svn:http://ala-hubs.googlecode.com/svn/tags/hubs-webapp-1.0</connection>
-        <developerConnection>scm:svn:http://ala-hubs.googlecode.com/svn/tags/hubs-webapp-1.0</developerConnection>
+        <developerConnection>scm:svn:https://ala-hubs.googlecode.com/svn/tags/hubs-webapp-1.0</developerConnection>
         <tag>HEAD</tag>
         <url>http://ala-hubs.googlecode.com/svn/tags/hubs-webapp-1.0</url>
     </scm>
