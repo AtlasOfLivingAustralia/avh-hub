@@ -6,7 +6,7 @@ grails.project.work.dir = "target/work"
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
-grails.plugin.location.'biocache-hubs' = "../biocache-hubs"
+//grails.plugin.location.'biocache-hubs' = "../biocache-hubs"
 
 grails.project.fork = [
     // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
@@ -45,6 +45,9 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+        mavenRepo ("http://maven.ala.org.au/repository") {
+            updatePolicy 'always'
+        }
     }
 
     dependencies {
