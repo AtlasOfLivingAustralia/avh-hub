@@ -37,10 +37,10 @@ println "[${appName}] (*) grails.config.locations = ${grails.config.locations}"
 println "default_config = ${default_config}"
 
 /******************************************************************************\
- *  SKINNING
+ *  APP CONFIG VARS - only used if external config file not found
 \******************************************************************************/
-ala.skin = 'avh'
-skin.orgNameLong = "Australia&quot;s Virtual Herbarium"
+skin.layout = 'avh'
+skin.orgNameLong = "Australia&apos;s Virtual Herbarium"
 skin.orgNameShort = "AVH"
 map.pointColour = "df4a21"
 // whether crumb trail should include a home link that is external to this webabpp - ala.baseUrl is used if true
@@ -48,30 +48,17 @@ skin.includeBaseUrl = true
 skin.headerUrl = "classpath:resources/generic-header.jsp" // can be external URL
 skin.footerUrl = "classpath:resources/generic-footer.jsp" // can be external URL
 skin.fluidLayout = true // true or false
+defaultListView = "mapView" // mapView or listView
 
-/******************************************************************************\
- *  EXTERNAL SERVERS
-\******************************************************************************/
 bie.baseURL = "http://bie.ala.org.au/"
 bie.searchPath = "/search"
-biocache.baseURL = "http://dev.ala.org.au:8080/biocache-hubs"
-biocacheServicesUrl = "http://biocache.ala.org.au/ws"
+biocache.baseUrl = "http://biocache.ala.org.au/ws"
+biocache.apiKey = "api-key-to-use"
+biocache.queryContext = "data_hub_uid:dh2" // data hub uid
 spatial.baseURL = "http://spatial.ala.org.au/"
 ala.baseURL = "http://www.ala.org.au"
 collections.baseUrl = "http://collections.ala.org.au"
 dataQualityChecksUrl = "https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv"
-
-/******************************************************************************\
- *  MISC
-\******************************************************************************/
-map.cloudmade.key = "BC9A493B41014CAABB98F0471D759707" // this is website specific
-downloads.extra = "dataResourceUid,dataResourceName.p"
-googleKey = "ABQIAAAAoBSAWIKN0nq5ftlHnSqAURRYnbqkszd6zrcg1s-Fm7JsBxVj5xRaQWSGnjeflao2CYtNRBZxuDrYyg"
-// data hub uid
-biocacheRestService.queryContext = "data_hub_uid:dh2"
-// whether map or list is the default tab to show - empty for list and "mapView" for map
-defaultListView = "mapView"
-apiKey = "api-key-to-use"
 clubRoleForHub = "ROLE_ADMIN"
 
 /******************************************************************************\

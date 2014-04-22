@@ -48,6 +48,7 @@ grails.project.dependency.resolution = {
         mavenRepo ("http://maven.ala.org.au/repository") {
             updatePolicy 'always'
         }
+        mavenRepo "http://maven.tmatesoft.com/content/repositories/releases/"
     }
 
     dependencies {
@@ -76,7 +77,7 @@ grails.project.dependency.resolution = {
         //runtime ":zipped-resources:1.0.1"
         //runtime ":cached-resources:1.1"
         //runtime ":yui-minify-resources:0.1.5"
-	runtime ":biocache-hubs:[0.1,]"
-        //runtime ":ala-web-theme:0.2-SNAPSHOT"
+        runtime ":biocache-hubs:[0.1,]"
+        runtime ":ala-web-theme:[0.1,]"
     }
 }
