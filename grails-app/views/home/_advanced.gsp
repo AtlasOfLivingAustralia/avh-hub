@@ -17,9 +17,7 @@
 </style>
 <form name="advancedSearchForm" id="advancedSearchForm" action="${request.contextPath}/advancedSearch" method="POST">
     <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;" value="${params.q}"/>
-    <input type="hidden" name="nameType" value="matched_name_children"/>
     <div class="" id="">
-
         <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Taxonomy</a>
         <div class="toggleSection" id="taxonomySection">
             <div id="taxonSearchDiv">
