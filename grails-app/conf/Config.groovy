@@ -43,6 +43,7 @@ skin.layout = 'avh'
 skin.orgNameLong = "Australia&apos;s Virtual Herbarium"
 skin.orgNameShort = "AVH"
 map.pointColour = "df4a21"
+map.zoomOutsideScopedRegion = false
 // whether crumb trail should include a home link that is external to this webabpp - ala.baseUrl is used if true
 skin.includeBaseUrl = true
 skin.headerUrl = "classpath:resources/generic-header.jsp" // can be external URL
@@ -177,6 +178,32 @@ log4j = {
     //appenders {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
+
+    appenders {
+        environments {
+            production {
+                rollingFile name: "tomcatLog", maxFileSize: 102400000, file: "/var/log/tomcat6/avh-hub.log", threshold: org.apache.log4j.Level.ERROR, layout: pattern(conversionPattern: "%d %-5p [%c{1}] %m%n")
+                //'null' name: "stacktrace"
+                console name: "stdout", layout: pattern(conversionPattern: "%d %-5p [%c{1}]  %m%n"), threshold: org.apache.log4j.Level.WARN
+            }
+            development {
+                console name: "stdout", layout: pattern(conversionPattern: "%d %-5p [%c{1}]  %m%n"), threshold: org.apache.log4j.Level.DEBUG
+            }
+            test {
+//                rollingFile name: "tomcatLog", maxFileSize: 102400000, file: "/tmp/${appName}-test.log", threshold: org.apache.log4j.Level.DEBUG, layout: pattern(conversionPattern: "%d %-5p [%c{1}]  %m%n")
+//                'null' name: "stacktrace"
+                console name: "stdout", layout: pattern(conversionPattern: "%d %-5p [%c{1}]  %m%n"), threshold: org.apache.log4j.Level.INFO
+            }
+        }
+    }
+
+    root {
+        // change the root logger to my tomcatLog file
+        error 'tomcatLog'
+        warn 'tomcatLog'
+        additivity = true
+    }
+
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
