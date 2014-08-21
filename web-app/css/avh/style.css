@@ -334,7 +334,7 @@ div#clubView {
     font-size: 13px;
 }
 
-.btn-group > .btn + .btn, .input-append > input + .btn {
+.btn-group > .btn + .btn, .input-append > input + .btn, .modal-footer .btn-group > .btn + .btn {
     margin-left: -5px;
 }
 
