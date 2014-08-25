@@ -18,6 +18,24 @@
 <form name="advancedSearchForm" id="advancedSearchForm" action="${request.contextPath}/advancedSearch" method="POST">
     <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;" value="${params.q}"/>
     <div class="" id="">
+        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Full text</a>
+        <div class="toggleSection" id="fulltextSection">
+            <div id="fulltextSearchDiv">
+                <table border="0" width="100" cellspacing="2" class=""  id="fulltextOptions">
+                    <thead/>
+                    <tbody>
+                        <tr>
+                            <td class="labels">Full text search</td>
+                            <td>
+                                <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
+                            </td>
+                        </tr>
+                    <input type="hidden" name="nameType" value="matched_name_children"/>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Taxonomy</a>
         <div class="toggleSection" id="taxonomySection">
             <div id="taxonSearchDiv">
@@ -111,12 +129,12 @@
                             <input type="checkbox" name="type_material" id="type_material" class="dataset"/>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="labels">Full text search</td>
-                        <td>
-                            <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
-                        </td>
-                    </tr>
+                    %{--<tr>--}%
+                        %{--<td class="labels">Full text search</td>--}%
+                        %{--<td>--}%
+                            %{--<input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>--}%
+                        %{--</td>--}%
+                    %{--</tr>--}%
                     <tr>
                         <td class="labels">Record updated</td>
                         <td>
