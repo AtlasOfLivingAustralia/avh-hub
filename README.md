@@ -1,4 +1,4 @@
-Australian Virtual Herbarium (avh-hub)
+Australian Virtual Herbarium Hub (avh-hub)
 =======
 
 Grails application that provides UI and customisations to the [ALA Biocache](https://github.com/AtlasOfLivingAustralia/biocache-hubs)
