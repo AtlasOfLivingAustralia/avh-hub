@@ -64,7 +64,7 @@ grails.project.dependency.resolution = {
         compile ":cache-headers:1.1.6"
         runtime ":resources:1.2.8"
         runtime ":cached-resources:1.0"
-        runtime ":biocache-hubs:0.57"
+        runtime ":biocache-hubs:0.60"
         runtime ":ala-web-theme:0.8.1"
     }
 }
