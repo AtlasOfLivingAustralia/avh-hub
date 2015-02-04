@@ -16,16 +16,17 @@
 
 </style>
 <form name="advancedSearchForm" id="advancedSearchForm" action="${request.contextPath}/advancedSearch" method="POST">
+    <input type="hidden" name="nameType" value="matched_name_children"/>
     <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;" value="${params.q}"/>
     <div class="" id="">
-        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Full text</a>
+        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Full text search</a>
         <div class="toggleSection" id="fulltextSection">
             <div id="fulltextSearchDiv">
                 <table border="0" width="100" cellspacing="2" class=""  id="fulltextOptions">
                     <thead/>
                     <tbody>
                         <tr>
-                            <td class="labels">Full text search</td>
+                            <td class="labels">Text</td>
                             <td>
                                 <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
                             </td>
@@ -52,40 +53,35 @@
                                 </td>
                             </tr>
                         </g:each>
-                        <input type="hidden" name="nameType" value="matched_name_children"/>
+                        <tr>
+                            <td class="labels">Botanical group</td>
+                            <td>
+                                <select class="taxaGroup" name="species_group" id="species_group">
+                                    <option value="">-- select a botanical group --</option>
+                                    <g:each var="group" in="${request.getAttribute(FacetsName.SPECIES_GROUP.fieldname)}">
+                                        <option value="${group.key}">${group.value}</option>
+                                    </g:each>
+                                </select>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <table border="0" width="100" cellspacing="2" class="" style="margin-left: 1px;">
+        </div><!-- end div.toggleSection -->
+        
+        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Identification</a>
+        <div class="toggleSection" id="identificationSection">
+            <table border="0" width="100" cellspacing="2" class="">
                 <thead/>
                 <tbody>
-                    <g:if test="${skin != 'avh'}">
-                        <tr>
-                            <td class="labels">Verbatim scientific name</td>
-                            <td>
-                                 <input type="text" name="raw_taxon_name" id="raw_taxon_name" class="dataset" placeholder="" size="80" value=""/>
-                            </td>
-                        </tr>
-                    </g:if>
                     <tr>
-                        <td class="labels">Botanical group</td>
-                        <td>
-                            <select class="taxaGroup" name="species_group" id="species_group">
-                                <option value="">-- select a botanical group --</option>
-                                <g:each var="group" in="${request.getAttribute(FacetsName.SPECIES_GROUP.fieldname)}">
-                                    <option value="${group.key}">${group.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="labels">Determiner</td>
+                        <td class="labels">Identified by</td>
                         <td>
                             <input type="text" name="identified_by" id="identified_by" class="dataset" placeholder=""  value=""/>
                         </td>
                     </tr>
                     <tr>
-                        <td class="labels">Determination date</td>
+                        <td class="labels">Identification date</td>
                         <td>
                             <input type="text" name="identified_date_start" id="identified_date_start" class="occurrence_date" placeholder="" value=""/>
                             to
@@ -96,7 +92,8 @@
                 </tbody>
             </table>
         </div><!-- end div.toggleSection -->
-        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Specimen</a>
+        
+        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Record</a>
         <div class="toggleSection">
             <table border="0" width="100" cellspacing="2" class="">
                 <thead/>
@@ -129,12 +126,6 @@
                             <input type="checkbox" name="type_material" id="type_material" class="dataset"/>
                         </td>
                     </tr>
-                    %{--<tr>--}%
-                        %{--<td class="labels">Full text search</td>--}%
-                        %{--<td>--}%
-                            %{--<input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>--}%
-                        %{--</td>--}%
-                    %{--</tr>--}%
                     <tr>
                         <td class="labels">Record updated</td>
                         <td>
@@ -148,7 +139,7 @@
                 </tbody>
             </table>
         </div><!-- end div.toggleSection Specimen-->
-        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Collecting event</a>
+        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Occurrence</a>
         <div class="toggleSection">
             <table border="0" width="100" cellspacing="2" class="">
                 <thead/>
@@ -187,7 +178,8 @@
                 </tbody>
             </table>
         </div><!-- end div.toggleSection Collecting Event -->
-        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Geography</a>
+        
+        <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Location</a>
         <div class="toggleSection">
             <table border="0" width="100" cellspacing="2" class="">
                 <thead/>
@@ -216,6 +208,17 @@
                     </tr>
                     <g:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
                     <tr>
+                        <td class="labels">Local government area</td>
+                        <td>
+                            <select class="biogeographic_region" name="cl959" id="cl959">
+                                <option value="">-- select local government area--</option>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.LGA.fieldname)}">
+                                    <option value="${region.key}">${region.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="labels"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
                         <td>
                             <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
@@ -239,20 +242,10 @@
                             </select>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="labels">Local government area</td>
-                        <td>
-                            <select class="biogeographic_region" name="cl959" id="cl959">
-                                <option value="">-- select local government area--</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.LGA.fieldname)}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div><!-- end div.toggleSection geography-->
+        
         <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Herbarium transactions</a>
         <div class="toggleSection">
             <table border="0" width="100" cellspacing="2" class="">
