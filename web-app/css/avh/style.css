@@ -246,7 +246,7 @@ h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, 
     margin-top: 5px;
 }
 
-#searchHeader { padding-left:30px; }
+/*#searchHeader { padding-left:30px; }*/
 
 .by-author {
     display: inline !important; /* should override 'display: none' in Twenty Eleven*/
@@ -311,9 +311,9 @@ div#SidebarBox ul.facets li {
 #SidebarBox, #resultsReturned {
     margin-top: 5px;
 }
-#searchHeader {
-    padding-left: 30px;
-}
+/*#searchHeader {*/
+    /*padding-left: 30px;*/
+/*}*/
 #solrSearchForm > input#taxaQuery {
     margin: 0;
 }
