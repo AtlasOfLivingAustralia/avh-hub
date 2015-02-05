@@ -594,10 +594,3 @@ a.skip {
 	position: absolute;
 	left: -9999px;
 }
-
-/*
-* Font colour for links in AVH
-*/
-a, a:link, a:visited, a:focus, a:hover {
-    color: #006600 !important;
-}
