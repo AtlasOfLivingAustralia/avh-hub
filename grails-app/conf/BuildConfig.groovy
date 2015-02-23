@@ -6,8 +6,7 @@ grails.project.work.dir = "target/work"
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
-grails.plugin.location.'biocache-hubs' = "../biocache-hubs"
-grails.plugin.location.'ala-auth' = "../ala-auth-plugin"
+//grails.plugin.location.'biocache-hubs' = "../biocache-hubs"
 
 grails.project.fork = [
     // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
@@ -55,8 +54,7 @@ grails.project.dependency.resolution = {
         runtime ":jquery:1.11.1"
         runtime ":resources:1.2.8"
         runtime ":cached-resources:1.0"
-        //runtime ":biocache-hubs:0.65"
-        //runtime ":ala-web-theme:0.8.5"
-        //runtime ":ala-auth:1.0"
+        runtime ":biocache-hubs:0.66"
+        runtime ":ala-auth:1.1"
     }
 }
