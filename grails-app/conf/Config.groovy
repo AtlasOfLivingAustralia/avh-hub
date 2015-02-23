@@ -51,9 +51,10 @@ skin.headerUrl = "classpath:resources/generic-header.jsp" // can be external URL
 skin.footerUrl = "classpath:resources/generic-footer.jsp" // can be external URL
 skin.fluidLayout = true // true or false
 skin.taxaLinks.baseUrl = "http://bie.ala.org.au/species/"
+skin.useAlaBie = true
 defaultListView = "mapView" // mapView or listView
 
-bie.baseURL = "http://bie.ala.org.au/"
+bie.baseUrl = "http://bie.ala.org.au/"
 bie.searchPath = "/search"
 biocache.baseUrl = "http://biocache.ala.org.au/ws"
 biocache.apiKey = "api-key-to-use"

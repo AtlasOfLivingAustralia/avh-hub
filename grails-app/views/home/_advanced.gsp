@@ -31,7 +31,6 @@
                                 <input type="text" name="text" id="fulltext" class="text" placeholder="" value=""/>
                             </td>
                         </tr>
-                    <input type="hidden" name="nameType" value="matched_name_children"/>
                     </tbody>
                 </table>
             </div>
