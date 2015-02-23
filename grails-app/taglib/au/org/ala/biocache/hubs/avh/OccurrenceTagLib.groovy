@@ -50,8 +50,14 @@ class OccurrenceTagLib {
                 tr() {
                     outputResultsTd("Collector: ", "${occurrence.collector}&nbsp;&nbsp;${occurrence.recordNumber}", true)
                     outputResultsTd("Data&nbsp;Resource: ", occurrence.dataResourceName, !occurrence.collectionName && occurrence.dataResourceName)
-                    outputResultsTd("Date: ", occurrence.eventDate, occurrence.eventDate)
-                    outputResultsTd("Date: ", occurrence.year, !occurrence.eventDate && occurrence.year)
+                    //outputResultsTd("Date: ", occurrence.eventDate, occurrence.eventDate)
+                    //outputResultsTd("Date: ", g.formatDate(date: new Date(occurrence.eventDate), format:"yyyy-MM-dd"), occurrence.eventDate)
+                    //outputResultsTd("Date: ", occurrence.year, !occurrence.eventDate && occurrence.year)
+                    if (occurrence.eventDate) {
+                        outputResultsTd("Date: ", g.formatDate(date: new Date(occurrence.eventDate), format:"dd-MM-yyyy"), true)
+                    } else if (occurrence.occurrenceYear || occurrence.year) {
+                        outputResultsTd("Year: ", g.formatDate(number:new Date(occurrence.occurrenceYear?:occurrence.year), format:"yyyy"), true)
+                    }
                 }
                 tr() {
                     outputResultsTd("Herbarium: ", occurrence.collectionName, occurrence.collectionName)
