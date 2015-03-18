@@ -15,7 +15,7 @@
     }
 
 </style>
-<form name="advancedSearchForm" id="advancedSearchForm" action="${request.contextPath}/advancedSearch" method="POST">
+<form name="advancedSearchForm" id="advancedSearchForm" action="${g.createLink(uri:'/advancedSearch')}" method="POST">
     <input type="hidden" name="nameType" value="matched_name_children"/>
     <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;" value="${params.q}"/>
     <div class="" id="">
