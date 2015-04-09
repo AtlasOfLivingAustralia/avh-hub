@@ -44,6 +44,11 @@ skin.orgNameLong = "Australia&apos;s Virtual Herbarium"
 skin.orgNameShort = "AVH"
 map.pointColour = "df4a21"
 map.zoomOutsideScopedRegion = false
+// Following values include NZ in default view
+map.defaultLatitude = "-27.6"
+map.defaultLongitude = "144.0"
+map.defaultZoom = "4"
+
 // whether crumb trail should include a home link that is external to this webabpp - ala.baseUrl is used if true
 skin.includeBaseUrl = true
 skin.taxaLinks.baseUrl = "http://bie.ala.org.au/species/"
@@ -76,7 +81,7 @@ security.cas.appServerName = "http://dev.ala.org.au:8080"
 security.cas.casServerName = 'https://auth.ala.org.au'
 security.cas.uriFilterPattern = '/admin, /admin/.*'
 security.cas.authenticateOnlyIfLoggedInPattern = "/occurrences/(?!.+userAssertions|facet.+).+,/explore/your-area"
-ssecurity.cas.uriExclusionFilterPattern = '/images.*,/css.*,/js.*'
+security.cas.uriExclusionFilterPattern = '/images.*,/css.*,/js.*'
 security.cas.loginUrl = 'https://auth.ala.org.au/cas/login'
 security.cas.logoutUrl = 'https://auth.ala.org.au/cas/logout'
 security.cas.casServerUrlPrefix = 'https://auth.ala.org.au/cas'
