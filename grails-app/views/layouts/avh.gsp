@@ -53,13 +53,15 @@
     <g:layoutHead />
 </head>
 <body>
+<g:set var="fluidLayout" value="${pageProperty(name:'meta.fluidLayout')?:grailsApplication.config.skin?.fluidLayout}"/>
+<g:set var="containerType" value="${fluidLayout ? 'container-fluid' : 'container'}"/>
 <alatag:outageBanner />
 <div class="wrapper ">
     <!-- BS style header -->
     <div class="navbarFullWidth">
         <div class="navbar navbar-static-top ">
             <div class="navbar-inner">
-                <div class="container">
+                <div class="${containerType}">
                     <ul class="nav">
                         <li class="page_item page-item-1"><a href="http://avh.chah.org.au/" title="Home">Home</a></li>
                         <li class="page_item page-item-3 hidden-phone"><a href="http://avh.chah.org.au/index.php/about/" title="About AVH">About AVH</a></li>
@@ -71,7 +73,7 @@
                 </div>
             </div>
         </div><!-- /.navbar -->
-        <div class="container">
+        <div class="${containerType}">
             <div id="avhLogoRow" class="row-fluid">
                 <div class="span6">
                     <a href="http://avh.chah.org.au/"><img src="${request.contextPath}/css/avh/images/logo_AVH-white-transparent-small.png"/></a>
@@ -91,7 +93,7 @@
         </div>
     </div>
 
-    <div id="contentBox" class="container content" style="margin-top: 20px;">
+    <div id="contentBox" class="${containerType} content" style="margin-top: 20px;">
         <g:layoutBody />
         <div class="push"></div>
     </div>
