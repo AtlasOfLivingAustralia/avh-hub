@@ -483,3 +483,7 @@ span.checkbox-checked {
 a, a:link, a:visited, a:focus, a:hover {
     color: #006600;
 }
+
+a.btn-primary, a.btn-primary:link {
+    color: #ffffff;
+}

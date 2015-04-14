@@ -46,7 +46,7 @@ map.pointColour = "df4a21"
 map.zoomOutsideScopedRegion = false
 // Following values include NZ in default view
 map.defaultLatitude = "-27.6"
-map.defaultLongitude = "144.0"
+map.defaultLongitude = "141.0"
 map.defaultZoom = "4"
 
 // whether crumb trail should include a home link that is external to this webabpp - ala.baseUrl is used if true
@@ -61,9 +61,11 @@ defaultListView = "mapView" // mapView or listView
 
 bie.baseUrl = "http://bie.ala.org.au/"
 bie.searchPath = "/search"
+bie.autocompleteHints.fq = "kingdom:Plantae"
 biocache.baseUrl = "http://biocache.ala.org.au/ws"
 biocache.apiKey = "api-key-to-use"
 biocache.queryContext = "data_hub_uid:dh2" // data hub uid
+biocache.groupedFacetsUrl = "file:///data/avh-hub/config/grouped_facets.json"
 spatial.baseURL = "http://spatial.ala.org.au/"
 ala.baseURL = "http://www.ala.org.au"
 collections.baseUrl = "http://collections.ala.org.au"
