@@ -56,61 +56,91 @@
 <g:set var="fluidLayout" value="${pageProperty(name:'meta.fluidLayout')?:grailsApplication.config.skin?.fluidLayout}"/>
 <g:set var="containerType" value="${fluidLayout ? 'container-fluid' : 'container'}"/>
 <alatag:outageBanner />
-<div class="wrapper ">
-    <!-- BS style header -->
-    <div class="navbarFullWidth">
-        <div class="navbar navbar-static-top ">
-            <div class="navbar-inner">
-                <div class="${containerType}">
-                    <ul class="nav">
-                        <li class="page_item page-item-1"><a href="http://avh.chah.org.au/" title="Home">Home</a></li>
-                        <li class="page_item page-item-3 hidden-phone"><a href="http://avh.chah.org.au/index.php/about/" title="About AVH">About AVH</a></li>
-                        <li class="page_item page-item-7 hidden-phone"><a href="http://avh.chah.org.au/index.php/terms-of-use/" title="Terms of use">Terms of use</a></li>
-                        <li class="page_item page-item-4"><a href="http://avh.chah.org.au/index.php/help/" title="Help">Help</a></li>
-                        <li class="page_item page-item-2"><a href="${request.contextPath}/search" title="Search">Search</a></li>
-                        <li class="page_item page-item-5 hidden-phone"><a href="http://avh.chah.org.au/index.php/news/" title="News">News</a></li>
-                    </ul>
-                </div>
+<!-- Header -->
+<!-- Navbar -->
+<div id="avh-nav" class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="http://avh.chah.org.au">Home</a></li>
+                    <li><a href="http://avh.ala.org.au/search/#tab_simpleSearch">Search</a></li>
+                    <li class="dropdown font-xsmall">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="http://avh.chah.org.au/index.php/about/">About AVH</a></li>
+                            <li><a href="http://avh.chah.org.au/index.php/terms-of-use/">Terms of use</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown font-xsmall">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Help<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="http://avh.chah.org.au/index.php/help/using-avh">Using AVH</a></li>
+                            <li><a href="http://avh.chah.org.au/index.php/help/data/">Data</a></li>
+                            <li><a href="http://avh.chah.org.au/index.php/help/download-fields/">Download fields</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="http://avh.chah.org.au/index.php/news">News</a></li>
+                </ul>
+                <ul class="nav pull-right">
+                    <li><a href="http://avh.chah.org.au/index.php/contact-us">Contact us</a></li>
+                    <li><a href="https://www.facebook.com/AustVirtHerb"><img src="${request.contextPath}/images/avh/facebook-icon-small2.png" alt="" width="25" height="25"></a></li>
+                </ul>
             </div>
-        </div><!-- /.navbar -->
-        <div class="${containerType}">
-            <div id="avhLogoRow" class="row-fluid">
-                <div class="span6">
-                    <a href="http://avh.chah.org.au/"><img src="${request.contextPath}/css/avh/images/logo_AVH-white-transparent-small.png"/></a>
-                </div>
-                <div class="span6 pull-right" id="rightMenu">
-                    <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
-                    <g:set var="loginId"><alatag:loggedInUserDisplayname/></g:set>
-                    <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
-                    <g:if test="${loginId}">|</g:if>
-                    <g:set var="returnUrlPath" value="${serverName}${request.requestURI}${request.queryString ? '?' : ''}${request.queryString}"/>
-                    <auth:loginLogout logoutUrl="${request.contextPath}/logout/logout" returnUrlPath="${returnUrlPath}"/>
-                    <g:if test="${clubView}">
-                        | <div id="clubView"><span>Club View</span></div>
-                    </g:if>
-                </div>
-            </div><!-- /.row-fluid -->
-        </div>
-    </div>
+        </div><!-- /.navbar-inner -->
+    </div><!-- .container -->
+</div><!-- /.navbar -->
 
-    <div id="contentBox" class="${containerType} content" style="margin-top: 20px;">
-        <g:layoutBody />
-        <div class="push"></div>
-    </div>
-    <div class="footer">
-        <div id="footer">
-            <span class="footer_item_1">
-                <a href="http://ala.org.au/"><r:img dir="images" file="atlas-poweredby_rgb-lightbg.png" plugin="biocache-hubs" alt="Powered by ALA logo"/></a>
-            </span>
-            <span class="footer_item_2">
-                AVH is an initiative of the Council of Heads of Australasian Herbaria (CHAH)
-            </span>
-            <span class="footer_item_3">
-                <a href="mailto:avh@chah.org.au">avh@chah.org.au</a>
-            </span>
+<div id="site-branding" class="site-branding">
+    <div class="container">
+        <div class="site-logo"><img src="${request.contextPath}/images/avh/avh-logo-white-80.png" alt=""></div>
+        <div class="site-header">
+            <h1 class="site-title"><a href="http://avh.chah.org.au" rel="home">AVH</a></h1>
+            <h2 class="site-description">Australia's Virtual Herbarium</h2>
+        </div>
+        <div class="span6 pull-right" id="rightMenu">
+            <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
+            <g:set var="loginId"><alatag:loggedInUserDisplayname/></g:set>
+            <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
+            <g:if test="${loginId}">|</g:if>
+            <g:set var="returnUrlPath" value="${serverName}${request.requestURI}${request.queryString ? '?' : ''}${request.queryString}"/>
+            <auth:loginLogout logoutUrl="${request.contextPath}/logout/logout" returnUrlPath="${returnUrlPath}"/>
+            <g:if test="${clubView}">
+                | <div id="clubView"><span>Club View</span></div>
+            </g:if>
         </div>
     </div>
+</div><!-- .site-branding -->
+<!-- End header -->
+
+<div id="main-content" class="${containerType}">
+    <g:layoutBody />
 </div>
+
+<!-- Footer -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="container">
+        <div class="row">
+            <aside id="text-3" class="widget col-sm-6  clearfix widget_text powered-by">
+                <div class="textwidget">
+                    <a href="http://ala.org.au/"><r:img dir="images" file="atlas-poweredby_rgb-lightbg.png" plugin="biocache-hubs" alt="Powered by ALA logo"/></a>
+                </div>
+            </aside>
+            <aside id="text-2" class="widget col-sm-6  clearfix widget_text contact-us">
+                <div class="textwidget">
+                    <a href="mailto:avh@chah.org.au" title="Contact us">avh@chah.org.au</a>
+                </div>
+            </aside>
+        </div><!-- .row -->
+    </div><!-- .container -->
+</footer><!-- #colophon -->
+<!-- End footer -->
+
 <script type="text/javascript">
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
