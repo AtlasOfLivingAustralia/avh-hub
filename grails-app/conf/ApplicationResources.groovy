@@ -7,7 +7,8 @@ modules = {
 
     avh {
         dependsOn 'bootstrapLocal', 'hubCore' // from ala-web-theme plugin
-        resource url:[dir:'css', file:'avh/style.css']
+        resource url:[dir:'css', file:'avh/avh-styles.css']
+        resource url:[dir:'css', file:'avh/ala-styles.css']
     }
 
     bootstrapLocal {

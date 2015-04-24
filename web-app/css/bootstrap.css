@@ -5459,9 +5459,11 @@ body[class*='nav-'] .nav > li[class*='nav-'] > a {
   background-color: #333a3f;
 }
 footer {
-  margin-top: 20px;
+  margin-top: 40px;
+  margin-bottom: 20px;
   background-color: #f0f0e8;
   border-top: 1px solid #d1d1d1;
+  border-bottom: 1px solid #d1d1d1;
   font-size: 12px;
   line-height: 1.6em;
   color: #333a3f;
@@ -5475,7 +5477,6 @@ footer a:hover {
   text-decoration: none;
 }
 footer > div {
-  border-bottom: 1px solid #d1d1d1;
 }
 footer #top-row {
   padding-bottom: 0;
