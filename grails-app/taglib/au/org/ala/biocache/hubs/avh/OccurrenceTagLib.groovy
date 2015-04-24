@@ -55,8 +55,10 @@ class OccurrenceTagLib {
                     //outputResultsTd("Date: ", occurrence.year, !occurrence.eventDate && occurrence.year)
                     if (occurrence.eventDate) {
                         outputResultsTd("Date: ", g.formatDate(date: new Date(occurrence.eventDate), format:"dd-MM-yyyy"), true)
-                    } else if (occurrence.occurrenceYear || occurrence.year) {
-                        outputResultsTd("Year: ", g.formatDate(number:new Date(occurrence.occurrenceYear?:occurrence.year), format:"yyyy"), true)
+                    } else if (occurrence.occurrenceYear) {
+                        outputResultsTd("Year: ", g.formatDate(number:new Date(occurrence.occurrenceYear), format:"yyyy"), true)
+                    } else if (occurrence.year) {
+                        outputResultsTd("Year: ", occurrence.year, true)
                     }
                 }
                 tr() {
