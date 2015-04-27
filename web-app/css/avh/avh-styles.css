@@ -168,6 +168,10 @@ div#rightMenu, #rightMenu a {
 
 /* footer
 --------------------------*/
+footer {
+    margin-bottom: 20px;
+}
+
 footer .row {
     margin-right: -15px;
     margin-left: -15px;
@@ -180,7 +184,7 @@ footer .row {
     padding-left: 15px;
 }
 
-.contac-us .textwidget a {
+.contact-us .textwidget a {
     color: #000;
 }
 
@@ -205,5 +209,31 @@ footer .row {
 #main-content .leaflet-container a {
     color: #006600;
 }
+
+/* Override some Bootstrap stuff
+------------------------------------------------*/
+@media (min-width: 768px) {
+    #avh-nav .nav.pull-right:last-child {
+        margin-right: 0;
+    }
+}
+
+/* Colour for highlighted text in drop-down
+-------------------------------------------------*/
+.ac_results li strong {
+    color: #006600;
+}
+
+/* Facets
+-------------------------------------------------*/
+#facetWell .sidebar h4 {
+    margin-top: 10px;
+}
+
+#facetWell span.fa.fa-square-o {
+    margin-right: 3px;
+}
+
+
 
 

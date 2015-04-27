@@ -59,7 +59,7 @@
 <!-- Header -->
 <!-- Navbar -->
 <div id="avh-nav" class="navbar">
-    <div class="container">
+    <div class="${containerType}">
         <div class="navbar-inner">
             <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <span class="icon-bar"></span>
@@ -97,7 +97,7 @@
 </div><!-- /.navbar -->
 
 <div id="site-branding" class="site-branding">
-    <div class="container">
+    <div class="${containerType}">
         <div class="site-logo"><img src="${request.contextPath}/images/avh/avh-logo-white-80.png" alt=""></div>
         <div class="site-header">
             <h1 class="site-title"><a href="http://avh.chah.org.au" rel="home">AVH</a></h1>
@@ -124,7 +124,7 @@
 
 <!-- Footer -->
 <footer id="colophon" class="site-footer" role="contentinfo">
-    <div class="container">
+    <div class="${containerType}">
         <div class="row">
             <aside id="text-3" class="widget col-sm-6  clearfix widget_text powered-by">
                 <div class="textwidget">
