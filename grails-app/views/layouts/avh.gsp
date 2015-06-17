@@ -23,6 +23,8 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <g:set var="serverName" value="${grailsApplication.config.serverName}"/>
+<g:set var="orgNameLong" value="${grailsApplication.config.skin.orgNameLong}"/>
+<g:set var="orgNameShort" value="${grailsApplication.config.skin.orgNameShort}"/>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
@@ -30,7 +32,7 @@
     <link href="http://www.naa.gov.au/recordkeeping/gov_online/agls/1.1" rel="schema.AGLS" />
     <alatag:addApplicationMetaTags/>
     <meta name="DC.Title" content="Partners" lang="en" />	<meta name="DC.Function" content="Public information" />
-    <meta name="DC.Description" content="Australia's Virtual Herbarium (AVH) is an online resource that provides immediate access to the wealth of plant specimen information held by Australian herbaria. AVH is a collaborative project of the state, Commonwealth and territory herbaria, developed under the auspices of the Council of Heads of Australasian Herbaria (CHAH), representing the major Australian collections." />
+    <meta name="DC.Description" content="${orgNameLong} (${orgNameShort}) is an online resource that provides immediate access to the wealth of plant specimen information held by Australian herbaria. ${orgNameShort} is a collaborative project of the state, Commonwealth and territory herbaria, developed under the auspices of the Council of Heads of Australasian Herbaria (CHAH), representing the major Australian collections." />
     <meta name="DC.Creator" content="jurisdiction:Australian Government Departmental Consortium;corporateName:Council of Heads of Australasian Herbaria" />
     <meta name="DC.Publisher" content="jurisdiction:Australian Government Departmental Consortium;corporateName:Council of Heads of Australasian Herbaria" />
     <meta name="DC.Type.Category" content="document" />
@@ -73,14 +75,14 @@
                     <li class="dropdown font-xsmall">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="http://avh.chah.org.au/index.php/about/">About AVH</a></li>
+                            <li><a href="http://avh.chah.org.au/index.php/about/">About ${orgNameShort}</a></li>
                             <li><a href="http://avh.chah.org.au/index.php/terms-of-use/">Terms of use</a></li>
                         </ul>
                     </li>
                     <li class="dropdown font-xsmall">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Help<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="http://avh.chah.org.au/index.php/help/using-avh">Using AVH</a></li>
+                            <li><a href="http://avh.chah.org.au/index.php/help/using-avh">Using ${orgNameShort}</a></li>
                             <li><a href="http://avh.chah.org.au/index.php/help/data/">Data</a></li>
                             <li><a href="http://avh.chah.org.au/index.php/help/download-fields/">Download fields</a></li>
                         </ul>
@@ -100,8 +102,8 @@
     <div class="${containerType}">
         <div class="site-logo"><img src="${request.contextPath}/images/avh/avh-logo-white-80.png" alt=""></div>
         <div class="site-header">
-            <h1 class="site-title"><a href="http://avh.chah.org.au" rel="home">AVH</a></h1>
-            <h2 class="site-description">Australia&apos;s Virtual Herbarium</h2>
+            <h1 class="site-title"><a href="http://avh.chah.org.au" rel="home">${orgNameShort}</a></h1>
+            <h2 class="site-description">${orgNameLong}</h2>
         </div>
         <div class="span6 pull-right" id="rightMenu">
             <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
