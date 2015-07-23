@@ -221,7 +221,7 @@
                         <td class="labels"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
                         <td>
                             <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                            <select class="biogeographic_region" name="ibra" id="ibra">
+                            <select class="biogeographic_region" name="cl1048" id="cl1048">
                                 <option value="">-- select an IBRA region --</option>
                                 <g:each var="region" in="${request.getAttribute(FacetsName.IBRA.fieldname)}">
                                     <option value="${region.key}">${region.value}</option>
