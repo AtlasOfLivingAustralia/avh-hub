@@ -44,7 +44,7 @@ class AdvancedSearchParams {
     String imcra = ""
     String imcra_meso = ""
     String places = ""
-    String cl959 = ""
+    String lga = ""
     String type_status = ""
     Boolean type_material = false
     String basis_of_record = ""
@@ -70,6 +70,9 @@ class AdvancedSearchParams {
     String seed_quantity_end = ""
     String start_year = ""
     String end_year = ""
+    String nz_provinces = ""
+    String nz_eco_regions = ""
+    String nz_districts = ""
 
     private final String QUOTE = "\""
 
@@ -88,9 +91,12 @@ class AdvancedSearchParams {
         if (state) q.append(" state:").append(quoteText(state))
         if (country) q.append(" country:").append(quoteText(country))
         if (ibra) q.append(" cl1048:").append(quoteText(ibra))
-        if (imcra) q.append(" imcra:").append(quoteText(imcra))
+        if (imcra) q.append(" cl21:").append(quoteText(imcra))
         if (imcra_meso) q.append(" cl966:").append(quoteText(imcra_meso))
-        if (cl959) q.append(" cl959:").append(quoteText(cl959))
+        if (lga) q.append(" cl959:").append(quoteText(lga))
+        if (nz_provinces) q.append(" cl2117:").append(quoteText(nz_provinces))
+        if (nz_eco_regions) q.append(" cl2115:").append(quoteText(nz_eco_regions))
+        if (nz_districts) q.append(" cl2116:").append(quoteText(nz_districts))
         if (places) q.append(" places:").append(quoteText(places.trim()))
         if (type_status) q.append(" type_status:").append(type_status)
         if (dataset) q.append(" data_resource_uid:").append(dataset)
