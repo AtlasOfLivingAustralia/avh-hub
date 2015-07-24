@@ -242,11 +242,33 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="labels">NZ Provinces</td>
+                        <td class="labels">NZ Province</td>
                         <td>
                             <select class="biogeographic_region" name="nz_provinces" id="nz_provinces">
-                                <option value="">-- select an IMCRA region --</option>
+                                <option value="">-- select a NZ province --</option>
                                 <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
+                                    <option value="${region.key}">${region.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labels">NZ Land District</td>
+                        <td>
+                            <select class="biogeographic_region" name="nz_districts" id="nz_districts">
+                                <option value="">-- select a NZ Land District --</option>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_DISTRICTS.fieldname)}">
+                                    <option value="${region.key}">${region.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labels">NZ ECO Region</td>
+                        <td>
+                            <select class="biogeographic_region" name="nz_eco_regions" id="nz_eco_regions">
+                                <option value="">-- select a NZ ECO region --</option>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_ECO_REGIONS.fieldname)}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
