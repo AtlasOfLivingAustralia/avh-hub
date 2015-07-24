@@ -209,7 +209,7 @@
                     <tr>
                         <td class="labels">Local government area</td>
                         <td>
-                            <select class="biogeographic_region" name="cl959" id="cl959">
+                            <select class="biogeographic_region" name="lga" id="lga">
                                 <option value="">-- select local government area--</option>
                                 <g:each var="region" in="${request.getAttribute(FacetsName.LGA.fieldname)}">
                                     <option value="${region.key}">${region.value}</option>
@@ -221,7 +221,7 @@
                         <td class="labels"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
                         <td>
                             <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                            <select class="biogeographic_region" name="cl1048" id="cl1048">
+                            <select class="biogeographic_region" name="ibra" id="ibra">
                                 <option value="">-- select an IBRA region --</option>
                                 <g:each var="region" in="${request.getAttribute(FacetsName.IBRA.fieldname)}">
                                     <option value="${region.key}">${region.value}</option>
@@ -236,6 +236,17 @@
                             <select class="biogeographic_region" name="imcra_meso" id="imcra">
                                 <option value="">-- select an IMCRA region --</option>
                                 <g:each var="region" in="${request.getAttribute(FacetsName.IMCRA_MESO.fieldname)}">
+                                    <option value="${region.key}">${region.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labels">NZ Provinces</td>
+                        <td>
+                            <select class="biogeographic_region" name="nz_provinces" id="nz_provinces">
+                                <option value="">-- select an IMCRA region --</option>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
