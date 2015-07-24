@@ -71,7 +71,7 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li><a href="http://avh.chah.org.au">Home</a></li>
-                    <li><a href="http://avh.ala.org.au/search/#tab_simpleSearch">Search</a></li>
+                    <li><a href="http://${serverName}/search/#tab_simpleSearch">Search</a></li>
                     <li class="dropdown font-xsmall">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
