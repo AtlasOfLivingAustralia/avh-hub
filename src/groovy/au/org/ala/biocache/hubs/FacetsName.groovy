@@ -39,6 +39,9 @@ enum FacetsName {
     IMCRA_MESO("cl966"),
     COUNTRIES("country"),
     LGA("cl959")
+    NZ_ECO_REGIONS("cl2115")
+    NZ_DISTRICTS("cl2116")
+    NZ_PROVINCES("cl2117")
 
     String fieldname
 
