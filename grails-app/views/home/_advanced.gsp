@@ -195,12 +195,26 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="labels">State or territory</td>
+<!--                    <td class="labels">State or territory</td>
                         <td>
                             <select class="state" name="state" id="state">
                                 <option value="">-- select a state or territory --</option>
                                 <g:each var="state" in="${request.getAttribute(FacetsName.STATES.fieldname)}">
                                     <option value="${state.key}">${state.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
+                    </tr>  -->
+                    <tr>
+                        <td class="labels">State, territory or province</td>
+                        <td>
+                            <select class="state" name="state_territory_province" id="state_territory_province">
+                                <option value="">-- select a state, territory or province --</option>
+                                <g:each var="state" in="${request.getAttribute(FacetsName.STATES.fieldname)}">
+                                    <option value="${state.key}">${state.value}</option>
+                                </g:each>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
+                                    <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
                         </td>
@@ -241,7 +255,7 @@
                             </select>
                         </td>
                     </tr>
-                    <tr>
+<!--                    <tr>
                         <td class="labels">NZ Province</td>
                         <td>
                             <select class="biogeographic_region" name="nz_provinces" id="nz_provinces">
@@ -251,7 +265,7 @@
                                 </g:each>
                             </select>
                         </td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td class="labels">NZ Land District</td>
                         <td>
