@@ -73,6 +73,7 @@ class AdvancedSearchParams {
     String nz_provinces = ""
     String nz_eco_regions = ""
     String nz_districts = ""
+    String state_territory_province = ""
 
     private final String QUOTE = "\""
 
@@ -146,6 +147,11 @@ class AdvancedSearchParams {
         if (institution_collection) {
             String label = (StringUtils.startsWith(institution_collection, "in")) ? " institution_uid" : " collection_uid"
             q.append(label).append(":").append(institution_collection)
+        }
+
+        if (state_territory_province) {
+            q.append(" (").append("state:").append(quoteText(state_territory_province))
+            q.append(" OR cl2117:").append(quoteText(state_territory_province)).append(")")
         }
 
         if (start_date || end_date) {
