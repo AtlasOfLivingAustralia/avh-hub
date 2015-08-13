@@ -163,19 +163,19 @@
             },
             {  
                 "sort":"count",
-                "field":"ibra"
+                "field":"cl20"
+            },
+            {
+                "sort":"count",
+                "field":"cl1048"
+            },
+            {
+                "sort":"count",
+                "field":"cl21"
             },
             {  
                 "sort":"count",
                 "field":"cl966"
-            },
-            {  
-                "sort":"count",
-                "field":"imcra"
-            },
-            {  
-                "sort":"index",
-                "field":"biogeographic_region"
             },
             {  
                 "sort":"count",
@@ -196,6 +196,10 @@
             {  
                 "sort":"index",
                 "field":"uncertainty"
+            },
+            {
+                "sort":"index",
+                "field":"coordinate_uncertainty"
             },
             {  
                 "sort":"count",
