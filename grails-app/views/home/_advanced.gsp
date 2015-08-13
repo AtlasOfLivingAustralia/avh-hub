@@ -1,4 +1,3 @@
-<%@ page import="au.org.ala.biocache.hubs.FacetsName; org.apache.commons.lang.StringUtils" contentType="text/html;charset=UTF-8" %>
 <style type="text/css">
     #content .nav-tabs > .active > a,
     #content .nav-tabs > .active > a:hover,
@@ -57,7 +56,7 @@
                             <td>
                                 <select class="taxaGroup" name="species_group" id="species_group">
                                     <option value="">-- select a botanical group --</option>
-                                    <g:each var="group" in="${request.getAttribute(FacetsName.SPECIES_GROUP.fieldname)}">
+                                    <g:each var="group" in="${request.getAttribute("species_group")}">
                                         <option value="${group.key}">${group.value}</option>
                                     </g:each>
                                 </select>
@@ -102,7 +101,7 @@
                         <td>
                             <select class="institution_uid collection_uid" name="institution_collection" id="institution_collection">
                                 <option value="">-- select an herbarium --</option>
-                                <g:each var="inst" in="${request.getAttribute(FacetsName.COLLECTION.fieldname)}">
+                                <g:each var="inst" in="${request.getAttribute("collection_uid")}">
                                     <!--<optgroup label="${inst.value}"> -->
                                     <g:if test="${inst.value}">
                                         <option value="${inst.key}">${inst.value}</option>
@@ -168,7 +167,7 @@
                         <td>
                             <select class="" name="cultivation_status" id="cultivation_status">
                                 <option value="">-- select an establishment means --</option>
-                                <g:each var="cs" in="${request.getAttribute(FacetsName.CULTIVATION_STATUS.fieldname)}">
+                                <g:each var="cs" in="${request.getAttribute("establishment_means")}">
                                     <option value="${cs.key}">${cs.value}</option>
                                 </g:each>
                             </select>
@@ -188,7 +187,7 @@
                         <td>
                             <select class="country" name="country" id="country">
                                 <option value="">-- select a country --</option>
-                                <g:each var="country" in="${request.getAttribute(FacetsName.COUNTRIES.fieldname)}">
+                                <g:each var="country" in="${request.getAttribute("country")}">
                                     <option value="${country.key}">${country.value}</option>
                                 </g:each>
                             </select>
@@ -199,7 +198,7 @@
                         <td>
                             <select class="state" name="state" id="state">
                                 <option value="">-- select a state or territory --</option>
-                                <g:each var="state" in="${request.getAttribute(FacetsName.STATES.fieldname)}">
+                                <g:each var="state" in="${request.getAttribute("state")}">
                                     <option value="${state.key}">${state.value}</option>
                                 </g:each>
                             </select>
@@ -211,7 +210,7 @@
                         <td>
                             <select class="biogeographic_region" name="cl959" id="cl959">
                                 <option value="">-- select local government area--</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.LGA.fieldname)}">
+                                <g:each var="region" in="${request.getAttribute("cl959")}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -223,7 +222,7 @@
                             <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                             <select class="biogeographic_region" name="ibra" id="ibra">
                                 <option value="">-- select an IBRA region --</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.IBRA.fieldname)}">
+                                <g:each var="region" in="${request.getAttribute("cl1048")}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -235,7 +234,7 @@
                             <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                             <select class="biogeographic_region" name="imcra_meso" id="imcra">
                                 <option value="">-- select an IMCRA region --</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.IMCRA_MESO.fieldname)}">
+                                <g:each var="region" in="${request.getAttribute("cl21")}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -296,7 +295,7 @@
                             <%--<input type="text" name="loan_destination" id="loan_destination" class="dataset" placeholder=""  value=""/>--%>
                             <select class="dataset" name="loan_destination" id="loan_destination">
                                 <option value="">-- select a borrowing institution --</option>
-                                <g:each var="ld" in="${request.getAttribute(FacetsName.LOAD_DESTINATION.fieldname)}">
+                                <g:each var="ld" in="${request.getAttribute("loan_destination")}">
                                     <option value="${ld.key}">${ld.value}</option>
                                 </g:each>
                             </select>
