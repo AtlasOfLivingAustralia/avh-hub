@@ -234,6 +234,9 @@ footer .row {
     margin-right: 3px;
 }
 
+body #main-content #customiseFacetsButton > .dropdown-menu, #main-content #resultsReturned .dropdown-menu {
+    background-color: white;
+}
 
 
 
