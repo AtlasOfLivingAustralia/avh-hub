@@ -210,7 +210,7 @@
                         <td>
                             <select class="biogeographic_region" name="cl959" id="cl959">
                                 <option value="">-- select local government area--</option>
-                                <g:each var="region" in="${request.getAttribute("cl959")}">
+                                <g:each var="region" in="${request.getAttribute("cl959").sort()}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -222,7 +222,7 @@
                             <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                             <select class="biogeographic_region" name="ibra" id="ibra">
                                 <option value="">-- select an IBRA region --</option>
-                                <g:each var="region" in="${request.getAttribute("cl1048")}">
+                                <g:each var="region" in="${request.getAttribute("cl1048").sort()}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -234,7 +234,7 @@
                             <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                             <select class="biogeographic_region" name="imcra_meso" id="imcra">
                                 <option value="">-- select an IMCRA region --</option>
-                                <g:each var="region" in="${request.getAttribute("cl21")}">
+                                <g:each var="region" in="${request.getAttribute("cl21").sort()}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
