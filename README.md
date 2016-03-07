@@ -9,7 +9,7 @@ Grails application that provides UI and customisations to the [ALA Biocache](htt
 Deploying AVH
 =============
 
-If you have not yet installed Ansible, Vagrant, or VirtualBox, use the instructions at the (ALA Install README.md file)[https://github.com/AtlasOfLivingAustralia/ala-install/blob/master/README.md] to install those first for your operating system.
+If you have not yet installed Ansible, Vagrant, or VirtualBox, use the instructions at the [ALA Install README.md file](https://github.com/AtlasOfLivingAustralia/ala-install/blob/master/README.md) to install those first for your operating system.
 
 Then, to deploy AVH onto a local virtual box install use the following instructions:
 
