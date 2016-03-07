@@ -6,8 +6,19 @@ Australian Virtual Herbarium Hub (avh-hub)
 Grails application that provides UI and customisations to the [ALA Biocache](https://github.com/AtlasOfLivingAustralia/biocache-hubs)
 (Grails plugin) for [http://avh.ala.org.au/](http://avh.ala.org.au/).
 
-Deploying AVH
-=============
+Deploying a new version of avh-hub to Nexus
+===========================================
+
+Travis-CI is used to deploy new versions of avh-hub to Nexus. This is done automatically by updating the version number in the application.properties file and pushing to GitHub.
+
+Once the new version of avh-hub is deployed to Nexus, the version number in ansible-inventories needs to change. To do this, the version number must be changed in: 
+
+https://github.com/AtlasOfLivingAustralia/ansible-inventories/blob/master/avh.ala.org.au
+
+If the biocache_hub_version is commented out then presumably it will use the most recent version it can find.
+
+Deploying the current Nexus deployed version of AVH to a virtual machine
+========================================================================
 
 If you have not yet installed Ansible, Vagrant, or VirtualBox, use the instructions at the [ALA Install README.md file](https://github.com/AtlasOfLivingAustralia/ala-install/blob/master/README.md) to install those first for your operating system.
 
