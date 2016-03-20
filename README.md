@@ -44,3 +44,20 @@ Then you can clone the ansible instructions and install it onto the given machin
 $ git clone git@github.com:AtlasOfLivingAustralia/ansible-inventories.git
 $ ansible-playbook -i ansible-inventories/avh.ala.org.au ala-install/ansible/avh-hub-standalone.yml --private-key ~/.vagrant.d/insecure_private_key -vvvv --user vagrant --sudo
 ```
+
+Deploying to AWS EC2 production server
+======================================
+
+After testing locally, the same ansible scripts can be used to deploy to the production server which is an AWS EC2 server.
+
+Comment out any testing line for avh.ala.org.au in your /etc/hosts file and add the following line:
+
+```
+52.63.44.128 avh.ala.org.au
+```
+
+Then deploy to that machine using the following command, replacing "MY_USER_NAME" with your login username:
+
+```
+$ ansible-playbook --user MY_USER_NAME -i ansible-inventories/avh.ala.org.au ala-install/ansible/avh-hub-standalone.yml --private-key ~/.ssh/id_rsa -vvvv --sudo --ask-sudo-pass
+```
