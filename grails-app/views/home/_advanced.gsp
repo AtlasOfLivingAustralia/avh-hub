@@ -1,3 +1,4 @@
+<%@ page import="au.org.ala.biocache.hubs.avh.FacetsName" %>
 <style type="text/css">
     #content .nav-tabs > .active > a,
     #content .nav-tabs > .active > a:hover,
@@ -217,26 +218,12 @@
                                 </g:each>
                             </select>
                         </td>
-                    </tr>  -->
-                    <tr>
-                        <td class="labels">State, territory or province</td>
-                        <td>
-                            <select class="state" name="state_territory_province" id="state_territory_province">
-                                <option value="">-- select a state, territory or province --</option>
-                                <g:each var="state" in="${request.getAttribute(FacetsName.STATES.fieldname)}">
-                                    <option value="${state.key}">${state.value}</option>
-                                </g:each>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
                     </tr>
                     <g:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
                     <tr>
                         <td class="labels">Local government area</td>
                         <td>
-                            <select class="biogeographic_region" name="lga" id="lga">
+                            <select class="lga" name="lga" id="lga">
                                 <option value="">-- select local government area--</option>
                                 <g:each var="region" in="${request.getAttribute("cl959").sort()}">
                                     <option value="${region.key}">${region.value}</option>

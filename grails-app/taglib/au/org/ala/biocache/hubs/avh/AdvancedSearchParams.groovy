@@ -12,7 +12,7 @@
  * implied. See the License for the specific language governing
  * rights and limitations under the License.
  */
-package au.org.ala.biocache.hubs
+package au.org.ala.biocache.hubs.avh
 
 import grails.validation.Validateable
 import groovy.util.logging.Log4j
