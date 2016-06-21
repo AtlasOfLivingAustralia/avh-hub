@@ -175,7 +175,19 @@
             },
             {  
                 "sort":"count",
-                "field":"cl966"
+                "field":"cl2115"
+            },
+            {  
+                "sort":"count",
+                "field":"cl2116"
+            },
+            {  
+                "sort":"count",
+                "field":"cl2117"
+            },
+            {  
+                "sort":"index",
+                "field":"biogeographic_region"
             },
             {  
                 "sort":"count",

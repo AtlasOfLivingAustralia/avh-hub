@@ -194,7 +194,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="labels">State or territory</td>
+<!--                    <td class="labels">State or territory</td>
                         <td>
                             <select class="state" name="state" id="state">
                                 <option value="">-- select a state or territory --</option>
@@ -203,12 +203,26 @@
                                 </g:each>
                             </select>
                         </td>
+                    </tr>  -->
+                    <tr>
+                        <td class="labels">State, territory or province</td>
+                        <td>
+                            <select class="state" name="state_territory_province" id="state_territory_province">
+                                <option value="">-- select a state, territory or province --</option>
+                                <g:each var="state" in="${request.getAttribute(FacetsName.STATES.fieldname)}">
+                                    <option value="${state.key}">${state.value}</option>
+                                </g:each>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
+                                    <option value="${region.key}">${region.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
                     </tr>
                     <g:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
                     <tr>
                         <td class="labels">Local government area</td>
                         <td>
-                            <select class="biogeographic_region" name="cl959" id="cl959">
+                            <select class="biogeographic_region" name="lga" id="lga">
                                 <option value="">-- select local government area--</option>
                                 <g:each var="region" in="${request.getAttribute("cl959").sort()}">
                                     <option value="${region.key}">${region.value}</option>
@@ -235,6 +249,39 @@
                             <select class="biogeographic_region" name="imcra_meso" id="imcra">
                                 <option value="">-- select an IMCRA region --</option>
                                 <g:each var="region" in="${request.getAttribute("cl21").sort()}">
+                                    <option value="${region.key}">${region.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
+                    </tr>
+<!--                    <tr>
+                        <td class="labels">NZ Province</td>
+                        <td>
+                            <select class="biogeographic_region" name="nz_provinces" id="nz_provinces">
+                                <option value="">-- select a NZ province --</option>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
+                                    <option value="${region.key}">${region.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <td class="labels">NZ Land District</td>
+                        <td>
+                            <select class="biogeographic_region" name="nz_districts" id="nz_districts">
+                                <option value="">-- select a NZ Land District --</option>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_DISTRICTS.fieldname)}">
+                                    <option value="${region.key}">${region.value}</option>
+                                </g:each>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labels">NZ ECO Region</td>
+                        <td>
+                            <select class="biogeographic_region" name="nz_eco_regions" id="nz_eco_regions">
+                                <option value="">-- select a NZ ECO region --</option>
+                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_ECO_REGIONS.fieldname)}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
