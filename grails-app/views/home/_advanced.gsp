@@ -1,4 +1,3 @@
-<%@ page import="au.org.ala.biocache.hubs.avh.FacetsName" %>
 <style type="text/css">
     #content .nav-tabs > .active > a,
     #content .nav-tabs > .active > a:hover,
@@ -210,10 +209,10 @@
                         <td>
                             <select class="state" name="state_territory_province" id="state_territory_province">
                                 <option value="">-- select a state, territory or province --</option>
-                                <g:each var="state" in="${request.getAttribute(FacetsName.STATES.fieldname)}">
+                                <g:each var="state" in="${request.getAttribute("state")}">
                                     <option value="${state.key}">${state.value}</option>
                                 </g:each>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
+                                <g:each var="region" in="${request.getAttribute("cl2117")}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -260,7 +259,7 @@
                         <td>
                             <select class="biogeographic_region" name="nz_provinces" id="nz_provinces">
                                 <option value="">-- select a NZ province --</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
+                                <g:each var="region" in="${request.getAttribute("cl2117")}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -271,7 +270,7 @@
                         <td>
                             <select class="biogeographic_region" name="nz_districts" id="nz_districts">
                                 <option value="">-- select a NZ Land District --</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_DISTRICTS.fieldname)}">
+                                <g:each var="region" in="${request.getAttribute("cl2116")}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -282,40 +281,7 @@
                         <td>
                             <select class="biogeographic_region" name="nz_eco_regions" id="nz_eco_regions">
                                 <option value="">-- select a NZ ECO region --</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_ECO_REGIONS.fieldname)}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr>
-<!--                    <tr>
-                        <td class="labels">NZ Province</td>
-                        <td>
-                            <select class="biogeographic_region" name="nz_provinces" id="nz_provinces">
-                                <option value="">-- select a NZ province --</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_PROVINCES.fieldname)}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr> -->
-                    <tr>
-                        <td class="labels">NZ Land District</td>
-                        <td>
-                            <select class="biogeographic_region" name="nz_districts" id="nz_districts">
-                                <option value="">-- select a NZ Land District --</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_DISTRICTS.fieldname)}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="labels">NZ ECO Region</td>
-                        <td>
-                            <select class="biogeographic_region" name="nz_eco_regions" id="nz_eco_regions">
-                                <option value="">-- select a NZ ECO region --</option>
-                                <g:each var="region" in="${request.getAttribute(FacetsName.NZ_ECO_REGIONS.fieldname)}">
+                                <g:each var="region" in="${request.getAttribute("cl2115")}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
