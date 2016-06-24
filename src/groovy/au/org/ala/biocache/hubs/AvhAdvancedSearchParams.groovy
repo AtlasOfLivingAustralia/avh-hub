@@ -12,13 +12,12 @@
  * implied. See the License for the specific language governing
  * rights and limitations under the License.
  */
-package au.org.ala.biocache.hubs.avh
+package au.org.ala.biocache.hubs
 
 import grails.validation.Validateable
 import groovy.util.logging.Log4j
 import org.apache.commons.httpclient.URIException
 import org.apache.commons.httpclient.util.URIUtil
-import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
@@ -28,7 +27,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
  */
 @Validateable
 @Log4j
-class AdvancedSearchParams extends au.org.ala.biocache.hubs.AdvancedSearchParams {
+class AvhAdvancedSearchParams extends AdvancedSearchParams {
 
     String nz_provinces = ""
     String nz_eco_regions = ""
@@ -41,7 +40,7 @@ class AdvancedSearchParams extends au.org.ala.biocache.hubs.AdvancedSearchParams
      * @return q
      */
     @Override
-    public String toString() {
+    public String toString2() {
         Map allParams = super.toParamMap()
         StringBuilder q = new StringBuilder(allParams.q)
 
@@ -72,14 +71,9 @@ class AdvancedSearchParams extends au.org.ala.biocache.hubs.AdvancedSearchParams
         return finalQuery
     }
 
-    /**
-     * Get the queryString in the form of a Map - for use with 'params' attribute
-     * in redirect, etc.
-     *
-     * @return
-     */
+    @Override
     public Map toParamMap() {
-        WebUtils.fromQueryString(toString())
+        WebUtils.fromQueryString(this.toString2())
     }
 
 }
