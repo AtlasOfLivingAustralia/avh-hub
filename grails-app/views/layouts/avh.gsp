@@ -25,7 +25,7 @@
 <g:set var="serverName" value="${grailsApplication.config.serverName}"/>
 <g:set var="orgNameLong" value="${grailsApplication.config.skin.orgNameLong}"/>
 <g:set var="orgNameShort" value="${grailsApplication.config.skin.orgNameShort}"/>
-<g:set var="avhHome" value="http://data.rbg.vic.gov.au/avh/"/>
+<g:set var="avhHome" value="${grailsApplication.config.organisation.baseUrl}"/>
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
