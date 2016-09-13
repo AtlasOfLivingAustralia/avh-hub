@@ -71,6 +71,7 @@ ala.baseURL = "http://www.ala.org.au"
 collections.baseUrl = "http://collections.ala.org.au"
 dataQualityChecksUrl = "https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv"
 clubRoleForHub = "ROLE_ADMIN"
+addLikeDislikeButton = false
 
 /******************************************************************************\
  *  CAS SETTINGS
