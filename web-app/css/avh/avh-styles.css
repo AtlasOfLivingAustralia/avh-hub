@@ -166,6 +166,24 @@ div#rightMenu, #rightMenu a {
     }
 }
 
+.btn-primary {
+    background-color: #4c9900;
+    background-image: -moz-linear-gradient(top, #4c9900, #4e8d1c);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4c9900), to(#4e8d1c));
+    background-image: -webkit-linear-gradient(top, #4c9900, #4e8d1c);
+    background-image: -o-linear-gradient(top, #4c9900, #4e8d1c);
+    background-image: linear-gradient(to bottom, #4c9900, #4e8d1c);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4c9900', endColorstr='#ff4e8d1c', GradientType=0);
+    border-color: #4e8d1c #4e8d1c #3f7f00;
+    *background-color: #4e8d1c;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled,
+.btn-primary[disabled] {
+    color: #ffffff;
+    background-color: #4e8d1c;
+}
+
 /* footer
 --------------------------*/
 footer {
