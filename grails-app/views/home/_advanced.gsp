@@ -208,7 +208,7 @@
                     <tr>
                         <td class="labels">Local government area</td>
                         <td>
-                            <select class="biogeographic_region" name="cl959" id="cl959">
+                            <select class="biogeographic_region" name="places" id="places">
                                 <option value="">-- select local government area--</option>
                                 <g:each var="region" in="${request.getAttribute("cl959").sort()}">
                                     <option value="${region.key}">${region.value}</option>
