@@ -219,41 +219,47 @@
                         </td>
                     </tr>
                     <g:set var="autoPlaceholder" value="start typing and select from the autocomplete drop-down list"/>
-                    <tr>
-                        <td class="labels">Local government area</td>
-                        <td>
-                            <select class="lga" name="lga" id="lga">
-                                <option value="">-- select local government area--</option>
-                                <g:each var="region" in="${request.getAttribute("cl959").sort()}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="labels"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
-                        <td>
-                            <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                            <select class="biogeographic_region" name="ibra" id="ibra">
-                                <option value="">-- select an IBRA region --</option>
-                                <g:each var="region" in="${request.getAttribute("cl1048").sort()}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="labels"><abbr title="Integrated Marine and Coastal Regionalisation of Australia (meso-scale)">IMCRA</abbr> region</td>
-                        <td>
-                            <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
-                            <select class="biogeographic_region" name="imcra_meso" id="imcra">
-                                <option value="">-- select an IMCRA region --</option>
-                                <g:each var="region" in="${request.getAttribute("cl21").sort()}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr>
+                    <g:if test="${request.getAttribute("cl959") && request.getAttribute("cl959").size() > 1}">
+                        <tr>
+                            <td class="labels">Local government area</td>
+                            <td>
+                                <select class="lga" name="lga" id="lga">
+                                    <option value="">-- select local government area--</option>
+                                    <g:each var="region" in="${request.getAttribute("cl959").sort()}">
+                                        <option value="${region.key}">${region.value}</option>
+                                    </g:each>
+                                </select>
+                            </td>
+                        </tr>
+                    </g:if>
+                    <g:if test="${request.getAttribute("cl1048") && request.getAttribute("cl1048").size() > 1}">
+                        <tr>
+                            <td class="labels"><abbr title="Interim Biogeographic Regionalisation of Australia">IBRA</abbr> region</td>
+                            <td>
+                                <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
+                                <select class="biogeographic_region" name="ibra" id="ibra">
+                                    <option value="">-- select an IBRA region --</option>
+                                    <g:each var="region" in="${request.getAttribute("cl1048").sort()}">
+                                        <option value="${region.key}">${region.value}</option>
+                                    </g:each>
+                                </select>
+                            </td>
+                        </tr>
+                    </g:if>
+                    <g:if test="${request.getAttribute("cl21") && request.getAttribute("cl21").size() > 1}">
+                        <tr>
+                            <td class="labels"><abbr title="Integrated Marine and Coastal Regionalisation of Australia (meso-scale)">IMCRA</abbr> region</td>
+                            <td>
+                                <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
+                                <select class="biogeographic_region" name="imcra_meso" id="imcra">
+                                    <option value="">-- select an IMCRA region --</option>
+                                    <g:each var="region" in="${request.getAttribute("cl21").sort()}">
+                                        <option value="${region.key}">${region.value}</option>
+                                    </g:each>
+                                </select>
+                            </td>
+                        </tr>
+                    </g:if>
 <!--                    <tr>
                         <td class="labels">NZ Province</td>
                         <td>
