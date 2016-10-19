@@ -2,17 +2,11 @@
 <g:set var="orgNameLong" value="${grailsApplication.config.skin.orgNameLong}"/>
 <g:set var="orgNameShort" value="${grailsApplication.config.skin.orgNameShort}"/>
 <g:set var="avhHome" value="${grailsApplication.config.organisation.baseUrl}"/>
-
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">
+<html>
 <head>
     <link rel="shortcut icon" href="${request.contextPath}/images/avh/favicon.ico" />
     <title>Error | ${orgNameLong}</title>
-
-    <r:require modules="avh"/>
-
-    <r:layoutResources/>
-    <g:layoutHead />
 </head>
 <body>
 
