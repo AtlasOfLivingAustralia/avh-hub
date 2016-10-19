@@ -49,7 +49,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1">
     <link rel="shortcut icon" href="${request.contextPath}/images/avh/favicon.ico" />
     <link rel='stylesheet' id='google_fonts-css'  href='//fonts.googleapis.com/css?family=Lato:300,400,700|Raleway:400,300,700' type='text/css' media='screen' />
-    <title><g:layoutTitle /></title>
+    <title>Error | ${orgNameLong}</title>
 
     <r:require modules="avh"/>
 
