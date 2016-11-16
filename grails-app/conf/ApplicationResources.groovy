@@ -6,12 +6,12 @@ modules = {
     // Define your skin module here - it must 'dependsOn' either bootstrap (ALA version) or bootstrap2 (unmodified) and core
 
     avh {
-        dependsOn 'bootstrapLocal', 'hubCore' // from ala-web-theme plugin
+        dependsOn 'bootstrap', 'hubCore' // from ala-web-theme plugin
         resource url:[dir:'css', file:'avh/avh-styles.css']
         resource url:[dir:'css', file:'avh/ala-styles.css']
     }
 
-    bootstrapLocal {
+    bootstrap {
         dependsOn 'core'
         defaultBundle 'main-core'
         resource url:[dir:'js', file:'bootstrap.js'], disposition: 'head', exclude: '*'
