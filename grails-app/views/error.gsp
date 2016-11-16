@@ -1,26 +1,27 @@
+<g:set var="serverName" value="${grailsApplication.config.serverName}"/>
+<g:set var="orgNameLong" value="${grailsApplication.config.skin.orgNameLong}"/>
+<g:set var="orgNameShort" value="${grailsApplication.config.skin.orgNameShort}"/>
+<g:set var="avhHome" value="${grailsApplication.config.organisation.baseUrl}"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <title><g:if env="development">Grails Runtime Exception</g:if><g:else>Error</g:else></title>
-    <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
-    <g:if env="development"><link rel="stylesheet" href="${resource(dir: 'css', file: 'errors.css')}" type="text/css"></g:if>
+    <link rel="shortcut icon" href="${request.contextPath}/images/avh/favicon.ico" />
+    <title>Error | ${orgNameLong}</title>
 </head>
 <body>
-<h1>
-    An error has occurred
-</h1>
-<g:if env="development">
-    <g:renderException exception="${exception}" />
-</g:if>
-<g:else>
+
+<div class="errors">
+    <h1>
+        An error occurred:
+    </h1>
     <ul class="errors">
-        <li>Error: unknown</li>
+        <g:renderException exception="${exception}" />
     </ul>
-</g:else>
 <g:if test="${flash.message}">
     <ul class="errors">
         <li>${flash.message}</li>
     </ul>
 </g:if>
+</div>
 </body>
 </html>
