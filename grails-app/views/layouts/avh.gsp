@@ -60,7 +60,6 @@
 <body>
 <g:set var="fluidLayout" value="${pageProperty(name:'meta.fluidLayout')?:grailsApplication.config.skin?.fluidLayout}"/>
 <g:set var="containerType" value="${fluidLayout ? 'container-fluid' : 'container'}"/>
-<alatag:outageBanner />
 <!-- Header -->
 <!-- Navbar -->
 <div id="avh-nav" class="navbar">
@@ -124,6 +123,9 @@
 <!-- End header -->
 
 <div id="main-content" class="${containerType}">
+    <plugin:isAvailable name="alaAdminPlugin">
+        <ala:systemMessage/>
+    </plugin:isAvailable>
     <g:layoutBody />
 </div>
 
