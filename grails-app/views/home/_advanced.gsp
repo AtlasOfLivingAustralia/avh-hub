@@ -15,7 +15,7 @@
 
 </style>
 <form name="advancedSearchForm" id="advancedSearchForm" action="${g.createLink(uri:'/advancedSearch')}" method="POST">
-    <input type="hidden" name="nameType" value="matched_name_children"/>
+    <input type="hidden" name="nameType" value="taxon_name"/>
     <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;" value="${params.q}"/>
     <div class="" id="">
         <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Full text search</a>
