@@ -122,7 +122,7 @@
 </div><!-- .site-branding -->
 <!-- End header -->
 
-<div id="main-content" class="${containerType}">
+<div id="main-content" class="${containerType} content">
     <plugin:isAvailable name="alaAdminPlugin">
         <ala:systemMessage/>
     </plugin:isAvailable>

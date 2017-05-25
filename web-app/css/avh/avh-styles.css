@@ -238,6 +238,18 @@ body #main-content #customiseFacetsButton > .dropdown-menu, #main-content #resul
     background-color: white;
 }
 
+#customiseFacetsButton h4 {
+    font-size: 14px;
+    font-weight: normal;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 510px;
+}
+
+div.facetsColumn {
+    width: 250px;
+}
+
+
 .btn-primary {
     color: #ffffff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
