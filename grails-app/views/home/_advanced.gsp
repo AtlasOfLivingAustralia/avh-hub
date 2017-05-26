@@ -15,7 +15,7 @@
 
 </style>
 <form name="advancedSearchForm" id="advancedSearchForm" action="${g.createLink(uri:'/advancedSearch')}" method="POST">
-    <input type="hidden" name="nameType" value="taxon_name"/>
+    <input type="hidden" name="nameType" value="taxa"/>
     <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;" value="${params.q}"/>
     <div class="" id="">
         <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Full text search</a>
@@ -57,7 +57,9 @@
                                 <select class="taxaGroup" name="species_group" id="species_group">
                                     <option value="">-- select a botanical group --</option>
                                     <g:each var="group" in="${request.getAttribute("species_group")}">
-                                        <option value="${group.key}">${group.value}</option>
+                                        <g:if test="${!grailsApplication.config.speciesGroupsIgnore.contains(group.value)}">
+                                            <option value="${group.key}"><g:message code="advancedsearch.speciesgroup.${group.value}" default="${group.value}"/></option>
+                                        </g:if>
                                     </g:each>
                                 </select>
                             </td>

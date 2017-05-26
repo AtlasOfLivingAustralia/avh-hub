@@ -42,7 +42,7 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams {
     @Override
     public String toString2() {
         Map allParams = super.toParamMap()
-        StringBuilder q = new StringBuilder(allParams.q)
+        StringBuilder q = new StringBuilder(allParams.q?:"")
 
         // build up q from the simple fields first...
         if (nz_provinces) q.append(" cl2117:").append(quoteText(nz_provinces))
@@ -57,11 +57,11 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams {
         String finalQuery = ""
 
         if (taxa) {
-            String query = URLEncoder.encode(q.toString().replace("?", ""))
+            String query = URLEncoder.encode(q.toString().replace("?", ""), "UTF-8")
             finalQuery = "taxa=" + taxa + "&q=" + query
         } else {
             try {
-                finalQuery = "q=" + URIUtil.encodeWithinQuery(q.toString().trim()); //URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
+                finalQuery = "q=" + URIUtil.encodeWithinQuery(q.toString().trim())  //URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
             } catch (URIException ex) {
                 log.error("URIUtil error: " + ex.getMessage(), ex)
                 finalQuery = "q=" + q.toString().trim(); // fall back

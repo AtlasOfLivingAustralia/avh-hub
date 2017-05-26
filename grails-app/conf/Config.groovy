@@ -90,6 +90,8 @@ security.cas.casServerUrlPrefix = 'https://auth.ala.org.au/cas'
 security.cas.bypass = false // not sure this is working
 auth.admin_role = "ROLE_ADMIN"
 
+speciesGroupsIgnore = "Animals,Arthropods,Bacteria,Crustaceans,Dicots,Insects,Molluscs,Protozoa"
+
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
 grails.mime.types = [ // the first one is the default format
