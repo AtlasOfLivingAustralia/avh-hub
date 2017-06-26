@@ -211,10 +211,11 @@
                         <td>
                             <select class="state" name="state_territory_province" id="state_territory_province">
                                 <option value="">-- select a state, territory or province --</option>
-                                <g:each var="state" in="${request.getAttribute("state")}">
+                                <g:each var="state" in="${request.getAttribute("state")?.sort()}">
                                     <option value="${state.key}">${state.value}</option>
                                 </g:each>
-                                <g:each var="region" in="${request.getAttribute("cl2117")}">
+                                <option value=""></option>
+                                <g:each var="region" in="${request.getAttribute("cl2117")?.sort()}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -227,7 +228,7 @@
                             <td>
                                 <select class="lga" name="lga" id="lga">
                                     <option value="">-- select local government area--</option>
-                                    <g:each var="region" in="${request.getAttribute("cl959").sort()}">
+                                    <g:each var="region" in="${request.getAttribute("cl959")?.sort()}">
                                         <option value="${region.key}">${region.value}</option>
                                     </g:each>
                                 </select>
@@ -241,7 +242,7 @@
                                 <%-- <input type="text" name="ibra" id="ibra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                 <select class="biogeographic_region" name="ibra" id="ibra">
                                     <option value="">-- select an IBRA region --</option>
-                                    <g:each var="region" in="${request.getAttribute("cl1048").sort()}">
+                                    <g:each var="region" in="${request.getAttribute("cl1048")?.sort()}">
                                         <option value="${region.key}">${region.value}</option>
                                     </g:each>
                                 </select>
@@ -255,30 +256,19 @@
                                 <%-- <input type="text" name="imcra" id="imcra" class="region_autocomplete" value="" placeholder="${autoPlaceholder}"/> --%>
                                 <select class="biogeographic_region" name="imcra_meso" id="imcra">
                                     <option value="">-- select an IMCRA region --</option>
-                                    <g:each var="region" in="${request.getAttribute("cl21").sort()}">
+                                    <g:each var="region" in="${request.getAttribute("cl21")?.sort()}">
                                         <option value="${region.key}">${region.value}</option>
                                     </g:each>
                                 </select>
                             </td>
                         </tr>
                     </g:if>
-<!--                    <tr>
-                        <td class="labels">NZ Province</td>
-                        <td>
-                            <select class="biogeographic_region" name="nz_provinces" id="nz_provinces">
-                                <option value="">-- select a NZ province --</option>
-                                <g:each var="region" in="${request.getAttribute("cl2117")}">
-                                    <option value="${region.key}">${region.value}</option>
-                                </g:each>
-                            </select>
-                        </td>
-                    </tr> -->
                     <tr>
                         <td class="labels">NZ Land District</td>
                         <td>
                             <select class="biogeographic_region" name="nz_districts" id="nz_districts">
                                 <option value="">-- select a NZ Land District --</option>
-                                <g:each var="region" in="${request.getAttribute("cl2116")}">
+                                <g:each var="region" in="${request.getAttribute("cl2116")?.sort()}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
@@ -289,7 +279,7 @@
                         <td>
                             <select class="biogeographic_region" name="nz_eco_regions" id="nz_eco_regions">
                                 <option value="">-- select a NZ ECO region --</option>
-                                <g:each var="region" in="${request.getAttribute("cl2115")}">
+                                <g:each var="region" in="${request.getAttribute("cl2115")?.sort()}">
                                     <option value="${region.key}">${region.value}</option>
                                 </g:each>
                             </select>
