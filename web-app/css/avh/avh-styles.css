@@ -13,6 +13,10 @@ body {
     overflow-y: scroll;
 }
 
+body h1, body h2, body h3, body h4, body h5 {
+    font-weight:300;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: Raleway, Arial, 'Helvetica Neue', sans-serif;
 }
