@@ -86,7 +86,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="${avhHome}/index.php/help/using-avh">Using ${orgNameShort}</a></li>
                             <li><a href="${avhHome}/index.php/help/data/">Data</a></li>
-                            <li><a href="${avhHome}/fields/">Download fields</a></li>
+                            <li><a href="${request.contextPath}/fields">Download fields</a></li>
                         </ul>
                     </li>
                     <li><a href="${avhHome}/index.php/news">News</a></li>
