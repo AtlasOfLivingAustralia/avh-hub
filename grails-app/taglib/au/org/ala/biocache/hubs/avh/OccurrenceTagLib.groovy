@@ -15,7 +15,8 @@ class OccurrenceTagLib {
      */
     def formatListRecordRow = { attrs ->
         def JSONObject occurrence = attrs.occurrence
-        def rawScientificName = alatag.rawScientificName(occurrence: occurrence)
+        String rawScientificName = alatag.rawScientificName(occurrence: occurrence)
+        String processedScientificName = occurrence.scientificName
         def mb = new MarkupBuilder(out)
 
         def outputResultsTd = { label, value, test ->
@@ -31,7 +32,13 @@ class OccurrenceTagLib {
 
         mb.div(class:'recordRow', id:occurrence.uuid ) {
             p(class:'rowA') {
-                span(class:"occurrenceNames", "${rawScientificName}")
+                span(class:"occurrenceNames") {
+                    if (processedScientificName && !rawScientificName.startsWith(processedScientificName)) {
+                        mkp.yieldUnescaped(rawScientificName + " &mdash; matched name: " + processedScientificName )
+                    } else {
+                        mkp.yieldUnescaped(rawScientificName)
+                    }
+                }
 
                 if (occurrence.raw_catalogNumber!= null && occurrence.raw_catalogNumber) {
                     span(style:'display:inline-block;float:right;') {

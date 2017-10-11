@@ -49,12 +49,12 @@ grails.project.dependency.resolution = {
     plugins {
         build ":release:3.0.1"
         build ":tomcat:7.0.54"
-        compile ':cache:1.1.1'
+        compile ':cache:1.1.8'
         compile ":cache-headers:1.1.6"
         runtime ":jquery:1.11.1"
         runtime ":resources:1.2.8"
         runtime ":cached-resources:1.0"
-        runtime ":biocache-hubs:1.3.12"
+        runtime ":biocache-hubs:1.4.3"
         runtime ":downloads-plugin:1.3.2"
         runtime ":ala-auth:1.3.4"
     }
