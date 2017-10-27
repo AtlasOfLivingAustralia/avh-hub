@@ -40,7 +40,7 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams {
      * @return q
      */
     @Override
-    public String toString2() {
+    public String toString() {
         Map allParams = super.toParamMap()
         StringBuilder q = new StringBuilder(allParams.q?:"")
 

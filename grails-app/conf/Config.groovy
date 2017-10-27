@@ -61,7 +61,7 @@ defaultListView = "mapView" // mapView or listView
 
 bie.baseUrl = "http://bie.ala.org.au/"
 bie.searchPath = "/search"
-bie.autocompleteHints.fq = "kingdom:Plantae"
+bie.autocompleteHints= "fq=\"kingdom:Plantae\""
 biocache.baseUrl = "http://biocache.ala.org.au/ws"
 biocache.apiKey = "api-key-to-use"
 biocache.queryContext = "data_hub_uid:dh2" // data hub uid
