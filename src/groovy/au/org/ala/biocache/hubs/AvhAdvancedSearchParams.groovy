@@ -73,7 +73,7 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams {
 
     @Override
     public Map toParamMap() {
-        WebUtils.fromQueryString(this.toString2())
+        WebUtils.fromQueryString(this.toString())
     }
 
 }
