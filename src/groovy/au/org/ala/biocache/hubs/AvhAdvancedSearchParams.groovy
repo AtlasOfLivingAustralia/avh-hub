@@ -39,8 +39,8 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams {
      *
      * @return q
      */
-    @Override
-    public String toString() {
+    //@Override
+    public String toString2() {
         Map allParams = super.toParamMap()
         StringBuilder q = new StringBuilder(allParams.q?:"")
 
@@ -73,7 +73,7 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams {
 
     @Override
     public Map toParamMap() {
-        WebUtils.fromQueryString(this.toString())
+        WebUtils.fromQueryString(this.toString2())
     }
 
 }
