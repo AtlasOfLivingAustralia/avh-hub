@@ -1,0 +1,89 @@
+/* ALA CSS file */
+
+.toggleResponsive {
+    display: none;
+}
+
+#main #main-content {
+    margin-top: 10px;
+    margin-bottom: 5em;
+}
+
+.explore-your-area #header #breadcrumb { display: none; }
+
+/*#content .nav-tabs li:not(.active)  a {*/
+/*background-color: #f2f2f2;*/
+/*}*/
+
+.rowA {
+    margin-bottom: 2px;
+}
+
+body #main-content #customiseFacetsButton > .dropdown-menu, #main-content #resultsReturned .dropdown-menu {
+    background-color: white;
+}
+
+/* Leaflet overrides */
+#main-content .leaflet-container a {
+    color: #C44D34;
+}
+
+#main-content .leaflet-bar a.leaflet-disabled, #main-content .leaflet-bar a.leaflet-disabled:hover {
+    color: #bbb;
+}
+
+#main-content .leaflet-container a.leaflet-popup-close-button {
+    color: #999;
+}
+
+#main-content .leaflet-bar a, #main-content .leaflet-bar a:hover,  #main-content a.colour-by-legend-toggle {
+    color: black;
+}
+
+#outageMessage {
+    font-size: 18px;
+    border: 4px solid #df4a21;
+    display: table;
+    margin: 0 auto;
+    min-width: 50%;
+}
+
+/*#currentFilter span.checkbox-unchecked {
+    background: url('../images/checkbox-unchecked.png') no-repeat left top;
+}
+
+#currentFilter span.checkbox-checked {
+    background: url('images/checkbox-checked.png') no-repeat left top;
+}*/
+
+/* anchor offset for floating header */
+:target:before {
+    content:"";
+    display:block;
+    height:67px; /* fixed header height*/
+    margin:-67px 0 0; /* negative fixed header height */
+}
+
+/* Media rules */
+@media only screen and (max-width : 992px) {
+    body > #main-content {
+        margin-top: 60px;
+    }
+}
+
+@media only screen and (max-width : 768px) {
+    body > #main-content {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+@media only screen and (max-width : 480px) {
+    body > #main-content {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    input#taxaQuery {
+        width: 50%;
+    }
+}
