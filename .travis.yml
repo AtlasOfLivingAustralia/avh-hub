@@ -1,11 +1,12 @@
 language: groovy
 jdk:
-- openjdk7
+- oraclejdk8
 sudo: false
 branches:
   only:
   - master
   - hotfix
+  - bs3-with-grails3
 #  - nzvh-test
 before_install:
  - wget -q https://raw.githubusercontent.com/AtlasOfLivingAustralia/travis-build-configuration/master/ala_common.sh
