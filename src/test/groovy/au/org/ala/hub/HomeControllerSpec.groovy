@@ -1,5 +1,6 @@
-package au.org.ala.biocache.hubs
+package au.org.ala.hub
 
+import au.org.ala.biocache.hubs.avh.HomeController
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
