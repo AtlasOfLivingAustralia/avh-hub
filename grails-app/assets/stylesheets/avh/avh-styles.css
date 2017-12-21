@@ -532,14 +532,17 @@ border-radius: 5px;
 width: 95%;
 }*/
 
-select {
-    width: 220px;
+#advancedSearchForm select {
+    width: 300px;
 }
 
-/*.btn-primary {
-    background-color: #5A9A18;
-    background-image: linear-gradient(to bottom, #5A9A18, #4d8415) !important;
-}*/
+.sidebar h3 {
+    font-size: 16px;
+}
+
+#listHeader h1 {
+    font-size: 26px;
+}
 
 #nameMatchingOptions {
     display:none;
