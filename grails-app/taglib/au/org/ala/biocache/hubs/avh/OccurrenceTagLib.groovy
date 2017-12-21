@@ -1,7 +1,8 @@
 package au.org.ala.biocache.hubs.avh
 
 import groovy.xml.MarkupBuilder
-import org.codehaus.groovy.grails.web.json.JSONObject
+//import org.codehaus.groovy.grails.web.json.JSONObject
+import org.grails.web.json.JSONObject
 
 class OccurrenceTagLib {
     //static defaultEncodeAs = 'html'

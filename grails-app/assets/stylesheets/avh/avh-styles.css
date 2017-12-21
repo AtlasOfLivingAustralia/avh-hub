@@ -45,10 +45,6 @@ h1, h2, h3, h4, h5, h6 {
     font-family: "Raleway", Arial, 'Helvetica Neue', sans-serif !important;
 }
 
-/*#t1, #t2, #t3, #t4, #t5, a.showHideFacetGroup, a.tooltips, a.multipleFacetsLink, a.occurrenceLink, td.multiple-facet-value a, a.fsort {
-    color: #006600 !important;
-}*/
-
 a {
     color: #006600 !important;
 }
@@ -291,9 +287,8 @@ div.facetsColumn {
     width: 250px;
 }
 
-.btn {
-    color: black !important;
-    background-color: lightgrey !important;
+.padding-left-1 {
+    padding-left: 1em;
 }
 
 .btn-primary {
