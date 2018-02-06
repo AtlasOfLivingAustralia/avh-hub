@@ -8,17 +8,7 @@
 //= require jquery.autocomplete.js
 //= require jquery-migrate-1.2.1.min.js
 //= require jquery_i18n
-// require jquery.autocomplete
 //= require bootstrap.min.js
-
-// require hubCore
-// require bootstrap.js
-// require html5.js
-// require_full_tree
-// require_tree .
-// require leafletPlugins.js
-// require_self
-
 
 if (typeof jQuery !== 'undefined') {
 	(function($) {
