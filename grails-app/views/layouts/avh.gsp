@@ -71,6 +71,8 @@
       <asset:javascript src="avh.js"/>
       <asset:javascript src="biocache-hubs.js" />
 
+      <asset:stylesheet src="third-party-styles.css"/>
+
       <g:layoutHead />
 
       <asset:deferredScripts />

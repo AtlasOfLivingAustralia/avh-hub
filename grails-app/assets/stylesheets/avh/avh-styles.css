@@ -46,7 +46,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    color: #006600 !important;
+    color: #006600;
+    /*color: #006600 !important;*/
 }
 
 a.newDownload {

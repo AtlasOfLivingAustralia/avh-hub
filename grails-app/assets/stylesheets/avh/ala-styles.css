@@ -90,6 +90,29 @@ img.aus-govt{margin-top: 20px;}
 img.gbif,img.csiro{max-width:100px;padding-top:15px;}
 img.ncris{margin-top:8px;}
 
+/* Colours and Swatchs
+================================= */
+.swatch-colour{height:70px;width:100%;display:block;border-bottom:1px solid #ccc;}
+.color--dark-grey{color: #9d9d9d;} .backgroundcolor--dark-grey{background-color: #9d9d9d;}
+.color--dark-red{color: #C44D34;} .backgroundcolor--dark-red{background-color: #C44D34;}
+.color--green{color: #006435;} .backgroundcolor--green{background-color: #006435;}
+.color--medium-blue{color: #2475A4;} .backgroundcolor--medium-blue{background-color: #2475A4;}
+.color--medium-grey{color: #637073;} .backgroundcolor--medium-grey{background-color: #637073;}
+.color--mellow-red{color: #DF3034;} .backgroundcolor--mellow-red{background-color: #DF3034;}
+.color--off-black{color: #212121;} .backgroundcolor--off-black{background-color: #212121;}
+.color--off-white{color: #F2F2F2;} .backgroundcolor--off-white{background-color: #F2F2F2;}
+.color--pink{color: #D0367D;} .backgroundcolor--pink{background-color: #D0367D;}
+.color--primary-red{color: #F26649;} .backgroundcolor--primary-red{background-color: #F26649;}
+.color--purple{color: #2E358B;} .backgroundcolor--purple{background-color: #2E358B;}
+.color--red{color: #B10E1E;} .backgroundcolor--red{background-color: #B10E1E;}
+.color--white{color: #fff !important;} .backgroundcolor--white{background-color: #fff;}
+.color--yellow{color: #FFBF47;} .backgroundcolor--yellow{background-color: #FFBF47;}
+.color--apple{color: #65B044;} .backgroundcolor--apple{background-color: #65B044;}
+.color--flamingo{color: #f26649;} .backgroundcolor--flamingo{background-color: #f26649;}
+.color--mojo{color: #C44D34;} .backgroundcolor--mojo{background-color: #C44D34;}
+.color-lochmara {color: #0087BE;} .background-lochmara {background-color: #0087BE;}
+.color-facebook {color: #507CBE;} .background-facebook {background-color: #507CBE;}
+
 
 /* Media Queries (Mobile First Method = only add rules to modify larger views)
 ================================= */
