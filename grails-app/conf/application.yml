@@ -27,6 +27,7 @@ info:
         name: '@info.app.name@'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
+        description: 'The Australasian Virtual Herbarium'
 spring:
     main:
         banner-mode: "off"
