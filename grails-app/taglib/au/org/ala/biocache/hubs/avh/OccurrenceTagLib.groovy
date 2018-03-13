@@ -35,7 +35,7 @@ class OccurrenceTagLib {
             p(class:'rowA') {
                 span(class:"occurrenceNames") {
                     if (processedScientificName && !rawScientificName.startsWith(processedScientificName)) {
-                        mkp.yieldUnescaped(rawScientificName + " &mdash; matched name: " + processedScientificName )
+                        mkp.yieldUnescaped(processedScientificName + " | provided name: " + rawScientificName )
                     } else {
                         mkp.yieldUnescaped(rawScientificName)
                     }
