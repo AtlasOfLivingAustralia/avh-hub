@@ -29,7 +29,6 @@
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
-<g:applyLayout>
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -49,57 +48,20 @@
         <meta name="DC.Rights" content="(c) Council of Heads of Australasian Herbaria, 2010" />
         <meta name="DC.Rights" content="Unless other stated, Intellectual Property associated with this resource resides with the Council of Heads of Australasian Herbaria and individual herbaria. Applications, source code and data are freely available for research, non-commercial and public good purposes" />
         <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1">
-        <link rel="shortcut icon" href="${request.contextPath}/images/avh/favicon.ico" />
-        <link rel='stylesheet' id='google_fonts-css'  href='//fonts.googleapis.com/css?family=Lato:300,400,700|Raleway:400,300,700' type='text/css' media='screen' />
+        <asset:link rel="shortcut icon" href="avh/favicon.ico" />
+        <asset:link rel='stylesheet' id='google_fonts-css'  href='//fonts.googleapis.com/css?family=Lato:300,400,700|Raleway:400,300,700' type='text/css' media='screen' />
         <title><g:layoutTitle /></title>
 
-      %{--  <g:if test="${!grailsApplication.config.headerAndFooter.excludeBootstrapCss}">
-            <link href="${grailsApplication.config.headerAndFooter.baseURL}/css/bootstrap.min.css" rel="stylesheet"
-                  media="screen,print"/>
-        </g:if>
-        <g:if test="${!grailsApplication.config.headerAndFooter.excludeAlaStylesCss}">
-            <link href="${grailsApplication.config.headerAndFooter.baseURL}/css/ala-styles.css" rel="stylesheet"
-                  media="screen,print"/>
-        </g:if>--}%
+        <asset:javascript src="avh.js"/>
+        <asset:javascript src="biocache-hubs.js" />
 
         <g:render template="/layouts/global" plugin="biocache-hubs"/>
 
+        <asset:stylesheet src="third-party-styles.css"/>
 
-        %{--<r:require modules="avh"/>--}%
-        %{--<asset:javascript src="${pageProperty(name: 'meta.head-js') ?: 'head'}"/>--}%
+        <g:layoutHead />
 
-      <asset:javascript src="avh.js"/>
-      <asset:javascript src="biocache-hubs.js" />
-
-      <asset:stylesheet src="third-party-styles.css"/>
-
-      <g:layoutHead />
-
-      <asset:deferredScripts />
-
-      %{--<asset:stylesheet src="hubCore.css"></asset:stylesheet>--}%
-
-      <asset:stylesheet src="avh.css"/>
-      %{--<asset:stylesheet src="bootstrapAdditions.css" />--}%
-
-  %{--    <asset:stylesheet src="hubCore.css" />
-      <asset:stylesheet src="bootstrapAdditions.css" />--}%
-      %{--<asset:stylesheet src=".css"/>--}%
-
-
-
-
-        %{--<asset:javascript src="hubCore.js" />--}%
-
-        %{--<asset:javascript src="hubCore.css" />--}%
-        %{--<asset:javascript src="leafletPlugins.js" />--}%
-
-        %{--<asset:javascript src="head.js"/>--}%
-
-        %{--<r:layoutResources/>--}%
-
-
-
+        <asset:stylesheet src="avh.css"/>
 
     </head>
     <body class="${pageProperty(name:'body.class')?:'nav-datasets'}" id="${pageProperty(name:'body.id')}" onload="${pageProperty(name:'body.onload')}">
@@ -144,45 +106,6 @@
             </div><!-- /.navbar-inner -->
         </div><!-- .container -->
     </div><!-- /.navbar -->
-
-
-   %{-- <div id="avh-nav" class="navbar">
-        <div class="${containerType}">
-            <div class="navbar-header">
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="nav-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="${avhHome}">Home</a></li>
-                        <li><a href="${serverName}/search/#tab_simpleSearch">Search</a></li>
-                        <li class="dropdown font-xsmall">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="${avhHome}/index.php/about/">About ${orgNameShort}</a></li>
-                                <li><a href="${avhHome}/index.php/terms-of-use/">Terms of use</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown font-xsmall">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Help<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="${avhHome}/index.php/help/using-avh">Using ${orgNameShort}</a></li>
-                                <li><a href="${avhHome}/index.php/help/data/">Data</a></li>
-                                <li><a href="${request.contextPath}/fields">Download fields</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="${avhHome}/index.php/news">News</a></li>
-                    </ul>
-                    <ul class="nav pull-right">
-                        <li><a href="${avhHome}/index.php/contact-us">Contact us</a></li>
-                        <li><a href="https://www.facebook.com/AustVirtHerb"><asset:image src="avh/facebook-icon-small2.png" alt="" width="25" height="25" /></a></li>
-                    </ul>
-                </div>
-            </div><!-- /.navbar-inner -->
-        </div><!-- .container -->
-    </div><!-- /.navbar -->--}%
 
     <div id="site-branding" class="site-branding">
         <div class="${containerType}">
@@ -245,14 +168,6 @@
         ga('send', 'pageview');
     </script>
 
-
-
-  %{--  <asset:javascript src="leaflet/leaflet.js"/>
-    <asset:javascript src="leafletPlugins.js"/>
-    <asset:deferredScripts />--}%
-
-    %{--<r:layoutResources/>--}%
-
+    <asset:deferredScripts />
     </body>
-</g:applyLayout>
 </html>

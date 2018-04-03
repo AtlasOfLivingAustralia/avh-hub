@@ -19,17 +19,18 @@ h1,h2,h3,h4,h5{font-weight:300;color:#5f5d60;}
 li,ul{color:#637073;font-size:14px;font-weight:200;line-height:1.6em;}
 p{font-size: 14px;line-height: 1.6em;}
 strong{color:#5f5d60;}
-.nav-tabs > li > a { background-color: #f2f2f2; }
-.nav-tabs > .active > a,
-.nav-tabs > .active > a:hover,
-.nav-tabs > .active > a:focus { background-color: white;}
 
 /* ALA Header
 ================================= */
 
+.nav-tabs > li > a { background-color: #f2f2f2; }
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus { background-color: white; }
+
+
 .navbar .navbar-inner {min-height: 50px;}
 .navbar-inner  img.brand {max-height: 20px;margin-top: 2px;}
-/*.navbar-inner a.brand {display: block;float: left;color: #f47a61;font-size: 16px;padding-right: 15px;}*/
 .navbar-inner ul.nav > li > a,.navbar-inner  a.brand {padding: 15px 10px;line-height: 20px;text-shadow: none;}
 .navbar-inner  ul.dropdown-menu li a {padding: 3px 20px;}
 .navbar-inner form {margin: 0; position: relative; left: 0; display: block; float: left;}
