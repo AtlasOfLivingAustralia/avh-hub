@@ -159,7 +159,7 @@ server:
 environments:
     development:
         grails:
-            serverURL: "https://devt.ala.org.au/avh-hub"
+            serverURL: "https://devt.ala.org.au:8080/avh-hub"
         security:
             cas:
                 appServerName: "https://auth.ala.org.au"
@@ -169,7 +169,7 @@ environments:
                 appServerName: "https://auth.ala.org.au"
     production:
         grails:
-            serverURL: "https://biocache.ala.org.au"
+            serverURL: "https://avh.ala.org.au"
         security:
             cas:
                 appServerName: "https://auth.ala.org.au"

@@ -43,7 +43,7 @@ bootRepackage {
 
 
 // Inplace plugin config
-
+//def inplace = true
 // Set to true it needed only for development
 
 dependencies {
@@ -83,10 +83,11 @@ dependencies {
     compile "org.grails.plugins:ala-auth:3.0.2"
 
   //  if(!inplace) {
-        compile "au.org.ala.plugins.grails:biocache-hubs:1.7"
-        runtime "au.org.ala.plugins.grails:downloads-plugin:1.6-SNAPSHOT"
-   // }
-
+    compile "au.org.ala.plugins.grails:biocache-hubs:2.0.3-SNAPSHOT"
+  //  } else {
+  //      compile project('biocache-hubs')
+  //  }
+    runtime "au.org.ala.plugins.grails:downloads-plugin:2.0.2-SNAPSHOT"
 
 }
 
