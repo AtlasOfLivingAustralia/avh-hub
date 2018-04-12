@@ -152,9 +152,9 @@ security:
     cas:
         uriFilterPattern: '/admin/.*,/registration/editAccount,/my-profile,/my-profile/,/myprofile/,/myprofile,/profile/.*,/admin/,/admin,/registration/update,/registration/update/.*,/monitoring,/monitoring/*,/registration/disableAccount/.*,/registration/disableAccount,/admin/admin/downloadUsersCsvFile,/alaAdmin.*'
 
-server:
-    contextPath: /avh-hub
-    port: 8080
+#server:
+#    contextPath: /avh-hub
+#    port: 8080
 
 environments:
     development:
