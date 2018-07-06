@@ -1,1 +1,13 @@
+// Inplace plugin config
+// Set to true it needed only for development
+boolean inplace = true
+
+if (inplace) {
+    include ':downloads-plugin'
+    project(':downloads-plugin').projectDir = new File(settingsDir,'../downloads-plugin')
+    include ':biocache-hubs'
+    project(':biocache-hubs').projectDir = new File(settingsDir,'../biocache-hubs')
+
+}
 rootProject.name='avh-hub'
+

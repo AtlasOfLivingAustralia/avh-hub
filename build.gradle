@@ -45,8 +45,28 @@ bootRepackage {
 // Inplace plugin config
 
 // Set to true it needed only for development
+boolean inplace = true
 
+if (inplace) {
+    grails {
+        exploded = true
+        plugins {
+            compile project(':biocache-hubs')
+            compile project(':downloads-plugin')
+            // When not inplace used, the pependencies below are managed by biocache-hubs plugin
+//            compile project(':ala-charts-plugin')
+//            compile project(':images-client-plugin')
+//            compile project(':ala-bootstrap3')
+//            runtime project(':ala-ws-plugin')
+        }
+    }
+}
 dependencies {
+    def noCache = {
+        exclude group: 'org.grails.plugins', module: 'cache'
+        exclude group: 'org.ehcache', module: 'ehcache'
+    }
+
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
@@ -80,12 +100,12 @@ dependencies {
     compile 'org.grails.plugins:external-config:1.1.1'
 
    // runtime "org.grails.plugins:ala-bootstrap3:3.0.1"
-    compile "org.grails.plugins:ala-auth:3.0.2"
+    compile "org.grails.plugins:ala-auth:3.0.2", noCache
 
-  //  if(!inplace) {
-        compile "au.org.ala.plugins.grails:biocache-hubs:1.7"
-        runtime "au.org.ala.plugins.grails:downloads-plugin:1.6-SNAPSHOT"
-   // }
+    if(!inplace) {
+        runtime "au.org.ala.plugins.grails:biocache-hubs:1.7", noCache
+        runtime "au.org.ala.plugins.grails:downloads-plugin:1.6-SNAPSHOT", noCache
+    }
 
 
 }
@@ -95,10 +115,8 @@ bootRun {
     addResources = true
 }
 
-
-/*
 assets {
     minifyJs = false
     minifyCss = false
 }
-*/
+
