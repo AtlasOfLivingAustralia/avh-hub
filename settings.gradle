@@ -1,1 +1,3 @@
 rootProject.name='avh-hub'
+//include 'biocache-hubs'
+//project(':biocache-hubs').projectDir = new File('../biocache-hubs')
