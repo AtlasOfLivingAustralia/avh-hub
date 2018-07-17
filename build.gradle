@@ -9,8 +9,7 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.14.2"
-        classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
-    }
+     }
 }
 
 plugins {
@@ -26,7 +25,6 @@ apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
-
 apply from: 'https://raw.githubusercontent.com/AtlasOfLivingAustralia/travis-build-configuration/master/travis_grails_publish.gradle'
 
 sourceCompatibility = 1.8
@@ -87,6 +85,7 @@ dependencies {
 
 }
 
+
 springBoot {
     buildInfo()
     layout = WAR
@@ -102,7 +101,6 @@ bootRun {
     jvmArgs('-Dspring.output.ansi.enabled=always')
     addResources = true
 }
-
 
 assets {
     minifyJs = true
