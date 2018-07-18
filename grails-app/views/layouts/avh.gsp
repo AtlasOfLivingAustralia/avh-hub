@@ -49,7 +49,7 @@
         <meta name="DC.Rights" content="Unless other stated, Intellectual Property associated with this resource resides with the Council of Heads of Australasian Herbaria and individual herbaria. Applications, source code and data are freely available for research, non-commercial and public good purposes" />
         <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1">
         <asset:link rel="shortcut icon" href="avh/favicon.ico" />
-        <asset:link rel='stylesheet' id='google_fonts-css'  href='//fonts.googleapis.com/css?family=Lato:300,400,700|Raleway:400,300,700' type='text/css' media='screen' />
+        <link rel='stylesheet' id='google_fonts-css'  href='//fonts.googleapis.com/css?family=Lato:300,400,700|Raleway:400,300,700' type='text/css' media='screen' />
         <title><g:layoutTitle /></title>
 
         <asset:javascript src="avh.js"/>
