@@ -352,6 +352,6 @@
         <br/>
         <input type="submit" value="Search" class="btn btn-primary" />
         &nbsp;&nbsp;
-        <input type="reset" value="Clear all" id="clearAll" class="btn" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
+        <input type="reset" value="Clear all" id="clearAll" class="btn btn-default" onclick="$('input#solrQuery').val(''); $('input.clear_taxon').click(); return true;"/>
     </div><!-- end #extendedOptions -->
 </form>

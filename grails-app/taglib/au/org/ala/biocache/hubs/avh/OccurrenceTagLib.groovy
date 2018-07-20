@@ -1,7 +1,8 @@
 package au.org.ala.biocache.hubs.avh
 
 import groovy.xml.MarkupBuilder
-import org.codehaus.groovy.grails.web.json.JSONObject
+//import org.codehaus.groovy.grails.web.json.JSONObject
+import org.grails.web.json.JSONObject
 
 class OccurrenceTagLib {
     //static defaultEncodeAs = 'html'
@@ -34,7 +35,7 @@ class OccurrenceTagLib {
             p(class:'rowA') {
                 span(class:"occurrenceNames") {
                     if (processedScientificName && !rawScientificName.startsWith(processedScientificName)) {
-                        mkp.yieldUnescaped(rawScientificName + " &mdash; matched name: " + processedScientificName )
+                        mkp.yieldUnescaped(processedScientificName + " | provided name: " + rawScientificName )
                     } else {
                         mkp.yieldUnescaped(rawScientificName)
                     }

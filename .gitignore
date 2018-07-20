@@ -1,4 +1,6 @@
 target/*
+build/*
 .idea/*
 *.iml
 .slcache/*
+.gradle/*
