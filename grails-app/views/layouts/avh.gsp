@@ -26,7 +26,7 @@
 <g:set var="orgNameLong" value="${grailsApplication.config.skin.orgNameLong}"/>
 <g:set var="orgNameShort" value="${grailsApplication.config.skin.orgNameShort}"/>
 <g:set var="avhHome" value="${grailsApplication.config.organisation.baseUrl}"/>
-
+<g:set var="userdetailsBaseUrl" value="${grailsApplication.config.userdetails.baseUrl}"/>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 
@@ -117,7 +117,7 @@
             <div class="span6 pull-right" id="rightMenu">
                 <%--<a href="http://www.ala.org.au/my-profile/"><div id='loginId'>Logged in as niels.klazenga@rbg.vic.gov.au</div></a>--%>
                 <g:set var="loginId"><alatag:loggedInUserDisplayname/></g:set>
-                <a href="http://www.ala.org.au/my-profile/">${loginId}</a>
+                <a href="${userdetailsBaseUrl}/my-profile/">${loginId}</a>
                 <g:if test="${loginId}">|</g:if>
                 <g:set var="returnUrlPath" value="${serverName}${request.requestURI}${request.queryString ? '?' : ''}${request.queryString}"/>
                 <auth:loginLogout logoutUrl="${request.contextPath}/logout/logout" returnUrlPath="${returnUrlPath}"/>
