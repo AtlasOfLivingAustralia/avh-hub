@@ -44,14 +44,14 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams implements Validateab
     public String toString2() {
         Map allParams = super.toParamMap()
         StringBuilder q = new StringBuilder(allParams.q?:"")
-
+        log.debug "[pre] q = ${q}"
         // build up q from the simple fields first...
-        if (nz_provinces) q.append(" cl2117:").append(quoteText(nz_provinces))
-        if (nz_eco_regions) q.append(" cl2115:").append(quoteText(nz_eco_regions))
-        if (nz_districts) q.append(" cl2116:").append(quoteText(nz_districts))
+        if (nz_provinces) q.append(" AND cl2117:").append(quoteText(nz_provinces))
+        if (nz_eco_regions) q.append(" AND cl2115:").append(quoteText(nz_eco_regions))
+        if (nz_districts) q.append(" AND cl2116:").append(quoteText(nz_districts))
 
         if (state_territory_province) {
-            q.append(" (").append("state:").append(quoteText(state_territory_province))
+            q.append(" AND (").append("state:").append(quoteText(state_territory_province))
             q.append(" OR cl2117:").append(quoteText(state_territory_province)).append(")")
         }
 
