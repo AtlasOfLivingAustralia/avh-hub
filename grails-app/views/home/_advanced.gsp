@@ -13,9 +13,13 @@
         background-color: #F0F0E8;
     }
 
+    #taxonSearchDiv .radio {
+        margin-left: 5px;
+        font-size: 13px;
+    }
+
 </style>
 <form name="advancedSearchForm" id="advancedSearchForm" action="${g.createLink(uri:'/advancedSearch')}" method="POST">
-    <input type="hidden" name="nameType" value="taxa"/>
     <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;" value="${params.q}"/>
     <div class="" id="">
         <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Full text search</a>
@@ -38,6 +42,18 @@
         <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Taxonomy</a>
         <div class="toggleSection" id="taxonomySection">
             <div id="taxonSearchDiv">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="nameType" id="nameType_1" value="taxa" ${'checked'}>
+                        Search against the &quot;matched&quot; scientific name (will include records for known synonyms)
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="nameType" id="nameType_2" value="raw_name" ${''}>
+                        Search against the &quot;supplied&quot; scientific name (will NOT include records for known synonyms)
+                    </label>
+                </div>
                 <table border="0" width="100" cellspacing="2" class=""  id="taxonomyOptions">
                     <thead/>
                     <tbody>
