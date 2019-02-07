@@ -311,34 +311,6 @@
                 <thead/>
                 <tbody>
                     <tr>
-                        <td class="labels">Duplicates sent to</td>
-                        <td>
-                                <%--<select class="institution_uid collection_uid" name="duplicates_institution_collection" id="duplicates_institution_collection"
-                                         onChange="alert('not currently available, coming soon');$(this).find('option')[0].selected = true;return false;">
-                                    <option value="">-- select an institution or collection --</option>
-                                    <g:each var="inst" in="${institutions}">
-                                        <optgroup label="${inst.value}">
-                                            <option value="${inst.key}">All records from ${inst.value}</option>
-                                            <g:each var="coll" in="${collections}">
-                                                <c:choose>
-                                                    <c:when test="${inst.key == 'in13' && fn:startsWith(coll.value, inst.value)}">
-                                                        <option value="${coll.key}">${fn:replace(fn:replace(coll.value, inst.value, ""), " - " ,"")} Collection</option>
-                                                    </c:when>
-                                                    <c:when test="${inst.key == 'in6' && fn:startsWith(coll.value, 'Australian National')}">
-                                                        <option value="${coll.key}">${coll.value}</option>
-                                                    </c:when>
-                                                    <c:when test="${fn:startsWith(coll.value, inst.value)}">
-                                                        <option value="${coll.key}">${fn:replace(coll.value, inst.value, "")}</option>
-                                                    </c:when>
-                                                </c:choose>
-                                            </g:each>
-                                        </optgroup>
-                                    </g:each>
-                                </select>--%>
-                            <input type="text" name="duplicate_inst" id="duplicate_inst" class="dataset" placeholder=""  value=""/>
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="labels">Loan number</td>
                         <td>
                             <input type="text" name="loan_identifier" id="loan_identifier" class="dataset" placeholder=""  value=""/>
