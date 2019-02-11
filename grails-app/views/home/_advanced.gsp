@@ -14,7 +14,7 @@
     }
 
     #taxonSearchDiv .radio {
-        margin-left: 5px;
+        margin: 5px;
         font-size: 13px;
     }
 
@@ -42,17 +42,21 @@
         <a href="#extendedOptions" class="toggleTitle toggleTitleActive">Taxonomy</a>
         <div class="toggleSection" id="taxonomySection">
             <div id="taxonSearchDiv">
+                <g:set var="matchedTaxonTooltip" value="${g.message(code:"advanced.taxon.tooltip.matched",default:"N/A")}"/>
+                <g:set var="suppliedTaxonTooltip" value="${g.message(code:"advanced.taxon.tooltip.supplied",default:"N/A")}"/>
                 <div class="radio">
-                    <label>
-                        <input type="radio" name="nameType" id="nameType_1" value="taxa" ${'checked'}>
-                        Search against the &quot;matched&quot; scientific name (will include records for known synonyms)
+                    <label title="Matched name – results will include known synonyms">
+                        <input type="radio" name="nameType" id="nameType_1" value="taxa" checked>
+                        Matched name
                     </label>
+                    <a href="#" data-toggle="tooltip" data-placement="right" title="${matchedTaxonTooltip}"><i class="glyphicon glyphicon-question-sign"></i></a>
                 </div>
                 <div class="radio">
-                    <label>
-                        <input type="radio" name="nameType" id="nameType_2" value="raw_name" ${''}>
-                        Search against the &quot;supplied&quot; scientific name (will NOT include records for known synonyms)
+                    <label title="Supplied name – results will not include synonyms">
+                        <input type="radio" name="nameType" id="nameType_2" value="raw_name">
+                        Supplied name
                     </label>
+                    <a href="#" data-toggle="tooltip" data-placement="right" title="${suppliedTaxonTooltip}"><i class="glyphicon glyphicon-question-sign"></i></a>
                 </div>
                 <table border="0" width="100" cellspacing="2" class=""  id="taxonomyOptions">
                     <thead/>
