@@ -564,9 +564,29 @@ abbr {
 }
 
 #content ul.nav-tabs {
-list-style: none;
-margin-left: 0;
-margin-bottom: 0;
+    list-style: none;
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+#content .nav-tabs > .active > a,
+#content .nav-tabs > .active > a:hover,
+#content .nav-tabs > .active > a:focus {
+    background-color: #F0F0E8;
+}
+
+#content .nav-tabs li:not(.active) a {
+    background-color: #fffef7;
+    border: 1px solid #ddd;
+}
+
+.tab-content {
+    background-color: #F0F0E8;
+}
+
+#taxonSearchDiv .radio {
+    margin: 5px;
+    font-size: 13px;
 }
 
 /* Download div */
@@ -622,5 +642,10 @@ margin-bottom: 2px;
     width: 15%;
 }
 
-
+.tooltip {
+    word-wrap: break-word;
+}
+.tooltip-inner {
+    max-width: none;
+}
 

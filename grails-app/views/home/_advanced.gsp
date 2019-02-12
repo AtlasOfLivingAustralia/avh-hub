@@ -1,24 +1,10 @@
-<style type="text/css">
-    #content .nav-tabs > .active > a,
-    #content .nav-tabs > .active > a:hover,
-    #content .nav-tabs > .active > a:focus {
-        background-color: #F0F0E8;
-    }
 
-    #content .nav-tabs li:not(.active) a {
-        background-color: #fffef7;
-    }
-
-    .tab-content {
-        background-color: #F0F0E8;
-    }
-
-    #taxonSearchDiv .radio {
-        margin: 5px;
-        font-size: 13px;
-    }
-
-</style>
+<asset:script type="text/javascript">
+    $(document).ready(function() {
+        // Init BS tooltip
+        $('[data-toggle="tooltip"]').tooltip({ html: true });
+    });
+</asset:script>
 <form name="advancedSearchForm" id="advancedSearchForm" action="${g.createLink(uri:'/advancedSearch')}" method="POST">
     <input type="text" id="solrQuery" name="q" style="position:absolute;left:-9999px;" value="${params.q}"/>
     <div class="" id="">
