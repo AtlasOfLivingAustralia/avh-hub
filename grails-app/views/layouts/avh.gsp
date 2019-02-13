@@ -144,7 +144,7 @@
                     <div class="textwidget">
                        %{-- <a href="http://ala.org.au/">
                             <r:img dir="images" file="atlas-poweredby_rgb-lightbg.png" plugin="biocache-hubs" alt="Powered by ALA logo"/></a>--}%
-                        <a href="http://ala.org.au/"><asset:image src="atlas-poweredby_rgb-lightbg.png"></asset:image></a>
+                        <a href="https://ala.org.au/"><asset:image src="ALA-powered-by-logo-inline.png" class="poweredByAlaLogo"></asset:image></a>
                     </div>
                 </aside>
                 <aside id="text-2" class="widget col-sm-6  clearfix widget_text contact-us">
