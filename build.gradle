@@ -42,8 +42,18 @@ configurations.all {
 
 
 // Inplace plugin config
-//def inplace = true
+def inplace = false
 // Set to true it needed only for development
+
+if (inplace) {
+    grails {
+        exploded = true
+        plugins {
+            compile project(':biocache-hubs')
+//            compile project(':downloads-plugin')
+        }
+    }
+}
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
@@ -76,13 +86,11 @@ dependencies {
    // runtime "org.grails.plugins:ala-bootstrap3:3.0.1"
     compile "org.grails.plugins:ala-auth:3.1.0"
 
-  //  if(!inplace) {
-    compile "au.org.ala.plugins.grails:biocache-hubs:2.1.0"
-  //  } else {
-  //      compile project('biocache-hubs')
-  //  }
-    runtime "au.org.ala.plugins.grails:downloads-plugin:2.0.6"
+    if (!inplace) {
+        compile "au.org.ala.plugins.grails:biocache-hubs:2.1.0"
+    }
 
+    runtime "au.org.ala.plugins.grails:downloads-plugin:2.0.7"
 }
 
 
