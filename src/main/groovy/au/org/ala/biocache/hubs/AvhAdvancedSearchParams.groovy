@@ -44,18 +44,22 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams implements Validateab
     public String toString2() {
         Map allParams = super.toParamMap()
         StringBuilder q = new StringBuilder(allParams.q?:"")
-        log.debug "[pre] q = ${q}"
+        log.debug "[pre] q = ${q} || allParams = ${allParams}"
         // build up q from the simple fields first...
-        if (nz_provinces) q.append(" AND cl2117:").append(quoteText(nz_provinces))
-        if (nz_eco_regions) q.append(" AND cl2115:").append(quoteText(nz_eco_regions))
-        if (nz_districts) q.append(" AND cl2116:").append(quoteText(nz_districts))
+        List queryTermsList = [] // we'll "join" elements before adding to (super) q
 
+        if (nz_provinces)   queryTermsList.add("cl2117:" + quoteText(nz_provinces))
+        if (nz_eco_regions) queryTermsList.add("cl2115:" + quoteText(nz_eco_regions))
+        if (nz_districts)   queryTermsList.add("cl2116:" + quoteText(nz_districts))
         if (state_territory_province) {
-            q.append(" AND (").append("state:").append(quoteText(state_territory_province))
-            q.append(" OR cl2117:").append(quoteText(state_territory_province)).append(")")
+            queryTermsList.add("(state:" + quoteText(state_territory_province)   // AU states
+                    + " OR cl2117:" + quoteText(state_territory_province) + ")") // NZ provinces
         }
 
-        String finalQuery = ""
+        if (q) q.append(" AND ") // there is an existing query from AdvancedSearchParams
+        q.append(queryTermsList.join(" AND "))
+
+        String finalQuery
 
         if (taxa) {
             String query = URLEncoder.encode(q.toString().replace("?", ""), "UTF-8")
