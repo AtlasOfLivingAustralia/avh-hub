@@ -56,8 +56,10 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams implements Validateab
                     + " OR cl2117:" + quoteText(state_territory_province) + ")") // NZ provinces
         }
 
-        if (q) q.append(" AND ") // there is an existing query from AdvancedSearchParams
-        q.append(queryTermsList.join(" AND "))
+        if (queryTermsList) {
+            if (q) q.append(" AND ") // there is an existing query from AdvancedSearchParams
+            q.append(queryTermsList.join(" AND "))
+        }
 
         String finalQuery
 
