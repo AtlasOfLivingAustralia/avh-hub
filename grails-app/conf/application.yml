@@ -105,24 +105,24 @@ headerAndFooter:
 speciesGroupsIgnore: "Animals,Arthropods,Bacteria,Crustaceans,Dicots,Insects,Molluscs,Protozoa"
 
 bie:
-  baseUrl: "http://bie.ala.org.au/"
+  baseUrl: "https://bie.ala.org.au"
   searchPath: "/search"
   autocompleteHints: "fq='kingdom:Plantae'"
 
 biocache:
-  baseUrl: "http://biocache.ala.org.au/ws"
-  apiKey: "api-key-to-use"
+  baseUrl: "https://biocache-ws.ala.org.au/ws"
+  apiKey: "not-your-api-key-to-use"
   queryContext: "data_hub_uid:dh2" # data hub uid
   groupedFacetsUrl: "file:///data/avh-hub/config/grouped_facets_avh.json"
 
 spatial:
-  baseURL: "http://spatial.ala.org.au/"
+  baseURL: "https://spatial.ala.org.au/"
 
 ala:
-  baseURL: "http://www.ala.org.au"
+  baseURL: "https://www.ala.org.au"
 
 collections:
-  baseUrl: "http://collections.ala.org.au"
+  baseUrl: "https://collections.ala.org.au"
 
 dataQualityChecksUrl: "https://docs.google.com/spreadsheet/pub?key=0AjNtzhUIIHeNdHJOYk1SYWE4dU1BMWZmb2hiTjlYQlE&single=true&gid=0&output=csv"
 
@@ -138,8 +138,8 @@ skin:
     fluidLayout: true
     useAlaBie: true
     taxaLinks:
-       baseUrl:  "http://bie.ala.org.au/species/"
-privacyPolicy: "http://www.ala.org.au/about/terms-of-use/privacy-policy/"
+       baseUrl:  "https://bie.ala.org.au/species/"
+privacyPolicy: "https://www.ala.org.au/about/terms-of-use/privacy-policy/"
 
 map:
     pointColour: "df4a21"
