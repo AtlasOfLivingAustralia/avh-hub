@@ -576,8 +576,10 @@ abbr {
 
 #content .nav-tabs > .active > a,
 #content .nav-tabs > .active > a:hover,
-#content .nav-tabs > .active > a:focus {
+#content .nav-tabs > .active > a:focus,
+#content #facetWell {
     background-color: #F0F0E8;
+    background-image: none;
 }
 
 #content .nav-tabs li:not(.active) a {
