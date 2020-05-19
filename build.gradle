@@ -90,7 +90,7 @@ dependencies {
         compile "au.org.ala.plugins.grails:biocache-hubs:2.1.7-SNAPSHOT"
     }
 
-    runtime "au.org.ala.plugins.grails:downloads-plugin:2.0.9"
+    runtime "au.org.ala.plugins.grails:downloads-plugin:2.0.10-SNAPSHOT"
 }
 
 
