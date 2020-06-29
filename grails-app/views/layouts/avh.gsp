@@ -81,25 +81,19 @@
                     <ul class="nav navbar-nav">
                         <li><a href="${avhHome}">Home</a></li>
                         <li><a href="${serverName}/search/#tab_simpleSearch">Search</a></li>
-                        <li class="dropdown font-xsmall">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="${avhHome}/index.php/about/">About ${orgNameShort}</a></li>
-                                <li><a href="${avhHome}/index.php/terms-of-use/">Terms of use</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="${avhHome}/about/">About ${orgNameShort}</a></li>
                         <li class="dropdown font-xsmall">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Help<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="${avhHome}/index.php/help/using-avh">Using ${orgNameShort}</a></li>
-                                <li><a href="${avhHome}/index.php/help/data/">Data</a></li>
+                                <li><a href="${avhHome}/using-avh">Using ${orgNameShort}</a></li>
+                                <li><a href="${avhHome}/data/">Data</a></li>
                                 <li><a href="${request.contextPath}/fields">Download fields</a></li>
                             </ul>
                         </li>
-                        <li><a href="${avhHome}/index.php/news">News</a></li>
+                        <li><a href="${avhHome}/news">News</a></li>
                     </ul>
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href="${avhHome}/index.php/contact-us">Contact us</a></li>
+                        <li><a href="${avhHome}/contact-us">Contact us</a></li>
                         <li><a href="https://www.facebook.com/AustVirtHerb"><asset:image src="avh/facebook-icon-small2.png" alt="" width="25" height="25"></asset:image></a></li>
                     </ul>
                 </div>
