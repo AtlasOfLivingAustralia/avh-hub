@@ -42,7 +42,7 @@ body h1, body h2, body h3, body h4, body h5 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Raleway", Arial, 'Helvetica Neue', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
 }
 
 a {
@@ -107,10 +107,8 @@ a:hover, a:focus {
     border: none;
 }
 
-#avh-nav .nav-collapse {
-    margin-left: -15px;
-    margin-right: -15px;
-    height: auto !important;
+.navbar-collapse {
+    padding: 0;
 }
 
 #avh-nav a, #avh-nav a>.caret, #avh-nav a:hover, #avh-nav a:hover {
@@ -131,6 +129,11 @@ a:hover, a:focus {
         margin-right: -15px;
     }
 }
+
+#avh-nav li a.facebook-link {
+    color: #4c9900;
+}
+
 
 /* Site branding
 --------------------------------*/
@@ -167,20 +170,16 @@ a:hover, a:focus {
 }
 
 #site-branding .site-title {
-    font-family: "Raleway", Arial, "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 60px;
     font-weight: 300;
     margin-bottom: 0;
-    margin-top: 25px;
-    line-height: 1.1;
+    padding-bottom: 0;
+    margin-top: 20px;
 }
 
 #site-branding .site-title a, #site-branding .site-description {
     color: #fff !important;
-}
-
-#site-branding .site-title h2{
-
 }
 
 .site-description {
@@ -208,7 +207,7 @@ div#rightMenu, #rightMenu a {
 /* footer
 --------------------------*/
 footer {
-    margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 footer .row {
@@ -232,6 +231,11 @@ img.poweredByAlaLogo {
     margin: 5px;
 }
 
+.contact-us .textwidget a {
+    color: #4c9900;
+    font-size: 16px;
+}
+
 @media (min-width: 768px) {
     .col-sm-6 {
         float: left;
@@ -247,6 +251,8 @@ img.poweredByAlaLogo {
         margin-top: 45px;
     }
 }
+
+
 
 /* Leaflet attribution control
 ------------------------------------------------*/
@@ -287,10 +293,6 @@ body #main-content #customiseFacetsButton > .dropdown-menu, #main-content #resul
     font-weight: normal;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width: 510px;
-}
-
-div.facetsColumn {
-    /*width: 250px;*/
 }
 
 .padding-left-1 {
@@ -334,13 +336,9 @@ div.facetsColumn {
 a:hover, #content2 a:hover {
     text-decoration: underline;
 }
-h1, h2, h3, h4, h5, h6, #content2 h1, #content2 h2, #content2 h3, #content2 h4, #content2 h5, #content2 h6 {
-    padding: 0 0 8px;
-    color: #444;
-    font-family: 'Rockwell', arial, helvetica, sans-serif;
-}
+
 #nav li a {
-    font-size: 14px;
+    font-size: 16px;
 }
 #contentBox {
     width: 1000px;
@@ -655,4 +653,3 @@ margin-bottom: 2px;
 .tooltip-inner {
     max-width: none;
 }
-
