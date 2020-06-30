@@ -112,13 +112,24 @@ a:hover, a:focus {
 }
 
 #avh-nav a, #avh-nav a>.caret, #avh-nav a:hover, #avh-nav a:hover {
-    color: #777;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 16px;
+    font-weight: normal;
+}
+
+#avh-nav .navbar-nav a i.fa {
+    font-size: 20px;
+}
+
+#avh-nav .navbar-nav a i.fa-facebook-square {
+    color: rgb(76, 153, 0);
 }
 
 #avh-nav a:hover .caret {
     display: inline-block;
-    color: #777;
+    color: rgba(0, 0, 0, 0.5);
 }
+
 #avh-nav li a {
     padding-top: 14px;
     padding-bottom: 13px;
@@ -126,7 +137,7 @@ a:hover, a:focus {
 
 @media (min-width: 768px) {
     #avh-nav .nav.navbar-nav.pull-right:last-child {
-        margin-right: -15px;
+        margin-right: 10px;
     }
 }
 
@@ -213,6 +224,10 @@ footer {
 footer .row {
     margin-right: -15px;
     margin-left: -15px;
+}
+
+footer .textwidget {
+    margin-top: 10px;
 }
 
 .col-sm-6 {
