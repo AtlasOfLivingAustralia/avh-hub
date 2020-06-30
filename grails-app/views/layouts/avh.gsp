@@ -79,7 +79,7 @@
                 </button>--}%
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="${avhHome}">Home</a></li>
+                        <li><a href="${avhHome}"><i class="fas fa-home"></i></a></li>
                         <li><a href="${serverName}/search/#tab_simpleSearch">Search</a></li>
                         <li><a href="${avhHome}/about/">About ${orgNameShort}</a></li>
                         <li class="dropdown font-xsmall">
@@ -93,8 +93,7 @@
                         <li><a href="${avhHome}/news">News</a></li>
                     </ul>
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href="${avhHome}/contact-us">Contact us</a></li>
-                        <li><a href="https://www.facebook.com/AustVirtHerb"><asset:image src="avh/facebook-icon-small2.png" alt="" width="25" height="25"></asset:image></a></li>
+                        <li><a href="https://www.facebook.com/AustVirtHerb"><i class="fab fa-facebook-square"></i></a></li>
                     </ul>
                 </div>
             </div><!-- /.navbar-inner -->
@@ -143,7 +142,7 @@
                 </aside>
                 <aside id="text-2" class="widget col-sm-6  clearfix widget_text contact-us">
                     <div class="textwidget">
-                        <a href="mailto:avh@chah.org.au" title="Contact us">avh@chah.org.au</a>
+                        <a href="${avhHome}/contact-us">Contact us</a>
                     </div>
                 </aside>
             </div><!-- .row -->
@@ -151,7 +150,7 @@
     </footer><!-- #colophon -->
     <!-- End footer -->
 
-
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
