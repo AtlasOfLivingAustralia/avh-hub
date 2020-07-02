@@ -72,11 +72,16 @@
     <div id="avh-nav" class="navbar navbar-default">
         <div class="${containerType}">
             <div class="navbar-inner">
-                <button type="button" class="btn btn-navbar btn-default" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" 
+                            data-toggle="collapse" data-target=".navbar-collapse" 
+                            aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="${avhHome}"><i class="fa fa-home"></i></a></li>
