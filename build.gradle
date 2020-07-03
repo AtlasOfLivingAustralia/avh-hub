@@ -87,10 +87,10 @@ dependencies {
     compile "org.grails.plugins:ala-auth:3.1.0"
 
     if (!inplace) {
-        compile "au.org.ala.plugins.grails:biocache-hubs:2.1.7"
+        compile "au.org.ala.plugins.grails:biocache-hubs:2.1.8-SNAPSHOT"
     }
 
-    runtime "au.org.ala.plugins.grails:downloads-plugin:2.0.10"
+    runtime "au.org.ala.plugins.grails:downloads-plugin:2.1.0-SNAPSHOT"
 }
 
 
