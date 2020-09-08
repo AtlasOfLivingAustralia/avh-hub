@@ -16,7 +16,7 @@ plugins {
     id "com.gorylenko.gradle-git-properties" version "1.4.17"
 }
 
-version "2.1.10-SNAPSHOT"
+version "2.1.9.1"
 group "au.org.ala"
 
 apply plugin:"eclipse"
@@ -87,7 +87,7 @@ dependencies {
     compile "org.grails.plugins:ala-auth:3.1.2"
 
     if (!inplace) {
-        compile "au.org.ala.plugins.grails:biocache-hubs:2.1.9-SNAPSHOT"
+        compile "au.org.ala.plugins.grails:biocache-hubs:2.1.9"
     }
 
     runtime "au.org.ala.plugins.grails:downloads-plugin:2.1.0"
