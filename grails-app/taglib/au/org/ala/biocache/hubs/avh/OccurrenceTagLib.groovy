@@ -41,10 +41,11 @@ class OccurrenceTagLib {
                     }
                 }
 
+
                 if (occurrence.raw_catalogNumber!= null && occurrence.raw_catalogNumber) {
                     span(style:'display:inline-block;float:right;') {
                         strong(class:'resultsLabel') {
-                            mkp.yieldUnescaped("Catalogue&nbsp;number:")
+                            mkp.yieldUnescaped("Catalogue&nbsp;number: ")
                         }
                         mkp.yieldUnescaped(occurrence.raw_catalogNumber)
                     }
@@ -57,16 +58,25 @@ class OccurrenceTagLib {
                 }
                 tr() {
                     outputResultsTd("Collector: ", "${occurrence.collector}&nbsp;&nbsp;${occurrence.recordNumber?:''}", true)
-                    outputResultsTd("Data&nbsp;Resource: ", occurrence.dataResourceName, !occurrence.collectionName && occurrence.dataResourceName)
 
                     if (occurrence.eventDate) {
                         outputResultsTd("Date: ", g.formatDate(date: new Date(occurrence.eventDate), format:"dd-MM-yyyy"), true)
                     } else if (occurrence.year) {
                         outputResultsTd("Year: ", occurrence.year, true)
                     }
+                    if (occurrence.image) {
+                        td(style: 'text-align: right;') {
+                            i(      class: 'fa fa-lg fa-photo',
+                                    title: "Record has ${occurrence.images.size()} associated image${occurrence.images.size()>1?'s':''}",
+                                    'data-toggle': "tooltip",
+                                    'data-placement': "left"
+                            )
+                        }
+                    }
                 }
                 tr() {
                     outputResultsTd("Herbarium: ", occurrence.collectionName, occurrence.collectionName)
+                    outputResultsTd("Data&nbsp;Resource: ", occurrence.dataResourceName, !occurrence.collectionName && occurrence.dataResourceName)
                     td(colspan: '2', style: 'text-align: right;') {
                         a(
                                 href: g.createLink(url:"${request.contextPath}/occurrences/${occurrence.uuid}"),
