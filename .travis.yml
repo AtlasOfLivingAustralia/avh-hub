@@ -14,9 +14,9 @@ before_cache:
 
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
+#  - $HOME/.m2
+#  - $HOME/.gradle/caches/
+#  - $HOME/.gradle/wrapper/
 
 after_success:
   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && travis_retry ./gradlew publish'
