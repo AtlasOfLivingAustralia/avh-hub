@@ -14,8 +14,8 @@ before_cache:
 
 cache:
   directories:
-#  - $HOME/.m2
-#  - $HOME/.gradle/caches/
+  - $HOME/.m2
+  - $HOME/.gradle/caches/
   - $HOME/.gradle/wrapper/
 
 after_success:
