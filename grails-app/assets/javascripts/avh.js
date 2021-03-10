@@ -20,3 +20,8 @@ if (typeof jQuery !== 'undefined') {
 		});
 	})(jQuery);
 }
+
+$(document).ready(function() {
+	// trigger bootstrap tooltip (for image icon in results list)
+	$('.avhRowB i[data-toggle="tooltip"]').tooltip();
+});
