@@ -16,6 +16,7 @@ plugins {
     id "com.gorylenko.gradle-git-properties" version "1.4.17"
 }
 
+// TODO: Update version to match biocache-hubs, e.g. (avh) 3.0.2.1 for (biocache-hubs) 3.0.2
 version "2.1.11-SNAPSHOT"
 group "au.org.ala"
 
