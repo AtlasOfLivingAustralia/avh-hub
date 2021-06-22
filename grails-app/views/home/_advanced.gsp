@@ -176,7 +176,7 @@
                             <select class="" name="cultivation_status" id="cultivation_status">
                                 <option value="">-- select an establishment means --</option>
                                 <g:each var="cs" in="${request.getAttribute("establishment_means")}">
-                                    <option value="${cs.key}">${cs.value}</option>
+                                    <option value="${cs.key}"><g:message code="establishment_means.${cs.key}" default="${cs.value}"/></option>
                                 </g:each>
                             </select>
                         </td>
