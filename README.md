@@ -1,4 +1,4 @@
-### avh-hub   [![Build Status](https://travis-ci.org/AtlasOfLivingAustralia/avh-hub.svg?branch=master)](https://travis-ci.org/AtlasOfLivingAustralia/avh-hub)
+### avh-hub   [![Build Status](https://travis-ci.com/AtlasOfLivingAustralia/avh-hub.svg?branch=develop)](https://travis-ci.com/github/AtlasOfLivingAustralia/avh-hub)
 
 Australian Virtual Herbarium Hub (avh-hub)
 ==========================================
