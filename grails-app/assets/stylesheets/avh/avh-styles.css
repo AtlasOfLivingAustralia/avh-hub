@@ -45,7 +45,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
 }
 
-a {
+a, .btn-link, .text-info {
     color: #006600;
     /*color: #006600 !important;*/
 }
@@ -54,7 +54,7 @@ a.newDownload {
     color: #FFFFFF !important;
 }
 
-a:hover, a:focus {
+a:hover, a:focus, .btn-link:focus, .btn-link:hover {
     color: #4C9900;
 }
 
@@ -672,4 +672,9 @@ margin-bottom: 2px;
 /* Override the biocache-hubs jQuery.hover styling */
 #results .recordRow:hover {
     background-color: rgba(255, 254, 247, 0.7) !important;
+}
+
+#excluded .exclude-count-label {
+    color: #006600;
+    font-style: italic
 }
