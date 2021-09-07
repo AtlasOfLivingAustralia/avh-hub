@@ -217,12 +217,18 @@
                         <td>
                             <select class="state" name="state_territory_province" id="state_territory_province">
                                 <option value="">-- select a state, territory or province --</option>
-                                <g:each var="state" in="${request.getAttribute("state")?.sort()}">
-                                    <option value="${state.key}">${state.value}</option>
+                                <g:each var="statesAU" in="${request.getAttribute("statesAU")}">
+                                    <option value="${statesAU.key}">${statesAU.value}</option>
                                 </g:each>
-                                <option value=""></option>
-                                <g:each var="region" in="${request.getAttribute("cl2117")?.sort()}">
-                                    <option value="${region.key}">${region.value}</option>
+                                <option disabled>—————————</option>
+                                <g:each var="statesNZ" in="${request.getAttribute("statesNZ")}">
+                                    <option value="${statesNZ.key}">${statesNZ.value}</option>
+                                </g:each>
+                                <option disabled>—————————</option>
+                                <g:each var="state" in="${request.getAttribute("state")?.sort()}">
+                                    <g:if test="${!request.getAttribute("skipStates")?.contains(state.key)}">
+                                        <option value="${state.key}">${state.value}</option>
+                                    </g:if>
                                 </g:each>
                             </select>
                         </td>
