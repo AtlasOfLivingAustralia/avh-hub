@@ -675,6 +675,7 @@ margin-bottom: 2px;
 }
 
 #excluded .exclude-count-label {
-    color: #006600;
-    font-style: italic
+    color: inherit;
+    font-style: normal;
+    font-weight: bold;
 }
