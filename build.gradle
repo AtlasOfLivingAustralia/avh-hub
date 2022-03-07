@@ -100,7 +100,7 @@ dependencies {
         compile "au.org.ala.plugins.grails:biocache-hubs:3.0.10-SNAPSHOT", noCache
     }
 
-    runtime "au.org.ala.plugins.grails:downloads-plugin:2.1.0", noCache
+    runtime "au.org.ala.plugins.grails:downloads-plugin:2.2.1", noCache
 }
 
 
