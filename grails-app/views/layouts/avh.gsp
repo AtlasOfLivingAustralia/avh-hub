@@ -117,8 +117,7 @@
                 <g:set var="loginId"><alatag:loggedInUserDisplayname/></g:set>
                 <a href="${userdetailsBaseUrl}/my-profile/">${loginId}</a>
                 <g:if test="${loginId}">|</g:if>
-                <g:set var="returnUrlPath" value="${serverName}${request.requestURI}${request.queryString ? '?' : ''}${request.queryString}"/>
-                <auth:loginLogout logoutUrl="${request.contextPath}/logout/logout" returnUrlPath="${returnUrlPath}"/>
+                <auth:loginLogout logoutUrl="${request.contextPath}/logout/logout"/>
                 %{--<g:if test="${clubView}">--}%
                 %{--| <div id="clubView"><span>Club View</span></div>--}%
                 %{--</g:if>--}%

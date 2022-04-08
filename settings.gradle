@@ -1,9 +1,23 @@
 rootProject.name='avh-hub'
+
 // Inplace plugin config
 // Set to true it needed only for development
-boolean inplace = false
+boolean inplace = true
 
 if (inplace) {
-    include 'biocache-hubs'
-    project(':biocache-hubs').projectDir = new File('../biocache-hubs')
+    include ':biocache-hubs'
+    project(':biocache-hubs').projectDir = new File(settingsDir, '../biocache-hubs')
+    include ':downloads-plugin'
+    project(':downloads-plugin').projectDir = new File(settingsDir,'../downloads-plugin')
+//    include ':ala-charts-plugin'
+//    project(':ala-charts-plugin').projectDir = new File(settingsDir,'../ala-charts-plugin')
+//    include ':images-client-plugin'
+//    project(':images-client-plugin').projectDir = new File(settingsDir,'../images-client-plugin')
+//    include ':ala-bootstrap3'
+//    project(':ala-bootstrap3').projectDir = new File(settingsDir, '../ala-bootstrap3')
+//    include ':ala-auth'
+//    project(':ala-auth').projectDir = new File(settingsDir,'../ala-auth-plugin')
+    include ':ala-ws-plugin'
+    project(':ala-ws-plugin').projectDir = new File(settingsDir, '../ala-ws-plugin')
 }
+
