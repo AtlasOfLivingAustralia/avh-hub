@@ -65,7 +65,7 @@ class AvhAdvancedSearchParams extends AdvancedSearchParams implements Validateab
 
         if (taxa) {
             String query = URLEncoder.encode(q.toString().replace("?", ""), "UTF-8")
-            finalQuery = "taxa=" + taxa + "&q=" + query
+            finalQuery = "q=" + query
         } else {
             try {
                 finalQuery = "q=" + URIUtil.encodeWithinQuery(q.toString().trim())  //URLEncoder.encode(q.toString().trim()); // TODO: use non-deprecated version with UTF-8
