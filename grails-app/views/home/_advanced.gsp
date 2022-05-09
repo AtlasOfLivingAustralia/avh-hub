@@ -39,7 +39,7 @@
                 </div>
                 <div class="radio">
                     <label title="Supplied name – results will not include synonyms">
-                        <input type="radio" name="nameType" id="nameType_2" value="raw_name">
+                        <input type="radio" name="nameType" id="nameType_2" value="raw_scientificName">
                         Supplied name
                     </label>
                     <a href="#" data-toggle="tooltip" data-placement="right" title="${suppliedTaxonTooltip}"><i class="glyphicon glyphicon-question-sign"></i></a>
