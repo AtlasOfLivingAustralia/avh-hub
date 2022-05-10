@@ -17,7 +17,7 @@ plugins {
 }
 
 // TODO: Update version to match biocache-hubs, e.g. (avh) 3.0.2.1 for (biocache-hubs) 3.0.2
-version "2.1.14-SNAPSHOT"
+version "2.1.15-SNAPSHOT"
 
 group "au.org.ala"
 
