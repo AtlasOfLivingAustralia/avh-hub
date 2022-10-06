@@ -22,8 +22,8 @@ ext {
         geckoDriverVersion = '0.26.0'
     }
 }
-
-version "3.0.0-SNAPSHOT"
+// version updated to match biocache-hubs
+version "5.0.0-SNAPSHOT"
 
 group "au.org.ala"
 
