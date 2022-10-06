@@ -1,6 +1,8 @@
 ---
 grails:
     profile: web
+    project:
+      groupId: 'au.org.ala'
     codegen:
         defaultPackage: au.org.ala.hub
     config:
@@ -19,6 +21,10 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
+    exceptionresolver:
+      params:
+        exclude:
+          - 'password'
     plugins:
         twitterbootstrap:
             fixtaglib: true
@@ -47,6 +53,10 @@ grails:
             accept:
                 header:
                     userAgents:
+                      - 'Gecko'
+                      - 'WebKit'
+                      - 'Presto'
+                      - 'Trident'
         types:
             all: '*/*'
             atom: application/atom+xml
@@ -70,6 +80,11 @@ grails:
             xml:
               - text/xml
               - application/xml
+    enable:
+      native2ascii: true
+    web:
+      disable:
+        multipart: false
     urlmapping:
         cache:
             maxsize: 1000
@@ -88,11 +103,12 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
+    serverURL: "https://avh.ala.org.au"
 endpoints:
     jmx:
         unique-names: true
 ---
-
+serverName: 'https://avh.ala.org.au'
 #logging:
 #  config: /data/avh-hub/config/logback.groovy
 
@@ -100,6 +116,19 @@ headerAndFooter:
   excludeBootstrapCss: false
   excludeAlaStylesCss: false
   baseURL: "https://www.ala.org.au/commonui-bs3"
+
+security:
+  cas:
+    enabled: false # default is true, undefined behaviour if this omitted
+  oidc:
+    enabled: true # default is false
+    discoveryUri: 'https://auth-dev.ala.org.au/cas/oidc/.well-known'
+    clientId: 'change me'
+    secret: 'change me'
+    scope: 'openid profile email ala roles users/read'
+
+webservice:
+  jwt: true
 
 
 speciesGroupsIgnore: "Animals,Arthropods,Bacteria,Crustaceans,Dicots,Insects,Molluscs,Protozoa"

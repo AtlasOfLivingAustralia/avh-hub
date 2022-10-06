@@ -151,11 +151,7 @@
             },
             {  
                 "sort":"index",
-                "field":"elevation_d_rng"
-            },
-            {  
-                "sort":"index",
-                "field":"min_elevation_d_rng"
+                "field":"minimumElevationInMeters"
             },
             {  
                 "sort":"count",
