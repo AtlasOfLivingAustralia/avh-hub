@@ -149,7 +149,7 @@
                 "sort":"count",
                 "field":"state"
             },
-            {  
+            {
                 "sort":"index",
                 "field":"minimumElevationInMeters"
             },
