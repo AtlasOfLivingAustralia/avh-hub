@@ -164,17 +164,17 @@ map:
     defaultZoom: "4"
 
 security:
-    core:
-        uriFilterPattern: '/admin/*,/download/*,/proxy/*,/occurrence/*'
-#        uriFilterPattern: '/admin/*,/registration/editAccount,/my-profile,/my-profile/,/myprofile/,/myprofile,/profile*,/admin/,/admin,/registration/update,/registration/update/*,/monitoring,/monitoring/*,/registration/disableAccount/*,/registration/disableAccount,/admin/admin/downloadUsersCsvFile,/alaAdmin*'
-    cas:
-      enabled: false # default is true, undefined behaviour if this omitted
-    oidc:
-      enabled: true # default is false
-      discoveryUri: 'https://auth-dev.ala.org.au/cas/oidc/.well-known'
-      clientId: 'change me'
-      secret: 'change me'
-      scope: 'openid profile email ala roles users/read'
+  core:
+    uriFilterPattern: '/admin/*,/download/*,/proxy/*,/occurrence/*'
+  #        uriFilterPattern: '/admin/*,/registration/editAccount,/my-profile,/my-profile/,/myprofile/,/myprofile,/profile*,/admin/,/admin,/registration/update,/registration/update/*,/monitoring,/monitoring/*,/registration/disableAccount/*,/registration/disableAccount,/admin/admin/downloadUsersCsvFile,/alaAdmin*'
+  cas:
+    enabled: false # default is true, undefined behaviour if this omitted
+  oidc:
+    enabled: true # default is false
+    discoveryUri: 'https://auth-dev.ala.org.au/cas/oidc/.well-known'
+    clientId: 'change me'
+    secret: 'change me'
+    scope: 'openid profile email ala roles'
 
 webservice:
   jwt: true
