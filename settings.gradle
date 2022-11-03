@@ -2,7 +2,7 @@ rootProject.name='avh-hub'
 
 // Inplace plugin config
 // Set to true it needed only for development
-boolean inplace = true
+boolean inplace = false
 
 if (inplace) {
     include ':biocache-hubs'
