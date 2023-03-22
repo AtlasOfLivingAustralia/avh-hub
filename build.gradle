@@ -129,7 +129,7 @@ dependencies {
 
     if (!inplace) {
         compile "au.org.ala.plugins.grails:biocache-hubs:5.0", noCache
-        compile "au.org.ala.plugins.grails:downloads-plugin:3.0", noCache
+        compile "au.org.ala.plugins.grails:downloads-plugin:3.1", noCache
     }
 }
 
