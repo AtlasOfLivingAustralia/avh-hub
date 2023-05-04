@@ -1,2 +1,0 @@
-2023-01-17 11:49:44.277  WARN --- [    Test worker] o.s.b.c.p.PropertySourcesDeducer         : Multiple PropertySourcesPlaceholderConfigurer beans registered [grailsPlaceholderConfigurer, propertySourcesPlaceholderConfigurer], falling back to Environment
-2023-01-17 11:49:44.336  WARN --- [    Test worker] grails.events.bus.EventBusBuilder        : No event bus implementations found on classpath, using synchronous implementation.
