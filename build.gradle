@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.6"
-        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.4.6"
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.4.7"
     }
 }
 
@@ -106,7 +106,7 @@ dependencies {
     runtimeOnly"org.apache.tomcat:tomcat-jdbc"
     runtimeOnly"javax.xml.bind:jaxb-api:2.3.1"
     runtimeOnly'org.glassfish.jaxb:jaxb-runtime:2.3.1'
-    runtimeOnly"com.bertramlabs.plugins:asset-pipeline-grails:3.4.6"
+    runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:3.4.7"
 
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "org.mockito:mockito-core"
@@ -119,7 +119,7 @@ dependencies {
     testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:3.14.0"
 
     // Jars
-    implementation "org.apache.httpcomponents:httpclient:4.5.6"
+//    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'xml-apis:xml-apis:1.4.01'
 
     if (!inplace) {
