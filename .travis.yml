@@ -8,6 +8,7 @@ branches:
   - hotfix
   - develop
   - epic/cloud-uplift/develop
+  - /^epic\/.*\/develop$/
 #  - nzvh-test
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
