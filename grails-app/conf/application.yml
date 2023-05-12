@@ -109,8 +109,6 @@ endpoints:
         unique-names: true
 ---
 serverName: 'https://avh.ala.org.au'
-#logging:
-#  config: /data/avh-hub/config/logback.groovy
 
 headerAndFooter:
   excludeBootstrapCss: false

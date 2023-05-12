@@ -22,11 +22,11 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-<g:set var="serverName" value="${grailsApplication.config.serverName}"/>
-<g:set var="orgNameLong" value="${grailsApplication.config.skin.orgNameLong}"/>
-<g:set var="orgNameShort" value="${grailsApplication.config.skin.orgNameShort}"/>
-<g:set var="avhHome" value="${grailsApplication.config.organisation.baseUrl}"/>
-<g:set var="userdetailsBaseUrl" value="${grailsApplication.config.userdetails.baseUrl}"/>
+<g:set var="serverName" value="${grailsApplication.config.getProperty('serverName')}"/>
+<g:set var="orgNameLong" value="${grailsApplication.config.getProperty('skin.orgNameLong')}"/>
+<g:set var="orgNameShort" value="${grailsApplication.config.getProperty('skin.orgNameShort')}"/>
+<g:set var="avhHome" value="${grailsApplication.config.getProperty('organisation.baseUrl')}"/>
+<g:set var="userdetailsBaseUrl" value="${grailsApplication.config.getProperty('userdetails.baseUrl')}"/>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 
@@ -65,7 +65,7 @@
 
     </head>
     <body class="${pageProperty(name:'body.class')?:'nav-datasets'}" id="${pageProperty(name:'body.id')}" onload="${pageProperty(name:'body.onload')}">
-    <g:set var="fluidLayout" value="${pageProperty(name:'meta.fluidLayout')?:grailsApplication.config.skin?.fluidLayout}"/>
+    <g:set var="fluidLayout" value="${pageProperty(name:'meta.fluidLayout')?:grailsApplication.config.getProperty('skin.fluidLayout')}"/>
     <g:set var="containerType" value="${fluidLayout ? 'container-fluid' : 'container'}"/>
     <!-- Header -->
     <!-- Navbar -->
