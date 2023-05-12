@@ -63,7 +63,7 @@
                                 <select class="taxaGroup" name="species_group" id="species_group">
                                     <option value="">-- select a botanical group --</option>
                                     <g:each var="group" in="${request.getAttribute("species_group")}">
-                                        <g:if test="${!grailsApplication.config.getProperty('skin.layout')}">
+                                        <g:if test="${!grailsApplication.config.getProperty('speciesGroupsIgnore').contains(group.value)}">
                                             <option value="${group.key}"><g:message code="advancedsearch.speciesgroup.${group.value}" default="${group.value}"/></option>
                                         </g:if>
                                     </g:each>
