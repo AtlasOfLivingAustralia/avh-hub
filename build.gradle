@@ -17,7 +17,7 @@ ext {
 
     ext {
         gebVersion = '2.3'
-        seleniumVersion = '3.14.0'
+        seleniumVersion = '4.0.0'
         chromeDriverVersion = '2.44'
         geckoDriverVersion = '0.26.0'
     }
@@ -57,14 +57,13 @@ if (inplace) {
     grails {
         exploded = true
         plugins {
-            // When not inplace used, the dependencies below are managed by biocache-hubs plugin
-            implementation project(':biocache-hubs'), {
-                exclude group: 'org.grails.plugins', module: 'ala-ws-plugin'
-            }
+            implementation project(':biocache-hubs')
             implementation project(':downloads-plugin')
-//            implementation project(':ala-charts-plugin')
-//            implementation project(':images-client-plugin')
-            implementation project(':ala-ws-plugin')
+//            compile project(':ala-charts-plugin')
+//            compile project(':images-client-plugin')
+            implementation "org.grails.plugins:ala-bootstrap3:4.1.0", {
+                exclude group: 'au.org.ala', module: 'ala-cas-client'
+            }
         }
     }
 }
@@ -101,7 +100,7 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-groovy"
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"
-    runtimeOnly"org.glassfish.web:el-impl:2.1.2-b03"
+    runtimeOnly"org.glassfish.web:el-impl:2.1.2-b05"
     runtimeOnly"com.h2database:h2"
     runtimeOnly"org.apache.tomcat:tomcat-jdbc"
     runtimeOnly"javax.xml.bind:jaxb-api:2.3.1"
@@ -112,19 +111,22 @@ dependencies {
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.grails:grails-web-testing-support"
     testImplementation "org.grails.plugins:geb"
-    testImplementation "org.seleniumhq.selenium:selenium-remote-driver:3.14.0"
-    testImplementation "org.seleniumhq.selenium:selenium-api:3.14.0"
-    testImplementation "org.seleniumhq.selenium:selenium-support:3.14.0"
-    testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.14.0"
-    testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:3.14.0"
+    testImplementation "org.seleniumhq.selenium:selenium-remote-driver:4.0.0"
+    testImplementation "org.seleniumhq.selenium:selenium-api:4.0.0"
+    testImplementation "org.seleniumhq.selenium:selenium-support:4.0.0"
+    testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:4.0.0"
+    testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:4.0.0"
 
     // Jars
-//    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.6'
     implementation 'xml-apis:xml-apis:1.4.01'
 
     if (!inplace) {
         implementation "au.org.ala.plugins.grails:biocache-hubs:6.0.0-SNAPSHOT", noCache
         implementation "au.org.ala.plugins.grails:downloads-plugin:3.3-SNAPSHOT", noCache
+        implementation "org.grails.plugins:ala-bootstrap3:4.1.0", {
+            exclude group: 'au.org.ala', module: 'ala-cas-client'
+        }
     }
 }
 
