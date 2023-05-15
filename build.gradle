@@ -89,7 +89,8 @@ dependencies {
     implementation "org.grails:grails-plugin-url-mappings"
     implementation "org.grails:grails-plugin-interceptors"
 //    implementation "org.grails.plugins:cache:5.0.0-ALA:ALA"
-    implementation "org.grails.plugins:cache"
+//    implementation "org.grails.plugins:cache"
+    implementation "org.grails.plugins:cache:5.0.1-ALA"
     implementation "org.grails.plugins:async"
     implementation "org.grails.plugins:scaffolding"
     implementation "org.grails.plugins:events"
@@ -100,11 +101,11 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-groovy"
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"
-    runtimeOnly"org.glassfish.web:el-impl:2.1.2-b05"
-    runtimeOnly"com.h2database:h2"
-    runtimeOnly"org.apache.tomcat:tomcat-jdbc"
-    runtimeOnly"javax.xml.bind:jaxb-api:2.3.1"
-    runtimeOnly'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+    runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"
+    runtimeOnly "com.h2database:h2"
+    runtimeOnly "org.apache.tomcat:tomcat-jdbc"
+    runtimeOnly "javax.xml.bind:jaxb-api:2.3.1"
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
     runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:3.4.7"
 
     testImplementation "io.micronaut:micronaut-inject-groovy"
@@ -114,11 +115,11 @@ dependencies {
     testImplementation "org.seleniumhq.selenium:selenium-remote-driver:4.0.0"
     testImplementation "org.seleniumhq.selenium:selenium-api:4.0.0"
     testImplementation "org.seleniumhq.selenium:selenium-support:4.0.0"
-    testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:4.0.0"
-    testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:4.0.0"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:4.0.0"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:4.0.0"
 
     // Jars
-    implementation 'org.apache.httpcomponents:httpclient:4.5.6'
+    implementation "org.apache.httpcomponents:httpclient:4.5.6"
     implementation 'xml-apis:xml-apis:1.4.01'
 
     if (!inplace) {
