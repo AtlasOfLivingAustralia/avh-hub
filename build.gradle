@@ -22,9 +22,9 @@ ext {
         geckoDriverVersion = '0.26.0'
     }
 }
+
 // version updated to match biocache-hubs
 version "6.0.1-SNAPSHOT"
-
 group "au.org.ala"
 
 apply plugin:"eclipse"
