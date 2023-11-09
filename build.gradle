@@ -124,7 +124,7 @@ dependencies {
 
     if (!inplace) {
         implementation "au.org.ala.plugins.grails:biocache-hubs:6.1.0", noCache
-        implementation "au.org.ala.plugins.grails:downloads-plugin:4.2.1", noCache
+        implementation "au.org.ala.plugins.grails:downloads-plugin:4.2.2", noCache
         implementation "org.grails.plugins:ala-bootstrap3:4.4.0", {
             exclude group: 'au.org.ala', module: 'ala-cas-client'
         }
