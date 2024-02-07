@@ -162,9 +162,6 @@ map:
     defaultZoom: "4"
 
 security:
-  core:
-    uriFilterPattern: '/admin/*,/download/*,/proxy/*,/occurrence/*'
-  #        uriFilterPattern: '/admin/*,/registration/editAccount,/my-profile,/my-profile/,/myprofile/,/myprofile,/profile*,/admin/,/admin,/registration/update,/registration/update/*,/monitoring,/monitoring/*,/registration/disableAccount/*,/registration/disableAccount,/admin/admin/downloadUsersCsvFile,/alaAdmin*'
   cas:
     enabled: false # default is true, undefined behaviour if this omitted
   oidc:
