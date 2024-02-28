@@ -46,11 +46,15 @@ class HomeController extends au.org.ala.biocache.hubs.HomeController {
        def (Map facetsMap, Map statesMapAu, Map statesMapNZ) = [[:],[:],[:]]
 
         // massage into same format as facet values (above)
-        webServicesService.getStates("Australia").each {
-            statesMapAu.put(it, it)
-        }
-        webServicesService.getStates("New Zealand").each {
-            statesMapNZ.put(it, it)
+        try {
+            webServicesService.getStates("Australia").each {
+                statesMapAu.put(it, it)
+            }
+            webServicesService.getStates("New Zealand").each {
+                statesMapNZ.put(it, it)
+            }
+        } catch (Exception ignored) {
+            // getStates can throw an exception
         }
 
         facetsMap.put("statesAU", statesMapAu)
