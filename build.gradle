@@ -1,41 +1,32 @@
 buildscript {
-    repositories {
-        mavenLocal()
-        maven { url "https://nexus.ala.org.au/content/groups/public/" }
-        maven { url "https://repo.grails.org/grails/core" }
-    }
-    dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-        classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.6"
-        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.4.7"
-    }
+    version "7.0.0-SNAPSHOT"
+    group "au.org.ala"
 }
 
-ext {
-    // The drivers we want to use
-    drivers = ["firefox", "chrome", "chromeHeadless"]
+plugins {
+    id "groovy"
+    id "org.grails.grails-gsp"
+    id "org.grails.grails-web"
+    id "war"
+    id "idea"
+    id "com.bertramlabs.asset-pipeline"
+    id "com.github.erdi.webdriver-binaries" version "3.0"
+    id "eclipse"
 
-    ext {
-        gebVersion = '2.3'
-        seleniumVersion = '4.0.0'
-        chromeDriverVersion = '2.44'
-        geckoDriverVersion = '0.26.0'
-    }
+    id "maven-publish"
 }
 
-// version updated to match biocache-hubs
-version "6.0.4"
-group "au.org.ala"
-
-apply plugin:"eclipse"
-apply plugin:"idea"
-apply plugin:"war"
-apply plugin:"org.grails.grails-web"
-apply plugin:"com.github.erdi.webdriver-binaries"
-apply plugin:"com.bertramlabs.asset-pipeline"
-apply plugin:"org.grails.grails-gsp"
-apply plugin:"maven-publish"
-apply from: "${project.projectDir}/gradle/publish.gradle"
+//ext {
+//    // The drivers we want to use
+//    drivers = ["firefox", "chrome", "chromeHeadless"]
+//
+//    ext {
+//        gebVersion = '2.3'
+//        seleniumVersion = '4.0.0'
+//        chromeDriverVersion = '2.44'
+//        geckoDriverVersion = '0.26.0'
+//    }
+//}
 
 repositories {
     mavenLocal()
@@ -48,6 +39,15 @@ configurations {
     runtimeClasspath {
         extendsFrom developmentOnly
     }
+}
+
+bootWar {
+    launchScript()
+    dependsOn(compileGroovyPages)
+}
+
+war {
+    dependsOn(compileGroovyPages)
 }
 
 // Set to true it needed only for development
@@ -104,10 +104,10 @@ dependencies {
     runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"
     runtimeOnly "com.h2database:h2"
     runtimeOnly "org.apache.tomcat:tomcat-jdbc"
+    runtimeOnly 'org.ehcache:ehcache'
     runtimeOnly "javax.xml.bind:jaxb-api:2.3.1"
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
     runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:3.4.7"
-
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.grails:grails-web-testing-support"
@@ -115,26 +115,26 @@ dependencies {
     testImplementation "org.seleniumhq.selenium:selenium-remote-driver:4.0.0"
     testImplementation "org.seleniumhq.selenium:selenium-api:4.0.0"
     testImplementation "org.seleniumhq.selenium:selenium-support:4.0.0"
-    testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:4.0.0"
-    testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:4.0.0"
+//    testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:4.0.0"
+//    testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:4.0.0"
 
     // Jars
-    implementation "org.apache.httpcomponents:httpclient:4.5.6"
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'xml-apis:xml-apis:1.4.01'
 
     if (!inplace) {
-        implementation "au.org.ala.plugins.grails:biocache-hubs:6.1.0", noCache
-        implementation "au.org.ala.plugins.grails:downloads-plugin:4.2.1", noCache
+        implementation "au.org.ala.plugins.grails:biocache-hubs:7.0.0", noCache
+        implementation "au.org.ala.plugins.grails:downloads-plugin:5.0.0", noCache
         implementation "org.grails.plugins:ala-bootstrap3:4.4.0", {
             exclude group: 'au.org.ala', module: 'ala-cas-client'
         }
     }
 }
 
-webdriverBinaries {
-    chromedriver "$chromeDriverVersion"
-    geckodriver "$geckoDriverVersion"
-}
+//webdriverBinaries {
+//    chromedriver "$chromeDriverVersion"
+//    geckodriver "$geckoDriverVersion"
+//}
 
 bootRun {
     ignoreExitValue true
@@ -155,17 +155,12 @@ tasks.withType(GroovyCompile) {
     }
 }
 
-webdriverBinaries {
-    chromedriver '2.45.0'
-    geckodriver '0.24.0'
-}
-
-tasks.withType(Test) {
-    systemProperty "geb.env", System.getProperty('geb.env')
-    systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
-    systemProperty "webdriver.chrome.driver", System.getProperty('webdriver.chrome.driver')
-    systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
-}
+//tasks.withType(Test) {
+//    systemProperty "geb.env", System.getProperty('geb.env')
+//    systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
+//    systemProperty "webdriver.chrome.driver", System.getProperty('webdriver.chrome.driver')
+//    systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
+//}
 
 
 assets {
@@ -191,4 +186,35 @@ publish {
     dependsOn assemble
 }
 
+publishing {
+    repositories {
+        maven {
+            name 'Nexus'
+            url "https://nexus.ala.org.au/content/repositories/${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}"
+            credentials {
+                username = System.getenv('TRAVIS_DEPLOY_USERNAME')
+                password = System.getenv('TRAVIS_DEPLOY_PASSWORD')
+            }
+        }
+    }
+    publications {
+        mavenJar(MavenPublication) {
+
+            pom.withXml {
+                def pomNode = asNode()
+                pomNode.dependencyManagement.replaceNode {}
+
+                // simply remove dependencies without a version
+                // version-less dependencies are handled with dependencyManagement
+                // see https://github.com/spring-gradle-plugins/dependency-management-plugin/issues/8 for more complete solutions
+                pomNode.dependencies.dependency.findAll {
+                    it.version.text().isEmpty()
+                }.each {
+                    it.replaceNode {}
+                }
+            }
+            artifact bootJar
+        }
+    }
+}
 

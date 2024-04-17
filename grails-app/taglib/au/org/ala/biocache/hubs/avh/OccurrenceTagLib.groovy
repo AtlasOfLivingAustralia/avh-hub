@@ -57,7 +57,7 @@ class OccurrenceTagLib {
                     outputResultsTd("Locality: ", occurrence.lga, occurrence.lga)
                 }
                 tr() {
-                    outputResultsTd("Collector: ", "${occurrence.collector}&nbsp;&nbsp;${occurrence.recordNumber?:''}", true)
+                    outputResultsTd("Collector: ", "${occurrence.collector?:''}&nbsp;&nbsp;${occurrence.recordNumber?:''}", true)
 
                     if (occurrence.eventDate) {
                         outputResultsTd("Date: ", g.formatDate(date: new Date(occurrence.eventDate), format:"dd-MM-yyyy"), true)
