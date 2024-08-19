@@ -11,7 +11,7 @@ class UrlMappings {
 
         "/"(controller:"home")
         "500"(view:'/error')
-        "404"(view:'/error')
+        "404"(view:'/notFound')
         "403"(view:'/error')
 	}
 }
