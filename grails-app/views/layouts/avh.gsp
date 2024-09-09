@@ -53,7 +53,6 @@
         <title><g:layoutTitle /></title>
 
         <asset:javascript src="avh.js"/>
-        <asset:javascript src="biocache-hubs.js" />
 
         <g:render template="/layouts/global" plugin="biocache-hubs"/>
 
