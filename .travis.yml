@@ -1,6 +1,6 @@
 language: groovy
 jdk:
-- openjdk11
+- openjdk17
 sudo: false
 branches:
   only:
@@ -9,7 +9,7 @@ branches:
   - develop
   - epic/cloud-uplift/develop
   - /^epic\/.*\/develop$/
-#  - nzvh-test
+  - /^feature\/.*$/
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/

@@ -1,5 +1,9 @@
 ### avh-hub   [![Build Status](https://travis-ci.com/AtlasOfLivingAustralia/avh-hub.svg?branch=develop)](https://travis-ci.com/github/AtlasOfLivingAustralia/avh-hub)
 
+## Versions
+- 8.x version, Java 17
+- 7.x version, Java 11
+
 Australian Virtual Herbarium Hub (avh-hub)
 ==========================================
 
