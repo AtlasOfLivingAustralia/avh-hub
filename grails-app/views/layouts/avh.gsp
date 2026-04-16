@@ -54,6 +54,11 @@
 
         <asset:javascript src="avh.js"/>
 
+        <g:if test="${grailsApplication.config.getProperty('headerAndFooter.challengeJsUrl')}">
+            <script type="text/javascript"
+                    src="${grailsApplication.config.getProperty('headerAndFooter.challengeJsUrl')}" defer></script>
+        </g:if>
+
         <g:render template="/layouts/global" plugin="biocache-hubs"/>
 
         <asset:stylesheet src="third-party-styles.css"/>
@@ -72,8 +77,8 @@
         <div class="${containerType}">
             <div class="navbar-inner">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" 
-                            data-toggle="collapse" data-target=".navbar-collapse" 
+                    <button type="button" class="navbar-toggle collapsed"
+                            data-toggle="collapse" data-target=".navbar-collapse"
                             aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
